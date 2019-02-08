@@ -6,4 +6,5 @@ const prompt = require('./prompt');
 
 
 //init
+
 prompt.run();

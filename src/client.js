@@ -1,16 +1,13 @@
 //CLIENT
+var settings = require('./settings')
 
 module.exports = {
-    connect: function () {
-        process.stdout.write('\033c');
-        console.log("LANCHAT v0.1".green)
-        console.log("")
-        console.log("loading...")
-        setTimeout(function () { return true }, 1000);
-    },
-
     handle: function (msg) {
 
+    },
+
+    set_nick: function (nick) {
+        settings.nick = nick;
     },
 
     command: function (command) {

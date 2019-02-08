@@ -1,4 +1,6 @@
 //COMMANDS
+const colors = require('colors');
+const client = require('./client');
 
 module.exports = {
     clear: function () {
@@ -10,13 +12,26 @@ module.exports = {
         process.exit(0);
     },
 
+    nick: function (args) {
+        var message
+        if (typeof args[0] === "undefined"){
+            message = "Try: /nick <new_nick>"
+        } else {
+            client.set_nick(args[0])
+            message = "Your nickname is now " + args[0]
+        }
+        return message;
+    },
+
     help: function () {
         var help = []
         help[0] = ""
-        help[1] = "HELP"
-        help[2] = "/clear - clear window"
-        help[3] = "/exit - exit Lan Chat"
-        help[4] = ""
+        help[1] = "HELP".green
+        help[2] = ""
+        help[3] = "/clear - clear window"
+        help[4] = "/exit - exit Lan Chat"
+        help[5] = "/nick <nickname> - set nickname"
+        help[6] = ""
         return help.join("\n");
     }
 }

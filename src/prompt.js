@@ -4,6 +4,7 @@ const readline = require('readline');
 const rl = readline.createInterface(process.stdin, process.stdout);
 const client = require('./client')
 const commands = require('./commands')
+var settings = require('./settings')
 
 module.exports = {
     run: function () {
@@ -43,15 +44,24 @@ function console_out(msg) {
 function wrapper(msg) {
     //if it message
     if (msg.charAt(0) !== "/") {
-        console_out(msg)
-        client.handle(msg)
+        //get time
+        var date = new Date();
+        var time = (("0" + date.getHours()).slice(-2) + ":" +
+            ("0" + date.getMinutes()).slice(-2) + ":" +
+            ("0" + date.getSeconds()).slice(-2));
+
+        //send
+        var message = "[" + time.green + "] "  + settings.nick.blue + ": " + msg
+        console_out(message)
+        client.handle(message)
     } else {
         //if it command
         var answer
-        if (typeof commands[msg.substr(1)] !== 'undefined') {
-            answer = commands[msg.substr(1)]();
+        const args = msg.split(" ");
+        if (typeof commands[args[0].substr(1)] !== 'undefined') {
+            answer = commands[args[0].substr(1)](args.slice(1));
         }
-        //if command have response send it
+        //if command have response
         if (typeof answer !== 'undefined') {
             console_out(answer)
         }
