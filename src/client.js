@@ -10,10 +10,12 @@ module.exports = {
     },
 
     handle: function (msg) {
-        if (msg.charAt(0) === "/") {
-            return "komenda";
-        } else {
-            return true;
+
+    },
+
+    command: function (command) {
+        if (command === "/clear") {
+            return
         }
     }
 }
