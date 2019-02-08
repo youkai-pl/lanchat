@@ -1,9 +1,9 @@
 //PROMPT
 const colors = require('colors');
-const readline = require('readline');
-const rl = readline.createInterface(process.stdin, process.stdout);
 const client = require('./client')
 const commands = require('./commands')
+const read = require("./rl")
+const rl = read.rl
 var settings = require('./settings')
 
 module.exports = {

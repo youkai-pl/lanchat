@@ -24,6 +24,8 @@ testPort(settings.port, "127.0.0.1", function (e) {
         http.listen(settings.port, function () {
             prompt.answer("server created" .red);
         });
+    } else {
+        prompt.answer("connected" .red)
     }
 })
 
