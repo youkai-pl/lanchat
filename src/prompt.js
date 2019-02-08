@@ -20,6 +20,9 @@ module.exports = {
             process.stdout.write('\033c');
             process.exit(0);
         });
+    },
+    answer: function (msg) {
+        console_out(msg)
     }
 }
 
@@ -49,11 +52,10 @@ function wrapper(msg) {
         var time = (("0" + date.getHours()).slice(-2) + ":" +
             ("0" + date.getMinutes()).slice(-2) + ":" +
             ("0" + date.getSeconds()).slice(-2));
-
         //send
-        var message = "[" + time.green + "] "  + settings.nick.blue + ": " + msg
+        var message = "[" + time.green + "] " + settings.nick.blue + ": " + msg
         console_out(message)
-        client.handle(message)
+        client.send(message)
     } else {
         //if it command
         var answer

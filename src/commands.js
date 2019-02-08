@@ -3,6 +3,14 @@ const colors = require('colors');
 const client = require('./client');
 
 module.exports = {
+    connect: function () {
+        client.connect()
+    },
+
+    create: function () {
+        client.create()
+    },
+
     clear: function () {
         process.stdout.write('\033c');
     },
@@ -14,7 +22,7 @@ module.exports = {
 
     nick: function (args) {
         var message
-        if (typeof args[0] === "undefined"){
+        if (typeof args[0] === "undefined") {
             message = "Try: /nick <new_nick>"
         } else {
             client.set_nick(args[0])
