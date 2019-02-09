@@ -32,15 +32,21 @@ module.exports = {
         var help = []
         help[0] = ""
         help[1] = "HELP".green
-        help[2] = ""
-        help[3] = "/clear - clear window"
-        help[4] = "/exit - exit Lan Chat"
-        help[5] = "/nick <nickname> - set nickname"
-        help[6] = ""
+        help[2] = "/host - create server"
+        help[3] = "/connect <ip> - connect to server"
+        help[4] = "/disconnect - disconnect from server"
+        help[5] = "/clear - clear window"
+        help[6] = "/exit - exit Lan Chat"
+        help[7] = "/nick <nickname> - set nickname"
+        help[8] = ""
         return help.join("\n");
     },
 
     connect: function (args) {
         client.connect(args[0]);
+    },
+
+    disconnect: function () {
+        client.disconnect();
     }
 }

@@ -40,6 +40,16 @@ module.exports = {
         }
     },
 
+    disconnect: function () {
+        if (connection_status) {
+            send_status(settings.nick.blue + " left the chat");
+            socket.disconnect()
+            out("[#] disconnected".green)
+        } else {
+            out("[!] you are not connected".red)
+        }
+    },
+
     set_nick: function (nick) {
         settings.nick = nick;
     },
