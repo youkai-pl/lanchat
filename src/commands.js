@@ -1,16 +1,9 @@
 //COMMANDS
 const colors = require('colors');
 const client = require('./client');
+var settings = require('./settings')
 
 module.exports = {
-    connect: function () {
-        client.connect()
-    },
-
-    create: function () {
-        client.create()
-    },
-
     clear: function () {
         process.stdout.write('\033c');
     },
