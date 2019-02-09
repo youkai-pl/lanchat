@@ -10,17 +10,21 @@ const rl = read.rl
 
 module.exports = {
     connect: function (ip) {
-        out("[#] connecting".green)
-        testPort(settings.port, ip, function (e) {
-            if (e === "failure") {
-                out("[#] connection error".red)
-            } else {
-                socket = require('socket.io-client')('http://' + ip + ":" + settings.port);
-                listen()
-                connection_status = true;
-                out("[#] connected".green)
-            }
-        })
+        if (connection_status) {
+            out("[!] you already connected".red)
+        } else {
+            out("[#] connecting".green)
+            testPort(settings.port, ip, function (e) {
+                if (e === "failure") {
+                    out("[#] connection error".red)
+                } else {
+                    socket = require('socket.io-client')('http://' + ip + ":" + settings.port);
+                    listen()
+                    connection_status = true;
+                    out("[#] connected".green)
+                }
+            })
+        }
     },
 
     send: function (msg) {
