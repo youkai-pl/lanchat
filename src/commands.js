@@ -13,6 +13,10 @@ module.exports = {
         process.exit(0);
     },
 
+    host: function () {
+        client.host()
+    },
+
     nick: function (args) {
         var message
         if (typeof args[0] === "undefined") {
@@ -34,5 +38,9 @@ module.exports = {
         help[5] = "/nick <nickname> - set nickname"
         help[6] = ""
         return help.join("\n");
+    },
+
+    connect: function (args) {
+        client.connect(args[0]);
     }
 }
