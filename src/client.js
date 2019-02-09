@@ -9,6 +9,13 @@ const read = require("./rl")
 const rl = read.rl
 
 module.exports = {
+
+    send: function (msg) {
+        if (connection_status) {
+            socket.emit('message', msg);
+        }
+    },
+
     connect: function (ip) {
         if (isEmptyOrSpaces(ip)) {
             out("Try /connect <ip>")
@@ -26,15 +33,10 @@ module.exports = {
                         listen()
                         connection_status = true;
                         out("[#] connected".green)
+                        send_status(settings.nick.blue + " join the chat");
                     }
                 })
             }
-        }
-    },
-
-    send: function (msg) {
-        if (connection_status) {
-            socket.emit('message', msg);
         }
     },
 
@@ -43,12 +45,12 @@ module.exports = {
     },
 
     host: function () {
+        out("[#] starting server".green)
         testPort(settings.port, "127.0.0.1", function (e) {
             if (e === "failure") {
                 io.on('connection', function (socket) {
-                    out('[#] user connected'.green);
                     socket.on('disconnect', function () {
-                        out('[#] user disconnected'.red);
+                        //nothing
                     });
                     socket.on('message', function (msg) {
                         socket.broadcast.emit('message', msg);
@@ -90,4 +92,8 @@ function listen() {
 
 function isEmptyOrSpaces(str) {
     return str === null || typeof str === "undefined" || str.match(/^ *$/) !== null;
+}
+
+function send_status(msg) {
+    socket.emit('message', msg);
 }
