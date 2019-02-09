@@ -1,8 +1,9 @@
 //CLIENT
-var settings = require("./settings")
 var http = require('http').Server();
 var io = require('socket.io')(http);
 var net = require('net');
+const ip = require("ip");
+var settings = require("./settings")
 var socket
 var connection_status
 const read = require("./rl")
@@ -18,7 +19,7 @@ module.exports = {
 
     connect: function (ip) {
         if (isEmptyOrSpaces(ip)) {
-            out("Try /connect <ip>")
+            out("Try: /connect <ip>")
         } else {
 
             if (connection_status) {
@@ -67,7 +68,8 @@ module.exports = {
                     });
                 });
                 http.listen(settings.port, function () {
-                    out("[#] server created".green);
+                    out("[#] Server running".green);
+                    out("[#] Local network IP:  ".green + ip.address().green);
                 });
                 socket = require('socket.io-client')('http://localhost:' + settings.port);
                 connection_status = true;
