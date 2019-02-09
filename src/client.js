@@ -10,20 +10,25 @@ const rl = read.rl
 
 module.exports = {
     connect: function (ip) {
-        if (connection_status) {
-            out("[!] you already connected".red)
+        if (isEmptyOrSpaces(ip)) {
+            out("Try /connect <ip>")
         } else {
-            out("[#] connecting".green)
-            testPort(settings.port, ip, function (e) {
-                if (e === "failure") {
-                    out("[#] connection error".red)
-                } else {
-                    socket = require('socket.io-client')('http://' + ip + ":" + settings.port);
-                    listen()
-                    connection_status = true;
-                    out("[#] connected".green)
-                }
-            })
+
+            if (connection_status) {
+                out("[!] you already connected".red)
+            } else {
+                out("[#] connecting".green)
+                testPort(settings.port, ip, function (e) {
+                    if (e === "failure") {
+                        out("[#] connection error".red)
+                    } else {
+                        socket = require('socket.io-client')('http://' + ip + ":" + settings.port);
+                        listen()
+                        connection_status = true;
+                        out("[#] connected".green)
+                    }
+                })
+            }
         }
     },
 
@@ -81,4 +86,8 @@ function listen() {
     socket.on('message', function (msg) {
         out(msg);
     })
+}
+
+function isEmptyOrSpaces(str) {
+    return str === null || typeof str === "undefined" || str.match(/^ *$/) !== null;
 }

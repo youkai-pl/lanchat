@@ -18,8 +18,7 @@ module.exports = {
         //exit
         rl.on('close', function () {
             process.stdout.write('\033c');
-
-            client.send(settings.nick .blue + " left chat")
+            client.send(settings.nick .blue + " left the chat")
             process.exit(0);
         });
     },
