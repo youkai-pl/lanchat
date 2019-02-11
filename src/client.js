@@ -3,38 +3,41 @@ var http = require('http').Server();
 var io = require('socket.io')(http);
 var net = require('net');
 const ip = require("ip");
+const rl = require("./rl").rl
+const fn = require("./common")
+const out = require("./out")
 var settings = require("./settings")
 var socket
 var connection_status
-const read = require("./rl")
-const rl = read.rl
+var server_status
 
 module.exports = {
 
-    send: function (msg) {
+    send: function (message) {
         if (connection_status) {
-            socket.emit('message', msg);
+            socket.emit('message', message);
         }
     },
 
     connect: function (ip) {
         if (isEmptyOrSpaces(ip)) {
-            out("Try: /connect <ip>")
+            out.blank("Try: /connect <ip>")
         } else {
 
             if (connection_status) {
-                out("[!] you already connected".red)
+                out.alert("you already connected")
             } else {
-                out("[#] connecting".green)
+                out.status("connecting")
                 testPort(settings.port, ip, function (e) {
                     if (e === "failure") {
-                        out("[#] connection error".red)
+                        out.alert("connection error")
                     } else {
                         socket = require('socket.io-client')('http://' + ip + ":" + settings.port);
                         listen()
                         connection_status = true;
-                        out("[#] connected".green)
-                        send_status(settings.nick.blue + " join the chat");
+                        out.status("connected")
+                        var msg = { content: " join the chat", nick: settings.nick }
+                        send_status(msg);
                     }
                 })
             }
@@ -43,11 +46,17 @@ module.exports = {
 
     disconnect: function () {
         if (connection_status) {
-            send_status(settings.nick.blue + " left the chat");
+            var msg = { content: " left the chat", nick: settings.nick }
+            send_status(msg);
             socket.disconnect()
-            out("[#] disconnected".green)
+            connection_status = false;
+            if (server_status) {
+                out.status("you are disconnected but server is still working")
+            } else {
+                out.status("disconnected")
+            }
         } else {
-            out("[!] you are not connected".red)
+            out.alert("you are not connected")
         }
     },
 
@@ -56,7 +65,7 @@ module.exports = {
     },
 
     host: function () {
-        out("[#] starting server".green)
+        out.status("starting server")
         testPort(settings.port, "127.0.0.1", function (e) {
             if (e === "failure") {
                 io.on('connection', function (socket) {
@@ -68,24 +77,18 @@ module.exports = {
                     });
                 });
                 http.listen(settings.port, function () {
-                    out("[#] Server running".green);
-                    out("[#] Local network IP:  ".green + ip.address().green);
+                    out.status("Server running");
+                    out.status("Local network IP: " + ip.address());
                 });
                 socket = require('socket.io-client')('http://localhost:' + settings.port);
                 connection_status = true;
+                server_status = true;
                 listen();
             } else {
-                out("[!] Server is already running on this PC".red)
+                out.alert("Server is already running on this PC")
             }
         })
     }
-}
-
-function out(msg) {
-    process.stdout.clearLine();
-    process.stdout.cursorTo(0);
-    console.log(msg);
-    rl.prompt(true);
 }
 
 function testPort(port, host, cb) {
@@ -98,7 +101,7 @@ function testPort(port, host, cb) {
 
 function listen() {
     socket.on('message', function (msg) {
-        out(msg);
+        out.message(msg)
     })
 }
 

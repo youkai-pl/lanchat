@@ -1,15 +1,16 @@
 //PROMPT
-const colors = require('colors');
+const colors = require('colors')
 const client = require('./client')
 const commands = require('./commands')
-const read = require("./rl")
-const rl = read.rl
+const out = require('./out')
+const rl = require("./rl").rl
 var settings = require('./settings')
 
 module.exports = {
     run: function () {
         //init
         initui()
+
         //prompt
         rl.on('line', function (line) {
             wrapper(line);
@@ -18,12 +19,10 @@ module.exports = {
         //exit
         rl.on('close', function () {
             process.stdout.write('\033c');
-            client.send(settings.nick .blue + " left the chat")
+            var msg = { content: " left the chat", nick: settings.nick }
+            client.send(msg)
             process.exit(0);
         });
-    },
-    answer: function (msg) {
-        console_out(msg)
     }
 }
 
@@ -36,37 +35,24 @@ function initui() {
     rl.prompt(true);
 }
 
-//write to console
-function console_out(msg) {
-    process.stdout.clearLine();
-    process.stdout.cursorTo(0);
-    console.log(msg);
-    rl.prompt(true);
-}
-
 //user input wrapper
-function wrapper(msg) {
+function wrapper(message) {
     //if it message
-    if (msg.charAt(0) !== "/") {
-        //get time
-        var date = new Date();
-        var time = (("0" + date.getHours()).slice(-2) + ":" +
-            ("0" + date.getMinutes()).slice(-2) + ":" +
-            ("0" + date.getSeconds()).slice(-2));
+    if (message.charAt(0) !== "/") {
         //send
-        var message = "[" + time.green + "] " + settings.nick.blue + ": " + msg
-        console_out(message)
-        client.send(message)
+        var msg = { content: message, nick: settings.nick }
+        out.message(msg)
+        client.send(msg)
     } else {
         //if it command
         var answer
-        const args = msg.split(" ");
+        const args = message.split(" ");
         if (typeof commands[args[0].substr(1)] !== 'undefined') {
             answer = commands[args[0].substr(1)](args.slice(1));
         }
         //if command have response
         if (typeof answer !== 'undefined') {
-            console_out(answer)
+            out.blank(answer)
         }
         process.stdout.clearLine();
         process.stdout.cursorTo(0);
