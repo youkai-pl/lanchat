@@ -28,7 +28,7 @@ module.exports = {
 
 function initui() {
     process.stdout.write('\033c');
-    console.log("LANCHAT v0.2".green)
+    console.log("LANCHAT 0.2.1".green)
     console.log("")
     console.log("type /help".green)
     console.log("")

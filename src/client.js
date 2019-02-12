@@ -73,7 +73,9 @@ module.exports = {
                         //nothing
                     });
                     socket.on('message', function (msg) {
-                        socket.broadcast.emit('message', msg);
+                        if (msg.hasOwnProperty('content') && msg.hasOwnProperty('nick')) {
+                            socket.broadcast.emit('message', msg);
+                        }
                     });
                 });
                 http.listen(settings.port, function () {
