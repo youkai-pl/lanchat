@@ -3,7 +3,8 @@ const colors = require('colors')
 const client = require('./client')
 const commands = require('./commands')
 const out = require('./out')
-const rl = require("./rl").rl
+const rl = require("./interface").rl
+const setTitle = require('console-title');
 var settings = require('./settings')
 
 module.exports = {
@@ -18,17 +19,21 @@ module.exports = {
 
         //exit
         rl.on('close', function () {
+            client.status({
+                content: "left the chat",
+                nick: settings.nick
+            })
             process.stdout.write('\033c');
-            var msg = { content: " left the chat", nick: settings.nick }
-            client.send(msg)
             process.exit(0);
         });
     }
 }
 
+//welcome message
 function initui() {
     process.stdout.write('\033c');
-    console.log("LANCHAT 0.2.1".green)
+    setTitle('lanchat');
+    console.log("LANCHAT 0.3.1".green)
     console.log("")
     console.log("type /help".green)
     console.log("")
@@ -40,9 +45,7 @@ function wrapper(message) {
     //if it message
     if (message.charAt(0) !== "/") {
         //send
-        var msg = { content: message, nick: settings.nick }
-        out.message(msg)
-        client.send(msg)
+        client.send(message)
     } else {
         //if it command
         var answer

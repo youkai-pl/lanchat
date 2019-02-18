@@ -1,5 +1,5 @@
 //CONSOLE
-const rl = require("./rl").rl
+const rl = require("./interface").rl
 const fn = require("./common")
 const colors = require('colors');
 
@@ -10,6 +10,14 @@ module.exports = {
         process.stdout.clearLine();
         process.stdout.cursorTo(0);
         console.log("[" + fn.time().green + "] " + msg.nick.blue + ": " + msg.content);
+        rl.prompt(true);
+    },
+
+    //user status
+    user_status: function (msg) {
+        process.stdout.clearLine();
+        process.stdout.cursorTo(0);
+        console.log(msg.nick.blue + " " + msg.content);
         rl.prompt(true);
     },
 
