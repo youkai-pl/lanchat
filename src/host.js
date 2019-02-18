@@ -74,6 +74,7 @@ function run() {
 
             var table = list.join("\n");
             socket.emit('return', table);
+
         })
 
 
@@ -103,7 +104,7 @@ function run() {
         socket.on('message', function (msg) {
             if (msg) {
                 if (msg.hasOwnProperty('content') && msg.hasOwnProperty('nick')) {
-                    if(msg.content !== ""){
+                    if (msg.content !== "") {
                         socket.broadcast.emit('message', msg);
                     }
                 }

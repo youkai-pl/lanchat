@@ -41,8 +41,11 @@ module.exports = {
                 fn.testPort(settings.port, ip, function (e) {
                     if (e === "failure") {
                         out.alert("connection error")
+                        global.connection_status = false;
                     } else {
-                        socket = require('socket.io-client')('http://' + ip + ":" + settings.port);
+                        socket = require('socket.io-client')('http://' + ip + ":" + settings.port, {
+                            reconnection: false
+                        });
                         listen()
                         global.connection_status = true;
                         out.status("connected")
