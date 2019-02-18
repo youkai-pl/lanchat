@@ -2,6 +2,18 @@
 
 IRC like chat app works in LAN network
 
+## Commands
+
+* `/host` - create server
+* `/connect` <ip> - connect to server
+* `/disconnect` - disconnect from server
+* `/clear` - clear window
+* `/exit` - exit Lan Chat
+* `/nick` <nickname> - set nickname
+* `/list` - connected users list
+* `/afk` - change status to afk
+* `/online` - change status to online
+
 ## Changelog
 
 ### 0.3.0
