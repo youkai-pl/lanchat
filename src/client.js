@@ -51,7 +51,7 @@ module.exports = {
 
                 //handle connection error
                 socket.on('connect_error', function () {
-                   out.alert("connection error")
+                    out.alert("connection error")
                 })
 
                 //handle disconnect
@@ -73,6 +73,10 @@ module.exports = {
             global.safe_disconnect = true
             socket.disconnect()
             global.connection_status = false;
+            status({
+                content: "leave the chat",
+                nick: settings.nick
+            })
             if (global.server_status) {
                 out.status("you are disconnected but server is still working")
             } else {

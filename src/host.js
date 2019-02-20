@@ -1,11 +1,11 @@
 //HOST
 const fn = require("./common")
 const out = require("./out")
-const colors = require('colors');
-const ip = require("ip");
+const colors = require('colors')
+const ip = require("ip")
 const client = require("./client")
-const http = require('http').Server();
-const io = require('socket.io')(http);
+const http = require('http').Server()
+const io = require('socket.io')(http)
 var settings = require("./settings")
 var global = require("./global")
 
@@ -16,7 +16,7 @@ module.exports = {
             if (e === "failure") {
                 http.listen(settings.port, function () {
                     out.status("Server running");
-                    out.status("Local network IP: " + ip.address());
+                    out.status("Local network IP: " + ip.address())
                 });
                 run();
                 global.server_status = true;
@@ -35,24 +35,34 @@ function run() {
 
         //login
         socket.on('login', function (nick) {
-            var id = socket.id.toString();
+            var id = socket.id.toString()
+            if (nick.length > 15) {
+                nick = nick.substring(0, 15)
+            }
             var user = {
                 nickname: nick,
                 status: "online"
             }
-            global.users[id] = user;
+            global.users[id] = user
         })
 
         //logoff
         socket.on("disconnect", function () {
-            var id = socket.id.toString();
+            var id = socket.id.toString()
             delete global.users[id]
         })
 
         //change nick
         socket.on("nick", function (nick) {
-            var id = socket.id.toString();
-            global.users[id].nickname = nick;
+            var id = socket.id.toString()
+            var old = global.users[id].nickname
+            if (global.users.hasOwnProperty(id)) {
+                if (nick.length > 15) {
+                    nick = nick.substring(0, 15)
+                }
+                global.users[id].nickname = nick;
+                socket.emit('return', old.blue + " change nick to " + nick.blue)
+            }
         })
 
         //list
@@ -72,32 +82,37 @@ function run() {
                 list[i] = a.nickname.blue + " (" + status + ")"
             }
 
-            var table = list.join("\n");
-            socket.emit('return', table);
+            var table = list.join("\n")
+            socket.emit('return', table)
 
         })
 
 
         //afk
         socket.on('afk', function (nickname) {
-            var id = socket.id.toString();
-            global.users[id].status = "afk";
-            var msg = {
-                content: "is afk",
-                nick: nickname
+            var id = socket.id.toString()
+            if (global.users.hasOwnProperty(id)) {
+                global.users[id].status = "afk"
+                var msg = {
+                    content: "is afk",
+                    nick: nickname
+                }
+                socket.broadcast.emit('status', msg)
             }
-            socket.broadcast.emit('status', msg);
+
         })
 
         //online
         socket.on('online', function (nickname) {
-            var id = socket.id.toString();
-            global.users[id].status = "online";
-            var msg = {
-                content: "is online",
-                nick: nickname
+            var id = socket.id.toString()
+            if (global.users.hasOwnProperty(id)) {
+                global.users[id].status = "online"
+                var msg = {
+                    content: "is online",
+                    nick: nickname
+                }
+                socket.broadcast.emit('status', msg)
             }
-            socket.broadcast.emit('status', msg);
         })
 
         //message
@@ -105,7 +120,10 @@ function run() {
             if (msg) {
                 if (msg.hasOwnProperty('content') && msg.hasOwnProperty('nick')) {
                     if (msg.content !== "") {
-                        socket.broadcast.emit('message', msg);
+                        if (msg.nick.length > 15) {
+                            msg.nick = msg.nick.substring(0, 15)
+                        }
+                        socket.broadcast.emit('message', msg)
                     }
                 }
             }
@@ -115,14 +133,17 @@ function run() {
         socket.on('status', function (msg) {
             if (msg) {
                 if (msg.hasOwnProperty('content') && msg.hasOwnProperty('nick')) {
-                    socket.broadcast.emit('status', msg);
+                    if (msg.nick.length > 15) {
+                        msg.nick = msg.nick.substring(0, 15)
+                    }
+                    socket.broadcast.emit('status', msg)
                 }
             }
         });
 
         //return
         socket.on('return', function (msg) {
-            socket.emit('return', msg);
+            socket.emit('return', msg)
         });
     });
 }

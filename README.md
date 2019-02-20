@@ -16,6 +16,11 @@ IRC like chat app works in LAN network
 
 ## Changelog
 
+### 0.3.1
+
+* bugixes
+* code improvements
+
 ### 0.3.0
 
 * user list
