@@ -38,24 +38,30 @@ module.exports = {
                 out.alert("you already connected")
             } else {
                 out.status("connecting")
-                fn.testPort(settings.port, ip, function (e) {
-                    if (e === "failure") {
-                        out.alert("connection error")
+
+                //create socket
+                socket = require('socket.io-client')('http://' + ip + ":" + settings.port, {
+                    reconnection: false
+                })
+
+                //connect
+                socket.on('connect', function () {
+                    connect()
+                });
+
+                //handle connection error
+                socket.on('connect_error', function () {
+                   out.alert("connection error")
+                })
+
+                //handle disconnect
+                socket.on('disconnect', function () {
+                    if (global.safe_disconnect !== true) {
+                        out.alert("disconnected")
                         global.connection_status = false;
-                    } else {
-                        socket = require('socket.io-client')('http://' + ip + ":" + settings.port, {
-                            reconnection: false
-                        });
-                        listen()
-                        global.connection_status = true;
-                        out.status("connected")
-                        login()
-                        status({
-                            content: "join the chat",
-                            nick: settings.nick
-                        })
                     }
                 })
+
             }
         }
     },
@@ -64,6 +70,7 @@ module.exports = {
     disconnect: function () {
         if (global.connection_status) {
             socket.emit('status', settings.nick);
+            global.safe_disconnect = true
             socket.disconnect()
             global.connection_status = false;
             if (global.server_status) {
@@ -93,6 +100,19 @@ module.exports = {
 }
 
 //FUNCTIONS
+
+//connect
+function connect() {
+    listen()
+    global.connection_status = true
+    global.safe_disconnect = false
+    out.status("connected")
+    login()
+    status({
+        content: "join the chat",
+        nick: settings.nick
+    })
+}
 
 //listen
 function listen() {
