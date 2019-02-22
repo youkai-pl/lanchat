@@ -96,6 +96,12 @@ module.exports = {
         }
     },
 
+    //rainbow
+    rb: function (args) {
+        var content = args.join(" ")
+        client.send(content.rainbow)
+    },
+
     //dev commands
     d1: function () {
         client.connect("localhost");
