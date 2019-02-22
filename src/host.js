@@ -61,7 +61,7 @@ function run() {
                     nick = nick.substring(0, 15)
                 }
                 global.users[id].nickname = nick;
-                socket.emit('return', old.blue + " change nick to " + nick.blue)
+                socket.broadcast.emit('return', old.blue + " change nick to " + nick.blue)
             }
         })
 
