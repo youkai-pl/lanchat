@@ -1,5 +1,5 @@
 {
-  "name": "lanchat",
+  "name": "lanchat-npm",
   "version": "0.3.2",
   "main": "main.js",
   "repository": "https://github.com/akira202/lanchat.git",
@@ -14,5 +14,9 @@
   },
   "bin": {
     "lanchat": "main.js"
+  },
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp": "^4.0.0"
   }
 }
