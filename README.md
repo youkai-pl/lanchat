@@ -2,6 +2,15 @@
 
 IRC like chat app works in LAN network
 
+## Instalation
+
+You have three options
+* `npm install -g lanchat`
+* download packed version from releases
+* `git clone` and `node src/main.js`
+
+**I reccomend using package from npm**
+
 ## Commands
 
 * `/host` - create server
@@ -13,8 +22,14 @@ IRC like chat app works in LAN network
 * `/list` - connected users list
 * `/afk` - change status to afk
 * `/online` - change status to online
+* `/rb` - rainbow text
 
 ## Changelog
+
+### 0.3.2
+* possibility of downloading from npm
+* rainbow text
+* bugfixes
 
 ### 0.3.1
 
