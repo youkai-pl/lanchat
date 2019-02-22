@@ -4,12 +4,15 @@ IRC like chat app works in LAN network
 
 ## Instalation
 
-You have three options
-* `npm install -g lanchat-npm`
-* download packed version from releases
-* `git clone` and `node src/main.js`
+You have two options
 
-**I reccomend using package from npm**
+NPM version **(reccomended)**
+* download node.js from [here](https://nodejs.org/en/download/)
+* `npm install -g lanchat-npm`
+* `lanchat` to start
+
+or download portable version from releases
+
 
 ## Commands
 
