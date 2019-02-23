@@ -34,7 +34,7 @@ module.exports = {
         if (fn.isEmptyOrSpaces(ip)) {
             out.blank("Try: /connect <ip>")
         } else {
-            if (global.connection_status) {
+            if (global.connection_status || global.reconnection) {
                 out.alert("you already connected")
             } else {
                 out.status("connecting")
@@ -47,10 +47,20 @@ module.exports = {
                 //connect
                 socket.on('connect', function () {
                     if (!global.reconnection) {
-                        connect()
+                        listen()
+                        global.connection_status = true
+                        global.safe_disconnect = false
+                        out.status("connected")
+                        login()
+                        status({
+                            content: "join the chat",
+                            nick: settings.nick
+                        })
                     } else {
                         login()
                         global.connection_status = true
+                        global.safe_disconnect = false
+
                     }
 
                 });
@@ -64,6 +74,7 @@ module.exports = {
                 socket.on('disconnect', function () {
                     if (global.safe_disconnect !== true) {
                         out.alert("disconnected")
+                        global.reconnection = true
                         global.connection_status = false
                     }
                 })
@@ -116,19 +127,6 @@ module.exports = {
 }
 
 //FUNCTIONS
-
-//connect
-function connect() {
-    listen()
-    global.connection_status = true
-    global.safe_disconnect = false
-    out.status("connected")
-    login()
-    status({
-        content: "join the chat",
-        nick: settings.nick
-    })
-}
 
 //listen
 function listen() {
