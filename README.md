@@ -1,5 +1,3 @@
-<img style="float: right;" src="https://i.imgur.com/nsdt4J6.png">
-
 # Lan-Chat
 #### IRC like chat app works in LAN network
 
