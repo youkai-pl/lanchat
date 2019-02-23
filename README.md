@@ -1,13 +1,35 @@
+<img style="float: right;" src="https://i.imgur.com/nsdt4J6.png">
+
 # Lan-Chat
-IRC like chat app works in LAN network
+#### IRC like chat app works in LAN network
+
+<div style="text-align: center;">
+
+![](https://img.shields.io/github/repo-size/akira202/lanchat.svg) ![](https://img.shields.io/github/languages/top/akira202/lanchat.svg) ![](https://img.shields.io/github/license/akira202/lanchat.svg) ![](https://img.shields.io/npm/v/lanchat-npm.svg) ![](https://img.shields.io/github/last-commit/akira202/lanchat.svg) ![](https://img.shields.io/github/release-date/akira202/lanchat.svg)
+
+</div>
+
+<p style="text-align: center;">
+    <img src="https://i.imgur.com/F6qOIOw.png" width="500">
+</p>
+
 
 ## Instalation
-You have two options
-NPM version **(reccomended)**
+You have three options
+
+#### NPM version **(reccomended)**
 * download node.js from [here](https://nodejs.org/en/download/)
 * `npm install -g lanchat-npm`
 * `lanchat` to start
-or download portable version from releases
+
+#### Portable Relase
+* [Download last version](https://github.com/akira202/lanchat/releases)
+
+#### Git Repository
+* `git clone https://github.com/akira202/lanchat.git`
+* `cd lanchat/src`
+* `yarn` or `npm install`
+* `node main`
 
 ## Commands
 * `/host` - create server
@@ -54,16 +76,3 @@ or download portable version from releases
 
 ### 0.1.0 beta
 * First release
-
-
-## ASCII ARTs
-
-```
-/rb ██╗      █████╗ ███╗   ██╗ ██████╗██╗  ██╗ █████╗ ████████╗
-/rb ██║     ██╔══██╗████╗  ██║██╔════╝██║  ██║██╔══██╗╚══██╔══╝
-/rb ██║     ███████║██╔██╗ ██║██║     ███████║███████║   ██║
-/rb ██║     ██╔══██║██║╚██╗██║██║     ██╔══██║██╔══██║   ██║
-/rb ███████╗██║  ██║██║ ╚████║╚██████╗██║  ██║██║  ██║   ██║
-/rb ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝
-
-```
