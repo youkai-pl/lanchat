@@ -29,11 +29,11 @@ module.exports = {
     }
 }
 
-//welcome message
+//initui
 function initui() {
     process.stdout.write('\033c');
     setTitle('lanchat');
-    console.log("LANCHAT 0.3.2".green)
+    console.log("LANCHAT 0.3.3".green)
     console.log("")
     rl.prompt(true);
 }
@@ -51,10 +51,7 @@ function wrapper(message) {
         if (typeof commands[args[0].substr(1)] !== 'undefined') {
             answer = commands[args[0].substr(1)](args.slice(1));
         }
-        //if command have response
-        if (typeof answer !== 'undefined') {
-            out.blank(answer)
-        }
+
         process.stdout.clearLine();
         process.stdout.cursorTo(0);
         rl.prompt(true);

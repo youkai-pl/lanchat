@@ -1,6 +1,6 @@
 //COMMANDS
-const colors = require('colors');
-const client = require('./client');
+const colors = require('colors')
+const client = require('./client')
 const host = require('./host')
 const out = require('./out')
 var global = require('./global')
@@ -10,12 +10,12 @@ module.exports = {
 
     //clear
     clear: function () {
-        process.stdout.write('\033c');
+        process.stdout.write('\033c')
     },
 
     //exit
     exit: function () {
-        process.stdout.write('\033c');
+        process.stdout.write('\033c')
         process.exit(0);
     },
 
@@ -31,12 +31,12 @@ module.exports = {
             message = "Try: /nick <new_nick>"
         } else {
             settings.nick = (args[0]);
-            message = "Your nickname is now " + args[0]
+            message = "Your nickname is now " + args[0].blue
             if (global.connection_status) {
                 client.nick()
             }
         }
-        return message;
+        out.blank(message)
     },
 
     //help
@@ -54,12 +54,12 @@ module.exports = {
         help[9] = "/afk - change status to afk"
         help[10] = "/online - change status to online"
         help[11] = ""
-        return help.join("\n");
+        out.blank(help.join("\n"))
     },
 
     //connect
     connect: function (args) {
-        client.connect(args[0]);
+        client.connect(args[0])
     },
 
     //disconnect
@@ -104,6 +104,6 @@ module.exports = {
 
     //dev commands
     d1: function () {
-        client.connect("localhost");
+        client.connect("localhost")
     }
 }
