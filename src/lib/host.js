@@ -48,11 +48,19 @@ function run() {
                 ip: socket.handshake.address
             }
             global.users[id] = user
+            socket.broadcast.emit('status', {
+                content: "join the chat",
+                nick: nick
+            })
         })
 
         //logoff
         socket.on("disconnect", function () {
             var id = socket.id.toString()
+            socket.broadcast.emit('status', {
+                content: "left the chat",
+                nick: global.users[id].nickname
+            })
             delete global.users[id]
         })
 

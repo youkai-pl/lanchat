@@ -22,11 +22,6 @@ module.exports = {
 
         //exit
         rl.on('close', function () {
-            client.status({
-                content: "left the chat",
-                nick: settings.nick
-            })
-
             process.stdout.write('\033c');
             process.exit(0);
         });

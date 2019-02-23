@@ -57,10 +57,6 @@ module.exports = {
                         global.safe_disconnect = false
                         out.status("connected")
                         login()
-                        status({
-                            content: "join the chat",
-                            nick: settings.nick
-                        })
                     } else {
                         login()
                         global.connection_status = true
@@ -101,10 +97,6 @@ module.exports = {
             global.safe_disconnect = true
             socket.disconnect()
             global.connection_status = false
-            status({
-                content: "leave the chat",
-                nick: settings.nick
-            })
             if (global.server_status) {
                 out.status("you are disconnected but server is still working")
             } else {
@@ -146,13 +138,6 @@ function listen() {
     socket.on('return', function (msg) {
         out.blank(msg)
     })
-}
-
-//status
-function status(msg) {
-    if (global.connection_status) {
-        socket.emit('status', msg);
-    }
 }
 
 //login
