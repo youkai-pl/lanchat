@@ -15,7 +15,7 @@ module.exports = {
         }
         out.message(msg)
         if (global.connection_status) {
-            socket.emit('message', msg);
+            socket.emit('message', msg)
         }
     },
 

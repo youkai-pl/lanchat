@@ -3,7 +3,8 @@ const colors = require('colors')
 const client = require('./client')
 const commands = require('./commands')
 const out = require('./out')
-const rl = require("./interface").rl
+var rl = require("./interface").rl
+var readline = require("./interface").readline
 const setTitle = require('console-title');
 var settings = require('./settings')
 
@@ -14,7 +15,9 @@ module.exports = {
 
         //prompt
         rl.on('line', function (line) {
+            readline.moveCursor(process.stdout, 0,-1)
             wrapper(line);
+            rl.prompt(true)
         });
 
         //exit
@@ -23,6 +26,7 @@ module.exports = {
                 content: "left the chat",
                 nick: settings.nick
             })
+
             process.stdout.write('\033c');
             process.exit(0);
         });
@@ -33,20 +37,20 @@ module.exports = {
 function initui() {
     process.stdout.write('\033c');
     setTitle('lanchat');
-    console.log("LANCHAT 0.3.3".green)
+    console.log("LANCHAT 0.4.0".green)
     console.log("")
     rl.prompt(true);
 }
 
 //user input wrapper
 function wrapper(message) {
+
     //if it message
     if (message.charAt(0) !== "/") {
         //send
         client.send(message)
     } else {
         //if it command
-        var answer
         const args = message.split(" ");
         if (typeof commands[args[0].substr(1)] !== 'undefined') {
             answer = commands[args[0].substr(1)](args.slice(1));
@@ -54,6 +58,5 @@ function wrapper(message) {
 
         process.stdout.clearLine();
         process.stdout.cursorTo(0);
-        rl.prompt(true);
     }
 }

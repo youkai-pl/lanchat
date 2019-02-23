@@ -2,7 +2,6 @@
 const fn = require("./common")
 const out = require("./out")
 const colors = require('colors')
-const ip = require("ip")
 const client = require("./client")
 const http = require('http').Server()
 const io = require('socket.io')(http)
@@ -16,7 +15,6 @@ module.exports = {
             if (e === "failure") {
                 http.listen(settings.port, function () {
                     out.status("Server running");
-                    out.status("Local network IP: " + ip.address())
                 });
                 run();
                 global.server_status = true;
