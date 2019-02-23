@@ -29,6 +29,11 @@ module.exports = {
         socket.emit('nick', settings.nick)
     },
 
+    //whois
+   long_list: function () {
+        socket.emit('long_list')
+    },
+
     //connect
     connect: function (ip) {
         if (fn.isEmptyOrSpaces(ip)) {

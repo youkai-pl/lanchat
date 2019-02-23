@@ -5,6 +5,7 @@ const colors = require('colors')
 const client = require("./client")
 const http = require('http').Server()
 const io = require('socket.io')(http)
+const shortid = require('shortid');
 var settings = require("./settings")
 var global = require("./global")
 
@@ -41,8 +42,10 @@ function run() {
                 nick = nick.substring(0, 15)
             }
             var user = {
+                sid: shortid.generate(),
                 nickname: nick,
-                status: "online"
+                status: "online",
+                ip: socket.handshake.address
             }
             global.users[id] = user
         })
@@ -70,7 +73,7 @@ function run() {
         socket.on("list", function () {
             var list = []
             var status
-            list[0] = "\nUSER LIST"
+            list[0] = "\nUser List: \n"
 
             for (i = 1; i < Object.keys(global.users).length + 1; i++) {
                 var a = global.users[Object.keys(global.users)[i - 1]]
@@ -80,7 +83,7 @@ function run() {
                 if (a.status === "afk") {
                     status = a.status.yellow
                 }
-                list[i] = a.nickname.blue + " (" + status + ")"
+                list[i] = a.sid.grey + " " + a.nickname.blue + " (" + status + ")"
             }
 
             var table = list.join("\n")
@@ -88,6 +91,11 @@ function run() {
 
         })
 
+        //long list
+        socket.on("long_list", function () {
+            var list = global.users
+            socket.emit('return', list)
+        })
 
         //afk
         socket.on('afk', function (nickname) {
