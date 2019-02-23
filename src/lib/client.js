@@ -41,12 +41,18 @@ module.exports = {
 
                 //create socket
                 socket = require('socket.io-client')('http://' + ip + ":" + settings.port, {
-                    reconnection: false
+                    reconnection: true
                 })
 
                 //connect
                 socket.on('connect', function () {
-                    connect()
+                    if (!global.reconnection) {
+                        connect()
+                    } else {
+                        login()
+                        global.connection_status = true
+                    }
+
                 });
 
                 //handle connection error
@@ -58,9 +64,15 @@ module.exports = {
                 socket.on('disconnect', function () {
                     if (global.safe_disconnect !== true) {
                         out.alert("disconnected")
-                        global.connection_status = false;
+                        global.connection_status = false
                     }
                 })
+
+                //handle reconnect
+                socket.on('reconnect', () => {
+                    out.status("reconnected")
+                    global.reconnection = true
+                });
 
             }
         }
@@ -69,10 +81,10 @@ module.exports = {
     //disconnect
     disconnect: function () {
         if (global.connection_status) {
-            socket.emit('status', settings.nick);
+            socket.emit('status', settings.nick)
             global.safe_disconnect = true
             socket.disconnect()
-            global.connection_status = false;
+            global.connection_status = false
             status({
                 content: "leave the chat",
                 nick: settings.nick
