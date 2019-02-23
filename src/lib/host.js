@@ -34,6 +34,9 @@ function run() {
         //login
         socket.on('login', function (nick) {
             var id = socket.id.toString()
+            if (typeof nick === "undefined" || nick === "") {
+                nick = "blank"
+            }
             if (nick.length > 15) {
                 nick = nick.substring(0, 15)
             }

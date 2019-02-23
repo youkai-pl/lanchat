@@ -27,7 +27,7 @@ module.exports = {
     //nick
     nick: function (args) {
         var message
-        if (typeof args[0] === "undefined") {
+        if (typeof args[0] === "undefined" || args[0] === "") {
             message = "Try: /nick <new_nick>"
         } else {
             settings.nick = (args[0]);
