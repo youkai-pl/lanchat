@@ -1,11 +1,11 @@
 
-var readline = require('readline');
+var readline = require("readline")
 var rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    prompt: '> ',
-    terminal: true
-});
+	input: process.stdin,
+	output: process.stdout,
+	prompt: "> ",
+	terminal: true
+})
 
-exports.rl = rl;
+exports.rl = rl
 exports.readline = readline
