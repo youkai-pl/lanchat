@@ -3,4 +3,3 @@ yarn.lock
 bin/*
 dist/*
 !dist/.gitkeep
-!bin/.gitkeep
