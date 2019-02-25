@@ -66,6 +66,7 @@ module.exports = {
 						global.safe_disconnect = false
 						out.status("connected")
 						login()
+						global.connection_status = true
 					} else {
 						login()
 						global.lock = true
@@ -86,6 +87,7 @@ module.exports = {
 						out.alert("disconnected")
 						global.reconnection = true
 						global.lock = false
+						global.connection_status = false
 					}
 				})
 
@@ -94,6 +96,7 @@ module.exports = {
 					out.status("reconnected")
 					global.lock = true
 					global.reconnect = true
+					global.connection_status = true
 				})
 
 				//handle conecting
