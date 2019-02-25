@@ -96,6 +96,7 @@ module.exports = {
 					out.status("reconnected")
 					global.lock = true
 					global.reconnect = true
+					global.connection_status = true
 				})
 
 				//handle conecting
