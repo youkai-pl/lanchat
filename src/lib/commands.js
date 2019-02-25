@@ -53,7 +53,8 @@ module.exports = {
 		help[8] = "/list - connected users list"
 		help[9] = "/afk - change status to afk"
 		help[10] = "/online - change status to online"
-		help[11] = ""
+		help[11] = "/dnd - do not disturb, mute all messages"
+		help[12] = ""
 		out.blank(help.join("\n"))
 	},
 
@@ -91,6 +92,16 @@ module.exports = {
 		if (global.connection_status) {
 			client.online()
 			out.status("you are online")
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
+	//dnd
+	dnd: function () {
+		if (global.connection_status) {
+			client.dnd()
+			out.status("you are dnd")
 		} else {
 			out.alert("you must be connected")
 		}

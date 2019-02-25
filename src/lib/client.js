@@ -66,6 +66,7 @@ module.exports = {
 						global.safe_disconnect = false
 						out.status("connected")
 						login()
+						global.connection_status = true
 					} else {
 						login()
 						global.lock = true
@@ -86,6 +87,7 @@ module.exports = {
 						out.alert("disconnected")
 						global.reconnection = true
 						global.lock = false
+						global.connection_status = false
 					}
 				})
 
@@ -135,12 +137,20 @@ module.exports = {
 
 	//afk
 	afk: function () {
+		global.dnd = false
 		socket.emit("afk", settings.nick)
 	},
 
 	//online
 	online: function () {
+		global.dnd = false
 		socket.emit("online", settings.nick)
+	},
+
+	//online
+	dnd: function () {
+		global.dnd = true
+		socket.emit("dnd", settings.nick)
 	}
 }
 
@@ -149,7 +159,9 @@ module.exports = {
 //listen
 function listen() {
 	socket.on("message", function (msg) {
-		out.message(msg)
+		if (!global.dnd) {
+			out.message(msg)
+		}
 	})
 
 	socket.on("status", function (msg) {

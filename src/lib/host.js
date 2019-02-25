@@ -91,6 +91,9 @@ function run() {
 				if (a.status === "afk") {
 					status = a.status.yellow
 				}
+				if (a.status === "dnd") {
+					status = a.status.red
+				}
 				list[i] = a.sid.grey + " " + a.nickname.blue + " (" + status + ")"
 			}
 
@@ -126,6 +129,19 @@ function run() {
 				global.users[id].status = "online"
 				var msg = {
 					content: "is online",
+					nick: nickname
+				}
+				socket.broadcast.emit("status", msg)
+			}
+		})
+
+		//dnd
+		socket.on("dnd", function (nickname) {
+			var id = socket.id.toString()
+			if (global.users.hasOwnProperty(id)) {
+				global.users[id].status = "dnd"
+				var msg = {
+					content: "is dnd",
 					nick: nickname
 				}
 				socket.broadcast.emit("status", msg)
