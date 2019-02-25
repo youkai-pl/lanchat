@@ -162,7 +162,7 @@ function listen() {
 	socket.on("message", function (msg) {
 		if (!global.dnd) {
 			out.message(msg)
-			out.notify(msg)
+			//out.notify(msg)
 		}
 	})
 
