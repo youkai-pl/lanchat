@@ -3,9 +3,9 @@ const colors = require("colors")
 const client = require("./client")
 const commands = require("./commands")
 const out = require("./out")
+const setTitle = require("console-title")
 var rl = require("./interface").rl
 var readline = require("./interface").readline
-const setTitle = require("console-title")
 var settings = require("./settings")
 
 module.exports = {
@@ -32,7 +32,7 @@ module.exports = {
 function initui() {
 	process.stdout.write("\033c")
 	setTitle("lanchat")
-	console.log("LANCHAT 0.4.0".green)
+	console.log("LANCHAT 0.4.1".green)
 	console.log("")
 	rl.prompt(true)
 }

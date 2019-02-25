@@ -102,17 +102,17 @@ module.exports = {
 		client.send(content.rainbow)
 	},
 
-	//whois
-	long_list: function () {
+	//d1
+	d1: function () {
+		client.connect("localhost")
+	},
+
+	//d2
+	d2: function () {
 		if (global.connection_status) {
 			client.long_list()
 		} else {
 			out.alert("you must be connected")
 		}
 	},
-
-	//dev commands
-	d1: function () {
-		client.connect("localhost")
-	}
 }

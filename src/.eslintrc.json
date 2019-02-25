@@ -29,8 +29,19 @@
             "error",
             "never"
         ],
+        "brace-style": [
+            "error",
+            "1tbs"
+        ],
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1
+            }
+        ],
         "no-console": "off",
         "no-undef": "off",
-        "no-unused-vars": "off"
+        "no-unused-vars": "off",
+        "space-after-function": "off"
     }
 }

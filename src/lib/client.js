@@ -5,6 +5,9 @@ const colors = require("colors")
 var settings = require("./settings")
 var global = require("./global")
 
+var trycount = 0
+var attemps = 5
+
 module.exports = {
 
 	//send
@@ -14,7 +17,7 @@ module.exports = {
 			nick: settings.nick
 		}
 		out.message(msg)
-		if (global.connection_status) {
+		if (global.lock) {
 			socket.emit("message", msg)
 		}
 	},
@@ -29,7 +32,7 @@ module.exports = {
 		socket.emit("nick", settings.nick)
 	},
 
-	//whois
+	//long list
 	long_list: function () {
 		socket.emit("long_list")
 	},
@@ -39,36 +42,42 @@ module.exports = {
 		if (fn.isEmptyOrSpaces(ip)) {
 			out.blank("Try: /connect <ip>")
 		} else {
-			if (global.connection_status || global.reconnection) {
+			if (global.lock) {
 				out.alert("you already connected")
 			} else {
 				out.status("connecting")
+				global.lock = true
 
 				//create socket
-				socket = require("socket.io-client")("http://" + ip + ":" + settings.port, {
-					reconnection: true
-				})
+				socket = require("socket.io-client")("http://" + ip + ":" + settings.port,
+					{
+						"reconnection": true,
+						"reconnectionDelay": 500,
+						"reconnectionDelayMax": 500,
+						"reconnectionAttempts": attemps
+					}
+				)
 
 				//connect
 				socket.on("connect", function () {
-					if (!global.reconnection) {
+					if (!global.reconnect) {
 						listen()
-						global.connection_status = true
+						global.lock = true
 						global.safe_disconnect = false
 						out.status("connected")
 						login()
 					} else {
 						login()
-						global.connection_status = true
+						global.lock = true
 						global.safe_disconnect = false
-
 					}
-
 				})
 
 				//handle connection error
 				socket.on("connect_error", function () {
-					out.alert("connection error")
+					if (trycount === attemps) {
+						out.alert("connection error")
+					}
 				})
 
 				//handle disconnect
@@ -76,27 +85,39 @@ module.exports = {
 					if (global.safe_disconnect !== true) {
 						out.alert("disconnected")
 						global.reconnection = true
-						global.connection_status = false
+						global.lock = false
 					}
 				})
 
 				//handle reconnect
 				socket.on("reconnect", () => {
 					out.status("reconnected")
-					global.reconnection = true
+					global.lock = true
+					global.reconnect = true
 				})
 
+				//handle conecting
+				socket.on("connecting", () => {
+					global.lock = true
+				})
+
+				//handle recconecting
+				socket.on("reconnecting", () => {
+					out.status("trying recconect")
+					global.lock = true
+					trycount++
+				})
 			}
 		}
 	},
 
 	//disconnect
 	disconnect: function () {
-		if (global.connection_status) {
+		if (global.lock) {
 			socket.emit("status", settings.nick)
 			global.safe_disconnect = true
 			socket.disconnect()
-			global.connection_status = false
+			global.lock = false
 			if (global.server_status) {
 				out.status("you are disconnected but server is still working")
 			} else {
