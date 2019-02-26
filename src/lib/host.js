@@ -40,6 +40,10 @@ function run() {
 			if (nick.length > 15) {
 				nick = nick.substring(0, 15)
 			}
+			var index2 = global.users.findIndex(x => x.nickname === nick)
+			if (index2 !== -1) {
+				nick = nick + global.users.length
+			}
 			var user = {
 				id: socket.id.toString(),
 				sid: shortid.generate(),
@@ -61,7 +65,7 @@ function run() {
 				content: "left the chat",
 				nick: global.users[index].nickname
 			})
-			delete global.users[index]
+			global.users.splice(global.users.indexOf(index), 1)
 		})
 
 		//change nick
@@ -71,8 +75,13 @@ function run() {
 				if (nick.length > 15) {
 					nick = nick.substring(0, 15)
 				}
+				var index2 = global.users.findIndex(x => x.nickname === nick)
+				if (index2 !== -1) {
+					nick = nick + index
+				}
 				var old = global.users[index].nickname
 				global.users[index].nickname = nick
+				socket.emit("return", "Your nick is now "+ nick.blue)
 				socket.broadcast.emit("return", old.blue + " change nick to " + nick.blue)
 			}
 		})

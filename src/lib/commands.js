@@ -31,12 +31,12 @@ module.exports = {
 			message = "Try: /nick <new_nick>"
 		} else {
 			settings.nick = (args[0])
-			message = "Your nickname is now " + args[0].blue
 			if (global.connection_status) {
 				client.nick()
+			} else {
+				out.blank("Your nickname is now " + args[0].blue)
 			}
 		}
-		out.blank(message)
 	},
 
 	//help
