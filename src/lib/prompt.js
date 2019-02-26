@@ -15,7 +15,6 @@ module.exports = {
 
 		//prompt
 		rl.on("line", function (line) {
-			readline.moveCursor(process.stdout, 0,-1)
 			wrapper(line)
 			rl.prompt(true)
 		})
@@ -43,6 +42,7 @@ function wrapper(message) {
 	//if it message
 	if (message.charAt(0) !== "/") {
 		//send
+		readline.moveCursor(process.stdout, 0,-1)
 		client.send(message)
 	} else {
 		//if it command

@@ -164,13 +164,16 @@ function run() {
 
 		//mention
 		socket.on("mention", function (nick, mentions) {
-
-			var msg = {
-				nick: mentions,
-				content: "mentioned you"
+			var index = global.users.findIndex(x => x.nickname === nick)
+			if (global.users[index]) {
+				var msg = {
+					nick: mentions,
+					content: "mentioned you"
+				}
+				socket.to(`${global.users[index].id}`).emit("mentioned", msg)
+			} else {
+				socket.emit("return", "This user not exist")
 			}
-
-			socket.to(`${id}`).emit("mentioned", msg)
 		})
 
 		//return
