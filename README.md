@@ -43,6 +43,14 @@ You have three options
 
 ## Changelog
 
+### 0.5.0
+* mentions
+* notifications
+* preventing the use of the same nicks
+* better api
+* code improvements
+* bugfixes
+
 ### 0.4.0
 * auto reconnect
 * bugfixes
