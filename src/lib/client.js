@@ -1,10 +1,12 @@
 //CLIENT
 const fn = require("./common")
 const out = require("./out")
+const notify = require("./notify")
 const colors = require("colors")
 var settings = require("./settings")
 var global = require("./global")
 
+//variables
 var trycount = 0
 var attemps = 5
 
@@ -20,6 +22,11 @@ module.exports = {
 		if (global.lock) {
 			socket.emit("message", msg)
 		}
+	},
+
+	//mention
+	mention: function (nick) {
+		socket.emit("mention", nick, settings.nick)
 	},
 
 	//status
@@ -159,17 +166,29 @@ module.exports = {
 
 //listen
 function listen() {
+
+	//message
 	socket.on("message", function (msg) {
 		if (!global.dnd) {
 			out.message(msg)
-			//out.notify(msg)
+			notify.message(msg)
 		}
 	})
 
+	//mention
+	socket.on("mentioned", function (msg) {
+		if (!global.dnd) {
+			out.user_status(msg)
+			notify.mention(msg)
+		}
+	})
+
+	//status
 	socket.on("status", function (msg) {
 		out.user_status(msg)
 	})
 
+	//return
 	socket.on("return", function (msg) {
 		out.blank(msg)
 	})

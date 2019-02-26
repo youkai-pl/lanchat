@@ -32,7 +32,7 @@ module.exports = {
 function initui() {
 	process.stdout.write("\033c")
 	setTitle("lanchat")
-	console.log("LANCHAT 0.4.2".green)
+	console.log("LANCHAT 0.5.0".green)
 	console.log("")
 	rl.prompt(true)
 }

@@ -34,7 +34,6 @@ function run() {
 
 		//login
 		socket.on("login", function (nick) {
-			var id = socket.id.toString()
 			if (typeof nick === "undefined" || nick === "") {
 				nick = "blank"
 			}
@@ -42,12 +41,13 @@ function run() {
 				nick = nick.substring(0, 15)
 			}
 			var user = {
+				id: socket.id.toString(),
 				sid: shortid.generate(),
 				nickname: nick,
 				status: "online",
 				ip: socket.handshake.address
 			}
-			global.users[id] = user
+			global.users.push(user)
 			socket.broadcast.emit("status", {
 				content: "join the chat",
 				nick: nick
@@ -56,23 +56,23 @@ function run() {
 
 		//logoff
 		socket.on("disconnect", function () {
-			var id = socket.id.toString()
+			var index = global.users.findIndex(x => x.id === socket.id)
 			socket.broadcast.emit("status", {
 				content: "left the chat",
-				nick: global.users[id].nickname
+				nick: global.users[index].nickname
 			})
-			delete global.users[id]
+			delete global.users[index]
 		})
 
 		//change nick
 		socket.on("nick", function (nick) {
-			var id = socket.id.toString()
-			var old = global.users[id].nickname
-			if (global.users.hasOwnProperty(id)) {
+			if (global.users.some(e => e.id === socket.id)) {
+				var index = global.users.findIndex(x => x.id === socket.id)
 				if (nick.length > 15) {
 					nick = nick.substring(0, 15)
 				}
-				global.users[id].nickname = nick
+				var old = global.users[index].nickname
+				global.users[index].nickname = nick
 				socket.broadcast.emit("return", old.blue + " change nick to " + nick.blue)
 			}
 		})
@@ -110,9 +110,9 @@ function run() {
 
 		//afk
 		socket.on("afk", function (nickname) {
-			var id = socket.id.toString()
-			if (global.users.hasOwnProperty(id)) {
-				global.users[id].status = "afk"
+			if (global.users.some(e => e.id === socket.id)) {
+				var index = global.users.findIndex(x => x.id === socket.id)
+				global.users[index].status = "afk"
 				var msg = {
 					content: "is afk",
 					nick: nickname
@@ -124,9 +124,9 @@ function run() {
 
 		//online
 		socket.on("online", function (nickname) {
-			var id = socket.id.toString()
-			if (global.users.hasOwnProperty(id)) {
-				global.users[id].status = "online"
+			if (global.users.some(e => e.id === socket.id)) {
+				var index = global.users.findIndex(x => x.id === socket.id)
+				global.users[index].status = "online"
 				var msg = {
 					content: "is online",
 					nick: nickname
@@ -137,9 +137,9 @@ function run() {
 
 		//dnd
 		socket.on("dnd", function (nickname) {
-			var id = socket.id.toString()
-			if (global.users.hasOwnProperty(id)) {
-				global.users[id].status = "dnd"
+			if (global.users.some(e => e.id === socket.id)) {
+				var index = global.users.findIndex(x => x.id === socket.id)
+				global.users[index].status = "dnd"
 				var msg = {
 					content: "is dnd",
 					nick: nickname
@@ -162,16 +162,15 @@ function run() {
 			}
 		})
 
-		//status
-		socket.on("status", function (msg) {
-			if (msg) {
-				if (msg.hasOwnProperty("content") && msg.hasOwnProperty("nick")) {
-					if (msg.nick.length > 15) {
-						msg.nick = msg.nick.substring(0, 15)
-					}
-					socket.broadcast.emit("status", msg)
-				}
+		//mention
+		socket.on("mention", function (nick, mentions) {
+
+			var msg = {
+				nick: mentions,
+				content: "mentioned you"
 			}
+
+			socket.to(`${id}`).emit("mentioned", msg)
 		})
 
 		//return
