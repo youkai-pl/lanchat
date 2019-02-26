@@ -2,8 +2,6 @@
 const rl = require("./interface").rl
 const fn = require("./common")
 const colors = require("colors")
-const notifier = require("node-notifier")
-const path = require("path")
 
 module.exports = {
 
@@ -45,18 +43,6 @@ module.exports = {
 		process.stdout.cursorTo(0)
 		console.log(msg)
 		rl.prompt(true)
-	},
-
-	//notify
-	notify: function (msg) {
-		notifier.notify(
-			{
-				title: "Lanchat",
-				message: "New Message",
-				sound: false,
-				icon: path.join(__dirname, "icon.png")
-			}
-		)
 	}
 }
 

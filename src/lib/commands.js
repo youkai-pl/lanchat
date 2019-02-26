@@ -31,12 +31,12 @@ module.exports = {
 			message = "Try: /nick <new_nick>"
 		} else {
 			settings.nick = (args[0])
-			message = "Your nickname is now " + args[0].blue
 			if (global.connection_status) {
 				client.nick()
+			} else {
+				out.blank("Your nickname is now " + args[0].blue)
 			}
 		}
-		out.blank(message)
 	},
 
 	//help
@@ -54,7 +54,9 @@ module.exports = {
 		help[9] = "/afk - change status to afk"
 		help[10] = "/online - change status to online"
 		help[11] = "/dnd - do not disturb, mute all messages"
-		help[12] = ""
+		help[12] = "/notify <all / mention / none> - change notify setting"
+		help[13] = "/m <nick> - mention user"
+		help[14] = ""
 		out.blank(help.join("\n"))
 	},
 
@@ -111,6 +113,29 @@ module.exports = {
 	rb: function (args) {
 		var content = args.join(" ")
 		client.send(content.rainbow)
+	},
+
+	//notify
+	notify: function (args) {
+		if ((args[0] === "all") || (args[0] === "mention") || (args[0] === "none")) {
+			settings.notify = args[0]
+			out.status("notify setting changed")
+		} else {
+			out.blank("try /notify <all / mention / none>")
+		}
+	},
+
+	//mention
+	m: function (args) {
+		if (global.connection_status) {
+			if (args[0]) {
+				client.mention(args[0])
+			} else {
+				out.blank("try /m <nick>")
+			}
+		} else {
+			out.alert("you must be connected")
+		}
 	},
 
 	//d1

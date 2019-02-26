@@ -15,7 +15,6 @@ module.exports = {
 
 		//prompt
 		rl.on("line", function (line) {
-			readline.moveCursor(process.stdout, 0,-1)
 			wrapper(line)
 			rl.prompt(true)
 		})
@@ -32,7 +31,7 @@ module.exports = {
 function initui() {
 	process.stdout.write("\033c")
 	setTitle("lanchat")
-	console.log("LANCHAT 0.4.2".green)
+	console.log("LANCHAT 0.5.0".green)
 	console.log("")
 	rl.prompt(true)
 }
@@ -43,6 +42,7 @@ function wrapper(message) {
 	//if it message
 	if (message.charAt(0) !== "/") {
 		//send
+		readline.moveCursor(process.stdout, 0,-1)
 		client.send(message)
 	} else {
 		//if it command
