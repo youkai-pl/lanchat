@@ -81,8 +81,8 @@ function run() {
 				}
 				var old = global.users[index].nickname
 				global.users[index].nickname = nick
-				socket.emit("return", "Your nick is now "+ nick.blue)
 				socket.broadcast.emit("return", old.blue + " change nick to " + nick.blue)
+				socket.emit("nick", nick)
 			}
 		})
 

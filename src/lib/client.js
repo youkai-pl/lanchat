@@ -204,6 +204,12 @@ function listen() {
 	socket.on("return", function (msg) {
 		out.blank(msg)
 	})
+
+	//nick
+	socket.on("nick", function (nick) {
+		out.blank("Your nick is now "+ nick.blue)
+		settings.nick = nick
+	})
 }
 
 //login
