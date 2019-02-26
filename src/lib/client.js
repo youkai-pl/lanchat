@@ -68,14 +68,18 @@ module.exports = {
 				//connect
 				socket.on("connect", function () {
 					if (!global.reconnect) {
-						listen()
 						global.lock = true
 						global.safe_disconnect = false
 						out.status("connected")
+						listen()
 						login()
 						global.connection_status = true
+						global.first = true
 					} else {
 						login()
+						if (!global.first) {
+							listen()
+						}
 						global.lock = true
 						global.safe_disconnect = false
 					}
@@ -100,7 +104,11 @@ module.exports = {
 
 				//handle reconnect
 				socket.on("reconnect", () => {
-					out.status("reconnected")
+					if (global.reconnection) {
+						out.status("reconnected")
+					} else {
+						out.status("connected")
+					}
 					global.lock = true
 					global.reconnect = true
 					global.connection_status = true
@@ -113,7 +121,11 @@ module.exports = {
 
 				//handle recconecting
 				socket.on("reconnecting", () => {
-					out.status("trying recconect")
+					if (global.reconnection) {
+						out.status("trying recconect")
+					} else {
+						out.status("connecting")
+					}
 					global.lock = true
 					trycount++
 				})
