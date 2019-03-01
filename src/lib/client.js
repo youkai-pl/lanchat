@@ -6,7 +6,7 @@ const colors = require("colors")
 var settings = require("./settings")
 var global = require("./global")
 
-//variables
+//config
 var trycount = 0
 var attemps = 5
 
@@ -20,18 +20,13 @@ module.exports = {
 		}
 		out.message(msg)
 		if (global.lock) {
-			socket.emit("message", msg)
+			socket.emit("message", content)
 		}
 	},
 
 	//mention
 	mention: function (nick) {
-		socket.emit("mention", nick, settings.nick)
-	},
-
-	//status
-	status: function (msg) {
-		status(msg)
+		socket.emit("mention", nick)
 	},
 
 	//nick
@@ -128,6 +123,9 @@ module.exports = {
 					}
 					global.lock = true
 					trycount++
+					if (trycount === attemps) {
+						global.lock = false
+					}
 				})
 			}
 		}
@@ -174,8 +172,6 @@ module.exports = {
 	}
 }
 
-//FUNCTIONS
-
 //listen
 function listen() {
 
@@ -207,8 +203,15 @@ function listen() {
 
 	//nick
 	socket.on("nick", function (nick) {
-		out.blank("Your nick is now "+ nick.blue)
+		out.blank("Your nick is now " + nick.blue)
 		settings.nick = nick
+	})
+
+	//motd
+	socket.on("motd", function (motd) {
+		if (!global.reconnect) {
+			out.blank("\n" + motd + "\n")
+		}
 	})
 }
 

@@ -1,21 +1,25 @@
-//HOST
 const fn = require("./common")
 const out = require("./out")
 const colors = require("colors")
 const client = require("./client")
 const http = require("http").Server()
 const io = require("socket.io")(http)
-const shortid = require("shortid")
 var settings = require("./settings")
 var global = require("./global")
+var motd
 
+//HOST
 module.exports = {
 	start: function () {
 		out.status("starting server")
+		motd = settings.motd()
+		if(!motd){
+			out.status("motd file not found")
+		}
 		fn.testPort(settings.port, "127.0.0.1", function (e) {
 			if (e === "failure") {
 				http.listen(settings.port, function () {
-					out.status("Server running")
+					out.status("server running")
 				})
 				run()
 				global.server_status = true
@@ -34,19 +38,21 @@ function run() {
 
 		//login
 		socket.on("login", function (nick) {
-			if (typeof nick === "undefined" || nick === "") {
+			//detect blank nick
+			if (!nick) {
 				nick = "blank"
 			}
+			//shortening long nick
 			if (nick.length > 15) {
 				nick = nick.substring(0, 15)
 			}
+			//detect already used nick
 			var index2 = global.users.findIndex(x => x.nickname === nick)
 			if (index2 !== -1) {
 				nick = nick + global.users.length
 			}
 			var user = {
-				id: socket.id.toString(),
-				sid: shortid.generate(),
+				id: socket.id,
 				nickname: nick,
 				status: "online",
 				ip: socket.handshake.address
@@ -56,6 +62,9 @@ function run() {
 				content: "join the chat",
 				nick: nick
 			})
+			if (motd) {
+				socket.emit("motd", motd)
+			}
 		})
 
 		//logoff
@@ -90,7 +99,7 @@ function run() {
 		socket.on("list", function () {
 			var list = []
 			var status
-			list[0] = "\nUser List: \n"
+			list[0] = "\nUser List:"
 
 			for (i = 1; i < global.users.length + 1; i++) {
 				var a = global.users[i - 1]
@@ -109,12 +118,6 @@ function run() {
 			var table = list.join("\n")
 			socket.emit("return", table)
 
-		})
-
-		//long list
-		socket.on("long_list", function () {
-			var list = global.users
-			socket.emit("return", list)
 		})
 
 		//afk
@@ -158,31 +161,38 @@ function run() {
 		})
 
 		//message
-		socket.on("message", function (msg) {
-			if (msg) {
-				if (msg.hasOwnProperty("content") && msg.hasOwnProperty("nick")) {
-					if (msg.content !== "") {
-						if (msg.nick.length > 15) {
-							msg.nick = msg.nick.substring(0, 15)
-						}
-						socket.broadcast.emit("message", msg)
+		socket.on("message", function (content) {
+			var index = global.users.findIndex(x => x.id === socket.id)
+			if (content) {
+				if (content) {
+					var msg = {
+						nick: global.users[index].nickname,
+						content: content
 					}
+					socket.broadcast.emit("message", msg)
 				}
 			}
 		})
 
 		//mention
-		socket.on("mention", function (nick, mentions) {
+		socket.on("mention", function (nick) {
 			var index = global.users.findIndex(x => x.nickname === nick)
+			var index2 = global.users.findIndex(x => x.id === socket.id)
 			if (global.users[index]) {
 				var msg = {
-					nick: mentions,
+					nick: global.users[index].nickname,
 					content: "mentioned you"
 				}
 				socket.to(`${global.users[index].id}`).emit("mentioned", msg)
 			} else {
 				socket.emit("return", "This user not exist")
 			}
+		})
+
+		//long list
+		socket.on("long_list", function () {
+			var list = global.users
+			socket.emit("return", list)
 		})
 
 		//return

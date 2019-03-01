@@ -19,5 +19,5 @@ gulp.task("clean", function () {
 })
 
 function cleanDist() {
-	del.sync(["../dist/**/*", "!../dist/.gitkeep"], { force: true })
+	del.sync(["../dist/**/*"], { force: true })
 }
