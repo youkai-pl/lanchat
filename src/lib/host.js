@@ -177,15 +177,16 @@ function run() {
 			}
 			try {
 				await rateLimiter.consume(socket.handshake.address)
-				if (content.length > 1500) {
-					content = content.substring(0, 1500)
-				}
 				if (content) {
-					var msg = {
-						nick: global.users[index].nickname,
-						content: content
+					if (content.length > 1500) {
+						socket.emit("return", "FLOOD BLOCKED")
+					} else {
+						var msg = {
+							nick: global.users[index].nickname,
+							content: content
+						}
+						socket.broadcast.emit("message", msg)
 					}
-					socket.broadcast.emit("message", msg)
 				}
 			} catch (rejRes) {
 				socket.emit("return", "FLOOD BLOCKED")
