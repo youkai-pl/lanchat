@@ -92,8 +92,8 @@ function run() {
 			var status
 			list[0] = "\nUser List: \n"
 
-			for (i = 1; i < Object.keys(global.users).length + 1; i++) {
-				var a = global.users[Object.keys(global.users)[i - 1]]
+			for (i = 1; i < global.users.length + 1; i++) {
+				var a = global.users[i - 1]
 				if (a.status === "online") {
 					status = a.status.green
 				}
@@ -103,7 +103,7 @@ function run() {
 				if (a.status === "dnd") {
 					status = a.status.red
 				}
-				list[i] = a.sid.grey + " " + a.nickname.blue + " (" + status + ")"
+				list[i] = a.nickname.blue + " (" + status + ")"
 			}
 
 			var table = list.join("\n")
