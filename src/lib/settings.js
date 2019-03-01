@@ -1,5 +1,6 @@
 const fs = require("fs")
-const path = __dirname + "./../config.json"
+const home = process.env.APPDATA || (process.platform == "darwin" ? process.env.HOME + "Library/Preferences" : process.env.HOME + "/.local/share")
+const path = home + "/lanchat/config.json"
 var config = {}
 
 //SETTINGS
@@ -22,7 +23,8 @@ module.exports = {
 }
 
 function load() {
-	if (!fs.existsSync(path)) {
+	if (!fs.existsSync(home + "/lanchat")) {
+		fs.mkdirSync(home + "/lanchat")
 		// eslint-disable-next-line quotes
 		fs.writeFileSync(path, '{"nick":"default","port":"2137","notify":"mention","motd":""}')
 	}
