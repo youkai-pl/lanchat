@@ -30,7 +30,7 @@ module.exports = {
 		if (typeof args[0] === "undefined" || args[0] === "") {
 			message = "Try: /nick <new_nick>"
 		} else {
-			settings.nick = (args[0])
+			settings.nickChange(args[0])
 			if (global.connection_status) {
 				client.nick()
 			} else {

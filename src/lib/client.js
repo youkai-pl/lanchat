@@ -134,7 +134,7 @@ module.exports = {
 	//disconnect
 	disconnect: function () {
 		if (global.lock) {
-			socket.emit("status", settings.nick)
+			socket.emit("status")
 			global.safe_disconnect = true
 			socket.disconnect()
 			global.lock = false
@@ -156,19 +156,19 @@ module.exports = {
 	//afk
 	afk: function () {
 		global.dnd = false
-		socket.emit("afk", settings.nick)
+		socket.emit("afk")
 	},
 
 	//online
 	online: function () {
 		global.dnd = false
-		socket.emit("online", settings.nick)
+		socket.emit("online")
 	},
 
 	//online
 	dnd: function () {
 		global.dnd = true
-		socket.emit("dnd", settings.nick)
+		socket.emit("dnd")
 	}
 }
 
@@ -204,7 +204,7 @@ function listen() {
 	//nick
 	socket.on("nick", function (nick) {
 		out.blank("Your nick is now " + nick.blue)
-		settings.nick = nick
+		settings.nickChange(nick)
 	})
 
 	//motd

@@ -12,9 +12,9 @@ var motd
 module.exports = {
 	start: function () {
 		out.status("starting server")
-		motd = settings.motd()
+		motd = settings.motd
 		if(!motd){
-			out.status("motd file not found")
+			out.status("motd not found")
 		}
 		fn.testPort(settings.port, "127.0.0.1", function (e) {
 			if (e === "failure") {
@@ -121,13 +121,13 @@ function run() {
 		})
 
 		//afk
-		socket.on("afk", function (nickname) {
+		socket.on("afk", function () {
 			if (global.users.some(e => e.id === socket.id)) {
 				var index = global.users.findIndex(x => x.id === socket.id)
 				global.users[index].status = "afk"
 				var msg = {
 					content: "is afk",
-					nick: nickname
+					nick: global.users[index].nickname
 				}
 				socket.broadcast.emit("status", msg)
 			}
@@ -135,26 +135,26 @@ function run() {
 		})
 
 		//online
-		socket.on("online", function (nickname) {
+		socket.on("online", function () {
 			if (global.users.some(e => e.id === socket.id)) {
 				var index = global.users.findIndex(x => x.id === socket.id)
 				global.users[index].status = "online"
 				var msg = {
 					content: "is online",
-					nick: nickname
+					nick: global.users[index].nickname
 				}
 				socket.broadcast.emit("status", msg)
 			}
 		})
 
 		//dnd
-		socket.on("dnd", function (nickname) {
+		socket.on("dnd", function () {
 			if (global.users.some(e => e.id === socket.id)) {
 				var index = global.users.findIndex(x => x.id === socket.id)
 				global.users[index].status = "dnd"
 				var msg = {
 					content: "is dnd",
-					nick: nickname
+					nick: global.users[index].nickname
 				}
 				socket.broadcast.emit("status", msg)
 			}
@@ -180,7 +180,7 @@ function run() {
 			var index2 = global.users.findIndex(x => x.id === socket.id)
 			if (global.users[index]) {
 				var msg = {
-					nick: global.users[index].nickname,
+					nick: global.users[index2].nickname,
 					content: "mentioned you"
 				}
 				socket.to(`${global.users[index].id}`).emit("mentioned", msg)

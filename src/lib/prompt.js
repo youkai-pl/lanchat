@@ -2,23 +2,21 @@
 const colors = require("colors")
 const client = require("./client")
 const commands = require("./commands")
-const out = require("./out")
 const setTitle = require("console-title")
+const settings = require("./settings")
 var rl = require("./interface").rl
 var readline = require("./interface").readline
-var settings = require("./settings")
 
 module.exports = {
 	run: function () {
 		//init
 		initui()
-
+		settings.load()
 		//prompt
 		rl.on("line", function (line) {
 			wrapper(line)
 			rl.prompt(true)
 		})
-
 		//exit
 		rl.on("close", function () {
 			process.stdout.write("\033c")
@@ -31,19 +29,19 @@ module.exports = {
 function initui() {
 	process.stdout.write("\033c")
 	setTitle("lanchat")
-	console.log("LANCHAT 0.5.0".green)
+	console.log("LANCHAT 1.0.0".green)
 	console.log("")
 	rl.prompt(true)
 }
 
 //user input wrapper
 function wrapper(message) {
-
 	//if it message
 	if (message.charAt(0) !== "/") {
 		//send
-		readline.moveCursor(process.stdout, 0,-1)
+		readline.moveCursor(process.stdout, 0, -1)
 		client.send(message)
+
 	} else {
 		//if it command
 		const args = message.split(" ")
