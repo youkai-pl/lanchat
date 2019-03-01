@@ -4,16 +4,23 @@ const colors = require("colors")
 const client = require("./client")
 const http = require("http").Server()
 const io = require("socket.io")(http)
+const { RateLimiterMemory } = require("rate-limiter-flexible")
 var settings = require("./settings")
 var global = require("./global")
 var motd
+
+const rateLimiter = new RateLimiterMemory(
+	{
+		points: 10,
+		duration: 1,
+	})
 
 //HOST
 module.exports = {
 	start: function () {
 		out.status("starting server")
 		motd = settings.motd
-		if(!motd){
+		if (!motd) {
 			out.status("motd not found")
 		}
 		fn.testPort(settings.port, "127.0.0.1", function (e) {
@@ -35,7 +42,6 @@ module.exports = {
 function run() {
 
 	io.on("connection", function (socket) {
-
 		//login
 		socket.on("login", function (nick) {
 			//detect blank nick
@@ -70,6 +76,9 @@ function run() {
 		//logoff
 		socket.on("disconnect", function () {
 			var index = global.users.findIndex(x => x.id === socket.id)
+			if (!global.users[index]) {
+				return
+			}
 			socket.broadcast.emit("status", {
 				content: "left the chat",
 				nick: global.users[index].nickname
@@ -161,9 +170,16 @@ function run() {
 		})
 
 		//message
-		socket.on("message", function (content) {
+		socket.on("message", async (content) => {
 			var index = global.users.findIndex(x => x.id === socket.id)
-			if (content) {
+			if (!global.users[index]) {
+				return
+			}
+			try {
+				await rateLimiter.consume(socket.handshake.address)
+				if (content.length > 1500) {
+					content = content.substring(0, 1500)
+				}
 				if (content) {
 					var msg = {
 						nick: global.users[index].nickname,
@@ -171,6 +187,8 @@ function run() {
 					}
 					socket.broadcast.emit("message", msg)
 				}
+			} catch (rejRes) {
+				socket.emit("return", "FLOOD BLOCKED")
 			}
 		})
 

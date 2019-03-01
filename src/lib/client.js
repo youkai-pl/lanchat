@@ -41,7 +41,7 @@ module.exports = {
 
 	//connect
 	connect: function (ip) {
-		if (fn.isEmptyOrSpaces(ip)) {
+		if (!ip) {
 			out.blank("Try: /connect <ip>")
 		} else {
 			if (global.lock) {

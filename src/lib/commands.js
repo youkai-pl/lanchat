@@ -118,7 +118,7 @@ module.exports = {
 	//notify
 	notify: function (args) {
 		if ((args[0] === "all") || (args[0] === "mention") || (args[0] === "none")) {
-			settings.notify = args[0]
+			settings.notifyChange(args[0])
 			out.status("notify setting changed")
 		} else {
 			out.blank("try /notify <all / mention / none>")

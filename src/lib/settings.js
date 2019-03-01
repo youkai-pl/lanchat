@@ -13,8 +13,16 @@ module.exports = {
 
 	//change nick
 	nickChange: function (nick) {
-		var config = JSON.parse(fs.readFileSync(path, "utf8"))
 		config["nick"] = nick
+		fs.writeFileSync(path, JSON.stringify(config), function (err) {
+			if (err) return console.log(err)
+		})
+		load()
+	},
+
+	//change notify settings
+	notifyChange: function (value) {
+		config["notify"] = value
 		fs.writeFileSync(path, JSON.stringify(config), function (err) {
 			if (err) return console.log(err)
 		})
