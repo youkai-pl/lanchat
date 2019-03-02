@@ -1,4 +1,4 @@
-//COMMANDS
+//import
 const colors = require("colors")
 const client = require("./client")
 const host = require("./host")
@@ -6,30 +6,37 @@ const out = require("./out")
 var global = require("./global")
 var settings = require("./settings")
 
+//COMMANDS
 module.exports = {
 
 	//clear
 	clear: function () {
+		//clear window
 		process.stdout.write("\033c")
 	},
 
 	//exit
 	exit: function () {
+		//exit
 		process.stdout.write("\033c")
 		process.exit(0)
 	},
 
 	//host
 	host: function () {
+		//create host
 		host.start()
 	},
 
 	//nick
 	nick: function (args) {
-		if (typeof args[0] === "undefined" || args[0] === "") {
+		//handle blank input
+		if (!args[0]) {
 			out.blank("Try: /nick <new_nick>")
 		} else {
+			//change local nick
 			settings.nickChange(args[0])
+			//chanhe nick on host
 			if (global.connection_status) {
 				client.nick()
 			} else {
@@ -72,6 +79,7 @@ module.exports = {
 
 	//list
 	list: function () {
+		//get connected user list
 		if (global.connection_status) {
 			client.list()
 		} else {
@@ -81,6 +89,7 @@ module.exports = {
 
 	//afk
 	afk: function () {
+		//set afk status
 		if (global.connection_status) {
 			client.afk()
 			out.status("you are afk")
@@ -91,6 +100,7 @@ module.exports = {
 
 	//online
 	online: function () {
+		//set online status
 		if (global.connection_status) {
 			client.online()
 			out.status("you are online")
@@ -101,6 +111,7 @@ module.exports = {
 
 	//dnd
 	dnd: function () {
+		//set dnd status
 		if (global.connection_status) {
 			client.dnd()
 			out.status("you are dnd")
@@ -111,12 +122,14 @@ module.exports = {
 
 	//rainbow
 	rb: function (args) {
+		//set rainbow message
 		var content = args.join(" ")
 		client.send(content.rainbow)
 	},
 
 	//notify
 	notify: function (args) {
+		//change notify setting
 		if ((args[0] === "all") || (args[0] === "mention") || (args[0] === "none")) {
 			settings.notifyChange(args[0])
 			out.status("notify setting changed")
@@ -127,6 +140,7 @@ module.exports = {
 
 	//mention
 	m: function (args) {
+		//mention user
 		if (global.connection_status) {
 			if (args[0]) {
 				client.mention(args[0])
@@ -140,6 +154,7 @@ module.exports = {
 
 	//kick
 	kick: function (args) {
+		//kick user
 		if (global.connection_status) {
 			if (args[0]) {
 				host.kick(args[0])

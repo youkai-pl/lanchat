@@ -1,3 +1,4 @@
+//import
 const fn = require("./common")
 const out = require("./out")
 const colors = require("colors")
@@ -7,8 +8,11 @@ const io = require("socket.io")(http)
 const { RateLimiterMemory } = require("rate-limiter-flexible")
 var settings = require("./settings")
 var global = require("./global")
+
+//variavles
 var motd
 
+//rate limiter init
 const rateLimiter = new RateLimiterMemory(
 	{
 		points: 10,

@@ -1,10 +1,12 @@
-//CLIENT
+//import
 const fn = require("./common")
 const out = require("./out")
 const notify = require("./notify")
 const colors = require("colors")
 var settings = require("./settings")
 var global = require("./global")
+
+//CLIENT
 
 //config
 var trycount = 0
