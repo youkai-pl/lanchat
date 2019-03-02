@@ -19,6 +19,7 @@
     "del": "^3.0.0",
     "gulp": "^4.0.0",
     "gulp-uglify-es": "^1.0.4",
+    "pkg": "^4.3.7",
     "readable-stream": "^3.2.0"
   }
 }
