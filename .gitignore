@@ -1,5 +1,4 @@
 node_modules
 yarn.lock
-bin/*
-dist/*
-!dist/.gitkeep
+bin
+dist

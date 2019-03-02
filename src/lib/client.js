@@ -1,4 +1,4 @@
-//CLIENT
+//import
 const fn = require("./common")
 const out = require("./out")
 const notify = require("./notify")
@@ -6,7 +6,9 @@ const colors = require("colors")
 var settings = require("./settings")
 var global = require("./global")
 
-//variables
+//CLIENT
+
+//config
 var trycount = 0
 var attemps = 5
 
@@ -14,29 +16,25 @@ module.exports = {
 
 	//send
 	send: function (content) {
-		var msg = {
+		//out
+		out.message({
 			content: content,
-			nick: settings.nick
-		}
-		out.message(msg)
+			nick: global.nick
+		})
+		//send
 		if (global.lock) {
-			socket.emit("message", msg)
+			socket.emit("message", content)
 		}
 	},
 
 	//mention
 	mention: function (nick) {
-		socket.emit("mention", nick, settings.nick)
-	},
-
-	//status
-	status: function (msg) {
-		status(msg)
+		socket.emit("mention", nick)
 	},
 
 	//nick
 	nick: function () {
-		socket.emit("nick", settings.nick)
+		socket.emit("nick", global.nick)
 	},
 
 	//long list
@@ -46,17 +44,22 @@ module.exports = {
 
 	//connect
 	connect: function (ip) {
-		if (fn.isEmptyOrSpaces(ip)) {
+
+		//check ip
+		if (!ip) {
 			out.blank("Try: /connect <ip>")
 		} else {
+
+			//block double connect
 			if (global.lock) {
 				out.alert("you already connected")
 			} else {
+
+				//connet
 				out.status("connecting")
 				global.lock = true
-
 				//create socket
-				socket = require("socket.io-client")("http://" + ip + ":" + settings.port,
+				socket = require("socket.io-client")("http://" + ip + ":" + global.port,
 					{
 						"reconnection": true,
 						"reconnectionDelay": 500,
@@ -67,6 +70,7 @@ module.exports = {
 
 				//connect
 				socket.on("connect", function () {
+					//normal way
 					if (!global.reconnect) {
 						global.lock = true
 						global.safe_disconnect = false
@@ -76,6 +80,7 @@ module.exports = {
 						global.connection_status = true
 						global.first = true
 					} else {
+						//recconect way
 						login()
 						if (!global.first) {
 							listen()
@@ -121,13 +126,20 @@ module.exports = {
 
 				//handle recconecting
 				socket.on("reconnecting", () => {
+
+					//show status
 					if (global.reconnection) {
 						out.status("trying recconect")
 					} else {
 						out.status("connecting")
 					}
 					global.lock = true
+
+					//count attemps
 					trycount++
+					if (trycount === attemps) {
+						global.lock = false
+					}
 				})
 			}
 		}
@@ -136,10 +148,14 @@ module.exports = {
 	//disconnect
 	disconnect: function () {
 		if (global.lock) {
-			socket.emit("status", settings.nick)
+
+			//disconnect
+			socket.emit("status")
 			global.safe_disconnect = true
 			socket.disconnect()
 			global.lock = false
+
+			//host status
 			if (global.server_status) {
 				out.status("you are disconnected but server is still working")
 			} else {
@@ -158,29 +174,29 @@ module.exports = {
 	//afk
 	afk: function () {
 		global.dnd = false
-		socket.emit("afk", settings.nick)
+		socket.emit("afk")
 	},
 
 	//online
 	online: function () {
 		global.dnd = false
-		socket.emit("online", settings.nick)
+		socket.emit("online")
 	},
 
 	//online
 	dnd: function () {
 		global.dnd = true
-		socket.emit("dnd", settings.nick)
+		socket.emit("dnd")
 	}
 }
-
-//FUNCTIONS
 
 //listen
 function listen() {
 
 	//message
 	socket.on("message", function (msg) {
+
+		//show message when dnd is disabled
 		if (!global.dnd) {
 			out.message(msg)
 			notify.message(msg)
@@ -189,6 +205,8 @@ function listen() {
 
 	//mention
 	socket.on("mentioned", function (msg) {
+
+		//show mention when dnd is disabled
 		if (!global.dnd) {
 			out.user_status(msg)
 			notify.mention(msg)
@@ -207,12 +225,19 @@ function listen() {
 
 	//nick
 	socket.on("nick", function (nick) {
-		out.blank("Your nick is now "+ nick.blue)
-		settings.nick = nick
+		out.blank("Your nick is now " + nick.blue)
+		settings.nickChange(nick)
+	})
+
+	//motd
+	socket.on("motd", function (motd) {
+		if (!global.reconnect) {
+			out.blank("\n" + motd + "\n")
+		}
 	})
 }
 
 //login
 function login() {
-	socket.emit("login", settings.nick)
+	socket.emit("login", global.nick)
 }
