@@ -17,17 +17,21 @@ const rateLimiter = new RateLimiterMemory(
 
 //HOST
 module.exports = {
+	//create host
 	start: function () {
 		out.status("starting server")
+		//load motd
 		motd = settings.motd
 		if (!motd) {
 			out.status("motd not found")
 		}
+		//check port
 		fn.testPort(settings.port, "127.0.0.1", function (e) {
 			if (e === "failure") {
 				http.listen(settings.port, function () {
 					out.status("server running")
 				})
+				//start host
 				run()
 				global.server_status = true
 				client.connect("localhost")
@@ -42,10 +46,12 @@ module.exports = {
 		if (!global.server_status) {
 			out.alert("You not a host")
 		} else {
+			//check user
 			var index = global.users.findIndex(x => x.nickname === args)
 			if (!global.users[index]) {
 				out.alert("This user not exist")
 			} else {
+				//kick user
 				out.status("Kicked " + global.users[index].nickname)
 				io.sockets.connected[global.users[index].id].disconnect()
 			}
@@ -55,14 +61,13 @@ module.exports = {
 
 //ALL SERVER THINGS
 function run() {
-
 	io.on("connection", function (socket) {
 
 		//login
 		socket.on("login", function (nick) {
 			//detect blank nick
 			if (!nick) {
-				nick = "blank"
+				nick = "default"
 			}
 			//shortening long nick
 			if (nick.length > 15) {
@@ -73,17 +78,20 @@ function run() {
 			if (index2 !== -1) {
 				nick = nick + global.users.length
 			}
+			//create user objcet
 			var user = {
 				id: socket.id,
 				nickname: nick,
 				status: "online",
 				ip: socket.handshake.address
 			}
+			//add user to array
 			global.users.push(user)
 			socket.broadcast.emit("status", {
 				content: "join the chat",
 				nick: nick
 			})
+			//emit motd
 			if (motd) {
 				socket.emit("motd", motd)
 			}
@@ -92,41 +100,53 @@ function run() {
 
 		//logoff
 		socket.on("disconnect", function () {
+			//find user
 			var index = global.users.findIndex(x => x.id === socket.id)
+			//error handle
 			if (!global.users[index]) {
 				return
 			}
+			//emit status
 			socket.broadcast.emit("status", {
 				content: "left the chat",
 				nick: global.users[index].nickname
 			})
+			//delete user from table
 			global.users.splice(global.users.indexOf(index), 1)
 		})
 
 		//change nick
 		socket.on("nick", function (nick) {
-			if (global.users.some(e => e.id === socket.id)) {
-				var index = global.users.findIndex(x => x.id === socket.id)
-				if (nick.length > 15) {
-					nick = nick.substring(0, 15)
-				}
-				var index2 = global.users.findIndex(x => x.nickname === nick)
-				if (index2 !== -1) {
-					nick = nick + index
-				}
-				var old = global.users[index].nickname
-				global.users[index].nickname = nick
-				socket.broadcast.emit("return", old.blue + " change nick to " + nick.blue)
-				socket.emit("nick", nick)
+			//find user
+			var index = global.users.findIndex(x => x.id === socket.id)
+			//error handle
+			if (!global.users[index]) {
+				return
 			}
+			//shorten the long nick
+			if (nick.length > 15) {
+				nick = nick.substring(0, 15)
+			}
+			//check is nick already used
+			var index2 = global.users.findIndex(x => x.nickname === nick)
+			if (index2 !== -1) {
+				nick = nick + index
+			}
+			var old = global.users[index].nickname
+			//save new nick
+			global.users[index].nickname = nick
+			//send return to user
+			socket.broadcast.emit("return", old.blue + " change nick to " + nick.blue)
+			socket.emit("nick", nick)
+
 		})
 
 		//list
 		socket.on("list", function () {
+			//crate user list
 			var list = []
 			var status
 			list[0] = "\nUser List:"
-
 			for (i = 1; i < global.users.length + 1; i++) {
 				var a = global.users[i - 1]
 				if (a.status === "online") {
@@ -141,6 +161,7 @@ function run() {
 				list[i] = a.nickname.blue + " (" + status + ")"
 			}
 
+			//emit table
 			var table = list.join("\n")
 			socket.emit("return", table)
 
@@ -148,79 +169,105 @@ function run() {
 
 		//afk
 		socket.on("afk", function () {
-			if (global.users.some(e => e.id === socket.id)) {
-				var index = global.users.findIndex(x => x.id === socket.id)
-				global.users[index].status = "afk"
-				var msg = {
-					content: "is afk",
-					nick: global.users[index].nickname
-				}
-				socket.broadcast.emit("status", msg)
+			//find user
+			var index = global.users.findIndex(x => x.id === socket.id)
+			//error handle
+			if (!global.users[index]) {
+				return
 			}
-
+			//change user status
+			global.users[index].status = "afk"
+			//emit status
+			socket.broadcast.emit("status", {
+				content: "is afk",
+				nick: global.users[index].nickname
+			})
 		})
 
 		//online
 		socket.on("online", function () {
-			if (global.users.some(e => e.id === socket.id)) {
-				var index = global.users.findIndex(x => x.id === socket.id)
-				global.users[index].status = "online"
-				var msg = {
-					content: "is online",
-					nick: global.users[index].nickname
-				}
-				socket.broadcast.emit("status", msg)
+			//find user
+			var index = global.users.findIndex(x => x.id === socket.id)
+			//error handle
+			if (!global.users[index]) {
+				return
 			}
+			//change user status
+			global.users[index].status = "online"
+			//emit status
+			socket.broadcast.emit("status", {
+				content: "is online",
+				nick: global.users[index].nickname
+			})
+
 		})
 
 		//dnd
 		socket.on("dnd", function () {
-			if (global.users.some(e => e.id === socket.id)) {
-				var index = global.users.findIndex(x => x.id === socket.id)
-				global.users[index].status = "dnd"
-				var msg = {
-					content: "is dnd",
-					nick: global.users[index].nickname
-				}
-				socket.broadcast.emit("status", msg)
+			//find user
+			var index = global.users.findIndex(x => x.id === socket.id)
+			//error handle
+			if (!global.users[index]) {
+				return
 			}
+			//change user status
+			global.users[index].status = "dnd"
+			//emit status
+			socket.broadcast.emit("status", {
+				content: "is dnd",
+				nick: global.users[index].nickname
+			})
+
 		})
 
 		//message
 		socket.on("message", async (content) => {
+			//find user
 			var index = global.users.findIndex(x => x.id === socket.id)
+			//error handle
 			if (!global.users[index]) {
 				return
 			}
 			try {
+				//flood block
 				await rateLimiter.consume(socket.handshake.address)
+				//validate message
 				if (content) {
+					//check lenght
 					if (content.length > 1500) {
-						socket.emit("return", "FLOOD BLOCKED")
+						socket.emit("return", "FLOOD BLOCKED".red)
 					} else {
-						var msg = {
+						//emit message
+						socket.broadcast.emit("message", {
 							nick: global.users[index].nickname,
 							content: content
-						}
-						socket.broadcast.emit("message", msg)
+						})
 					}
 				}
 			} catch (rejRes) {
-				socket.emit("return", "FLOOD BLOCKED")
+				//emit alert
+				socket.emit("return", "FLOOD BLOCKED".red)
 			}
 		})
 
 		//mention
 		socket.on("mention", function (nick) {
+			//find user
 			var index = global.users.findIndex(x => x.nickname === nick)
+			//find user
 			var index2 = global.users.findIndex(x => x.id === socket.id)
+			//error handle
+			if (!global.users[index2]) {
+				return
+			}
 			if (global.users[index]) {
-				var msg = {
+				//send mention
+				socket.to(`${global.users[index].id}`).emit("mentioned", {
 					nick: global.users[index2].nickname,
 					content: "mentioned you"
-				}
-				socket.to(`${global.users[index].id}`).emit("mentioned", msg)
+				})
 			} else {
+				//send return
 				socket.emit("return", "This user not exist")
 			}
 		})
