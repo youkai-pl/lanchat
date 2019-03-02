@@ -16,11 +16,12 @@ module.exports = {
 
 	//send
 	send: function (content) {
-		var msg = {
+		//out
+		out.message({
 			content: content,
 			nick: settings.nick
-		}
-		out.message(msg)
+		})
+		//send
 		if (global.lock) {
 			socket.emit("message", content)
 		}
@@ -43,12 +44,18 @@ module.exports = {
 
 	//connect
 	connect: function (ip) {
+
+		//check ip
 		if (!ip) {
 			out.blank("Try: /connect <ip>")
 		} else {
+
+			//block double connect
 			if (global.lock) {
 				out.alert("you already connected")
 			} else {
+
+				//connet
 				out.status("connecting")
 				global.lock = true
 
@@ -64,6 +71,7 @@ module.exports = {
 
 				//connect
 				socket.on("connect", function () {
+					//normal way
 					if (!global.reconnect) {
 						global.lock = true
 						global.safe_disconnect = false
@@ -73,6 +81,7 @@ module.exports = {
 						global.connection_status = true
 						global.first = true
 					} else {
+						//recconect way
 						login()
 						if (!global.first) {
 							listen()
@@ -118,12 +127,16 @@ module.exports = {
 
 				//handle recconecting
 				socket.on("reconnecting", () => {
+
+					//show status
 					if (global.reconnection) {
 						out.status("trying recconect")
 					} else {
 						out.status("connecting")
 					}
 					global.lock = true
+
+					//count attemps
 					trycount++
 					if (trycount === attemps) {
 						global.lock = false
@@ -136,10 +149,14 @@ module.exports = {
 	//disconnect
 	disconnect: function () {
 		if (global.lock) {
+
+			//disconnect
 			socket.emit("status")
 			global.safe_disconnect = true
 			socket.disconnect()
 			global.lock = false
+
+			//host status
 			if (global.server_status) {
 				out.status("you are disconnected but server is still working")
 			} else {
@@ -179,6 +196,8 @@ function listen() {
 
 	//message
 	socket.on("message", function (msg) {
+
+		//show message when dnd is disabled
 		if (!global.dnd) {
 			out.message(msg)
 			notify.message(msg)
@@ -187,6 +206,8 @@ function listen() {
 
 	//mention
 	socket.on("mentioned", function (msg) {
+
+		//show mention when dnd is disabled
 		if (!global.dnd) {
 			out.user_status(msg)
 			notify.mention(msg)
