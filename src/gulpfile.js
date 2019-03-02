@@ -25,7 +25,7 @@ gulp.task("dist", function () {
 gulp.task("pkg", async () => {
 	cleanBin()
 	await exec(["./main.js", "--target", "win-x64", "--output", "../bin/lanchat-win64"])
-	await exec(["./main.js", "--target", "win-x86", "--output", "../bin/lanchat-win86"])
+	await exec(["./main.js", "--target", "win-x86", "--output", "../bin/lanchat-win32"])
 	await exec(["./main.js", "--target", "linux-x64", "--output", "../bin/lanchat-linux64"])
 	await exec(["./main.js", "--target", "linux-x86", "--output", "../bin/lanchat-linux32"])
 	return
