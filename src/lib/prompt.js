@@ -1,22 +1,32 @@
-//PROMPT
+//import
 const colors = require("colors")
 const client = require("./client")
 const commands = require("./commands")
-const setTitle = require("console-title")
 const settings = require("./settings")
-var rl = require("./interface").rl
-var readline = require("./interface").readline
+const pkg = require("../package.json")
+const rl = require("./interface").rl
+const readline = require("./interface").readline
 
+//PROMPT
 module.exports = {
 	run: function () {
+
 		//init
-		initui()
 		settings.load()
+		process.stdout.write("\033c")
+		process.stdout.write(
+			String.fromCharCode(27) + "]0;" + "Lanchat" + String.fromCharCode(7)
+		)
+		console.log("LANCHAT ".green + pkg.version.green)
+		console.log("")
+		rl.prompt(true)
+
 		//prompt
 		rl.on("line", function (line) {
 			wrapper(line)
 			rl.prompt(true)
 		})
+
 		//exit
 		rl.on("close", function () {
 			process.stdout.write("\033c")
@@ -25,30 +35,25 @@ module.exports = {
 	}
 }
 
-//initui
-function initui() {
-	process.stdout.write("\033c")
-	setTitle("lanchat")
-	console.log("LANCHAT 1.0.0".green)
-	console.log("")
-	rl.prompt(true)
-}
-
 //user input wrapper
 function wrapper(message) {
-	//if it message
+
+	//check prefix
 	if (message.charAt(0) !== "/") {
-		//send
+
+		//send message
 		readline.moveCursor(process.stdout, 0, -1)
 		client.send(message)
 
 	} else {
-		//if it command
+
+		//execute command
 		const args = message.split(" ")
 		if (typeof commands[args[0].substr(1)] !== "undefined") {
 			answer = commands[args[0].substr(1)](args.slice(1))
 		}
 
+		//reset cursor
 		process.stdout.clearLine()
 		process.stdout.cursorTo(0)
 	}
