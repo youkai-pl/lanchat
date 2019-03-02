@@ -1,3 +1,4 @@
+//import
 const net = require("net")
 
 //COMMON
@@ -12,6 +13,7 @@ module.exports = {
 		return time
 	},
 
+	//test port
 	testPort: function (port, host, cb) {
 		net.createConnection(port, host).on("connect", function (e) {
 			cb("success", e)
@@ -19,9 +21,5 @@ module.exports = {
 			cb("failure", e)
 		})
 	},
-
-	isEmptyOrSpaces: function (str) {
-		return str === null || typeof str === "undefined" || str.match(/^ *$/) !== null
-	}
 }
 

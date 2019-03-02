@@ -1,4 +1,7 @@
+//import
 const fs = require("fs")
+
+//variables
 const home = process.env.APPDATA || (process.platform == "darwin" ? process.env.HOME + "Library/Preferences" : process.env.HOME + "/.local/share")
 const path = home + "/lanchat/config.json"
 var config = {}
@@ -30,6 +33,7 @@ module.exports = {
 	}
 }
 
+//load config file
 function load() {
 	if (!fs.existsSync(home + "/lanchat")) {
 		fs.mkdirSync(home + "/lanchat")
@@ -38,6 +42,7 @@ function load() {
 	}
 
 	try {
+		//export config
 		config = JSON.parse(fs.readFileSync(path, "utf8"))
 		module.exports.nick = config.nick
 		module.exports.motd = config.motd

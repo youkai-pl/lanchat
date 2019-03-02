@@ -1,8 +1,9 @@
-//CONSOLE
+//import
 const rl = require("./interface").rl
 const fn = require("./common")
 const colors = require("colors")
 
+//OUT
 module.exports = {
 
 	//view message
