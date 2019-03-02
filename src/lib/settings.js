@@ -51,16 +51,25 @@ function load() {
 	//create host config
 	if (!fs.existsSync(path + "host.json")) {
 		// eslint-disable-next-line quotes
-		fs.writeFileSync(path + "host.json", '{"rateLimit: "10"}')
+		fs.writeFileSync(path + "host.json", '{"rateLimit": "15"}')
 	}
 
 	//load and export config
 	try {
+
+		//load files
 		config = JSON.parse(fs.readFileSync(path + "config.json", "utf8"))
+		host = JSON.parse(fs.readFileSync(path + "host.json", "utf8"))
+
+		//export config
 		global.nick = config.nick
 		global.notify = config.notify
 		global.port = config.port
+
+		//export host config
 		global.motd = motd()
+		global.rateLimit = host.rateLimit
+
 	} catch (err) {
 		return false
 	}

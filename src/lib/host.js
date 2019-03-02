@@ -8,21 +8,23 @@ const io = require("socket.io")(http)
 const { RateLimiterMemory } = require("rate-limiter-flexible")
 var settings = require("./settings")
 var global = require("./global")
+var rateLimiter
 
 //variavles
 var motd
-
-//rate limiter init
-const rateLimiter = new RateLimiterMemory(
-	{
-		points: 10,
-		duration: 1,
-	})
 
 //HOST
 module.exports = {
 	//create host
 	start: function () {
+
+		//rate limiter init
+		rateLimiter = new RateLimiterMemory(
+			{
+				points: global.rateLimit,
+				duration: 1,
+			})
+
 		out.status("starting server")
 		//load motd
 		motd = global.motd
