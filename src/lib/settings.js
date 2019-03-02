@@ -38,17 +38,24 @@ function load() {
 	if (!fs.existsSync(home + "/lanchat")) {
 		fs.mkdirSync(home + "/lanchat")
 		// eslint-disable-next-line quotes
-		fs.writeFileSync(path, '{"nick":"default","port":"2137","notify":"mention","motd":""}')
+		fs.writeFileSync(path, '{"nick":"default","port":"2137","notify":"mention"}')
 	}
 
+	//load and export config
 	try {
-		//export config
 		config = JSON.parse(fs.readFileSync(path, "utf8"))
 		module.exports.nick = config.nick
-		module.exports.motd = config.motd
 		module.exports.notify = config.notify
 		module.exports.port = config.port
+		module.exports.motd = motd()
 	} catch (err) {
 		return false
+	}
+}
+
+//load motd file
+function motd() {
+	if (fs.existsSync(home + "/lanchat/motd.txt")) {
+		return fs.readFileSync(home + "/lanchat/motd.txt", "utf8")
 	}
 }
