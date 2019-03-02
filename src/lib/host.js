@@ -25,14 +25,14 @@ module.exports = {
 	start: function () {
 		out.status("starting server")
 		//load motd
-		motd = settings.motd
+		motd = global.motd
 		if (!motd) {
 			out.status("motd not found")
 		}
 		//check port
-		fn.testPort(settings.port, "127.0.0.1", function (e) {
+		fn.testPort(global.port, "127.0.0.1", function (e) {
 			if (e === "failure") {
-				http.listen(settings.port, function () {
+				http.listen(global.port, function () {
 					out.status("server running")
 				})
 				//start host

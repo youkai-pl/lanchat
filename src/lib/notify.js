@@ -9,7 +9,7 @@ module.exports = {
 	//message
 	message: function () {
 		//send all messages notify
-		if (settings.notify === "all") {
+		if (global.notify === "all") {
 			notifier.notify(
 				{
 					title: "Lanchat",
@@ -24,7 +24,7 @@ module.exports = {
 	//mention
 	mention: function () {
 		//send mention notify
-		if (settings.notify === "mention" || settings.notify === "all") {
+		if (global.notify === "mention" || global.notify === "all") {
 			notifier.notify(
 				{
 					title: "Lanchat",

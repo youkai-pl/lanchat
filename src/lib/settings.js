@@ -1,9 +1,10 @@
 //import
 const fs = require("fs")
+var global = require("./global")
 
 //variables
 const home = process.env.APPDATA || (process.platform == "darwin" ? process.env.HOME + "Library/Preferences" : process.env.HOME + "/.local/share")
-const path = home + "/lanchat/config.json"
+const path = home + "/lanchat/"
 var config = {}
 
 //SETTINGS
@@ -17,7 +18,7 @@ module.exports = {
 	//change nick
 	nickChange: function (nick) {
 		config["nick"] = nick
-		fs.writeFileSync(path, JSON.stringify(config), function (err) {
+		fs.writeFileSync(path + "config.json", JSON.stringify(config), function (err) {
 			if (err) return console.log(err)
 		})
 		load()
@@ -35,19 +36,31 @@ module.exports = {
 
 //load config file
 function load() {
+
+	//create dir
 	if (!fs.existsSync(home + "/lanchat")) {
 		fs.mkdirSync(home + "/lanchat")
+	}
+
+	//create config
+	if (!fs.existsSync(path + "config.json")) {
 		// eslint-disable-next-line quotes
-		fs.writeFileSync(path, '{"nick":"default","port":"2137","notify":"mention"}')
+		fs.writeFileSync(path + "config.json", '{"nick":"default","port":"2137","notify":"mention"}')
+	}
+
+	//create host config
+	if (!fs.existsSync(path + "host.json")) {
+		// eslint-disable-next-line quotes
+		fs.writeFileSync(path + "host.json", '{"rateLimit: "10"}')
 	}
 
 	//load and export config
 	try {
-		config = JSON.parse(fs.readFileSync(path, "utf8"))
-		module.exports.nick = config.nick
-		module.exports.notify = config.notify
-		module.exports.port = config.port
-		module.exports.motd = motd()
+		config = JSON.parse(fs.readFileSync(path + "config.json", "utf8"))
+		global.nick = config.nick
+		global.notify = config.notify
+		global.port = config.port
+		global.motd = motd()
 	} catch (err) {
 		return false
 	}

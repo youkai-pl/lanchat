@@ -19,7 +19,7 @@ module.exports = {
 		//out
 		out.message({
 			content: content,
-			nick: settings.nick
+			nick: global.nick
 		})
 		//send
 		if (global.lock) {
@@ -34,7 +34,7 @@ module.exports = {
 
 	//nick
 	nick: function () {
-		socket.emit("nick", settings.nick)
+		socket.emit("nick", global.nick)
 	},
 
 	//long list
@@ -58,9 +58,8 @@ module.exports = {
 				//connet
 				out.status("connecting")
 				global.lock = true
-
 				//create socket
-				socket = require("socket.io-client")("http://" + ip + ":" + settings.port,
+				socket = require("socket.io-client")("http://" + ip + ":" + global.port,
 					{
 						"reconnection": true,
 						"reconnectionDelay": 500,
@@ -240,5 +239,5 @@ function listen() {
 
 //login
 function login() {
-	socket.emit("login", settings.nick)
+	socket.emit("login", global.nick)
 }
