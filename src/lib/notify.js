@@ -1,12 +1,14 @@
-//NOTIFY
+//import
 const notifier = require("node-notifier")
 const path = require("path")
 var settings = require("./settings")
 
+//NOTIFY
 module.exports = {
 
 	//message
-	message: function (msg) {
+	message: function () {
+		//send all messages notify
 		if (settings.notify === "all") {
 			notifier.notify(
 				{
@@ -20,8 +22,9 @@ module.exports = {
 	},
 
 	//mention
-	mention: function (msg) {
-		if (settings.notify === "mention") {
+	mention: function () {
+		//send mention notify
+		if (settings.notify === "mention" || settings.notify === "all") {
 			notifier.notify(
 				{
 					title: "Lanchat",
