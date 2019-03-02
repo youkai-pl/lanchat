@@ -35,6 +35,21 @@ module.exports = {
 				out.alert("Server is already running on this PC")
 			}
 		})
+	},
+
+	//kick
+	kick: function (args) {
+		if (!global.server_status) {
+			out.alert("You not a host")
+		} else {
+			var index = global.users.findIndex(x => x.nickname === args)
+			if (!global.users[index]) {
+				out.alert("This user not exist")
+			} else {
+				out.status("Kicked " + global.users[index].nickname)
+				io.sockets.connected[global.users[index].id].disconnect()
+			}
+		}
 	}
 }
 
@@ -42,6 +57,7 @@ module.exports = {
 function run() {
 
 	io.on("connection", function (socket) {
+
 		//login
 		socket.on("login", function (nick) {
 			//detect blank nick
@@ -71,6 +87,7 @@ function run() {
 			if (motd) {
 				socket.emit("motd", motd)
 			}
+			return
 		})
 
 		//logoff

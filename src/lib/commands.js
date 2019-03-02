@@ -26,9 +26,8 @@ module.exports = {
 
 	//nick
 	nick: function (args) {
-		var message
 		if (typeof args[0] === "undefined" || args[0] === "") {
-			message = "Try: /nick <new_nick>"
+			out.blank("Try: /nick <new_nick>")
 		} else {
 			settings.nickChange(args[0])
 			if (global.connection_status) {
@@ -56,7 +55,8 @@ module.exports = {
 		help[11] = "/dnd - do not disturb, mute all messages"
 		help[12] = "/notify <all / mention / none> - change notify setting"
 		help[13] = "/m <nick> - mention user"
-		help[14] = ""
+		help[14] = "/kick <nick> - kick user from host"
+		help[15] = ""
 		out.blank(help.join("\n"))
 	},
 
@@ -132,6 +132,19 @@ module.exports = {
 				client.mention(args[0])
 			} else {
 				out.blank("try /m <nick>")
+			}
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
+	//kick
+	kick: function (args) {
+		if (global.connection_status) {
+			if (args[0]) {
+				host.kick(args[0])
+			} else {
+				out.blank("try /kick <nick>")
 			}
 		} else {
 			out.alert("you must be connected")
