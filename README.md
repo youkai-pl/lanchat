@@ -8,7 +8,7 @@
 </div>
 
 <p style="text-align: center;">
-    <img src="https://i.imgur.com/F6qOIOw.png" width="500">
+    <img src="https://i.ibb.co/8DmL1FM/test.gif" width="500">
 </p>
 
 
@@ -41,7 +41,25 @@ You have three options
 * `/online` - change status to online
 * `/rb` - rainbow text
 
+## Config
+Configuration files are located in these folders
+* Windows `AppData/Roaming/lanchat`
+* Linux `/.local/share`
+* MacOS `Library/Preferences`
+
+### Host configuration
+Host settings can be changed in `host.json` file.
+You can create a `motd.txt` file for the host to display the motd message.
+
 ## Changelog
+
+### 0.6.0
+* kick command
+* host motd
+* save config
+* flood block
+* code improvements
+* bugfixes
 
 ### 0.5.0
 * mentions
