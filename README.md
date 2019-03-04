@@ -20,7 +20,7 @@ You have three options
 * `npm install -g lanchat-npm`
 * `lanchat` to start
 
-#### Portable Relase
+#### Portable Release
 * [Download last version](https://github.com/akira202/lanchat/releases)
 
 #### Git Repository
@@ -52,6 +52,9 @@ Host settings can be changed in `host.json` file.
 You can create a `motd.txt` file for the host to display the motd message.
 
 ## Changelog
+
+### 0.6.1
+* bugfix
 
 ### 0.6.0
 * kick command
