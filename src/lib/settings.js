@@ -27,7 +27,7 @@ module.exports = {
 	//change notify settings
 	notifyChange: function (value) {
 		config["notify"] = value
-		fs.writeFileSync(path, JSON.stringify(config), function (err) {
+		fs.writeFileSync(path + "config.json", JSON.stringify(config), function (err) {
 			if (err) return console.log(err)
 		})
 		load()
