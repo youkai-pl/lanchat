@@ -12,14 +12,19 @@ module.exports = {
 	run: function () {
 
 		//init
-		settings.load()
-		process.stdout.write("\033c")
-		process.stdout.write(
-			String.fromCharCode(27) + "]0;" + "Lanchat" + String.fromCharCode(7)
-		)
-		console.log("LANCHAT ".green + pkg.version.green)
-		console.log("")
-		rl.prompt(true)
+
+		if (settings.load()){
+			process.stdout.write("\033c")
+			process.stdout.write(
+				String.fromCharCode(27) + "]0;" + "Lanchat" + String.fromCharCode(7)
+			)
+			console.log("Lanchat ".green + pkg.version.green)
+			console.log("")
+			rl.prompt(true)
+		} else {
+			console.log("Corrupted config file")
+			process.exit(0)
+		}
 
 		//prompt
 		rl.on("line", function (line) {

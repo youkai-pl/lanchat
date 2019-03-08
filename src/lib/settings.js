@@ -1,5 +1,6 @@
 //import
 const fs = require("fs")
+const out = require("./out")
 var global = require("./global")
 
 //variables
@@ -12,7 +13,9 @@ module.exports = {
 
 	//load config
 	load: function () {
-		load()
+		if (load()) {
+			return true
+		}
 	},
 
 	//change nick
@@ -54,12 +57,36 @@ function load() {
 		fs.writeFileSync(path + "host.json", '{"rateLimit": "15"}')
 	}
 
-	//load and export config
+	//create host database
+	if (!fs.existsSync(path + "db.json")) {
+		// eslint-disable-next-line quotes
+		fs.writeFileSync(path + "db.json", '{}')
+	}
+
+	//load
 	try {
 
 		//load files
 		config = JSON.parse(fs.readFileSync(path + "config.json", "utf8"))
 		host = JSON.parse(fs.readFileSync(path + "host.json", "utf8"))
+		db = JSON.parse(fs.readFileSync(path + "db.json", "utf8"))
+
+		//valdate
+		if (!config.hasOwnProperty("nick")) {
+			return false
+		}
+		if (!config.hasOwnProperty("port")) {
+			return false
+		}
+		if (!config.hasOwnProperty("notify")) {
+			return false
+		}
+		if (!host.hasOwnProperty("rateLimit")) {
+			return false
+		}
+		if (!host.hasOwnProperty("auth")) {
+			return false
+		}
 
 		//export config
 		global.nick = config.nick
@@ -70,7 +97,12 @@ function load() {
 		global.motd = motd()
 		global.rateLimit = host.rateLimit
 
+		//return
+		return true
+
 	} catch (err) {
+
+		//return
 		return false
 	}
 }
