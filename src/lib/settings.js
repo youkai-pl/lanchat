@@ -21,19 +21,27 @@ module.exports = {
 	//change nick
 	nickChange: function (nick) {
 		config["nick"] = nick
+		global.nick = nick
 		fs.writeFileSync(path + "config.json", JSON.stringify(config), function (err) {
 			if (err) return console.log(err)
 		})
-		load()
 	},
 
 	//change notify settings
 	notifyChange: function (value) {
 		config["notify"] = value
+		global.notify = notify
 		fs.writeFileSync(path + "config.json", JSON.stringify(config), function (err) {
 			if (err) return console.log(err)
 		})
-		load()
+	},
+
+	//write to db
+	writedb: function (ip, key, value) {
+		global.db[ip] = {[key]: value}
+		fs.writeFileSync(path + "db.json", JSON.stringify(db), function (err) {
+			if (err) return console.log(err)
+		})
 	}
 }
 
@@ -84,9 +92,6 @@ function load() {
 		if (!host.hasOwnProperty("rateLimit")) {
 			return false
 		}
-		if (!host.hasOwnProperty("auth")) {
-			return false
-		}
 
 		//export config
 		global.nick = config.nick
@@ -96,6 +101,9 @@ function load() {
 		//export host config
 		global.motd = motd()
 		global.rateLimit = host.rateLimit
+
+		//export db
+		global.db = db
 
 		//return
 		return true

@@ -15,3 +15,6 @@ module.exports.motd
 
 //host config
 module.exports.rateLimit
+
+//db
+module.exports.db

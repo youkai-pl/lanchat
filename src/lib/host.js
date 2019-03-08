@@ -71,37 +71,58 @@ function run() {
 
 		//login
 		socket.on("login", function (nick) {
-			//detect blank nick
-			if (!nick) {
-				nick = "default"
+
+			//add user to database
+			if (!global.db.hasOwnProperty(nick)) {
+				console.log("test")
+				settings.writedb(nick, "permission", 1)
 			}
-			//shortening long nick
-			if (nick.length > 15) {
-				nick = nick.substring(0, 15)
+
+			if (global.db[nick].permission !== 0) {
+
+				//detect blank nick
+				if (!nick) {
+					nick = "default"
+				}
+
+				//shortening long nick
+				if (nick.length > 15) {
+					nick = nick.substring(0, 15)
+				}
+
+				//detect already used nick
+				var index2 = global.users.findIndex(x => x.nickname === nick)
+				if (index2 !== -1) {
+					nick = nick + global.users.length
+				}
+
+				//create user objcet
+				var user = {
+					id: socket.id,
+					nickname: nick,
+					status: "online",
+					ip: socket.handshake.address
+				}
+
+				//add user to array
+				global.users.push(user)
+
+				//broadcast status
+				socket.broadcast.emit("status", {
+					content: "join the chat",
+					nick: nick
+				})
+
+				//emit motd
+				if (motd) {
+					socket.emit("motd", motd)
+				}
+
+				return
+
+			} else {
+				io.sockets.connected[socket.id].disconnect()
 			}
-			//detect already used nick
-			var index2 = global.users.findIndex(x => x.nickname === nick)
-			if (index2 !== -1) {
-				nick = nick + global.users.length
-			}
-			//create user objcet
-			var user = {
-				id: socket.id,
-				nickname: nick,
-				status: "online",
-				ip: socket.handshake.address
-			}
-			//add user to array
-			global.users.push(user)
-			socket.broadcast.emit("status", {
-				content: "join the chat",
-				nick: nick
-			})
-			//emit motd
-			if (motd) {
-				socket.emit("motd", motd)
-			}
-			return
 		})
 
 		//logoff
