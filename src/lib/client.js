@@ -145,6 +145,15 @@ module.exports = {
 		}
 	},
 
+	//auth
+	auth: function (password) {
+		if (password) {
+			socket.emit("auth", global.nick, password)
+		} else {
+			out.blank("try /login <password>")
+		}
+	},
+
 	//disconnect
 	disconnect: function () {
 		if (global.lock) {

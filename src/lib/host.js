@@ -72,56 +72,84 @@ function run() {
 		//login
 		socket.on("login", function (nick) {
 
-			//add user to database
-			if (!global.db.hasOwnProperty(nick)) {
-				console.log("test")
-				settings.writedb(nick, "permission", 1)
+			//detect blank nick
+			if (!nick) {
+				nick = "default"
 			}
 
-			if (global.db[nick].permission !== 0) {
+			//shortening long nick
+			if (nick.length > 15) {
+				nick = nick.substring(0, 15)
+			}
 
-				//detect blank nick
-				if (!nick) {
-					nick = "default"
-				}
+			//check database
+			var index = global.db.findIndex(x => x.nickname === nick)
 
-				//shortening long nick
-				if (nick.length > 15) {
-					nick = nick.substring(0, 15)
-				}
+			//create database index
+			if (index === -1) {
+				settings.createDb(nick)
+			}
 
-				//detect already used nick
-				var index2 = global.users.findIndex(x => x.nickname === nick)
-				if (index2 !== -1) {
-					nick = nick + global.users.length
-				}
+			//update index
+			index = global.db.findIndex(x => x.nickname === nick)
 
-				//create user objcet
-				var user = {
-					id: socket.id,
-					nickname: nick,
-					status: "online",
-					ip: socket.handshake.address
-				}
+			//add keys
+			if (!global.db[index].hasOwnProperty("level")) {
+				settings.writedb(nick, "level", 3)
+			}
+			if (!global.db[index].hasOwnProperty("ip")) {
+				settings.writedb(nick, "ip", socket.handshake.address)
+			}
+			if (!global.db[index].hasOwnProperty("lock")) {
+				settings.writedb(nick, "lock", false)
+			}
+			if (!global.db[index].hasOwnProperty("pass")) {
+				settings.writedb(nick, "pass", false)
+			}
 
-				//add user to array
-				global.users.push(user)
+			//check ban
+			if (global.db[index].level === 0) {
 
-				//broadcast status
-				socket.broadcast.emit("status", {
-					content: "join the chat",
-					nick: nick
-				})
-
-				//emit motd
-				if (motd) {
-					socket.emit("motd", motd)
-				}
-
-				return
-
-			} else {
+				//return
+				socket.emit("return", "BANNED")
 				io.sockets.connected[socket.id].disconnect()
+			} else {
+
+				//check connected list
+				if (global.users.findIndex(x => x.nickname === nick) !== -1) {
+
+					//return
+					socket.emit("return", "User already connected\nChange nick and try again")
+					io.sockets.connected[socket.id].disconnect()
+				} else {
+
+					//emit motd
+					if (motd) {
+						socket.emit("motd", motd)
+					}
+
+					//check lock
+					if (global.db[index].lock) {
+
+						//return
+						socket.emit("return", "Account locked\nLogin with /login <password>")
+
+					} else {
+						auth(nick, socket)
+					}
+				}
+			}
+		})
+
+		//auth
+		socket.on("auth", function (nick, password) {
+			var index = global.db.findIndex(x => x.nickname === nick)
+			if (password === global.db[index].pass) {
+				auth(nick, socket)
+				//return
+				socket.emit("return", "Logged!")
+			} else {
+				socket.emit("return", "Wrong password")
 			}
 		})
 
@@ -134,7 +162,7 @@ function run() {
 				return
 			}
 			//emit status
-			socket.broadcast.emit("status", {
+			socket.broadcast.to("logged").emit("status", {
 				content: "left the chat",
 				nick: global.users[index].nickname
 			})
@@ -162,8 +190,9 @@ function run() {
 			var old = global.users[index].nickname
 			//save new nick
 			global.users[index].nickname = nick
+			settings.writedb(old, "nickname", nick)
 			//send return to user
-			socket.broadcast.emit("return", old.blue + " change nick to " + nick.blue)
+			socket.broadcast.to("logged").emit("return", old.blue + " change nick to " + nick.blue)
 			socket.emit("nick", nick)
 
 		})
@@ -205,7 +234,7 @@ function run() {
 			//change user status
 			global.users[index].status = "afk"
 			//emit status
-			socket.broadcast.emit("status", {
+			socket.broadcast.to("logged").emit("status", {
 				content: "is afk",
 				nick: global.users[index].nickname
 			})
@@ -222,7 +251,7 @@ function run() {
 			//change user status
 			global.users[index].status = "online"
 			//emit status
-			socket.broadcast.emit("status", {
+			socket.broadcast.to("logged").emit("status", {
 				content: "is online",
 				nick: global.users[index].nickname
 			})
@@ -240,7 +269,7 @@ function run() {
 			//change user status
 			global.users[index].status = "dnd"
 			//emit status
-			socket.broadcast.emit("status", {
+			socket.broadcast.to("logged").emit("status", {
 				content: "is dnd",
 				nick: global.users[index].nickname
 			})
@@ -265,7 +294,7 @@ function run() {
 						socket.emit("return", "FLOOD BLOCKED".red)
 					} else {
 						//emit message
-						socket.broadcast.emit("message", {
+						socket.broadcast.to("logged").emit("message", {
 							nick: global.users[index].nickname,
 							content: content
 						})
@@ -310,4 +339,28 @@ function run() {
 			socket.emit("return", msg)
 		})
 	})
+}
+
+function auth(nick, socket) {
+	//create user objcet
+	var user = {
+		id: socket.id,
+		nickname: nick,
+		status: "online",
+		ip: socket.handshake.address
+	}
+
+	//add user to array
+	global.users.push(user)
+
+	//broadcast status
+	socket.broadcast.to("logged").emit("status", {
+		content: "join the chat",
+		nick: nick
+	})
+
+	//join
+	socket.join("logged")
+
+	return
 }

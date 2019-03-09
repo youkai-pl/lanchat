@@ -72,6 +72,15 @@ module.exports = {
 		client.connect(args[0])
 	},
 
+	//login
+	login: function (args) {
+		if (global.connection_status) {
+			client.auth(args[0])
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
 	//disconnect
 	disconnect: function () {
 		client.disconnect()
