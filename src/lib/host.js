@@ -153,6 +153,18 @@ function run() {
 			}
 		})
 
+		//register
+		socket.on("register", function (nick, password) {
+			var index = global.users.findIndex(x => x.nickname === nick)
+			if(index !== -1){
+				settings.writedb(nick, "lock", true)
+				settings.writedb(nick, "pass", password)
+				socket.emit("return", "Done")
+			} else {
+				socket.emit("return", "Login first")
+			}
+		})
+
 		//logoff
 		socket.on("disconnect", function () {
 			//find user
@@ -185,16 +197,16 @@ function run() {
 			//check is nick already used
 			var index2 = global.users.findIndex(x => x.nickname === nick)
 			if (index2 !== -1) {
-				nick = nick + index
+				socket.emit("return", "nick already used")
+			} else {
+				var old = global.users[index].nickname
+				//save new nick
+				global.users[index].nickname = nick
+				settings.writedb(old, "nickname", nick)
+				//send return to user
+				socket.broadcast.to("logged").emit("return", old.blue + " change nick to " + nick.blue)
+				socket.emit("nick", nick)
 			}
-			var old = global.users[index].nickname
-			//save new nick
-			global.users[index].nickname = nick
-			settings.writedb(old, "nickname", nick)
-			//send return to user
-			socket.broadcast.to("logged").emit("return", old.blue + " change nick to " + nick.blue)
-			socket.emit("nick", nick)
-
 		})
 
 		//list

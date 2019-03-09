@@ -62,8 +62,10 @@ module.exports = {
 		help[11] = "/dnd - do not disturb, mute all messages"
 		help[12] = "/notify <all / mention / none> - change notify setting"
 		help[13] = "/m <nick> - mention user"
-		help[14] = "/kick <nick> - kick user from host"
-		help[15] = ""
+		help[14] = "/login <password> - login"
+		help[15] = "/register <password> <password> - protect account on server"
+		help[15] = "/kick <nick> - kick user from host"
+		help[16] = ""
 		out.blank(help.join("\n"))
 	},
 
@@ -76,6 +78,15 @@ module.exports = {
 	login: function (args) {
 		if (global.connection_status) {
 			client.auth(args[0])
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
+	//register
+	register: function (args) {
+		if (global.connection_status) {
+			client.register(args)
 		} else {
 			out.alert("you must be connected")
 		}

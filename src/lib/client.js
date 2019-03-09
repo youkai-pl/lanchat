@@ -154,20 +154,30 @@ module.exports = {
 		}
 	},
 
+	//register
+	register: function (args) {
+		if (args) {
+			if (args[0] === args[1]) {
+				socket.emit("register", global.nick, args[0])
+			} else {
+				out.blank("passwords do not match")
+			}
+		} else {
+			out.blank("try /register <password> <password>")
+		}
+	},
+
 	//disconnect
 	disconnect: function () {
 		if (global.lock) {
-
-			//disconnect
-			socket.emit("status")
-			global.safe_disconnect = true
-			socket.disconnect()
-			global.lock = false
-
-			//host status
 			if (global.server_status) {
-				out.status("you are disconnected but server is still working")
+				out.status("host cannot be disconnect")
 			} else {
+				//disconnect
+				socket.emit("status")
+				global.safe_disconnect = true
+				//socket.disconnect()
+				global.lock = false
 				out.status("disconnected")
 			}
 		} else {
