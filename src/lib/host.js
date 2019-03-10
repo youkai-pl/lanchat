@@ -107,9 +107,23 @@ function run() {
 				settings.writedb(nick, "pass", false)
 			}
 
-			//check ban
+			//ban check
+			var ban
 
+			//chekc via ip
+			for (var i = 0; i < global.db.length; i++) {
+				if (global.db[i].level === 0) {
+					ban = true
+				}
+			}
+
+			//check via nick
 			if (global.db[index].level === 0) {
+				ban = true
+			}
+
+			//handle banned user
+			if (ban) {
 
 				//return
 				socket.emit("return", "BANNED")
