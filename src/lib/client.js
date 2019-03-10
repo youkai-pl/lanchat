@@ -206,6 +206,24 @@ module.exports = {
 	dnd: function () {
 		global.dnd = true
 		socket.emit("dnd")
+	},
+
+	//kick
+	kick: function (arg) {
+		if (arg !== global.nick) {
+			socket.emit("kick", global.nick, arg)
+		} else {
+			out.status("You can't kick yourself")
+		}
+	},
+
+	//ban
+	ban: function (arg) {
+		if (arg !== global.nick) {
+			socket.emit("ban", global.nick, arg)
+		} else {
+			out.status("You can't ban yourself")
+		}
 	}
 }
 

@@ -63,9 +63,9 @@ module.exports = {
 		help[12] = "/notify <all / mention / none> - change notify setting"
 		help[13] = "/m <nick> - mention user"
 		help[14] = "/login <password> - login"
-		help[15] = "/register <password> <password> - protect account on server"
-		help[15] = "/kick <nick> - kick user from host"
-		help[16] = ""
+		help[15] = "/register <password> <password> - protect account on server,\n password will be change with same command"
+		help[16] = "/kick <nick> - kick user from host"
+		help[17] = ""
 		out.blank(help.join("\n"))
 	},
 
@@ -177,7 +177,21 @@ module.exports = {
 		//kick user
 		if (global.connection_status) {
 			if (args[0]) {
-				host.kick(args[0])
+				client.kick(args[0])
+			} else {
+				out.blank("try /kick <nick>")
+			}
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
+	//ban
+	ban: function (args) {
+		//kick user
+		if (global.connection_status) {
+			if (args[0]) {
+				client.ban(args[0])
 			} else {
 				out.blank("try /kick <nick>")
 			}

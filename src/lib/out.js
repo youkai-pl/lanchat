@@ -18,7 +18,7 @@ module.exports = {
 	user_status: function (msg) {
 		process.stdout.clearLine()
 		process.stdout.cursorTo(0)
-		console.log("[#] ".green + msg.nick.blue + " " + msg.content.green)
+		console.log("[#] ".green + msg.nick.blue + " " + msg.content)
 		rl.prompt(true)
 	},
 
