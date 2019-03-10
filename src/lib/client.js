@@ -224,6 +224,15 @@ module.exports = {
 		} else {
 			out.status("You can't ban yourself")
 		}
+	},
+
+	//unban
+	unban: function (arg) {
+		if (arg !== global.nick) {
+			socket.emit("unban", global.nick, arg)
+		} else {
+			out.status("You can't unban yourself")
+		}
 	}
 }
 

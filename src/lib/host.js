@@ -360,17 +360,40 @@ function run() {
 				//find user
 				var index2 = global.db.findIndex(x => x.nickname === nick)
 				//find user
-				var index3 = global.users.findIndex(x => x.nickname === arg)
+				var index3 = global.db.findIndex(x => x.nickname === arg)
 				if ((global.db[index2].level < 4) || (global.db[index2].level < global.db[index3].level)) {
 					socket.emit("return", "You not have permission")
 				} else {
-					if (!global.users[index3]) {
+					if (!global.db[index3]) {
 						socket.emit("return", "This user not exist")
 					} else {
-						//kick user
+						//ban user
 						socket.emit("return", "Banned " + global.users[index3].nickname)
 						settings.writedb(arg, "level", 0)
 						io.sockets.connected[global.users[index3].id].disconnect()
+					}
+				}
+			}
+		})
+
+		//unban
+		socket.on("unban", function (nick, arg) {
+			//find user
+			var index = global.users.findIndex(x => x.nickname === nick)
+			if (index !== -1) {
+				//find user
+				var index2 = global.db.findIndex(x => x.nickname === nick)
+				//find user
+				var index3 = global.db.findIndex(x => x.nickname === arg)
+				if (global.db[index2].level < 4) {
+					socket.emit("return", "You not have permission")
+				} else {
+					if (!global.db[index3]) {
+						socket.emit("return", "This user not exist")
+					} else {
+						//ban user
+						socket.emit("return", "Unbanned " + global.db[index3].nickname)
+						settings.writedb(arg, "level", 2)
 					}
 				}
 			}

@@ -64,8 +64,10 @@ module.exports = {
 		help[13] = "/m <nick> - mention user"
 		help[14] = "/login <password> - login"
 		help[15] = "/register <password> <password> - protect account on server,\n password will be change with same command"
-		help[16] = "/kick <nick> - kick user from host"
-		help[17] = ""
+		help[16] = "/kick <nick> - kick user"
+		help[17] = "/ban <nick> - ban user"
+		help[18] = "/unban <nick> - unban user"
+		help[19] = ""
 		out.blank(help.join("\n"))
 	},
 
@@ -192,6 +194,20 @@ module.exports = {
 		if (global.connection_status) {
 			if (args[0]) {
 				client.ban(args[0])
+			} else {
+				out.blank("try /kick <nick>")
+			}
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
+	//unban
+	unban: function (args) {
+		//kick user
+		if (global.connection_status) {
+			if (args[0]) {
+				client.unban(args[0])
 			} else {
 				out.blank("try /kick <nick>")
 			}
