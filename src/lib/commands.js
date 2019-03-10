@@ -67,7 +67,9 @@ module.exports = {
 		help[16] = "/kick <nick> - kick user"
 		help[17] = "/ban <nick> - ban user"
 		help[18] = "/unban <nick> - unban user"
-		help[19] = ""
+		help[19] = "/mute <nick> - mute user"
+		help[20] = "/unmute <nick> - unmute user"
+		help[21] = ""
 		out.blank(help.join("\n"))
 	},
 
@@ -190,12 +192,12 @@ module.exports = {
 
 	//ban
 	ban: function (args) {
-		//kick user
+		//ban user
 		if (global.connection_status) {
 			if (args[0]) {
 				client.ban(args[0])
 			} else {
-				out.blank("try /kick <nick>")
+				out.blank("try /ban <nick>")
 			}
 		} else {
 			out.alert("you must be connected")
@@ -204,12 +206,40 @@ module.exports = {
 
 	//unban
 	unban: function (args) {
-		//kick user
+		//unban user
 		if (global.connection_status) {
 			if (args[0]) {
 				client.unban(args[0])
 			} else {
-				out.blank("try /kick <nick>")
+				out.blank("try /unban <nick>")
+			}
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
+	//mute
+	mute: function (args) {
+		//mute user
+		if (global.connection_status) {
+			if (args[0]) {
+				client.mute(args[0])
+			} else {
+				out.blank("try /mute <nick>")
+			}
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
+	//unmute
+	unmute: function (args) {
+		//mute user
+		if (global.connection_status) {
+			if (args[0]) {
+				client.unmute(args[0])
+			} else {
+				out.blank("try /mute <nick>")
 			}
 		} else {
 			out.alert("you must be connected")

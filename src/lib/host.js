@@ -187,30 +187,35 @@ function run() {
 		socket.on("message", async (content) => {
 			//find user
 			var index = global.users.findIndex(x => x.id === socket.id)
+			var index2 = global.db.findIndex(x => x.nickname === global.users[index].nickname)
 			//error handle
 			if (!global.users[index]) {
 				return
 			}
-			if (content) {
-				//check lenght
-				try {
-					//flood block
-					await rateLimiter.consume(socket.handshake.address)
-					//validate message
+			if (global.db[index2].level === 1) {
+				socket.emit("return", "muted")
+			} else {
+				if (content) {
+					//check lenght
+					try {
+						//flood block
+						await rateLimiter.consume(socket.handshake.address)
+						//validate message
 
-					if (content.length > 1500) {
+						if (content.length > 1500) {
+							socket.emit("return", "FLOOD BLOCKED")
+						} else {
+							//emit message
+							socket.broadcast.to("main").emit("message", {
+								nick: global.users[index].nickname,
+								content: content
+							})
+						}
+
+					} catch (rejRes) {
+						//emit alert
 						socket.emit("return", "FLOOD BLOCKED")
-					} else {
-						//emit message
-						socket.broadcast.to("main").emit("message", {
-							nick: global.users[index].nickname,
-							content: content
-						})
 					}
-
-				} catch (rejRes) {
-					//emit alert
-					socket.emit("return", "FLOOD BLOCKED")
 				}
 			}
 		})
@@ -407,6 +412,52 @@ function run() {
 					} else {
 						//ban user
 						socket.emit("return", "Unbanned " + global.db[index3].nickname)
+						settings.writedb(arg, "level", 2)
+					}
+				}
+			}
+		})
+
+		//mute
+		socket.on("mute", function (nick, arg) {
+			//find user
+			var index = global.users.findIndex(x => x.nickname === nick)
+			if (index !== -1) {
+				//find user
+				var index2 = global.db.findIndex(x => x.nickname === nick)
+				//find user
+				var index3 = global.db.findIndex(x => x.nickname === arg)
+				if ((global.db[index2].level < 4) || (global.db[index2].level < global.db[index3].level)) {
+					socket.emit("return", "You not have permission")
+				} else {
+					if (!global.db[index3]) {
+						socket.emit("return", "This user not exist")
+					} else {
+						//mute user
+						socket.emit("return", "Muted " + global.db[index3].nickname)
+						settings.writedb(arg, "level", 1)
+					}
+				}
+			}
+		})
+
+		//unmute
+		socket.on("unmute", function (nick, arg) {
+			//find user
+			var index = global.users.findIndex(x => x.nickname === nick)
+			if (index !== -1) {
+				//find user
+				var index2 = global.db.findIndex(x => x.nickname === nick)
+				//find user
+				var index3 = global.db.findIndex(x => x.nickname === arg)
+				if (global.db[index2].level < 4) {
+					socket.emit("return", "You not have permission")
+				} else {
+					if (!global.db[index3]) {
+						socket.emit("return", "This user not exist")
+					} else {
+						//mute user
+						socket.emit("return", "Unmuted " + global.db[index3].nickname)
 						settings.writedb(arg, "level", 2)
 					}
 				}

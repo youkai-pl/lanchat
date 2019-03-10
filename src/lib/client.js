@@ -233,7 +233,25 @@ module.exports = {
 		} else {
 			out.status("You can't unban yourself")
 		}
-	}
+	},
+
+	//mute
+	mute: function (arg) {
+		if (arg !== global.nick) {
+			socket.emit("mute", global.nick, arg)
+		} else {
+			out.status("You can't mute yourself")
+		}
+	},
+
+	//unmute
+	unmute: function (arg) {
+		if (arg !== global.nick) {
+			socket.emit("unmute", global.nick, arg)
+		} else {
+			out.status("You can't unmute yourself")
+		}
+	},
 }
 
 //listen
