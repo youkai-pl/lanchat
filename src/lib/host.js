@@ -1,7 +1,6 @@
 //import
 const fn = require("./common")
 const out = require("./out")
-const colors = require("colors")
 const client = require("./client")
 const http = require("http").Server()
 const io = require("socket.io")(http)
@@ -30,7 +29,7 @@ module.exports = {
 		}
 
 		//write permission to database
-		settings.writedb(global.nick, "level", 5)
+		settings.writedb(global.nick, "level", 4)
 
 		//rate limiter init
 		rateLimiter = new RateLimiterMemory(
@@ -161,60 +160,72 @@ function run() {
 		//auth
 		socket.on("auth", function (nick, password) {
 			var index = global.db.findIndex(x => x.nickname === nick)
-			if (password === global.db[index].pass) {
-				auth(nick, socket)
-				//return
-				socket.emit("return", "Logged!")
+			if (global.users.findIndex(x => x.id === socket.id) !== -1) {
+				socket.emit("return", "You are already loggined")
 			} else {
-				socket.emit("return", "Wrong password")
+				if (password === global.db[index].pass) {
+					auth(nick, socket)
+				} else {
+					socket.emit("return", "Wrong password")
+				}
 			}
 		})
 
 		//register
 		socket.on("register", function (nick, password) {
 			var index = global.users.findIndex(x => x.nickname === nick)
-			if (index !== -1) {
-				settings.writedb(nick, "lock", true)
-				settings.writedb(nick, "pass", password)
-				socket.emit("return", "Done")
+			if (password) {
+				if (index !== -1) {
+					settings.writedb(nick, "lock", true)
+					settings.writedb(nick, "pass", password)
+					socket.emit("return", "Done")
+				} else {
+					socket.emit("return", "Login first")
+				}
 			} else {
-				socket.emit("return", "Login first")
+				socket.emit("return", "Password cannot be blank")
 			}
 		})
 
 		//USER ACTIONS
 		//message
 		socket.on("message", async (content) => {
+
 			//find user
 			var index = global.users.findIndex(x => x.id === socket.id)
-			var index2 = global.db.findIndex(x => x.nickname === global.users[index].nickname)
-			//error handle
-			if (!global.users[index]) {
-				return
-			}
-			if (global.db[index2].level === 1) {
-				socket.emit("return", "muted")
-			} else {
-				if (content) {
-					//check lenght
-					try {
-						//flood block
-						await rateLimiter.consume(socket.handshake.address)
-						//validate message
 
-						if (content.length > 1500) {
+			//if user loggined
+			if (global.users[index]) {
+
+				//get user from db
+				var index2 = global.db.findIndex(x => x.nickname === global.users[index].nickname)
+
+				//check mute
+				if (global.db[index2].level === 1) {
+					socket.emit("return", "muted")
+				} else {
+					if (content) {
+						//check lenght
+						try {
+							//flood block
+							await rateLimiter.consume(socket.handshake.address)
+							//validate message
+
+							//block long messages
+							if (content.length > 1500) {
+								socket.emit("return", "FLOOD BLOCKED")
+							} else {
+								//emit message
+								socket.broadcast.to("main").emit("message", {
+									nick: global.users[index].nickname,
+									content: content
+								})
+							}
+
+						} catch (rejRes) {
+							//emit alert
 							socket.emit("return", "FLOOD BLOCKED")
-						} else {
-							//emit message
-							socket.broadcast.to("main").emit("message", {
-								nick: global.users[index].nickname,
-								content: content
-							})
 						}
-
-					} catch (rejRes) {
-						//emit alert
-						socket.emit("return", "FLOOD BLOCKED")
 					}
 				}
 			}
@@ -264,7 +275,7 @@ function run() {
 				global.users[index].nickname = nick
 				settings.writedb(old, "nickname", nick)
 				//send return to user
-				socket.broadcast.to("main").emit("return", old.blue + " change nick to " + nick.blue)
+				socket.broadcast.to("main").emit("return", old + " change nick to " + nick)
 				socket.emit("nick", nick)
 			}
 		})
@@ -273,20 +284,11 @@ function run() {
 		socket.on("list", function () {
 			//crate user list
 			var list = []
-			var status
 			list[0] = "\nUser List:"
 			for (i = 1; i < global.users.length + 1; i++) {
 				var a = global.users[i - 1]
-				if (a.status === "online") {
-					status = a.status.green
-				}
-				if (a.status === "afk") {
-					status = a.status.yellow
-				}
-				if (a.status === "dnd") {
-					status = a.status.red
-				}
-				list[i] = a.nickname.blue + " (" + status + ")"
+
+				list[i] = a.nickname + " (" + a.status + ")"
 			}
 
 			//emit table
@@ -355,7 +357,7 @@ function run() {
 			var index = global.users.findIndex(x => x.nickname === nick)
 			if (index !== -1) {
 				var index2 = global.db.findIndex(x => x.nickname === nick)
-				if (global.db[index2].level < 4) {
+				if (global.db[index2].level < 3) {
 					socket.emit("return", "You not have permission")
 				} else {
 					//check user
@@ -380,7 +382,7 @@ function run() {
 				var index2 = global.db.findIndex(x => x.nickname === nick)
 				//find user
 				var index3 = global.db.findIndex(x => x.nickname === arg)
-				if ((global.db[index2].level < 4) || (global.db[index2].level < global.db[index3].level)) {
+				if ((global.db[index2].level < 3) || (global.db[index2].level < global.db[index3].level)) {
 					socket.emit("return", "You not have permission")
 				} else {
 					if (!global.db[index3]) {
@@ -404,7 +406,7 @@ function run() {
 				var index2 = global.db.findIndex(x => x.nickname === nick)
 				//find user
 				var index3 = global.db.findIndex(x => x.nickname === arg)
-				if (global.db[index2].level < 4) {
+				if (global.db[index2].level < 3) {
 					socket.emit("return", "You not have permission")
 				} else {
 					if (!global.db[index3]) {
@@ -427,7 +429,7 @@ function run() {
 				var index2 = global.db.findIndex(x => x.nickname === nick)
 				//find user
 				var index3 = global.db.findIndex(x => x.nickname === arg)
-				if ((global.db[index2].level < 4) || (global.db[index2].level < global.db[index3].level)) {
+				if ((global.db[index2].level < 3) || (global.db[index2].level < global.db[index3].level)) {
 					socket.emit("return", "You not have permission")
 				} else {
 					if (!global.db[index3]) {
@@ -450,7 +452,7 @@ function run() {
 				var index2 = global.db.findIndex(x => x.nickname === nick)
 				//find user
 				var index3 = global.db.findIndex(x => x.nickname === arg)
-				if (global.db[index2].level < 4) {
+				if (global.db[index2].level < 3) {
 					socket.emit("return", "You not have permission")
 				} else {
 					if (!global.db[index3]) {
@@ -480,7 +482,6 @@ function auth(nick, socket) {
 	//check connected list
 	if (global.users.findIndex(x => x.nickname === nick) !== -1) {
 
-		//return
 		socket.emit("return", "User already connected\nChange nick and try again")
 		io.sockets.connected[socket.id].disconnect()
 	} else {
@@ -501,6 +502,9 @@ function auth(nick, socket) {
 			content: "join the chat",
 			nick: nick
 		})
+
+		//emit logged
+		socket.emit("return", "Logged!")
 
 		//emit motd
 		if (motd) {
