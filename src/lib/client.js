@@ -252,6 +252,11 @@ module.exports = {
 			out.status("You can't unmute yourself")
 		}
 	},
+
+	//chane permission
+	level: function (arg) {
+		socket.emit("level", global.nick, arg)
+	},
 }
 
 //listen

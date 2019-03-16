@@ -69,7 +69,8 @@ module.exports = {
 		help[18] = "/unban <nick> - unban user"
 		help[19] = "/mute <nick> - mute user"
 		help[20] = "/unmute <nick> - unmute user"
-		help[21] = ""
+		help[21] = "/level <nick> <1-5> - change user permission level"
+		help[22] = ""
 		out.blank(help.join("\n"))
 	},
 
@@ -240,6 +241,19 @@ module.exports = {
 				client.unmute(args[0])
 			} else {
 				out.blank("try /mute <nick>")
+			}
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
+	//chane permission
+	level: function (args) {
+		if (global.connection_status) {
+			if (args[0] && args[1]) {
+				client.level(args)
+			} else {
+				out.blank("try /level <nick> <1-5>")
 			}
 		} else {
 			out.alert("you must be connected")

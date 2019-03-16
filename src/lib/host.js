@@ -29,7 +29,7 @@ module.exports = {
 		}
 
 		//write permission to database
-		settings.writedb(global.nick, "level", 4)
+		settings.writedb(global.nick, "level", 5)
 
 		//rate limiter init
 		rateLimiter = new RateLimiterMemory(
@@ -461,6 +461,33 @@ function run() {
 						//mute user
 						socket.emit("return", "Unmuted " + global.db[index3].nickname)
 						settings.writedb(arg, "level", 2)
+					}
+				}
+			}
+		})
+
+		//change permission level
+		socket.on("level", function (nick, arg) {
+			//find user
+			var index = global.users.findIndex(x => x.nickname === nick)
+			if (index !== -1) {
+				//find user
+				var index2 = global.db.findIndex(x => x.nickname === nick)
+				//find user
+				var index3 = global.db.findIndex(x => x.nickname === arg[0])
+				if ((global.db[index2].level < 4) || (global.db[index2].level < global.db[index3].level)) {
+					socket.emit("return", "You not have permission")
+				} else {
+					if (!global.db[index3]) {
+						socket.emit("return", "This user not exist")
+					} else {
+						if (arg[1] >= 0 && arg[1] <= 4) {
+							//change permission
+							socket.emit("return", "Updated permission for " + global.db[index3].nickname)
+							settings.writedb(arg[0], "level", Number(arg[1]))
+						} else {
+							socket.emit("return", "Bad permission number")
+						}
 					}
 				}
 			}
