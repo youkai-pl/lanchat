@@ -62,14 +62,39 @@ module.exports = {
 		help[11] = "/dnd - do not disturb, mute all messages"
 		help[12] = "/notify <all / mention / none> - change notify setting"
 		help[13] = "/m <nick> - mention user"
-		help[14] = "/kick <nick> - kick user from host"
-		help[15] = ""
+		help[14] = "/login <password> - login"
+		help[15] = "/register <password> <password> - protect account on server,\n password will be change with same command"
+		help[16] = "/kick <nick> - kick user"
+		help[17] = "/ban <nick> - ban user"
+		help[18] = "/unban <nick> - unban user"
+		help[19] = "/mute <nick> - mute user"
+		help[20] = "/unmute <nick> - unmute user"
+		help[21] = "/level <nick> <1-5> - change user permission level"
+		help[22] = ""
 		out.blank(help.join("\n"))
 	},
 
 	//connect
 	connect: function (args) {
 		client.connect(args[0])
+	},
+
+	//login
+	login: function (args) {
+		if (global.connection_status) {
+			client.auth(args[0])
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
+	//register
+	register: function (args) {
+		if (global.connection_status) {
+			client.register(args)
+		} else {
+			out.alert("you must be connected")
+		}
 	},
 
 	//disconnect
@@ -157,9 +182,78 @@ module.exports = {
 		//kick user
 		if (global.connection_status) {
 			if (args[0]) {
-				host.kick(args[0])
+				client.kick(args[0])
 			} else {
 				out.blank("try /kick <nick>")
+			}
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
+	//ban
+	ban: function (args) {
+		//ban user
+		if (global.connection_status) {
+			if (args[0]) {
+				client.ban(args[0])
+			} else {
+				out.blank("try /ban <nick>")
+			}
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
+	//unban
+	unban: function (args) {
+		//unban user
+		if (global.connection_status) {
+			if (args[0]) {
+				client.unban(args[0])
+			} else {
+				out.blank("try /unban <nick>")
+			}
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
+	//mute
+	mute: function (args) {
+		//mute user
+		if (global.connection_status) {
+			if (args[0]) {
+				client.mute(args[0])
+			} else {
+				out.blank("try /mute <nick>")
+			}
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
+	//unmute
+	unmute: function (args) {
+		//mute user
+		if (global.connection_status) {
+			if (args[0]) {
+				client.unmute(args[0])
+			} else {
+				out.blank("try /mute <nick>")
+			}
+		} else {
+			out.alert("you must be connected")
+		}
+	},
+
+	//chane permission
+	level: function (args) {
+		if (global.connection_status) {
+			if (args[0] && args[1]) {
+				client.level(args)
+			} else {
+				out.blank("try /level <nick> <1-5>")
 			}
 		} else {
 			out.alert("you must be connected")

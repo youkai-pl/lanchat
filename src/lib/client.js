@@ -145,20 +145,39 @@ module.exports = {
 		}
 	},
 
+	//auth
+	auth: function (password) {
+		if (password) {
+			socket.emit("auth", global.nick, password)
+		} else {
+			out.blank("try /login <password>")
+		}
+	},
+
+	//register
+	register: function (args) {
+		if (args) {
+			if (args[0] === args[1]) {
+				socket.emit("register", global.nick, args[0])
+			} else {
+				out.blank("passwords do not match")
+			}
+		} else {
+			out.blank("try /register <password> <password>")
+		}
+	},
+
 	//disconnect
 	disconnect: function () {
 		if (global.lock) {
-
-			//disconnect
-			socket.emit("status")
-			global.safe_disconnect = true
-			socket.disconnect()
-			global.lock = false
-
-			//host status
 			if (global.server_status) {
-				out.status("you are disconnected but server is still working")
+				out.status("host cannot be disconnect")
 			} else {
+				//disconnect
+				socket.emit("status")
+				global.safe_disconnect = true
+				//socket.disconnect()
+				global.lock = false
 				out.status("disconnected")
 			}
 		} else {
@@ -187,7 +206,57 @@ module.exports = {
 	dnd: function () {
 		global.dnd = true
 		socket.emit("dnd")
-	}
+	},
+
+	//kick
+	kick: function (arg) {
+		if (arg !== global.nick) {
+			socket.emit("kick", global.nick, arg)
+		} else {
+			out.status("You can't kick yourself")
+		}
+	},
+
+	//ban
+	ban: function (arg) {
+		if (arg !== global.nick) {
+			socket.emit("ban", global.nick, arg)
+		} else {
+			out.status("You can't ban yourself")
+		}
+	},
+
+	//unban
+	unban: function (arg) {
+		if (arg !== global.nick) {
+			socket.emit("unban", global.nick, arg)
+		} else {
+			out.status("You can't unban yourself")
+		}
+	},
+
+	//mute
+	mute: function (arg) {
+		if (arg !== global.nick) {
+			socket.emit("mute", global.nick, arg)
+		} else {
+			out.status("You can't mute yourself")
+		}
+	},
+
+	//unmute
+	unmute: function (arg) {
+		if (arg !== global.nick) {
+			socket.emit("unmute", global.nick, arg)
+		} else {
+			out.status("You can't unmute yourself")
+		}
+	},
+
+	//chane permission
+	level: function (arg) {
+		socket.emit("level", global.nick, arg)
+	},
 }
 
 //listen

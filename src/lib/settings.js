@@ -36,9 +36,29 @@ module.exports = {
 		})
 	},
 
+	//load database
+	loadDb: function () {
+		db = JSON.parse(fs.readFileSync(path + "db.json", "utf8"))
+		//export db
+		global.db = db
+	},
+
+	//add user to db
+	createDb: function (nick) {
+		global.db.push({
+			nickname: nick,
+		})
+
+		//write to file
+		fs.writeFileSync(path + "db.json", JSON.stringify(db), function (err) {
+			if (err) return console.log(err)
+		})
+	},
+
 	//write to db
-	writedb: function (ip, key, value) {
-		global.db[ip] = {[key]: value}
+	writedb: function (nick, key, value) {
+		var index = global.db.findIndex(x => x.nickname === nick)
+		global.db[index][key] = value
 		fs.writeFileSync(path + "db.json", JSON.stringify(db), function (err) {
 			if (err) return console.log(err)
 		})
@@ -68,7 +88,7 @@ function load() {
 	//create host database
 	if (!fs.existsSync(path + "db.json")) {
 		// eslint-disable-next-line quotes
-		fs.writeFileSync(path + "db.json", '{}')
+		fs.writeFileSync(path + "db.json", '[]')
 	}
 
 	//load
@@ -77,7 +97,6 @@ function load() {
 		//load files
 		config = JSON.parse(fs.readFileSync(path + "config.json", "utf8"))
 		host = JSON.parse(fs.readFileSync(path + "host.json", "utf8"))
-		db = JSON.parse(fs.readFileSync(path + "db.json", "utf8"))
 
 		//valdate
 		if (!config.hasOwnProperty("nick")) {
@@ -101,9 +120,6 @@ function load() {
 		//export host config
 		global.motd = motd()
 		global.rateLimit = host.rateLimit
-
-		//export db
-		global.db = db
 
 		//return
 		return true
