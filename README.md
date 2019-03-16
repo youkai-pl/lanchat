@@ -39,19 +39,36 @@ You have three options
 * `/list` - connected users list
 * `/afk` - change status to afk
 * `/online` - change status to online
-* `/rb` - rainbow text
+* /dnd - do not disturb, mute all messages
+* /notify <all / mention / none> - change notify setting
+* /m <nick> - mention user
+* /login <password> - login
+* /register <password> <password> - protect account on server, password will be change with same command
+* /kick <nick> - kick user
+* /ban <nick> - ban user
+* /unban <nick> - unban user
+* mute <nick> - mute user
+* unmute <nick> - unmute user
+* level <nick> <1-5> - change user permission level
 
 ## Config
 Configuration files are located in these folders
-* Windows `AppData/Roaming/lanchat`
+* Windows `AppData\Roaming\lanchat`
 * Linux `/.local/share`
 * MacOS `Library/Preferences`
 
-### Host configuration
+### Host configuration and database
 Host settings can be changed in `host.json` file.
 You can create a `motd.txt` file for the host to display the motd message.
+Users settings and permission is storage in `db.json`
 
 ## Changelog
+
+### 0.7.0
+* permissions
+* ban
+* mute
+* login and register
 
 ### 0.6.1
 * bugfix
