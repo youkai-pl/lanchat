@@ -1,9 +1,7 @@
 //import
-const fn = require("./common")
 const out = require("./out")
 const notify = require("./notify")
 const colors = require("colors")
-var settings = require("./settings")
 var global = require("./global")
 
 //CLIENT
@@ -76,12 +74,12 @@ module.exports = {
 						global.safe_disconnect = false
 						out.status("connected")
 						listen()
-						login()
+						socket.emit("login", global.nick)
 						global.connection_status = true
 						global.first = true
 					} else {
 						//recconect way
-						login()
+						socket.emit("login", global.nick)
 						if (!global.first) {
 							listen()
 						}
@@ -190,22 +188,14 @@ module.exports = {
 		socket.emit("list")
 	},
 
-	//afk
-	afk: function () {
-		global.dnd = false
-		socket.emit("afk")
-	},
-
-	//online
-	online: function () {
-		global.dnd = false
-		socket.emit("online")
-	},
-
-	//online
-	dnd: function () {
-		global.dnd = true
-		socket.emit("dnd")
+	//changeStatus
+	changeStatus: function (value) {
+		if (value === "dnd") {
+			global.dnd = true
+		} else {
+			global.dnd = false
+		}
+		socket.emit("changeStatus", value)
 	},
 
 	//kick
@@ -292,21 +282,18 @@ function listen() {
 		out.blank(msg)
 	})
 
-	//nick
-	socket.on("nick", function (nick) {
-		out.blank("Your nick is now " + nick.blue)
-		settings.nickChange(nick)
-	})
-
 	//motd
 	socket.on("motd", function (motd) {
 		if (!global.reconnect) {
 			out.blank("\n" + motd + "\n")
 		}
 	})
-}
 
-//login
-function login() {
-	socket.emit("login", global.nick)
+	//DEV
+	//return code
+	socket.on("rcode", function (value) {
+		if (global.devlog) {
+			out.blank("HOST ERROR: " + value)
+		}
+	})
 }

@@ -1,6 +1,5 @@
 //import
 const rl = require("./interface").rl
-const fn = require("./common")
 const colors = require("colors")
 
 //OUT
@@ -10,7 +9,7 @@ module.exports = {
 	message: function (msg) {
 		process.stdout.clearLine()
 		process.stdout.cursorTo(0)
-		console.log("[" + fn.time().green + "] " + msg.nick.blue + ": " + msg.content)
+		console.log("[" + time().green + "] " + msg.nick.blue + ": " + msg.content)
 		rl.prompt(true)
 	},
 
@@ -18,7 +17,7 @@ module.exports = {
 	user_status: function (msg) {
 		process.stdout.clearLine()
 		process.stdout.cursorTo(0)
-		console.log("[#] ".green + msg.nick.blue + " " + msg.content)
+		console.log(msg.nick.blue + " " + msg.content)
 		rl.prompt(true)
 	},
 
@@ -47,3 +46,11 @@ module.exports = {
 	}
 }
 
+//get time
+function time() {
+	var date = new Date()
+	var time = (("0" + date.getHours()).slice(-2) + ":" +
+		("0" + date.getMinutes()).slice(-2) + ":" +
+		("0" + date.getSeconds()).slice(-2))
+	return time
+}

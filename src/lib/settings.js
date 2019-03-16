@@ -76,7 +76,7 @@ function load() {
 	//create config
 	if (!fs.existsSync(path + "config.json")) {
 		// eslint-disable-next-line quotes
-		fs.writeFileSync(path + "config.json", '{"nick":"default","port":"2137","notify":"mention"}')
+		fs.writeFileSync(path + "config.json", '{"nick":"default","port":"2137","notify":"mention", "devlog":"false"}')
 	}
 
 	//create host config
@@ -116,6 +116,7 @@ function load() {
 		global.nick = config.nick
 		global.notify = config.notify
 		global.port = config.port
+		global.devlog = config.devlog
 
 		//export host config
 		global.motd = motd()

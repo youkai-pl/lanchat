@@ -30,17 +30,19 @@ module.exports = {
 
 	//nick
 	nick: function (args) {
+
 		//handle blank input
 		if (!args[0]) {
 			out.blank("Try: /nick <new_nick>")
 		} else {
+
 			//change local nick
 			settings.nickChange(args[0])
-			//chanhe nick on host
+			out.blank("Your nickname is now " + args[0].blue)
+
+			//change nick on host
 			if (global.connection_status) {
 				client.nick()
-			} else {
-				out.blank("Your nickname is now " + args[0].blue)
 			}
 		}
 	},
@@ -116,7 +118,7 @@ module.exports = {
 	afk: function () {
 		//set afk status
 		if (global.connection_status) {
-			client.afk()
+			client.changeStatus("afk")
 			out.status("you are afk")
 		} else {
 			out.alert("you must be connected")
@@ -127,7 +129,7 @@ module.exports = {
 	online: function () {
 		//set online status
 		if (global.connection_status) {
-			client.online()
+			client.changeStatus("online")
 			out.status("you are online")
 		} else {
 			out.alert("you must be connected")
@@ -138,7 +140,7 @@ module.exports = {
 	dnd: function () {
 		//set dnd status
 		if (global.connection_status) {
-			client.dnd()
+			client.changeStatus("dnd")
 			out.status("you are dnd")
 		} else {
 			out.alert("you must be connected")
