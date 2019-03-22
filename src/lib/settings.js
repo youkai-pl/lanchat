@@ -30,7 +30,7 @@ module.exports = {
 	//change notify settings
 	notifyChange: function (value) {
 		config["notify"] = value
-		global.notify = notify
+		global.notify = value
 		fs.writeFileSync(path + "config.json", JSON.stringify(config), function (err) {
 			if (err) return console.log(err)
 		})

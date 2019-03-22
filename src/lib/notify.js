@@ -8,6 +8,7 @@ module.exports = {
 
 	//message
 	message: function () {
+
 		//send all messages notify
 		if (global.notify === "all") {
 			notifier.notify(
@@ -15,7 +16,7 @@ module.exports = {
 					title: "Lanchat",
 					message: "New Message",
 					sound: false,
-					icon: path.join(__dirname, "icon.png")
+					icon: path.join(__dirname, "../icon.png")
 				}
 			)
 		}
@@ -30,7 +31,7 @@ module.exports = {
 					title: "Lanchat",
 					message: "Somebody mentioned you",
 					sound: false,
-					icon: path.join(__dirname, "icon.png")
+					icon: path.join(__dirname, "../icon.png")
 				}
 			)
 		}

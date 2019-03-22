@@ -39,17 +39,17 @@ You have three options
 * `/list` - connected users list
 * `/afk` - change status to afk
 * `/online` - change status to online
-* /dnd - do not disturb, mute all messages
-* /notify <all / mention / none> - change notify setting
-* /m <nick> - mention user
-* /login <password> - login
-* /register <password> <password> - protect account on server, password will be change with same command
-* /kick <nick> - kick user
-* /ban <nick> - ban user
-* /unban <nick> - unban user
-* mute <nick> - mute user
-* unmute <nick> - unmute user
-* level <nick> <1-5> - change user permission level
+* `/dnd` - do not disturb, mute all messages
+* `/notify <all / mention / none>` - change notify setting
+* `/m <nick>` - mention user
+* `/login <password>` - login
+* `/register <password> <password>` - protect account on server, password will be change with same command
+* `/kick <nick>` - kick user
+* `/ban <nick>` - ban user
+* `/unban <nick>` - unban user
+* `/mute <nick>` - mute user
+* `/unmute <nick>` - unmute user
+* `/level <nick> <1-5>` - change user permission level
 
 ## Config
 Configuration files are located in these folders

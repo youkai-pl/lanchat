@@ -172,7 +172,6 @@ module.exports = {
 				out.status("host cannot be disconnect")
 			} else {
 				//disconnect
-				socket.emit("status")
 				global.safe_disconnect = true
 				//socket.disconnect()
 				global.lock = false
@@ -293,7 +292,7 @@ function listen() {
 	//return code
 	socket.on("rcode", function (value) {
 		if (global.devlog) {
-			out.blank("HOST ERROR: " + value)
+			out.blank("RETURN: " + value)
 		}
 	})
 }

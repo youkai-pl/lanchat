@@ -73,7 +73,7 @@ function run() {
 		socket.on("login", function (nick) {
 
 			//detect blank nick
-			if (nick) {
+			if (!nick) {
 				nick = "default"
 			}
 
@@ -149,13 +149,18 @@ function run() {
 			//find user
 			var index = global.users.findIndex(x => x.id === socket.id)
 
-			//emit status
-			socket.broadcast.to("main").emit("status", {
-				content: "left the chat",
-				nick: global.users[index].nickname
-			})
-			//delete user from table
-			global.users.splice(global.users.indexOf(index), 1)
+			//if user authorized
+			if (index !== -1) {
+
+				//emit status
+				socket.broadcast.to("main").emit("status", {
+					content: "left the chat",
+					nick: global.users[index].nickname
+				})
+
+				//delete user from table
+				global.users.splice(global.users.indexOf(index), 1)
+			}
 		})
 
 		//auth
@@ -326,10 +331,10 @@ function run() {
 
 		//MODERATION
 		//kick
-		socket.on("kick", function (nick, arg) {
-			var index = global.users.findIndex(x => x.nickname === nick)
+		socket.on("kick", function (arg) {
+			var index = global.users.findIndex(x => x.id === socket.id)
 			if (index !== -1) {
-				var index2 = global.db.findIndex(x => x.nickname === nick)
+				var index2 = global.db.findIndex(x => x.nickname === global.users[index].nickname)
 				if (global.db[index2].level < 3) {
 					socket.emit("rcode", "013")
 					socket.emit("return", "You not have permission")
@@ -349,12 +354,12 @@ function run() {
 		})
 
 		//ban
-		socket.on("ban", function (nick, arg) {
+		socket.on("ban", function (arg) {
 			//find user
-			var index = global.users.findIndex(x => x.nickname === nick)
+			var index = global.users.findIndex(x => x.id === socket.id)
 			if (index !== -1) {
 				//find user
-				var index2 = global.db.findIndex(x => x.nickname === nick)
+				var index2 = global.db.findIndex(x => x.nickname ===  global.users[index].nickname)
 				//find user
 				var index3 = global.db.findIndex(x => x.nickname === arg)
 				if ((global.db[index2].level < 3) || (global.db[index2].level < global.db[index3].level)) {

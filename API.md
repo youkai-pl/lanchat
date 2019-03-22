@@ -1,7 +1,72 @@
-# Lanchat API
+# Lanchat API 1.0
 
-In progress
+## Client side socket commands
 
+#### login
+Login on server
+```js
+socket.emit("login", nick)
+```
+
+#### auth
+Auth registered user
+```js
+socket.emit("auth", nick, password)
+```
+
+#### register
+Register user on server
+```js
+socket.emit("register", nick, password)
+```
+
+#### list
+Get connected user list
+```js
+socket.emit("list")
+```
+
+#### changeStatus
+Change user status
+* online
+* afk
+* dnd
+```js
+socket.emit("changeStatus", value)
+```
+
+#### message
+Send message
+```js
+socket.emit("message", content)
+```
+
+#### nick
+Change nick
+```js
+socket.emit("nick", global.nick)
+```
+
+#### kick
+Kick user by nick
+**works only for users with moderator persmission**
+```js
+socket.emit("kick", nick)
+```
+
+#### ban
+Ban user by nick
+**works only for users with moderator persmission**
+```js
+socket.emit("ban", nick)
+```
+
+#### mute
+Mute user by nick
+**works only for users with moderator persmission**
+```js
+socket.emit("kick", mute)
+```
 
 
 ## Return codes

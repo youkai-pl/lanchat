@@ -12,8 +12,7 @@ module.exports = {
 	run: function () {
 
 		//init
-
-		if (settings.load()){
+		if (settings.load()) {
 			process.stdout.write("\033c")
 			process.stdout.write(
 				String.fromCharCode(27) + "]0;" + "Lanchat" + String.fromCharCode(7)
