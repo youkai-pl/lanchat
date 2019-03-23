@@ -255,10 +255,7 @@ function run() {
 			//if user exist
 			if (global.users[selected]) {
 				//send mention
-				socket.to(`${global.users[selected].id}`).emit("mentioned", {
-					nick: global.users[index].nickname,
-					content: "mentioned you"
-				})
+				socket.to(`${global.users[selected].id}`).emit("mentioned", global.users[index].nickname)
 			} else {
 				//send return
 				socket.emit("rcode", "002")
@@ -359,7 +356,7 @@ function run() {
 			var index = global.users.findIndex(x => x.id === socket.id)
 			if (index !== -1) {
 				//find user
-				var index2 = global.db.findIndex(x => x.nickname ===  global.users[index].nickname)
+				var index2 = global.db.findIndex(x => x.nickname === global.users[index].nickname)
 				//find user
 				var index3 = global.db.findIndex(x => x.nickname === arg)
 				if ((global.db[index2].level < 3) || (global.db[index2].level < global.db[index3].level)) {
@@ -380,12 +377,12 @@ function run() {
 		})
 
 		//unban
-		socket.on("unban", function (nick, arg) {
+		socket.on("unban", function (arg) {
 			//find user
-			var index = global.users.findIndex(x => x.nickname === nick)
+			var index = global.users.findIndex(x => x.id === socket.id)
 			if (index !== -1) {
 				//find user
-				var index2 = global.db.findIndex(x => x.nickname === nick)
+				var index2 = global.db.findIndex(x => x.nickname === global.users[index].nickname)
 				//find user
 				var index3 = global.db.findIndex(x => x.nickname === arg)
 				if (global.db[index2].level < 3) {
@@ -405,12 +402,12 @@ function run() {
 		})
 
 		//mute
-		socket.on("mute", function (nick, arg) {
+		socket.on("mute", function (arg) {
 			//find user
-			var index = global.users.findIndex(x => x.nickname === nick)
+			var index = global.users.findIndex(x => x.id === socket.id)
 			if (index !== -1) {
 				//find user
-				var index2 = global.db.findIndex(x => x.nickname === nick)
+				var index2 = global.db.findIndex(x => x.nickname === global.users[index].nickname)
 				//find user
 				var index3 = global.db.findIndex(x => x.nickname === arg)
 				if ((global.db[index2].level < 3) || (global.db[index2].level < global.db[index3].level)) {
@@ -432,10 +429,10 @@ function run() {
 		//unmute
 		socket.on("unmute", function (nick, arg) {
 			//find user
-			var index = global.users.findIndex(x => x.nickname === nick)
+			var index = global.users.findIndex(x => x.id === socket.id)
 			if (index !== -1) {
 				//find user
-				var index2 = global.db.findIndex(x => x.nickname === nick)
+				var index2 = global.db.findIndex(x => x.nickname === global.users[index].nickname)
 				//find user
 				var index3 = global.db.findIndex(x => x.nickname === arg)
 				if (global.db[index2].level < 3) {
@@ -457,10 +454,10 @@ function run() {
 		//change permission level
 		socket.on("level", function (nick, arg) {
 			//find user
-			var index = global.users.findIndex(x => x.nickname === nick)
+			var index = global.users.findIndex(x => x.nickname === socket.id)
 			if (index !== -1) {
 				//find user
-				var index2 = global.db.findIndex(x => x.nickname === nick)
+				var index2 = global.db.findIndex(x => x.nickname === global.users[index].nickname)
 				//find user
 				var index3 = global.db.findIndex(x => x.nickname === arg[0])
 				if ((global.db[index2].level < 4) || (global.db[index2].level < global.db[index3].level)) {
@@ -482,13 +479,6 @@ function run() {
 					}
 				}
 			}
-		})
-
-		//DEV
-		//long list
-		socket.on("long_list", function () {
-			var list = global.users
-			socket.emit("return", list)
 		})
 	})
 }
@@ -524,7 +514,6 @@ function auth(nick, socket) {
 
 		//emit logged
 		socket.emit("rcode", "015")
-		socket.emit("return", "Logged!")
 
 		//emit motd
 		if (motd) {

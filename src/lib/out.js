@@ -21,6 +21,14 @@ module.exports = {
 		rl.prompt(true)
 	},
 
+	//mention
+	mention: function(nick){
+		process.stdout.clearLine()
+		process.stdout.cursorTo(0)
+		console.log(nick.blue + " mentioned you")
+		rl.prompt(true)
+	},
+
 	//view alert
 	alert: function (msg) {
 		process.stdout.clearLine()

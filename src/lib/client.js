@@ -12,34 +12,6 @@ var attemps = 5
 
 module.exports = {
 
-	//send
-	send: function (content) {
-		//out
-		out.message({
-			content: content,
-			nick: global.nick
-		})
-		//send
-		if (global.lock) {
-			socket.emit("message", content)
-		}
-	},
-
-	//mention
-	mention: function (nick) {
-		socket.emit("mention", nick)
-	},
-
-	//nick
-	nick: function () {
-		socket.emit("nick", global.nick)
-	},
-
-	//long list
-	long_list: function () {
-		socket.emit("long_list")
-	},
-
 	//connect
 	connect: function (ip) {
 
@@ -62,7 +34,8 @@ module.exports = {
 						"reconnection": true,
 						"reconnectionDelay": 500,
 						"reconnectionDelayMax": 500,
-						"reconnectionAttempts": attemps
+						"reconnectionAttempts": attemps,
+						"secure": true
 					}
 				)
 
@@ -143,6 +116,29 @@ module.exports = {
 		}
 	},
 
+	//send
+	send: function (content) {
+		//out
+		out.message({
+			content: content,
+			nick: global.nick
+		})
+		//send
+		if (global.lock) {
+			socket.emit("message", content)
+		}
+	},
+
+	//mention
+	mention: function (nick) {
+		socket.emit("mention", nick)
+	},
+
+	//nick
+	nick: function () {
+		socket.emit("nick", global.nick)
+	},
+
 	//auth
 	auth: function (password) {
 		if (password) {
@@ -200,7 +196,7 @@ module.exports = {
 	//kick
 	kick: function (arg) {
 		if (arg !== global.nick) {
-			socket.emit("kick", global.nick, arg)
+			socket.emit("kick", arg)
 		} else {
 			out.status("You can't kick yourself")
 		}
@@ -209,7 +205,7 @@ module.exports = {
 	//ban
 	ban: function (arg) {
 		if (arg !== global.nick) {
-			socket.emit("ban", global.nick, arg)
+			socket.emit("ban", arg)
 		} else {
 			out.status("You can't ban yourself")
 		}
@@ -218,7 +214,7 @@ module.exports = {
 	//unban
 	unban: function (arg) {
 		if (arg !== global.nick) {
-			socket.emit("unban", global.nick, arg)
+			socket.emit("unban", arg)
 		} else {
 			out.status("You can't unban yourself")
 		}
@@ -227,7 +223,7 @@ module.exports = {
 	//mute
 	mute: function (arg) {
 		if (arg !== global.nick) {
-			socket.emit("mute", global.nick, arg)
+			socket.emit("mute", arg)
 		} else {
 			out.status("You can't mute yourself")
 		}
@@ -236,15 +232,15 @@ module.exports = {
 	//unmute
 	unmute: function (arg) {
 		if (arg !== global.nick) {
-			socket.emit("unmute", global.nick, arg)
+			socket.emit("unmute", arg)
 		} else {
 			out.status("You can't unmute yourself")
 		}
 	},
 
-	//chane permission
+	//change permission
 	level: function (arg) {
-		socket.emit("level", global.nick, arg)
+		socket.emit("level", arg)
 	},
 }
 
@@ -262,12 +258,12 @@ function listen() {
 	})
 
 	//mention
-	socket.on("mentioned", function (msg) {
+	socket.on("mentioned", function (nick) {
 
 		//show mention when dnd is disabled
 		if (!global.dnd) {
-			out.user_status(msg)
-			notify.mention(msg)
+			out.mention(nick)
+			notify.mention()
 		}
 	})
 
@@ -288,7 +284,6 @@ function listen() {
 		}
 	})
 
-	//DEV
 	//return code
 	socket.on("rcode", function (value) {
 		if (global.devlog) {

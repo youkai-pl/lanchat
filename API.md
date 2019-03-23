@@ -41,6 +41,12 @@ Send message
 socket.emit("message", content)
 ```
 
+### mention
+Send mention
+```js
+socket.emit("mention", nick)
+```
+
 #### nick
 Change nick
 ```js
@@ -48,29 +54,67 @@ socket.emit("nick", global.nick)
 ```
 
 #### kick
-Kick user by nick
-**works only for users with moderator persmission**
+Kick user
 ```js
 socket.emit("kick", nick)
 ```
 
 #### ban
-Ban user by nick
-**works only for users with moderator persmission**
+Ban user
 ```js
 socket.emit("ban", nick)
 ```
 
 #### mute
-Mute user by nick
-**works only for users with moderator persmission**
+Mute user
 ```js
 socket.emit("kick", mute)
 ```
 
+#### unban
+Unban user
+```js
+socket.emit("unban", nick)
+```
+
+#### unmute
+Unmute user
+```js
+socket.emit("kick", unmute)
+```
+
+#### level
+Change user permission number
+```js
+socket.emit("level", nick)
+```
+
+## Client side events
+
+#### message
+Message broadcasted on host
+Return obcject:
+```js
+msg {
+    nick: "name of the sender"
+    content: "message content"
+}
+```
+
+#### mentioned
+Mention from other user
+Return nickname of sender
+
+
+## Permissions
+* 0 - ban
+* 1 - mute
+* 2 - user
+* 3 - moderator (kick, ban, etc)
+* 4 - administrator (moderator commands + level)
+* 5 - owner (can do anything)
 
 ## Return codes
-
 * 001 - blank message
 * 002 - selected user not exist
 * 003 - already used nickname
