@@ -1,5 +1,6 @@
-# Lan-Chat
-#### IRC like chat app works in LAN network
+<p style="text-align: center;">
+    <img src="https://i.imgur.com/sL3PaoX.png" width="500">
+</p>
 
 <div style="text-align: center;">
 
@@ -7,10 +8,14 @@
 
 </div>
 
-<p style="text-align: center;">
-    <img src="https://i.ibb.co/8DmL1FM/test.gif" width="500">
-</p>
+# Lan-Chat
+#### IRC like chat app works in LAN network
 
+* [Instalation](#instalation)
+* [Commands](commands)
+* [Config](#config)
+* [Changelog](#changelog)
+* [API documentation](API.md)
 
 ## Instalation
 You have three options
