@@ -1,8 +1,12 @@
 <p align="center">
-
 <img src="https://i.imgur.com/sL3PaoX.png" width="500">
 
-![](https://img.shields.io/github/repo-size/akira202/lanchat.svg) ![](https://img.shields.io/github/languages/top/akira202/lanchat.svg) ![](https://img.shields.io/github/license/akira202/lanchat.svg) ![](https://img.shields.io/npm/v/lanchat-npm.svg) ![](https://img.shields.io/github/last-commit/akira202/lanchat.svg) ![](https://img.shields.io/github/release-date/akira202/lanchat.svg)
+<img src="https://img.shields.io/github/repo-size/akira202/lanchat.svg">
+<img src="https://img.shields.io/github/languages/top/akira202/lanchat.svg">
+<img src="https://img.shields.io/github/license/akira202/lanchat.svg">
+<img src="https://img.shields.io/npm/v/lanchat-npm.svg">
+<img src="https://img.shields.io/github/last-commit/akira202/lanchat.svg">
+<img src="https://img.shields.io/github/release-date/akira202/lanchat.svg">
 
 </p>
 
