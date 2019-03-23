@@ -1,37 +1,55 @@
 # Lanchat API 1.0
 
 * [Client side socket commands](#client-side-socket-commands)
+* * [login](#login)
+* * [auth](#auth)
+* * [register](#register)
+* * [list](#list)
+* * [changeStatus](#changeStatus)
+* * [message](#message)
+* * [mention](#mention)
+* * [nick](#nick)
+* * [ban](#ban)
+* * [mute](#mute)
+* * [unban](#unban)
+* * [unmute](#unmute)
+* * [level](#level)
 * [Client side socket events](#client-side-socket-events)
+* * [message](#message-event)
+* * [mentioned](#mentioned)
+* * [status](#status)
+* * [return](#return)
+* * [motd](#motd)
+* * [rcode](#rcode)
 * [Permissions](#permissions)
 * [Return codes](#return-codes)
-
 ## Client side socket commands
 
-#### login
+### login
 Login on server
 ```js
 socket.emit("login", nick)
 ```
 
-#### auth
+### auth
 Auth registered user
 ```js
 socket.emit("auth", nick, password)
 ```
 
-#### register
+### register
 Register user on server
 ```js
 socket.emit("register", nick, password)
 ```
 
-#### list
+### list
 Get connected user list
 ```js
 socket.emit("list")
 ```
 
-#### changeStatus
+### changeStatus
 Change user status
 * online
 * afk
@@ -40,7 +58,7 @@ Change user status
 socket.emit("changeStatus", value)
 ```
 
-#### message
+### message
 Send message
 ```js
 socket.emit("message", content)
@@ -52,43 +70,43 @@ Send mention
 socket.emit("mention", nick)
 ```
 
-#### nick
+### nick
 Change nick
 ```js
-socket.emit("nick", global.nick)
+socket.emit("nick", nick)
 ```
 
-#### kick
+### kick
 Kick user
 ```js
 socket.emit("kick", nick)
 ```
 
-#### ban
+### ban
 Ban user
 ```js
 socket.emit("ban", nick)
 ```
 
-#### mute
+### mute
 Mute user
 ```js
 socket.emit("kick", mute)
 ```
 
-#### unban
+### unban
 Unban user
 ```js
 socket.emit("unban", nick)
 ```
 
-#### unmute
+### unmute
 Unmute user
 ```js
 socket.emit("kick", unmute)
 ```
 
-#### level
+### level
 Change user permission number
 [Permissions](#permissions)
 ```js
@@ -97,8 +115,8 @@ socket.emit("level", nick)
 
 ## Client side socket events
 
-#### message
-Message broadcasted on host
+### message (event)
+Message broadcasted on host <br>
 Return obcject:
 ```js
 msg {
@@ -107,12 +125,12 @@ msg {
 }
 ```
 
-#### mentioned
+### mentioned
 Mention from other user
 Return nickname of sender
 
-#### status
-Change status of other user
+### status
+Change status of other user <br>
 Return object:
 ```js
 msg {
@@ -121,16 +139,16 @@ msg {
 }
 ```
 
-#### return
-Message from server
+### return
+Message from server <br>
 Return string
 
-#### motd
-Text showing after connected
+### motd
+Text showing after connected <br>
 Return string
 
-#### rcode
-Return code from server
+### rcode
+Return code from server <br>
 [List](#return-codes)
 
 ## Permissions
