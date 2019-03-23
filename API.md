@@ -1,5 +1,10 @@
 # Lanchat API 1.0
 
+* [Client side socket commands](#client-side-socket-commands)
+* [Client side socket events](#client-side-socket-events)
+* [Permissions](#permissions)
+* [Return codes](#return-codes)
+
 ## Client side socket commands
 
 #### login
@@ -85,11 +90,12 @@ socket.emit("kick", unmute)
 
 #### level
 Change user permission number
+[Permissions](#permissions)
 ```js
 socket.emit("level", nick)
 ```
 
-## Client side events
+## Client side socket events
 
 #### message
 Message broadcasted on host
@@ -105,6 +111,27 @@ msg {
 Mention from other user
 Return nickname of sender
 
+#### status
+Change status of other user
+Return object:
+```js
+msg {
+    nick: "name of user"
+    content: "content"
+}
+```
+
+#### return
+Message from server
+Return string
+
+#### motd
+Text showing after connected
+Return string
+
+#### rcode
+Return code from server
+[List](#return-codes)
 
 ## Permissions
 * 0 - ban
