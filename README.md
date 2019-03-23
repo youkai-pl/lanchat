@@ -1,6 +1,6 @@
 <p align="center">
 <img src="https://i.imgur.com/sL3PaoX.png" width="500">
-
+<br>
 <img src="https://img.shields.io/github/repo-size/akira202/lanchat.svg">
 <img src="https://img.shields.io/github/languages/top/akira202/lanchat.svg">
 <img src="https://img.shields.io/github/license/akira202/lanchat.svg">
@@ -70,6 +70,10 @@ You can create a `motd.txt` file for the host to display the motd message.
 Users settings and permission is storage in `db.json`
 
 ## Changelog
+
+### 0.8.0 RC1
+* code improvements
+* bugfixes
 
 ### 0.7.0
 * permissions
