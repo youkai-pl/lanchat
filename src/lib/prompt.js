@@ -5,6 +5,8 @@ const commands = require("./commands")
 const pkg = require("../package.json")
 const rl = require("./interface").rl
 const readline = require("./interface").readline
+const plugins = require("require-all")(__dirname + "../../plugins")
+var global = require("./global")
 
 //PROMPT
 module.exports = {
@@ -15,8 +17,18 @@ module.exports = {
 		process.stdout.write(
 			String.fromCharCode(27) + "]0;" + "Lanchat" + String.fromCharCode(7)
 		)
-		console.log("Lanchat ".green + pkg.version.green)
+		console.log("Lanchat " + pkg.version)
 		console.log("")
+
+		if (Object.keys(plugins).length) {
+			console.log("Loaded " + Object.keys(plugins).length + " plugins")
+		}
+		if (plugins.hasOwnProperty("host")) {
+			console.log("Host plugin loaded")
+		}
+		console.log("Nickname: " + global.nick)
+		console.log("")
+
 		rl.prompt(true)
 
 		//prompt
@@ -47,9 +59,14 @@ function wrapper(message) {
 			//execute command
 			const args = message.split(" ")
 			if (typeof commands[args[0].substr(1)] !== "undefined") {
-				answer = commands[args[0].substr(1)](args.slice(1))
+				commands[args[0].substr(1)](args.slice(1))
 			}
 
+			for (i in plugins) {
+				if (typeof plugins[i][args[0].substr(1)] !== "undefined") {
+					plugins[i][args[0].substr(1)](args.slice(1))
+				}
+			}
 			//reset cursor
 			process.stdout.clearLine()
 			process.stdout.cursorTo(0)
