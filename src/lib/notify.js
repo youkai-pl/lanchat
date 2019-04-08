@@ -1,6 +1,7 @@
 //import
 const notifier = require("node-notifier")
 const path = require("path")
+const global = require("./global")
 var settings = require("./settings")
 
 //NOTIFY

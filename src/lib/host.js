@@ -7,13 +7,13 @@ const io = require("socket.io")(http)
 const { RateLimiterMemory } = require("rate-limiter-flexible")
 var settings = require("./settings")
 var global = require("./global")
-var rateLimiter
 
 //variavles
 var motd
 
 //HOST
 module.exports = {
+
 	//create host
 	start: function () {
 
@@ -25,7 +25,7 @@ module.exports = {
 
 		//create database index
 		if (index === -1) {
-			settings.createDb(global.nick)
+			settings.addUser(global.nick)
 		}
 
 		//write permission to database
@@ -34,7 +34,7 @@ module.exports = {
 		//rate limiter init
 		rateLimiter = new RateLimiterMemory(
 			{
-				points: global.rateLimit,
+				points: global.ratelimit,
 				duration: 1,
 			})
 
@@ -87,7 +87,7 @@ function run() {
 
 			//create database index
 			if (index === -1) {
-				settings.createDb(nick)
+				settings.addUser(nick)
 			}
 
 			//update index
@@ -529,8 +529,9 @@ function auth(nick, socket) {
 
 //test port
 function testPort(port, host, cb) {
-	net.createConnection(port, host).on("connect", function (e) {
+	var client = net.createConnection(port, host).on("connect", function (e) {
 		cb("success", e)
+		client.destroy()
 	}).on("error", function (e) {
 		cb("failure", e)
 	})

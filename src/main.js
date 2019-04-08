@@ -2,4 +2,23 @@
 
 // LANCHAT BY AKIRA
 const prompt = require("./lib/prompt")
-prompt.run()
+const settings = require("./lib/settings")
+
+//crash handler
+process.on("uncaughtException", function (err) {
+	console.log("Error: " + err)
+})
+
+//load config
+if (settings.load()) {
+
+	//init
+	prompt.run()
+
+} else {
+
+	//catch wrong config file
+	console.log("Corrupted config file")
+	console.log("Delete config file")
+	process.exit(0)
+}
