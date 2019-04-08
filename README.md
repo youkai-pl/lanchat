@@ -71,6 +71,13 @@ Users settings and permission is storage in `db.json`
 
 ## Changelog
 
+### 0.9.0
+* plugins support
+
+### 0.8.1 RC2
+* code improvements
+* bugfixes
+
 ### 0.8.0 RC1
 * code improvements
 * bugfixes
