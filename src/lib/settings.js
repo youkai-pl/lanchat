@@ -1,6 +1,5 @@
 //import
 const fs = require("fs")
-const out = require("./out")
 var global = require("./global")
 
 //variables
@@ -19,18 +18,9 @@ module.exports = {
 	},
 
 	//change nick
-	nickChange: function (nick) {
-		config["nick"] = nick
-		global.nick = nick
-		fs.writeFileSync(path + "config.json", JSON.stringify(config), function (err) {
-			if (err) return console.log(err)
-		})
-	},
-
-	//change notify settings
-	notifyChange: function (value) {
-		config["notify"] = value
-		global.notify = value
+	change: function (type, nick) {
+		config[type] = nick
+		global[type] = nick
 		fs.writeFileSync(path + "config.json", JSON.stringify(config), function (err) {
 			if (err) return console.log(err)
 		})
@@ -44,7 +34,7 @@ module.exports = {
 	},
 
 	//add user to db
-	createDb: function (nick) {
+	addUser: function (nick) {
 		global.db.push({
 			nickname: nick,
 		})
@@ -76,13 +66,7 @@ function load() {
 	//create config
 	if (!fs.existsSync(path + "config.json")) {
 		// eslint-disable-next-line quotes
-		fs.writeFileSync(path + "config.json", '{"nick":"default","port":"2137","notify":"mention", "devlog":"false"}')
-	}
-
-	//create host config
-	if (!fs.existsSync(path + "host.json")) {
-		// eslint-disable-next-line quotes
-		fs.writeFileSync(path + "host.json", '{"rateLimit": "15"}')
+		fs.writeFileSync(path + "config.json", '{"nick":"default","port":"2137","notify":"mention", "devlog":false, "attemps": "5", "ratelimit": "15"}')
 	}
 
 	//create host database
@@ -96,7 +80,6 @@ function load() {
 
 		//load files
 		config = JSON.parse(fs.readFileSync(path + "config.json", "utf8"))
-		host = JSON.parse(fs.readFileSync(path + "host.json", "utf8"))
 
 		//valdate
 		if (!config.hasOwnProperty("nick")) {
@@ -108,19 +91,19 @@ function load() {
 		if (!config.hasOwnProperty("notify")) {
 			return false
 		}
-		if (!host.hasOwnProperty("rateLimit")) {
+		if (!config.hasOwnProperty("devlog")) {
+			return false
+		}
+		if (!config.hasOwnProperty("ratelimit")) {
+			return false
+		}
+		if (!config.hasOwnProperty("attemps")) {
 			return false
 		}
 
 		//export config
-		global.nick = config.nick
-		global.notify = config.notify
-		global.port = config.port
-		global.devlog = config.devlog
-
-		//export host config
+		global = Object.assign(global, config)
 		global.motd = motd()
-		global.rateLimit = host.rateLimit
 
 		//return
 		return true

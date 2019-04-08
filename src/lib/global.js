@@ -7,14 +7,5 @@ module.exports.reconnect
 module.exports.dnd
 module.exports.users = []
 
-//config
-module.exports.nick
-module.exports.notify
-module.exports.port
-module.exports.motd
-
-//host config
-module.exports.rateLimit
-
 //db
 module.exports.db

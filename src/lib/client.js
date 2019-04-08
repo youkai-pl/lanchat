@@ -1,14 +1,12 @@
 //import
 const out = require("./out")
 const notify = require("./notify")
-const colors = require("colors")
 var global = require("./global")
 
 //CLIENT
 
-//config
+//variables
 var trycount = 0
-var attemps = 5
 
 module.exports = {
 
@@ -34,7 +32,7 @@ module.exports = {
 						"reconnection": true,
 						"reconnectionDelay": 500,
 						"reconnectionDelayMax": 500,
-						"reconnectionAttempts": attemps,
+						"reconnectionAttempts": global.attemps,
 						"secure": true
 					}
 				)
@@ -63,7 +61,7 @@ module.exports = {
 
 				//handle connection error
 				socket.on("connect_error", function () {
-					if (trycount === attemps) {
+					if (trycount === global.attemps) {
 						out.alert("connection error")
 					}
 				})
@@ -108,8 +106,9 @@ module.exports = {
 
 					//count attemps
 					trycount++
-					if (trycount === attemps) {
+					if (trycount === global.attemps) {
 						global.lock = false
+						out.alert("connection error")
 					}
 				})
 			}

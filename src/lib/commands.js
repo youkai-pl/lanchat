@@ -37,7 +37,7 @@ module.exports = {
 		} else {
 
 			//change local nick
-			settings.nickChange(args[0])
+			settings.change("nick", args[0])
 			out.blank("Your nickname is now " + args[0].blue)
 
 			//change nick on host
@@ -51,28 +51,27 @@ module.exports = {
 	help: function () {
 		var help = []
 		help[0] = ""
-		help[1] = "HELP\n".green
-		help[2] = "/host - create server"
-		help[3] = "/connect <ip> - connect to server"
-		help[4] = "/disconnect - disconnect from server"
-		help[5] = "/clear - clear window"
-		help[6] = "/exit - exit Lan Chat"
-		help[7] = "/nick <nickname> - set nickname"
-		help[8] = "/list - connected users list"
-		help[9] = "/afk - change status to afk"
-		help[10] = "/online - change status to online"
-		help[11] = "/dnd - do not disturb, mute all messages"
-		help[12] = "/notify <all / mention / none> - change notify setting"
-		help[13] = "/m <nick> - mention user"
-		help[14] = "/login <password> - login"
-		help[15] = "/register <password> <password> - protect account on server,\n password will be change with same command"
-		help[16] = "/kick <nick> - kick user"
-		help[17] = "/ban <nick> - ban user"
-		help[18] = "/unban <nick> - unban user"
-		help[19] = "/mute <nick> - mute user"
-		help[20] = "/unmute <nick> - unmute user"
-		help[21] = "/level <nick> <1-5> - change user permission level"
-		help[22] = ""
+		help[1] = "/host - create server"
+		help[2] = "/connect <ip> - connect to server"
+		help[3] = "/disconnect - disconnect from server"
+		help[4] = "/clear - clear window"
+		help[5] = "/exit - exit Lan Chat"
+		help[6] = "/nick <nickname> - set nickname"
+		help[7] = "/list - connected users list"
+		help[8] = "/afk - change status to afk"
+		help[9] = "/online - change status to online"
+		help[10] = "/dnd - do not disturb, mute all messages"
+		help[11] = "/notify <all / mention / none> - change notify setting"
+		help[12] = "/m <nick> - mention user"
+		help[13] = "/login <password> - login"
+		help[14] = "/register <password> <password> - protect account on server,\n password will be change with same command"
+		help[15] = "/kick <nick> - kick user"
+		help[16] = "/ban <nick> - ban user"
+		help[17] = "/unban <nick> - unban user"
+		help[18] = "/mute <nick> - mute user"
+		help[19] = "/unmute <nick> - unmute user"
+		help[20] = "/level <nick> <1-5> - change user permission level"
+		help[21] = ""
 		out.blank(help.join("\n"))
 	},
 
@@ -158,7 +157,7 @@ module.exports = {
 	notify: function (args) {
 		//change notify setting
 		if ((args[0] === "all") || (args[0] === "mention") || (args[0] === "none")) {
-			settings.notifyChange(args[0])
+			settings.change("notify", args[0])
 			out.status("notify setting changed")
 		} else {
 			out.blank("try /notify <all / mention / none>")
