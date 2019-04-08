@@ -1,8 +1,8 @@
 //import
 const colors = require("colors")
 const client = require("./client")
-const host = require("./host")
 const out = require("./out")
+const fs = require("fs")
 var global = require("./global")
 var settings = require("./settings")
 
@@ -20,12 +20,6 @@ module.exports = {
 		//exit
 		process.stdout.write("\033c")
 		process.exit(0)
-	},
-
-	//host
-	host: function () {
-		//create host
-		host.start()
 	},
 
 	//nick

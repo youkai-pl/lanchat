@@ -1,12 +1,12 @@
 //import
-const out = require("./out")
-const client = require("./client")
+const out = require("../lib/out")
+const client = require("../lib/client")
 const net = require("net")
 const http = require("http").Server()
 const io = require("socket.io")(http)
 const { RateLimiterMemory } = require("rate-limiter-flexible")
-var settings = require("./settings")
-var global = require("./global")
+var settings = require("../lib/settings")
+var global = require("../lib/global")
 
 //variavles
 var motd
@@ -15,7 +15,7 @@ var motd
 module.exports = {
 
 	//create host
-	start: function () {
+	host: function () {
 
 		//load db
 		settings.loadDb()
