@@ -38,7 +38,7 @@ socket.emit("auth", nick, password)
 ```
 
 ### register
-Register user on server
+Register user on server or change his password
 ```js
 socket.emit("register", nick, password)
 ```

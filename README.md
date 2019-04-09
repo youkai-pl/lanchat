@@ -16,6 +16,7 @@
 * [Instalation](#instalation)
 * [Commands](commands)
 * [Config](#config)
+* [Plugins](#plugins)
 * [Changelog](#changelog)
 * [API documentation](API.md)
 
@@ -64,12 +65,29 @@ Configuration files are located in these folders
 * Linux `/.local/share`
 * MacOS `Library/Preferences`
 
+## Plugins
+Plugins must be place in lanchat folder.
+Windows - `%USERPROFILE%\AppData\Roaming\npm\node_modules\lanchat-npm\plugins`
+MacOS - `/usr/local/lib/node_modules/lanchat-npm/plugins`
+Linux - `/usr/lib/node_modules/lanchat-npm/plugins`
+**Portable version does'nt support plugins**
+
 ### Host configuration and database
 Host settings can be changed in `host.json` file.
 You can create a `motd.txt` file for the host to display the motd message.
 Users settings and permission is storage in `db.json`
 
 ## Changelog
+
+### 0.10.0 RC3
+* small changes in prompt
+
+### 0.9.0
+* plugins support
+
+### 0.8.1 RC2
+* code improvements
+* bugfixes
 
 ### 0.8.0 RC1
 * code improvements

@@ -15,18 +15,22 @@ gulp.task("dist", function () {
 			uglify(),
 			gulp.dest("../dist/lib/")
 		)
+		pipeline(
+			gulp.src("./plugins/*.js"),
+			uglify(),
+			gulp.dest("../dist/plugins/")
+		)
 		gulp.src(["../README.md"]).pipe(gulp.dest("../dist"))
 		gulp.src(["../LICENSE.md"]).pipe(gulp.dest("../dist"))
 		gulp.src(["../API.md"]).pipe(gulp.dest("../dist"))
-		gulp.src(["../src/**/*", "!../src/**/node_modules/**", "!../src/yarn.lock", "!../src/**lib/**"]).pipe(gulp.dest("../dist"))
+		gulp.src(["../src/**/*", "!../src/**/node_modules/**", "!../src/yarn.lock", "!../src/**lib/**", "!../src/**plugins/**", "!../src/gulpfile.js"]).pipe(gulp.dest("../dist"))
 		resolve()
 	})
 })
 
 gulp.task("pkg", async () => {
 	cleanBin()
-	await exec(["./main.js", "--target", "win-x64", "--output", "../bin/lanchat-win64"])
-	await exec(["./main.js", "--target", "win-x86", "--output", "../bin/lanchat-win32"])
+	await exec(["./main.js", "--target", "win-x86", "--output", "../bin/lanchat"])
 	await exec(["./main.js", "--target", "linux-x64", "--output", "../bin/lanchat-linux64"])
 	await exec(["./main.js", "--target", "linux-x86", "--output", "../bin/lanchat-linux32"])
 	return
