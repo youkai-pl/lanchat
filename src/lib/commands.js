@@ -58,7 +58,7 @@ module.exports = {
 		help[11] = "/notify <all / mention / none> - change notify setting"
 		help[12] = "/m <nick> - mention user"
 		help[13] = "/login <password> - login"
-		help[14] = "/register <password> <password> - protect account on server,\n password will be change with same command"
+		help[14] = "/lock - add or change password on host"
 		help[15] = "/kick <nick> - kick user"
 		help[16] = "/ban <nick> - ban user"
 		help[17] = "/unban <nick> - unban user"
@@ -84,9 +84,9 @@ module.exports = {
 	},
 
 	//register
-	register: function (args) {
+	lock: function (args) {
 		if (global.connection_status) {
-			client.register(args)
+			client.lock(args)
 		} else {
 			out.alert("you must be connected")
 		}

@@ -1,5 +1,4 @@
 //import
-const colors = require("colors")
 const client = require("./client")
 const commands = require("./commands")
 const pkg = require("../package.json")
@@ -21,7 +20,7 @@ module.exports = {
 		console.log("")
 
 		if (Object.keys(plugins).length) {
-			console.log("Loaded " + Object.keys(plugins).length + " plugins")
+			console.log("Loaded " + Object.keys(plugins).length + " plugin(s)")
 		}
 		if (plugins.hasOwnProperty("host")) {
 			console.log("Host plugin loaded")
@@ -51,10 +50,15 @@ function wrapper(message) {
 		//check prefix
 		if (message.charAt(0) !== "/") {
 
-			//send message
+			//clear line
 			readline.moveCursor(process.stdout, 0, -1)
+
+			//send message
 			client.send(message)
 		} else {
+
+			//clear line
+			readline.moveCursor(process.stdout, 0, -1)
 
 			//execute command
 			const args = message.split(" ")
@@ -62,16 +66,19 @@ function wrapper(message) {
 				commands[args[0].substr(1)](args.slice(1))
 			}
 
+			//try execute commands from plugins
 			for (i in plugins) {
 				if (typeof plugins[i][args[0].substr(1)] !== "undefined") {
 					plugins[i][args[0].substr(1)](args.slice(1))
 				}
 			}
+
 			//reset cursor
 			process.stdout.clearLine()
 			process.stdout.cursorTo(0)
 		}
 	} else {
+		//clear line
 		readline.moveCursor(process.stdout, 0, -1)
 	}
 }

@@ -147,13 +147,13 @@ module.exports = {
 		}
 	},
 
-	//register
-	register: function (args) {
+	//lock
+	lock: function (args) {
 		if (args) {
 			if (args[0] === args[1]) {
 				socket.emit("register", global.nick, args[0])
 			} else {
-				out.blank("passwords do not match")
+				out.blank("try /register <password> <password>")
 			}
 		} else {
 			out.blank("try /register <password> <password>")
