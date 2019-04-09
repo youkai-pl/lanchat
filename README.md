@@ -79,6 +79,9 @@ Users settings and permission is storage in `db.json`
 
 ## Changelog
 
+### 0.10.0 RC3
+* small changes in prompt
+
 ### 0.9.0
 * plugins support
 
