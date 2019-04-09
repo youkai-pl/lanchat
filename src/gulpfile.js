@@ -23,7 +23,7 @@ gulp.task("dist", function () {
 		gulp.src(["../README.md"]).pipe(gulp.dest("../dist"))
 		gulp.src(["../LICENSE.md"]).pipe(gulp.dest("../dist"))
 		gulp.src(["../API.md"]).pipe(gulp.dest("../dist"))
-		gulp.src(["../src/**/*", "!../src/**/node_modules/**", "!../src/yarn.lock", "!../src/**lib/**", "!../src/**plugins/**"]).pipe(gulp.dest("../dist"))
+		gulp.src(["../src/**/*", "!../src/**/node_modules/**", "!../src/yarn.lock", "!../src/**lib/**", "!../src/**plugins/**", "!../src/gulpfile.js"]).pipe(gulp.dest("../dist"))
 		resolve()
 	})
 })
