@@ -70,6 +70,7 @@ Plugins must be place in lanchat folder.
 Windows - `%USERPROFILE%\AppData\Roaming\npm\node_modules\lanchat-npm\plugins`
 MacOS - `/usr/local/lib/node_modules/lanchat-npm/plugins`
 Linux - `/usr/lib/node_modules/lanchat-npm/plugins`
+**Portable version does'nt support plugins**
 
 ### Host configuration and database
 Host settings can be changed in `host.json` file.
