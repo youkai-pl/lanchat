@@ -16,6 +16,7 @@
 * [Instalation](#instalation)
 * [Commands](commands)
 * [Config](#config)
+* [Plugins](#plugins)
 * [Changelog](#changelog)
 * [API documentation](API.md)
 
@@ -63,6 +64,12 @@ Configuration files are located in these folders
 * Windows `AppData\Roaming\lanchat`
 * Linux `/.local/share`
 * MacOS `Library/Preferences`
+
+## Plugins
+Plugins must be place in lanchat folder.
+Windows - `%USERPROFILE%\AppData\Roaming\npm\node_modules\lanchat-npm\plugins`
+MacOS - `/usr/local/lib/node_modules/lanchat-npm/plugins`
+Linux - `/usr/lib/node_modules/lanchat-npm/plugins`
 
 ### Host configuration and database
 Host settings can be changed in `host.json` file.
