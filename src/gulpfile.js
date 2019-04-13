@@ -3,7 +3,8 @@ const gulp = require("gulp")
 const del = require("del")
 const uglify = require("gulp-uglify-es").default
 const pipeline = require("readable-stream").pipeline
-const { exec } = require("pkg")
+const { compile } = require("nexe")
+const package = require("./package.json")
 
 //gulp config
 
@@ -29,24 +30,40 @@ gulp.task("dist", function () {
 })
 
 gulp.task("pkg", async () => {
-	cleanBin()
-	await exec([".", "--target", "win-x86", "--output", "../bin/lanchat"])
-	await exec([".", "--target", "linux-x64", "--output", "../bin/lanchat-linux64"])
-	await exec([".", "--target", "linux-x86", "--output", "../bin/lanchat-linux32"])
-	return
+	clean("bin")
+	return new Promise(function (resolve, reject) {
+		compile({
+			build: true,
+			input: "./main.js",
+			resources: "./plugins",
+			output: "../bin/lanchat.exe",
+			ico: "./icon.ico",
+			loglevel: "verbose",
+			rc: {
+				CompanyName: "akira202",
+				PRODUCTVERSION: package.version,
+				FILEVERSION: package.version,
+				ProductName: "Lanchat",
+				FileDescription: "Lanchat: chat in lan",
+				LegalCopyright: "MIT License",
+				InternalName: "lanchat",
+				OriginalFilename: "lanchat.exe"
+			},
+			target: ["windows-x86-10.15.0", "linux-x64-10.15.0", "linux-x32-10.15.0"]
+		}).then(() => {
+			console.log("success")
+			resolve()
+		})
+	})
 })
 
 gulp.task("clean", function () {
 	return new Promise(function (resolve, reject) {
-		cleanDist()
+		clean("dist")
 		resolve()
 	})
 })
 
-function cleanDist() {
-	del.sync(["../dist/**/*"], { force: true })
-}
-
-function cleanBin() {
-	del.sync(["../bin/**/*"], { force: true })
+function clean(dir) {
+	del.sync(["../" + dir + "/**/*"], { force: true })
 }
