@@ -29,14 +29,14 @@ gulp.task("dist", function () {
 	})
 })
 
-gulp.task("pkg", async () => {
+gulp.task("build", async () => {
 	clean("bin")
 	return new Promise(function (resolve, reject) {
 		compile({
 			build: true,
 			input: "./main.js",
 			resources: "./plugins",
-			output: "../bin/lanchat.exe",
+			output: "../bin/build/lanchat.exe",
 			ico: "./icon.ico",
 			loglevel: "verbose",
 			rc: {
@@ -49,6 +49,21 @@ gulp.task("pkg", async () => {
 				InternalName: "lanchat",
 				OriginalFilename: "lanchat.exe"
 			},
+			target: ["windows-x86-10.15.0", "linux-x64-10.15.0", "linux-x32-10.15.0"]
+		}).then(() => {
+			console.log("success")
+			resolve()
+		})
+	})
+})
+
+gulp.task("pkg", async () => {
+	clean("bin")
+	return new Promise(function (resolve, reject) {
+		compile({
+			input: "./main.js",
+			resources: "./plugins",
+			output: "../bin/pkg/lanchat",
 			target: ["windows-x86-10.15.0", "linux-x64-10.15.0", "linux-x32-10.15.0"]
 		}).then(() => {
 			console.log("success")
