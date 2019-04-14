@@ -5,7 +5,6 @@
 <img src="https://img.shields.io/github/languages/top/akira202/lanchat.svg">
 <img src="https://img.shields.io/github/license/akira202/lanchat.svg">
 <img src="https://img.shields.io/npm/v/lanchat-npm.svg">
-<img src="https://img.shields.io/github/last-commit/akira202/lanchat.svg">
 <img src="https://img.shields.io/github/release-date/akira202/lanchat.svg">
 
 </p>
@@ -14,19 +13,21 @@
 #### IRC like chat app works in LAN network
 
 * [Instalation](#instalation)
-* [Commands](commands)
+* [Commands](#commands)
 * [Config](#config)
 * [Plugins](#plugins)
+* [Host](#host)
 * [Changelog](#changelog)
 * [API documentation](API.md)
 
 ## Instalation
-You have three options
+You have several options
 
 #### NPM version **(reccomended)**
 * download node.js from [here](https://nodejs.org/en/download/)
 * `npm install -g lanchat-npm`
 * `lanchat` to start
+Also you can use `update.bat` form [releases](https://github.com/akira202/lanchat/releases)
 
 #### Portable Release
 * [Download last version](https://github.com/akira202/lanchat/releases)
@@ -38,7 +39,6 @@ You have three options
 * `node main`
 
 ## Commands
-* `/host` - create server
 * `/connect` <ip> - connect to server
 * `/disconnect` - disconnect from server
 * `/clear` - clear window
@@ -72,12 +72,20 @@ MacOS - `/usr/local/lib/node_modules/lanchat-npm/plugins`
 Linux - `/usr/lib/node_modules/lanchat-npm/plugins`
 **Portable version does'nt support plugins**
 
+## Host
+To enable host function download host plugin and place it in plugins folder.
+[Host plugin](https://raw.githubusercontent.com/akira202/lanchat/master/src/plugins/host.js)
+Host can be started with `/host` command.
+
 ### Host configuration and database
 Host settings can be changed in `host.json` file.
 You can create a `motd.txt` file for the host to display the motd message.
 Users settings and permission is storage in `db.json`
 
 ## Changelog
+
+### 0.11.0 RC4
+* code improvements
 
 ### 0.10.1 RC3
 * bugfix

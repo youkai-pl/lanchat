@@ -4,7 +4,6 @@ const commands = require("./commands")
 const pkg = require("../package.json")
 const rl = require("./interface").rl
 const readline = require("./interface").readline
-const plugins = require("require-all")(__dirname + "../../plugins")
 var global = require("./global")
 
 //PROMPT
@@ -19,11 +18,14 @@ module.exports = {
 		console.log("Lanchat " + pkg.version)
 		console.log("")
 
-		if (Object.keys(plugins).length) {
-			console.log("Loaded " + Object.keys(plugins).length + " plugin(s)")
-		}
-		if (plugins.hasOwnProperty("host")) {
-			console.log("Host plugin loaded")
+		//no show plugins info in portable version
+		if (global.plugins) {
+			if (Object.keys(global.plugins).length) {
+				console.log("Loaded " + Object.keys(global.plugins).length + " plugin(s)")
+			}
+			if (global.plugins.hasOwnProperty("host")) {
+				console.log("Host plugin loaded")
+			}
 		}
 		console.log("Nickname: " + global.nick)
 		console.log("")
@@ -57,9 +59,6 @@ function wrapper(message) {
 			client.send(message)
 		} else {
 
-			//clear line
-			readline.moveCursor(process.stdout, 0, -1)
-
 			//execute command
 			const args = message.split(" ")
 			if (typeof commands[args[0].substr(1)] !== "undefined") {
@@ -67,9 +66,9 @@ function wrapper(message) {
 			}
 
 			//try execute commands from plugins
-			for (i in plugins) {
-				if (typeof plugins[i][args[0].substr(1)] !== "undefined") {
-					plugins[i][args[0].substr(1)](args.slice(1))
+			for (i in global.plugins) {
+				if (typeof global.plugins[i][args[0].substr(1)] !== "undefined") {
+					global.plugins[i][args[0].substr(1)](args.slice(1))
 				}
 			}
 

@@ -10,9 +10,15 @@ var global = require("../lib/global")
 
 //variavles
 var motd
+global.users = []
 
 //HOST
 module.exports = {
+
+	//help
+	help: function () {
+		out.blank("/host - create server")
+	},
 
 	//create host
 	host: function () {

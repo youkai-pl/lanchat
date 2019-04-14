@@ -1,52 +1,65 @@
 //import
 const gulp = require("gulp")
+const yarn = require("gulp-yarn")
 const del = require("del")
 const uglify = require("gulp-uglify-es").default
 const pipeline = require("readable-stream").pipeline
-const { exec } = require("pkg")
+const { compile } = require("nexe")
 
 //gulp config
 
+//dist
 gulp.task("dist", function () {
 	return new Promise(function (resolve, reject) {
-		cleanDist()
+		clean("dist")
 		pipeline(
 			gulp.src("./lib/*.js"),
 			uglify(),
 			gulp.dest("../dist/lib/")
 		)
-		pipeline(
-			gulp.src("./plugins/*.js"),
-			uglify(),
-			gulp.dest("../dist/plugins/")
-		)
 		gulp.src(["../README.md"]).pipe(gulp.dest("../dist"))
 		gulp.src(["../LICENSE.md"]).pipe(gulp.dest("../dist"))
 		gulp.src(["../API.md"]).pipe(gulp.dest("../dist"))
-		gulp.src(["../src/**/*", "!../src/**/node_modules/**", "!../src/yarn.lock", "!../src/**lib/**", "!../src/**plugins/**", "!../src/gulpfile.js"]).pipe(gulp.dest("../dist"))
+		gulp.src(["../src/**/*", "!../src/**/node_modules/**", "!../src/yarn.lock", "!../src/lib/**/*", "!../src/plugins/**/*", "!../src/gulpfile.js", "!../src/icon.ico"]).pipe(gulp.dest("../dist"))
 		resolve()
 	})
 })
 
-gulp.task("pkg", async () => {
-	cleanBin()
-	await exec([".", "--target", "win-x86", "--output", "../bin/lanchat"])
-	await exec([".", "--target", "linux-x64", "--output", "../bin/lanchat-linux64"])
-	await exec([".", "--target", "linux-x86", "--output", "../bin/lanchat-linux32"])
-	return
+//pkg
+gulp.task("pkg-compile", function () {
+	return new Promise(function (resolve, reject) {
+		compile({
+			input: "../dist/main.js",
+			output: "../bin/lanchat.exe",
+			target: "windows-x86-10.15.3"
+		}).then(() => {
+			console.log("success windows")
+			resolve()
+		})
+	})
 })
 
+//clean
 gulp.task("clean", function () {
 	return new Promise(function (resolve, reject) {
-		cleanDist()
+		clean("dist")
 		resolve()
 	})
 })
 
-function cleanDist() {
-	del.sync(["../dist/**/*"], { force: true })
-}
+//prepkg
+gulp.task("prepkg", function prepkg() {
+	return new Promise(function (resolve, reject) {
+		clean("bin")
+		gulp.src(["../dist/package.json"])
+			.pipe(yarn({
+				production: true
+			}))
+		resolve()
+	})
+})
 
-function cleanBin() {
-	del.sync(["../bin/**/*"], { force: true })
+//clean
+function clean(dir) {
+	del.sync(["../" + dir + "/**/*"], { force: true })
 }

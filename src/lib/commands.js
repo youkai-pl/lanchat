@@ -65,7 +65,6 @@ module.exports = {
 		help[18] = "/mute <nick> - mute user"
 		help[19] = "/unmute <nick> - unmute user"
 		help[20] = "/level <nick> <1-5> - change user permission level"
-		help[21] = ""
 		out.blank(help.join("\n"))
 	},
 
