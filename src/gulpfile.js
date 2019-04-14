@@ -1,5 +1,6 @@
 //import
 const gulp = require("gulp")
+const yarn = require("gulp-yarn")
 const del = require("del")
 const uglify = require("gulp-uglify-es").default
 const pipeline = require("readable-stream").pipeline
@@ -8,9 +9,10 @@ const package = require("./package.json")
 
 //gulp config
 
+//dist
 gulp.task("dist", function () {
 	return new Promise(function (resolve, reject) {
-		cleanDist()
+		clean("dist")
 		pipeline(
 			gulp.src("./lib/*.js"),
 			uglify(),
@@ -29,16 +31,15 @@ gulp.task("dist", function () {
 	})
 })
 
-gulp.task("build", async () => {
-	clean("bin")
+//build
+gulp.task("build", function () {
 	return new Promise(function (resolve, reject) {
 		compile({
 			build: true,
-			input: "./main.js",
-			resources: "./plugins",
+			input: "../dist/main.js",
+			resources: "../dist/plugins",
 			output: "../bin/build/lanchat.exe",
-			ico: "./icon.ico",
-			loglevel: "verbose",
+			ico: "../dist/icon.ico",
 			rc: {
 				CompanyName: "akira202",
 				PRODUCTVERSION: package.version,
@@ -49,7 +50,7 @@ gulp.task("build", async () => {
 				InternalName: "lanchat",
 				OriginalFilename: "lanchat.exe"
 			},
-			target: ["windows-x86-10.15.0", "linux-x64-10.15.0", "linux-x32-10.15.0"]
+			target: ["windows-x86-10.15.3", "linux-x64-10.15.3", "linux-x32-10.15.3"]
 		}).then(() => {
 			console.log("success")
 			resolve()
@@ -57,14 +58,14 @@ gulp.task("build", async () => {
 	})
 })
 
-gulp.task("pkg", async () => {
-	clean("bin")
+//pkg
+gulp.task("pkg-compile", function () {
 	return new Promise(function (resolve, reject) {
 		compile({
-			input: "./main.js",
-			resources: "./plugins",
+			input: "../dist/main.js",
+			resources: "../dist/plugins",
 			output: "../bin/pkg/lanchat",
-			target: ["windows-x86-10.15.0", "linux-x64-10.15.0", "linux-x32-10.15.0"]
+			target: ["windows-x86-10.15.3", "linux-x64-10.15.3", "linux-x32-10.15.3"]
 		}).then(() => {
 			console.log("success")
 			resolve()
@@ -72,6 +73,7 @@ gulp.task("pkg", async () => {
 	})
 })
 
+//clean
 gulp.task("clean", function () {
 	return new Promise(function (resolve, reject) {
 		clean("dist")
@@ -79,6 +81,19 @@ gulp.task("clean", function () {
 	})
 })
 
+//prepkg
+gulp.task("prepkg", function prepkg() {
+	return new Promise(function (resolve, reject) {
+		clean("bin")
+		gulp.src(["../dist/package.json"])
+			.pipe(yarn({
+				production: true
+			}))
+		resolve()
+	})
+})
+
+//clean
 function clean(dir) {
 	del.sync(["../" + dir + "/**/*"], { force: true })
 }

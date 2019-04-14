@@ -57,9 +57,6 @@ function wrapper(message) {
 			client.send(message)
 		} else {
 
-			//clear line
-			readline.moveCursor(process.stdout, 0, -1)
-
 			//execute command
 			const args = message.split(" ")
 			if (typeof commands[args[0].substr(1)] !== "undefined") {
