@@ -4,6 +4,9 @@
 const fs = require("fs")
 const prompt = require("./lib/prompt")
 const settings = require("./lib/settings")
+var global = require("./lib/global")
+
+console.log("loading...")
 
 //crash handler
 process.on("uncaughtException", function (err) {
@@ -12,8 +15,7 @@ process.on("uncaughtException", function (err) {
 
 //load plugins
 if (fs.existsSync("./plugins")) {
-	require("require-all")(__dirname + "/plugins")
-
+	global.plugins = require("require-all")(__dirname + "/plugins")
 }
 
 //load config
