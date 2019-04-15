@@ -22,6 +22,21 @@ module.exports = {
 		} else {
 			out.alert("Plugins doesn't work in portable version")
 		}
+	},
+
+	//delete
+	delete: function (name) {
+		if (fs.existsSync("./plugins")) {
+			var dest = "./plugins/" + name + ".js"
+			if(fs.existsSync(dest)){
+				fs.unlinkSync(dest)
+				out.status("Done. Relaunch required")
+			} else {
+				out.status("This plugin doesn't exist")
+			}
+		} else {
+			out.alert("Plugins doesn't work in portable version")
+		}
 	}
 }
 

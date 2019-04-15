@@ -3,8 +3,8 @@ const fs = require("fs")
 var global = require("./global")
 
 //variables
-const home = process.env.APPDATA || (process.platform == "darwin" ? process.env.HOME + "Library/Preferences" : process.env.HOME + "/.local/share")
-const path = home + "/lanchat/"
+const home = process.env.APPDATA || (process.platform == "darwin" ? process.env.HOME + "Library/Preferences" : process.env.HOME)
+const path = home + "/.lanchat/"
 var config = {}
 
 //SETTINGS
@@ -59,8 +59,8 @@ module.exports = {
 function load() {
 
 	//create dir
-	if (!fs.existsSync(home + "/lanchat")) {
-		fs.mkdirSync(home + "/lanchat")
+	if (!fs.existsSync(home + "/.lanchat")) {
+		fs.mkdirSync(home + "/.lanchat")
 	}
 
 	//create config
@@ -117,7 +117,7 @@ function load() {
 
 //load motd file
 function motd() {
-	if (fs.existsSync(home + "/lanchat/motd.txt")) {
-		return fs.readFileSync(home + "/lanchat/motd.txt", "utf8")
+	if (fs.existsSync(home + "/.lanchat/motd.txt")) {
+		return fs.readFileSync(home + "/.lanchat/motd.txt", "utf8")
 	}
 }

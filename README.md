@@ -61,16 +61,17 @@ Also you can use `update.bat` form [releases](https://github.com/akira202/lancha
 
 ## Config
 Configuration files are located in these folders
-* Windows `AppData\Roaming\lanchat`
-* Linux `/.local/share`
+* Windows `AppData\Roaming\.lanchat`
+* Linux `/home/.lanchat`
 * MacOS `Library/Preferences`
 
 ## Plugins
-Plugins must be place in lanchat folder.
+Plugins from official repository can be download with `/dwn <plugin name>` command.
+Also you can place they in plugins folder manualy.
 Windows - `%USERPROFILE%\AppData\Roaming\npm\node_modules\lanchat-npm\plugins`
 MacOS - `/usr/local/lib/node_modules/lanchat-npm/plugins`
 Linux - `/usr/lib/node_modules/lanchat-npm/plugins`
-**Portable version does'nt support plugins**
+**Portable version doesn't support plugins**
 
 ## Host
 To enable host function download host plugin and place it in plugins folder.

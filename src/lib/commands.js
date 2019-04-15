@@ -63,6 +63,8 @@ module.exports = {
 		help[17] = "/mute <nick> - mute user"
 		help[18] = "/unmute <nick> - unmute user"
 		help[19] = "/level <nick> <1-5> - change user permission level"
+		help[20] = "/dwn <plugin name> - download plugin"
+		help[21] = "/dwd <plugin name> - delete plugin"
 		out.blank(help.join("\n"))
 	},
 
@@ -252,15 +254,21 @@ module.exports = {
 		}
 	},
 
-	//plugin
+	//plugin install
 	dwn: function(args){
 		if(args[0]){
 			dwn.donwload(args[0])
+		}else{
+			out.blank("try /dwn <plugin name>")
 		}
 	},
 
-	//d1
-	d1: function () {
-		client.connect("localhost")
+	//plugin delet
+	dwd: function(args){
+		if(args[0]){
+			dwn.delete(args[0])
+		}else{
+			out.blank("try /dwd <plugin name>")
+		}
 	}
 }
