@@ -205,50 +205,56 @@ function run() {
 		//message
 		socket.on("message", async (content) => {
 
-			//find user
-			var index = global.users.findIndex(x => x.id === socket.id)
+			//validate message
+			if (typeof content === "string" || content instanceof String) {
+				//find user
+				var index = global.users.findIndex(x => x.id === socket.id)
 
-			//if user loggined
-			if (global.users[index]) {
+				//if user loggined
+				if (global.users[index]) {
 
-				//get user from db
-				var index2 = global.db.findIndex(x => x.nickname === global.users[index].nickname)
+					//get user from db
+					var index2 = global.db.findIndex(x => x.nickname === global.users[index].nickname)
 
-				//check mute
-				if (global.db[index2].level === 1) {
-					socket.emit("rcode", "011")
-					socket.emit("return", "muted")
-				} else {
-					if (content) {
-						//check lenght
-						try {
-							//flood block
-							await rateLimiter.consume(socket.handshake.address)
-							//validate message
-
-							//block long messages
-							if (content.length > 1500) {
-								socket.emit("rcode", "012")
-								socket.emit("return", "FLOOD BLOCKED")
-							} else {
-								//emit message
-								socket.broadcast.to("main").emit("message", {
-									nick: global.users[index].nickname,
-									content: content
-								})
-							}
-
-						} catch (rejRes) {
-
-							//emit alert
-							socket.emit("rcode", "004")
-							socket.emit("return", "FLOOD BLOCKED")
-						}
+					//check mute
+					if (global.db[index2].level === 1) {
+						socket.emit("rcode", "011")
+						socket.emit("return", "muted")
 					} else {
-						//emit blank message error
-						socket.emit("rcode", "001")
+						if (content) {
+							//check lenght
+							try {
+								//flood block
+								await rateLimiter.consume(socket.handshake.address)
+								//validate message
+
+								//block long messages
+								if (content.length > 1500) {
+									socket.emit("rcode", "012")
+									socket.emit("return", "FLOOD BLOCKED")
+								} else {
+									//emit message
+									socket.broadcast.to("main").emit("message", {
+										nick: global.users[index].nickname,
+										content: content
+									})
+								}
+
+							} catch (rejRes) {
+
+								//emit alert
+								socket.emit("rcode", "004")
+								socket.emit("return", "HOST: FLOOD BLOCKED")
+							}
+						} else {
+							//emit blank message error
+							socket.emit("rcode", "001")
+						}
 					}
 				}
+			} else {
+				//disconnect user with wrong client
+				io.sockets.connected[socket.id].disconnect()
 			}
 		})
 

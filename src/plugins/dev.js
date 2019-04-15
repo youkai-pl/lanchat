@@ -2,7 +2,7 @@ var global = require("../lib/global")
 
 module.exports = {
 
-	//help
+	//global
 	global: function () {
 		console.log(global)
 	}

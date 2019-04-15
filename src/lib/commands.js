@@ -1,8 +1,7 @@
 //import
-const colors = require("colors")
 const client = require("./client")
 const out = require("./out")
-const fs = require("fs")
+const dwn = require("./dwn")
 var global = require("./global")
 var settings = require("./settings")
 
@@ -45,26 +44,25 @@ module.exports = {
 	help: function () {
 		var help = []
 		help[0] = ""
-		help[1] = "/host - create server"
-		help[2] = "/connect <ip> - connect to server"
-		help[3] = "/disconnect - disconnect from server"
-		help[4] = "/clear - clear window"
-		help[5] = "/exit - exit Lan Chat"
-		help[6] = "/nick <nickname> - set nickname"
-		help[7] = "/list - connected users list"
-		help[8] = "/afk - change status to afk"
-		help[9] = "/online - change status to online"
-		help[10] = "/dnd - do not disturb, mute all messages"
-		help[11] = "/notify <all / mention / none> - change notify setting"
-		help[12] = "/m <nick> - mention user"
-		help[13] = "/login <password> - login"
-		help[14] = "/lock - add or change password on host"
-		help[15] = "/kick <nick> - kick user"
-		help[16] = "/ban <nick> - ban user"
-		help[17] = "/unban <nick> - unban user"
-		help[18] = "/mute <nick> - mute user"
-		help[19] = "/unmute <nick> - unmute user"
-		help[20] = "/level <nick> <1-5> - change user permission level"
+		help[1] = "/connect <ip> - connect to server"
+		help[2] = "/disconnect - disconnect from server"
+		help[3] = "/clear - clear window"
+		help[4] = "/exit - exit Lan Chat"
+		help[5] = "/nick <nickname> - set nickname"
+		help[6] = "/list - connected users list"
+		help[7] = "/afk - change status to afk"
+		help[8] = "/online - change status to online"
+		help[9] = "/dnd - do not disturb, mute all messages"
+		help[10] = "/notify <all / mention / none> - change notify setting"
+		help[11] = "/m <nick> - mention user"
+		help[12] = "/login <password> - login"
+		help[13] = "/lock - add or change password on host"
+		help[14] = "/kick <nick> - kick user"
+		help[15] = "/ban <nick> - ban user"
+		help[16] = "/unban <nick> - unban user"
+		help[17] = "/mute <nick> - mute user"
+		help[18] = "/unmute <nick> - unmute user"
+		help[19] = "/level <nick> <1-5> - change user permission level"
 		out.blank(help.join("\n"))
 	},
 
@@ -254,17 +252,15 @@ module.exports = {
 		}
 	},
 
+	//plugin
+	dwn: function(args){
+		if(args[0]){
+			dwn.donwload(args[0])
+		}
+	},
+
 	//d1
 	d1: function () {
 		client.connect("localhost")
-	},
-
-	//d2
-	d2: function () {
-		if (global.connection_status) {
-			client.long_list()
-		} else {
-			out.alert("you must be connected")
-		}
-	},
+	}
 }
