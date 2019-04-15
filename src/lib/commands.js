@@ -2,8 +2,8 @@
 const client = require("./client")
 const out = require("./out")
 const dwn = require("./dwn")
+const db = require("./db")
 var global = require("./global")
-var settings = require("./settings")
 
 //COMMANDS
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
 		} else {
 
 			//change local nick
-			settings.change("nick", args[0])
+			db.change("nick", args[0])
 			out.blank("Your nickname is now " + args[0].blue)
 
 			//change nick on host
@@ -150,7 +150,7 @@ module.exports = {
 	notify: function (args) {
 		//change notify setting
 		if ((args[0] === "all") || (args[0] === "mention") || (args[0] === "none")) {
-			settings.change("notify", args[0])
+			db.change("notify", args[0])
 			out.status("notify setting changed")
 		} else {
 			out.blank("try /notify <all / mention / none>")
@@ -255,19 +255,19 @@ module.exports = {
 	},
 
 	//plugin install
-	dwn: function(args){
-		if(args[0]){
+	dwn: function (args) {
+		if (args[0]) {
 			dwn.donwload(args[0])
-		}else{
+		} else {
 			out.blank("try /dwn <plugin name>")
 		}
 	},
 
 	//plugin delet
-	dwd: function(args){
-		if(args[0]){
+	dwd: function (args) {
+		if (args[0]) {
 			dwn.delete(args[0])
-		}else{
+		} else {
 			out.blank("try /dwd <plugin name>")
 		}
 	}

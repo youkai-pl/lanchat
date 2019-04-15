@@ -5,7 +5,7 @@ const net = require("net")
 const http = require("http").Server()
 const io = require("socket.io")(http)
 const { RateLimiterMemory } = require("rate-limiter-flexible")
-var settings = require("../lib/settings")
+const db = require("../lib/db")
 var global = require("../lib/global")
 
 //variavles
@@ -24,18 +24,18 @@ module.exports = {
 	host: function () {
 
 		//load db
-		settings.loadDb()
+		db.loadDb()
 
 		//check database
 		var index = global.db.findIndex(x => x.nickname === global.nick)
 
 		//create database index
 		if (index === -1) {
-			settings.addUser(global.nick)
+			db.addUser(global.nick)
 		}
 
 		//write permission to database
-		settings.writedb(global.nick, "level", 5)
+		db.writedb(global.nick, "level", 5)
 
 		//rate limiter init
 		rateLimiter = new RateLimiterMemory(
@@ -93,7 +93,7 @@ function run() {
 
 			//create database index
 			if (index === -1) {
-				settings.addUser(nick)
+				db.addUser(nick)
 			}
 
 			//update index
@@ -101,16 +101,16 @@ function run() {
 
 			//add keys
 			if (!global.db[index].hasOwnProperty("level")) {
-				settings.writedb(nick, "level", 2)
+				db.writedb(nick, "level", 2)
 			}
 			if (!global.db[index].hasOwnProperty("ip")) {
-				settings.writedb(nick, "ip", socket.handshake.address)
+				db.writedb(nick, "ip", socket.handshake.address)
 			}
 			if (!global.db[index].hasOwnProperty("lock")) {
-				settings.writedb(nick, "lock", false)
+				db.writedb(nick, "lock", false)
 			}
 			if (!global.db[index].hasOwnProperty("pass")) {
-				settings.writedb(nick, "pass", false)
+				db.writedb(nick, "pass", false)
 			}
 
 			//ban check
@@ -190,8 +190,8 @@ function run() {
 			var index = global.users.findIndex(x => x.nickname === nick)
 			if (password) {
 				if (index !== -1) {
-					settings.writedb(nick, "lock", true)
-					settings.writedb(nick, "pass", password)
+					db.writedb(nick, "lock", true)
+					db.writedb(nick, "pass", password)
 					socket.emit("rcode", "009")
 					socket.emit("return", "Done")
 				}
@@ -296,7 +296,7 @@ function run() {
 				var old = global.users[index].nickname
 				//save new nick
 				global.users[index].nickname = nick
-				settings.writedb(old, "nickname", nick)
+				db.writedb(old, "nickname", nick)
 				//send return to user
 				socket.broadcast.to("main").emit("return", old + " change nick to " + nick)
 			}
@@ -381,7 +381,7 @@ function run() {
 					} else {
 						//ban user
 						socket.emit("return", "Banned " + global.users[index3].nickname)
-						settings.writedb(arg, "level", 0)
+						db.writedb(arg, "level", 0)
 						io.sockets.connected[global.users[index3].id].disconnect()
 					}
 				}
@@ -407,7 +407,7 @@ function run() {
 					} else {
 						//ban user
 						socket.emit("return", "Unbanned " + global.db[index3].nickname)
-						settings.writedb(arg, "level", 2)
+						db.writedb(arg, "level", 2)
 					}
 				}
 			}
@@ -432,7 +432,7 @@ function run() {
 					} else {
 						//mute user
 						socket.emit("return", "Muted " + global.db[index3].nickname)
-						settings.writedb(arg, "level", 1)
+						db.writedb(arg, "level", 1)
 					}
 				}
 			}
@@ -457,7 +457,7 @@ function run() {
 					} else {
 						//mute user
 						socket.emit("return", "Unmuted " + global.db[index3].nickname)
-						settings.writedb(arg, "level", 2)
+						db.writedb(arg, "level", 2)
 					}
 				}
 			}
@@ -483,7 +483,7 @@ function run() {
 						if (arg[1] >= 0 && arg[1] <= 4) {
 							//change permission
 							socket.emit("return", "Updated permission for " + global.db[index3].nickname)
-							settings.writedb(arg[0], "level", Number(arg[1]))
+							db.writedb(arg[0], "level", Number(arg[1]))
 						} else {
 							socket.emit("rcode", "014")
 							socket.emit("return", "Bad permission ID")

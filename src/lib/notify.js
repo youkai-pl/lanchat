@@ -2,7 +2,7 @@
 const notifier = require("node-notifier")
 const path = require("path")
 const global = require("./global")
-var settings = require("./settings")
+const db = require("./db")
 
 //NOTIFY
 module.exports = {
