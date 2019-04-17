@@ -23,9 +23,6 @@ module.exports = {
 			if (Object.keys(global.plugins).length) {
 				console.log("Loaded " + Object.keys(global.plugins).length + " plugin(s)")
 			}
-			if (global.plugins.hasOwnProperty("host")) {
-				console.log("Host plugin loaded")
-			}
 		}
 		console.log("Nickname: " + global.nick)
 		console.log("")

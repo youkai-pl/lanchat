@@ -74,9 +74,7 @@ Linux - `/usr/lib/node_modules/lanchat-npm/plugins`
 **Portable version doesn't support plugins**
 
 ## Host
-To enable host function download host plugin and place it in plugins folder.
-[Host plugin](https://raw.githubusercontent.com/akira202/lanchat/master/src/plugins/host.js)
-Host can be started with `/host` command.
+Use `/host` command to start lanchat server. Your pseudonym will automatically be assigned administrator privileges.
 
 ### Host configuration and database
 Host settings can be changed in `host.json` file.

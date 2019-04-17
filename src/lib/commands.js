@@ -3,6 +3,7 @@ const client = require("./client")
 const out = require("./out")
 const dwn = require("./dwn")
 const db = require("./db")
+const host = require("./host")
 var global = require("./global")
 
 //COMMANDS
@@ -43,34 +44,40 @@ module.exports = {
 	//help
 	help: function () {
 		var help = []
-		help[0] = ""
-		help[1] = "/connect <ip> - connect to server"
-		help[2] = "/disconnect - disconnect from server"
-		help[3] = "/clear - clear window"
-		help[4] = "/exit - exit Lan Chat"
-		help[5] = "/nick <nickname> - set nickname"
-		help[6] = "/list - connected users list"
-		help[7] = "/afk - change status to afk"
-		help[8] = "/online - change status to online"
-		help[9] = "/dnd - do not disturb, mute all messages"
-		help[10] = "/notify <all / mention / none> - change notify setting"
-		help[11] = "/m <nick> - mention user"
-		help[12] = "/login <password> - login"
-		help[13] = "/lock - add or change password on host"
-		help[14] = "/kick <nick> - kick user"
-		help[15] = "/ban <nick> - ban user"
-		help[16] = "/unban <nick> - unban user"
-		help[17] = "/mute <nick> - mute user"
-		help[18] = "/unmute <nick> - unmute user"
-		help[19] = "/level <nick> <1-5> - change user permission level"
-		help[20] = "/dwn <plugin name> - download plugin"
-		help[21] = "/dwd <plugin name> - delete plugin"
+		help.push("")
+		help.push("/connect <ip> - connect to server")
+		help.push("/host - create server")
+		help.push("/disconnect - disconnect from server")
+		help.push("/clear - clear window")
+		help.push("/exit - exit Lan Chat")
+		help.push("/nick <nickname> - set nickname")
+		help.push("/list - connected users list")
+		help.push("/afk - change status to afk")
+		help.push("/online - change status to online")
+		help.push("/dnd - do not disturb, mute all messages")
+		help.push("/notify <all / mention / none> - change notify setting")
+		help.push("/m <nick> - mention user")
+		help.push("/login <password> - login")
+		help.push("/lock - add or change password on host")
+		help.push("/kick <nick> - kick user")
+		help.push("/ban <nick> - ban user")
+		help.push("/unban <nick> - unban user")
+		help.push("/mute <nick> - mute user")
+		help.push("/unmute <nick> - unmute user")
+		help.push("/level <nick> <1-5> - change user permission level")
+		help.push("/dwn <plugin name> - download plugin")
+		help.push("/dwd <plugin name> - delete plugin")
 		out.blank(help.join("\n"))
 	},
 
 	//connect
 	connect: function (args) {
 		client.connect(args[0])
+	},
+
+	//host
+	host: function () {
+		host.host()
 	},
 
 	//login

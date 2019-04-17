@@ -1,12 +1,12 @@
 //import
-const out = require("../lib/out")
-const client = require("../lib/client")
+const out = require("./out")
+const client = require("./client")
 const net = require("net")
 const http = require("http").Server()
 const io = require("socket.io")(http)
 const { RateLimiterMemory } = require("rate-limiter-flexible")
-const db = require("../lib/db")
-var global = require("../lib/global")
+const db = require("./db")
+var global = require("./global")
 
 //variavles
 var motd
@@ -14,11 +14,6 @@ global.users = []
 
 //HOST
 module.exports = {
-
-	//help
-	help: function () {
-		out.blank("/host - create server")
-	},
 
 	//create host
 	host: function () {
