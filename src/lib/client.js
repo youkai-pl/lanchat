@@ -1,6 +1,7 @@
 //import
 const out = require("./out")
 const notify = require("./notify")
+const files = require("./files")
 var global = require("./global")
 
 //CLIENT
@@ -27,12 +28,12 @@ module.exports = {
 				out.status("connecting")
 				global.lock = true
 				//create socket
-				socket = require("socket.io-client")("http://" + ip + ":" + global.port,
+				socket = require("socket.io-client")("http://" + ip + ":" + files.config.port,
 					{
 						"reconnection": true,
 						"reconnectionDelay": 500,
 						"reconnectionDelayMax": 500,
-						"reconnectionAttempts": global.attemps,
+						"reconnectionAttempts": files.config.attemps,
 						"secure": true
 					}
 				)
@@ -45,12 +46,12 @@ module.exports = {
 						global.safe_disconnect = false
 						out.status("connected")
 						listen()
-						socket.emit("login", global.nick)
+						socket.emit("login", files.config.nick)
 						global.connection_status = true
 						global.first = true
 					} else {
 						//recconect way
-						socket.emit("login", global.nick)
+						socket.emit("login", files.config.nick)
 						if (!global.first) {
 							listen()
 						}
@@ -61,7 +62,7 @@ module.exports = {
 
 				//handle connection error
 				socket.on("connect_error", function () {
-					if (trycount === global.attemps) {
+					if (trycount === files.config.attemps) {
 						out.alert("connection error")
 					}
 				})
@@ -106,7 +107,7 @@ module.exports = {
 
 					//count attemps
 					trycount++
-					if (trycount === global.attemps) {
+					if (trycount === files.config.attemps) {
 						global.lock = false
 						out.alert("connection error")
 					}
@@ -120,7 +121,7 @@ module.exports = {
 		//out
 		out.message({
 			content: content,
-			nick: global.nick
+			nick: files.config.nick
 		})
 		//send
 		if (global.lock) {
@@ -135,13 +136,13 @@ module.exports = {
 
 	//nick
 	nick: function () {
-		socket.emit("nick", global.nick)
+		socket.emit("nick", files.config.nick)
 	},
 
 	//auth
 	auth: function (password) {
 		if (password) {
-			socket.emit("auth", global.nick, password)
+			socket.emit("auth", files.config.nick, password)
 		} else {
 			out.blank("try /login <password>")
 		}
@@ -151,7 +152,7 @@ module.exports = {
 	lock: function (args) {
 		if (args) {
 			if (args[0] === args[1]) {
-				socket.emit("register", global.nick, args[0])
+				socket.emit("register", files.config.nick, args[0])
 			} else {
 				out.blank("try /register <password> <password>")
 			}
@@ -194,7 +195,7 @@ module.exports = {
 
 	//kick
 	kick: function (arg) {
-		if (arg !== global.nick) {
+		if (arg !== files.config.nick) {
 			socket.emit("kick", arg)
 		} else {
 			out.status("You can't kick yourself")
@@ -203,7 +204,7 @@ module.exports = {
 
 	//ban
 	ban: function (arg) {
-		if (arg !== global.nick) {
+		if (arg !== files.config.nick) {
 			socket.emit("ban", arg)
 		} else {
 			out.status("You can't ban yourself")
@@ -212,7 +213,7 @@ module.exports = {
 
 	//unban
 	unban: function (arg) {
-		if (arg !== global.nick) {
+		if (arg !== files.config.nick) {
 			socket.emit("unban", arg)
 		} else {
 			out.status("You can't unban yourself")
@@ -221,7 +222,7 @@ module.exports = {
 
 	//mute
 	mute: function (arg) {
-		if (arg !== global.nick) {
+		if (arg !== files.config.nick) {
 			socket.emit("mute", arg)
 		} else {
 			out.status("You can't mute yourself")
@@ -230,7 +231,7 @@ module.exports = {
 
 	//unmute
 	unmute: function (arg) {
-		if (arg !== global.nick) {
+		if (arg !== files.config.nick) {
 			socket.emit("unmute", arg)
 		} else {
 			out.status("You can't unmute yourself")
@@ -285,7 +286,7 @@ function listen() {
 
 	//return code
 	socket.on("rcode", function (value) {
-		if (global.devlog) {
+		if (files.config.devlog) {
 			out.blank("RETURN: " + value)
 		}
 	})

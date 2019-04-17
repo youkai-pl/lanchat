@@ -4,6 +4,7 @@ const commands = require("./commands")
 const pkg = require("../package.json")
 const rl = require("./interface").rl
 const readline = require("./interface").readline
+const files = require("./files")
 var global = require("./global")
 
 //PROMPT
@@ -24,7 +25,7 @@ module.exports = {
 				console.log("Loaded " + Object.keys(global.plugins).length + " plugin(s)")
 			}
 		}
-		console.log("Nickname: " + global.nick)
+		console.log("Nickname: " + files.config.nick)
 		console.log("")
 
 		rl.prompt(true)

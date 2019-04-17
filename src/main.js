@@ -9,9 +9,9 @@ var global = require("./lib/global")
 console.log("loading...")
 
 //crash handler
-process.on("uncaughtException", function (err) {
+/* process.on("uncaughtException", function (err) {
 	console.log("Error: " + err)
-})
+}) */
 
 //load plugins
 if (fs.existsSync("./plugins")) {

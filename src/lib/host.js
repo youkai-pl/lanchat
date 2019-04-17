@@ -5,7 +5,7 @@ const net = require("net")
 const http = require("http").Server()
 const io = require("socket.io")(http)
 const { RateLimiterMemory } = require("rate-limiter-flexible")
-const files = require("./files")
+const files = require("../lib/files")
 var global = require("./global")
 
 users = []
@@ -24,30 +24,30 @@ module.exports = {
 
 		//create database index
 		if (index === -1) {
-			files.dbAddUser(global.nick)
+			files.dbAddUser(files.config.nick)
 		}
 
 		//write permission to database
-		files.dbWrite(global.nick, "level", 5)
+		files.dbWrite(files.config.nick, "level", 5)
 
 		//rate limiter init
 		rateLimiter = new RateLimiterMemory(
 			{
-				points: global.ratelimit,
+				points: files.config.ratelimit,
 				duration: 1,
 			})
 
 		out.status("starting server")
 
 		//check motd
-		if (!global.motd) {
+		if (!files.config.motd) {
 			out.status("motd not found")
 		}
 
 		//check port
-		testPort(global.port, "127.0.0.1", function (e) {
+		testPort(files.config.port, "127.0.0.1", function (e) {
 			if (e === "failure") {
-				http.listen(global.port, function () {
+				http.listen(files.config.port, function () {
 					out.status("server running")
 				})
 				//start host
@@ -522,8 +522,8 @@ function auth(nick, socket) {
 		socket.emit("rcode", "015")
 
 		//emit motd
-		if (global.motd) {
-			socket.emit("motd", global.motd)
+		if (files.config.motd) {
+			socket.emit("motd", files.config.motd)
 		}
 
 		//join

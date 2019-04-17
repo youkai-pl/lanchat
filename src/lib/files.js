@@ -108,7 +108,7 @@ function load() {
 		}
 
 		//export config
-		global = Object.assign(global, config)
+		module.exports.config = config
 
 		//return
 		return true
