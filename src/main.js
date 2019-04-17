@@ -3,7 +3,7 @@
 // LANCHAT BY AKIRA
 const fs = require("fs")
 const prompt = require("./lib/prompt")
-const files = require("./lib/files")
+const config = require("./lib/config")
 var global = require("./lib/global")
 
 console.log("loading...")
@@ -19,7 +19,7 @@ if (fs.existsSync("./plugins")) {
 }
 
 //load config
-if (files.configLoad()) {
+if (config.load()) {
 	//init
 	prompt.run()
 } else {

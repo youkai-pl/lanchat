@@ -1,6 +1,5 @@
 //import
 const fs = require("fs")
-var global = require("./global")
 
 //variables
 const home = process.env.APPDATA || (process.platform == "darwin" ? process.env.HOME + "Library/Preferences" : process.env.HOME)
@@ -11,48 +10,19 @@ module.exports = {
 
 	//CONFIG//
 	//load config
-	configLoad: function () {
+	load: function () {
 		if (load()) {
 			return true
 		}
 	},
 
 	//config write
-	configWrite: function (type, value) {
-		config[type] = value
-		global[type] = value
+	write: function (key, value) {
+		config[key] = value
 		fs.writeFileSync(path + "config.json", JSON.stringify(config), function (err) {
 			if (err) return console.log(err)
 		})
-	},
-
-	//DATABASE//
-	//load database
-	loadDb: function () {
-		db = JSON.parse(fs.readFileSync(path + "db.json", "utf8"))
-		//export db
-		global.db = db
-	},
-
-	//add user to db
-	dbAddUser: function (nick) {
-		global.db.push({
-			nickname: nick,
-		})
-
-		//write to file
-		fs.writeFileSync(path + "db.json", JSON.stringify(db), function (err) {
-			if (err) return console.log(err)
-		})
-	},
-
-	//write to db
-	dbWrite: function (nick, key, value) {
-		var index = global.db.findIndex(x => x.nickname === nick)
-		global.db[index][key] = value
-		fs.writeFileSync(path + "db.json", JSON.stringify(db), function (err) {
-			if (err) return console.log(err)
-		})
+		module.exports[key] = config[key]
 	}
 }
 
@@ -107,8 +77,10 @@ function load() {
 			config.motd = fs.readFileSync(home + "/.lanchat/motd.txt", "utf8")
 		}
 
-		//export config
-		module.exports.config = config
+		//export
+		for (i in config) {
+			module.exports[i] = config[i]
+		}
 
 		//return
 		return true
