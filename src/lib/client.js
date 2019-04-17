@@ -168,7 +168,7 @@ module.exports = {
 			} else {
 				//disconnect
 				global.safe_disconnect = true
-				//socket.disconnect()
+				socket.disconnect()
 				global.lock = false
 				out.status("disconnected")
 			}

@@ -2,8 +2,8 @@
 const client = require("./client")
 const out = require("./out")
 const dwn = require("./dwn")
-const db = require("./db")
 const host = require("./host")
+const files = require("./files")
 var global = require("./global")
 
 //COMMANDS
@@ -31,7 +31,7 @@ module.exports = {
 		} else {
 
 			//change local nick
-			db.change("nick", args[0])
+			files.configWrite("nick", args[0])
 			out.blank("Your nickname is now " + args[0].blue)
 
 			//change nick on host
@@ -157,7 +157,7 @@ module.exports = {
 	notify: function (args) {
 		//change notify setting
 		if ((args[0] === "all") || (args[0] === "mention") || (args[0] === "none")) {
-			db.change("notify", args[0])
+			files.configWrite("notify", args[0])
 			out.status("notify setting changed")
 		} else {
 			out.blank("try /notify <all / mention / none>")

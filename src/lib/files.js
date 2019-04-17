@@ -7,25 +7,26 @@ const home = process.env.APPDATA || (process.platform == "darwin" ? process.env.
 const path = home + "/.lanchat/"
 var config = {}
 
-//SETTINGS
 module.exports = {
 
+	//CONFIG//
 	//load config
-	load: function () {
+	configLoad: function () {
 		if (load()) {
 			return true
 		}
 	},
 
-	//change nick
-	change: function (type, nick) {
-		config[type] = nick
-		global[type] = nick
+	//config write
+	configWrite: function (type, value) {
+		config[type] = value
+		global[type] = value
 		fs.writeFileSync(path + "config.json", JSON.stringify(config), function (err) {
 			if (err) return console.log(err)
 		})
 	},
 
+	//DATABASE//
 	//load database
 	loadDb: function () {
 		db = JSON.parse(fs.readFileSync(path + "db.json", "utf8"))
@@ -34,7 +35,7 @@ module.exports = {
 	},
 
 	//add user to db
-	addUser: function (nick) {
+	dbAddUser: function (nick) {
 		global.db.push({
 			nickname: nick,
 		})
@@ -46,7 +47,7 @@ module.exports = {
 	},
 
 	//write to db
-	writedb: function (nick, key, value) {
+	dbWrite: function (nick, key, value) {
 		var index = global.db.findIndex(x => x.nickname === nick)
 		global.db[index][key] = value
 		fs.writeFileSync(path + "db.json", JSON.stringify(db), function (err) {
@@ -58,27 +59,27 @@ module.exports = {
 //load config file
 function load() {
 
-	//create dir
+	//check dir
 	if (!fs.existsSync(home + "/.lanchat")) {
 		fs.mkdirSync(home + "/.lanchat")
 	}
 
-	//create config
+	//check config
 	if (!fs.existsSync(path + "config.json")) {
 		// eslint-disable-next-line quotes
 		fs.writeFileSync(path + "config.json", '{"nick":"default","port":"2137","notify":"mention", "devlog":false, "attemps": "5", "ratelimit": "15"}')
 	}
 
-	//create host database
+	//check host database
 	if (!fs.existsSync(path + "db.json")) {
 		// eslint-disable-next-line quotes
 		fs.writeFileSync(path + "db.json", '[]')
 	}
 
-	//load
+	//load config
 	try {
 
-		//load files
+		//load file
 		config = JSON.parse(fs.readFileSync(path + "config.json", "utf8"))
 
 		//valdate
@@ -101,9 +102,13 @@ function load() {
 			return false
 		}
 
+		//load motd
+		if (fs.existsSync(home + "/.lanchat/motd.txt")) {
+			config.motd = fs.readFileSync(home + "/.lanchat/motd.txt", "utf8")
+		}
+
 		//export config
 		global = Object.assign(global, config)
-		global.motd = motd()
 
 		//return
 		return true
@@ -112,12 +117,5 @@ function load() {
 
 		//return
 		return false
-	}
-}
-
-//load motd file
-function motd() {
-	if (fs.existsSync(home + "/.lanchat/motd.txt")) {
-		return fs.readFileSync(home + "/.lanchat/motd.txt", "utf8")
 	}
 }

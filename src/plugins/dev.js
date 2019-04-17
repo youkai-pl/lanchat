@@ -1,3 +1,4 @@
+const client = require("../lib/client")
 var global = require("../lib/global")
 
 module.exports = {
