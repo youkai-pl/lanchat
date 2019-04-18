@@ -1,6 +1,7 @@
 //import
 const rl = require("./interface").rl
-const colors = require("colors")
+const c = require("./colors")
+
 //OUT
 module.exports = {
 
@@ -8,7 +9,7 @@ module.exports = {
 	message: function (msg) {
 		process.stdout.clearLine()
 		process.stdout.cursorTo(0)
-		console.log("[" + time().green + "] " + msg.nick.blue + ": " + msg.content)
+		console.log(c.green + "[" + time() + "] " + c.blue + msg.nick + c.reset + ": " + msg.content)
 		rl.prompt(true)
 	},
 
@@ -16,15 +17,15 @@ module.exports = {
 	user_status: function (msg) {
 		process.stdout.clearLine()
 		process.stdout.cursorTo(0)
-		console.log(msg.nick.blue + " " + msg.content)
+		console.log(c.blue + msg.nick + " " + c.reset + msg.content)
 		rl.prompt(true)
 	},
 
 	//mention
-	mention: function(nick){
+	mention: function (nick) {
 		process.stdout.clearLine()
 		process.stdout.cursorTo(0)
-		console.log(nick.blue + " mentioned you")
+		console.log(c.blue + nick + c.reset + " mentioned you")
 		rl.prompt(true)
 	},
 
@@ -32,7 +33,7 @@ module.exports = {
 	alert: function (msg) {
 		process.stdout.clearLine()
 		process.stdout.cursorTo(0)
-		console.log("[!] ".red + msg.red)
+		console.log(c.red + "[!] " + msg + c.reset)
 		rl.prompt(true)
 	},
 
@@ -40,7 +41,7 @@ module.exports = {
 	status: function (msg) {
 		process.stdout.clearLine()
 		process.stdout.cursorTo(0)
-		console.log("[#] ".green + msg.green)
+		console.log(c.green + "[#] " + msg + c.reset)
 		rl.prompt(true)
 	},
 

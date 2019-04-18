@@ -4,7 +4,7 @@ module.exports = {
 
 	//help
 	help: function () {
-		out.blank("/dwl - list of avabile plugins")
+		out.blank("/dwl        - list avabile plugins")
 	},
 
 	//dwn-list

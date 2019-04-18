@@ -107,11 +107,7 @@ module.exports = {
 
 	//auth
 	auth: function (password) {
-		if (password) {
-			socket.emit("auth", config.nick, password)
-		} else {
-			out.blank("try /login <password>")
-		}
+		socket.emit("auth", config.nick, password)
 	},
 
 	//lock

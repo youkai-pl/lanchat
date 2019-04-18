@@ -109,6 +109,7 @@ function wrapper(message) {
 			process.stdout.cursorTo(0)
 		}
 	} else {
+
 		//clear line
 		readline.moveCursor(process.stdout, 0, -1)
 	}

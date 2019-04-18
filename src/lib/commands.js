@@ -4,6 +4,7 @@ const out = require("./out")
 const dwn = require("./dwn")
 const host = require("./host")
 const config = require("./config")
+const c = require("./colors")
 var global = require("./global")
 
 //COMMANDS
@@ -32,7 +33,7 @@ module.exports = {
 
 			//change local nick
 			config.write("nick", args[0])
-			out.blank("Your nickname is now " + args[0].blue)
+			out.blank("Your nickname is now " + c.blue + args[0] + c.reset)
 
 			//change nick on host
 			if (global.connected) {
@@ -45,28 +46,28 @@ module.exports = {
 	help: function () {
 		var help = []
 		help.push("")
-		help.push("/connect <ip> - connect to server")
-		help.push("/host - create server")
-		help.push("/disconnect - disconnect from server")
-		help.push("/clear - clear window")
-		help.push("/exit - exit Lan Chat")
-		help.push("/nick <nickname> - set nickname")
-		help.push("/list - connected users list")
-		help.push("/afk - change status to afk")
-		help.push("/online - change status to online")
-		help.push("/dnd - do not disturb, mute all messages")
-		help.push("/notify <all / mention / none> - change notify setting")
-		help.push("/m <nick> - mention user")
-		help.push("/login <password> - login")
-		help.push("/lock - add or change password on host")
-		help.push("/kick <nick> - kick user")
-		help.push("/ban <nick> - ban user")
-		help.push("/unban <nick> - unban user")
-		help.push("/mute <nick> - mute user")
-		help.push("/unmute <nick> - unmute user")
-		help.push("/level <nick> <1-5> - change user permission level")
-		help.push("/dwn <plugin name> - download plugin")
-		help.push("/dwd <plugin name> - delete plugin")
+		help.push("/connect    - connect")
+		help.push("/disconnect - disconnect")
+		help.push("/host       - create server")
+		help.push("/clear      - clear screen")
+		help.push("/exit       - exit lanchat")
+		help.push("/nick       - change nick")
+		help.push("/list       - list users")
+		help.push("/online     - change status")
+		help.push("/afk        - change status")
+		help.push("/dnd        - change status")
+		help.push("/notify     - change notifications settings")
+		help.push("/mention    - mention user")
+		help.push("/login      - login on locked account")
+		help.push("/lock       - lock account")
+		help.push("/kick       - kick user")
+		help.push("/ban        - ban user")
+		help.push("/unban      - unban user")
+		help.push("/mute       - mute user")
+		help.push("/unmute     - unmute user")
+		help.push("/level      - change user permission")
+		help.push("/dwn        - donwload plugin")
+		help.push("/dwd        - delete plugin")
 		out.blank(help.join("\n"))
 	},
 
@@ -83,10 +84,15 @@ module.exports = {
 	//login
 	login: function (args) {
 		if (global.connected) {
-			client.auth(args[0])
+			if (args[0]) {
+				client.auth(args[0])
+			} else {
+				out.blank("try /login <password>")
+			}
 		} else {
 			out.alert("you must be connected")
 		}
+
 	},
 
 	//register
@@ -149,13 +155,6 @@ module.exports = {
 		}
 	},
 
-	//rainbow
-	rb: function (args) {
-		//set rainbow message
-		var content = args.join(" ")
-		client.send(content.rainbow)
-	},
-
 	//notify
 	notify: function (args) {
 		//change notify setting
@@ -168,7 +167,7 @@ module.exports = {
 	},
 
 	//mention
-	m: function (args) {
+	mention: function (args) {
 		//mention user
 		if (global.connected) {
 			if (args[0]) {
