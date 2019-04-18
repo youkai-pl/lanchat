@@ -5,30 +5,62 @@ const pkg = require("../package.json")
 const rl = require("./interface").rl
 const readline = require("./interface").readline
 const config = require("./config")
+const dwn = require("./dwn")
 var global = require("./global")
 
 //PROMPT
 module.exports = {
 	run: function () {
-
+		rl.pause()
 		//init
 		process.stdout.write("\033c")
 		process.stdout.write(
 			String.fromCharCode(27) + "]0;" + "Lanchat" + String.fromCharCode(7)
 		)
-		console.log("Lanchat " + pkg.version)
-		console.log("")
+
+		//welcome screen
+		if (process.stdout.columns > 41) {
+			//make it green
+			console.log("\x1b[92m")
+			//shitty ascii art
+			console.log(" █     █████ ███ █ █████ █   █ █████ █████")
+			console.log(" █     █   █ █ █ █ █     █   █ █   █   █")
+			console.log(" █     █████ █ █ █ █     █████ █████   █")
+			console.log(" █     █   █ █ █ █ █     █   █ █   █   █")
+			console.log(" █████ █   █ █ ███ █████ █   █ █   █   █")
+		} else {
+			console.log("Lanchat")
+		}
+
+		//reset color
+		console.log("\x1b[0m")
+
+		//show acutal version
+		console.log(" Version " + pkg.version)
 
 		//plugis info
 		if (global.plugins) {
 			if (Object.keys(global.plugins).length) {
-				console.log("Loaded " + Object.keys(global.plugins).length + " plugin(s)")
+				console.log(" Loaded " + Object.keys(global.plugins).length + " plugin(s)")
 			}
 		}
-		console.log("Nickname: " + config.nick)
-		console.log("")
 
-		rl.prompt(true)
+		//show user nick
+		console.log(" Nickname: " + config.nick)
+
+		//check update
+		console.log(" Checking update")
+		dwn.selfCheck().then((data) => {
+			readline.moveCursor(process.stdout, 0, -1)
+			if (data) {
+				console.log(" Update avabile: (" + data + ")")
+			} else {
+				process.stdout.clearLine()
+				process.stdout.cursorTo(0)
+			}
+			console.log("")
+			rl.prompt(true)
+		})
 
 		//prompt
 		rl.on("line", function (line) {

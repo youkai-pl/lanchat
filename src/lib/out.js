@@ -1,7 +1,6 @@
 //import
 const rl = require("./interface").rl
 const colors = require("colors")
-
 //OUT
 module.exports = {
 

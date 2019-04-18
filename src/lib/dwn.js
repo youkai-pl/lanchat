@@ -2,9 +2,11 @@
 const https = require("https")
 const fs = require("fs")
 const out = require("./out")
+const pkg = require("../package.json")
 //PLUGINS DOWNLOADER
 
 const plugins = "https://raw.githubusercontent.com/akira202/lanchat/master/src/plugins/"
+const self = "https://raw.githubusercontent.com/akira202/lanchat/master/src/package.json"
 
 module.exports = {
 
@@ -28,7 +30,7 @@ module.exports = {
 	delete: function (name) {
 		if (fs.existsSync("./plugins")) {
 			var dest = "./plugins/" + name + ".js"
-			if(fs.existsSync(dest)){
+			if (fs.existsSync(dest)) {
 				fs.unlinkSync(dest)
 				out.status("Done. Relaunch required")
 			} else {
@@ -37,6 +39,32 @@ module.exports = {
 		} else {
 			out.alert("Plugins doesn't work in portable version")
 		}
+	},
+
+	//check self update
+	selfCheck: function () {
+		return new Promise((resolve, reject) => {
+			https.get(self, response => {
+
+				var body = ""
+				response.on("data", function (d) {
+					body += d
+				})
+
+				response.on("end", function () {
+					var parsed = JSON.parse(body)
+					var remote = parseInt(parsed.version.split(".").join(""))
+					var current = parseInt(pkg.version.split(".").join(""))
+					if (remote > current) {
+						resolve(parsed.version)
+					} else {
+						resolve(false)
+					}
+				})
+			}).on("error", function () {
+				resolve(false)
+			})
+		})
 	}
 }
 
