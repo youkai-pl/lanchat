@@ -54,7 +54,7 @@ module.exports = {
 				})
 				//start host
 				run()
-				global.server_status = true
+				global.host = true
 				client.connect("localhost")
 			} else {
 				out.alert("Server is already running on this PC")

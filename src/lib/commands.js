@@ -35,7 +35,7 @@ module.exports = {
 			out.blank("Your nickname is now " + args[0].blue)
 
 			//change nick on host
-			if (global.connection_status) {
+			if (global.connected) {
 				client.nick()
 			}
 		}
@@ -82,7 +82,7 @@ module.exports = {
 
 	//login
 	login: function (args) {
-		if (global.connection_status) {
+		if (global.connected) {
 			client.auth(args[0])
 		} else {
 			out.alert("you must be connected")
@@ -91,7 +91,7 @@ module.exports = {
 
 	//register
 	lock: function (args) {
-		if (global.connection_status) {
+		if (global.connected) {
 			client.lock(args)
 		} else {
 			out.alert("you must be connected")
@@ -106,7 +106,7 @@ module.exports = {
 	//list
 	list: function () {
 		//get connected user list
-		if (global.connection_status) {
+		if (global.connected) {
 			client.list()
 		} else {
 			out.alert("you must be connected")
@@ -116,7 +116,8 @@ module.exports = {
 	//afk
 	afk: function () {
 		//set afk status
-		if (global.connection_status) {
+		if (global.connected) {
+			config.write("status", "afk")
 			client.changeStatus("afk")
 			out.status("you are afk")
 		} else {
@@ -127,7 +128,8 @@ module.exports = {
 	//online
 	online: function () {
 		//set online status
-		if (global.connection_status) {
+		if (global.connected) {
+			config.write("status", "online")
 			client.changeStatus("online")
 			out.status("you are online")
 		} else {
@@ -138,7 +140,8 @@ module.exports = {
 	//dnd
 	dnd: function () {
 		//set dnd status
-		if (global.connection_status) {
+		if (global.connected) {
+			config.write("status", "dnd")
 			client.changeStatus("dnd")
 			out.status("you are dnd")
 		} else {
@@ -167,7 +170,7 @@ module.exports = {
 	//mention
 	m: function (args) {
 		//mention user
-		if (global.connection_status) {
+		if (global.connected) {
 			if (args[0]) {
 				client.mention(args[0])
 			} else {
@@ -181,7 +184,7 @@ module.exports = {
 	//kick
 	kick: function (args) {
 		//kick user
-		if (global.connection_status) {
+		if (global.connected) {
 			if (args[0]) {
 				client.kick(args[0])
 			} else {
@@ -195,7 +198,7 @@ module.exports = {
 	//ban
 	ban: function (args) {
 		//ban user
-		if (global.connection_status) {
+		if (global.connected) {
 			if (args[0]) {
 				client.ban(args[0])
 			} else {
@@ -209,7 +212,7 @@ module.exports = {
 	//unban
 	unban: function (args) {
 		//unban user
-		if (global.connection_status) {
+		if (global.connected) {
 			if (args[0]) {
 				client.unban(args[0])
 			} else {
@@ -223,7 +226,7 @@ module.exports = {
 	//mute
 	mute: function (args) {
 		//mute user
-		if (global.connection_status) {
+		if (global.connected) {
 			if (args[0]) {
 				client.mute(args[0])
 			} else {
@@ -237,7 +240,7 @@ module.exports = {
 	//unmute
 	unmute: function (args) {
 		//mute user
-		if (global.connection_status) {
+		if (global.connected) {
 			if (args[0]) {
 				client.unmute(args[0])
 			} else {
@@ -250,7 +253,7 @@ module.exports = {
 
 	//chane permission
 	level: function (args) {
-		if (global.connection_status) {
+		if (global.connected) {
 			if (args[0] && args[1]) {
 				client.level(args)
 			} else {

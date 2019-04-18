@@ -61,6 +61,9 @@ module.exports = {
 				config.motd = fs.readFileSync(home + "/.lanchat/motd.txt", "utf8")
 			}
 
+			//set status
+			config.status = "online"
+
 			//export
 			for (i in config) {
 				module.exports[i] = config[i]
@@ -75,10 +78,22 @@ module.exports = {
 
 	//config write
 	write: function (key, value) {
+
+		//change value
 		config[key] = value
-		fs.writeFileSync(path + "config.json", JSON.stringify(config), function (err) {
+
+		//delete temporary keys
+		var toWrtie = config
+		delete toWrtie["validate"]
+		delete toWrtie["motd"]
+		delete toWrtie["status"]
+
+		//save to file
+		fs.writeFileSync(path + "config.json", JSON.stringify(toWrtie), function (err) {
 			if (err) return console.log(err)
 		})
+
+		//export
 		module.exports[key] = config[key]
 	}
 }

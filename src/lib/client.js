@@ -5,9 +5,11 @@ const config = require("./config")
 var global = require("./global")
 
 //CLIENT
-
 //variables
 var trycount = 0
+global.connected = false
+reconnect = false
+safeDisconnect = false
 
 module.exports = {
 
@@ -20,13 +22,10 @@ module.exports = {
 		} else {
 
 			//block double connect
-			if (global.lock) {
+			if (global.connected) {
 				out.alert("you already connected")
 			} else {
 
-				//connet
-				out.status("connecting")
-				global.lock = true
 				//create socket
 				socket = require("socket.io-client")("http://" + ip + ":" + config.port,
 					{
@@ -38,76 +37,43 @@ module.exports = {
 					}
 				)
 
-				//connect
+				//connected
 				socket.on("connect", function () {
-					//normal way
-					if (!global.reconnect) {
-						global.lock = true
-						global.safe_disconnect = false
-						out.status("connected")
-						listen()
-						socket.emit("login", config.nick)
-						global.connection_status = true
-						global.first = true
+					global.connected = true
+					trycount = 0
+					if (reconnect) {
+						out.status("reconnected")
 					} else {
-						//recconect way
-						socket.emit("login", config.nick)
-						if (!global.first) {
-							listen()
-						}
-						global.lock = true
-						global.safe_disconnect = false
+						listen()
+						out.status("connected")
 					}
-				})
-
-				//handle connection error
-				socket.on("connect_error", function () {
-					if (trycount === config.attemps) {
-						out.alert("connection error")
-					}
+					socket.emit("login", config.nick)
 				})
 
 				//handle disconnect
 				socket.on("disconnect", function () {
-					if (global.safe_disconnect !== true) {
-						out.alert("disconnected")
-						global.reconnection = true
+					global.connected = false
+					if (!safeDisconnect) {
 						global.lock = false
-						global.connection_status = false
+						out.alert("disconnected")
 					}
 				})
 
 				//handle reconnect
 				socket.on("reconnect", () => {
-					if (global.reconnection) {
-						out.status("reconnected")
-					} else {
-						out.status("connected")
-					}
-					global.lock = true
-					global.reconnect = true
-					global.connection_status = true
+					reconnect = true
 				})
 
 				//handle conecting
 				socket.on("connecting", () => {
-					global.lock = true
+					out.status("connecting")
 				})
 
 				//handle recconecting
 				socket.on("reconnecting", () => {
-
-					//show status
-					if (global.reconnection) {
-						out.status("trying recconect")
-					} else {
-						out.status("connecting")
-					}
-					global.lock = true
-
-					//count attemps
 					trycount++
-					if (trycount === config.attemps) {
+					out.status("connecting")
+					if (trycount == config.attemps) {
 						global.lock = false
 						out.alert("connection error")
 					}
@@ -124,7 +90,7 @@ module.exports = {
 			nick: config.nick
 		})
 		//send
-		if (global.lock) {
+		if (global.connected) {
 			socket.emit("message", content)
 		}
 	},
@@ -154,23 +120,24 @@ module.exports = {
 			if (args[0] === args[1]) {
 				socket.emit("register", config.nick, args[0])
 			} else {
-				out.blank("try /register <password> <password>")
+				out.blank("try /lock <password> <password>")
 			}
 		} else {
-			out.blank("try /register <password> <password>")
+			out.blank("try /lock <password> <password>")
 		}
 	},
 
 	//disconnect
 	disconnect: function () {
-		if (global.lock) {
-			if (global.server_status) {
+		if (global.connected) {
+			if (global.host) {
 				out.status("host cannot be disconnect")
 			} else {
+
 				//disconnect
-				global.safe_disconnect = true
+				reconnect = false
+				safeDisconnect = true
 				socket.disconnect()
-				global.lock = false
 				out.status("disconnected")
 			}
 		} else {
@@ -185,11 +152,6 @@ module.exports = {
 
 	//changeStatus
 	changeStatus: function (value) {
-		if (value === "dnd") {
-			global.dnd = true
-		} else {
-			global.dnd = false
-		}
 		socket.emit("changeStatus", value)
 	},
 
@@ -251,7 +213,7 @@ function listen() {
 	socket.on("message", function (msg) {
 
 		//show message when dnd is disabled
-		if (!global.dnd) {
+		if (config.status !== "dnd") {
 			out.message(msg)
 			notify.message(msg)
 		}
@@ -261,7 +223,7 @@ function listen() {
 	socket.on("mentioned", function (nick) {
 
 		//show mention when dnd is disabled
-		if (!global.dnd) {
+		if (config.status !== "dnd") {
 			out.mention(nick)
 			notify.mention()
 		}
@@ -279,7 +241,7 @@ function listen() {
 
 	//motd
 	socket.on("motd", function (motd) {
-		if (!global.reconnect) {
+		if (!reconnect) {
 			out.blank("\n" + motd + "\n")
 		}
 	})

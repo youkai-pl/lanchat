@@ -20,8 +20,10 @@ module.exports = {
 
 		//welcome screen
 		if (process.stdout.columns > 41) {
+
 			//make it green
 			console.log("\x1b[92m")
+
 			//shitty ascii art
 			console.log(" █     █████ ███ █ █████ █   █ █████ █████")
 			console.log(" █     █   █ █ █ █ █     █   █ █   █   █")
@@ -49,7 +51,7 @@ module.exports = {
 		console.log(" Nickname: " + config.nick)
 
 		//check update
-		console.log(" Checking update")
+		console.log(" Checking updates")
 		dwn.selfCheck().then((data) => {
 			readline.moveCursor(process.stdout, 0, -1)
 			if (data) {
