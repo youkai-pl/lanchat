@@ -19,7 +19,7 @@ module.exports = {
 		console.log("Lanchat " + pkg.version)
 		console.log("")
 
-		//no show plugins info in portable version
+		//plugis info
 		if (global.plugins) {
 			if (Object.keys(global.plugins).length) {
 				console.log("Loaded " + Object.keys(global.plugins).length + " plugin(s)")

@@ -19,10 +19,7 @@ module.exports = {
 	host: function () {
 
 		//load db
-
 		database = db.load()
-
-		global.db = database
 
 		//check database
 		var index = database.findIndex(x => x.nickname === config.nick)
