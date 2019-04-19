@@ -20,9 +20,10 @@
   * [status](#status)
   * [return](#return)
   * [motd](#motd)
-  * [rcode](#rcode)
+  * [banned](#banned)
+  * [needAuth](#needAuth)
+  * [joined](#joined)
 * [Permissions](#permissions)
-* [Return codes](#return-codes)
 ## Client side socket commands
 
 ### login
@@ -147,9 +148,12 @@ Return string
 Text showing after connected <br>
 Return string
 
-### rcode
-Return code from server <br>
-[List](#return-codes)
+### banned
+Emited when user has been banned
+
+### needAuth
+
+### joined
 
 ## Permissions
 * 0 - ban
@@ -158,20 +162,3 @@ Return code from server <br>
 * 3 - moderator (kick, ban, etc)
 * 4 - administrator (moderator commands + level)
 * 5 - owner (can do anything)
-
-## Return codes
-* 001 - blank message
-* 002 - selected user not exist
-* 003 - already used nickname
-* 004 - flood blocked
-* 005 - user banned
-* 006 - account locked with password
-* 007 - already logged
-* 008 - wrong password
-* 009 - password changed
-* 010 - blank password at register
-* 011 - user muted
-* 012 - long message blocked
-* 013 - user don't have permission
-* 014 - bad permission ID
-* 015 - logged successfully

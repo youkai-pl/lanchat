@@ -241,11 +241,4 @@ function listen() {
 			out.blank("\n" + motd + "\n")
 		}
 	})
-
-	//return code
-	socket.on("rcode", function (value) {
-		if (config.devlog) {
-			out.blank("RETURN: " + value)
-		}
-	})
 }

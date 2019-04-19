@@ -78,7 +78,8 @@ module.exports = {
 
 	//host
 	host: function () {
-		host.host()
+		host.start()
+		client.connect("127.0.0.1")
 	},
 
 	//login

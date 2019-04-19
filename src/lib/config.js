@@ -46,7 +46,7 @@ module.exports = {
 			if (!config.hasOwnProperty("notify")) {
 				config.validate = false
 			}
-			if (!config.hasOwnProperty("devlog")) {
+			if (!config.hasOwnProperty("log")) {
 				config.validate = false
 			}
 			if (!config.hasOwnProperty("ratelimit")) {
