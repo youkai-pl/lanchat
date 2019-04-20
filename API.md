@@ -17,6 +17,38 @@
     * [unmute](#unmute)
 
 * [Client side socket events](#client-side-socket-events)
+    * [afk](#afk)
+    * [alreadySigned](#alreadySigned)
+    * [clientMuted](#clientMuted)
+    * [dnd](#dnd)
+    * [doneBan](#doneBan)
+    * [doneSetPermission](#doneSetPermission)
+    * [doneUnmute](#doneUnMute)
+    * [doneUnban](#doneUnBan)
+    * [doneMute](#doneMute)
+    * [flood](#flood)
+    * [incorrectValue](#incorrectValue)
+    * [join](#join)
+    * [left](#left)
+    * [list](#list)
+    * [loginSucces](#loginSucces)
+    * [mention](#mention)
+    * [message](#message)
+    * [motd](#motd)
+    * [neetAuth](#neetAuth)
+    * [noPermission](#noPermission)
+    * [nickChanged](#nickChanged)
+    * [nickShortened](#nickShortened)
+    * [nickTaken](#nickTaken)
+    * [notExist](#notExist)
+    * [notSigned](#notSigned)
+    * [online](#online)
+    * [passChanged](#passChanged)
+    * [socketLimit](#socketLimit)
+    * [statusChanged](#statusChanged)
+    * [tooLong](#tooLong)
+    * [userChangeNick](#userChangeNick)
+    * [wrongPass](#wrongPass)
 
 * [Permissions](#permissions)
 ## Client side socket commands
@@ -114,44 +146,95 @@ socket.emit("kick", unmute)
 
 ## Client side socket events
 
-### message (event)
-Message broadcasted on host <br>
-Return obcject:
-```js
-msg {
-    nick: "name of the sender"
-    content: "message content"
-}
-```
+### afk
+Returns nickname of user at status change
 
-### mentioned
-Mention from other user
-Return nickname of sender
+### alreadySigned
+Returns when user trying auth second time
 
-### status
-Change status of other user <br>
-Return object:
-```js
-msg {
-    nick: "name of user"
-    content: "content"
-}
-```
+### clientMuted
+Returns when muted user trying send message
 
-### return
-Message from server <br>
-Return string
+### dnd
+Returns nickname of user at status change
+
+### doneBan
+Returns when moderation action is done succesfully
+
+### doneSetPermission
+Returns when moderation action is done succesfully
+
+### doneUnmute
+Returns when moderation action is done succesfully
+
+### doneUnban
+Returns when moderation action is done succesfully
+
+### doneMute
+Returns when moderation action is done succesfully
+
+### flood
+Returns when user flooding whith messages or commands
+
+### incorrectValue
+Returns when parametr of command isn't valid
+
+### join
+Returns someone's nickname when he signed
+
+### left
+Retruns someone's nickname when he leave server
+
+### loginSucces
+Returns after succesfull login
+
+### mention
+Returns someone's nickname when he mentioning you
+
+### message
+Returns nickname and message content
 
 ### motd
-Text showing after connected <br>
-Return string
+Returns when user joining server with motd
 
-### banned
-Emited when user has been banned
+### neetAuth
+Returns when user have to login with password
 
-### needAuth
+### noPermission
+Returns when the user tries to do something for which he is not authorized
 
-### joined
+### nickChanged
+Returns after succesfully nick change
+
+### nickShortened
+Returns after nick change when it's too long
+
+### nickTaken
+Returns when nick is alredy taken
+
+### notExist
+Returns when paramentr user doesn't exist
+
+### online
+Returns someone's nickname when he changed status to online
+
+### passChanged
+Returns after successfully password change
+
+### socketLimit
+Returns when all server sockets is taken.
+
+### statusChanged
+Returns after successfully status change
+
+### tooLong
+Returns when message is too long
+
+### userChangeNick
+Returns old and new nickname when someone changed it
+
+### wrongPass
+Returns when password is not valid
 
 ## Permissions
 * 0 - ban

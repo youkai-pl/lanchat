@@ -354,7 +354,7 @@ function listen() {
 	})
 
 	//doneMute
-	socket.on("doneUnMute", function (nick) {
+	socket.on("doneUnmute", function (nick) {
 		out.user_status(nick, "is unmuted")
 	})
 
@@ -364,12 +364,17 @@ function listen() {
 	})
 
 	//doneUnBan
-	socket.on("doneUnBan", function (nick) {
+	socket.on("doneUnban", function (nick) {
 		out.user_status(nick, "is unbanned")
 	})
 
 	//doneSetPermission
 	socket.on("doneSetPermission", function (nick, level) {
 		out.user_status(nick, "permissions changed to " + level)
+	})
+
+	///socketLimit
+	socket.old("socketLimit", function(){
+		out.alert("all sockets is taken")
 	})
 }

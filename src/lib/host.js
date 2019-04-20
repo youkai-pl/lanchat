@@ -258,7 +258,7 @@ module.exports.start = function () {
 			socket.on("unmute", function (nick) {
 				checkPermission("unmute", socket, nick, function () {
 					db.write(nick, "mute", false)
-					socket.emit("doneUnMute", nick)
+					socket.emit("doneUnmute", nick)
 				})
 			})
 
@@ -286,7 +286,7 @@ module.exports.start = function () {
 			socket.on("unban", function (nick) {
 				checkPermission("unban", socket, nick, function () {
 					db.write(nick, "level", 1)
-					socket.emit("doneUnBan", nick)
+					socket.emit("doneUnban", nick)
 				})
 			})
 
