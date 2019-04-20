@@ -11,6 +11,8 @@ var database
 var users = []
 var status
 
+module.exports.users = users
+
 module.exports.start = function () {
 
 	//start server
@@ -71,41 +73,58 @@ module.exports.start = function () {
 					nick = nick.substring(0, 15)
 				}
 
-				//add user to database
-				if (!db.get(nick)) {
-					db.add({
-						nickname: nick,
-						level: 2,
-					})
-				}
+				//check the availability of a nickname
+				if (getId(nick)) {
 
-				//save user ip adress
-				db.write(nick, "ip", socket.handshake.address)
+					//if nick is take emit alert
+					log(nick + " alredy taken")
+					socket.emit("taken")
+					io.sockets.connected[socket.id].disconnect()
+				} else {
 
-				//check ban
-				var ban
-				for (var i = 0; i < database.length; i++) {
-					if (database[i].level === 0) {
-						if (database[i].ip === socket.handshake.address) {
-							ban = true
+					//add user to database
+					if (!db.get(nick)) {
+						db.add({
+							nickname: nick,
+							level: 2,
+						})
+					}
+
+					//save user ip adress
+					db.write(nick, "ip", socket.handshake.address)
+
+					//check ban
+					var ban
+					for (var i = 0; i < database.length; i++) {
+						if (database[i].level === 0) {
+							if (database[i].ip === socket.handshake.address) {
+								ban = true
+							}
 						}
 					}
-				}
-				if (db.get(nick).level === 0) {
-					ban = true
-				}
-				if (ban) {
-					log(nick + "is banne")
-					socket.emit("banned")
-					io.sockets.connected[socket.id].disconnect()
-				}
+					if (db.get(nick).level === 0) {
+						ban = true
+					}
+					if (ban) {
+						log(nick + " is banned")
+						socket.emit("banned")
+						io.sockets.connected[socket.id].disconnect()
+					}
 
-				if (db.get(nick).pass) {
-					log(nick + "need auth")
-					socket.emit("needAuth")
-				} else {
-					login(nick, socket)
+					//check password
+					if (db.get(nick).pass) {
+						log(nick + " need auth")
+						socket.emit("needAuth")
+					} else {
+						login(nick, socket)
+					}
 				}
+			})
+
+			//disconnect
+			socket.on("disconnect", function () {
+
+				delUser(socket.id)
 			})
 		})
 	}
@@ -121,23 +140,77 @@ function log(content) {
 //login
 function login(nick, socket) {
 
-	if (users.findIndex(x => x.nickname === nick) !== -1) {
+	addUser({
+		id: socket.id,
+		nickname: nick,
+		status: "online"
+	})
 
-		log(nick + " alredy taken")
-		socket.emit("taken")
-		io.sockets.connected[socket.id].disconnect()
-	} else {
-		users.push({
-			nickname: nick,
-			status: "online"
-		})
+	log(nick + " joined")
+	socket.join("main")
+	socket.emit("joined")
 
-		log(nick + " joined")
-		socket.join("main")
-		socket.emit("joined")
-
-		if (config.emit) {
-			socket.emit("motd", config.motd)
-		}
+	if (config.emit) {
+		socket.emit("motd", config.motd)
 	}
+}
+
+//add user
+function addUser(user) {
+
+	//find empty space
+	var index = users.findIndex(x => x.id === null)
+	if (index !== -1) {
+		users[index] = user
+	} else {
+		users.push(user)
+	}
+}
+
+//get user
+function getUser(id) {
+	var user
+	var index = users.findIndex(x => x.id === id)
+	if (index === -1) {
+		user = false
+	} else {
+		user = users[index]
+	}
+	return user
+}
+
+//get user index
+function getIndex(id) {
+	var index = users.findIndex(x => x.id === id)
+	if (index === -1) {
+		index = false
+	}
+	return index
+}
+
+//get user id
+function getId(nick) {
+	var userId
+	var index = users.findIndex(x => x.nickname === nick)
+	if (index === -1) {
+		userId = false
+	} else {
+		userId = users[index].id
+	}
+	return userId
+}
+
+//delete user
+function delUser(id) {
+	var index = getIndex(id)
+	if (index) {
+		Object.keys(users[index]).forEach(v => users[index][v] = null)
+	} else {
+		log(id + " not exist")
+	}
+}
+
+//emit user status
+function emitStatus(socket) {
+
 }
