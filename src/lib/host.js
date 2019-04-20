@@ -150,34 +150,62 @@ module.exports.start = function () {
 
 			//message
 			socket.on("message", async (content) => {
-				//check message
-				if (typeof content === "string" || content instanceof String) {
+				if (getUser(socket.id)) {
+					//check message
+					if (typeof content === "string" || content instanceof String) {
 
-					if (db.get(getUser(socket.id).nick).level !== 1) {
-						try {
+						//change permission
+						if (db.get(getUser(socket.id).nick).level !== 1) {
+							try {
 
-							//flood block
-							await rateLimiter.consume(socket.handshake.address)
+								//flood block
+								await rateLimiter.consume(socket.handshake.address)
 
-							//block long messages
-							if (content.length < config.lenghtlimit) {
+								//block long messages
+								if (content.length < config.lenghtlimit) {
 
-								//emit message
-								socket.broadcast.to("main").emit("message",{
-									nick: getUser(socket.id).nick,
-									content: content
-								})
+									//emit message
+									socket.broadcast.to("main").emit("message", {
+										nick: getUser(socket.id).nick,
+										content: content
+									})
 
-							} else {
-								socket.emit("tooLong")
-
+								} else {
+									socket.emit("tooLong")
+								}
+							} catch (rejRes) {
+								socket.emit("flood")
 							}
-						} catch (rejRes) {
-							socket.emit("flood")
+						} else {
+							socket.emit("muted")
 						}
-					} else {
-						socket.emit("muted")
 					}
+				} else {
+					socket.emit("notSigned")
+				}
+			})
+
+			//mention
+			socket.on("mention", async (nick) => {
+				if (getUser(socket.id)) {
+					try {
+
+						//flood block
+						await rateLimiter.consume(socket.handshake.address)
+
+						//find user and send mention
+						var id = getByNick(nick).id
+						if (id) {
+							socket.to(`${id}`).emit("mentioned", getUser(socket.id).nick)
+						} else {
+							socket.emit("userNotExist")
+						}
+
+					} catch (rejRes) {
+						socket.emit("flood")
+					}
+				} else {
+					socket.emit("notSigned")
 				}
 			})
 		})

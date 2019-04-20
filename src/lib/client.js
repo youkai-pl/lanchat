@@ -291,4 +291,14 @@ function listen() {
 	socket.on("flood", function(){
 		out.warning("flood blocked by server")
 	})
+
+	//notSigned
+	socket.on("notSigned" ,function(){
+		out.warning("you must be logged in")
+	})
+
+	//userNotExist
+	socket.on("userNotExist", function(){
+		out.warning("user not exist")
+	})
 }
