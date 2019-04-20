@@ -258,22 +258,22 @@ function listen() {
 	})
 
 	//needAuth
-	socket.on("needAuth", function(){
+	socket.on("needAuth", function () {
 		out.status("login required")
 	})
 
 	//wrongPass
-	socket.on("wrongPass", function(){
-		out.status("wrong password")
+	socket.on("wrongPass", function () {
+		out.warning("wrong password")
 	})
 
 	//nickTaken
-	socket.on("nickTaken", function(){
+	socket.on("nickTaken", function () {
 		out.warning("nick already taken, change it and try again")
 	})
 
 	//passChanged
-	socket.on("passChanged", function(){
+	socket.on("passChanged", function () {
 		out.warning("password changed")
 	})
 
@@ -283,47 +283,54 @@ function listen() {
 	})
 
 	//tooLong
-	socket.on("tooLong", function(){
+	socket.on("tooLong", function () {
 		out.warning("message too long")
 	})
 
 	//flood
-	socket.on("flood", function(){
+	socket.on("flood", function () {
 		out.warning("flood blocked by server")
 	})
 
 	//notSigned
-	socket.on("notSigned" ,function(){
+	socket.on("notSigned", function () {
 		out.warning("you must be logged in")
 	})
 
 	//userNotExist
-	socket.on("userNotExist", function(){
+	socket.on("userNotExist", function () {
 		out.warning("user not exist")
 	})
 
 	//loginSucces
-	socket.on("loginSucces", function(){
+	socket.on("loginSucces", function () {
 		out.status("logged succesfull")
 	})
 
 	//alreadySigned
-	socket.on("alreadySigned", function(){
+	socket.on("alreadySigned", function () {
 		out.warning("alredy signed")
 	})
 
 	//nickShortened
-	socket.on("nickShortened", function(){
+	socket.on("nickShortened", function () {
 		out.warning("server has shortened your nickname")
 	})
 
 	//userChangeNick
-	socket.on("userChangeNick", function(old, nick){
+	socket.on("userChangeNick", function (old, nick) {
 		out.nickChange(old, nick)
 	})
 
 	//nickChanged
-	socket.on("nickChanged", function(){
+	socket.on("nickChanged", function () {
 		out.status("nick on changed")
+	})
+
+	//usersList
+	socket.on("usersList", function (users) {
+		for (var i = 0; i < users.length; i++) {
+			out.list(users[i].nick, users[i].status)
+		}
 	})
 }

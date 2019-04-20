@@ -156,7 +156,7 @@ module.exports.start = function () {
 			})
 
 			//message
-			socket.on("message", async (content) => {
+			socket.on("message", function (content) {
 				verify(socket, function () {
 					//check message
 					if (typeof content === "string" || content instanceof String) {
@@ -185,7 +185,7 @@ module.exports.start = function () {
 			})
 
 			//mention
-			socket.on("mention", async (nick) => {
+			socket.on("mention", function (nick) {
 				verify(socket, function () {
 					//find user and send mention
 					var id = getByNick(nick).id
@@ -198,7 +198,7 @@ module.exports.start = function () {
 			})
 
 			//nick
-			socket.on("nick", async (nick) => {
+			socket.on("nick", function (nick) {
 				verify(socket, function () {
 					//shorten the long nick
 					if (nick.length > 15) {
@@ -219,6 +219,13 @@ module.exports.start = function () {
 							socket.emit("nickChanged")
 						}
 					}
+				})
+			})
+
+			//list
+			socket.on("list", function () {
+				verify(socket, function () {
+					socket.emit("usersList", users)
 				})
 			})
 		})
