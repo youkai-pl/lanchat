@@ -14,10 +14,10 @@ module.exports = {
 	},
 
 	//user status
-	user_status: function (msg) {
+	user_status: function (nick, content) {
 		process.stdout.clearLine()
 		process.stdout.cursorTo(0)
-		console.log(c.blue + msg.nick + " " + c.reset + msg.content)
+		console.log(c.blue + nick + " " + c.reset + content)
 		rl.prompt(true)
 	},
 
@@ -34,6 +34,14 @@ module.exports = {
 		process.stdout.clearLine()
 		process.stdout.cursorTo(0)
 		console.log(c.red + "[!] " + msg + c.reset)
+		rl.prompt(true)
+	},
+
+	//warning
+	warning: function (msg) {
+		process.stdout.clearLine()
+		process.stdout.cursorTo(0)
+		console.log(c.yellow + "[!] " + msg + c.reset)
 		rl.prompt(true)
 	},
 

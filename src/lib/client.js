@@ -225,20 +225,55 @@ function listen() {
 		}
 	})
 
-	//status
-	socket.on("status", function (msg) {
-		out.user_status(msg)
-	})
-
-	//return
-	socket.on("return", function (msg) {
-		out.blank(msg)
-	})
-
 	//motd
 	socket.on("motd", function (motd) {
 		if (!reconnect) {
 			out.blank("\n" + motd + "\n")
 		}
+	})
+
+	//joined
+	socket.on("isJoin", function (nick) {
+		out.user_status(nick, "joined")
+	})
+
+	//left
+	socket.on("isLeft", function (nick) {
+		out.user_status(nick, "left")
+	})
+
+	//online
+	socket.on("isOnline", function (nick) {
+		out.user_status(nick, "is online")
+	})
+
+	//dnd
+	socket.on("isDnd", function (nick) {
+		out.user_status(nick, "dnd")
+	})
+
+	//afk
+	socket.on("isAfk", function (nick) {
+		out.user_status(nick, "is afk")
+	})
+
+	//needAuth
+	socket.on("needAuth", function(){
+		out.status("login required")
+	})
+
+	//wrongPass
+	socket.on("wrongPass", function(){
+		out.status("wrong password")
+	})
+
+	//nickTaken
+	socket.on("nickTaken", function(){
+		out.warning("nick already taken, change it and try again")
+	})
+
+	//passChanged
+	socket.on("passChanged", function(){
+		out.warning("password changed")
 	})
 }

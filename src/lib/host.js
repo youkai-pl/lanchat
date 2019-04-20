@@ -27,7 +27,7 @@ module.exports.start = function () {
 
 		if (!db.get(config.nick)) {
 			db.add({
-				nickname: config.nick,
+				nick: config.nick,
 				level: 5,
 				ip: "127.0.0.1"
 			})
@@ -62,8 +62,6 @@ module.exports.start = function () {
 			//login
 			socket.on("login", function (nick) {
 
-				log(nick + " connected")
-
 				//detect blank nick
 				if (!nick) {
 					nick = "default"
@@ -76,24 +74,17 @@ module.exports.start = function () {
 
 				//check sockets limit
 				if (config.socketlimit <= usersLimit) {
-					log("socket limit reached")
 					socket.emit("socketLimit")
 					io.sockets.connected[socket.id].disconnect()
 				} else {
 
 					//check the availability of a nickname
-					if (getId(nick)) {
-
-						//if nick is take emit alert
-						log(nick + " alredy taken")
-						socket.emit("taken")
-						io.sockets.connected[socket.id].disconnect()
-					} else {
+					if (checkNickAvabile(nick, socket)) {
 
 						//add user to database
 						if (!db.get(nick)) {
 							db.add({
-								nickname: nick,
+								nick: nick,
 								level: 2,
 							})
 						}
@@ -114,14 +105,12 @@ module.exports.start = function () {
 							ban = true
 						}
 						if (ban) {
-							log(nick + " is banned")
 							socket.emit("banned")
 							io.sockets.connected[socket.id].disconnect()
 						}
 
 						//check password
 						if (db.get(nick).pass) {
-							log(nick + " need auth")
 							socket.emit("needAuth")
 						} else {
 							login(nick, socket)
@@ -132,17 +121,33 @@ module.exports.start = function () {
 
 			//disconnect
 			socket.on("disconnect", function () {
-
+				emitStatus("left", socket)
 				delUser(socket.id)
 			})
-		})
-	}
-}
 
-//log
-function log(content) {
-	if (config.log) {
-		out.blank(content)
+			//auth
+			socket.on("auth", function (nick, password) {
+				//check password
+				if (db.get(nick).pass === password) {
+					//check nick avability
+					if (checkNickAvabile(nick, socket)) {
+						login(nick, socket)
+					}
+				} else {
+					socket.emit("wrongPass")
+				}
+			})
+
+			//register
+			socket.on("register", function (nick, password) {
+				if (getByNick(nick)) {
+					if (password) {
+						db.write(nick, "pass", password)
+						socket.emit("passChanged")
+					}
+				}
+			})
+		})
 	}
 }
 
@@ -151,22 +156,22 @@ function login(nick, socket) {
 
 	addUser({
 		id: socket.id,
-		nickname: nick,
+		nick: nick,
 		status: "online"
 	})
 
-	log(nick + " joined")
 	socket.join("main")
 	socket.emit("joined")
 
-	if (config.emit) {
+	if (config.motd) {
 		socket.emit("motd", config.motd)
 	}
+
+	emitStatus("join", socket)
 }
 
 //add user
 function addUser(user) {
-
 	//find empty space
 	var index = users.findIndex(x => x.id === null)
 	if (index !== -1) {
@@ -177,10 +182,22 @@ function addUser(user) {
 	usersLimit++
 }
 
-//get user
+//get user by id
 function getUser(id) {
 	var user
 	var index = users.findIndex(x => x.id === id)
+	if (index === -1) {
+		user = false
+	} else {
+		user = users[index]
+	}
+	return user
+}
+
+//get user by id
+function getByNick(nick) {
+	var user
+	var index = users.findIndex(x => x.nick === nick)
 	if (index === -1) {
 		user = false
 	} else {
@@ -198,30 +215,51 @@ function getIndex(id) {
 	return index
 }
 
-//get user id
-function getId(nick) {
-	var userId
-	var index = users.findIndex(x => x.nickname === nick)
-	if (index === -1) {
-		userId = false
-	} else {
-		userId = users[index].id
-	}
-	return userId
-}
-
 //delete user
 function delUser(id) {
 	var index = getIndex(id)
 	if (index) {
 		Object.keys(users[index]).forEach(v => users[index][v] = null)
 		usersLimit--
-	} else {
-		log(id + " not exist")
 	}
 }
 
 //emit user status
-function emitStatus(socket) {
+function emitStatus(type, socket) {
 
+	if (getUser(socket.id)) {
+
+		if (type === "join") {
+			socket.broadcast.to("main").emit("isJoin", getUser(socket.id).nick)
+		}
+
+		if (type === "left") {
+			socket.broadcast.to("main").emit("isLeft", getUser(socket.id).nick)
+		}
+
+		if (type === "online") {
+			socket.broadcast.to("main").emit("isOnline", getUser(socket.id).nick)
+		}
+
+		if (type === "dnd") {
+			socket.broadcast.to("main").emit("isDnd", getUser(socket.id).nick)
+		}
+
+		if (type === "afk") {
+			socket.broadcast.to("main").emit("isAfk", getUser(socket.id).nick)
+		}
+	}
+}
+
+//chech nick avability
+function checkNickAvabile(nick, socket) {
+	var value
+	if (getByNick(nick)) {
+		socket.emit("nickTaken")
+		io.sockets.connected[socket.id].disconnect()
+		value = false
+	} else {
+		value = true
+	}
+	return value
 }

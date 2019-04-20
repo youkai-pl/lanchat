@@ -32,7 +32,7 @@ module.exports = {
 		}
 
 		database.push({
-			nickname: user.nickname,
+			nick: user.nick,
 			level: user.level,
 			ip: user.ip,
 			pass: user.pass
@@ -42,14 +42,14 @@ module.exports = {
 
 	//write to db
 	write: function (nick, key, value) {
-		var index = database.findIndex(x => x.nickname === nick)
+		var index = database.findIndex(x => x.nick === nick)
 		database[index][key] = value
 		save()
 	},
 
 	//get user
 	get: function (nick) {
-		var index = database.findIndex(x => x.nickname === nick)
+		var index = database.findIndex(x => x.nick === nick)
 		if (index === -1) {
 			user = false
 		} else {
