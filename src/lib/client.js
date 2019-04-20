@@ -144,7 +144,7 @@ module.exports = {
 
 	//list
 	list: function () {
-		socket.emit("getList")
+		socket.emit("list")
 	},
 
 	//changeStatus

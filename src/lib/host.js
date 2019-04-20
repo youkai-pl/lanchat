@@ -149,7 +149,7 @@ module.exports.start = function () {
 			socket.on("setPassword", function (nick, password) {
 				if (getByNick(nick)) {
 					if (password) {
-						db.write(nick, "pass", password)
+						db.write(getUser(socket.id).nick, "pass", password)
 						socket.emit("passChanged")
 					}
 				}

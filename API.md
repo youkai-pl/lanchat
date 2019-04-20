@@ -1,38 +1,25 @@
 # Lanchat API 1.0
 
 * [Client side socket commands](#client-side-socket-commands)
-  * [login](#login)
-  * [auth](#auth)
-  * [register](#register)
-  * [list](#list)
-  * [changeStatus](#changeStatus)
-  * [message](#message)
-  * [mention](#mention)
-  * [nick](#nick)
-  * [ban](#ban)
-  * [mute](#mute)
-  * [unban](#unban)
-  * [unmute](#unmute)
-  * [level](#level)
+    * [auth](#auth)
+    * [ban](#ban)
+    * [changeNick](#changeNick)
+    * [changeStatus](#changeStatus)
+    * [kick](#kick)
+    * [mention](#mention)
+    * [message](#message)
+    * [mute](#mute)
+    * [list](#list)
+    * [login](#login)
+    * [setPassword](#setPassword)
+    * [setPermission](#setPermission)
+    * [unban](#unban)
+    * [unmute](#unmute)
+
 * [Client side socket events](#client-side-socket-events)
-  * [message](#message-event)
-  * [mentioned](#mentioned)
-  * [status](#status)
-  * [return](#return)
-  * [motd](#motd)
-  * [banned](#banned)
-  * [needAuth](#needAuth)
-  * [joined](#joined)
-  * [socketLimit]
-  * []
+
 * [Permissions](#permissions)
 ## Client side socket commands
-
-### login
-Login on server
-```js
-socket.emit("login", nick)
-```
 
 ### auth
 Auth registered user
@@ -40,16 +27,16 @@ Auth registered user
 socket.emit("auth", nick, password)
 ```
 
-### register
-Register user on server or change his password
+### ban
+Ban user
 ```js
-socket.emit("register", nick, password)
+socket.emit("ban", nick)
 ```
 
-### list
-Get connected user list
+### changeNick
+Change nick
 ```js
-socket.emit("list")
+socket.emit("changeNick", nick)
 ```
 
 ### changeStatus
@@ -61,10 +48,10 @@ Change user status
 socket.emit("changeStatus", value)
 ```
 
-### message
-Send message
+### kick
+Kick user
 ```js
-socket.emit("message", content)
+socket.emit("kick", nick)
 ```
 
 ### mention
@@ -73,28 +60,42 @@ Send mention
 socket.emit("mention", nick)
 ```
 
-### nick
-Change nick
+### message
+Send message
 ```js
-socket.emit("nick", nick)
-```
-
-### kick
-Kick user
-```js
-socket.emit("kick", nick)
-```
-
-### ban
-Ban user
-```js
-socket.emit("ban", nick)
+socket.emit("message", content)
 ```
 
 ### mute
 Mute user
 ```js
 socket.emit("kick", mute)
+```
+
+### list
+Get connected user list
+```js
+socket.emit("list")
+```
+
+### login
+Login on server
+```js
+socket.emit("login", nick)
+```
+
+### setPassword
+Register user on server or change his password
+```js
+socket.emit("register", setPassword)
+```
+
+### setPermission
+Change user permission number
+[Permissions](#permissions)
+
+```js
+socket.emit("setPermission", nick, level)
 ```
 
 ### unban
@@ -109,12 +110,7 @@ Unmute user
 socket.emit("kick", unmute)
 ```
 
-### level
-Change user permission number
-[Permissions](#permissions)
-```js
-socket.emit("level", nick)
-```
+
 
 ## Client side socket events
 
@@ -159,8 +155,7 @@ Emited when user has been banned
 
 ## Permissions
 * 0 - ban
-* 1 - mute
-* 2 - user
-* 3 - moderator (kick, ban, etc)
-* 4 - administrator (moderator commands + level)
-* 5 - owner (can do anything)
+* 1 - user
+* 2 - moderator (kick, ban, etc)
+* 3 - administrator (moderator commands + level)
+* 4 - owner (can do anything)

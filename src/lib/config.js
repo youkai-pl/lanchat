@@ -88,6 +88,9 @@ module.exports = {
 		//change value
 		config[key] = value
 
+		//export
+		module.exports[key] = config[key]
+
 		//delete temporary keys
 		var toWrtie = config
 		delete toWrtie["validate"]
@@ -98,8 +101,5 @@ module.exports = {
 		fs.writeFileSync(path + "config.json", JSON.stringify(toWrtie), function (err) {
 			if (err) return console.log(err)
 		})
-
-		//export
-		module.exports[key] = config[key]
 	}
 }
