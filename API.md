@@ -1,35 +1,57 @@
 # Lanchat API 1.0
 
 * [Client side socket commands](#client-side-socket-commands)
-  * [login](#login)
-  * [auth](#auth)
-  * [register](#register)
-  * [list](#list)
-  * [changeStatus](#changeStatus)
-  * [message](#message)
-  * [mention](#mention)
-  * [nick](#nick)
-  * [ban](#ban)
-  * [mute](#mute)
-  * [unban](#unban)
-  * [unmute](#unmute)
-  * [level](#level)
-* [Client side socket events](#client-side-socket-events)
-  * [message](#message-event)
-  * [mentioned](#mentioned)
-  * [status](#status)
-  * [return](#return)
-  * [motd](#motd)
-  * [rcode](#rcode)
-* [Permissions](#permissions)
-* [Return codes](#return-codes)
-## Client side socket commands
+    * [auth](#auth)
+    * [ban](#ban)
+    * [changeNick](#changeNick)
+    * [changeStatus](#changeStatus)
+    * [kick](#kick)
+    * [mention](#mention)
+    * [message](#message)
+    * [mute](#mute)
+    * [list](#list)
+    * [login](#login)
+    * [setPassword](#setPassword)
+    * [setPermission](#setPermission)
+    * [unban](#unban)
+    * [unmute](#unmute)
 
-### login
-Login on server
-```js
-socket.emit("login", nick)
-```
+* [Client side socket events](#client-side-socket-events)
+    * [afk](#afk)
+    * [alreadySigned](#alreadySigned)
+    * [clientMuted](#clientMuted)
+    * [dnd](#dnd)
+    * [doneBan](#doneBan)
+    * [doneSetPermission](#doneSetPermission)
+    * [doneUnmute](#doneUnMute)
+    * [doneUnban](#doneUnBan)
+    * [doneMute](#doneMute)
+    * [flood](#flood)
+    * [incorrectValue](#incorrectValue)
+    * [join](#join)
+    * [left](#left)
+    * [list](#list)
+    * [loginSucces](#loginSucces)
+    * [mention](#mention)
+    * [message](#message)
+    * [motd](#motd)
+    * [neetAuth](#neetAuth)
+    * [noPermission](#noPermission)
+    * [nickChanged](#nickChanged)
+    * [nickShortened](#nickShortened)
+    * [nickTaken](#nickTaken)
+    * [notExist](#notExist)
+    * [notSigned](#notSigned)
+    * [online](#online)
+    * [passChanged](#passChanged)
+    * [socketLimit](#socketLimit)
+    * [statusChanged](#statusChanged)
+    * [tooLong](#tooLong)
+    * [userChangeNick](#userChangeNick)
+    * [wrongPass](#wrongPass)
+
+* [Permissions](#permissions)
+## Client side socket commands
 
 ### auth
 Auth registered user
@@ -37,16 +59,16 @@ Auth registered user
 socket.emit("auth", nick, password)
 ```
 
-### register
-Register user on server or change his password
+### ban
+Ban user
 ```js
-socket.emit("register", nick, password)
+socket.emit("ban", nick)
 ```
 
-### list
-Get connected user list
+### changeNick
+Change nick
 ```js
-socket.emit("list")
+socket.emit("changeNick", nick)
 ```
 
 ### changeStatus
@@ -58,10 +80,10 @@ Change user status
 socket.emit("changeStatus", value)
 ```
 
-### message
-Send message
+### kick
+Kick user
 ```js
-socket.emit("message", content)
+socket.emit("kick", nick)
 ```
 
 ### mention
@@ -70,28 +92,42 @@ Send mention
 socket.emit("mention", nick)
 ```
 
-### nick
-Change nick
+### message
+Send message
 ```js
-socket.emit("nick", nick)
-```
-
-### kick
-Kick user
-```js
-socket.emit("kick", nick)
-```
-
-### ban
-Ban user
-```js
-socket.emit("ban", nick)
+socket.emit("message", content)
 ```
 
 ### mute
 Mute user
 ```js
 socket.emit("kick", mute)
+```
+
+### list
+Get connected user list
+```js
+socket.emit("list")
+```
+
+### login
+Login on server
+```js
+socket.emit("login", nick)
+```
+
+### setPassword
+Register user on server or change his password
+```js
+socket.emit("register", setPassword)
+```
+
+### setPermission
+Change user permission number
+[Permissions](#permissions)
+
+```js
+socket.emit("setPermission", nick, level)
 ```
 
 ### unban
@@ -106,72 +142,103 @@ Unmute user
 socket.emit("kick", unmute)
 ```
 
-### level
-Change user permission number
-[Permissions](#permissions)
-```js
-socket.emit("level", nick)
-```
+
 
 ## Client side socket events
 
-### message (event)
-Message broadcasted on host <br>
-Return obcject:
-```js
-msg {
-    nick: "name of the sender"
-    content: "message content"
-}
-```
+### afk
+Returns nickname of user at status change
 
-### mentioned
-Mention from other user
-Return nickname of sender
+### alreadySigned
+Returns when user trying auth second time
 
-### status
-Change status of other user <br>
-Return object:
-```js
-msg {
-    nick: "name of user"
-    content: "content"
-}
-```
+### clientMuted
+Returns when muted user trying send message
 
-### return
-Message from server <br>
-Return string
+### dnd
+Returns nickname of user at status change
+
+### doneBan
+Returns when moderation action is done succesfully
+
+### doneSetPermission
+Returns when moderation action is done succesfully
+
+### doneUnmute
+Returns when moderation action is done succesfully
+
+### doneUnban
+Returns when moderation action is done succesfully
+
+### doneMute
+Returns when moderation action is done succesfully
+
+### flood
+Returns when user flooding whith messages or commands
+
+### incorrectValue
+Returns when parametr of command isn't valid
+
+### join
+Returns someone's nickname when he signed
+
+### left
+Retruns someone's nickname when he leave server
+
+### loginSucces
+Returns after succesfull login
+
+### mention
+Returns someone's nickname when he mentioning you
+
+### message
+Returns nickname and message content
 
 ### motd
-Text showing after connected <br>
-Return string
+Returns when user joining server with motd
 
-### rcode
-Return code from server <br>
-[List](#return-codes)
+### neetAuth
+Returns when user have to login with password
+
+### noPermission
+Returns when the user tries to do something for which he is not authorized
+
+### nickChanged
+Returns after succesfully nick change
+
+### nickShortened
+Returns after nick change when it's too long
+
+### nickTaken
+Returns when nick is alredy taken
+
+### notExist
+Returns when paramentr user doesn't exist
+
+### online
+Returns someone's nickname when he changed status to online
+
+### passChanged
+Returns after successfully password change
+
+### socketLimit
+Returns when all server sockets is taken.
+
+### statusChanged
+Returns after successfully status change
+
+### tooLong
+Returns when message is too long
+
+### userChangeNick
+Returns old and new nickname when someone changed it
+
+### wrongPass
+Returns when password is not valid
 
 ## Permissions
 * 0 - ban
-* 1 - mute
-* 2 - user
-* 3 - moderator (kick, ban, etc)
-* 4 - administrator (moderator commands + level)
-* 5 - owner (can do anything)
-
-## Return codes
-* 001 - blank message
-* 002 - selected user not exist
-* 003 - already used nickname
-* 004 - flood blocked
-* 005 - user banned
-* 006 - account locked with password
-* 007 - already logged
-* 008 - wrong password
-* 009 - password changed
-* 010 - blank password at register
-* 011 - user muted
-* 012 - long message blocked
-* 013 - user don't have permission
-* 014 - bad permission ID
-* 015 - logged successfully
+* 1 - user
+* 2 - moderator (kick, ban, etc)
+* 3 - administrator (moderator commands + level)
+* 4 - owner (can do anything)

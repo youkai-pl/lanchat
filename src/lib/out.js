@@ -7,50 +7,61 @@ module.exports = {
 
 	//view message
 	message: function (msg) {
-		process.stdout.clearLine()
-		process.stdout.cursorTo(0)
-		console.log(c.green + "[" + time() + "] " + c.blue + msg.nick + c.reset + ": " + msg.content)
-		rl.prompt(true)
+		out(c.green + "[" + time() + "] " + c.blue + msg.nick + c.reset + ": " + msg.content)
 	},
 
 	//user status
-	user_status: function (msg) {
-		process.stdout.clearLine()
-		process.stdout.cursorTo(0)
-		console.log(c.blue + msg.nick + " " + c.reset + msg.content)
-		rl.prompt(true)
+	user_status: function (nick, content) {
+		out(c.blue + nick + " " + c.reset + content)
 	},
 
 	//mention
 	mention: function (nick) {
-		process.stdout.clearLine()
-		process.stdout.cursorTo(0)
-		console.log(c.blue + nick + c.reset + " mentioned you")
-		rl.prompt(true)
+		out(c.blue + nick + c.reset + " mentioned you")
 	},
 
 	//view alert
 	alert: function (msg) {
-		process.stdout.clearLine()
-		process.stdout.cursorTo(0)
-		console.log(c.red + "[!] " + msg + c.reset)
-		rl.prompt(true)
+		out(c.red + "[!] " + msg + c.reset)
+	},
+
+	//warning
+	warning: function (msg) {
+		out(c.yellow + "[!] " + msg + c.reset)
 	},
 
 	//view status
 	status: function (msg) {
-		process.stdout.clearLine()
-		process.stdout.cursorTo(0)
-		console.log(c.green + "[#] " + msg + c.reset)
-		rl.prompt(true)
+		out(c.green + "[#] " + msg + c.reset)
 	},
 
 	//normal console text
 	blank: function (msg) {
-		process.stdout.clearLine()
-		process.stdout.cursorTo(0)
-		console.log(msg)
-		rl.prompt(true)
+		out(msg)
+	},
+
+	//nick change
+	nickChange: function (old, nick) {
+		out(c.blue + old + c.reset + " is now " + c.blue + nick + c.reset)
+	},
+
+	//list of users
+	list: function (user, status) {
+		var color
+		if (status === "online") {
+			color = c.green
+		}
+		if (status === "afk") {
+			color = c.yellow
+		}
+		if (status === "dnd") {
+			color = c.red
+		}
+		if (!status) {
+			color = c.reset
+		}
+
+		out("(" + color + status + c.reset + ") " + user)
 	}
 }
 
@@ -61,4 +72,11 @@ function time() {
 		("0" + date.getMinutes()).slice(-2) + ":" +
 		("0" + date.getSeconds()).slice(-2))
 	return time
+}
+
+function out(content) {
+	process.stdout.clearLine()
+	process.stdout.cursorTo(0)
+	console.log(content)
+	rl.prompt(true)
 }

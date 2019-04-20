@@ -20,7 +20,7 @@ module.exports = {
 		//check config
 		if (!fs.existsSync(path + "config.json")) {
 			// eslint-disable-next-line quotes
-			fs.writeFileSync(path + "config.json", '{"nick":"default","port":"2137","notify":"mention", "devlog":false, "attemps": "5", "ratelimit": "15"}')
+			fs.writeFileSync(path + "config.json", '{"nick":"default","port":"2137","notify":"mention", "devlog":false, "attemps": 5, "ratelimit": 15, "socketlimit": 20, "lenghtlimit: 1500"}')
 		}
 
 		//check host database
@@ -46,13 +46,19 @@ module.exports = {
 			if (!config.hasOwnProperty("notify")) {
 				config.validate = false
 			}
-			if (!config.hasOwnProperty("devlog")) {
+			if (!config.hasOwnProperty("log")) {
 				config.validate = false
 			}
 			if (!config.hasOwnProperty("ratelimit")) {
 				config.validate = false
 			}
 			if (!config.hasOwnProperty("attemps")) {
+				config.validate = false
+			}
+			if (!config.hasOwnProperty("socketlimit")) {
+				config.validate = false
+			}
+			if (!config.hasOwnProperty("lenghtlimit")) {
 				config.validate = false
 			}
 
@@ -82,6 +88,9 @@ module.exports = {
 		//change value
 		config[key] = value
 
+		//export
+		module.exports[key] = config[key]
+
 		//delete temporary keys
 		var toWrtie = config
 		delete toWrtie["validate"]
@@ -92,8 +101,5 @@ module.exports = {
 		fs.writeFileSync(path + "config.json", JSON.stringify(toWrtie), function (err) {
 			if (err) return console.log(err)
 		})
-
-		//export
-		module.exports[key] = config[key]
 	}
 }

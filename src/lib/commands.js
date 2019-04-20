@@ -33,11 +33,12 @@ module.exports = {
 
 			//change local nick
 			config.write("nick", args[0])
-			out.blank("Your nickname is now " + c.blue + args[0] + c.reset)
 
 			//change nick on host
 			if (global.connected) {
 				client.nick()
+			} else {
+				out.blank("Your nickname is now " + c.blue + args[0] + c.reset)
 			}
 		}
 	},
@@ -78,7 +79,8 @@ module.exports = {
 
 	//host
 	host: function () {
-		host.host()
+		host.start()
+		client.connect("127.0.0.1")
 	},
 
 	//login

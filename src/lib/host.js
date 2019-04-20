@@ -1,547 +1,467 @@
 //import
-const out = require("./out")
-const client = require("./client")
-const net = require("net")
 const http = require("http").Server()
 const io = require("socket.io")(http)
 const { RateLimiterMemory } = require("rate-limiter-flexible")
+const out = require("./out")
 const db = require("./db")
 const config = require("./config")
-var global = require("./global")
 
+//variables
 var database
-users = []
+var users = []
+var status
+var usersLimit = 0
+var rateLimiter
 
-//HOST
-module.exports = {
+module.exports.stats = { users, usersLimit }
 
-	//create host
-	host: function () {
+module.exports.start = function () {
 
-		//load db
+	//start server
+	if (status) {
+		out.alert("server already running")
+	} else {
+
+		//load database
+		out.status("loading database")
 		database = db.load()
 
-		//check database
-		var index = database.findIndex(x => x.nickname === config.nick)
-
-		//create database index
-		if (index === -1) {
-			db.add(config.nick)
+		if (!db.get(config.nick)) {
+			db.add({
+				nick: config.nick,
+				level: 5,
+				ip: "127.0.0.1"
+			})
 		}
 
-		//write permission to database
-		db.write(config.nick, "level", 5)
+		//set permissions
+		db.write(config.nick, "level", 4)
 
-		//rate limiter init
+		out.status("starting server")
+
+		//rate limiter
 		rateLimiter = new RateLimiterMemory(
 			{
 				points: config.ratelimit,
 				duration: 1,
 			})
 
-		out.status("starting server")
-
 		//check motd
 		if (!config.motd) {
 			out.status("motd not found")
 		}
 
-		//check port
-		testPort(config.port, "127.0.0.1", function (e) {
-			if (e === "failure") {
-				http.listen(config.port, function () {
-					out.status("server running")
-				})
-				//start host
-				run()
-				global.host = true
-				client.connect("localhost")
-			} else {
-				out.alert("Server is already running on this PC")
-				return
-			}
+		//start listen
+		http.listen(config.port, function () {
+			out.status("server started")
+			status = true
 		})
-	},
-}
 
-//ALL SERVER THINGS
-function run() {
-	io.on("connection", function (socket) {
+		//SOCKET EVENTS
+		io.on("connection", function (socket) {
 
-		//BASIC ACTIONS
-		//login
-		socket.on("login", function (nick) {
+			//login
+			socket.on("login", function (nick) {
 
-			//detect blank nick
-			if (!nick) {
-				nick = "default"
-			}
-
-			//shortening long nick
-			if (nick.length > 15) {
-				nick = nick.substring(0, 15)
-			}
-
-			//check database
-			var index = database.findIndex(x => x.nickname === nick)
-
-			//create database index
-			if (index === -1) {
-				db.add(nick)
-			}
-
-			//update index
-			index = database.findIndex(x => x.nickname === nick)
-
-			//add keys
-			if (!database[index].hasOwnProperty("level")) {
-				db.write(nick, "level", 2)
-			}
-			if (!database[index].hasOwnProperty("ip")) {
-				db.write(nick, "ip", socket.handshake.address)
-			}
-			if (!database[index].hasOwnProperty("lock")) {
-				db.write(nick, "lock", false)
-			}
-			if (!database[index].hasOwnProperty("pass")) {
-				db.write(nick, "pass", false)
-			}
-
-			//ban check
-			var ban
-
-			//chekc via ip
-			for (var i = 0; i < database.length; i++) {
-				if (database[i].level === 0) {
-					ban = true
+				//detect blank nick
+				if (!nick) {
+					nick = "default"
 				}
-			}
 
-			//check via nick
-			if (database[index].level === 0) {
-				ban = true
-			}
+				//shortening long nick
+				if (nick.length > 15) {
+					nick = nick.substring(0, 15)
+					socket.emit("nickShortened")
+				}
 
-			//handle banned user
-			if (ban) {
-
-				//return
-				socket.emit("rcode", "005")
-				socket.emit("return", "BANNED")
-				io.sockets.connected[socket.id].disconnect()
-			} else {
-
-				//check lock
-				if (database[index].lock) {
-
-					//return
-					socket.emit("rcode", "006")
-					socket.emit("return", "Account locked\nLogin with /login <password>")
+				//check sockets limit
+				if (config.socketlimit <= usersLimit) {
+					socket.emit("socketLimit")
+					io.sockets.connected[socket.id].disconnect()
 				} else {
-					auth(nick, socket)
-				}
-			}
-		})
 
-		//logoff
-		socket.on("disconnect", function () {
+					//check the availability of a nickname
+					if (checkNickAvabile(nick, socket)) {
 
-			//find user
-			var index = users.findIndex(x => x.id === socket.id)
+						//add user to database
+						if (!db.get(nick)) {
+							db.add({
+								nick: nick,
+								level: 1,
+							})
+						}
 
-			//if user authorized
-			if (index !== -1) {
+						//save user ip adress
+						db.write(nick, "ip", socket.handshake.address)
 
-				//emit status
-				socket.broadcast.to("main").emit("status", {
-					content: "left the chat",
-					nick: users[index].nickname
-				})
-
-				//delete user from table
-				users.splice(users.indexOf(index), 1)
-			}
-		})
-
-		//auth
-		socket.on("auth", function (nick, password) {
-			var index = database.findIndex(x => x.nickname === nick)
-			if (users.findIndex(x => x.id === socket.id) !== -1) {
-				socket.emit("rcode", "007")
-				socket.emit("return", "You are already logged")
-			} else {
-				if (password === database[index].pass) {
-					auth(nick, socket)
-				} else {
-					socket.emit("rcode", "008")
-					socket.emit("return", "Wrong password")
-				}
-			}
-		})
-
-		//register
-		socket.on("register", function (nick, password) {
-			var index = users.findIndex(x => x.nickname === nick)
-			if (password) {
-				if (index !== -1) {
-					db.write(nick, "lock", true)
-					db.write(nick, "pass", password)
-					socket.emit("rcode", "009")
-					socket.emit("return", "Done")
-				}
-			} else {
-				socket.emit("rcode", "010")
-				socket.emit("return", "Password cannot be blank")
-			}
-		})
-
-		//USER ACTIONS
-		//message
-		socket.on("message", async (content) => {
-
-			//validate message
-			if (typeof content === "string" || content instanceof String) {
-				//find user
-				var index = users.findIndex(x => x.id === socket.id)
-
-				//if user loggined
-				if (users[index]) {
-
-					//get user from db
-					var index2 = database.findIndex(x => x.nickname === users[index].nickname)
-
-					//check mute
-					if (database[index2].level === 1) {
-						socket.emit("rcode", "011")
-						socket.emit("return", "muted")
-					} else {
-						if (content) {
-							//check lenght
-							try {
-								//flood block
-								await rateLimiter.consume(socket.handshake.address)
-								//validate message
-
-								//block long messages
-								if (content.length > 1500) {
-									socket.emit("rcode", "012")
-									socket.emit("return", "FLOOD BLOCKED")
-								} else {
-									//emit message
-									socket.broadcast.to("main").emit("message", {
-										nick: users[index].nickname,
-										content: content
-									})
+						//check ban
+						var ban
+						for (var i = 0; i < database.length; i++) {
+							if (database[i].level === 0) {
+								if (database[i].ip === socket.handshake.address) {
+									ban = true
 								}
-
-							} catch (rejRes) {
-
-								//emit alert
-								socket.emit("rcode", "004")
-								socket.emit("return", "HOST: FLOOD BLOCKED")
 							}
+						}
+						if (db.get(nick).level === 0) {
+							ban = true
+						}
+						if (ban) {
+							socket.emit("banned")
+							io.sockets.connected[socket.id].disconnect()
 						} else {
-							//emit blank message error
-							socket.emit("rcode", "001")
+							//check password
+							if (db.get(nick).pass) {
+								socket.emit("needAuth")
+							} else {
+								login(nick, socket)
+							}
 						}
 					}
 				}
-			} else {
-				//disconnect user with wrong client
-				io.sockets.connected[socket.id].disconnect()
-			}
-		})
+			})
 
-		//mention
-		socket.on("mention", function (nick) {
-			//find user
-			var selected = users.findIndex(x => x.nickname === nick)
-			//find user
-			var index = users.findIndex(x => x.id === socket.id)
-			//if user exist
-			if (users[selected]) {
-				//send mention
-				socket.to(`${users[selected].id}`).emit("mentioned", users[index].nickname)
-			} else {
-				//send return
-				socket.emit("rcode", "002")
-				socket.emit("return", "This user not exist")
-			}
-		})
+			//disconnect
+			socket.on("disconnect", function () {
+				emitStatus("left", socket)
+				delUser(socket.id)
+			})
 
-		//change nick
-		socket.on("nick", function (nick) {
+			//auth
+			socket.on("auth", function (nick, password) {
+				if (!getUser(socket.id)) {
+					//check password
+					if (db.get(nick).pass === password) {
+						//check nick avability
+						if (checkNickAvabile(nick, socket)) {
+							login(nick, socket)
+							socket.emit("loginSucces")
+						}
+					} else {
+						socket.emit("wrongPass")
+					}
+				} else {
+					socket.emit("alreadySigned")
+				}
+			})
 
-			//find user
-			var index = users.findIndex(x => x.id === socket.id)
+			//setPassword
+			socket.on("setPassword", function (nick, password) {
+				if (getByNick(nick)) {
+					if (password) {
+						db.write(getUser(socket.id).nick, "pass", password)
+						socket.emit("passChanged")
+					}
+				}
+			})
 
-			//shorten the long nick
-			if (nick.length > 15) {
-				nick = nick.substring(0, 15)
-			}
+			//message
+			socket.on("message", function (content) {
+				verify(socket, function () {
+					//check message
+					if (typeof content === "string" || content instanceof String) {
 
-			//check is nick already used
-			if (database.findIndex(x => x.nickname === nick) !== -1) {
-				socket.emit("rcode", "003")
-				socket.emit("return", "nick already used on this server")
-			} else {
+						//change permission
+						if (!checkMute(socket.id)) {
 
-				//get old nick
-				var old = users[index].nickname
+							//block long messages
+							if (content.length < config.lenghtlimit) {
 
-				//save new nick
-				users[index].nickname = nick
-				db.write(old, "nickname", nick)
+								//emit message
+								socket.broadcast.to("main").emit("message", {
+									nick: getUser(socket.id).nick,
+									content: content
+								})
 
-				//send return to user
-				socket.broadcast.to("main").emit("return", old + " change nick to " + nick)
-			}
-		})
+							} else {
+								socket.emit("tooLong")
+							}
 
-		//list
-		socket.on("list", function () {
-
-			//crate user list
-			var list = []
-			list[0] = "\nUser List:"
-
-			//add users to table
-			for (i = 1; i < users.length + 1; i++) {
-				var a = users[i - 1]
-
-				list[i] = a.nickname + " (" + a.status + ")"
-			}
-
-			//emit table
-			socket.emit("return", list.join("\n"))
-
-		})
-
-		//change status
-		socket.on("changeStatus", function (value) {
-			if (value === "online" || value === "dnd" || value === "afk") {
-				//find user
-				var index = users.findIndex(x => x.id === socket.id)
-				//change user status
-				users[index].status = value
-				//emit status
-				socket.broadcast.to("main").emit("status", {
-					content: "is " + value,
-					nick: users[index].nickname
+						} else {
+							socket.emit("clientMuted")
+						}
+					}
 				})
-			} else {
-				socket.emit("rcode", "001")
-			}
-		})
+			})
 
-		//MODERATION
-		//kick
-		socket.on("kick", function (arg) {
-			var index = users.findIndex(x => x.id === socket.id)
-			if (index !== -1) {
-				var index2 = database.findIndex(x => x.nickname === users[index].nickname)
-				if (database[index2].level < 3) {
-					socket.emit("rcode", "013")
-					socket.emit("return", "You not have permission")
-				} else {
-					//check user
-					var index3 = users.findIndex(x => x.nickname === arg)
-					if (!users[index3]) {
-						socket.emit("rcode", "002")
-						socket.emit("return", "This user not exist")
+			//mention
+			socket.on("mention", function (nick) {
+				verify(socket, function () {
+					if (checkMute(socket.id)) {
+						socket.emit("muted")
 					} else {
-						//kick user
-						socket.emit("return", "Kicked " + users[index3].nickname)
-						io.sockets.connected[users[index3].id].disconnect()
-					}
-				}
-			}
-		})
-
-		//ban
-		socket.on("ban", function (arg) {
-			//find user
-			var index = users.findIndex(x => x.id === socket.id)
-			if (index !== -1) {
-				//find user
-				var index2 = database.findIndex(x => x.nickname === users[index].nickname)
-				//find user
-				var index3 = database.findIndex(x => x.nickname === arg)
-				if ((database[index2].level < 3) || (database[index2].level < database[index3].level)) {
-					socket.emit("rcode", "013")
-					socket.emit("return", "You not have permission")
-				} else {
-					if (!database[index3]) {
-						socket.emit("rcode", "002")
-						socket.emit("return", "This user not exist")
-					} else {
-						//ban user
-						socket.emit("return", "Banned " + users[index3].nickname)
-						db.write(arg, "level", 0)
-						io.sockets.connected[users[index3].id].disconnect()
-					}
-				}
-			}
-		})
-
-		//unban
-		socket.on("unban", function (arg) {
-			//find user
-			var index = users.findIndex(x => x.id === socket.id)
-			if (index !== -1) {
-				//find user
-				var index2 = database.findIndex(x => x.nickname === users[index].nickname)
-				//find user
-				var index3 = database.findIndex(x => x.nickname === arg)
-				if (database[index2].level < 3) {
-					socket.emit("rcode", "013")
-					socket.emit("return", "You not have permission")
-				} else {
-					if (!database[index3]) {
-						socket.emit("rcode", "002")
-						socket.emit("return", "This user not exist")
-					} else {
-						//ban user
-						socket.emit("return", "Unbanned " + database[index3].nickname)
-						db.write(arg, "level", 2)
-					}
-				}
-			}
-		})
-
-		//mute
-		socket.on("mute", function (arg) {
-			//find user
-			var index = users.findIndex(x => x.id === socket.id)
-			if (index !== -1) {
-				//find user
-				var index2 = database.findIndex(x => x.nickname === users[index].nickname)
-				//find user
-				var index3 = database.findIndex(x => x.nickname === arg)
-				if ((database[index2].level < 3) || (database[index2].level < database[index3].level)) {
-					socket.emit("rcode", "013")
-					socket.emit("return", "You not have permission")
-				} else {
-					if (!database[index3]) {
-						socket.emit("rcode", "002")
-						socket.emit("return", "This user not exist")
-					} else {
-						//mute user
-						socket.emit("return", "Muted " + database[index3].nickname)
-						db.write(arg, "level", 1)
-					}
-				}
-			}
-		})
-
-		//unmute
-		socket.on("unmute", function (arg) {
-
-			//find user
-			var index = users.findIndex(x => x.id === socket.id)
-			if (index !== -1) {
-				//find user
-				var index2 = database.findIndex(x => x.nickname === users[index].nickname)
-				//find user
-				var index3 = database.findIndex(x => x.nickname === arg)
-				if (database[index2].level < 3) {
-					socket.emit("rcode", "013")
-					socket.emit("return", "You not have permission")
-				} else {
-					if (!database[index3]) {
-						socket.emit("rcode", "002")
-						socket.emit("return", "This user not exist")
-					} else {
-						//mute user
-						socket.emit("return", "Unmuted " + database[index3].nickname)
-						db.write(arg, "level", 2)
-					}
-				}
-			}
-		})
-
-		//change permission level
-		socket.on("level", function (nick, arg) {
-			//find user
-			var index = users.findIndex(x => x.nickname === socket.id)
-			if (index !== -1) {
-				//find user
-				var index2 = database.findIndex(x => x.nickname === users[index].nickname)
-				//find user
-				var index3 = database.findIndex(x => x.nickname === arg[0])
-				if ((database[index2].level < 4) || (database[index2].level < database[index3].level)) {
-					socket.emit("rcode", "013")
-					socket.emit("return", "You not have permission")
-				} else {
-					if (!database[index3]) {
-						socket.emit("rcode", "002")
-						socket.emit("return", "This user not exist")
-					} else {
-						if (arg[1] >= 0 && arg[1] <= 4) {
-							//change permission
-							socket.emit("return", "Updated permission for " + database[index3].nickname)
-							db.write(arg[0], "level", Number(arg[1]))
+						var id = getByNick(nick).id
+						if (id) {
+							socket.to(`${id}`).emit("mention", getUser(socket.id).nick)
 						} else {
-							socket.emit("rcode", "014")
-							socket.emit("return", "Bad permission ID")
+							socket.emit("notExist")
 						}
 					}
+				})
+			})
+
+			//nick
+			socket.on("changeNick", function (nick) {
+				verify(socket, function () {
+					//shorten the long nick
+					if (nick.length > 15) {
+						nick = nick.substring(0, 15)
+						socket.emit("nickShortened")
+					}
+
+					if (db.get(nick)) {
+						socket.emit("nickTaken")
+					} else {
+						if (getByNick(nick)) {
+							socket.emit("nickTaken")
+						} else {
+							var old = getUser(socket.id).nick
+							writeUser(socket.id, "nick, nick")
+							db.write(old, "nick", nick)
+							socket.broadcast.to("main").emit("userChangeNick", old, nick)
+							socket.emit("nickChanged")
+						}
+					}
+				})
+			})
+
+			//list
+			socket.on("list", function () {
+				verify(socket, function () {
+					socket.emit("list", users)
+				})
+			})
+
+			//change status
+			socket.on("changeStatus", function (status) {
+				verify(socket, function () {
+					var acceptable = ["online", "afk", "dnd"]
+					if (acceptable.indexOf(status) !== -1) {
+						writeUser(socket.id, "status", status)
+						socket.emit("statusChanged")
+						emitStatus(status, socket)
+					} else {
+						socket.emit("incorrectValue")
+					}
+				})
+			})
+
+			//mute
+			socket.on("mute", function (nick) {
+				checkPermission("mute", socket, nick, function () {
+					db.write(nick, "mute", true)
+					socket.emit("doneMute", nick)
+				})
+			})
+
+			//unmute
+			socket.on("unmute", function (nick) {
+				checkPermission("unmute", socket, nick, function () {
+					db.write(nick, "mute", false)
+					socket.emit("doneUnmute", nick)
+				})
+			})
+
+			//kick
+			socket.on("kick", function (nick) {
+				checkPermission("kick", socket, nick, function () {
+					if (getByNick(nick)) {
+						io.sockets.connected[getByNick(nick).id].disconnect()
+					} else {
+						socket.emit("notExist")
+					}
+				})
+			})
+
+			//ban
+			socket.on("ban", function (nick) {
+				checkPermission("ban", socket, nick, function () {
+					db.write(nick, "level", 0)
+					io.sockets.connected[getByNick(nick).id].disconnect()
+					socket.emit("doneBan", nick)
+				})
+			})
+
+			//unban
+			socket.on("unban", function (nick) {
+				checkPermission("unban", socket, nick, function () {
+					db.write(nick, "level", 1)
+					socket.emit("doneUnban", nick)
+				})
+			})
+
+			//unban
+			socket.on("setPermission", function (nick, level) {
+				level = parseInt(level)
+				if (level >= 1 && level <= 4) {
+					checkPermission("level", socket, nick, function () {
+						db.write(nick, "level", level)
+						socket.emit("doneSetPermission", nick, level)
+					})
+				} else {
+					socket.emit("incorrectValue")
 				}
-			}
+			})
 		})
-	})
-}
-
-//FUNCIONS
-//Auth
-function auth(nick, socket) {
-
-	//check connected list
-	if (users.findIndex(x => x.nickname === nick) !== -1) {
-
-		socket.emit("rcode", "003")
-		socket.emit("return", "User already connected\nChange nick and try again")
-		io.sockets.connected[socket.id].disconnect()
-	} else {
-
-		//create user objcet
-		var user = {
-			id: socket.id,
-			nickname: nick,
-			status: "online",
-			ip: socket.handshake.address
-		}
-
-		//add user to array
-		users.push(user)
-
-		//broadcast status
-		socket.broadcast.to("main").emit("status", {
-			content: "join the chat",
-			nick: nick
-		})
-
-		//emit logged
-		socket.emit("rcode", "015")
-
-		//emit motd
-		if (config.motd) {
-			socket.emit("motd", config.motd)
-		}
-
-		//join
-		socket.join("main")
-
-		return
 	}
 }
 
-//test port
-function testPort(port, host, cb) {
-	var client = net.createConnection(port, host).on("connect", function (e) {
-		cb("success", e)
-		client.destroy()
-	}).on("error", function (e) {
-		cb("failure", e)
+//login
+function login(nick, socket) {
+
+	addUser({
+		id: socket.id,
+		nick: nick,
+		status: "online"
 	})
+
+	socket.join("main")
+	socket.emit("joined")
+
+	if (config.motd) {
+		socket.emit("motd", config.motd)
+	}
+
+	emitStatus("join", socket)
+}
+
+//add user
+function addUser(user) {
+	//find empty space
+	var index = users.findIndex(x => x.id === null)
+	if (index !== -1) {
+		users[index] = user
+	} else {
+		users.push(user)
+	}
+	usersLimit++
+}
+
+//get user by id
+function getUser(id) {
+	var user
+	var index = users.findIndex(x => x.id === id)
+	if (index === -1) {
+		user = false
+	} else {
+		user = users[index]
+	}
+	return user
+}
+
+//get user by id
+function getByNick(nick) {
+	var user
+	var index = users.findIndex(x => x.nick === nick)
+	if (index === -1) {
+		user = false
+	} else {
+		user = users[index]
+	}
+	return user
+}
+
+//get user index
+function getIndex(id) {
+	var index = users.findIndex(x => x.id === id)
+	if (index === -1) {
+		index = false
+	}
+	return index
+}
+
+//write to user
+function writeUser(id, key, value) {
+	var back
+	var index = getIndex(id)
+	if (index) {
+		users[index][key] = value
+		back = true
+	} else {
+		back = false
+	}
+	return back
+}
+
+//delete user
+function delUser(id) {
+	var index = getIndex(id)
+	if (index) {
+		Object.keys(users[index]).forEach(v => users[index][v] = null)
+		usersLimit--
+	}
+}
+
+//check permission
+function checkPermission(type, socket, nick, callback) {
+	verify(socket, function () {
+		var permission
+		var check
+		if (db.get(nick)) {
+			if (type === "mute" || type === "unmute" || type === "ban" || type === "unban" || type === "kick") {
+				permission = 2
+			}
+			if (type === "level") {
+				permission = 3
+			}
+
+			var level = db.get(getUser(socket.id).nick).level
+			if (level >= permission && level > db.get(nick).level) {
+				check = true
+			} else {
+				check = false
+				socket.emit("noPermission")
+			}
+		} else {
+			check = false
+			socket.emit("notExist")
+		}
+		if (check) {
+			callback()
+		}
+	})
+}
+
+//emit user status
+function emitStatus(type, socket) {
+
+	if (getUser(socket.id)) {
+		socket.broadcast.to("main").emit(type, getUser(socket.id).nick)
+	}
+}
+
+//chech nick avability
+function checkNickAvabile(nick, socket) {
+	var value
+	if (getByNick(nick)) {
+		socket.emit("nickTaken")
+		io.sockets.connected[socket.id].disconnect()
+		value = false
+	} else {
+		value = true
+	}
+	return value
+}
+
+//check mute
+function checkMute(id) {
+	return db.get(getUser(id).nick).mute
+}
+
+//verify
+async function verify(socket, callback) {
+	if (getUser(socket.id)) {
+		try {
+
+			//flood block
+			await rateLimiter.consume(socket.handshake.address)
+
+			callback()
+
+		} catch (rejRes) {
+			socket.emit("flood")
+		}
+	} else {
+		socket.emit("notSigned")
+	}
 }

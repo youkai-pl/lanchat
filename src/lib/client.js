@@ -1,5 +1,6 @@
 //import
 const out = require("./out")
+const c = require("./colors")
 const notify = require("./notify")
 const config = require("./config")
 var global = require("./global")
@@ -102,7 +103,7 @@ module.exports = {
 
 	//nick
 	nick: function () {
-		socket.emit("nick", config.nick)
+		socket.emit("changeNick", config.nick)
 	},
 
 	//auth
@@ -114,7 +115,7 @@ module.exports = {
 	lock: function (args) {
 		if (args) {
 			if (args[0] === args[1]) {
-				socket.emit("register", config.nick, args[0])
+				socket.emit("setPassword", config.nick, args[0])
 			} else {
 				out.blank("try /lock <password> <password>")
 			}
@@ -198,7 +199,7 @@ module.exports = {
 
 	//change permission
 	level: function (arg) {
-		socket.emit("level", arg)
+		socket.emit("setPermission", arg[0], arg[1])
 	},
 }
 
@@ -216,23 +217,13 @@ function listen() {
 	})
 
 	//mention
-	socket.on("mentioned", function (nick) {
+	socket.on("mention", function (nick) {
 
 		//show mention when dnd is disabled
 		if (config.status !== "dnd") {
 			out.mention(nick)
 			notify.mention()
 		}
-	})
-
-	//status
-	socket.on("status", function (msg) {
-		out.user_status(msg)
-	})
-
-	//return
-	socket.on("return", function (msg) {
-		out.blank(msg)
 	})
 
 	//motd
@@ -242,10 +233,148 @@ function listen() {
 		}
 	})
 
-	//return code
-	socket.on("rcode", function (value) {
-		if (config.devlog) {
-			out.blank("RETURN: " + value)
+	//joined
+	socket.on("join", function (nick) {
+		out.user_status(nick, "joined")
+	})
+
+	//left
+	socket.on("left", function (nick) {
+		out.user_status(nick, "left")
+	})
+
+	//online
+	socket.on("online", function (nick) {
+		out.user_status(nick, "is online")
+	})
+
+	//dnd
+	socket.on("dnd", function (nick) {
+		out.user_status(nick, "dnd")
+	})
+
+	//afk
+	socket.on("afk", function (nick) {
+		out.user_status(nick, "is afk")
+	})
+
+	//needAuth
+	socket.on("needAuth", function () {
+		out.status("login required")
+	})
+
+	//wrongPass
+	socket.on("wrongPass", function () {
+		out.warning("wrong password")
+	})
+
+	//nickTaken
+	socket.on("nickTaken", function () {
+		out.warning("nick already taken, change it and try again")
+	})
+
+	//passChanged
+	socket.on("passChanged", function () {
+		out.warning("password changed")
+	})
+
+	//muted
+	socket.on("clientMuted", function () {
+		out.warning("you are muted")
+	})
+
+	//tooLong
+	socket.on("tooLong", function () {
+		out.warning("message too long")
+	})
+
+	//flood
+	socket.on("flood", function () {
+		out.warning("flood blocked by server")
+	})
+
+	//notSigned
+	socket.on("notSigned", function () {
+		out.warning("you must be logged in")
+	})
+
+	//notExist
+	socket.on("notExist", function () {
+		out.warning("user doesn't exist")
+	})
+
+	//loginSucces
+	socket.on("loginSucces", function () {
+		out.status("logged succesfull")
+	})
+
+	//alreadySigned
+	socket.on("alreadySigned", function () {
+		out.warning("alredy signed")
+	})
+
+	//nickShortened
+	socket.on("nickShortened", function () {
+		out.warning("server has shortened your nickname")
+	})
+
+	//userChangeNick
+	socket.on("userChangeNick", function (old, nick) {
+		out.nickChange(old, nick)
+	})
+
+	//nickChanged
+	socket.on("nickChanged", function () {
+		out.blank("Your nickname is now " + c.blue + args[0] + c.reset)
+	})
+
+	//usersList
+	socket.on("list", function (users) {
+		for (var i = 0; i < users.length; i++) {
+			out.list(users[i].nick, users[i].status)
 		}
+	})
+
+	//incorrectValue
+	socket.on("incorrectValue", function () {
+		out.alert("incorrect value")
+	})
+
+	//statusChanged
+	socket.on("statusChanged", function () { })
+
+	//noPermission
+	socket.on("noPermission", function () {
+		out.warning("no permission")
+	})
+
+	//doneMute
+	socket.on("doneMute", function (nick) {
+		out.user_status(nick, "is muted")
+	})
+
+	//doneMute
+	socket.on("doneUnmute", function (nick) {
+		out.user_status(nick, "is unmuted")
+	})
+
+	//doneBan
+	socket.on("doneBan", function (nick) {
+		out.user_status(nick, "is banned")
+	})
+
+	//doneUnBan
+	socket.on("doneUnban", function (nick) {
+		out.user_status(nick, "is unbanned")
+	})
+
+	//doneSetPermission
+	socket.on("doneSetPermission", function (nick, level) {
+		out.user_status(nick, "permissions changed to " + level)
+	})
+
+	///socketLimit
+	socket.old("socketLimit", function(){
+		out.alert("all sockets is taken")
 	})
 }
