@@ -311,4 +311,19 @@ function listen() {
 	socket.on("alreadySigned", function(){
 		out.warning("alredy signed")
 	})
+
+	//nickShortened
+	socket.on("nickShortened", function(){
+		out.warning("server has shortened your nickname")
+	})
+
+	//userChangeNick
+	socket.on("userChangeNick", function(old, nick){
+		out.nickChange(old, nick)
+	})
+
+	//nickChanged
+	socket.on("nickChanged", function(){
+		out.status("nick on server changed")
+	})
 }

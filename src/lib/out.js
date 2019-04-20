@@ -59,6 +59,13 @@ module.exports = {
 		process.stdout.cursorTo(0)
 		console.log(msg)
 		rl.prompt(true)
+	},
+
+	//nick change
+	nickChange: function (old, nick) {
+		process.stdout.clearLine()
+		process.stdout.cursorTo(0)
+		console.log(c.blue + old + c.reset+ " is now " + c.blue + nick + c.reset)
 	}
 }
 

@@ -70,6 +70,7 @@ module.exports.start = function () {
 				//shortening long nick
 				if (nick.length > 15) {
 					nick = nick.substring(0, 15)
+					socket.emit("nickShortened")
 				}
 
 				//check sockets limit
@@ -156,6 +157,7 @@ module.exports.start = function () {
 			//message
 			socket.on("message", async (content) => {
 				if (getUser(socket.id)) {
+
 					//check message
 					if (typeof content === "string" || content instanceof String) {
 
@@ -204,6 +206,42 @@ module.exports.start = function () {
 							socket.to(`${id}`).emit("mentioned", getUser(socket.id).nick)
 						} else {
 							socket.emit("userNotExist")
+						}
+
+					} catch (rejRes) {
+						socket.emit("flood")
+					}
+				} else {
+					socket.emit("notSigned")
+				}
+			})
+
+			//nick
+			socket.on("nick", async (nick) => {
+				if (getUser(socket.id)) {
+					try {
+
+						//flood block
+						await rateLimiter.consume(socket.handshake.address)
+
+						//shorten the long nick
+						if (nick.length > 15) {
+							nick = nick.substring(0, 15)
+							socket.emit("nickShortened")
+						}
+
+						if (db.get(nick)) {
+							socket.emit("nickTaken")
+						} else {
+							if (getByNick(nick)) {
+								socket.emit("nickTaken")
+							} else {
+								var old = getUser(socket.id).nick
+								writeUser(socket.id, "nick, nick")
+								db.write(old, "nick", nick)
+								socket.broadcast.to("main").emit("userChangeNick", old, nick)
+								socket.emit("nickChanged")
+							}
 						}
 
 					} catch (rejRes) {
@@ -279,6 +317,19 @@ function getIndex(id) {
 		index = false
 	}
 	return index
+}
+
+//write to user
+function writeUser(id, key, value) {
+	var back
+	var index = getIndex(id)
+	if (index) {
+		users[index][key] = value
+		back = true
+	} else {
+		back = false
+	}
+	return back
 }
 
 //delete user
