@@ -276,4 +276,19 @@ function listen() {
 	socket.on("passChanged", function(){
 		out.warning("password changed")
 	})
+
+	//muted
+	socket.on("muted", function () {
+		out.warning("user has been muted")
+	})
+
+	//tooLong
+	socket.on("tooLong", function(){
+		out.warning("message too long")
+	})
+
+	//flood
+	socket.on("flood", function(){
+		out.warning("flood blocked by server")
+	})
 }

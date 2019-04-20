@@ -147,6 +147,39 @@ module.exports.start = function () {
 					}
 				}
 			})
+
+			//message
+			socket.on("message", async (content) => {
+				//check message
+				if (typeof content === "string" || content instanceof String) {
+
+					if (db.get(getUser(socket.id).nick).level !== 1) {
+						try {
+
+							//flood block
+							await rateLimiter.consume(socket.handshake.address)
+
+							//block long messages
+							if (content.length < config.lenghtlimit) {
+
+								//emit message
+								socket.broadcast.to("main").emit("message",{
+									nick: getUser(socket.id).nick,
+									content: content
+								})
+
+							} else {
+								socket.emit("tooLong")
+
+							}
+						} catch (rejRes) {
+							socket.emit("flood")
+						}
+					} else {
+						socket.emit("muted")
+					}
+				}
+			})
 		})
 	}
 }

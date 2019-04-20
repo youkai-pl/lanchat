@@ -20,7 +20,7 @@ module.exports = {
 		//check config
 		if (!fs.existsSync(path + "config.json")) {
 			// eslint-disable-next-line quotes
-			fs.writeFileSync(path + "config.json", '{"nick":"default","port":"2137","notify":"mention", "devlog":false, "attemps": 5, "ratelimit": 15, "socketlimit": 20}')
+			fs.writeFileSync(path + "config.json", '{"nick":"default","port":"2137","notify":"mention", "devlog":false, "attemps": 5, "ratelimit": 15, "socketlimit": 20, "lenghtlimit: 1500"}')
 		}
 
 		//check host database
@@ -56,6 +56,9 @@ module.exports = {
 				config.validate = false
 			}
 			if (!config.hasOwnProperty("socketlimit")) {
+				config.validate = false
+			}
+			if (!config.hasOwnProperty("lenghtlimit")) {
 				config.validate = false
 			}
 
