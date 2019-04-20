@@ -23,6 +23,8 @@
   * [banned](#banned)
   * [needAuth](#needAuth)
   * [joined](#joined)
+  * [socketLimit]
+  * []
 * [Permissions](#permissions)
 ## Client side socket commands
 

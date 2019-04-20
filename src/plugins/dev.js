@@ -28,6 +28,6 @@ module.exports = {
 
 	//users
 	d5: function () {
-		console.log(host.users)
+		console.log(host.stats)
 	}
 }

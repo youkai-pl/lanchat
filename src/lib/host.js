@@ -10,8 +10,9 @@ const config = require("./config")
 var database
 var users = []
 var status
+var usersLimit = 0
 
-module.exports.users = users
+module.exports.stats = { users, usersLimit }
 
 module.exports.start = function () {
 
@@ -73,50 +74,58 @@ module.exports.start = function () {
 					nick = nick.substring(0, 15)
 				}
 
-				//check the availability of a nickname
-				if (getId(nick)) {
-
-					//if nick is take emit alert
-					log(nick + " alredy taken")
-					socket.emit("taken")
+				//check sockets limit
+				if (config.socketlimit <= usersLimit) {
+					log("socket limit reached")
+					socket.emit("socketLimit")
 					io.sockets.connected[socket.id].disconnect()
 				} else {
 
-					//add user to database
-					if (!db.get(nick)) {
-						db.add({
-							nickname: nick,
-							level: 2,
-						})
-					}
+					//check the availability of a nickname
+					if (getId(nick)) {
 
-					//save user ip adress
-					db.write(nick, "ip", socket.handshake.address)
+						//if nick is take emit alert
+						log(nick + " alredy taken")
+						socket.emit("taken")
+						io.sockets.connected[socket.id].disconnect()
+					} else {
 
-					//check ban
-					var ban
-					for (var i = 0; i < database.length; i++) {
-						if (database[i].level === 0) {
-							if (database[i].ip === socket.handshake.address) {
-								ban = true
+						//add user to database
+						if (!db.get(nick)) {
+							db.add({
+								nickname: nick,
+								level: 2,
+							})
+						}
+
+						//save user ip adress
+						db.write(nick, "ip", socket.handshake.address)
+
+						//check ban
+						var ban
+						for (var i = 0; i < database.length; i++) {
+							if (database[i].level === 0) {
+								if (database[i].ip === socket.handshake.address) {
+									ban = true
+								}
 							}
 						}
-					}
-					if (db.get(nick).level === 0) {
-						ban = true
-					}
-					if (ban) {
-						log(nick + " is banned")
-						socket.emit("banned")
-						io.sockets.connected[socket.id].disconnect()
-					}
+						if (db.get(nick).level === 0) {
+							ban = true
+						}
+						if (ban) {
+							log(nick + " is banned")
+							socket.emit("banned")
+							io.sockets.connected[socket.id].disconnect()
+						}
 
-					//check password
-					if (db.get(nick).pass) {
-						log(nick + " need auth")
-						socket.emit("needAuth")
-					} else {
-						login(nick, socket)
+						//check password
+						if (db.get(nick).pass) {
+							log(nick + " need auth")
+							socket.emit("needAuth")
+						} else {
+							login(nick, socket)
+						}
 					}
 				}
 			})
@@ -165,6 +174,7 @@ function addUser(user) {
 	} else {
 		users.push(user)
 	}
+	usersLimit++
 }
 
 //get user
@@ -205,6 +215,7 @@ function delUser(id) {
 	var index = getIndex(id)
 	if (index) {
 		Object.keys(users[index]).forEach(v => users[index][v] = null)
+		usersLimit--
 	} else {
 		log(id + " not exist")
 	}
