@@ -127,14 +127,19 @@ module.exports.start = function () {
 
 			//auth
 			socket.on("auth", function (nick, password) {
-				//check password
-				if (db.get(nick).pass === password) {
-					//check nick avability
-					if (checkNickAvabile(nick, socket)) {
-						login(nick, socket)
+				if (!getUser(socket.id)) {
+					//check password
+					if (db.get(nick).pass === password) {
+						//check nick avability
+						if (checkNickAvabile(nick, socket)) {
+							login(nick, socket)
+							socket.emit("loginSucces")
+						}
+					} else {
+						socket.emit("wrongPass")
 					}
 				} else {
-					socket.emit("wrongPass")
+					socket.emit("alreadySigned")
 				}
 			})
 

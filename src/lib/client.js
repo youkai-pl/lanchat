@@ -301,4 +301,14 @@ function listen() {
 	socket.on("userNotExist", function(){
 		out.warning("user not exist")
 	})
+
+	//loginSucces
+	socket.on("loginSucces", function(){
+		out.status("logged succesfull")
+	})
+
+	//alreadySigned
+	socket.on("alreadySigned", function(){
+		out.warning("alredy signed")
+	})
 }
