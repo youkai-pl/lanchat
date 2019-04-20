@@ -109,13 +109,13 @@ module.exports.start = function () {
 						if (ban) {
 							socket.emit("banned")
 							io.sockets.connected[socket.id].disconnect()
-						}
-
-						//check password
-						if (db.get(nick).pass) {
-							socket.emit("needAuth")
 						} else {
-							login(nick, socket)
+							//check password
+							if (db.get(nick).pass) {
+								socket.emit("needAuth")
+							} else {
+								login(nick, socket)
+							}
 						}
 					}
 				}
@@ -250,7 +250,7 @@ module.exports.start = function () {
 			socket.on("mute", function (nick) {
 				checkPermission("mute", socket, nick, function () {
 					db.write(nick, "mute", true)
-					io.to("main").emit("isMuted", nick)
+					socket.emit("doneMute", nick)
 				})
 			})
 
@@ -258,15 +258,49 @@ module.exports.start = function () {
 			socket.on("unmute", function (nick) {
 				checkPermission("unmute", socket, nick, function () {
 					db.write(nick, "mute", false)
-					io.to("main").emit("isUnMuted", nick)
+					socket.emit("doneUnMute", nick)
 				})
 			})
 
 			//kick
 			socket.on("kick", function (nick) {
 				checkPermission("kick", socket, nick, function () {
-					io.sockets.connected[getByNick(nick).id].disconnect()
+					if (getByNick(nick)) {
+						io.sockets.connected[getByNick(nick).id].disconnect()
+					} else {
+						socket.emit("userNotExist")
+					}
 				})
+			})
+
+			//ban
+			socket.on("ban", function (nick) {
+				checkPermission("ban", socket, nick, function () {
+					db.write(nick, "level", 0)
+					io.sockets.connected[getByNick(nick).id].disconnect()
+					socket.emit("doneBan", nick)
+				})
+			})
+
+			//unban
+			socket.on("unban", function (nick) {
+				checkPermission("unban", socket, nick, function () {
+					db.write(nick, "level", 1)
+					socket.emit("doneUnBan", nick)
+				})
+			})
+
+			//unban
+			socket.on("setPermission", function (nick, level) {
+				level = parseInt(level)
+				if (level >= 1 && level <= 4) {
+					checkPermission("level", socket, nick, function () {
+						db.write(nick, "level", level)
+						socket.emit("doneSetPermission", nick, level)
+					})
+				} else {
+					socket.emit("incorrectValue")
+				}
 			})
 		})
 	}

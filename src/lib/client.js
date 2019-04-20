@@ -198,7 +198,7 @@ module.exports = {
 
 	//change permission
 	level: function (arg) {
-		socket.emit("level", arg)
+		socket.emit("setPermission", arg[0], arg[1])
 	},
 }
 
@@ -257,16 +257,6 @@ function listen() {
 		out.user_status(nick, "is afk")
 	})
 
-	//muted
-	socket.on("isMuted", function (nick) {
-		out.user_status(nick, "has been muted")
-	})
-
-	//unmuted
-	socket.on("isUnMuted", function (nick) {
-		out.user_status(nick, "is unmuted")
-	})
-
 	//needAuth
 	socket.on("needAuth", function () {
 		out.status("login required")
@@ -309,7 +299,7 @@ function listen() {
 
 	//userNotExist
 	socket.on("userNotExist", function () {
-		out.warning("user not exist")
+		out.warning("user doesn't exist")
 	})
 
 	//loginSucces
@@ -355,5 +345,30 @@ function listen() {
 	//noPermission
 	socket.on("noPermission", function () {
 		out.warning("no permission")
+	})
+
+	//doneMute
+	socket.on("doneMute", function (nick) {
+		out.user_status(nick, "is muted")
+	})
+
+	//doneMute
+	socket.on("doneUnMute", function (nick) {
+		out.user_status(nick, "is unmuted")
+	})
+
+	//doneBan
+	socket.on("doneBan", function (nick) {
+		out.user_status(nick, "is banned")
+	})
+
+	//doneUnBan
+	socket.on("doneUnBan", function (nick) {
+		out.user_status(nick, "is unbanned")
+	})
+
+	//doneSetPermission
+	socket.on("doneSetPermission", function (nick, level) {
+		out.user_status(nick, "permissions changed to " + level)
 	})
 }
