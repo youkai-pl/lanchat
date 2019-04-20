@@ -145,8 +145,8 @@ module.exports.start = function () {
 				}
 			})
 
-			//register
-			socket.on("register", function (nick, password) {
+			//setPassword
+			socket.on("setPassword", function (nick, password) {
 				if (getByNick(nick)) {
 					if (password) {
 						db.write(nick, "pass", password)
@@ -178,7 +178,7 @@ module.exports.start = function () {
 							}
 
 						} else {
-							socket.emit("muted")
+							socket.emit("clientMuted")
 						}
 					}
 				})
@@ -192,16 +192,16 @@ module.exports.start = function () {
 					} else {
 						var id = getByNick(nick).id
 						if (id) {
-							socket.to(`${id}`).emit("mentioned", getUser(socket.id).nick)
+							socket.to(`${id}`).emit("mention", getUser(socket.id).nick)
 						} else {
-							socket.emit("userNotExist")
+							socket.emit("notExist")
 						}
 					}
 				})
 			})
 
 			//nick
-			socket.on("nick", function (nick) {
+			socket.on("changeNick", function (nick) {
 				verify(socket, function () {
 					//shorten the long nick
 					if (nick.length > 15) {
@@ -228,7 +228,7 @@ module.exports.start = function () {
 			//list
 			socket.on("list", function () {
 				verify(socket, function () {
-					socket.emit("usersList", users)
+					socket.emit("list", users)
 				})
 			})
 
@@ -268,7 +268,7 @@ module.exports.start = function () {
 					if (getByNick(nick)) {
 						io.sockets.connected[getByNick(nick).id].disconnect()
 					} else {
-						socket.emit("userNotExist")
+						socket.emit("notExist")
 					}
 				})
 			})
@@ -414,7 +414,7 @@ function checkPermission(type, socket, nick, callback) {
 			}
 		} else {
 			check = false
-			socket.emit("userNotExist")
+			socket.emit("notExist")
 		}
 		if (check) {
 			callback()
@@ -426,26 +426,7 @@ function checkPermission(type, socket, nick, callback) {
 function emitStatus(type, socket) {
 
 	if (getUser(socket.id)) {
-
-		if (type === "join") {
-			socket.broadcast.to("main").emit("isJoin", getUser(socket.id).nick)
-		}
-
-		if (type === "left") {
-			socket.broadcast.to("main").emit("isLeft", getUser(socket.id).nick)
-		}
-
-		if (type === "online") {
-			socket.broadcast.to("main").emit("isOnline", getUser(socket.id).nick)
-		}
-
-		if (type === "dnd") {
-			socket.broadcast.to("main").emit("isDnd", getUser(socket.id).nick)
-		}
-
-		if (type === "afk") {
-			socket.broadcast.to("main").emit("isAfk", getUser(socket.id).nick)
-		}
+		socket.broadcast.to("main").emit(type, getUser(socket.id).nick)
 	}
 }
 

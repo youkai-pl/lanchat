@@ -1,5 +1,6 @@
 //import
 const out = require("./out")
+const c = require("./colors")
 const notify = require("./notify")
 const config = require("./config")
 var global = require("./global")
@@ -102,7 +103,7 @@ module.exports = {
 
 	//nick
 	nick: function () {
-		socket.emit("nick", config.nick)
+		socket.emit("changeNick", config.nick)
 	},
 
 	//auth
@@ -114,7 +115,7 @@ module.exports = {
 	lock: function (args) {
 		if (args) {
 			if (args[0] === args[1]) {
-				socket.emit("register", config.nick, args[0])
+				socket.emit("setPassword", config.nick, args[0])
 			} else {
 				out.blank("try /lock <password> <password>")
 			}
@@ -143,7 +144,7 @@ module.exports = {
 
 	//list
 	list: function () {
-		socket.emit("list")
+		socket.emit("getList")
 	},
 
 	//changeStatus
@@ -216,7 +217,7 @@ function listen() {
 	})
 
 	//mention
-	socket.on("mentioned", function (nick) {
+	socket.on("mention", function (nick) {
 
 		//show mention when dnd is disabled
 		if (config.status !== "dnd") {
@@ -233,27 +234,27 @@ function listen() {
 	})
 
 	//joined
-	socket.on("isJoin", function (nick) {
+	socket.on("join", function (nick) {
 		out.user_status(nick, "joined")
 	})
 
 	//left
-	socket.on("isLeft", function (nick) {
+	socket.on("left", function (nick) {
 		out.user_status(nick, "left")
 	})
 
 	//online
-	socket.on("isOnline", function (nick) {
+	socket.on("online", function (nick) {
 		out.user_status(nick, "is online")
 	})
 
 	//dnd
-	socket.on("isDnd", function (nick) {
+	socket.on("dnd", function (nick) {
 		out.user_status(nick, "dnd")
 	})
 
 	//afk
-	socket.on("isAfk", function (nick) {
+	socket.on("afk", function (nick) {
 		out.user_status(nick, "is afk")
 	})
 
@@ -278,7 +279,7 @@ function listen() {
 	})
 
 	//muted
-	socket.on("muted", function () {
+	socket.on("clientMuted", function () {
 		out.warning("you are muted")
 	})
 
@@ -297,8 +298,8 @@ function listen() {
 		out.warning("you must be logged in")
 	})
 
-	//userNotExist
-	socket.on("userNotExist", function () {
+	//notExist
+	socket.on("notExist", function () {
 		out.warning("user doesn't exist")
 	})
 
@@ -324,11 +325,11 @@ function listen() {
 
 	//nickChanged
 	socket.on("nickChanged", function () {
-		out.status("nick on changed")
+		out.blank("Your nickname is now " + c.blue + args[0] + c.reset)
 	})
 
 	//usersList
-	socket.on("usersList", function (users) {
+	socket.on("list", function (users) {
 		for (var i = 0; i < users.length; i++) {
 			out.list(users[i].nick, users[i].status)
 		}
