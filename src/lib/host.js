@@ -11,6 +11,7 @@ var database
 var users = []
 var status
 var usersLimit = 0
+var rateLimiter
 
 module.exports.stats = { users, usersLimit }
 
@@ -156,100 +157,69 @@ module.exports.start = function () {
 
 			//message
 			socket.on("message", async (content) => {
-				if (getUser(socket.id)) {
-
+				verify(socket, function () {
 					//check message
 					if (typeof content === "string" || content instanceof String) {
 
 						//change permission
 						if (db.get(getUser(socket.id).nick).level !== 1) {
-							try {
 
-								//flood block
-								await rateLimiter.consume(socket.handshake.address)
+							//block long messages
+							if (content.length < config.lenghtlimit) {
 
-								//block long messages
-								if (content.length < config.lenghtlimit) {
+								//emit message
+								socket.broadcast.to("main").emit("message", {
+									nick: getUser(socket.id).nick,
+									content: content
+								})
 
-									//emit message
-									socket.broadcast.to("main").emit("message", {
-										nick: getUser(socket.id).nick,
-										content: content
-									})
-
-								} else {
-									socket.emit("tooLong")
-								}
-							} catch (rejRes) {
-								socket.emit("flood")
+							} else {
+								socket.emit("tooLong")
 							}
+
 						} else {
 							socket.emit("muted")
 						}
 					}
-				} else {
-					socket.emit("notSigned")
-				}
+				})
 			})
 
 			//mention
 			socket.on("mention", async (nick) => {
-				if (getUser(socket.id)) {
-					try {
-
-						//flood block
-						await rateLimiter.consume(socket.handshake.address)
-
-						//find user and send mention
-						var id = getByNick(nick).id
-						if (id) {
-							socket.to(`${id}`).emit("mentioned", getUser(socket.id).nick)
-						} else {
-							socket.emit("userNotExist")
-						}
-
-					} catch (rejRes) {
-						socket.emit("flood")
+				verify(socket, function () {
+					//find user and send mention
+					var id = getByNick(nick).id
+					if (id) {
+						socket.to(`${id}`).emit("mentioned", getUser(socket.id).nick)
+					} else {
+						socket.emit("userNotExist")
 					}
-				} else {
-					socket.emit("notSigned")
-				}
+				})
 			})
 
 			//nick
 			socket.on("nick", async (nick) => {
-				if (getUser(socket.id)) {
-					try {
+				verify(socket, function () {
+					//shorten the long nick
+					if (nick.length > 15) {
+						nick = nick.substring(0, 15)
+						socket.emit("nickShortened")
+					}
 
-						//flood block
-						await rateLimiter.consume(socket.handshake.address)
-
-						//shorten the long nick
-						if (nick.length > 15) {
-							nick = nick.substring(0, 15)
-							socket.emit("nickShortened")
-						}
-
-						if (db.get(nick)) {
+					if (db.get(nick)) {
+						socket.emit("nickTaken")
+					} else {
+						if (getByNick(nick)) {
 							socket.emit("nickTaken")
 						} else {
-							if (getByNick(nick)) {
-								socket.emit("nickTaken")
-							} else {
-								var old = getUser(socket.id).nick
-								writeUser(socket.id, "nick, nick")
-								db.write(old, "nick", nick)
-								socket.broadcast.to("main").emit("userChangeNick", old, nick)
-								socket.emit("nickChanged")
-							}
+							var old = getUser(socket.id).nick
+							writeUser(socket.id, "nick, nick")
+							db.write(old, "nick", nick)
+							socket.broadcast.to("main").emit("userChangeNick", old, nick)
+							socket.emit("nickChanged")
 						}
-
-					} catch (rejRes) {
-						socket.emit("flood")
 					}
-				} else {
-					socket.emit("notSigned")
-				}
+				})
 			})
 		})
 	}
@@ -379,4 +349,22 @@ function checkNickAvabile(nick, socket) {
 		value = true
 	}
 	return value
+}
+
+//verify
+async function verify(socket, callback) {
+	if (getUser(socket.id)) {
+		try {
+
+			//flood block
+			await rateLimiter.consume(socket.handshake.address)
+
+			callback()
+
+		} catch (rejRes) {
+			socket.emit("flood")
+		}
+	} else {
+		socket.emit("notSigned")
+	}
 }

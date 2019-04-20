@@ -324,6 +324,6 @@ function listen() {
 
 	//nickChanged
 	socket.on("nickChanged", function(){
-		out.status("nick on server changed")
+		out.status("nick on changed")
 	})
 }
