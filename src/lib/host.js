@@ -228,6 +228,20 @@ module.exports.start = function () {
 					socket.emit("usersList", users)
 				})
 			})
+
+			//change status
+			socket.on("changeStatus", function (status) {
+				verify(socket, function () {
+					var acceptable = ["online", "afk", "dnd"]
+					if (acceptable.indexOf(status) !== -1) {
+						writeUser(socket.id, "status", status)
+						socket.emit("statusChanged")
+						emitStatus(status, socket)
+					} else {
+						socket.emit("incorrectValue")
+					}
+				})
+			})
 		})
 	}
 }

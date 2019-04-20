@@ -333,4 +333,12 @@ function listen() {
 			out.list(users[i].nick, users[i].status)
 		}
 	})
+
+	//incorrectValue
+	socket.on("incorrectValue", function(){
+		out.alert("incorrect value")
+	})
+
+	//statusChanged
+	socket.on("statusChanged", function(){})
 }
