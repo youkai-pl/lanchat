@@ -20,7 +20,7 @@ module.exports = {
 	add: function (user) {
 
 		if (!user.hasOwnProperty("level")) {
-			user.lock = 2
+			user.lock = 1
 		}
 
 		if (!user.hasOwnProperty("ip")) {
@@ -31,11 +31,16 @@ module.exports = {
 			user.pass = false
 		}
 
+		if(!user.hasOwnProperty("mute")){
+			user.mute = false
+		}
+
 		database.push({
 			nick: user.nick,
 			level: user.level,
 			ip: user.ip,
-			pass: user.pass
+			pass: user.pass,
+			mute: user.mute
 		})
 		save()
 	},

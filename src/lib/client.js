@@ -257,6 +257,16 @@ function listen() {
 		out.user_status(nick, "is afk")
 	})
 
+	//muted
+	socket.on("isMuted", function (nick) {
+		out.user_status(nick, "has been muted")
+	})
+
+	//unmuted
+	socket.on("isUnMuted", function (nick) {
+		out.user_status(nick, "is unmuted")
+	})
+
 	//needAuth
 	socket.on("needAuth", function () {
 		out.status("login required")
@@ -279,7 +289,7 @@ function listen() {
 
 	//muted
 	socket.on("muted", function () {
-		out.warning("user has been muted")
+		out.warning("you are muted")
 	})
 
 	//tooLong
@@ -335,10 +345,15 @@ function listen() {
 	})
 
 	//incorrectValue
-	socket.on("incorrectValue", function(){
+	socket.on("incorrectValue", function () {
 		out.alert("incorrect value")
 	})
 
 	//statusChanged
-	socket.on("statusChanged", function(){})
+	socket.on("statusChanged", function () { })
+
+	//noPermission
+	socket.on("noPermission", function () {
+		out.warning("no permission")
+	})
 }

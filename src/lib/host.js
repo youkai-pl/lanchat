@@ -35,7 +35,7 @@ module.exports.start = function () {
 		}
 
 		//set permissions
-		db.write(config.nick, "level", 5)
+		db.write(config.nick, "level", 4)
 
 		out.status("starting server")
 
@@ -87,7 +87,7 @@ module.exports.start = function () {
 						if (!db.get(nick)) {
 							db.add({
 								nick: nick,
-								level: 2,
+								level: 1,
 							})
 						}
 
@@ -162,7 +162,7 @@ module.exports.start = function () {
 					if (typeof content === "string" || content instanceof String) {
 
 						//change permission
-						if (db.get(getUser(socket.id).nick).level !== 1) {
+						if (!checkMute(socket.id)) {
 
 							//block long messages
 							if (content.length < config.lenghtlimit) {
@@ -187,12 +187,15 @@ module.exports.start = function () {
 			//mention
 			socket.on("mention", function (nick) {
 				verify(socket, function () {
-					//find user and send mention
-					var id = getByNick(nick).id
-					if (id) {
-						socket.to(`${id}`).emit("mentioned", getUser(socket.id).nick)
+					if (checkMute(socket.id)) {
+						socket.emit("muted")
 					} else {
-						socket.emit("userNotExist")
+						var id = getByNick(nick).id
+						if (id) {
+							socket.to(`${id}`).emit("mentioned", getUser(socket.id).nick)
+						} else {
+							socket.emit("userNotExist")
+						}
 					}
 				})
 			})
@@ -240,6 +243,22 @@ module.exports.start = function () {
 					} else {
 						socket.emit("incorrectValue")
 					}
+				})
+			})
+
+			//mute
+			socket.on("mute", function (nick) {
+				checkPermission("mute", socket, nick, function () {
+					db.write(nick, "mute", true)
+					io.to("main").emit("isMuted", nick)
+				})
+			})
+
+			//unmute
+			socket.on("unmute", function (nick) {
+				checkPermission("unmute", socket, nick, function () {
+					db.write(nick, "mute", false)
+					io.to("main").emit("isUnMuted", nick)
 				})
 			})
 		})
@@ -332,6 +351,36 @@ function delUser(id) {
 	}
 }
 
+//check permission
+function checkPermission(type, socket, nick, callback) {
+	verify(socket, function () {
+		var permission
+		var check
+		if (db.get(nick)) {
+			if (type === "mute" || type === "unmute" || type === "ban" || type === "unban" || type === "kick") {
+				permission = 2
+			}
+			if (type === "level") {
+				permission = 3
+			}
+
+			var level = db.get(getUser(socket.id).nick).level
+			if (level >= permission && level > db.get(nick).level) {
+				check = true
+			} else {
+				check = false
+				socket.emit("noPermission")
+			}
+		} else {
+			check = false
+			socket.emit("userNotExist")
+		}
+		if (check) {
+			callback()
+		}
+	})
+}
+
 //emit user status
 function emitStatus(type, socket) {
 
@@ -370,6 +419,11 @@ function checkNickAvabile(nick, socket) {
 		value = true
 	}
 	return value
+}
+
+//check mute
+function checkMute(id) {
+	return db.get(getUser(id).nick).mute
 }
 
 //verify
