@@ -261,6 +261,13 @@ module.exports.start = function () {
 					io.to("main").emit("isUnMuted", nick)
 				})
 			})
+
+			//kick
+			socket.on("kick", function (nick) {
+				checkPermission("kick", socket, nick, function () {
+					io.sockets.connected[getByNick(nick).id].disconnect()
+				})
+			})
 		})
 	}
 }
