@@ -23,7 +23,7 @@ module.exports = {
 		if (process.stdout.columns > 41) {
 
 			//set color
-			console.log("\x1b[95m")
+			process.stdout.write("\x1b[95m")
 
 			//ascii art
 			console.log("    __                  _           _   ")

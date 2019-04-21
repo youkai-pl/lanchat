@@ -52,12 +52,16 @@ module.exports = {
 				})
 
 				response.on("end", function () {
-					var parsed = JSON.parse(body)
-					var remote = parseInt(parsed.version.split(".").join(""))
-					var current = parseInt(pkg.version.split(".").join(""))
-					if (remote > current) {
-						resolve(parsed.version)
-					} else {
+					try {
+						var parsed = JSON.parse(body)
+						var remote = parseInt(parsed.version.split(".").join(""))
+						var current = parseInt(pkg.version.split(".").join(""))
+						if (remote > current) {
+							resolve(parsed.version)
+						} else {
+							resolve(false)
+						}
+					} catch (e) {
 						resolve(false)
 					}
 				})
