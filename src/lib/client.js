@@ -1,12 +1,16 @@
 //import
 const out = require("./out")
+const c = require("./colors")
 const notify = require("./notify")
-var global = require("./global")
+const config = require("./config")
 
 //CLIENT
-
 //variables
 var trycount = 0
+var connection = false
+var reconnect = false
+var safeDisconnect = false
+var inprogress = false
 
 module.exports = {
 
@@ -19,96 +23,85 @@ module.exports = {
 		} else {
 
 			//block double connect
-			if (global.lock) {
-				out.alert("you already connected")
+			if (connection || inprogress) {
+				if (connection) {
+					out.alert("you already connected")
+				}
+				if (inprogress) {
+					out.alert("you are under connecting")
+				}
 			} else {
 
-				//connet
-				out.status("connecting")
-				global.lock = true
+				out.loading("connecting")
+
+				//lock
+				inprogress = true
+				module.exports.inprogress = inprogress
+
 				//create socket
-				socket = require("socket.io-client")("http://" + ip + ":" + global.port,
+				socket = require("socket.io-client")("http://" + ip + ":" + config.port,
 					{
 						"reconnection": true,
 						"reconnectionDelay": 500,
 						"reconnectionDelayMax": 500,
-						"reconnectionAttempts": global.attemps,
+						"reconnectionAttempts": config.attemps,
 						"secure": true
 					}
 				)
 
-				//connect
+				//connected
 				socket.on("connect", function () {
-					//normal way
-					if (!global.reconnect) {
-						global.lock = true
-						global.safe_disconnect = false
-						out.status("connected")
-						listen()
-						socket.emit("login", global.nick)
-						global.connection_status = true
-						global.first = true
+					out.stopLoading()
+					connection = true
+					module.exports.connection = connection
+					inprogress = false
+					module.exports.inprogress = inprogress
+					trycount = 0
+					if (reconnect) {
+						out.status("reconnected")
 					} else {
-						//recconect way
-						socket.emit("login", global.nick)
-						if (!global.first) {
-							listen()
-						}
-						global.lock = true
-						global.safe_disconnect = false
+						listen()
+						out.status("connected")
 					}
-				})
-
-				//handle connection error
-				socket.on("connect_error", function () {
-					if (trycount === global.attemps) {
-						out.alert("connection error")
-					}
+					socket.emit("login", config.nick)
 				})
 
 				//handle disconnect
 				socket.on("disconnect", function () {
-					if (global.safe_disconnect !== true) {
+					out.stopLoading()
+					connection = false
+					module.exports.connection = connection
+					inprogress = false
+					module.exports.inprogress = inprogress
+					if (!safeDisconnect) {
 						out.alert("disconnected")
-						global.reconnection = true
-						global.lock = false
-						global.connection_status = false
 					}
 				})
 
 				//handle reconnect
 				socket.on("reconnect", () => {
-					if (global.reconnection) {
-						out.status("reconnected")
-					} else {
-						out.status("connected")
-					}
-					global.lock = true
-					global.reconnect = true
-					global.connection_status = true
+					reconnect = true
+					inprogress = false
+					module.exports.inprogress = inprogress
 				})
 
 				//handle conecting
 				socket.on("connecting", () => {
-					global.lock = true
 				})
 
 				//handle recconecting
 				socket.on("reconnecting", () => {
+					out.loading("connecting")
 
-					//show status
-					if (global.reconnection) {
-						out.status("trying recconect")
-					} else {
-						out.status("connecting")
-					}
-					global.lock = true
-
-					//count attemps
 					trycount++
-					if (trycount === global.attemps) {
-						global.lock = false
+					inprogress = true
+					module.exports.inprogress = inprogress
+					//out.status("connecting")
+					if (trycount == config.attemps) {
 						out.alert("connection error")
+						out.stopLoading()
+						inprogress = false
+						module.exports.inprogress = inprogress
 					}
 				})
 			}
@@ -117,13 +110,12 @@ module.exports = {
 
 	//send
 	send: function (content) {
-		//out
-		out.message({
-			content: content,
-			nick: global.nick
-		})
-		//send
-		if (global.lock) {
+
+		if (connection) {
+			out.message({
+				content: content,
+				nick: config.nick
+			})
 			socket.emit("message", content)
 		}
 	},
@@ -135,46 +127,33 @@ module.exports = {
 
 	//nick
 	nick: function () {
-		socket.emit("nick", global.nick)
+		socket.emit("changeNick", config.nick)
 	},
 
 	//auth
 	auth: function (password) {
-		if (password) {
-			socket.emit("auth", global.nick, password)
-		} else {
-			out.blank("try /login <password>")
-		}
+		socket.emit("auth", config.nick, password)
 	},
 
 	//lock
 	lock: function (args) {
 		if (args) {
 			if (args[0] === args[1]) {
-				socket.emit("register", global.nick, args[0])
+				socket.emit("setPassword", config.nick, args[0])
 			} else {
-				out.blank("try /register <password> <password>")
+				out.blank("try /lock <password> <password>")
 			}
 		} else {
-			out.blank("try /register <password> <password>")
+			out.blank("try /lock <password> <password>")
 		}
 	},
 
 	//disconnect
 	disconnect: function () {
-		if (global.lock) {
-			if (global.server_status) {
-				out.status("host cannot be disconnect")
-			} else {
-				//disconnect
-				global.safe_disconnect = true
-				//socket.disconnect()
-				global.lock = false
-				out.status("disconnected")
-			}
-		} else {
-			out.alert("you are not connected")
-		}
+		reconnect = false
+		safeDisconnect = true
+		socket.disconnect()
+		out.status("disconnected")
 	},
 
 	//list
@@ -184,17 +163,12 @@ module.exports = {
 
 	//changeStatus
 	changeStatus: function (value) {
-		if (value === "dnd") {
-			global.dnd = true
-		} else {
-			global.dnd = false
-		}
 		socket.emit("changeStatus", value)
 	},
 
 	//kick
 	kick: function (arg) {
-		if (arg !== global.nick) {
+		if (arg !== config.nick) {
 			socket.emit("kick", arg)
 		} else {
 			out.status("You can't kick yourself")
@@ -203,7 +177,7 @@ module.exports = {
 
 	//ban
 	ban: function (arg) {
-		if (arg !== global.nick) {
+		if (arg !== config.nick) {
 			socket.emit("ban", arg)
 		} else {
 			out.status("You can't ban yourself")
@@ -212,7 +186,7 @@ module.exports = {
 
 	//unban
 	unban: function (arg) {
-		if (arg !== global.nick) {
+		if (arg !== config.nick) {
 			socket.emit("unban", arg)
 		} else {
 			out.status("You can't unban yourself")
@@ -221,7 +195,7 @@ module.exports = {
 
 	//mute
 	mute: function (arg) {
-		if (arg !== global.nick) {
+		if (arg !== config.nick) {
 			socket.emit("mute", arg)
 		} else {
 			out.status("You can't mute yourself")
@@ -230,7 +204,7 @@ module.exports = {
 
 	//unmute
 	unmute: function (arg) {
-		if (arg !== global.nick) {
+		if (arg !== config.nick) {
 			socket.emit("unmute", arg)
 		} else {
 			out.status("You can't unmute yourself")
@@ -239,7 +213,7 @@ module.exports = {
 
 	//change permission
 	level: function (arg) {
-		socket.emit("level", arg)
+		socket.emit("setPermission", arg[0], arg[1])
 	},
 }
 
@@ -250,43 +224,169 @@ function listen() {
 	socket.on("message", function (msg) {
 
 		//show message when dnd is disabled
-		if (!global.dnd) {
+		if (config.status !== "dnd") {
 			out.message(msg)
 			notify.message(msg)
 		}
 	})
 
 	//mention
-	socket.on("mentioned", function (nick) {
+	socket.on("mention", function (nick) {
 
 		//show mention when dnd is disabled
-		if (!global.dnd) {
+		if (config.status !== "dnd") {
 			out.mention(nick)
 			notify.mention()
 		}
 	})
 
-	//status
-	socket.on("status", function (msg) {
-		out.user_status(msg)
-	})
-
-	//return
-	socket.on("return", function (msg) {
-		out.blank(msg)
-	})
-
 	//motd
 	socket.on("motd", function (motd) {
-		if (!global.reconnect) {
+		if (!reconnect) {
 			out.blank("\n" + motd + "\n")
 		}
 	})
 
-	//return code
-	socket.on("rcode", function (value) {
-		if (global.devlog) {
-			out.blank("RETURN: " + value)
-		}
+	//joined
+	socket.on("join", function (nick) {
+		out.user_status(nick, "joined")
+	})
+
+	//left
+	socket.on("left", function (nick) {
+		out.user_status(nick, "left")
+	})
+
+	//online
+	socket.on("online", function (nick) {
+		out.user_status(nick, "is online")
+	})
+
+	//dnd
+	socket.on("dnd", function (nick) {
+		out.user_status(nick, "dnd")
+	})
+
+	//afk
+	socket.on("afk", function (nick) {
+		out.user_status(nick, "is afk")
+	})
+
+	//needAuth
+	socket.on("needAuth", function () {
+		out.status("login required")
+	})
+
+	//wrongPass
+	socket.on("wrongPass", function () {
+		out.warning("wrong password")
+	})
+
+	//nickTaken
+	socket.on("nickTaken", function () {
+		out.warning("nick already taken, change it and try again")
+	})
+
+	//passChanged
+	socket.on("passChanged", function () {
+		out.warning("password changed")
+	})
+
+	//muted
+	socket.on("clientMuted", function () {
+		out.warning("you are muted")
+	})
+
+	//tooLong
+	socket.on("tooLong", function () {
+		out.warning("message too long")
+	})
+
+	//flood
+	socket.on("flood", function () {
+		out.warning("flood blocked by server")
+	})
+
+	//notSigned
+	socket.on("notSigned", function () {
+		out.warning("you must be logged in")
+	})
+
+	//notExist
+	socket.on("notExist", function () {
+		out.warning("user doesn't exist")
+	})
+
+	//loginSucces
+	socket.on("loginSucces", function () {
+		out.status("logged succesfull")
+	})
+
+	//alreadySigned
+	socket.on("alreadySigned", function () {
+		out.warning("alredy signed")
+	})
+
+	//nickShortened
+	socket.on("nickShortened", function () {
+		out.warning("server has shortened your nickname")
+	})
+
+	//userChangeNick
+	socket.on("userChangeNick", function (old, nick) {
+		out.nickChange(old, nick)
+	})
+
+	//nickChanged
+	socket.on("nickChanged", function () {
+		out.blank("Your nickname is now " + c.blue + args[0] + c.reset)
+	})
+
+	//usersList
+	socket.on("list", function (users) {
+		out.list(users)
+	})
+
+	//incorrectValue
+	socket.on("incorrectValue", function () {
+		out.alert("incorrect value")
+	})
+
+	//statusChanged
+	socket.on("statusChanged", function () { })
+
+	//noPermission
+	socket.on("noPermission", function () {
+		out.warning("no permission")
+	})
+
+	//doneMute
+	socket.on("doneMute", function (nick) {
+		out.user_status(nick, "is muted")
+	})
+
+	//doneMute
+	socket.on("doneUnmute", function (nick) {
+		out.user_status(nick, "is unmuted")
+	})
+
+	//doneBan
+	socket.on("doneBan", function (nick) {
+		out.user_status(nick, "is banned")
+	})
+
+	//doneUnBan
+	socket.on("doneUnban", function (nick) {
+		out.user_status(nick, "is unbanned")
+	})
+
+	//doneSetPermission
+	socket.on("doneSetPermission", function (nick, level) {
+		out.user_status(nick, "permissions changed to " + level)
+	})
+
+	///socketLimit
+	socket.on("socketLimit", function () {
+		out.alert("all sockets is taken")
 	})
 }

@@ -1,56 +1,87 @@
 //import
 const rl = require("./interface").rl
-const colors = require("colors")
+const c = require("./colors")
+var loading
 
 //OUT
 module.exports = {
 
 	//view message
 	message: function (msg) {
-		process.stdout.clearLine()
-		process.stdout.cursorTo(0)
-		console.log("[" + time().green + "] " + msg.nick.blue + ": " + msg.content)
-		rl.prompt(true)
+		out(c.gray + "[" + time() + "] " + c.blue + msg.nick + c.reset + ": " + msg.content)
 	},
 
 	//user status
-	user_status: function (msg) {
-		process.stdout.clearLine()
-		process.stdout.cursorTo(0)
-		console.log(msg.nick.blue + " " + msg.content)
-		rl.prompt(true)
+	user_status: function (nick, content) {
+		out(c.blue + nick + " " + c.reset + content)
 	},
 
 	//mention
-	mention: function(nick){
-		process.stdout.clearLine()
-		process.stdout.cursorTo(0)
-		console.log(nick.blue + " mentioned you")
-		rl.prompt(true)
+	mention: function (nick) {
+		out(c.blue + nick + c.reset + " mentioned you")
 	},
 
 	//view alert
 	alert: function (msg) {
-		process.stdout.clearLine()
-		process.stdout.cursorTo(0)
-		console.log("[!] ".red + msg.red)
-		rl.prompt(true)
+		out(c.red + "[!] " + msg + c.reset)
+	},
+
+	//warning
+	warning: function (msg) {
+		out(c.yellow + "[!] " + msg + c.reset)
 	},
 
 	//view status
 	status: function (msg) {
-		process.stdout.clearLine()
-		process.stdout.cursorTo(0)
-		console.log("[#] ".green + msg.green)
-		rl.prompt(true)
+		out(c.blue + "[#] " + msg + c.reset)
 	},
 
 	//normal console text
 	blank: function (msg) {
-		process.stdout.clearLine()
-		process.stdout.cursorTo(0)
-		console.log(msg)
-		rl.prompt(true)
+		out(msg)
+	},
+
+	//nick change
+	nickChange: function (old, nick) {
+		out(c.blue + old + c.reset + " is now " + c.blue + nick + c.reset)
+	},
+
+	//list of users
+	list: function (users) {
+
+		for (var i = 0; i < users.length; i++) {
+			var color
+			var status = users[i].status
+			var nick = users[i].nick
+			if (status === "online") {
+				color = c.green
+			}
+			if (status === "afk") {
+				color = c.yellow
+			}
+			if (status === "dnd") {
+				color = c.red
+			}
+			if (!status) {
+				color = c.reset
+			}
+			if (nick) {
+				out("(" + color + status + c.reset + ") " + nick)
+			}
+		}
+	},
+
+	//loading
+	loading: function (content) {
+		clearInterval(loading)
+		process.stderr.write("\x1B[?25l")
+		animation(content)
+	},
+
+	//stop loading
+	stopLoading: function () {
+		clearInterval(loading)
+		process.stderr.write("\x1B[?25h")
 	}
 }
 
@@ -61,4 +92,23 @@ function time() {
 		("0" + date.getMinutes()).slice(-2) + ":" +
 		("0" + date.getSeconds()).slice(-2))
 	return time
+}
+
+function out(content) {
+	process.stdout.clearLine()
+	process.stdout.cursorTo(0)
+	console.log(content)
+	rl.prompt(true)
+}
+
+function animation(content) {
+	loading = (function () {
+		var P = ["\\", "|", "/", "-"]
+		var x = 0
+		return setInterval(function () {
+			process.stdout.clearLine()
+			process.stdout.write(c.blue + "\r" + P[x++] + " " + content + c.reset)
+			x &= 3
+		}, 100)
+	})()
 }

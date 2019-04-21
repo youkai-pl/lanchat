@@ -1,29 +1,25 @@
 #!/usr/bin/env node
 
 // LANCHAT BY AKIRA
-const fs = require("fs")
 const prompt = require("./lib/prompt")
-const settings = require("./lib/settings")
-var global = require("./lib/global")
-
-console.log("loading...")
+const config = require("./lib/config")
+const plugins = require("./lib/plugins")
 
 //crash handler
-process.on("uncaughtException", function (err) {
+/* process.on("uncaughtException", function (err) {
 	console.log("Error: " + err)
-})
+}) */
 
 //load plugins
-if (fs.existsSync("./plugins")) {
-	global.plugins = require("require-all")(__dirname + "/plugins")
-}
+plugins.load()
 
 //load config
-if (settings.load()) {
-	//init
+config.load()
+
+//check config
+if (config.validate) {
 	prompt.run()
 } else {
-	//catch wrong config file
 	console.log("Corrupted config file")
 	console.log("Delete config file")
 	process.exit(0)

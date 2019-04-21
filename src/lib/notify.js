@@ -1,8 +1,7 @@
 //import
 const notifier = require("node-notifier")
 const path = require("path")
-const global = require("./global")
-var settings = require("./settings")
+const config = require("./config")
 
 //NOTIFY
 module.exports = {
@@ -11,7 +10,7 @@ module.exports = {
 	message: function () {
 
 		//send all messages notify
-		if (global.notify === "all") {
+		if (config.notify === "all") {
 			notifier.notify(
 				{
 					title: "Lanchat",
@@ -26,7 +25,7 @@ module.exports = {
 	//mention
 	mention: function () {
 		//send mention notify
-		if (global.notify === "mention" || global.notify === "all") {
+		if (config.notify === "mention" || config.notify === "all") {
 			notifier.notify(
 				{
 					title: "Lanchat",
