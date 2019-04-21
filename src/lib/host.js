@@ -13,8 +13,6 @@ var status
 var usersLimit = 0
 var rateLimiter
 
-module.exports.stats = { users, usersLimit }
-
 module.exports.start = function () {
 
 	//start server
@@ -321,7 +319,6 @@ function login(nick, socket) {
 	if (config.motd) {
 		socket.emit("motd", config.motd)
 	}
-
 	emitStatus("join", socket)
 }
 
@@ -374,7 +371,7 @@ function getIndex(id) {
 function writeUser(id, key, value) {
 	var back
 	var index = getIndex(id)
-	if (index) {
+	if (index || index === 0) {
 		users[index][key] = value
 		back = true
 	} else {
@@ -386,7 +383,7 @@ function writeUser(id, key, value) {
 //delete user
 function delUser(id) {
 	var index = getIndex(id)
-	if (index) {
+	if (index || index === 0) {
 		Object.keys(users[index]).forEach(v => users[index][v] = null)
 		usersLimit--
 	}

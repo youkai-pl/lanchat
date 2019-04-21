@@ -1,7 +1,6 @@
 const client = require("../lib/client")
 const config = require("../lib/config")
 const db = require("../lib/db")
-const host = require("../lib/host")
 
 module.exports = {
 
@@ -23,10 +22,5 @@ module.exports = {
 	//db
 	d4: function(){
 		console.log(db)
-	},
-
-	//users
-	d5: function () {
-		console.log(host.stats)
 	}
 }
