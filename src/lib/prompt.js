@@ -81,37 +81,32 @@ module.exports = {
 
 //user input wrapper
 function wrapper(message) {
-	if (message) {
-		//check prefix
-		if (message.charAt(0) !== "/") {
 
-			//clear line
-			readline.moveCursor(process.stdout, 0, -1)
+	//clear line
+	readline.moveCursor(process.stdout, 0, -1)
 
-			//send message
-			client.send(message)
-		} else {
+	//check prefix
+	if (message.charAt(0) !== "/") {
 
-			//execute command
-			const args = message.split(" ")
-			if (typeof commands[args[0].substr(1)] !== "undefined") {
-				commands[args[0].substr(1)](args.slice(1))
-			}
-
-			//try execute commands from plugins
-			for (i in plugins.run) {
-				if (typeof plugins.run[i][args[0].substr(1)] !== "undefined") {
-					plugins.run[i][args[0].substr(1)](args.slice(1))
-				}
-			}
-
-			//reset cursor
-			process.stdout.clearLine()
-			process.stdout.cursorTo(0)
-		}
+		//send message
+		client.send(message)
 	} else {
 
-		//clear line
-		readline.moveCursor(process.stdout, 0, -1)
+		//execute command
+		const args = message.split(" ")
+		if (typeof commands[args[0].substr(1)] !== "undefined") {
+			commands[args[0].substr(1)](args.slice(1))
+		}
+
+		//try execute commands from plugins
+		for (i in plugins.run) {
+			if (typeof plugins.run[i][args[0].substr(1)] !== "undefined") {
+				plugins.run[i][args[0].substr(1)](args.slice(1))
+			}
+		}
+
+		//reset cursor
+		process.stdout.clearLine()
+		process.stdout.cursorTo(0)
 	}
 }

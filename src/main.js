@@ -5,8 +5,6 @@ const prompt = require("./lib/prompt")
 const config = require("./lib/config")
 const plugins = require("./lib/plugins")
 
-console.log("Loading...")
-
 //crash handler
 /* process.on("uncaughtException", function (err) {
 	console.log("Error: " + err)

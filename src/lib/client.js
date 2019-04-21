@@ -31,6 +31,9 @@ module.exports = {
 					out.alert("you are under connecting")
 				}
 			} else {
+
+				//lock
+				out.status("connecting")
 				inprogress = true
 				module.exports.inprogress = inprogress
 
@@ -102,13 +105,12 @@ module.exports = {
 
 	//send
 	send: function (content) {
-		//out
-		out.message({
-			content: content,
-			nick: config.nick
-		})
-		//send
+
 		if (connection) {
+			out.message({
+				content: content,
+				nick: config.nick
+			})
 			socket.emit("message", content)
 		}
 	},

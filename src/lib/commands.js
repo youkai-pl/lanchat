@@ -44,7 +44,6 @@ module.exports = {
 	//help
 	help: function () {
 		var help = []
-		help.push("")
 		help.push("/connect    - connect")
 		help.push("/disconnect - disconnect")
 		help.push("/host       - create server")
