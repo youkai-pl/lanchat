@@ -1,6 +1,7 @@
 //import
 const rl = require("./interface").rl
 const c = require("./colors")
+var loading
 
 //OUT
 module.exports = {
@@ -62,6 +63,19 @@ module.exports = {
 		}
 
 		out("(" + color + status + c.reset + ") " + user)
+	},
+
+	//loading
+	loading: function (content) {
+		clearInterval(loading)
+		process.stderr.write("\x1B[?25l")
+		animation(content)
+	},
+
+	//stop loading
+	stopLoading: function () {
+		clearInterval(loading)
+		process.stderr.write("\x1B[?25h")
 	}
 }
 
@@ -79,4 +93,16 @@ function out(content) {
 	process.stdout.cursorTo(0)
 	console.log(content)
 	rl.prompt(true)
+}
+
+function animation(content) {
+	loading = (function () {
+		var P = ["\\", "|", "/", "-"]
+		var x = 0
+		return setInterval(function () {
+			process.stdout.clearLine()
+			process.stdout.write(c.blue + "\r" + P[x++] + " " + content + c.reset)
+			x &= 3
+		}, 100)
+	})()
 }

@@ -21,7 +21,7 @@ module.exports.start = function () {
 	} else {
 
 		//load database
-		out.status("loading database")
+		out.loading("loading database")
 		database = db.load()
 
 		if (!db.get(config.nick)) {
@@ -35,7 +35,7 @@ module.exports.start = function () {
 		//set permissions
 		db.write(config.nick, "level", 4)
 
-		out.status("starting server")
+		out.loading("starting server")
 
 		//rate limiter
 		rateLimiter = new RateLimiterMemory(
@@ -46,11 +46,12 @@ module.exports.start = function () {
 
 		//check motd
 		if (!config.motd) {
-			out.status("motd not found")
+			out.loading("motd not found")
 		}
 
 		//start listen
 		http.listen(config.port, function () {
+			out.stopLoading()
 			out.status("server started")
 			status = true
 		})

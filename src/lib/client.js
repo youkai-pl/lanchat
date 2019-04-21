@@ -32,8 +32,9 @@ module.exports = {
 				}
 			} else {
 
+				out.loading("connecting")
+
 				//lock
-				out.status("connecting")
 				inprogress = true
 				module.exports.inprogress = inprogress
 
@@ -50,6 +51,7 @@ module.exports = {
 
 				//connected
 				socket.on("connect", function () {
+					out.stopLoading()
 					connection = true
 					module.exports.connection = connection
 					inprogress = false
@@ -66,6 +68,7 @@ module.exports = {
 
 				//handle disconnect
 				socket.on("disconnect", function () {
+					out.stopLoading()
 					connection = false
 					module.exports.connection = connection
 					inprogress = false
@@ -84,17 +87,19 @@ module.exports = {
 
 				//handle conecting
 				socket.on("connecting", () => {
-					out.status("connecting")
 				})
 
 				//handle recconecting
 				socket.on("reconnecting", () => {
+					out.loading("connecting")
+
 					trycount++
 					inprogress = true
 					module.exports.inprogress = inprogress
-					out.status("connecting")
+					//out.status("connecting")
 					if (trycount == config.attemps) {
 						out.alert("connection error")
+						out.stopLoading()
 						inprogress = false
 						module.exports.inprogress = inprogress
 					}

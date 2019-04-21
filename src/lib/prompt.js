@@ -7,6 +7,7 @@ const readline = require("./interface").readline
 const config = require("./config")
 const dwn = require("./dwn")
 const plugins = require("./plugins")
+const out = require("./out")
 
 //PROMPT
 module.exports = {
@@ -52,14 +53,13 @@ module.exports = {
 		console.log(" Nickname: " + config.nick)
 
 		//check update
-		console.log(" Checking updates")
+		out.loading("checking updates")
 		dwn.selfCheck().then((data) => {
-			readline.moveCursor(process.stdout, 0, -1)
+			out.stopLoading()
+			process.stdout.clearLine()
+			process.stdout.cursorTo(0)
 			if (data) {
 				console.log(" Update avabile: (" + data + ")")
-			} else {
-				process.stdout.clearLine()
-				process.stdout.cursorTo(0)
 			}
 			console.log("")
 			rl.prompt(true)

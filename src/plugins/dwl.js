@@ -10,11 +10,10 @@ module.exports = {
 	//dwn-list
 	dwl: function () {
 		var l = []
-		l.push("")
-		l.push(" Version   Name   Description")
+		l.push("Name   Description             Version")
 		l.push("-----------------------------------------")
-		l.push(" 0.11.0   dev    developer commands")
-		l.push(" 0.11.0   dwl    list of avabile plugins")
+		l.push("dev    developer commands      1.0.0+")
+		l.push("dwl    list of avabile plugins 1.0.0+")
 		out.blank(l.join("\n"))
 	}
 }
