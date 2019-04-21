@@ -5,7 +5,7 @@
 <img src="https://img.shields.io/npm/v/lanchat-npm.svg">
 <img src="https://img.shields.io/github/downloads/akira202/lanchat/total.svg?label=github%20downloads">
 <img src="https://img.shields.io/npm/dt/lanchat-npm.svg?label=npm%20downloads">
-<img src ="https://img.shields.io/github/last-commit/akira202/lanchat/dev.svg">
+<img src ="https://img.shields.io/github/last-commit/akira202/lanchat/master.svg">
 <img src="https://img.shields.io/github/release-date/akira202/lanchat.svg">
 
 </p>
