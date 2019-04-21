@@ -17,7 +17,6 @@ module.exports = {
 
 	//exit
 	exit: function () {
-		//exit
 		process.stdout.write("\033c")
 		process.exit(0)
 	},
@@ -78,87 +77,75 @@ module.exports = {
 
 	//host
 	host: function () {
-		host.start()
-		//client.connect("127.0.0.1")
+		if (client.connection) {
+			out.alert("disconnect from current server first")
+		} else {
+			host.start()
+			client.connect("127.0.0.1")
+		}
 	},
 
 	//login
 	login: function (args) {
-		if (client.connection) {
+		if (checkConnection()) {
 			if (args[0]) {
 				client.auth(args[0])
 			} else {
 				out.blank("try /login <password>")
 			}
-		} else {
-			out.alert("you must be connected")
 		}
-
 	},
 
 	//register
 	lock: function (args) {
-		if (client.connection) {
+		if (checkConnection()) {
 			client.lock(args)
-		} else {
-			out.alert("you must be connected")
 		}
 	},
 
 	//disconnect
 	disconnect: function () {
-		client.disconnect()
+		if (checkConnection()) {
+			client.disconnect()
+		}
 	},
 
 	//list
 	list: function () {
-		//get connected user list
-		if (client.connection) {
+		if (checkConnection()) {
 			client.list()
-		} else {
-			out.alert("you must be connected")
 		}
 	},
 
 	//afk
 	afk: function () {
-		//set afk status
-		if (client.connection) {
+		if (checkConnection()) {
 			config.write("status", "afk")
 			client.changeStatus("afk")
 			out.status("you are afk")
-		} else {
-			out.alert("you must be connected")
 		}
 	},
 
 	//online
 	online: function () {
-		//set online status
-		if (client.connection) {
+		if (checkConnection()) {
 			config.write("status", "online")
 			client.changeStatus("online")
 			out.status("you are online")
-		} else {
-			out.alert("you must be connected")
 		}
 	},
 
 	//dnd
 	dnd: function () {
-		//set dnd status
-		if (client.connection) {
+		if (checkConnection()) {
 			config.write("status", "dnd")
 			client.changeStatus("dnd")
 			out.status("you are dnd")
-		} else {
-			out.alert("you must be connected")
 		}
 	},
 
 	//notify
 	notify: function (args) {
-		//change notify setting
 		if ((args[0] === "all") || (args[0] === "mention") || (args[0] === "none")) {
 			config.write("notify", args[0])
 			out.status("notify setting changed")
@@ -169,98 +156,78 @@ module.exports = {
 
 	//mention
 	mention: function (args) {
-		//mention user
-		if (client.connection) {
+		if (checkConnection()) {
 			if (args[0]) {
 				client.mention(args[0])
 			} else {
 				out.blank("try /m <nick>")
 			}
-		} else {
-			out.alert("you must be connected")
 		}
 	},
 
 	//kick
 	kick: function (args) {
-		//kick user
-		if (client.connection) {
+		if (checkConnection()) {
 			if (args[0]) {
 				client.kick(args[0])
 			} else {
 				out.blank("try /kick <nick>")
 			}
-		} else {
-			out.alert("you must be connected")
 		}
 	},
 
 	//ban
 	ban: function (args) {
-		//ban user
-		if (client.connection) {
+		if (checkConnection()) {
 			if (args[0]) {
 				client.ban(args[0])
 			} else {
 				out.blank("try /ban <nick>")
 			}
-		} else {
-			out.alert("you must be connected")
 		}
 	},
 
 	//unban
 	unban: function (args) {
-		//unban user
-		if (client.connection) {
+		if (checkConnection()) {
 			if (args[0]) {
 				client.unban(args[0])
 			} else {
 				out.blank("try /unban <nick>")
 			}
-		} else {
-			out.alert("you must be connected")
 		}
 	},
 
 	//mute
 	mute: function (args) {
-		//mute user
-		if (client.connection) {
+		if (checkConnection()) {
 			if (args[0]) {
 				client.mute(args[0])
 			} else {
 				out.blank("try /mute <nick>")
 			}
-		} else {
-			out.alert("you must be connected")
 		}
 	},
 
 	//unmute
 	unmute: function (args) {
-		//mute user
-		if (client.connection) {
+		if (checkConnection()) {
 			if (args[0]) {
 				client.unmute(args[0])
 			} else {
 				out.blank("try /mute <nick>")
 			}
-		} else {
-			out.alert("you must be connected")
 		}
 	},
 
 	//chane permission
 	level: function (args) {
-		if (client.connection) {
+		if (checkConnection()) {
 			if (args[0] && args[1]) {
 				client.level(args)
 			} else {
 				out.blank("try /level <nick> <1-5>")
 			}
-		} else {
-			out.alert("you must be connected")
 		}
 	},
 
@@ -281,4 +248,15 @@ module.exports = {
 			out.blank("try /dwd <plugin name>")
 		}
 	}
+}
+
+function checkConnection() {
+	var check
+	if (client.connection) {
+		check = true
+	} else {
+		check = false
+		out.alert("you must be connected")
+	}
+	return check
 }

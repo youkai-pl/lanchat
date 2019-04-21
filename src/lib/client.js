@@ -7,9 +7,10 @@ const config = require("./config")
 //CLIENT
 //variables
 var trycount = 0
-connection = false
-reconnect = false
-safeDisconnect = false
+var connection = false
+var reconnect = false
+var safeDisconnect = false
+var inprogress = false
 
 module.exports = {
 
@@ -22,9 +23,16 @@ module.exports = {
 		} else {
 
 			//block double connect
-			if (connection) {
-				out.alert("you already connected")
+			if (connection || inprogress) {
+				if (connection) {
+					out.alert("you already connected")
+				}
+				if (inprogress) {
+					out.alert("you are under connecting")
+				}
 			} else {
+				inprogress = true
+				module.exports.inprogress = inprogress
 
 				//create socket
 				socket = require("socket.io-client")("http://" + ip + ":" + config.port,
@@ -41,6 +49,8 @@ module.exports = {
 				socket.on("connect", function () {
 					connection = true
 					module.exports.connection = connection
+					inprogress = false
+					module.exports.inprogress = inprogress
 					trycount = 0
 					if (reconnect) {
 						out.status("reconnected")
@@ -55,6 +65,8 @@ module.exports = {
 				socket.on("disconnect", function () {
 					connection = false
 					module.exports.connection = connection
+					inprogress = false
+					module.exports.inprogress = inprogress
 					if (!safeDisconnect) {
 						out.alert("disconnected")
 					}
@@ -63,6 +75,8 @@ module.exports = {
 				//handle reconnect
 				socket.on("reconnect", () => {
 					reconnect = true
+					inprogress = false
+					module.exports.inprogress = inprogress
 				})
 
 				//handle conecting
@@ -73,9 +87,13 @@ module.exports = {
 				//handle recconecting
 				socket.on("reconnecting", () => {
 					trycount++
+					inprogress = true
+					module.exports.inprogress = inprogress
 					out.status("connecting")
 					if (trycount == config.attemps) {
 						out.alert("connection error")
+						inprogress = false
+						module.exports.inprogress = inprogress
 					}
 				})
 			}
@@ -125,15 +143,10 @@ module.exports = {
 
 	//disconnect
 	disconnect: function () {
-		if (connection) {
-			//disconnect
-			reconnect = false
-			safeDisconnect = true
-			socket.disconnect()
-			out.status("disconnected")
-		} else {
-			out.alert("you are not connected")
-		}
+		reconnect = false
+		safeDisconnect = true
+		socket.disconnect()
+		out.status("disconnected")
 	},
 
 	//list
