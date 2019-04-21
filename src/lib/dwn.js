@@ -73,9 +73,9 @@ module.exports = {
 function get(url, dest, temp) {
 
 	if (fs.existsSync(dest)) {
-		out.status("Updating...")
+		out.loading("Updating")
 	} else {
-		out.status("Downloading...")
+		out.loading("Downloading")
 	}
 
 	return new Promise((resolve, reject) => {
@@ -88,6 +88,7 @@ function get(url, dest, temp) {
 			} else {
 				file.close()
 				fs.unlink(temp, () => { })
+				out.stopLoading()
 				reject("Not found")
 			}
 		})
@@ -96,8 +97,10 @@ function get(url, dest, temp) {
 			file.close()
 			fs.unlink(temp, () => { })
 			if (err.code === "ENOTFOUND") {
+				out.stopLoading()
 				reject("Connection error")
 			} else {
+				out.stopLoading()
 				reject(err.code)
 			}
 		})
@@ -109,6 +112,7 @@ function get(url, dest, temp) {
 			if (fs.existsSync(temp)) {
 				fs.renameSync(temp, dest)
 			}
+			out.stopLoading()
 			resolve()
 
 		})
@@ -116,6 +120,7 @@ function get(url, dest, temp) {
 		file.on("error", err => {
 			file.close()
 			fs.unlink(temp, () => { })
+			out.stopLoading()
 			reject()
 		})
 	})
