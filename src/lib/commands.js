@@ -225,7 +225,7 @@ module.exports = {
 			if (args[0] && args[1]) {
 				client.level(args)
 			} else {
-				out.blank("try /level <nick> <1-5>")
+				out.blank("try /level <nick> <0-4>")
 			}
 		}
 	},
