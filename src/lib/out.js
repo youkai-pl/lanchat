@@ -47,22 +47,28 @@ module.exports = {
 	},
 
 	//list of users
-	list: function (user, status) {
-		var color
-		if (status === "online") {
-			color = c.green
-		}
-		if (status === "afk") {
-			color = c.yellow
-		}
-		if (status === "dnd") {
-			color = c.red
-		}
-		if (!status) {
-			color = c.reset
-		}
+	list: function (users) {
 
-		out("(" + color + status + c.reset + ") " + user)
+		for (var i = 0; i < users.length; i++) {
+			var color
+			var status = users[i].status
+			var nick = users[i].nick
+			if (status === "online") {
+				color = c.green
+			}
+			if (status === "afk") {
+				color = c.yellow
+			}
+			if (status === "dnd") {
+				color = c.red
+			}
+			if (!status) {
+				color = c.reset
+			}
+			if (nick) {
+				out("(" + color + status + c.reset + ") " + nick)
+			}
+		}
 	},
 
 	//loading

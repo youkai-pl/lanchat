@@ -344,9 +344,7 @@ function listen() {
 
 	//usersList
 	socket.on("list", function (users) {
-		for (var i = 0; i < users.length; i++) {
-			out.list(users[i].nick, users[i].status)
-		}
+		out.list(users)
 	})
 
 	//incorrectValue
