@@ -9,7 +9,7 @@
 
 </p>
 
-# Lan-Chat
+# Lanchat
 #### IRC like chat app works in LAN network
 
 * [Instalation](#instalation)

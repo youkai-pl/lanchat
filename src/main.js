@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
 // LANCHAT BY AKIRA
-const fs = require("fs")
 const prompt = require("./lib/prompt")
 const config = require("./lib/config")
-var global = require("./lib/global")
+const plugins = require("./lib/plugins")
 
 console.log("Loading...")
 
@@ -14,9 +13,7 @@ console.log("Loading...")
 }) */
 
 //load plugins
-if (fs.existsSync("./plugins")) {
-	global.plugins = require("require-all")(__dirname + "/plugins")
-}
+plugins.load()
 
 //load config
 config.load()

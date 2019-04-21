@@ -7,7 +7,7 @@ module.exports = {
 
 	//view message
 	message: function (msg) {
-		out(c.green + "[" + time() + "] " + c.blue + msg.nick + c.reset + ": " + msg.content)
+		out(c.gray + "[" + time() + "] " + c.blue + msg.nick + c.reset + ": " + msg.content)
 	},
 
 	//user status
@@ -32,7 +32,7 @@ module.exports = {
 
 	//view status
 	status: function (msg) {
-		out(c.green + "[#] " + msg + c.reset)
+		out(c.blue + "[#] " + msg + c.reset)
 	},
 
 	//normal console text

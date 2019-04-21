@@ -3,12 +3,11 @@ const out = require("./out")
 const c = require("./colors")
 const notify = require("./notify")
 const config = require("./config")
-var global = require("./global")
 
 //CLIENT
 //variables
 var trycount = 0
-global.connected = false
+connection = false
 reconnect = false
 safeDisconnect = false
 
@@ -23,7 +22,7 @@ module.exports = {
 		} else {
 
 			//block double connect
-			if (global.connected) {
+			if (connection) {
 				out.alert("you already connected")
 			} else {
 
@@ -40,7 +39,8 @@ module.exports = {
 
 				//connected
 				socket.on("connect", function () {
-					global.connected = true
+					connection = true
+					module.exports.connection = connection
 					trycount = 0
 					if (reconnect) {
 						out.status("reconnected")
@@ -53,9 +53,9 @@ module.exports = {
 
 				//handle disconnect
 				socket.on("disconnect", function () {
-					global.connected = false
+					connection = false
+					module.exports.connection = connection
 					if (!safeDisconnect) {
-						global.lock = false
 						out.alert("disconnected")
 					}
 				})
@@ -75,7 +75,6 @@ module.exports = {
 					trycount++
 					out.status("connecting")
 					if (trycount == config.attemps) {
-						global.lock = false
 						out.alert("connection error")
 					}
 				})
@@ -91,7 +90,7 @@ module.exports = {
 			nick: config.nick
 		})
 		//send
-		if (global.connected) {
+		if (connection) {
 			socket.emit("message", content)
 		}
 	},
@@ -126,17 +125,12 @@ module.exports = {
 
 	//disconnect
 	disconnect: function () {
-		if (global.connected) {
-			if (global.host) {
-				out.status("host cannot be disconnect")
-			} else {
-
-				//disconnect
-				reconnect = false
-				safeDisconnect = true
-				socket.disconnect()
-				out.status("disconnected")
-			}
+		if (connection) {
+			//disconnect
+			reconnect = false
+			safeDisconnect = true
+			socket.disconnect()
+			out.status("disconnected")
 		} else {
 			out.alert("you are not connected")
 		}
@@ -374,7 +368,7 @@ function listen() {
 	})
 
 	///socketLimit
-	socket.old("socketLimit", function(){
+	socket.on("socketLimit", function () {
 		out.alert("all sockets is taken")
 	})
 }

@@ -1,5 +1,4 @@
 const client = require("../lib/client")
-const global = require("../lib/global")
 const config = require("../lib/config")
 const db = require("../lib/db")
 const host = require("../lib/host")
@@ -13,7 +12,7 @@ module.exports = {
 
 	//global
 	d2: function () {
-		console.log(global)
+		console.log(client.connection)
 	},
 
 	//config

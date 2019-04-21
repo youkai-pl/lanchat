@@ -6,13 +6,14 @@ const rl = require("./interface").rl
 const readline = require("./interface").readline
 const config = require("./config")
 const dwn = require("./dwn")
-var global = require("./global")
+const plugins = require("./plugins")
 
 //PROMPT
 module.exports = {
 	run: function () {
-		rl.pause()
+
 		//init
+		rl.pause()
 		process.stdout.write("\033c")
 		process.stdout.write(
 			String.fromCharCode(27) + "]0;" + "Lanchat" + String.fromCharCode(7)
@@ -21,17 +22,17 @@ module.exports = {
 		//welcome screen
 		if (process.stdout.columns > 41) {
 
-			//make it green
-			console.log("\x1b[92m")
+			//set color
+			console.log("\x1b[95m")
 
-			//shitty ascii art
-			console.log(" █     █████ ███ █ █████ █   █ █████ █████")
-			console.log(" █     █   █ █ █ █ █     █   █ █   █   █")
-			console.log(" █     █████ █ █ █ █     █████ █████   █")
-			console.log(" █     █   █ █ █ █ █     █   █ █   █   █")
-			console.log(" █████ █   █ █ ███ █████ █   █ █   █   █")
+			//ascii art
+			console.log("    __                  _           _   ")
+			console.log("   / /  __ _ _ __   ___| |__   __ _| |_ ")
+			console.log("  / /  / _` | '_ \\ / __| '_ \\ / _` | __|")
+			console.log(" / /__| (_| | | | | (__| | | | (_| | |_ ")
+			console.log(" \\____/\\__,_|_| |_|\\___|_| |_|\\__,_|\\__|")
 		} else {
-			console.log("Lanchat")
+			console.log(" Lanchat")
 		}
 
 		//reset color
@@ -41,9 +42,9 @@ module.exports = {
 		console.log(" Version " + pkg.version)
 
 		//plugis info
-		if (global.plugins) {
-			if (Object.keys(global.plugins).length) {
-				console.log(" Loaded " + Object.keys(global.plugins).length + " plugin(s)")
+		if (plugins.run) {
+			if (Object.keys(plugins.run).length) {
+				console.log(" Loaded " + Object.keys(plugins.run).length + " plugin(s)")
 			}
 		}
 
@@ -98,9 +99,9 @@ function wrapper(message) {
 			}
 
 			//try execute commands from plugins
-			for (i in global.plugins) {
-				if (typeof global.plugins[i][args[0].substr(1)] !== "undefined") {
-					global.plugins[i][args[0].substr(1)](args.slice(1))
+			for (i in plugins.run) {
+				if (typeof plugins.run[i][args[0].substr(1)] !== "undefined") {
+					plugins.run[i][args[0].substr(1)](args.slice(1))
 				}
 			}
 
