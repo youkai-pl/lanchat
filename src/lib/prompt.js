@@ -85,28 +85,30 @@ function wrapper(message) {
 	//clear line
 	readline.moveCursor(process.stdout, 0, -1)
 
-	//check prefix
-	if (message.charAt(0) !== "/") {
+	if (!/^ *$/.test(message)) {
+		//check prefix
+		if (message.charAt(0) !== "/") {
 
-		//send message
-		client.send(message)
-	} else {
+			//send message
+			client.send(message)
+		} else {
 
-		//execute command
-		const args = message.split(" ")
-		if (typeof commands[args[0].substr(1)] !== "undefined") {
-			commands[args[0].substr(1)](args.slice(1))
-		}
-
-		//try execute commands from plugins
-		for (i in plugins.run) {
-			if (typeof plugins.run[i][args[0].substr(1)] !== "undefined") {
-				plugins.run[i][args[0].substr(1)](args.slice(1))
+			//execute command
+			const args = message.split(" ")
+			if (typeof commands[args[0].substr(1)] !== "undefined") {
+				commands[args[0].substr(1)](args.slice(1))
 			}
-		}
 
-		//reset cursor
-		process.stdout.clearLine()
-		process.stdout.cursorTo(0)
+			//try execute commands from plugins
+			for (i in plugins.run) {
+				if (typeof plugins.run[i][args[0].substr(1)] !== "undefined") {
+					plugins.run[i][args[0].substr(1)](args.slice(1))
+				}
+			}
+
+			//reset cursor
+			process.stdout.clearLine()
+			process.stdout.cursorTo(0)
+		}
 	}
 }
