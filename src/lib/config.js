@@ -20,7 +20,7 @@ module.exports = {
 		//check config
 		if (!fs.existsSync(path + "config.json")) {
 			// eslint-disable-next-line quotes
-			fs.writeFileSync(path + "config.json", '{"nick":"default","port":"2137","notify":"mention", "devlog":false, "attemps": 5, "ratelimit": 15, "socketlimit": 20, "lenghtlimit: 1500"}')
+			fs.writeFileSync(path + "config.json", '{}')
 		}
 
 		//check host database
@@ -35,31 +35,44 @@ module.exports = {
 			//load file
 			config = JSON.parse(fs.readFileSync(path + "config.json", "utf8"))
 			config.validate = true
+			var save
 
 			//valdate
 			if (!config.hasOwnProperty("nick")) {
-				config.validate = false
+				config.nick = "default"
+				save = true
 			}
 			if (!config.hasOwnProperty("port")) {
-				config.validate = false
+				config.port = 2137
+				save = true
 			}
 			if (!config.hasOwnProperty("notify")) {
-				config.validate = false
+				config.notify = "mention"
+				save = true
 			}
 			if (!config.hasOwnProperty("log")) {
-				config.validate = false
+				config.log = false
+				save = true
 			}
 			if (!config.hasOwnProperty("ratelimit")) {
-				config.validate = false
+				config.ratelimit = 15
+				save = true
 			}
 			if (!config.hasOwnProperty("attemps")) {
-				config.validate = false
+				config.attemps = 5
+				save = true
 			}
 			if (!config.hasOwnProperty("socketlimit")) {
-				config.validate = false
+				config.socketlimit = 100
+				save = true
 			}
 			if (!config.hasOwnProperty("lenghtlimit")) {
-				config.validate = false
+				config.lenghtlimit = 1500
+				save = true
+			}
+			if (save) {
+				saveConfig()
+				config.validate = true
 			}
 
 			//load motd
@@ -75,8 +88,9 @@ module.exports = {
 				module.exports[i] = config[i]
 			}
 
-		} catch (err) {
+			return config.validate
 
+		} catch (err) {
 			//return
 			config.validate = false
 		}
@@ -90,16 +104,16 @@ module.exports = {
 
 		//export
 		module.exports[key] = config[key]
-
-		//delete temporary keys
-		var toWrtie = config
-		delete toWrtie["validate"]
-		delete toWrtie["motd"]
-		delete toWrtie["status"]
-
-		//save to file
-		fs.writeFileSync(path + "config.json", JSON.stringify(toWrtie), function (err) {
-			if (err) return console.log(err)
-		})
+		saveConfig()
 	}
+}
+
+function saveConfig() {
+	var toWrtie = config
+	delete toWrtie["validate"]
+	delete toWrtie["motd"]
+	delete toWrtie["status"]
+	fs.writeFileSync(path + "config.json", JSON.stringify(toWrtie), function (err) {
+		console.log(err)
+	})
 }
