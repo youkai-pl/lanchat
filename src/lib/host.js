@@ -146,19 +146,21 @@ module.exports.start = function () {
 
 			//setPassword
 			socket.on("setPassword", function (nick, password) {
-				if (getByNick(nick)) {
-					if (password) {
-						db.write(getUser(socket.id).nick, "pass", password)
-						socket.emit("passChanged")
+				verify(socket, function () {
+					if (getByNick(nick)) {
+						if (password) {
+							db.write(getUser(socket.id).nick, "pass", password)
+							socket.emit("passChanged")
+						}
 					}
-				}
+				})
 			})
 
 			//message
 			socket.on("message", function (content) {
 				verify(socket, function () {
 					//check message
-					if (typeof content === "string" || content instanceof String) {
+					if (typeof content === "string" && !/^ *$/.test(content)) {
 
 						//change permission
 						if (!checkMute(socket.id)) {
@@ -179,6 +181,8 @@ module.exports.start = function () {
 						} else {
 							socket.emit("clientMuted")
 						}
+					} else {
+						socket.emit("incorrectValue")
 					}
 				})
 			})

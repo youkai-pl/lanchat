@@ -136,16 +136,8 @@ module.exports = {
 	},
 
 	//lock
-	lock: function (args) {
-		if (args) {
-			if (args[0] === args[1]) {
-				socket.emit("setPassword", config.nick, args[0])
-			} else {
-				out.blank("try /lock <password> <password>")
-			}
-		} else {
-			out.blank("try /lock <password> <password>")
-		}
+	lock: function (pass) {
+		socket.emit("setPassword", config.nick, pass)
 	},
 
 	//disconnect

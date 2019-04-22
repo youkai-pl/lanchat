@@ -76,6 +76,11 @@ Host settings are storage in `config.json`
 
 ## Changelog
 
+### 1.0.1
+* blank message spam bugfix
+* corrupted config bugifx
+* lock with blank password bugifx
+
 ### 1.0.0
 * host in portable version
 * plugin manager

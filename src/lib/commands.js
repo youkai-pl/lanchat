@@ -98,7 +98,15 @@ module.exports = {
 	//register
 	lock: function (args) {
 		if (checkConnection()) {
-			client.lock(args)
+			if (args[0]) {
+				if (args[0] === args[1]) {
+					client.lock(args[0])
+				} else {
+					out.warning("try /lock <password> <password>")
+				}
+			} else {
+				out.warning("password cannot be blank")
+			}
 		}
 	},
 
