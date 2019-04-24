@@ -9,6 +9,11 @@ module.exports = {
 
 	//listen
 	listen: function () {
+		listen.on("error", function (err) {
+			if(err.code === "EADDRINUSE"){
+				out.warning("Port 2138 is busy. Lanchat can't listen for hosts.")
+			}
+		})
 		listen.bind(2138)
 		listen.on("message", function (msg, rinfo) {
 			if (list.indexOf(rinfo.address) === -1) {
@@ -33,6 +38,6 @@ module.exports = {
 
 		setInterval(function () {
 			broadcast.send(message, 0, message.length, 2138)
-		}, 3000)
+		}, 500)
 	}
 }
