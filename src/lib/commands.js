@@ -5,7 +5,7 @@ const dwn = require("./dwn")
 const host = require("./host")
 const config = require("./config")
 const c = require("./colors")
-
+const udp = require("./udp")
 //COMMANDS
 module.exports = {
 
@@ -47,6 +47,7 @@ module.exports = {
 		help.push("/connect    - connect")
 		help.push("/disconnect - disconnect")
 		help.push("/host       - create server")
+		help.push("/lan        - list of hosts detected in lan")
 		help.push("/clear      - clear screen")
 		help.push("/exit       - exit lanchat")
 		help.push("/nick       - change nick")
@@ -254,6 +255,11 @@ module.exports = {
 		} else {
 			out.blank("try /dwd <plugin name>")
 		}
+	},
+
+	//list of detected hosts
+	lan: function(){
+		udp.list()
 	}
 }
 

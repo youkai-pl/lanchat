@@ -10,7 +10,7 @@ module.exports = {
 	//listen
 	listen: function () {
 		listen.on("error", function (err) {
-			if(err.code === "EADDRINUSE"){
+			if (err.code === "EADDRINUSE") {
 				out.warning("Port 2138 is busy. Lanchat can't listen for hosts.")
 			}
 		})
@@ -39,5 +39,12 @@ module.exports = {
 		setInterval(function () {
 			broadcast.send(message, 0, message.length, 2138)
 		}, 500)
+	},
+
+	//list
+	list: function () {
+		for (var i = 0; i < list.length; i++) {
+			out.status("[" + (i + 1) + "] " + list[i])
+		}
 	}
 }
