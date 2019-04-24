@@ -247,7 +247,7 @@ module.exports = {
 		}
 	},
 
-	//plugin delet
+	//plugin delete
 	dwd: function (args) {
 		if (args[0]) {
 			dwn.delete(args[0])

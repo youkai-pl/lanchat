@@ -3,6 +3,7 @@ const out = require("./out")
 const c = require("./colors")
 const notify = require("./notify")
 const config = require("./config")
+const udp = require("./udp")
 
 //CLIENT
 //variables
@@ -33,6 +34,9 @@ module.exports = {
 			} else {
 
 				out.loading("connecting")
+
+				//stop udp listening
+				udp.close()
 
 				//lock
 				inprogress = true
@@ -73,6 +77,7 @@ module.exports = {
 					module.exports.connection = connection
 					inprogress = false
 					module.exports.inprogress = inprogress
+					udp.listen()
 					if (!safeDisconnect) {
 						out.alert("disconnected")
 					}
