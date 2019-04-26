@@ -3,29 +3,45 @@ const listen = dgram.createSocket("udp4")
 const broadcast = dgram.createSocket("udp4")
 const out = require("./out")
 
+//variables
 var list = []
+var status
 
 module.exports = {
 
 	//listen
 	listen: function () {
+
 		listen.on("error", function (err) {
 			if (err.code === "EADDRINUSE") {
 				out.warning("Port 2138 is busy. Lanchat can't listen for hosts.")
 			}
 		})
-		listen.bind(2138)
+
+		listen.on("listening", function () {
+			status = true
+		})
+
 		listen.on("message", function (msg, rinfo) {
 			if (list.indexOf(rinfo.address) === -1) {
 				out.status("Host detected in LAN: " + rinfo.address)
 				list.push(rinfo.address)
 			}
 		})
+
+		try {
+			listen.bind({ port: 2138 })
+		}catch(err){
+			//empty catch (i'm sorry)
+		}
 	},
 
 	//stop listen
 	close: function () {
-		listen.close()
+		if (status) {
+			listen.close()
+			status = false
+		}
 	},
 
 	//broadcast
