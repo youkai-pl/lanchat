@@ -44,7 +44,7 @@ module.exports = {
 	//list
 	list: function () {
 		for (var i = 0; i < list.length; i++) {
-			out.status("[" + (i + 1) + "] " + list[i])
+			out.hostsList({ n: i + 1, ip: list[i] })
 		}
 	}
 }
