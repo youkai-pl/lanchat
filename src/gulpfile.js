@@ -9,8 +9,8 @@ const { compile } = require("nexe")
 // gulp config
 
 // dist
-gulp.task("dist", function () {
-	return new Promise(function (resolve, reject) {
+gulp.task("dist", () => {
+	return new Promise(((resolve, reject) => {
 		clean("dist")
 		pipeline(
 			gulp.src("./lib/*.js"),
@@ -22,12 +22,12 @@ gulp.task("dist", function () {
 		gulp.src(["../API.md"]).pipe(gulp.dest("../dist"))
 		gulp.src(["../src/**/*", "!../src/**/node_modules/**", "!../src/yarn.lock", "!../src/lib/**/*", "!../src/plugins/**/*", "!../src/gulpfile.js", "!../src/icon.ico"]).pipe(gulp.dest("../dist"))
 		resolve()
-	})
+	}))
 })
 
 // pkg
-gulp.task("pkg-compile", function () {
-	return new Promise(function (resolve, reject) {
+gulp.task("pkg-compile", () => {
+	return new Promise(((resolve, reject) => {
 		compile({
 			input: "../dist/main.js",
 			output: "../bin/lanchat.exe",
@@ -36,27 +36,27 @@ gulp.task("pkg-compile", function () {
 			console.log("success windows")
 			resolve()
 		})
-	})
+	}))
 })
 
 // clean
-gulp.task("clean", function () {
-	return new Promise(function (resolve, reject) {
+gulp.task("clean", () => {
+	return new Promise(((resolve, reject) => {
 		clean("dist")
 		resolve()
-	})
+	}))
 })
 
 // prepkg
-gulp.task("prepkg", function prepkg() {
-	return new Promise(function (resolve, reject) {
+gulp.task("prepkg", () => {
+	return new Promise(((resolve, reject) => {
 		clean("bin")
 		gulp.src(["../dist/package.json"])
 			.pipe(yarn({
 				production: true
 			}))
 		resolve()
-	})
+	}))
 })
 
 // clean

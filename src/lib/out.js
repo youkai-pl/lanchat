@@ -110,7 +110,7 @@ function animation(content) {
 	loading = (function () {
 		var P = ["\\", "|", "/", "-"]
 		var x = 0
-		return setInterval(function () {
+		return setInterval(() => {
 			process.stdout.clearLine()
 			process.stdout.write(c.blue + "\r" + P[x++] + " " + content + c.reset)
 			x &= 3

@@ -52,7 +52,7 @@ module.exports.start = function () {
 		}
 
 		// start listen
-		http.listen(config.port, function () {
+		http.listen(config.port, () => {
 			out.stopLoading()
 			out.status("server started")
 			status = true
@@ -62,10 +62,10 @@ module.exports.start = function () {
 		udp.broadcast()
 
 		// SOCKET EVENTS
-		io.on("connection", function (socket) {
+		io.on("connection", (socket) => {
 
 			// login
-			socket.on("login", function (nick) {
+			socket.on("login", (nick) => {
 
 				// detect blank nick
 				if (!nick) {
@@ -126,19 +126,19 @@ module.exports.start = function () {
 			})
 
 			// disconnect
-			socket.on("disconnect", function () {
+			socket.on("disconnect", () => {
 				emitStatus("left", socket)
 				delUser(socket.id)
 			})
 
 			// auth
-			socket.on("auth", function (nick, password) {
+			socket.on("auth", (nick, password) => {
 				if (!getUser(socket.id)) {
 
 					var hash = db.get(nick).pass
 
 					// check password
-					bcrypt.compare(password, hash, function (err, res) {
+					bcrypt.compare(password, hash, (err, res) => {
 						if (res === true) {
 
 							// check nick avability
@@ -156,13 +156,13 @@ module.exports.start = function () {
 			})
 
 			// setPassword
-			socket.on("setPassword", function (nick, password) {
-				verify(socket, function () {
+			socket.on("setPassword", (nick, password) => {
+				verify(socket, () => {
 					if (getByNick(nick)) {
 						if (password) {
 
-							bcrypt.genSalt(10, function (err, salt) {
-								bcrypt.hash(password, salt, function (err, hash) {
+							bcrypt.genSalt(10, (err, salt) => {
+								bcrypt.hash(password, salt, (err, hash) => {
 
 									db.write(getUser(socket.id).nick, "pass", hash)
 									socket.emit("passChanged")
@@ -176,8 +176,8 @@ module.exports.start = function () {
 			})
 
 			// message
-			socket.on("message", function (content) {
-				verify(socket, function () {
+			socket.on("message", (content) => {
+				verify(socket, () => {
 					// check message
 					if (typeof content === "string" && !/^ *$/.test(content)) {
 
@@ -207,8 +207,8 @@ module.exports.start = function () {
 			})
 
 			// mention
-			socket.on("mention", function (nick) {
-				verify(socket, function () {
+			socket.on("mention", (nick) => {
+				verify(socket, () => {
 					if (checkMute(socket.id)) {
 						socket.emit("muted")
 					} else {
@@ -223,8 +223,8 @@ module.exports.start = function () {
 			})
 
 			// nick
-			socket.on("changeNick", function (nick) {
-				verify(socket, function () {
+			socket.on("changeNick", (nick) => {
+				verify(socket, () => {
 					// shorten the long nick
 					if (nick.length > 15) {
 						nick = nick.substring(0, 15)
@@ -248,15 +248,15 @@ module.exports.start = function () {
 			})
 
 			// list
-			socket.on("list", function () {
-				verify(socket, function () {
+			socket.on("list", () => {
+				verify(socket, () => {
 					socket.emit("list", users)
 				})
 			})
 
 			// change status
-			socket.on("changeStatus", function (status) {
-				verify(socket, function () {
+			socket.on("changeStatus", (status) => {
+				verify(socket, () => {
 					var acceptable = ["online", "afk", "dnd"]
 					if (acceptable.indexOf(status) !== -1) {
 						writeUser(socket.id, "status", status)
@@ -269,24 +269,24 @@ module.exports.start = function () {
 			})
 
 			// mute
-			socket.on("mute", function (nick) {
-				checkPermission("mute", socket, nick, function () {
+			socket.on("mute", (nick) => {
+				checkPermission("mute", socket, nick, () => {
 					db.write(nick, "mute", true)
 					socket.emit("doneMute", nick)
 				})
 			})
 
 			// unmute
-			socket.on("unmute", function (nick) {
-				checkPermission("unmute", socket, nick, function () {
+			socket.on("unmute", (nick) => {
+				checkPermission("unmute", socket, nick, () => {
 					db.write(nick, "mute", false)
 					socket.emit("doneUnmute", nick)
 				})
 			})
 
 			// kick
-			socket.on("kick", function (nick) {
-				checkPermission("kick", socket, nick, function () {
+			socket.on("kick", (nick) => {
+				checkPermission("kick", socket, nick, () => {
 					if (getByNick(nick)) {
 						io.sockets.connected[getByNick(nick).id].disconnect()
 					} else {
@@ -296,8 +296,8 @@ module.exports.start = function () {
 			})
 
 			// ban
-			socket.on("ban", function (nick) {
-				checkPermission("ban", socket, nick, function () {
+			socket.on("ban", (nick) => {
+				checkPermission("ban", socket, nick, () => {
 					db.write(nick, "level", 0)
 					io.sockets.connected[getByNick(nick).id].disconnect()
 					socket.emit("doneBan", nick)
@@ -305,18 +305,18 @@ module.exports.start = function () {
 			})
 
 			// unban
-			socket.on("unban", function (nick) {
-				checkPermission("unban", socket, nick, function () {
+			socket.on("unban", (nick) => {
+				checkPermission("unban", socket, nick, () => {
 					db.write(nick, "level", 1)
 					socket.emit("doneUnban", nick)
 				})
 			})
 
 			// unban
-			socket.on("setPermission", function (nick, level) {
+			socket.on("setPermission", (nick, level) => {
 				level = parseInt(level)
 				if (level >= 1 && level <= 4) {
-					checkPermission("level", socket, nick, function () {
+					checkPermission("level", socket, nick, () => {
 						db.write(nick, "level", level)
 						socket.emit("doneSetPermission", nick, level)
 					})
@@ -415,7 +415,7 @@ function delUser(id) {
 
 // check permission
 function checkPermission(type, socket, nick, callback) {
-	verify(socket, function () {
+	verify(socket, () => {
 		var permission
 		var check
 		if (db.get(nick)) {

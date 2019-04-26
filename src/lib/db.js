@@ -65,7 +65,7 @@ module.exports = {
 }
 
 function save() {
-	fs.writeFileSync(path + "db.json", JSON.stringify(database), function (err) {
+	fs.writeFileSync(path + "db.json", JSON.stringify(database), (err) => {
 		if (err) return console.log(err)
 	})
 }

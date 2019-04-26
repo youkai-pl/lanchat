@@ -113,7 +113,7 @@ function saveConfig() {
 	delete toWrtie["validate"]
 	delete toWrtie["motd"]
 	delete toWrtie["status"]
-	fs.writeFileSync(path + "config.json", JSON.stringify(toWrtie), function (err) {
+	fs.writeFileSync(path + "config.json", JSON.stringify(toWrtie), (err) => {
 		console.log(err)
 	})
 }

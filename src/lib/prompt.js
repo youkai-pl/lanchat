@@ -70,13 +70,13 @@ module.exports = {
 		})
 
 		// prompt
-		rl.on("line", function (line) {
+		rl.on("line", (line) => {
 			wrapper(line)
 			rl.prompt(true)
 		})
 
 		// exit
-		rl.on("close", function () {
+		rl.on("close", () => {
 			process.stdout.write("\033c")
 			process.exit(0)
 		})

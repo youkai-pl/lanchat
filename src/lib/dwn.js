@@ -47,11 +47,11 @@ module.exports = {
 			https.get(self, response => {
 
 				var body = ""
-				response.on("data", function (d) {
+				response.on("data", (d) => {
 					body += d
 				})
 
-				response.on("end", function () {
+				response.on("end", () => {
 					try {
 						var parsed = JSON.parse(body)
 						if (compare(pkg.version, parsed.version) === -1) {
@@ -63,7 +63,7 @@ module.exports = {
 						resolve(false)
 					}
 				})
-			}).on("error", function () {
+			}).on("error", () => {
 				resolve(false)
 			})
 		})

@@ -6,7 +6,7 @@ const config = require("./lib/config")
 const plugins = require("./lib/plugins")
 
 // crash handler
-process.on("uncaughtException", function (err) {
+process.on("uncaughtException", (err) => {
 	console.log("Error: " + err)
 })
 

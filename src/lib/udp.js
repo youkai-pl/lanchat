@@ -12,17 +12,17 @@ module.exports = {
 	// listen
 	listen: function () {
 
-		listen.on("error", function (err) {
+		listen.on("error", (err) => {
 			if (err.code === "EADDRINUSE") {
 				out.warning("Port 2138 is busy. Lanchat can't listen for hosts.")
 			}
 		})
 
-		listen.on("listening", function () {
+		listen.on("listening", () => {
 			status = true
 		})
 
-		listen.on("message", function (msg, rinfo) {
+		listen.on("message", (msg, rinfo) => {
 			if (list.indexOf(rinfo.address) === -1) {
 				out.status("Host detected in LAN: " + rinfo.address)
 				list.push(rinfo.address)
@@ -44,13 +44,13 @@ module.exports = {
 
 	// broadcast
 	broadcast: function () {
-		broadcast.on("listening", function () {
+		broadcast.on("listening", () => {
 			broadcast.setBroadcast(true)
 		})
 
 		const message = "test"
 
-		setInterval(function () {
+		setInterval(() => {
 			broadcast.send(message, 0, message.length, 2138)
 		}, 500)
 	},

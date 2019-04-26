@@ -54,7 +54,7 @@ module.exports = {
 				)
 
 				// connected
-				socket.on("connect", function () {
+				socket.on("connect", () => {
 					out.stopLoading()
 					connection = true
 					module.exports.connection = connection
@@ -71,7 +71,7 @@ module.exports = {
 				})
 
 				// handle disconnect
-				socket.on("disconnect", function () {
+				socket.on("disconnect", () => {
 					out.stopLoading()
 					connection = false
 					module.exports.connection = connection
@@ -218,7 +218,7 @@ module.exports = {
 function listen() {
 
 	// message
-	socket.on("message", function (msg) {
+	socket.on("message", (msg) => {
 
 		// show message when dnd is disabled
 		if (config.status !== "dnd") {
@@ -228,7 +228,7 @@ function listen() {
 	})
 
 	// mention
-	socket.on("mention", function (nick) {
+	socket.on("mention", (nick) => {
 
 		// show mention when dnd is disabled
 		if (config.status !== "dnd") {
@@ -238,152 +238,152 @@ function listen() {
 	})
 
 	// motd
-	socket.on("motd", function (motd) {
+	socket.on("motd", (motd) => {
 		if (!reconnect) {
 			out.blank("\n" + motd + "\n")
 		}
 	})
 
 	// joined
-	socket.on("join", function (nick) {
+	socket.on("join", (nick) => {
 		out.user_status(nick, "joined")
 	})
 
 	// left
-	socket.on("left", function (nick) {
+	socket.on("left", (nick) => {
 		out.user_status(nick, "left")
 	})
 
 	// online
-	socket.on("online", function (nick) {
+	socket.on("online", (nick) => {
 		out.user_status(nick, "is online")
 	})
 
 	// dnd
-	socket.on("dnd", function (nick) {
+	socket.on("dnd", (nick) => {
 		out.user_status(nick, "dnd")
 	})
 
 	// afk
-	socket.on("afk", function (nick) {
+	socket.on("afk", (nick) => {
 		out.user_status(nick, "is afk")
 	})
 
 	// needAuth
-	socket.on("needAuth", function () {
+	socket.on("needAuth", () => {
 		out.status("login required")
 	})
 
 	// wrongPass
-	socket.on("wrongPass", function () {
+	socket.on("wrongPass", () => {
 		out.warning("wrong password")
 	})
 
 	// nickTaken
-	socket.on("nickTaken", function () {
+	socket.on("nickTaken", () => {
 		out.warning("nick already taken, change it and try again")
 	})
 
 	// passChanged
-	socket.on("passChanged", function () {
+	socket.on("passChanged", () => {
 		out.warning("password changed")
 	})
 
 	// muted
-	socket.on("clientMuted", function () {
+	socket.on("clientMuted", () => {
 		out.warning("you are muted")
 	})
 
 	// tooLong
-	socket.on("tooLong", function () {
+	socket.on("tooLong", () => {
 		out.warning("message too long")
 	})
 
 	// flood
-	socket.on("flood", function () {
+	socket.on("flood", () => {
 		out.warning("flood blocked by server")
 	})
 
 	// notSigned
-	socket.on("notSigned", function () {
+	socket.on("notSigned", () => {
 		out.warning("you must be logged in")
 	})
 
 	// notExist
-	socket.on("notExist", function () {
+	socket.on("notExist", () => {
 		out.warning("user doesn't exist")
 	})
 
 	// loginSucces
-	socket.on("loginSucces", function () {
+	socket.on("loginSucces", () => {
 		out.status("logged succesfull")
 	})
 
 	// alreadySigned
-	socket.on("alreadySigned", function () {
+	socket.on("alreadySigned", () => {
 		out.warning("alredy signed")
 	})
 
 	// nickShortened
-	socket.on("nickShortened", function () {
+	socket.on("nickShortened", () => {
 		out.warning("server has shortened your nickname")
 	})
 
 	// userChangeNick
-	socket.on("userChangeNick", function (old, nick) {
+	socket.on("userChangeNick", (old, nick) => {
 		out.nickChange(old, nick)
 	})
 
 	// nickChanged
-	socket.on("nickChanged", function () {
+	socket.on("nickChanged", () => {
 		out.blank("Your nickname is now " + c.blue + args[0] + c.reset)
 	})
 
 	// usersList
-	socket.on("list", function (users) {
+	socket.on("list", (users) => {
 		out.list(users)
 	})
 
 	// incorrectValue
-	socket.on("incorrectValue", function () {
+	socket.on("incorrectValue", () => {
 		out.alert("incorrect value")
 	})
 
 	// statusChanged
-	socket.on("statusChanged", function () { })
+	socket.on("statusChanged", () => { })
 
 	// noPermission
-	socket.on("noPermission", function () {
+	socket.on("noPermission", () => {
 		out.warning("no permission")
 	})
 
 	// doneMute
-	socket.on("doneMute", function (nick) {
+	socket.on("doneMute", (nick) => {
 		out.user_status(nick, "is muted")
 	})
 
 	// doneMute
-	socket.on("doneUnmute", function (nick) {
+	socket.on("doneUnmute", (nick) => {
 		out.user_status(nick, "is unmuted")
 	})
 
 	// doneBan
-	socket.on("doneBan", function (nick) {
+	socket.on("doneBan", (nick) => {
 		out.user_status(nick, "is banned")
 	})
 
 	// doneUnBan
-	socket.on("doneUnban", function (nick) {
+	socket.on("doneUnban", (nick) => {
 		out.user_status(nick, "is unbanned")
 	})
 
 	// doneSetPermission
-	socket.on("doneSetPermission", function (nick, level) {
+	socket.on("doneSetPermission", (nick, level) => {
 		out.user_status(nick, "permissions changed to " + level)
 	})
 
 	// /socketLimit
-	socket.on("socketLimit", function () {
+	socket.on("socketLimit", () => {
 		out.alert("all sockets is taken")
 	})
 }

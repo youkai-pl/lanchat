@@ -59,6 +59,7 @@
         "no-console": "off",
         "no-undef": "off",
         "no-unused-vars": "off",
-        "space-after-function": "off"
+        "space-after-function": "off",
+        "prefer-arrow-callback": "error"
     }
 }
