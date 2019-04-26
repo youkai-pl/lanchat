@@ -1,12 +1,24 @@
 {
   "name": "lanchat-npm",
-  "version": "1.1.0",
+  "version": "1.1.0-beta",
   "description": "Chat working in local network",
   "main": "main.js",
   "repository": "https://github.com/akira202/lanchat.git",
+  "bugs": "https://github.com/akira202/lanchat/issues",
   "author": "akira202",
+  "contributors": [
+    {
+      "name": "Bartłomiej Tota",
+      "email": "betat95@gmail.com",
+      "url": "https://akira202.github.io/"
+    }
+  ],
   "license": "MIT",
-  "preferGlobal": true,
+  "keywords": [
+    "chat",
+    "irc",
+    "local network"
+  ],
   "dependencies": {
     "bcrypt": "^3.0.6",
     "node-notifier": "^5.4.0",
