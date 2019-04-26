@@ -5,6 +5,7 @@ const { RateLimiterMemory } = require("rate-limiter-flexible")
 const out = require("./out")
 const db = require("./db")
 const config = require("./config")
+const udp = require("./udp")
 
 //variables
 var database
@@ -55,6 +56,9 @@ module.exports.start = function () {
 			out.status("server started")
 			status = true
 		})
+
+		//start broadcast
+		udp.broadcast()
 
 		//SOCKET EVENTS
 		io.on("connection", function (socket) {

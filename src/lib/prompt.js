@@ -8,6 +8,7 @@ const config = require("./config")
 const dwn = require("./dwn")
 const plugins = require("./plugins")
 const out = require("./out")
+const udp = require("./udp")
 
 //PROMPT
 module.exports = {
@@ -63,6 +64,9 @@ module.exports = {
 			}
 			console.log("")
 			rl.prompt(true)
+
+			//udp listening
+			udp.listen()
 		})
 
 		//prompt

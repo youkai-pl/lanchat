@@ -71,6 +71,11 @@ module.exports = {
 		}
 	},
 
+	//host lists
+	hostsList: function (host) {
+		out(host.n + ". " + host.ip)
+	},
+
 	//loading
 	loading: function (content) {
 		clearInterval(loading)
