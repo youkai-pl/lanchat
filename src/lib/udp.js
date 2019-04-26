@@ -31,9 +31,7 @@ module.exports = {
 
 		try {
 			listen.bind({ port: 2138 })
-		}catch(err) {
-			// empty catch (i'm sorry)
-		}
+		}catch(err) {}
 	},
 
 	// stop listen

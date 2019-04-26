@@ -39,6 +39,12 @@
                 "max": 1
             }
         ],
+        "no-empty": [
+            "error",
+            {
+                "allowEmptyCatch": true
+            }
+        ],
         "spaced-comment": [
             "error",
             "always",
