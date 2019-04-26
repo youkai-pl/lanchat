@@ -1,22 +1,22 @@
-//import
+// import
 const fs = require("fs")
 
-//variables
+// variables
 const home = process.env.APPDATA || (process.platform == "darwin" ? process.env.HOME + "Library/Preferences" : process.env.HOME)
 const path = home + "/.lanchat/"
 var database = {}
 
 module.exports = {
 
-	//load database
+	// load database
 	load: function () {
 		database = JSON.parse(fs.readFileSync(path + "db.json", "utf8"))
 
-		//export db
+		// export db
 		return database
 	},
 
-	//add user to db
+	// add user to db
 	add: function (user) {
 
 		if (!user.hasOwnProperty("level")) {
@@ -31,7 +31,7 @@ module.exports = {
 			user.pass = false
 		}
 
-		if(!user.hasOwnProperty("mute")){
+		if(!user.hasOwnProperty("mute")) {
 			user.mute = false
 		}
 
@@ -45,14 +45,14 @@ module.exports = {
 		save()
 	},
 
-	//write to db
+	// write to db
 	write: function (nick, key, value) {
 		var index = database.findIndex(x => x.nick === nick)
 		database[index][key] = value
 		save()
 	},
 
-	//get user
+	// get user
 	get: function (nick) {
 		var index = database.findIndex(x => x.nick === nick)
 		if (index === -1) {
@@ -65,7 +65,7 @@ module.exports = {
 }
 
 function save() {
-	fs.writeFileSync(path + "db.json", JSON.stringify(database), function (err) {
+	fs.writeFileSync(path + "db.json", JSON.stringify(database), (err) => {
 		if (err) return console.log(err)
 	})
 }

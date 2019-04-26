@@ -2,12 +2,12 @@ const out = require("../lib/out")
 
 module.exports = {
 
-	//help
+	// help
 	help: function () {
 		out.blank("/dwl        - list avabile plugins")
 	},
 
-	//dwn-list
+	// dwn-list
 	dwl: function () {
 		var l = []
 		l.push("Name   Description             Version")

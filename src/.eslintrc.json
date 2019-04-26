@@ -6,8 +6,8 @@
     },
     "extends": "eslint:recommended",
     "globals": {
-        "Atomics": "readable",
-        "SharedArrayBuffer": "readable"
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
     },
     "parserOptions": {
         "ecmaVersion": 2018
@@ -39,9 +39,27 @@
                 "max": 1
             }
         ],
+        "no-empty": [
+            "error",
+            {
+                "allowEmptyCatch": true
+            }
+        ],
+        "spaced-comment": [
+            "error",
+            "always",
+            {
+                "exceptions": [
+                    "-",
+                    "+"
+                ]
+            }
+        ],
+        "space-before-blocks": "error",
         "no-console": "off",
         "no-undef": "off",
         "no-unused-vars": "off",
-        "space-after-function": "off"
+        "space-after-function": "off",
+        "prefer-arrow-callback": "error"
     }
 }

@@ -1,4 +1,4 @@
-//import
+// import
 const client = require("./client")
 const commands = require("./commands")
 const pkg = require("../package.json")
@@ -10,24 +10,24 @@ const plugins = require("./plugins")
 const out = require("./out")
 const udp = require("./udp")
 
-//PROMPT
+// PROMPT
 module.exports = {
 	run: function () {
 
-		//init
+		// init
 		rl.pause()
 		process.stdout.write("\033c")
 		process.stdout.write(
 			String.fromCharCode(27) + "]0;" + "Lanchat" + String.fromCharCode(7)
 		)
 
-		//welcome screen
+		// welcome screen
 		if (process.stdout.columns > 41) {
 
-			//set color
+			// set color
 			process.stdout.write("\x1b[95m")
 
-			//ascii art
+			// ascii art
 			console.log("    __                  _           _   ")
 			console.log("   / /  __ _ _ __   ___| |__   __ _| |_ ")
 			console.log("  / /  / _` | '_ \\ / __| '_ \\ / _` | __|")
@@ -37,23 +37,23 @@ module.exports = {
 			console.log(" Lanchat")
 		}
 
-		//reset color
+		// reset color
 		console.log("\x1b[0m")
 
-		//show acutal version
+		// show acutal version
 		console.log(" Version " + pkg.version)
 
-		//plugis info
+		// plugis info
 		if (plugins.run) {
 			if (Object.keys(plugins.run).length) {
 				console.log(" Loaded " + Object.keys(plugins.run).length + " plugin(s)")
 			}
 		}
 
-		//show user nick
+		// show user nick
 		console.log(" Nickname: " + config.nick)
 
-		//check update
+		// check update
 		out.loading("checking updates")
 		dwn.selfCheck().then((data) => {
 			out.stopLoading()
@@ -65,52 +65,52 @@ module.exports = {
 			console.log("")
 			rl.prompt(true)
 
-			//udp listening
+			// udp listening
 			udp.listen()
 		})
 
-		//prompt
-		rl.on("line", function (line) {
+		// prompt
+		rl.on("line", (line) => {
 			wrapper(line)
 			rl.prompt(true)
 		})
 
-		//exit
-		rl.on("close", function () {
+		// exit
+		rl.on("close", () => {
 			process.stdout.write("\033c")
 			process.exit(0)
 		})
 	}
 }
 
-//user input wrapper
+// user input wrapper
 function wrapper(message) {
 
-	//clear line
+	// clear line
 	readline.moveCursor(process.stdout, 0, -1)
 
 	if (!/^ *$/.test(message)) {
-		//check prefix
+		// check prefix
 		if (message.charAt(0) !== "/") {
 
-			//send message
+			// send message
 			client.send(message)
 		} else {
 
-			//execute command
+			// execute command
 			const args = message.split(" ")
 			if (typeof commands[args[0].substr(1)] !== "undefined") {
 				commands[args[0].substr(1)](args.slice(1))
 			}
 
-			//try execute commands from plugins
+			// try execute commands from plugins
 			for (i in plugins.run) {
 				if (typeof plugins.run[i][args[0].substr(1)] !== "undefined") {
 					plugins.run[i][args[0].substr(1)](args.slice(1))
 				}
 			}
 
-			//reset cursor
+			// reset cursor
 			process.stdout.clearLine()
 			process.stdout.cursorTo(0)
 		}
