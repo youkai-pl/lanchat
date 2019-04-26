@@ -31,7 +31,7 @@ module.exports = {
 			user.pass = false
 		}
 
-		if(!user.hasOwnProperty("mute")){
+		if(!user.hasOwnProperty("mute")) {
 			user.mute = false
 		}
 

@@ -258,7 +258,7 @@ module.exports = {
 	},
 
 	// list of detected hosts
-	lan: function(){
+	lan: function() {
 		udp.list()
 	}
 }

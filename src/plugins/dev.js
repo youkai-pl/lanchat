@@ -20,11 +20,11 @@ module.exports = {
 	},
 
 	// db
-	d4: function(){
+	d4: function() {
 		console.log(db)
 	},
 
-	d5: function(){
+	d5: function() {
 		console.log(client.inprogress)
 	}
 }
