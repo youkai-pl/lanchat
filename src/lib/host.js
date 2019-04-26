@@ -2,6 +2,7 @@
 const http = require("http").Server()
 const io = require("socket.io")(http)
 const { RateLimiterMemory } = require("rate-limiter-flexible")
+const bcrypt = require("bcrypt")
 const out = require("./out")
 const db = require("./db")
 const config = require("./config")
@@ -133,16 +134,22 @@ module.exports.start = function () {
 			//auth
 			socket.on("auth", function (nick, password) {
 				if (!getUser(socket.id)) {
+
+					var hash = db.get(nick).pass
+
 					//check password
-					if (db.get(nick).pass === password) {
-						//check nick avability
-						if (checkNickAvabile(nick, socket)) {
-							login(nick, socket)
-							socket.emit("loginSucces")
+					bcrypt.compare(password, hash, function (err, res) {
+						if (res === true) {
+
+							//check nick avability
+							if (checkNickAvabile(nick, socket)) {
+								login(nick, socket)
+								socket.emit("loginSucces")
+							}
+						} else {
+							socket.emit("wrongPass")
 						}
-					} else {
-						socket.emit("wrongPass")
-					}
+					})
 				} else {
 					socket.emit("alreadySigned")
 				}
@@ -153,8 +160,16 @@ module.exports.start = function () {
 				verify(socket, function () {
 					if (getByNick(nick)) {
 						if (password) {
-							db.write(getUser(socket.id).nick, "pass", password)
-							socket.emit("passChanged")
+
+							bcrypt.genSalt(10, function (err, salt) {
+								bcrypt.hash(password, salt, function (err, hash) {
+
+									db.write(getUser(socket.id).nick, "pass", hash)
+									socket.emit("passChanged")
+								})
+							})
+						} else {
+							socket.emit("incorrectValue")
 						}
 					}
 				})
