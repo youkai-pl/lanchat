@@ -1,4 +1,4 @@
-//INTERFACE
+// INTERFACE
 var readline = require("readline")
 var rl = readline.createInterface({
 	input: process.stdin,
@@ -7,6 +7,6 @@ var rl = readline.createInterface({
 	terminal: true
 })
 
-//Exports
+// Exports
 exports.rl = rl
 exports.readline = readline

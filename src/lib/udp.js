@@ -3,13 +3,13 @@ const listen = dgram.createSocket("udp4")
 const broadcast = dgram.createSocket("udp4")
 const out = require("./out")
 
-//variables
+// variables
 var list = []
 var status
 
 module.exports = {
 
-	//listen
+	// listen
 	listen: function () {
 
 		listen.on("error", function (err) {
@@ -32,11 +32,11 @@ module.exports = {
 		try {
 			listen.bind({ port: 2138 })
 		}catch(err){
-			//empty catch (i'm sorry)
+			// empty catch (i'm sorry)
 		}
 	},
 
-	//stop listen
+	// stop listen
 	close: function () {
 		if (status) {
 			listen.close()
@@ -44,7 +44,7 @@ module.exports = {
 		}
 	},
 
-	//broadcast
+	// broadcast
 	broadcast: function () {
 		broadcast.on("listening", function () {
 			broadcast.setBroadcast(true)
@@ -57,7 +57,7 @@ module.exports = {
 		}, 500)
 	},
 
-	//list
+	// list
 	list: function () {
 		for (var i = 0; i < list.length; i++) {
 			out.hostsList({ n: i + 1, ip: list[i] })

@@ -1,43 +1,43 @@
-//import
+// import
 const fs = require("fs")
 
-//variables
+// variables
 const home = process.env.APPDATA || (process.platform == "darwin" ? process.env.HOME + "Library/Preferences" : process.env.HOME)
 const path = home + "/.lanchat/"
 var config = {}
 
 module.exports = {
 
-	//CONFIG//
-	//load config
+	// CONFIG//
+	// load config
 	load: function () {
 
-		//check dir
+		// check dir
 		if (!fs.existsSync(home + "/.lanchat")) {
 			fs.mkdirSync(home + "/.lanchat")
 		}
 
-		//check config
+		// check config
 		if (!fs.existsSync(path + "config.json")) {
 			// eslint-disable-next-line quotes
 			fs.writeFileSync(path + "config.json", '{}')
 		}
 
-		//check host database
+		// check host database
 		if (!fs.existsSync(path + "db.json")) {
 			// eslint-disable-next-line quotes
 			fs.writeFileSync(path + "db.json", '[]')
 		}
 
-		//load config
+		// load config
 		try {
 
-			//load file
+			// load file
 			config = JSON.parse(fs.readFileSync(path + "config.json", "utf8"))
 			config.validate = true
 			var save
 
-			//valdate
+			// valdate
 			if (!config.hasOwnProperty("nick")) {
 				config.nick = "default"
 				save = true
@@ -75,15 +75,15 @@ module.exports = {
 				config.validate = true
 			}
 
-			//load motd
+			// load motd
 			if (fs.existsSync(home + "/.lanchat/motd.txt")) {
 				config.motd = fs.readFileSync(home + "/.lanchat/motd.txt", "utf8")
 			}
 
-			//set status
+			// set status
 			config.status = "online"
 
-			//export
+			// export
 			for (i in config) {
 				module.exports[i] = config[i]
 			}
@@ -91,18 +91,18 @@ module.exports = {
 			return config.validate
 
 		} catch (err) {
-			//return
+			// return
 			config.validate = false
 		}
 	},
 
-	//config write
+	// config write
 	write: function (key, value) {
 
-		//change value
+		// change value
 		config[key] = value
 
-		//export
+		// export
 		module.exports[key] = config[key]
 		saveConfig()
 	}

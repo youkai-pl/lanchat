@@ -1,4 +1,4 @@
-//colors palette
+// colors palette
 
 const colors = {
 	red: "\x1b[91m",

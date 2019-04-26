@@ -5,18 +5,18 @@ const prompt = require("./lib/prompt")
 const config = require("./lib/config")
 const plugins = require("./lib/plugins")
 
-//crash handler
+// crash handler
 process.on("uncaughtException", function (err) {
 	console.log("Error: " + err)
 })
 
-//load plugins
+// load plugins
 plugins.load()
 
-//load config
+// load config
 config.load()
 
-//check config
+// check config
 if (config.validate) {
 	prompt.run()
 } else {

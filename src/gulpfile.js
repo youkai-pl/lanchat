@@ -1,4 +1,4 @@
-//import
+// import
 const gulp = require("gulp")
 const yarn = require("gulp-yarn")
 const del = require("del")
@@ -6,9 +6,9 @@ const uglify = require("gulp-uglify-es").default
 const pipeline = require("readable-stream").pipeline
 const { compile } = require("nexe")
 
-//gulp config
+// gulp config
 
-//dist
+// dist
 gulp.task("dist", function () {
 	return new Promise(function (resolve, reject) {
 		clean("dist")
@@ -25,7 +25,7 @@ gulp.task("dist", function () {
 	})
 })
 
-//pkg
+// pkg
 gulp.task("pkg-compile", function () {
 	return new Promise(function (resolve, reject) {
 		compile({
@@ -39,7 +39,7 @@ gulp.task("pkg-compile", function () {
 	})
 })
 
-//clean
+// clean
 gulp.task("clean", function () {
 	return new Promise(function (resolve, reject) {
 		clean("dist")
@@ -47,7 +47,7 @@ gulp.task("clean", function () {
 	})
 })
 
-//prepkg
+// prepkg
 gulp.task("prepkg", function prepkg() {
 	return new Promise(function (resolve, reject) {
 		clean("bin")
@@ -59,7 +59,7 @@ gulp.task("prepkg", function prepkg() {
 	})
 })
 
-//clean
+// clean
 function clean(dir) {
 	del.sync(["../" + dir + "/**/*"], { force: true })
 }

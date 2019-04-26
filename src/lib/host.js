@@ -1,4 +1,4 @@
-//import
+// import
 const http = require("http").Server()
 const io = require("socket.io")(http)
 const { RateLimiterMemory } = require("rate-limiter-flexible")
@@ -8,7 +8,7 @@ const db = require("./db")
 const config = require("./config")
 const udp = require("./udp")
 
-//variables
+// variables
 var database
 var users = []
 var status
@@ -17,12 +17,12 @@ var rateLimiter
 
 module.exports.start = function () {
 
-	//start server
+	// start server
 	if (status) {
 		out.alert("server already running")
 	} else {
 
-		//load database
+		// load database
 		out.loading("loading database")
 		database = db.load()
 
@@ -34,60 +34,60 @@ module.exports.start = function () {
 			})
 		}
 
-		//set permissions
+		// set permissions
 		db.write(config.nick, "level", 4)
 
 		out.loading("starting server")
 
-		//rate limiter
+		// rate limiter
 		rateLimiter = new RateLimiterMemory(
 			{
 				points: config.ratelimit,
 				duration: 1,
 			})
 
-		//check motd
+		// check motd
 		if (!config.motd) {
 			out.loading("motd not found")
 		}
 
-		//start listen
+		// start listen
 		http.listen(config.port, function () {
 			out.stopLoading()
 			out.status("server started")
 			status = true
 		})
 
-		//start broadcast
+		// start broadcast
 		udp.broadcast()
 
-		//SOCKET EVENTS
+		// SOCKET EVENTS
 		io.on("connection", function (socket) {
 
-			//login
+			// login
 			socket.on("login", function (nick) {
 
-				//detect blank nick
+				// detect blank nick
 				if (!nick) {
 					nick = "default"
 				}
 
-				//shortening long nick
+				// shortening long nick
 				if (nick.length > 15) {
 					nick = nick.substring(0, 15)
 					socket.emit("nickShortened")
 				}
 
-				//check sockets limit
+				// check sockets limit
 				if (config.socketlimit <= usersLimit) {
 					socket.emit("socketLimit")
 					io.sockets.connected[socket.id].disconnect()
 				} else {
 
-					//check the availability of a nickname
+					// check the availability of a nickname
 					if (checkNickAvabile(nick, socket)) {
 
-						//add user to database
+						// add user to database
 						if (!db.get(nick)) {
 							db.add({
 								nick: nick,
@@ -95,10 +95,10 @@ module.exports.start = function () {
 							})
 						}
 
-						//save user ip adress
+						// save user ip adress
 						db.write(nick, "ip", socket.handshake.address)
 
-						//check ban
+						// check ban
 						var ban
 						for (var i = 0; i < database.length; i++) {
 							if (database[i].level === 0) {
@@ -114,7 +114,7 @@ module.exports.start = function () {
 							socket.emit("banned")
 							io.sockets.connected[socket.id].disconnect()
 						} else {
-							//check password
+							// check password
 							if (db.get(nick).pass) {
 								socket.emit("needAuth")
 							} else {
@@ -125,23 +125,23 @@ module.exports.start = function () {
 				}
 			})
 
-			//disconnect
+			// disconnect
 			socket.on("disconnect", function () {
 				emitStatus("left", socket)
 				delUser(socket.id)
 			})
 
-			//auth
+			// auth
 			socket.on("auth", function (nick, password) {
 				if (!getUser(socket.id)) {
 
 					var hash = db.get(nick).pass
 
-					//check password
+					// check password
 					bcrypt.compare(password, hash, function (err, res) {
 						if (res === true) {
 
-							//check nick avability
+							// check nick avability
 							if (checkNickAvabile(nick, socket)) {
 								login(nick, socket)
 								socket.emit("loginSucces")
@@ -155,7 +155,7 @@ module.exports.start = function () {
 				}
 			})
 
-			//setPassword
+			// setPassword
 			socket.on("setPassword", function (nick, password) {
 				verify(socket, function () {
 					if (getByNick(nick)) {
@@ -175,19 +175,19 @@ module.exports.start = function () {
 				})
 			})
 
-			//message
+			// message
 			socket.on("message", function (content) {
 				verify(socket, function () {
-					//check message
+					// check message
 					if (typeof content === "string" && !/^ *$/.test(content)) {
 
-						//change permission
+						// change permission
 						if (!checkMute(socket.id)) {
 
-							//block long messages
+							// block long messages
 							if (content.length < config.lenghtlimit) {
 
-								//emit message
+								// emit message
 								socket.broadcast.to("main").emit("message", {
 									nick: getUser(socket.id).nick,
 									content: content
@@ -206,7 +206,7 @@ module.exports.start = function () {
 				})
 			})
 
-			//mention
+			// mention
 			socket.on("mention", function (nick) {
 				verify(socket, function () {
 					if (checkMute(socket.id)) {
@@ -222,10 +222,10 @@ module.exports.start = function () {
 				})
 			})
 
-			//nick
+			// nick
 			socket.on("changeNick", function (nick) {
 				verify(socket, function () {
-					//shorten the long nick
+					// shorten the long nick
 					if (nick.length > 15) {
 						nick = nick.substring(0, 15)
 						socket.emit("nickShortened")
@@ -247,14 +247,14 @@ module.exports.start = function () {
 				})
 			})
 
-			//list
+			// list
 			socket.on("list", function () {
 				verify(socket, function () {
 					socket.emit("list", users)
 				})
 			})
 
-			//change status
+			// change status
 			socket.on("changeStatus", function (status) {
 				verify(socket, function () {
 					var acceptable = ["online", "afk", "dnd"]
@@ -268,7 +268,7 @@ module.exports.start = function () {
 				})
 			})
 
-			//mute
+			// mute
 			socket.on("mute", function (nick) {
 				checkPermission("mute", socket, nick, function () {
 					db.write(nick, "mute", true)
@@ -276,7 +276,7 @@ module.exports.start = function () {
 				})
 			})
 
-			//unmute
+			// unmute
 			socket.on("unmute", function (nick) {
 				checkPermission("unmute", socket, nick, function () {
 					db.write(nick, "mute", false)
@@ -284,7 +284,7 @@ module.exports.start = function () {
 				})
 			})
 
-			//kick
+			// kick
 			socket.on("kick", function (nick) {
 				checkPermission("kick", socket, nick, function () {
 					if (getByNick(nick)) {
@@ -295,7 +295,7 @@ module.exports.start = function () {
 				})
 			})
 
-			//ban
+			// ban
 			socket.on("ban", function (nick) {
 				checkPermission("ban", socket, nick, function () {
 					db.write(nick, "level", 0)
@@ -304,7 +304,7 @@ module.exports.start = function () {
 				})
 			})
 
-			//unban
+			// unban
 			socket.on("unban", function (nick) {
 				checkPermission("unban", socket, nick, function () {
 					db.write(nick, "level", 1)
@@ -312,7 +312,7 @@ module.exports.start = function () {
 				})
 			})
 
-			//unban
+			// unban
 			socket.on("setPermission", function (nick, level) {
 				level = parseInt(level)
 				if (level >= 1 && level <= 4) {
@@ -328,7 +328,7 @@ module.exports.start = function () {
 	}
 }
 
-//login
+// login
 function login(nick, socket) {
 
 	addUser({
@@ -346,9 +346,9 @@ function login(nick, socket) {
 	emitStatus("join", socket)
 }
 
-//add user
+// add user
 function addUser(user) {
-	//find empty space
+	// find empty space
 	var index = users.findIndex(x => x.id === null)
 	if (index !== -1) {
 		users[index] = user
@@ -358,7 +358,7 @@ function addUser(user) {
 	usersLimit++
 }
 
-//get user by id
+// get user by id
 function getUser(id) {
 	var user
 	var index = users.findIndex(x => x.id === id)
@@ -370,7 +370,7 @@ function getUser(id) {
 	return user
 }
 
-//get user by id
+// get user by id
 function getByNick(nick) {
 	var user
 	var index = users.findIndex(x => x.nick === nick)
@@ -382,7 +382,7 @@ function getByNick(nick) {
 	return user
 }
 
-//get user index
+// get user index
 function getIndex(id) {
 	var index = users.findIndex(x => x.id === id)
 	if (index === -1) {
@@ -391,7 +391,7 @@ function getIndex(id) {
 	return index
 }
 
-//write to user
+// write to user
 function writeUser(id, key, value) {
 	var back
 	var index = getIndex(id)
@@ -404,7 +404,7 @@ function writeUser(id, key, value) {
 	return back
 }
 
-//delete user
+// delete user
 function delUser(id) {
 	var index = getIndex(id)
 	if (index || index === 0) {
@@ -413,7 +413,7 @@ function delUser(id) {
 	}
 }
 
-//check permission
+// check permission
 function checkPermission(type, socket, nick, callback) {
 	verify(socket, function () {
 		var permission
@@ -443,7 +443,7 @@ function checkPermission(type, socket, nick, callback) {
 	})
 }
 
-//emit user status
+// emit user status
 function emitStatus(type, socket) {
 
 	if (getUser(socket.id)) {
@@ -451,7 +451,7 @@ function emitStatus(type, socket) {
 	}
 }
 
-//chech nick avability
+// chech nick avability
 function checkNickAvabile(nick, socket) {
 	var value
 	if (getByNick(nick)) {
@@ -464,17 +464,17 @@ function checkNickAvabile(nick, socket) {
 	return value
 }
 
-//check mute
+// check mute
 function checkMute(id) {
 	return db.get(getUser(id).nick).mute
 }
 
-//verify
+// verify
 async function verify(socket, callback) {
 	if (getUser(socket.id)) {
 		try {
 
-			//flood block
+			// flood block
 			await rateLimiter.consume(socket.handshake.address)
 
 			callback()
