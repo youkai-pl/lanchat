@@ -8,6 +8,7 @@
   "license": "MIT",
   "preferGlobal": true,
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "node-notifier": "^5.4.0",
     "rate-limiter-flexible": "^0.25.2",
     "require-all": "^3.0.0",
