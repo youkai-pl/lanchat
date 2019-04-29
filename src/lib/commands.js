@@ -17,6 +17,7 @@ module.exports = {
 
 	// exit
 	exit: function () {
+		console.log("\x1b[0m")
 		process.stdout.write("\033c")
 		process.exit(0)
 	},
@@ -258,7 +259,7 @@ module.exports = {
 	},
 
 	// list of detected hosts
-	lan: function() {
+	lan: function () {
 		udp.list()
 	}
 }

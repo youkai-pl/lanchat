@@ -76,9 +76,10 @@ module.exports = {
 		})
 
 		// exit
-		rl.on("close", () => {
+		process.on("SIGINT", () => {
+			console.log("\x1b[0m")
 			process.stdout.write("\033c")
-			process.exit(0)
+			process.exit()
 		})
 	}
 }
