@@ -336,7 +336,7 @@ function listen() {
 
 	// nickChanged
 	socket.on("nickChanged", () => {
-		out.blank("Your nickname is now " + c.blue + args[0] + c.reset)
+		out.blank("Your nickname is now " + c.blue + config.nick + c.reset)
 	})
 
 	// usersList
