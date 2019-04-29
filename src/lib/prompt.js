@@ -4,6 +4,8 @@ const commands = require("./commands")
 const pkg = require("../package.json")
 const rl = require("./interface").rl
 const readline = require("./interface").readline
+const EventEmitter = require("events")
+const emitter = new EventEmitter()
 const config = require("./config")
 const dwn = require("./dwn")
 const plugins = require("./plugins")
@@ -55,19 +57,23 @@ module.exports = {
 
 		// check update
 		out.loading("checking updates")
-		dwn.selfCheck().then((data) => {
-			out.stopLoading()
-			process.stdout.clearLine()
-			process.stdout.cursorTo(0)
-			if (data) {
-				console.log(" Update avabile: (" + data + ")")
-			}
-			console.log("")
-			rl.prompt(true)
+		dwn.selfCheck()
+			.then((data) => {
+				out.stopLoading()
+				process.stdout.clearLine()
+				process.stdout.cursorTo(0)
+				if (data) {
+					console.log(" Update avabile: (" + data + ")")
+				}
+				console.log("")
+				rl.prompt(true)
 
-			// udp listening
-			udp.listen()
-		})
+				// udp listening
+				udp.listen()
+
+				// emit ready
+				process.emit("ready")
+			})
 
 		// prompt
 		rl.on("line", (line) => {
