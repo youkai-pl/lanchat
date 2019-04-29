@@ -44,7 +44,7 @@ module.exports = {
 	// check self update
 	selfCheck: function () {
 		return new Promise((resolve, reject) => {
-			https.get(self, response => {
+			const request = https.get(self, response => {
 
 				var body = ""
 				response.on("data", (d) => {
@@ -66,6 +66,11 @@ module.exports = {
 			}).on("error", () => {
 				resolve(false)
 			})
+
+			request.setTimeout(1500, () => {
+				request.abort()
+			})
+
 		})
 	}
 }
