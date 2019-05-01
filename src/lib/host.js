@@ -2,7 +2,7 @@
 const http = require("http").Server()
 const io = require("socket.io")(http)
 const { RateLimiterMemory } = require("rate-limiter-flexible")
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs")
 const out = require("./out")
 const db = require("./db")
 const config = require("./config")
