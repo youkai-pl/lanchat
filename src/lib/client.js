@@ -233,7 +233,7 @@ function listen() {
 		// show mention when dnd is disabled
 		if (config.status !== "dnd") {
 			out.mention(nick)
-			notify.mention()
+			notify.mention(nick)
 		}
 	})
 

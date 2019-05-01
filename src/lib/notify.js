@@ -23,14 +23,15 @@ module.exports = {
 	},
 
 	// mention
-	mention: function () {
+	mention: function (nick) {
+
 		// send mention notify
 		if (config.notify === "mention" || config.notify === "all") {
 			notifier.notify(
 				{
 					title: "Lanchat",
-					message: "Somebody mentioned you",
-					sound: false,
+					message: nick + " mentioned you",
+					sound: true,
 					icon: path.join(__dirname, "../icon.png")
 				}
 			)
