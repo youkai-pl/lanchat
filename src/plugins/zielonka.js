@@ -27,69 +27,7 @@ process.on("ready", () => {
 	rl.pause()
 	process.stdout.write("\033c")
 	process.stdout.write(c.green)
-	setTimeout(() => {
-		console.log("CD PROCJECT RED")
-		setTimeout(() => {
-			console.log("WE WSPÓŁPRACY Z ELECTRONIC ARTS")
-			setTimeout(() => {
-				weclome()
-				setTimeout(() => {
-					console.log("I BETHESDA SOFTWORKS")
-					setTimeout(() => {
-						process.stdout.write("\033c")
-						process.stdout.write(c.green)
-						console.log("                          THE ELDER SCROLLS V:")
-						console.log("")
-						console.log("    ▄████████    ▄█   ▄█▄ ▄██   ▄      ▄████████  ▄█    ▄▄▄▄███▄▄▄▄   ")
-						console.log("   ███    ███   ███ ▄███▀ ███   ██▄   ███    ███ ███  ▄██▀▀▀███▀▀▀██▄ ")
-						console.log("   ███    █▀    ███▐██▀   ███▄▄▄███   ███    ███ ███▌ ███   ███   ███ ")
-						console.log("   ███         ▄█████▀    ▀▀▀▀▀▀███  ▄███▄▄▄▄██▀ ███▌ ███   ███   ███ ")
-						console.log(" ▀███████████ ▀▀█████▄    ▄██   ███ ▀▀███▀▀▀▀▀   ███▌ ███   ███   ███ ")
-						console.log("          ███   ███▐██▄   ███   ███ ▀███████████ ███  ███   ███   ███ ")
-						console.log("    ▄█    ███   ███ ▀███▄ ███   ███   ███    ███ ███  ███   ███   ███ ")
-						console.log("  ▄████████▀    ███   ▀█▀  ▀█████▀    ███    ███ █▀    ▀█   ███   █▀  ")
-						console.log("                ▀                     ███    ███                      ")
-						setTimeout(() => {
-							console.log("Nie no żartowałem")
-							setTimeout(() => {
-								process.stdout.write("\033c")
-								process.stdout.write(c.green)
-								setTimeout(() => {
-									console.log("")
-									console.log(" ▒███████▒  ██████  ██▓███   ▄████▄   ██░ ██  ▄▄▄     ▄▄▄█████▓")
-									setTimeout(() => {
-										console.log(" ▒ ▒ ▒ ▄▀░▒██    ▒ ▓██░  ██▒▒██▀ ▀█  ▓██░ ██▒▒████▄   ▓  ██▒ ▓▒")
-										setTimeout(() => {
-											console.log(" ░ ▒ ▄▀▒░ ░ ▓██▄   ▓██░ ██▓▒▒▓█    ▄ ▒██▀▀██░▒██  ▀█▄ ▒ ▓██░ ▒░")
-											setTimeout(() => {
-												console.log("   ▄▀▒   ░  ▒   ██▒▒██▄█▓▒ ▒▒▓▓▄ ▄██▒░▓█ ░██ ░██▄▄▄▄██░ ▓██▓ ░ ")
-												setTimeout(() => {
-													console.log(" ▒███████▒▒██████▒▒▒██▒ ░  ░▒ ▓███▀ ░░▓█▒░██▓ ▓█   ▓██▒ ▒██▒ ░ ")
-													setTimeout(() => {
-														console.log(" ░▒▒ ▓░▒░▒▒ ▒▓▒ ▒ ░▒▓▒░ ░  ░░ ░▒ ▒  ░ ▒ ░░▒░▒ ▒▒   ▓▒█░ ▒ ░░   ")
-														console.log(" ░░▒ ▒ ░ ▒░ ░▒  ░ ░░▒ ░       ░  ▒    ▒ ░▒░ ░  ▒   ▒▒ ░   ░    ")
-														setTimeout(() => {
-															console.log("   ░ ░          ░           ░ ░       ░  ░  ░      ░  ░        ")
-															setTimeout(() => {
-																console.log(" ░                          ░                                  ")
-																console.log("                        Super DLC kurwo")
-																out.blank("                    Wpisz start i daj enter")
-																out.blank("")
-															}, 100)
-														}, 100)
-													}, 100)
-												}, 100)
-											}, 100)
-										}, 100)
-									}, 100)
-								}, 100)
-							}, 500)
-						}, 1500)
-					}, 500)
-				}, 800)
-			}, 1000)
-		}, 1000)
-	}, 500)
+	weclome()
 })
 
 function weclome() {
