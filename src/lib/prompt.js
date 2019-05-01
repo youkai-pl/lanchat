@@ -4,6 +4,8 @@ const commands = require("./commands")
 const pkg = require("../package.json")
 const rl = require("./interface").rl
 const readline = require("./interface").readline
+const EventEmitter = require("events")
+const emitter = new EventEmitter()
 const config = require("./config")
 const dwn = require("./dwn")
 const plugins = require("./plugins")
@@ -55,22 +57,23 @@ module.exports = {
 
 		// check update
 		out.loading("checking updates")
-		dwn.selfCheck().then((data) => {
-			out.stopLoading()
-			process.stdout.clearLine()
-			process.stdout.cursorTo(0)
-			if (data) {
-				console.log(" Update avabile: (" + data + ")")
-			}
-			console.log("")
-			rl.prompt(true)
+		dwn.selfCheck()
+			.then((data) => {
+				out.stopLoading()
+				process.stdout.clearLine()
+				process.stdout.cursorTo(0)
+				if (data) {
+					console.log(" Update avabile: (" + data + ")")
+				}
+				console.log("")
+				rl.prompt(true)
 
-			// udp listening
-			udp.listen()
+				// udp listening
+				udp.listen()
 
-			// ready event
-			process.emit("ready")
-		})
+				// ready event
+				process.emit("ready")
+			})
 
 		// prompt
 		rl.on("line", (line) => {
@@ -79,9 +82,10 @@ module.exports = {
 		})
 
 		// exit
-		rl.on("close", () => {
+		process.on("SIGINT", () => {
+			console.log("\x1b[0m")
 			process.stdout.write("\033c")
-			process.exit(0)
+			process.exit()
 		})
 	}
 }
