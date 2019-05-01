@@ -31,7 +31,7 @@ module.exports = {
 
 		try {
 			listen.bind({ port: 2138 })
-		}catch(err) {}
+		} catch (err) { }
 	},
 
 	// stop listen
@@ -51,7 +51,7 @@ module.exports = {
 		const message = "test"
 
 		setInterval(() => {
-			broadcast.send(message, 0, message.length, 2138)
+			broadcast.send(message, 0, message.length, 2138, "255.255.255.255")
 		}, 500)
 	},
 
