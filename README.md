@@ -76,6 +76,10 @@ Host settings are storage in `config.json`
 
 ## Changelog
 
+### 1.1.0
+* themes
+* bugfixes
+
 ### 1.1.0 Beta
 * password hashing
 * detects host in lan
