@@ -67,6 +67,9 @@ module.exports = {
 
 			// udp listening
 			udp.listen()
+
+			// ready event
+			process.emit("ready")
 		})
 
 		// prompt
