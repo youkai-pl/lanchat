@@ -4,7 +4,7 @@ const out = require("./out")
 const dwn = require("./dwn")
 const host = require("./host")
 const config = require("./config")
-const c = require("./colors")
+const c = require("./theme")
 const udp = require("./udp")
 // COMMANDS
 module.exports = {

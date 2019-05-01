@@ -71,7 +71,7 @@ module.exports = {
 				// udp listening
 				udp.listen()
 
-				// emit ready
+				// ready event
 				process.emit("ready")
 			})
 
