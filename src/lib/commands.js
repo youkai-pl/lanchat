@@ -1,52 +1,22 @@
-//import
+// imports
 const client = require("./client")
 const out = require("./out")
 const dwn = require("./dwn")
 const host = require("./host")
 const config = require("./config")
-const c = require("./colors")
+const c = require("./theme")
+const udp = require("./udp")
 
-//COMMANDS
+// COMMANDS
 module.exports = {
 
-	//clear
-	clear: function () {
-		//clear window
-		process.stdout.write("\033c")
-	},
-
-	//exit
-	exit: function () {
-		process.stdout.write("\033c")
-		process.exit(0)
-	},
-
-	//nick
-	nick: function (args) {
-
-		//handle blank input
-		if (!args[0]) {
-			out.blank("Try: /nick <new_nick>")
-		} else {
-
-			//change local nick
-			config.write("nick", args[0])
-
-			//change nick on host
-			if (client.connection) {
-				client.nick()
-			} else {
-				out.blank("Your nickname is now " + c.blue + args[0] + c.reset)
-			}
-		}
-	},
-
-	//help
+	// help
 	help: function () {
 		var help = []
 		help.push("/connect    - connect")
 		help.push("/disconnect - disconnect")
 		help.push("/host       - create server")
+		help.push("/lan        - list of hosts detected in lan")
 		help.push("/clear      - clear screen")
 		help.push("/exit       - exit lanchat")
 		help.push("/nick       - change nick")
@@ -69,12 +39,45 @@ module.exports = {
 		out.blank(help.join("\n"))
 	},
 
-	//connect
+	// clear
+	clear: function () {
+		// clear window
+		process.stdout.write("\033c")
+	},
+
+	// exit
+	exit: function () {
+		console.log("\x1b[0m")
+		process.stdout.write("\033c")
+		process.exit(0)
+	},
+
+	// nick
+	nick: function (args) {
+
+		// handle blank input
+		if (!args[0]) {
+			out.blank("Try: /nick <new_nick>")
+		} else {
+
+			// change local nick
+			config.write("nick", args[0])
+
+			// change nick on host
+			if (client.connection) {
+				client.nick()
+			} else {
+				out.blank("Your nickname is now " + c.blue + args[0] + c.reset)
+			}
+		}
+	},
+
+	// connect
 	connect: function (args) {
 		client.connect(args[0])
 	},
 
-	//host
+	// host
 	host: function () {
 		if (client.connection) {
 			out.alert("disconnect from current server first")
@@ -84,7 +87,7 @@ module.exports = {
 		}
 	},
 
-	//login
+	// login
 	login: function (args) {
 		if (checkConnection()) {
 			if (args[0]) {
@@ -95,7 +98,7 @@ module.exports = {
 		}
 	},
 
-	//register
+	// register
 	lock: function (args) {
 		if (checkConnection()) {
 			if (args[0]) {
@@ -110,21 +113,21 @@ module.exports = {
 		}
 	},
 
-	//disconnect
+	// disconnect
 	disconnect: function () {
 		if (checkConnection()) {
 			client.disconnect()
 		}
 	},
 
-	//list
+	// list
 	list: function () {
 		if (checkConnection()) {
 			client.list()
 		}
 	},
 
-	//afk
+	// afk
 	afk: function () {
 		if (checkConnection()) {
 			config.write("status", "afk")
@@ -133,7 +136,7 @@ module.exports = {
 		}
 	},
 
-	//online
+	// online
 	online: function () {
 		if (checkConnection()) {
 			config.write("status", "online")
@@ -142,7 +145,7 @@ module.exports = {
 		}
 	},
 
-	//dnd
+	// dnd
 	dnd: function () {
 		if (checkConnection()) {
 			config.write("status", "dnd")
@@ -151,7 +154,7 @@ module.exports = {
 		}
 	},
 
-	//notify
+	// notify
 	notify: function (args) {
 		if ((args[0] === "all") || (args[0] === "mention") || (args[0] === "none")) {
 			config.write("notify", args[0])
@@ -161,7 +164,7 @@ module.exports = {
 		}
 	},
 
-	//mention
+	// mention
 	mention: function (args) {
 		if (checkConnection()) {
 			if (args[0]) {
@@ -172,7 +175,7 @@ module.exports = {
 		}
 	},
 
-	//kick
+	// kick
 	kick: function (args) {
 		if (checkConnection()) {
 			if (args[0]) {
@@ -183,7 +186,7 @@ module.exports = {
 		}
 	},
 
-	//ban
+	// ban
 	ban: function (args) {
 		if (checkConnection()) {
 			if (args[0]) {
@@ -194,7 +197,7 @@ module.exports = {
 		}
 	},
 
-	//unban
+	// unban
 	unban: function (args) {
 		if (checkConnection()) {
 			if (args[0]) {
@@ -205,7 +208,7 @@ module.exports = {
 		}
 	},
 
-	//mute
+	// mute
 	mute: function (args) {
 		if (checkConnection()) {
 			if (args[0]) {
@@ -216,7 +219,7 @@ module.exports = {
 		}
 	},
 
-	//unmute
+	// unmute
 	unmute: function (args) {
 		if (checkConnection()) {
 			if (args[0]) {
@@ -227,7 +230,7 @@ module.exports = {
 		}
 	},
 
-	//chane permission
+	// chane permission
 	level: function (args) {
 		if (checkConnection()) {
 			if (args[0] && args[1]) {
@@ -238,7 +241,7 @@ module.exports = {
 		}
 	},
 
-	//plugin install
+	// plugin install
 	dwn: function (args) {
 		if (args[0]) {
 			dwn.donwload(args[0])
@@ -247,13 +250,18 @@ module.exports = {
 		}
 	},
 
-	//plugin delet
+	// plugin delete
 	dwd: function (args) {
 		if (args[0]) {
 			dwn.delete(args[0])
 		} else {
 			out.blank("try /dwd <plugin name>")
 		}
+	},
+
+	// list of detected hosts
+	lan: function () {
+		udp.list()
 	}
 }
 

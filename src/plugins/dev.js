@@ -4,27 +4,27 @@ const db = require("../lib/db")
 
 module.exports = {
 
-	//d1
+	// d1
 	d1: function () {
 		client.connect("localhost")
 	},
 
-	//global
+	// global
 	d2: function () {
 		console.log(client.connection)
 	},
 
-	//config
+	// config
 	d3: function () {
 		console.log(config)
 	},
 
-	//db
-	d4: function(){
+	// db
+	d4: function() {
 		console.log(db)
 	},
 
-	d5: function(){
+	d5: function() {
 		console.log(client.inprogress)
 	}
 }
