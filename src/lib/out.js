@@ -1,6 +1,6 @@
 // import
 const rl = require("./interface").rl
-const c = require("./colors")
+const c = require("./theme")
 var loading
 
 // OUT

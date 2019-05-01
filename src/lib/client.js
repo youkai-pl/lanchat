@@ -1,6 +1,6 @@
 // import
 const out = require("./out")
-const c = require("./colors")
+const c = require("./theme")
 const notify = require("./notify")
 const config = require("./config")
 const udp = require("./udp")
