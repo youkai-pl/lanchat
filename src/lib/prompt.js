@@ -4,8 +4,6 @@ const commands = require("./commands")
 const pkg = require("../package.json")
 const rl = require("./interface").rl
 const readline = require("./interface").readline
-const EventEmitter = require("events")
-const emitter = new EventEmitter()
 const config = require("./config")
 const dwn = require("./dwn")
 const plugins = require("./plugins")
@@ -60,13 +58,14 @@ module.exports = {
 		dwn.selfCheck()
 			.then((data) => {
 				out.stopLoading()
+
+				//write alert
 				process.stdout.clearLine()
 				process.stdout.cursorTo(0)
 				if (data) {
-					console.log(" Update avabile: (" + data + ")")
+					out.blank(" Update avabile: (" + data + ")")
 				}
-				console.log("")
-				rl.prompt(true)
+				out.blank("")
 
 				// udp listening
 				udp.listen()
@@ -83,6 +82,8 @@ module.exports = {
 
 		// exit
 		process.on("SIGINT", () => {
+
+			//reset colors and clear screen
 			console.log("\x1b[0m")
 			process.stdout.write("\033c")
 			process.exit()
@@ -97,6 +98,7 @@ function wrapper(message) {
 	readline.moveCursor(process.stdout, 0, -1)
 
 	if (!/^ *$/.test(message)) {
+
 		// check prefix
 		if (message.charAt(0) !== "/") {
 

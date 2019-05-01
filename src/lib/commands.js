@@ -1,4 +1,4 @@
-// import
+// imports
 const client = require("./client")
 const out = require("./out")
 const dwn = require("./dwn")
@@ -6,8 +6,38 @@ const host = require("./host")
 const config = require("./config")
 const c = require("./theme")
 const udp = require("./udp")
+
 // COMMANDS
 module.exports = {
+
+	// help
+	help: function () {
+		var help = []
+		help.push("/connect    - connect")
+		help.push("/disconnect - disconnect")
+		help.push("/host       - create server")
+		help.push("/lan        - list of hosts detected in lan")
+		help.push("/clear      - clear screen")
+		help.push("/exit       - exit lanchat")
+		help.push("/nick       - change nick")
+		help.push("/list       - list users")
+		help.push("/online     - change status")
+		help.push("/afk        - change status")
+		help.push("/dnd        - change status")
+		help.push("/notify     - change notifications settings")
+		help.push("/mention    - mention user")
+		help.push("/login      - login on locked account")
+		help.push("/lock       - lock account")
+		help.push("/kick       - kick user")
+		help.push("/ban        - ban user")
+		help.push("/unban      - unban user")
+		help.push("/mute       - mute user")
+		help.push("/unmute     - unmute user")
+		help.push("/level      - change user permission")
+		help.push("/dwn        - donwload plugin")
+		help.push("/dwd        - delete plugin")
+		out.blank(help.join("\n"))
+	},
 
 	// clear
 	clear: function () {
@@ -40,35 +70,6 @@ module.exports = {
 				out.blank("Your nickname is now " + c.blue + args[0] + c.reset)
 			}
 		}
-	},
-
-	// help
-	help: function () {
-		var help = []
-		help.push("/connect    - connect")
-		help.push("/disconnect - disconnect")
-		help.push("/host       - create server")
-		help.push("/lan        - list of hosts detected in lan")
-		help.push("/clear      - clear screen")
-		help.push("/exit       - exit lanchat")
-		help.push("/nick       - change nick")
-		help.push("/list       - list users")
-		help.push("/online     - change status")
-		help.push("/afk        - change status")
-		help.push("/dnd        - change status")
-		help.push("/notify     - change notifications settings")
-		help.push("/mention    - mention user")
-		help.push("/login      - login on locked account")
-		help.push("/lock       - lock account")
-		help.push("/kick       - kick user")
-		help.push("/ban        - ban user")
-		help.push("/unban      - unban user")
-		help.push("/mute       - mute user")
-		help.push("/unmute     - unmute user")
-		help.push("/level      - change user permission")
-		help.push("/dwn        - donwload plugin")
-		help.push("/dwd        - delete plugin")
-		out.blank(help.join("\n"))
 	},
 
 	// connect
