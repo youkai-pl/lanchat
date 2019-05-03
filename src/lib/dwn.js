@@ -5,7 +5,7 @@ const out = require("./out")
 const pkg = require("../package.json")
 // PLUGINS DOWNLOADER
 
-const plugins = "https://raw.githubusercontent.com/akira202/lanchat/master/src/plugins/"
+const plugins = "https://github.com/akira202/lanchat-plugins/tree/master/plugins"
 const self = "https://raw.githubusercontent.com/akira202/lanchat/master/src/package.json"
 
 module.exports = {
