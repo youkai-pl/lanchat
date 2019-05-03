@@ -59,7 +59,7 @@ module.exports = {
 			.then((data) => {
 				out.stopLoading()
 
-				//write alert
+				// write alert
 				process.stdout.clearLine()
 				process.stdout.cursorTo(0)
 				if (data) {
@@ -83,7 +83,7 @@ module.exports = {
 		// exit
 		process.on("SIGINT", () => {
 
-			//reset colors and clear screen
+			// reset colors and clear screen
 			console.log("\x1b[0m")
 			process.stdout.write("\033c")
 			process.exit()
