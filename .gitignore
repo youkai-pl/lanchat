@@ -2,5 +2,6 @@ node_modules
 yarn.lock
 bin
 dist
-src/plugins
+src/plugins/**
+!/**/.gitkeep
 *code-workspace
