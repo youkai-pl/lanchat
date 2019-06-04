@@ -9,6 +9,7 @@ const plugins = require("./lib/plugins")
 process.on("uncaughtException", (err) => {
 	console.log("Error: " + err)
 })
+cls
 
 // load plugins
 plugins.load()
