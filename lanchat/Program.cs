@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using lanchat.prompt;
 
 namespace lanchat
 {
@@ -10,6 +11,7 @@ namespace lanchat
     {
         static void Main(string[] args)
         {
+            Prompt.Init();
         }
     }
 }
