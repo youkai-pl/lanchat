@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using lanchat.prompt;
+﻿// lanchat 2
+// tofu 2019
 
 namespace lanchat
 {
