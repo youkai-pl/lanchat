@@ -7,6 +7,7 @@ namespace lanchat
     {
         static void Main(string[] args)
         {
+            // Initialize prompt
             Prompt.Init();
         }
     }
