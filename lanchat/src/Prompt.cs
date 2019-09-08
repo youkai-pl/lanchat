@@ -3,9 +3,10 @@ using System.Diagnostics;
 
 public static class Prompt
 {
-    private static bool readPrompt = true;
+    // variables
+    private static bool read = true;
 
-    // Welcome screen
+    // welcome screen
     public static void Welcome()
     {
         System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
@@ -17,21 +18,21 @@ public static class Prompt
         Console.WriteLine("");
     }
 
-    // Initialize prompt
+    // read from prompt
     public static void Read()
     {
-        while (readPrompt)
+        while (read)
         {
             Console.Write("> ");
 
-            // Read input
+            // read input
             string promptInput = Console.ReadLine();
             Console.SetCursorPosition(2, Console.CursorTop - 1);
-            ClearCurrentConsoleLine();
+            ClearLine();
 
             if (!string.IsNullOrEmpty(promptInput))
             {
-                // Check is input command
+                // check is input command
                 if (promptInput.StartsWith("/"))
                 {
                     string command = promptInput.Substring(1);
@@ -51,7 +52,7 @@ public static class Prompt
         }
     }
 
-    // Write notice
+    // write notice
     public static void Notice(string message)
     {
         Console.ForegroundColor = ConsoleColor.Cyan;
@@ -59,11 +60,11 @@ public static class Prompt
         Console.ForegroundColor = ConsoleColor.White;
     }
 
-    // Query
+    // query
     public static string Query(string query, bool blank)
     {
-        readPrompt = false;
-        string response = null;
+        read = false;
+        string response;
         do
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -71,12 +72,12 @@ public static class Prompt
             Console.ForegroundColor = ConsoleColor.White;
             response = Console.ReadLine();
         } while (string.IsNullOrEmpty(response) || blank);
-        readPrompt = true;
+        read = true;
         return response;
     }
 
-    // Local methods
-    private static void ClearCurrentConsoleLine()
+    // local methods
+    private static void ClearLine()
     {
         int currentLineCursor = Console.CursorTop;
         Console.SetCursorPosition(0, Console.CursorTop);

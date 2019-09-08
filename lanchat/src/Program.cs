@@ -9,10 +9,10 @@ namespace lanchat
     {
         static void Main(string[] args)
         {
-            // Welcome screen
+            // show welcome screen
             Prompt.Welcome();
 
-            //Check config
+            // check config
             if (string.IsNullOrEmpty(Properties.User.Default.nick))
             {
                 Prompt.Notice("First configuration");
@@ -20,10 +20,9 @@ namespace lanchat
                 Properties.User.Default.Save();
             }
 
-            // Initialize prompt
-            var ts = new ThreadStart(Prompt.Read);
-            var backgroundThread = new Thread(ts);
-            backgroundThread.Start();
+            // initialize prompt
+            var promptThread = new Thread(new ThreadStart(Prompt.Read));
+            promptThread.Start();
         }
     }
 }

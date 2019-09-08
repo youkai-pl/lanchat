@@ -6,7 +6,7 @@ public static class Commands
     {
         string[] args = command.Split(' ');
 
-        // Commands switch
+        // commands switch
         switch (args[0])
         {
             case "help":
@@ -23,7 +23,7 @@ public static class Commands
 
     }
 
-    // Methods
+    // methods
     private static void ShowHelp()
     {
         Console.WriteLine("");
