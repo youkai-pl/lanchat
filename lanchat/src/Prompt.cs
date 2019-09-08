@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Drawing;
+using Console = Colorful.Console;
 using System.Diagnostics;
 
 public static class Prompt
 {
     // variables
-    private static bool read = true;
+    private static string promptChar = ">";
 
     // welcome screen
     public static void Welcome()
@@ -21,9 +23,10 @@ public static class Prompt
     // read from prompt
     public static void Read()
     {
-        while (read)
+        while (true)
         {
-            Console.Write("> ");
+
+            Console.Write(promptChar + " ");
 
             // read input
             string promptInput = Console.ReadLine();
@@ -42,38 +45,48 @@ public static class Prompt
                 // or message
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.Write(lanchat.Properties.User.Default.nick + " ");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write(promptInput);
-                    Console.WriteLine();
+                    Message(lanchat.Properties.User.Default.nick, promptInput);
                 }
             }
         }
     }
 
-    // write notice
-    public static void Notice(string message)
+    // outputs
+    public static void Out(string message, Color? color = null)
     {
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine(message);
-        Console.ForegroundColor = ConsoleColor.White;
+        int currentTopCursor = Console.CursorTop;
+        int currentLeftCursor = Console.CursorLeft;
+        Console.MoveBufferArea(0, currentTopCursor, Console.WindowWidth, 1, 0, currentTopCursor + 1);
+        Console.CursorTop = currentTopCursor;
+        Console.CursorLeft = 0;
+        Console.WriteLine(message, color ?? Color.White);
+        Console.CursorTop = currentTopCursor + 1;
+        Console.CursorLeft = currentLeftCursor;
     }
 
-    // query
-    public static string Query(string query, bool blank)
+    public static void Message(string nickname, string message)
     {
-        read = false;
-        string response;
-        do
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write(query + ": ");
-            Console.ForegroundColor = ConsoleColor.White;
-            response = Console.ReadLine();
-        } while (string.IsNullOrEmpty(response) || blank);
-        read = true;
-        return response;
+        int currentTopCursor = Console.CursorTop;
+        int currentLeftCursor = Console.CursorLeft;
+        Console.MoveBufferArea(0, currentTopCursor, Console.WindowWidth, 1, 0, currentTopCursor + 1);
+        Console.CursorTop = currentTopCursor;
+        Console.CursorLeft = 0;
+        Console.Write(DateTime.Now.ToString("HH:mm:ss") + " ", Color.DimGray);
+        Console.Write(nickname + " ", Color.SteelBlue);
+        Console.WriteLine(message);
+        Console.CursorTop = currentTopCursor + 1;
+        Console.CursorLeft = currentLeftCursor;
+    }
+
+    public static void Notice(string message)
+    {
+        Out("[#] " + message, Color.DodgerBlue);
+    }
+
+    public static void Alert(string message)
+
+    {
+        Out("[!] " + message, Color.OrangeRed);
     }
 
     // local methods

@@ -58,5 +58,17 @@ namespace lanchat.Properties {
                 this["privateKey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string filesPath {
+            get {
+                return ((string)(this["filesPath"]));
+            }
+            set {
+                this["filesPath"] = value;
+            }
+        }
     }
 }
