@@ -26,8 +26,11 @@ public static class Commands
     // Methods
     private static void ShowHelp()
     {
-        Console.WriteLine("/help - list of commands");
+        Console.WriteLine("");
         Console.WriteLine("/exit - quit lanchat");
+        Console.WriteLine("/help - list of commands");
+        Console.WriteLine("/nick - change nick");
+        Console.WriteLine("");
     }
 
     private static void SetNick(string nick)

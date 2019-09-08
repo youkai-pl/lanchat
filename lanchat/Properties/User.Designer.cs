@@ -34,5 +34,29 @@ namespace lanchat.Properties {
                 this["nick"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string publicKey {
+            get {
+                return ((string)(this["publicKey"]));
+            }
+            set {
+                this["publicKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string privateKey {
+            get {
+                return ((string)(this["privateKey"]));
+            }
+            set {
+                this["privateKey"] = value;
+            }
+        }
     }
 }
