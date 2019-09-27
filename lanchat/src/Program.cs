@@ -20,7 +20,6 @@ namespace lanchat
             // check config
             if (string.IsNullOrEmpty(Properties.User.Default.nick))
             {
-                promptThread.Abort();
                 Properties.User.Default.nick = "default";
                 Properties.User.Default.filesPath = "default";
                 Properties.User.Default.Save();
