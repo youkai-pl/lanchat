@@ -6,7 +6,7 @@ using System.Diagnostics;
 public static class Prompt
 {
     // variables
-    private static string promptChar = ">";
+    public static string promptChar = ">";
 
     // welcome screen
     public static void Welcome()
@@ -21,17 +21,20 @@ public static class Prompt
     }
 
     // read from prompt
-    public static void Read()
+    public static void Init()
     {
         while (true)
         {
-
             Console.Write(promptChar + " ");
 
             // read input
             string promptInput = Console.ReadLine();
-            Console.SetCursorPosition(2, Console.CursorTop - 1);
-            ClearLine();
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            int currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, currentLineCursor);
+            Console.SetCursorPosition(0, Console.CursorTop++);
 
             if (!string.IsNullOrEmpty(promptInput))
             {
@@ -45,35 +48,30 @@ public static class Prompt
                 // or message
                 else
                 {
-                    Message(lanchat.Properties.User.Default.nick, promptInput);
+                    Out(promptInput, null, lanchat.Properties.User.Default.nick);
                 }
             }
         }
     }
 
     // outputs
-    public static void Out(string message, Color? color = null)
+    public static void Out(string message, Color? color = null, string nickname = null)
     {
         int currentTopCursor = Console.CursorTop;
         int currentLeftCursor = Console.CursorLeft;
         Console.MoveBufferArea(0, currentTopCursor, Console.WindowWidth, 1, 0, currentTopCursor + 1);
         Console.CursorTop = currentTopCursor;
         Console.CursorLeft = 0;
-        Console.WriteLine(message, color ?? Color.White);
-        Console.CursorTop = currentTopCursor + 1;
-        Console.CursorLeft = currentLeftCursor;
-    }
-
-    public static void Message(string nickname, string message)
-    {
-        int currentTopCursor = Console.CursorTop;
-        int currentLeftCursor = Console.CursorLeft;
-        Console.MoveBufferArea(0, currentTopCursor, Console.WindowWidth, 1, 0, currentTopCursor + 1);
-        Console.CursorTop = currentTopCursor;
-        Console.CursorLeft = 0;
-        Console.Write(DateTime.Now.ToString("HH:mm:ss") + " ", Color.DimGray);
-        Console.Write(nickname + " ", Color.SteelBlue);
-        Console.WriteLine(message);
+        if (!string.IsNullOrEmpty(nickname))
+        {
+            Console.Write(DateTime.Now.ToString("HH:mm:ss") + " ", Color.DimGray);
+            Console.Write(nickname + " ", Color.SteelBlue);
+            Console.WriteLine(message);
+        }
+        else
+        {
+            Console.WriteLine(message, color ?? Color.White);
+        }
         Console.CursorTop = currentTopCursor + 1;
         Console.CursorLeft = currentLeftCursor;
     }
@@ -87,15 +85,6 @@ public static class Prompt
 
     {
         Out("[!] " + message, Color.OrangeRed);
-    }
-
-    // local methods
-    private static void ClearLine()
-    {
-        int currentLineCursor = Console.CursorTop;
-        Console.SetCursorPosition(0, Console.CursorTop);
-        Console.Write(new string(' ', Console.WindowWidth));
-        Console.SetCursorPosition(0, currentLineCursor);
     }
 }
 

@@ -1,7 +1,7 @@
-﻿// lanchat 2
-// tofu 2019
+﻿// Lanchat 2
+// Bartłomiej Tota 2019 
+// MIT License
 
-using System;
 using System.Threading;
 
 namespace lanchat
@@ -10,12 +10,9 @@ namespace lanchat
     {
         static void Main(string[] args)
         {
+
             // show welcome screen
             Prompt.Welcome();
-
-            // initialize prompt
-            var promptThread = new Thread(Prompt.Read);
-            promptThread.Start();
 
             // check config
             if (string.IsNullOrEmpty(Properties.User.Default.nick))
@@ -25,12 +22,8 @@ namespace lanchat
                 Properties.User.Default.Save();
             }
 
-            Thread.Sleep(2000);
-            Prompt.Notice("notice");
-            Thread.Sleep(1000);
-            Prompt.Alert("alert");
-            Thread.Sleep(600);
-            Prompt.Message("test", "dasdasdsdasdsad");
+            // initialize prompt
+            new Thread(Prompt.Init).Start();
         }
     }
 }
