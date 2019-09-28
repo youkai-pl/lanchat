@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("Lanchat")]
 [assembly: AssemblyDescription("Lanchat")]
-[assembly: AssemblyConfiguration("")]
+//[assembly: AssemblyConfiguration("Debug")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Lanchat")]
 [assembly: AssemblyCopyright("Bartlomiej Tota (tofudd) 2019")]
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.0")]
-[assembly: AssemblyFileVersion("2.0.0")]
+[assembly: AssemblyVersion("2.0.0.1000")]
+[assembly: AssemblyFileVersion("2.0.0.1000")]

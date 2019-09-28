@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
+using System.Reflection;
 using Console = Colorful.Console;
 
 public static class Prompt
@@ -11,14 +11,13 @@ public static class Prompt
     // welcome screen
     public static void Welcome()
     {
-        System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-        FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-        string version = fvi.FileVersion;
-
+        string version = GetVersion();
         Console.Title = "Lanchat 2";
         Console.WriteLine("Lanchat " + version);
         Console.WriteLine("");
     }
+
+
 
     // read from prompt
     public static void Init()
@@ -49,7 +48,6 @@ public static class Prompt
         }
     }
 
-    // outputs
     public static void Out(string message, Color? color = null, string nickname = null)
     {
         int currentTopCursor = Console.CursorTop;
@@ -82,7 +80,6 @@ public static class Prompt
         Out("[!] " + message, Color.OrangeRed);
     }
 
-    // query
     public static string Query(string query)
     {
         Console.Write(query + " ", Color.LightGreen);
@@ -99,5 +96,17 @@ public static class Prompt
         Console.Write(new string(' ', Console.WindowWidth));
         Console.SetCursorPosition(0, currentLineCursor);
         Console.SetCursorPosition(0, Console.CursorTop++);
+    }
+
+    private static string GetVersion()
+    {
+        string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+#if DEBUG
+        version += " DEBUG MODE";
+#endif
+#if ALPHA
+        version += " Alpha";
+#endif
+        return version;
     }
 }
