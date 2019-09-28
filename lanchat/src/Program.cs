@@ -1,24 +1,28 @@
 ﻿// Lanchat 2
-// Bartłomiej Tota 2019 
+// Bartłomiej Tota 2019
 // MIT License
 
 using System.Threading;
 
 namespace lanchat
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-
             // show welcome screen
             Prompt.Welcome();
 
             // check config
             if (string.IsNullOrEmpty(Properties.User.Default.nick))
             {
-                Properties.User.Default.nick = "default";
-                Properties.User.Default.filesPath = "default";
+                string nick = Prompt.Query("Choose nickname: ");
+                while (nick.Length > 20)
+                {
+                    Prompt.Alert("Max 20 charcters");
+                    nick = Prompt.Query("Choose nickname: ");
+                }
+                Properties.User.Default.nick = nick;
                 Properties.User.Default.Save();
             }
 

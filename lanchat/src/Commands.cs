@@ -16,11 +16,11 @@ public static class Commands
             case "exit":
                 Exit();
                 break;
+
             case "nick":
                 SetNick(args[1]);
                 break;
         }
-
     }
 
     // methods

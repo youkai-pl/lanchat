@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using Console = Colorful.Console;
-using System.Diagnostics;
 
 public static class Prompt
 {
@@ -29,12 +29,7 @@ public static class Prompt
 
             // read input
             string promptInput = Console.ReadLine();
-            Console.SetCursorPosition(0, Console.CursorTop - 1);
-            int currentLineCursor = Console.CursorTop;
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(0, currentLineCursor);
-            Console.SetCursorPosition(0, Console.CursorTop++);
+            ClearLine();
 
             if (!string.IsNullOrEmpty(promptInput))
             {
@@ -86,5 +81,23 @@ public static class Prompt
     {
         Out("[!] " + message, Color.OrangeRed);
     }
-}
 
+    // query
+    public static string Query(string query)
+    {
+        Console.Write(query + " ", Color.LightGreen);
+        string answer = Console.ReadLine();
+        ClearLine();
+        return answer;
+    }
+
+    private static void ClearLine()
+    {
+        Console.SetCursorPosition(0, Console.CursorTop - 1);
+        int currentLineCursor = Console.CursorTop;
+        Console.SetCursorPosition(0, Console.CursorTop);
+        Console.Write(new string(' ', Console.WindowWidth));
+        Console.SetCursorPosition(0, currentLineCursor);
+        Console.SetCursorPosition(0, Console.CursorTop++);
+    }
+}
