@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="src\Commands.cs" />
     <Compile Include="src\Cryptography.cs" />
+    <Compile Include="src\Network.cs" />
     <Compile Include="src\Program.cs" />
     <Compile Include="src\Prompt.cs" />
   </ItemGroup>

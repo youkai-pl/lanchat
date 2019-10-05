@@ -1,6 +1,7 @@
 ﻿// Lanchat 2
 // Bartłomiej Tota 2019
 
+using lanchat.Network;
 using System.Threading;
 
 namespace lanchat
@@ -41,6 +42,9 @@ namespace lanchat
 
             // initialize prompt
             new Thread(Prompt.Init).Start();
+
+            // initialize network
+            Client.Init(Properties.User.Default.bport);
         }
     }
 }
