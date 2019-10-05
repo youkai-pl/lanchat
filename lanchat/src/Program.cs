@@ -13,7 +13,8 @@ namespace lanchat
             // show welcome screen
             Prompt.Welcome();
 
-            // check config
+            // check nick
+            Prompt.Notice("Validating config");
             if (string.IsNullOrEmpty(Properties.User.Default.nick))
             {
                 string nick = Prompt.Query("Choose nickname: ");
@@ -23,6 +24,19 @@ namespace lanchat
                     nick = Prompt.Query("Choose nickname: ");
                 }
                 Properties.User.Default.nick = nick;
+                Properties.User.Default.Save();
+            }
+
+            // try to load rsa settings
+            Prompt.Notice("Validating RSA keys");
+            try
+            {
+                Cryptography.Load();
+            }
+            catch
+            {
+                Prompt.Notice("Generating RSA keys");
+                Properties.User.Default.csp = Cryptography.Generate();
                 Properties.User.Default.Save();
             }
 

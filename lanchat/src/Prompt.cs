@@ -17,15 +17,12 @@ public static class Prompt
         Console.WriteLine("");
     }
 
-
-
     // read from prompt
     public static void Init()
     {
         while (true)
         {
             Console.Write(promptChar + " ");
-
             // read input
             string promptInput = Console.ReadLine();
             ClearLine();
