@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using System.Xml.Linq;
 
 namespace lanchat.Crypto
 {
@@ -16,6 +17,11 @@ namespace lanchat.Crypto
         {
             csp = new RSACryptoServiceProvider();
             csp.FromXmlString(lanchat.Properties.User.Default.csp);
+        }
+
+        public static string GetPublic()
+        {
+            return XElement.Parse(csp.ToXmlString(false)).Element("Modulus").Value;
         }
     }
 }
