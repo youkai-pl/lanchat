@@ -14,6 +14,8 @@ public static class Prompt
         string version = GetVersion();
         Console.Title = "Lanchat 2";
         Console.WriteLine("Lanchat " + version);
+        Console.WriteLine("Main port: " + lanchat.Properties.User.Default.mport.ToString());
+        Console.WriteLine("Broadcast port: " + lanchat.Properties.User.Default.bport.ToString());
         Console.WriteLine("");
     }
 
@@ -23,6 +25,7 @@ public static class Prompt
         while (true)
         {
             Console.Write(promptChar + " ");
+
             // read input
             string promptInput = Console.ReadLine();
             ClearLine();

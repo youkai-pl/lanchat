@@ -1,6 +1,5 @@
 ﻿// Lanchat 2
 // Bartłomiej Tota 2019
-// MIT License
 
 using System.Threading;
 

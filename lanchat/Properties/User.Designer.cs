@@ -46,5 +46,29 @@ namespace lanchat.Properties {
                 this["csp"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1411")]
+        public int bport {
+            get {
+                return ((int)(this["bport"]));
+            }
+            set {
+                this["bport"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1410")]
+        public int mport {
+            get {
+                return ((int)(this["mport"]));
+            }
+            set {
+                this["mport"] = value;
+            }
+        }
     }
 }

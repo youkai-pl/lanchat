@@ -8,5 +8,11 @@
     <Setting Name="csp" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="bport" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1411</Value>
+    </Setting>
+    <Setting Name="mport" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1410</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
