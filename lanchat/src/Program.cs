@@ -2,6 +2,8 @@
 // Bartłomiej Tota 2019
 
 using lanchat.Network;
+using lanchat.Terminal;
+using lanchat.Crypto;
 using System.Threading;
 
 namespace lanchat

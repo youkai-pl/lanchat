@@ -1,18 +1,21 @@
 ﻿using System.Security.Cryptography;
 
-public static class Cryptography
+namespace lanchat.Crypto
 {
-    public static RSACryptoServiceProvider csp;
-
-    public static string Generate()
+    public static class Cryptography
     {
-        csp = new RSACryptoServiceProvider(1024);
-        return csp.ToXmlString(true);
-    }
+        public static RSACryptoServiceProvider csp;
 
-    public static void Load()
-    {
-        csp = new RSACryptoServiceProvider();
-        csp.FromXmlString(lanchat.Properties.User.Default.csp);
+        public static string Generate()
+        {
+            csp = new RSACryptoServiceProvider(1024);
+            return csp.ToXmlString(true);
+        }
+
+        public static void Load()
+        {
+            csp = new RSACryptoServiceProvider();
+            csp.FromXmlString(lanchat.Properties.User.Default.csp);
+        }
     }
 }
