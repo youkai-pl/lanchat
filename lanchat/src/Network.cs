@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -12,9 +13,12 @@ namespace lanchat.Network
     {
         public static void Init(int PORT, string nickname, string publicKey)
         {
+            string selfHash = Guid.NewGuid().ToString();
+
             XElement self = new XElement("paperplane",
                 new XElement("nickname", nickname),
-                new XElement("publickey", publicKey));
+                new XElement("publickey", publicKey),
+                new XElement("hash", selfHash));
 
             // create UDP client
             UdpClient udpClient = new UdpClient();
@@ -38,7 +42,16 @@ namespace lanchat.Network
                 while (true)
                 {
                     var recvBuffer = udpClient.Receive(ref from);
-                    Console.WriteLine(Encoding.UTF8.GetString(recvBuffer));
+                    var sender = from.Address.ToString();
+                    var paperplane = XElement.Parse(Encoding.UTF8.GetString(recvBuffer));
+
+                    if (paperplane.Element("hash").Value != selfHash)
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine(sender);
+                        Console.WriteLine(paperplane.Element("nickname").Value);
+                        Console.WriteLine(paperplane.Element("hash").Value);
+                    }
                 }
             });
         }
