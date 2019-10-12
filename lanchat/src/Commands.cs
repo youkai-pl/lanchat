@@ -1,5 +1,6 @@
 ﻿using lanchat.Terminal;
 using System;
+using static lanchat.Program;
 
 namespace lanchat.Commands
 {
@@ -40,8 +41,8 @@ namespace lanchat.Commands
         {
             if (!string.IsNullOrEmpty(nick))
             {
-                lanchat.Properties.User.Default.nick = nick;
-                lanchat.Properties.User.Default.Save();
+                Config["nickname"] = nick;
+                SaveConfig();
                 Prompt.Notice("Nickname changed");
             }
         }

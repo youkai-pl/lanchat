@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.Reflection;
+using static lanchat.Program;
 using Console = Colorful.Console;
 
 namespace lanchat.Terminal
@@ -17,8 +18,8 @@ namespace lanchat.Terminal
             string version = GetVersion();
             Console.Title = "Lanchat 2";
             Console.WriteLine("Lanchat " + version);
-            Console.WriteLine("Main port: " + lanchat.Properties.User.Default.mport.ToString());
-            Console.WriteLine("Broadcast port: " + lanchat.Properties.User.Default.bport.ToString());
+            Console.WriteLine("Main port: " + Config["mport"].ToString());
+            Console.WriteLine("Broadcast port: " + Config["bport"].ToString());
             Console.WriteLine("");
         }
 
@@ -45,7 +46,7 @@ namespace lanchat.Terminal
                     // or message
                     else
                     {
-                        Out(promptInput, null, lanchat.Properties.User.Default.nick);
+                        Out(promptInput, null, Config["nickname"]);
                     }
                 }
             }
