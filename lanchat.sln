@@ -1,28 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.29215.179
+VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lanchat", "lanchat\lanchat.csproj", "{66CAC928-9216-46F3-8795-1F34D8B65CF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lanchat", "lanchat\lanchat.csproj", "{E34FDF59-658C-4F04-ADCB-ABC048FB5048}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Alpha|Any CPU = Alpha|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{66CAC928-9216-46F3-8795-1F34D8B65CF5}.Alpha|Any CPU.ActiveCfg = Alpha|Any CPU
-		{66CAC928-9216-46F3-8795-1F34D8B65CF5}.Alpha|Any CPU.Build.0 = Alpha|Any CPU
-		{66CAC928-9216-46F3-8795-1F34D8B65CF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66CAC928-9216-46F3-8795-1F34D8B65CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66CAC928-9216-46F3-8795-1F34D8B65CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66CAC928-9216-46F3-8795-1F34D8B65CF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E34FDF59-658C-4F04-ADCB-ABC048FB5048}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E34FDF59-658C-4F04-ADCB-ABC048FB5048}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E34FDF59-658C-4F04-ADCB-ABC048FB5048}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E34FDF59-658C-4F04-ADCB-ABC048FB5048}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A0E27881-3B5C-4F77-B9CE-5694712DD214}
+		SolutionGuid = {C97425CD-0020-4DBF-A57F-513275818A0E}
 	EndGlobalSection
 EndGlobal
