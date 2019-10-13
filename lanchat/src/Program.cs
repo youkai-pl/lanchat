@@ -17,7 +17,7 @@ namespace lanchat
 
         private static void Main(string[] args)
         {
-            // load settings
+            // load or create config file
             var builder = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("config.json", optional: false, reloadOnChange: true);
@@ -71,7 +71,14 @@ namespace lanchat
                 mport = Config["mport"],
                 bport = Config["bport"]
             };
-            File.WriteAllText("config.json", JsonSerializer.Serialize(newConfig).ToString());
+            try
+            {
+                File.WriteAllText("config*json", JsonSerializer.Serialize(newConfig).ToString());
+            }
+            catch
+            {
+                Prompt.Alert("Config save error");
+            }
         }
     }
 }
