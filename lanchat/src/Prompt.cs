@@ -1,11 +1,11 @@
-﻿using lanchat.Commands;
+﻿using lanchat.CommandsLib;
 using System;
 using System.Drawing;
 using System.Reflection;
 using static lanchat.Program;
 using Console = Colorful.Console;
 
-namespace lanchat.Terminal
+namespace lanchat.PromptLib
 {
     public static class Prompt
     {

@@ -8,6 +8,18 @@
     <AssemblyVersion>2.0.0.1000</AssemblyVersion>
     <FileVersion>2.0.0.1000</FileVersion>
     <AssemblyName>Lanchat</AssemblyName>
+    <StartupObject>lanchat.Program</StartupObject>
+    <NeutralLanguage>en-GB</NeutralLanguage>
+    <RepositoryUrl>https://github.com/tofudd/lanchat</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/tofudd/lanchat</PackageProjectUrl>
+    <Copyright>Bartłomiej Tota (tofudd)</Copyright>
+    <Authors>Bartłomiej Tota</Authors>
+    <Company />
+    <Description />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +27,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
   <ItemGroup>
