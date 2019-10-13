@@ -73,7 +73,7 @@ namespace lanchat
             };
             try
             {
-                File.WriteAllText("config*json", JsonSerializer.Serialize(newConfig).ToString());
+                File.WriteAllText("config.json", JsonSerializer.Serialize(newConfig).ToString());
             }
             catch
             {
