@@ -24,17 +24,20 @@ namespace lanchat.CommandsLib
                 case "nick":
                     SetNick(args[1]);
                     break;
+                default:
+                    Prompt.Out("Bad command");
+                    break;
             }
         }
 
         // methods
         private static void ShowHelp()
         {
-            Console.WriteLine("");
-            Console.WriteLine("/exit - quit lanchat");
-            Console.WriteLine("/help - list of commands");
-            Console.WriteLine("/nick - change nick");
-            Console.WriteLine("");
+            Prompt.Out("");
+            Prompt.Out("/exit - quit lanchat");
+            Prompt.Out("/help - list of commands");
+            Prompt.Out("/nick - change nick");
+            Prompt.Out("");
         }
 
         private static void SetNick(string nick)

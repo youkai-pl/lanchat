@@ -20,7 +20,6 @@ namespace lanchat.PromptLib
             Out("Lanchat " + GetVersion());
             Out("Main port: " + Config["mport"].ToString());
             Out("Broadcast port: " + Config["bport"].ToString());
-            Out("");
         }
 
         // read from prompt
@@ -28,17 +27,7 @@ namespace lanchat.PromptLib
         {
             while (true)
             {
-                ConsoleKeyInfo key;
-                do
-                {
-                    key = Console.ReadKey();
-                    if (char.IsLetterOrDigit(key.KeyChar))
-                    {
-                        inputBuffer = inputBuffer + key.KeyChar;
-                    }
-                } while (key.Key != ConsoleKey.Enter);
-
-                string promptInput = inputBuffer;
+                string promptInput = ReadLine();
                 inputBuffer = "";
 
                 if (!string.IsNullOrEmpty(promptInput))
@@ -57,6 +46,47 @@ namespace lanchat.PromptLib
                     }
                 }
             }
+        }
+
+        private static string ReadLine()
+        {
+            inputBuffer = "";
+
+            int curIndex = 0;
+            do
+            {
+                ConsoleKeyInfo readKeyResult = Console.ReadKey(true);
+
+                // handle Enter
+                if (readKeyResult.Key == ConsoleKey.Enter)
+                {
+                    return inputBuffer;
+                }
+
+                // handle backspace
+                if (readKeyResult.Key == ConsoleKey.Backspace)
+                {
+                    if (curIndex > 0)
+                    {
+                        inputBuffer = inputBuffer.Remove(inputBuffer.Length - 1);
+                        Console.Write(readKeyResult.KeyChar);
+                        Console.Write(' ');
+                        Console.Write(readKeyResult.KeyChar);
+                        curIndex--;
+                    }
+                }
+                else
+                // handle all other keypresses
+                {
+                    if (!char.IsControl(readKeyResult.KeyChar))
+                    {
+                        inputBuffer += readKeyResult.KeyChar;
+                        Console.Write(readKeyResult.KeyChar);
+                        curIndex++;
+                    }  
+                }
+            }
+            while (true);
         }
 
         public static void Out(string message, Color? color = null, string nickname = null)

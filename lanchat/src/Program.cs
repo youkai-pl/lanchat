@@ -54,6 +54,7 @@ namespace lanchat
             }
 
             // initialize prompt
+            Prompt.Out("");
             new Thread(Prompt.Init).Start();
 
             // initialize network
