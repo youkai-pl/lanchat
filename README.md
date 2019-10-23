@@ -1,5 +1,8 @@
 # Lanchat 2
 
+## Contributors
+Special thanks to meomatic for logo idea
+
 ## Planned changes
 * change language to C#
 * moderation will be replaced with client-side features
@@ -10,11 +13,11 @@
 ## Roadmap
 ### Client:
 - [x] Basic prompt
+- [x] Linux support
 - [ ] Separated prompts for rooms
 - [ ] Themes support
 - [ ] Multi languages
 - [ ] Plugins
-- [ ] Linux support
 
 ### Protocol:
 - [ ] Working encrypted chat
