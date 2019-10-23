@@ -61,9 +61,6 @@ namespace lanchat
             Client.Init(int.Parse(Config["bport"]),
                         Config["nickname"],
                         Cryptography.GetPublic());
-
-            Thread.Sleep(2000);
-            Prompt.Out("testowy shit który sprawdza czy nie pierdolnie");
         }
 
         public static void SaveConfig()
