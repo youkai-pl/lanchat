@@ -1,6 +1,9 @@
 ﻿using lanchat.CommandsLib;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Reflection;
 using static lanchat.Program;
 using Console = Colorful.Console;
@@ -10,8 +13,8 @@ namespace lanchat.PromptLib
     public static class Prompt
     {
         // variables
-        public static string promptChar = ">";
-        public static string inputBuffer;
+        public static string promptChar = "> ";
+        public static List<char> inputBuffer = new List<char>();
 
         // welcome screen
         public static void Welcome()
@@ -28,7 +31,6 @@ namespace lanchat.PromptLib
             while (true)
             {
                 string promptInput = ReadLine();
-                inputBuffer = "";
 
                 if (!string.IsNullOrEmpty(promptInput))
                 {
@@ -50,17 +52,46 @@ namespace lanchat.PromptLib
 
         private static string ReadLine()
         {
-            inputBuffer = "";
-
             int curIndex = 0;
+            bool insert = false;
+
             do
             {
                 ConsoleKeyInfo readKeyResult = Console.ReadKey(true);
 
-                // handle Enter
+                // handle enter
                 if (readKeyResult.Key == ConsoleKey.Enter)
                 {
-                    return inputBuffer;
+                    try
+                    {
+                        return string.Join("", inputBuffer.ToArray());
+                    }
+                    finally
+                    {
+                        inputBuffer.Clear();
+                    }
+                }
+
+                // handle left arrow
+                if (readKeyResult.Key == ConsoleKey.LeftArrow)
+                {
+                    if (curIndex > 0)
+                    {
+                        insert = true;
+                        curIndex--;
+                        Console.CursorLeft--;
+                    }
+                }
+
+                // handle right arrow
+                if (readKeyResult.Key == ConsoleKey.RightArrow)
+                {
+                    if (inputBuffer.Count > curIndex)
+                    {
+                        insert = true;
+                        curIndex++;
+                        Console.CursorLeft++;
+                    }
                 }
 
                 // handle backspace
@@ -68,11 +99,12 @@ namespace lanchat.PromptLib
                 {
                     if (curIndex > 0)
                     {
-                        inputBuffer = inputBuffer.Remove(inputBuffer.Length - 1);
+                        inputBuffer.RemoveAt(curIndex - 1);
                         Console.Write(readKeyResult.KeyChar);
                         Console.Write(' ');
                         Console.Write(readKeyResult.KeyChar);
                         curIndex--;
+                        ResetCursor(curIndex);
                     }
                 }
                 else
@@ -80,13 +112,29 @@ namespace lanchat.PromptLib
                 {
                     if (!char.IsControl(readKeyResult.KeyChar))
                     {
-                        inputBuffer += readKeyResult.KeyChar;
-                        Console.Write(readKeyResult.KeyChar);
+                        inputBuffer.Insert(curIndex, readKeyResult.KeyChar);
                         curIndex++;
-                    }  
+
+                        if (insert)
+                        {
+                            ResetCursor(curIndex);
+                            insert = false;
+                        }
+                        else
+                        {
+                            Console.Write(readKeyResult.KeyChar);
+                        }
+                    }
                 }
             }
             while (true);
+        }
+
+        private static void ResetCursor(int curIndex)
+        {
+            ClearLine();
+            Console.Write(promptChar + string.Join("", inputBuffer.ToArray()));
+            Console.CursorLeft = curIndex + 2;
         }
 
         public static void Out(string message, Color? color = null, string nickname = null)
@@ -102,7 +150,7 @@ namespace lanchat.PromptLib
             {
                 Console.WriteLine(message, color ?? Color.White);
             }
-            Console.Write(promptChar + " " + inputBuffer);
+            Console.Write(promptChar + string.Join("", inputBuffer.ToArray()));
         }
 
         public static void Notice(string message)
