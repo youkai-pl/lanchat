@@ -1,9 +1,7 @@
 ﻿using lanchat.CommandsLib;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Reflection;
 using static lanchat.Program;
 using Console = Colorful.Console;
@@ -12,8 +10,9 @@ namespace lanchat.PromptLib
 {
     public static class Prompt
     {
-        // variables
+        // command prompt symbol
         public static string promptChar = "> ";
+        // input buffer
         public static List<char> inputBuffer = new List<char>();
 
         // welcome screen
@@ -28,6 +27,8 @@ namespace lanchat.PromptLib
         // read from prompt
         public static void Init()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+
             while (true)
             {
                 string promptInput = ReadLine();
