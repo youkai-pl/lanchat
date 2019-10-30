@@ -54,7 +54,6 @@ namespace lanchat.PromptLib
         private static string ReadLine()
         {
             int curIndex = 0;
-            bool insert = false;
 
             do
             {
@@ -65,7 +64,8 @@ namespace lanchat.PromptLib
                 {
                     try
                     {
-                        return string.Join("", inputBuffer.ToArray());
+                        string output = string.Join("", inputBuffer.ToArray());
+                        return output;
                     }
                     finally
                     {
@@ -78,7 +78,6 @@ namespace lanchat.PromptLib
                 {
                     if (curIndex > 0)
                     {
-                        insert = true;
                         curIndex--;
                         Console.CursorLeft--;
                     }
@@ -89,7 +88,6 @@ namespace lanchat.PromptLib
                 {
                     if (inputBuffer.Count > curIndex)
                     {
-                        insert = true;
                         curIndex++;
                         Console.CursorLeft++;
                     }
@@ -101,9 +99,6 @@ namespace lanchat.PromptLib
                     if (curIndex > 0)
                     {
                         inputBuffer.RemoveAt(curIndex - 1);
-                        Console.Write(readKeyResult.KeyChar);
-                        Console.Write(' ');
-                        Console.Write(readKeyResult.KeyChar);
                         curIndex--;
                         ResetCursor(curIndex);
                     }
@@ -115,16 +110,7 @@ namespace lanchat.PromptLib
                     {
                         inputBuffer.Insert(curIndex, readKeyResult.KeyChar);
                         curIndex++;
-
-                        if (insert)
-                        {
-                            ResetCursor(curIndex);
-                            insert = false;
-                        }
-                        else
-                        {
-                            Console.Write(readKeyResult.KeyChar);
-                        }
+                        ResetCursor(curIndex);
                     }
                 }
             }
@@ -133,9 +119,11 @@ namespace lanchat.PromptLib
 
         private static void ResetCursor(int curIndex)
         {
+            Console.CursorVisible = false; ;
             ClearLine();
             Console.Write(promptChar + string.Join("", inputBuffer.ToArray()));
             Console.CursorLeft = curIndex + 2;
+            Console.CursorVisible = true;
         }
 
         public static void Out(string message, Color? color = null, string nickname = null)
