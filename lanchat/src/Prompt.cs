@@ -1,6 +1,7 @@
 ﻿using lanchat.CommandsLib;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
 using static lanchat.Program;
@@ -119,10 +120,33 @@ namespace lanchat.PromptLib
 
         private static void ResetCursor(int curIndex)
         {
-            Console.CursorVisible = false; ;
-            ClearLine();
-            Console.Write(promptChar + string.Join("", inputBuffer.ToArray()));
-            Console.CursorLeft = curIndex + 2;
+            Console.CursorVisible = false;
+
+            int linesCount = (inputBuffer.Count / 3) + 1;
+            int characterIndex = 0;
+            string[] lines = new string[linesCount];
+
+
+            for (int i = 0; i < linesCount; i++)
+            {
+                for (; characterIndex < 3; characterIndex++)
+                {
+                    if (characterIndex >= inputBuffer.Count)
+                    {
+                        break;
+                    }
+                    lines[i] += inputBuffer[characterIndex];
+                }
+            }
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                Debug.WriteLine(lines[i]);
+            }
+
+            //ClearLine();
+            //Console.Write(promptChar + string.Join("", inputBuffer.ToArray()));
+            //Console.CursorLeft = curIndex + 2;
             Console.CursorVisible = true;
         }
 
