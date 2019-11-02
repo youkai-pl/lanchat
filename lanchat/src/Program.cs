@@ -27,7 +27,7 @@ namespace lanchat
             Prompt.Welcome();
 
             // check nick
-            Prompt.Notice("Validating config");
+            Prompt.Out("Validating config");
             if (string.IsNullOrEmpty(Config["nickname"]))
             {
                 string nick = Prompt.Query("Choose nickname: ");
@@ -41,19 +41,20 @@ namespace lanchat
             }
 
             // try to load rsa settings
-            Prompt.Notice("Validating RSA keys");
+            Prompt.Out("Validating RSA keys");
             try
             {
                 Cryptography.Load();
             }
             catch
             {
-                Prompt.Notice("Generating RSA keys");
+                Prompt.Out("Generating RSA keys");
                 Config["csp"] = Cryptography.Generate();
                 SaveConfig();
             }
 
             // initialize prompt
+            Prompt.Out("");
             new Thread(Prompt.Init).Start();
 
             // initialize network
