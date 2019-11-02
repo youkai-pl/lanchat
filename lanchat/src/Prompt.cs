@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Reflection;
 using static lanchat.Program;
 using Console = Colorful.Console;
@@ -70,6 +71,7 @@ namespace lanchat.PromptLib
                     }
                     finally
                     {
+                        ResetCursor(curIndex);
                         inputBuffer.Clear();
                     }
                 }
@@ -80,7 +82,16 @@ namespace lanchat.PromptLib
                     if (curIndex > 0)
                     {
                         curIndex--;
-                        Console.CursorLeft--;
+
+                        if (Console.CursorLeft - 1 > 0)
+                        {
+                            Console.CursorLeft--;
+                        }
+                        else
+                        {
+                            Console.CursorTop--;
+                            Console.CursorLeft = Console.WindowWidth - 1;
+                        }
                     }
                 }
 
@@ -90,7 +101,15 @@ namespace lanchat.PromptLib
                     if (inputBuffer.Count > curIndex)
                     {
                         curIndex++;
-                        Console.CursorLeft++;
+                        if (Console.CursorLeft + 1 < Console.WindowWidth)
+                        {
+                            Console.CursorLeft++;
+                        }
+                        else
+                        {
+                            Console.CursorTop++;
+                            Console.CursorLeft = 0;
+                        }
                     }
                 }
 
@@ -118,43 +137,43 @@ namespace lanchat.PromptLib
             while (true);
         }
 
+
         private static void ResetCursor(int curIndex)
         {
             Console.CursorVisible = false;
 
-            int linesCount = (inputBuffer.Count / 3) + 1;
-            int characterIndex = 0;
-            string[] lines = new string[linesCount];
+            int linesCount = (inputBuffer.Count / Console.WindowWidth) + 1;
 
-
-            for (int i = 0; i < linesCount; i++)
+            ClearLine();
+            if (linesCount > 1)
             {
-                for (; characterIndex < 3; characterIndex++)
-                {
-                    if (characterIndex >= inputBuffer.Count)
-                    {
-                        break;
-                    }
-                    lines[i] += inputBuffer[characterIndex];
-                }
+                Console.CursorTop -= linesCount - 1;
             }
 
-            for (int i = 0; i < lines.Length; i++)
+            Console.Write(promptChar + string.Join("", inputBuffer.ToArray()));
+
+            if (curIndex + 2 < Console.WindowWidth)
             {
-                Debug.WriteLine(lines[i]);
+                Console.CursorLeft = curIndex + 2;
             }
 
-            //ClearLine();
-            //Console.Write(promptChar + string.Join("", inputBuffer.ToArray()));
-            //Console.CursorLeft = curIndex + 2;
             Console.CursorVisible = true;
         }
 
         public static void Out(string message, Color? color = null, string nickname = null)
         {
             ClearLine();
+
             if (!string.IsNullOrEmpty(nickname))
             {
+
+                int linesCount = (message.Length / Console.WindowWidth) + 1;
+
+                if (linesCount > 1)
+                {
+                    Console.CursorTop -= linesCount - 1;
+                }
+
                 Console.Write(DateTime.Now.ToString("HH:mm:ss") + " ", Color.DimGray);
                 Console.Write(nickname + " ", Color.SteelBlue);
                 Console.WriteLine(message);
