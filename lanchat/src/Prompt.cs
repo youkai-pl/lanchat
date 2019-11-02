@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Reflection;
 using static lanchat.Program;
 using Console = Colorful.Console;
@@ -14,6 +13,7 @@ namespace lanchat.PromptLib
     {
         // command prompt symbol
         public static string promptChar = "> ";
+
         // input buffer
         public static List<char> inputBuffer = new List<char>();
 
@@ -81,6 +81,8 @@ namespace lanchat.PromptLib
                 {
                     if (curIndex > 0)
                     {
+
+
                         curIndex--;
 
                         if (Console.CursorLeft - 1 > 0)
@@ -89,8 +91,7 @@ namespace lanchat.PromptLib
                         }
                         else
                         {
-                            Console.CursorTop--;
-                            Console.CursorLeft = Console.WindowWidth - 1;
+                            Alert("Editing messages longer than the terminal width can cause some problems and is temporarily disabled");
                         }
                     }
                 }
@@ -118,9 +119,20 @@ namespace lanchat.PromptLib
                 {
                     if (curIndex > 0)
                     {
-                        inputBuffer.RemoveAt(curIndex - 1);
-                        curIndex--;
-                        ResetCursor(curIndex);
+                        if (Console.CursorLeft - 2 > 0)
+                        {
+                            inputBuffer.RemoveAt(curIndex - 1);
+                            curIndex--;
+                            ResetCursor(curIndex);
+                        }
+                        else
+                        {
+                            ClearLine();
+                            Console.CursorTop--;
+                            inputBuffer.RemoveAt(curIndex - 1);
+                            curIndex--;
+                            ResetCursor(curIndex);
+                        }
                     }
                 }
                 else
@@ -137,13 +149,12 @@ namespace lanchat.PromptLib
             while (true);
         }
 
-
         private static void ResetCursor(int curIndex)
         {
             Console.CursorVisible = false;
-
             int linesCount = (inputBuffer.Count / Console.WindowWidth) + 1;
 
+            // move the cursor to the right line
             ClearLine();
             if (linesCount > 1)
             {
@@ -152,6 +163,7 @@ namespace lanchat.PromptLib
 
             Console.Write(promptChar + string.Join("", inputBuffer.ToArray()));
 
+            // if input has one line move cursor to specific  column
             if (curIndex + 2 < Console.WindowWidth)
             {
                 Console.CursorLeft = curIndex + 2;
@@ -162,18 +174,26 @@ namespace lanchat.PromptLib
 
         public static void Out(string message, Color? color = null, string nickname = null)
         {
+            int linesCount;
+
+            // this is shit, i dont know whats going on here
+            if (inputBuffer.Count > Console.WindowWidth)
+            {
+                linesCount = (inputBuffer.Count / Console.WindowWidth) + 1;
+            }
+            else
+            {
+                linesCount = (message.Length / Console.WindowWidth) + 1;
+            }
+
+            if (linesCount > 1)
+            {
+                Console.CursorTop -= linesCount - 1;
+            }
             ClearLine();
 
             if (!string.IsNullOrEmpty(nickname))
             {
-
-                int linesCount = (message.Length / Console.WindowWidth) + 1;
-
-                if (linesCount > 1)
-                {
-                    Console.CursorTop -= linesCount - 1;
-                }
-
                 Console.Write(DateTime.Now.ToString("HH:mm:ss") + " ", Color.DimGray);
                 Console.Write(nickname + " ", Color.SteelBlue);
                 Console.WriteLine(message);
