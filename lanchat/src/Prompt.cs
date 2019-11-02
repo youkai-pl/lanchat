@@ -1,7 +1,6 @@
 ﻿using lanchat.CommandsLib;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
 using static lanchat.Program;
@@ -82,16 +81,14 @@ namespace lanchat.PromptLib
                     if (curIndex > 0)
                     {
 
-
-                        curIndex--;
-
-                        if (Console.CursorLeft - 1 > 0)
+                        if ((inputBuffer.Count / Console.WindowWidth) > 0)
                         {
-                            Console.CursorLeft--;
+                            Alert("Editing messages longer than the terminal width can cause some problems and is temporarily disabled");
                         }
                         else
                         {
-                            Alert("Editing messages longer than the terminal width can cause some problems and is temporarily disabled");
+                            curIndex--;
+                            Console.CursorLeft--;
                         }
                     }
                 }
@@ -186,7 +183,7 @@ namespace lanchat.PromptLib
                 linesCount = (message.Length / Console.WindowWidth) + 1;
             }
 
-            if (linesCount > 1)
+            if (linesCount > 1 && (Console.CursorTop - linesCount - 1 > 0))
             {
                 Console.CursorTop -= linesCount - 1;
             }
