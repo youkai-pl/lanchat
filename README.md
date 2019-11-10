@@ -1,8 +1,5 @@
 # Lanchat 2
 
-## Contributors
-Special thanks to meomatic for logo idea
-
 ## Planned changes
 * change language to C#
 * moderation will be replaced with client-side features
@@ -10,7 +7,7 @@ Special thanks to meomatic for logo idea
 * rooms
 * encrytpion
 
-## Roadmap
+## Todo
 ### Client:
 - [x] Basic prompt
 - [x] Linux support

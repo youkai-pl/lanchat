@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
+using Newtonsoft.Json;
 
 namespace lanchat.NetworkLib
 {
@@ -14,10 +14,11 @@ namespace lanchat.NetworkLib
         {
             string selfHash = Guid.NewGuid().ToString();
 
-            XElement self = new XElement("paperplane",
-                new XElement("nickname", nickname),
-                new XElement("publickey", publicKey),
-                new XElement("hash", selfHash));
+            Paperplane self = new Paperplane(
+                nickname,
+                publicKey,
+                selfHash
+            );
 
             // create UDP client
             UdpClient udpClient = new UdpClient();
@@ -28,7 +29,7 @@ namespace lanchat.NetworkLib
             {
                 while (true)
                 {
-                    var data = Encoding.UTF8.GetBytes(self.ToString());
+                    var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(self));
                     udpClient.Send(data, data.Length, "255.255.255.255", PORT);
                     Thread.Sleep(1000);
                 }
@@ -42,17 +43,33 @@ namespace lanchat.NetworkLib
                 {
                     var recvBuffer = udpClient.Receive(ref from);
                     var sender = from.Address.ToString();
-                    var paperplane = XElement.Parse(Encoding.UTF8.GetString(recvBuffer));
 
-                    if (paperplane.Element("hash").Value != selfHash)
+                    Paperplane paperplane = JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer));
+
+                    if (paperplane.Hash != selfHash)
                     {
                         Console.WriteLine("");
                         Console.WriteLine(sender);
-                        Console.WriteLine(paperplane.Element("nickname").Value);
-                        Console.WriteLine(paperplane.Element("hash").Value);
+                        Console.WriteLine(paperplane.Nickname);
+                        Console.WriteLine(paperplane.Hash);
                     }
                 }
             });
         }
+    }
+
+    public class Paperplane
+    {
+        public Paperplane(string nickname, string publicKey, string hash)
+        {
+            Nickname = nickname;
+            PublicKey = publicKey;
+            Hash = hash;
+        }
+
+        public string Nickname { get; set; }
+        public string Hash { get; set; }
+        public string PublicKey { get; set; }
+
     }
 }

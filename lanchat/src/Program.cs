@@ -6,7 +6,7 @@ using lanchat.NetworkLib;
 using lanchat.PromptLib;
 using Microsoft.Extensions.Configuration;
 using System.IO;
-using System.Text.Json;
+using Newtonsoft.Json;
 using System.Threading;
 
 namespace lanchat
@@ -74,7 +74,7 @@ namespace lanchat
             };
             try
             {
-                File.WriteAllText("config.json", JsonSerializer.Serialize(newConfig).ToString());
+                File.WriteAllText("config.json", JsonConvert.SerializeObject(newConfig));
             }
             catch
             {
