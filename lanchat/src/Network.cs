@@ -5,16 +5,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace lanchat.NetworkLib
 {
     public static class Client
     {
+        // users list
+        public static List<User> users = new List<User>();
+
         public static void Init(int PORT, string nickname, string publicKey)
         {
             string selfHash = Guid.NewGuid().ToString();
 
-            Paperplane self = new Paperplane(
+            User self = new User(
                 nickname,
                 publicKey,
                 selfHash
@@ -44,10 +48,10 @@ namespace lanchat.NetworkLib
                     var recvBuffer = udpClient.Receive(ref from);
                     var sender = from.Address.ToString();
 
-                    Paperplane paperplane = JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer));
-
-                    if (paperplane.Hash != selfHash)
+                    User paperplane = JsonConvert.DeserializeObject<User>(Encoding.UTF8.GetString(recvBuffer));
+                    if (users.FindIndex(item => item.Hash == paperplane.Hash) != 0)
                     {
+                        users.Add(paperplane);
                         Console.WriteLine("");
                         Console.WriteLine(sender);
                         Console.WriteLine(paperplane.Nickname);
@@ -57,10 +61,10 @@ namespace lanchat.NetworkLib
             });
         }
     }
-
-    public class Paperplane
+    
+    public class User
     {
-        public Paperplane(string nickname, string publicKey, string hash)
+        public User(string nickname, string publicKey, string hash)
         {
             Nickname = nickname;
             PublicKey = publicKey;
