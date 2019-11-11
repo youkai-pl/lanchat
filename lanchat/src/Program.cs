@@ -1,8 +1,8 @@
 ﻿// Lanchat 2
 // Bartłomiej Tota 2019
 
-using Lanchat.Core.Cryptography;
-using Lanchat.Core.Network;
+using Lanchat.Common.Cryptography;
+using Lanchat.Common.Network;
 using lanchat.PromptLib;
 using Microsoft.Extensions.Configuration;
 using System.IO;

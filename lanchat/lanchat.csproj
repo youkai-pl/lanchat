@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\lanchat.core\lanchat.core.csproj" />
+    <ProjectReference Include="..\lanchat.common\lanchat.common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

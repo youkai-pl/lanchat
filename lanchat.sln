@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lanchat", "lanchat\lanchat.csproj", "{E34FDF59-658C-4F04-ADCB-ABC048FB5048}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lanchat.core", "lanchat.core\lanchat.core.csproj", "{24D8E08A-5157-4837-882F-405DBC46419A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lanchat.common", "lanchat.common\lanchat.common.csproj", "{24D8E08A-5157-4837-882F-405DBC46419A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lanchat.windows", "lanchat.windows\lanchat.windows.csproj", "{4E74A425-A696-40FE-9B52-F03EB0144710}"
 EndProject

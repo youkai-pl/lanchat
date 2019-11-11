@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Lanchat.Core.TcpLib
+namespace Lanchat.Common.TcpLib
 {
     class Tcp
     {

@@ -59,7 +59,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\lanchat.core\lanchat.core.csproj">
+    <ProjectReference Include="..\lanchat.common\lanchat.common.csproj">
       <Project>{24d8e08a-5157-4837-882f-405dbc46419a}</Project>
       <Name>lanchat.core</Name>
     </ProjectReference>
