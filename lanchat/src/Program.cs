@@ -1,8 +1,8 @@
 ﻿// Lanchat 2
 // Bartłomiej Tota 2019
 
-using lanchat.CryptographyLib;
-using lanchat.NetworkLib;
+using lanchat.core.CryptographyLib;
+using lanchat.core.NetworkLib;
 using lanchat.PromptLib;
 using Microsoft.Extensions.Configuration;
 using System.IO;
@@ -44,7 +44,7 @@ namespace lanchat
             Prompt.Out("Validating RSA keys");
             try
             {
-                Cryptography.Load();
+                Cryptography.Load(Config);
             }
             catch
             {

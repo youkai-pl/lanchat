@@ -1,8 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿using Microsoft.Extensions.Configuration;
+using System.Security.Cryptography;
 using System.Xml.Linq;
-using static lanchat.Program;
 
-namespace lanchat.CryptographyLib
+namespace lanchat.core.CryptographyLib
 {
     public static class Cryptography
     {
@@ -14,10 +14,10 @@ namespace lanchat.CryptographyLib
             return csp.ToXmlString(true);
         }
 
-        public static void Load()
+        public static void Load(IConfigurationRoot config)
         {
             csp = new RSACryptoServiceProvider();
-            csp.FromXmlString(Config["csp"]);
+            csp.FromXmlString(config["csp"]);
         }
 
         public static string GetPublic()
