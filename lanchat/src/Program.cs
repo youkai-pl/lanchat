@@ -1,15 +1,15 @@
 ﻿// Lanchat 2
 // Bartłomiej Tota 2019
 
-using lanchat.core.CryptographyLib;
-using lanchat.core.NetworkLib;
+using Lanchat.Core.Cryptography;
+using Lanchat.Core.Network;
 using lanchat.PromptLib;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using Newtonsoft.Json;
 using System.Threading;
 
-namespace lanchat
+namespace Lanchat
 {
     internal class Program
     {

@@ -6,9 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using lanchat.core.tcp;
+using Lanchat.Core.TcpLib;
 
-namespace lanchat.core.NetworkLib
+namespace Lanchat.Core.Network
 {
     public static class Client
     {

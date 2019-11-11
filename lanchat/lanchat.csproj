@@ -8,7 +8,7 @@
     <AssemblyVersion>2.0.0.1000</AssemblyVersion>
     <FileVersion>2.0.0.1000</FileVersion>
     <AssemblyName>Lanchat</AssemblyName>
-    <StartupObject>lanchat.Program</StartupObject>
+    <StartupObject>Lanchat.Program</StartupObject>
     <NeutralLanguage>en-GB</NeutralLanguage>
     <RepositoryUrl>https://github.com/tofudd/lanchat</RepositoryUrl>
     <PackageProjectUrl>https://github.com/tofudd/lanchat</PackageProjectUrl>
@@ -16,6 +16,7 @@
     <Authors>Bartłomiej Tota</Authors>
     <Company />
     <Description />
+    <RootNamespace>Lanchat</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

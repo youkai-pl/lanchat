@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Xml.Linq;
 
-namespace lanchat.core.CryptographyLib
+namespace Lanchat.Core.Cryptography
 {
     public static class Cryptography
     {

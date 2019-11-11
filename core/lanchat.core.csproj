@@ -63,10 +63,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cryptography.cs" />
-    <Compile Include="Network.cs" />
+    <Compile Include="src\Cryptography.cs" />
+    <Compile Include="src\Network.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tcp.cs" />
+    <Compile Include="src\Tcp.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

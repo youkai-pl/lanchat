@@ -1,6 +1,6 @@
 ﻿using lanchat.PromptLib;
 using System;
-using static lanchat.Program;
+using static Lanchat.Program;
 
 namespace lanchat.CommandsLib
 {
