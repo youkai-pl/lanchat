@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lanchat", "lanchat\lanchat.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lanchat.core", "lanchat.core\lanchat.core.csproj", "{24D8E08A-5157-4837-882F-405DBC46419A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lanchat.windows", "lanchat.windows\lanchat.windows.csproj", "{4E74A425-A696-40FE-9B52-F03EB0144710}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{24D8E08A-5157-4837-882F-405DBC46419A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24D8E08A-5157-4837-882F-405DBC46419A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24D8E08A-5157-4837-882F-405DBC46419A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E74A425-A696-40FE-9B52-F03EB0144710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E74A425-A696-40FE-9B52-F03EB0144710}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E74A425-A696-40FE-9B52-F03EB0144710}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E74A425-A696-40FE-9B52-F03EB0144710}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
