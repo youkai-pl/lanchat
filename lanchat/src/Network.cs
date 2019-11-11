@@ -49,7 +49,7 @@ namespace lanchat.NetworkLib
                     var sender = from.Address.ToString();
 
                     User paperplane = JsonConvert.DeserializeObject<User>(Encoding.UTF8.GetString(recvBuffer));
-                    if (users.FindIndex(item => item.Hash == paperplane.Hash) != 0)
+                    if (users.FindIndex(item => item.Hash == paperplane.Hash) != 0 && paperplane.Hash != selfHash)
                     {
                         users.Add(paperplane);
                         Console.WriteLine("");
