@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using lanchat.HostLib;
+using lanchat.TcpLib;
 
 namespace lanchat.NetworkLib
 {
@@ -28,7 +28,7 @@ namespace lanchat.NetworkLib
             );
 
             // create host
-            Task.Run(() => { Host.Listen(tcpPort); });
+            Task.Run(() => { Tcp.Host(tcpPort); });
 
             // create UDP client
             UdpClient udpClient = new UdpClient();
@@ -58,11 +58,14 @@ namespace lanchat.NetworkLib
                     if (users.FindIndex(item => item.Hash == paperplane.Hash) != 0 && paperplane.Hash != selfHash)
                     {
                         users.Add(paperplane);
+                        /*
                         Console.WriteLine("");
                         Console.WriteLine(sender);
                         Console.WriteLine(paperplane.Nickname);
                         Console.WriteLine(paperplane.Hash);
                         Console.WriteLine(paperplane.Port);
+                        */
+                        Tcp.Connect(sender, paperplane.Port);
                     }
                 }
             });
