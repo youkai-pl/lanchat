@@ -21,7 +21,6 @@ namespace lanchat.PromptLib
         {
             Console.Title = "Lanchat 2";
             Out("Lanchat " + GetVersion());
-            Out("Main port: " + Config["mport"].ToString());
             Out("Broadcast port: " + Config["bport"].ToString());
         }
 

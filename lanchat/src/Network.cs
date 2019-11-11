@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using lanchat.HostLib;
 
 namespace lanchat.NetworkLib
 {
@@ -17,12 +18,17 @@ namespace lanchat.NetworkLib
         public static void Init(int PORT, string nickname, string publicKey)
         {
             string selfHash = Guid.NewGuid().ToString();
+            int tcpPort = FreeTcpPort();
 
             User self = new User(
                 nickname,
                 publicKey,
-                selfHash
+                selfHash,
+                tcpPort
             );
+
+            // create host
+            Task.Run(() => { Host.Listen(tcpPort); });
 
             // create UDP client
             UdpClient udpClient = new UdpClient();
@@ -56,24 +62,36 @@ namespace lanchat.NetworkLib
                         Console.WriteLine(sender);
                         Console.WriteLine(paperplane.Nickname);
                         Console.WriteLine(paperplane.Hash);
+                        Console.WriteLine(paperplane.Port);
                     }
                 }
             });
         }
+
+        private static int FreeTcpPort()
+        {
+            TcpListener l = new TcpListener(IPAddress.Loopback, 0);
+            l.Start();
+            int port = ((IPEndPoint)l.LocalEndpoint).Port;
+            l.Stop();
+            return port;
+        }
     }
-    
+
     public class User
     {
-        public User(string nickname, string publicKey, string hash)
+        public User(string nickname, string publicKey, string hash, int port)
         {
             Nickname = nickname;
             PublicKey = publicKey;
             Hash = hash;
+            Port = port;
         }
 
         public string Nickname { get; set; }
         public string Hash { get; set; }
         public string PublicKey { get; set; }
+        public int Port { get; set; }
 
     }
 }
