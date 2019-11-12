@@ -67,9 +67,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Colorful.Console">
-      <Version>1.2.9</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration">
       <Version>3.0.0</Version>
     </PackageReference>
