@@ -3,7 +3,7 @@
 
 using Lanchat.Common.Cryptography;
 using Lanchat.Common.Network;
-using lanchat.PromptLib;
+using lanchat.Cli.PromptLib;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using Newtonsoft.Json;

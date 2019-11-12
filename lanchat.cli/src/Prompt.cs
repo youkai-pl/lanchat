@@ -6,7 +6,7 @@ using System.Reflection;
 using static Lanchat.Program;
 using Console = Colorful.Console;
 
-namespace lanchat.PromptLib
+namespace lanchat.Cli.PromptLib
 {
     public static class Prompt
     {

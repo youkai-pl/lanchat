@@ -47,10 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\Commands.cs" />
     <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\Prompt.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -59,6 +57,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\lanchat.cli\lanchat.cli.csproj">
+      <Project>{ab0d2375-ecd4-4c66-b25c-4e3ed07e97b6}</Project>
+      <Name>lanchat.cli</Name>
+    </ProjectReference>
     <ProjectReference Include="..\lanchat.common\lanchat.common.csproj">
       <Project>{24d8e08a-5157-4837-882f-405dbc46419a}</Project>
       <Name>lanchat.core</Name>
