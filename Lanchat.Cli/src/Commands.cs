@@ -1,8 +1,8 @@
-﻿using lanchat.PromptLib;
+﻿using lanchat.Cli.PromptLib;
 using System;
-using static lanchat.Program;
+using static Lanchat.Cli.Program.Program;
 
-namespace lanchat.CommandsLib
+namespace lanchat.Cli.CommandsLib
 {
     public static class Command
     {
@@ -24,6 +24,7 @@ namespace lanchat.CommandsLib
                 case "nick":
                     SetNick(args[1]);
                     break;
+
                 default:
                     Prompt.Out("Bad command");
                     break;

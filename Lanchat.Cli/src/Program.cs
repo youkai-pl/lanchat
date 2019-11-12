@@ -1,21 +1,20 @@
 ﻿// Lanchat 2
 // Bartłomiej Tota 2019
-
-using lanchat.CryptographyLib;
-using lanchat.NetworkLib;
-using lanchat.PromptLib;
+using lanchat.Cli.PromptLib;
+using Lanchat.Common.Cryptography;
+using Lanchat.Common.Network;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 using Newtonsoft.Json;
+using System.IO;
 using System.Threading;
 
-namespace lanchat
+namespace Lanchat.Cli.Program
 {
-    internal class Program
+    public static class Program
     {
         public static IConfigurationRoot Config;
 
-        private static void Main(string[] args)
+        public static void Main()
         {
             // load or create config file
             var builder = new ConfigurationBuilder()
@@ -44,7 +43,7 @@ namespace lanchat
             Prompt.Out("Validating RSA keys");
             try
             {
-                Cryptography.Load();
+                Cryptography.Load(Config);
             }
             catch
             {

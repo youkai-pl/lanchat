@@ -1,12 +1,12 @@
-﻿using lanchat.CommandsLib;
+﻿using lanchat.Cli.CommandsLib;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
-using static lanchat.Program;
 using Console = Colorful.Console;
+using static Lanchat.Cli.Program.Program;
 
-namespace lanchat.PromptLib
+namespace lanchat.Cli.PromptLib
 {
     public static class Prompt
     {
@@ -79,7 +79,6 @@ namespace lanchat.PromptLib
                 {
                     if (curIndex > 0)
                     {
-
                         if ((inputBuffer.Count / Console.WindowWidth) > 0)
                         {
                             Alert("Editing messages longer than the terminal width can cause some problems and is temporarily disabled");

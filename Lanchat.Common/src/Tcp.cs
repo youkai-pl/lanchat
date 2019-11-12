@@ -3,9 +3,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace lanchat.TcpLib
+namespace Lanchat.Common.TcpLib
 {
-    class Tcp
+    internal class Tcp
     {
         public static void Host(int port)
         {
