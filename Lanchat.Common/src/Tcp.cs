@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Lanchat.Common.TcpLib
 {
-    class Tcp
+    internal class Tcp
     {
         public static void Host(int port)
         {

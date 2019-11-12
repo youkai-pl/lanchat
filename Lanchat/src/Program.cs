@@ -1,12 +1,12 @@
 ﻿// Lanchat 2
 // Bartłomiej Tota 2019
 
+using lanchat.Cli.PromptLib;
 using Lanchat.Common.Cryptography;
 using Lanchat.Common.Network;
-using lanchat.Cli.PromptLib;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 using Newtonsoft.Json;
+using System.IO;
 using System.Threading;
 
 namespace Lanchat

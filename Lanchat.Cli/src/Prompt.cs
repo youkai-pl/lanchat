@@ -78,7 +78,6 @@ namespace lanchat.Cli.PromptLib
                 {
                     if (curIndex > 0)
                     {
-
                         if ((inputBuffer.Count / Console.WindowWidth) > 0)
                         {
                             Alert("Editing messages longer than the terminal width can cause some problems and is temporarily disabled");

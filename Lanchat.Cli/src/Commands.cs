@@ -23,6 +23,7 @@ namespace lanchat.Cli.CommandsLib
                 case "nick":
                     SetNick(args[1]);
                     break;
+
                 default:
                     Prompt.Out("Bad command");
                     break;

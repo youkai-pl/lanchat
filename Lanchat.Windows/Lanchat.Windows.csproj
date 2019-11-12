@@ -65,10 +65,6 @@
       <Project>{24d8e08a-5157-4837-882f-405dbc46419a}</Project>
       <Name>lanchat.core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\lanchat\lanchat.csproj">
-      <Project>{e34fdf59-658c-4f04-adcb-abc048fb5048}</Project>
-      <Name>lanchat</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration">

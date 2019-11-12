@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Lanchat.Common.TcpLib;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using Lanchat.Common.TcpLib;
 
 namespace Lanchat.Common.Network
 {
@@ -95,6 +95,5 @@ namespace Lanchat.Common.Network
         public string Hash { get; set; }
         public string PublicKey { get; set; }
         public int Port { get; set; }
-
     }
 }
