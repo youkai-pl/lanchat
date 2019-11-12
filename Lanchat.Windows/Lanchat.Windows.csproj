@@ -53,10 +53,6 @@
       <Project>{ab0d2375-ecd4-4c66-b25c-4e3ed07e97b6}</Project>
       <Name>Lanchat.Cli</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Lanchat.Common\Lanchat.Common.csproj">
-      <Project>{24d8e08a-5157-4837-882f-405dbc46419a}</Project>
-      <Name>Lanchat.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
