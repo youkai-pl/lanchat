@@ -9,7 +9,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Threading;
 
-namespace Lanchat.Windows
+namespace Lanchat
 {
     internal class Program
     {
@@ -17,7 +17,6 @@ namespace Lanchat.Windows
 
         private static void Main(string[] args)
         {
-
             // load or create config file
             var builder = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
