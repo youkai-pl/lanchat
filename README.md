@@ -1,5 +1,11 @@
 # Lanchat 2
 
+## Directories guide
+* Lanchat.Cli - Terminal Lanchat client app
+* Lanchat.Common - Library with classes common for other projects
+* Lanchat.Core - .Net Core project for Lanchat Cli
+* Lanchat.Windows - .Net Framework project for Lanchat Cli
+
 ## Planned changes
 * change language to C#
 * moderation will be replaced with client-side features
