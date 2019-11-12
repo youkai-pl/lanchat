@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lanchat", "Lanchat\Lanchat.csproj", "{E34FDF59-658C-4F04-ADCB-ABC048FB5048}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lanchat.Core", "Lanchat\Lanchat.Core.csproj", "{E34FDF59-658C-4F04-ADCB-ABC048FB5048}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lanchat.Common", "Lanchat.Common\Lanchat.Common.csproj", "{24D8E08A-5157-4837-882F-405DBC46419A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lanchat.Windows", "Lanchat.Windows\Lanchat.Windows.csproj", "{4E74A425-A696-40FE-9B52-F03EB0144710}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lanchat.cli", "Lanchat.Cli\Lanchat.Cli.csproj", "{AB0D2375-ECD4-4C66-B25C-4E3ED07E97B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lanchat.Cli", "Lanchat.Cli\Lanchat.Cli.csproj", "{AB0D2375-ECD4-4C66-B25C-4E3ED07E97B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

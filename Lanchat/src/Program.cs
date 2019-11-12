@@ -1,7 +1,7 @@
 ﻿// Lanchat 2
 // Bartłomiej Tota 2019
 
-namespace Lanchat
+namespace Lanchat.Core
 {
     internal class Program
     {
