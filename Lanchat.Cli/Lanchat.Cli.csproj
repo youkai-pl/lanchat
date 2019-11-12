@@ -6,6 +6,14 @@
 
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Lanchat.Common\Lanchat.Common.csproj" />
   </ItemGroup>
 
 </Project>
