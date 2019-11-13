@@ -7,6 +7,7 @@
     <StartupObject>Lanchat.Core.Program</StartupObject>
     <RootNamespace>Lanchat.Core</RootNamespace>
     <Configurations>Debug;Release;Alpha</Configurations>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -19,12 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\lanchat.cli\lanchat.cli.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

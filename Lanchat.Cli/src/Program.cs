@@ -29,11 +29,11 @@ namespace Lanchat.Cli.Program
             Prompt.Out("Validating config");
             if (string.IsNullOrEmpty(Config["nickname"]))
             {
-                string nick = Prompt.Query("Choose nickname: ");
+                string nick = Prompt.Query("Choose nickname:");
                 while (nick.Length > 20)
                 {
                     Prompt.Alert("Max 20 charcters");
-                    nick = Prompt.Query("Choose nickname: ");
+                    nick = Prompt.Query("Choose nickname:");
                 }
                 Config["nickname"] = nick;
                 SaveConfig();

@@ -58,13 +58,11 @@ namespace Lanchat.Common.Network
                     if (users.FindIndex(item => item.Hash == paperplane.Hash) != 0 && paperplane.Hash != selfHash)
                     {
                         users.Add(paperplane);
-                        /*
                         Console.WriteLine("");
                         Console.WriteLine(sender);
                         Console.WriteLine(paperplane.Nickname);
                         Console.WriteLine(paperplane.Hash);
                         Console.WriteLine(paperplane.Port);
-                        */
                         Tcp.Connect(sender, paperplane.Port);
                     }
                 }
