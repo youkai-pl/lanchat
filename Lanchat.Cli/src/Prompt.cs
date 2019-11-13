@@ -213,8 +213,10 @@ namespace lanchat.Cli.PromptLib
 
         public static string Query(string query)
         {
+            Console.CursorLeft = 0;
             Console.Write(query + " ", Color.LightGreen);
             string answer = Console.ReadLine();
+            Console.CursorTop--;
             ClearLine();
             return answer;
         }
