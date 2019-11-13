@@ -55,15 +55,15 @@ namespace Lanchat.Common.Network
                     var sender = from.Address.ToString();
 
                     User paperplane = JsonConvert.DeserializeObject<User>(Encoding.UTF8.GetString(recvBuffer));
-                    if (users.FindIndex(item => item.Hash == paperplane.Hash) != 0 && paperplane.Hash != selfHash)
+                    if (!users.Exists(x => x.Hash == paperplane.Hash) && paperplane.Hash != selfHash)
                     {
                         users.Add(paperplane);
-                        Console.WriteLine("");
                         Console.WriteLine(sender);
                         Console.WriteLine(paperplane.Nickname);
                         Console.WriteLine(paperplane.Hash);
                         Console.WriteLine(paperplane.Port);
-                        Tcp.Connect(sender, paperplane.Port);
+                        Console.WriteLine("");
+                        //Tcp.Connect(sender, paperplane.Port);
                     }
                 }
             });
