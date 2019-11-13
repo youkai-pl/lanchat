@@ -6,6 +6,7 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject>Lanchat.Core.Program</StartupObject>
     <RootNamespace>Lanchat.Core</RootNamespace>
+    <Configurations>Debug;Release;Alpha</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
