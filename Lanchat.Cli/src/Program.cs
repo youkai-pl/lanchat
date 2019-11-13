@@ -40,7 +40,6 @@ namespace Lanchat.Cli.Program
             }
 
             // try to load rsa settings
-            Prompt.Out("Validating RSA keys");
             try
             {
                 Cryptography.Load(Config);
