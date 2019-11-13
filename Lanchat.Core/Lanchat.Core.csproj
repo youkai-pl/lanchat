@@ -8,6 +8,7 @@
     <RootNamespace>Lanchat.Core</RootNamespace>
     <Configurations>Debug;Release;Alpha</Configurations>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyName>Lanchat</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
