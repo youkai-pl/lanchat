@@ -221,6 +221,11 @@ namespace lanchat.Cli.PromptLib
             return answer;
         }
 
+        public static void Pause()
+        {
+            Console.ReadKey();
+        }
+
         private static void ClearLine()
         {
             int currentLineCursor = Console.CursorTop;
