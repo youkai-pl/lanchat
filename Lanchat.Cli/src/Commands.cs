@@ -45,8 +45,7 @@ namespace lanchat.Cli.CommandsLib
         {
             if (!string.IsNullOrEmpty(nick))
             {
-                Config["nickname"] = nick;
-                SaveConfig();
+                EditConfig("nickname", nick);
                 Prompt.Notice("Nickname changed");
             }
         }

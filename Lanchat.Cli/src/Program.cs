@@ -33,19 +33,20 @@ namespace Lanchat.Cli.Program
             // Show welcome screen
             Prompt.Welcome();
 
-            // Check nick
+            // Validate config file
             Prompt.Out("Validating config");
 
+            // Check nickname
             if (string.IsNullOrEmpty(Config["nickname"]))
             {
+                // If nickname is blank create new with up to 20 characters
                 string nick = Prompt.Query("Choose nickname:");
                 while (nick.Length > 20)
                 {
                     Prompt.Alert("Max 20 charcters");
                     nick = Prompt.Query("Choose nickname:");
                 }
-                Config["nickname"] = nick;
-                SaveConfig();
+                EditConfig("nickname", nick);
             }
 
             // Try to load rsa settings
@@ -56,8 +57,7 @@ namespace Lanchat.Cli.Program
             catch
             {
                 Prompt.Out("Generating RSA keys");
-                Config["csp"] = Cryptography.Generate();
-                SaveConfig();
+                EditConfig("csp", Cryptography.Generate());
             }
 
             // Initialize prompt
@@ -77,15 +77,17 @@ namespace Lanchat.Cli.Program
             Environment.Exit(1);
         }
 
-        public static void SaveConfig()
+        public static void EditConfig(string key, string value)
         {
+            Config[key] = value;
+
             var newConfig = new
             {
                 nickname = Config["nickname"],
                 csp = Config["csp"],
-                mport = Config["mport"],
                 bport = Config["bport"]
             };
+
             try
             {
                 File.WriteAllText("config.json", JsonConvert.SerializeObject(newConfig));
