@@ -70,6 +70,7 @@ namespace Lanchat.Cli.Program
                         Cryptography.GetPublic());
         }
 
+        // Show crash screen and stop program
         private static void CrashScreen(Exception e)
         {
             Prompt.Alert(e.Message);
@@ -77,6 +78,7 @@ namespace Lanchat.Cli.Program
             Environment.Exit(1);
         }
 
+        // Change config file value
         public static void EditConfig(string key, string value)
         {
             Config[key] = value;
