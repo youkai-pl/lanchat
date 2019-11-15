@@ -65,7 +65,7 @@ namespace Lanchat.Cli.Program
             new Thread(Prompt.Init).Start();
 
             // Initialize network
-            Client.Init(int.Parse(Config["bport"]),
+            Client.Init(int.Parse(Config["port"]),
                         Config["nickname"],
                         Cryptography.GetPublic());
         }
@@ -87,7 +87,7 @@ namespace Lanchat.Cli.Program
             {
                 nickname = Config["nickname"],
                 csp = Config["csp"],
-                bport = Config["bport"]
+                port = Config["port"]
             };
 
             try

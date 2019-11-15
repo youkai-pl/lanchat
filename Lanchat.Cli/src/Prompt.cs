@@ -21,7 +21,7 @@ namespace lanchat.Cli.PromptLib
         {
             Console.Title = "Lanchat 2";
             Out("Lanchat " + GetVersion());
-            Out("Broadcast port: " + Config["bport"].ToString());
+            Out("Broadcast port: " + Config["port"].ToString());
         }
 
         // read from prompt
