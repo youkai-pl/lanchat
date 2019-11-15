@@ -1,8 +1,9 @@
 ﻿// Lanchat 2
 // Let's all love lain
-using lanchat.Cli.PromptLib;
+using Lanchat.Cli.PromptLib;
 using Lanchat.Common.Cryptography;
 using Lanchat.Common.Network;
+using Lanchat.Cli.CommandsLib;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -61,13 +62,31 @@ namespace Lanchat.Cli.Program
             }
 
             // Initialize prompt
-            Prompt.Out("");
-            new Thread(Prompt.Init).Start();
+            Prompt Prompt1 = new Prompt();
+            Prompt1.RecievedInput += OnRecievedInput;
+            new Thread(Prompt1.Init).Start();
 
             // Initialize network
             Client.Init(int.Parse(Config["port"]),
                         Config["nickname"],
                         Cryptography.GetPublic());
+        }
+
+        // Handle input
+        private static void OnRecievedInput(string input, EventArgs e)
+        {
+            // Check is input command
+            if (input.StartsWith("/"))
+            {
+                string command = input.Substring(1);
+                Command.Execute(command);
+            }
+
+            // Or message
+            else
+            {
+                Prompt.Out(input, null, Config["nickname"]);
+            }
         }
 
         // Show crash screen and stop program

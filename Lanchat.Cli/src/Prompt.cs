@@ -1,22 +1,21 @@
-﻿using lanchat.Cli.CommandsLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using Console = Colorful.Console;
 using static Lanchat.Cli.Program.Program;
 
-namespace lanchat.Cli.PromptLib
+namespace Lanchat.Cli.PromptLib
 {
-    public static class Prompt
+    public class Prompt
     {
-        // command prompt symbol
+        // Command prompt symbol
         public static string promptChar = "> ";
 
-        // input buffer
+        // Input buffer
         public static List<char> inputBuffer = new List<char>();
 
-        // welcome screen
+        // Welcome screen
         public static void Welcome()
         {
             Console.Title = "Lanchat 2";
@@ -24,29 +23,26 @@ namespace lanchat.Cli.PromptLib
             Out("Broadcast port: " + Config["port"].ToString());
         }
 
-        // read from prompt
-        public static void Init()
+        // Input event
+        public delegate void RecievedInputHandler(string input, EventArgs e);
+        public event RecievedInputHandler RecievedInput;
+        protected virtual void OnRecievedInput(string input)
+        {
+            RecievedInput(input, EventArgs.Empty);
+        }
+
+        // Read from prompt
+        public void Init()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Out("");
 
             while (true)
             {
-                string promptInput = ReadLine();
-
-                if (!string.IsNullOrEmpty(promptInput))
+                string input = ReadLine();
+                if (!string.IsNullOrEmpty(input))
                 {
-                    // check is input command
-                    if (promptInput.StartsWith("/"))
-                    {
-                        string command = promptInput.Substring(1);
-                        Command.Execute(command);
-                    }
-
-                    // or message
-                    else
-                    {
-                        Out(promptInput, null, Config["nickname"]);
-                    }
+                    OnRecievedInput(input);
                 }
             }
         }
@@ -59,7 +55,7 @@ namespace lanchat.Cli.PromptLib
             {
                 ConsoleKeyInfo readKeyResult = Console.ReadKey(true);
 
-                // handle enter
+                // Handle enter
                 if (readKeyResult.Key == ConsoleKey.Enter)
                 {
                     try
@@ -74,7 +70,7 @@ namespace lanchat.Cli.PromptLib
                     }
                 }
 
-                // handle left arrow
+                // Handle left arrow
                 if (readKeyResult.Key == ConsoleKey.LeftArrow)
                 {
                     if (curIndex > 0)
@@ -91,7 +87,7 @@ namespace lanchat.Cli.PromptLib
                     }
                 }
 
-                // handle right arrow
+                // Handle right arrow
                 if (readKeyResult.Key == ConsoleKey.RightArrow)
                 {
                     if (inputBuffer.Count > curIndex)
@@ -109,7 +105,7 @@ namespace lanchat.Cli.PromptLib
                     }
                 }
 
-                // handle backspace
+                // Handle backspace
                 if (readKeyResult.Key == ConsoleKey.Backspace)
                 {
                     if (curIndex > 0)
@@ -131,7 +127,7 @@ namespace lanchat.Cli.PromptLib
                     }
                 }
                 else
-                // handle all other keypresses
+                // Handle all other keypresses
                 {
                     if (!char.IsControl(readKeyResult.KeyChar))
                     {
@@ -149,7 +145,7 @@ namespace lanchat.Cli.PromptLib
             Console.CursorVisible = false;
             int linesCount = (inputBuffer.Count / Console.WindowWidth) + 1;
 
-            // move the cursor to the right line
+            // Move the cursor to the right line
             ClearLine();
             if (linesCount > 1)
             {
@@ -158,7 +154,7 @@ namespace lanchat.Cli.PromptLib
 
             Console.Write(promptChar + string.Join("", inputBuffer.ToArray()));
 
-            // if input has one line move cursor to specific  column
+            // If input has one line move cursor to specific  column
             if (curIndex + 2 < Console.WindowWidth)
             {
                 Console.CursorLeft = curIndex + 2;
@@ -171,7 +167,7 @@ namespace lanchat.Cli.PromptLib
         {
             int linesCount;
 
-            // this is shit, i dont know whats going on here
+            // This is shit, i dont know whats going on here
             if (inputBuffer.Count > Console.WindowWidth)
             {
                 linesCount = (inputBuffer.Count / Console.WindowWidth) + 1;
