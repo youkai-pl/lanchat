@@ -1,5 +1,5 @@
 {
-    "bport": 4001,
     "csp": null,
-    "nickname": null
+    "nickname": null,
+    "port": 4001
 }

@@ -1,82 +1,78 @@
 ﻿// Lanchat 2
-// Bartłomiej Tota 2019
-using lanchat.Cli.PromptLib;
+// Let's all love lain
+
+using Lanchat.Cli.CommandsLib;
+using Lanchat.Cli.ConfigLib;
+using Lanchat.Cli.PromptLib;
 using Lanchat.Common.Cryptography;
 using Lanchat.Common.Network;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System.IO;
+using System;
 using System.Threading;
 
 namespace Lanchat.Cli.Program
 {
     public static class Program
     {
-        public static IConfigurationRoot Config;
-
         public static void Main()
         {
-            // load or create config file
-            var builder = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("config.json", optional: false, reloadOnChange: true);
-            Config = builder.Build();
+            // Load or create config file
+            Config.Load();
 
-            // show welcome screen
+            // Show welcome screen
             Prompt.Welcome();
 
-            // check nick
+            // Validate config file
             Prompt.Out("Validating config");
-            if (string.IsNullOrEmpty(Config["nickname"]))
+
+            // Check nickname
+            if (string.IsNullOrEmpty(Config.Get("nickname")))
             {
+                // If nickname is blank create new with up to 20 characters
                 string nick = Prompt.Query("Choose nickname:");
                 while (nick.Length > 20)
                 {
                     Prompt.Alert("Max 20 charcters");
                     nick = Prompt.Query("Choose nickname:");
                 }
-                Config["nickname"] = nick;
-                SaveConfig();
+                Config.Edit("nickname", nick);
             }
 
-            // try to load rsa settings
+            // Try to load rsa settings
             try
             {
-                Cryptography.Load(Config);
+                Cryptography.Load(Config.Get("csp"));
             }
             catch
             {
                 Prompt.Out("Generating RSA keys");
-                Config["csp"] = Cryptography.Generate();
-                SaveConfig();
+                Config.Edit("csp", Cryptography.Generate());
             }
 
-            // initialize prompt
-            Prompt.Out("");
-            new Thread(Prompt.Init).Start();
+            // Initialize prompt
+            Prompt Prompt1 = new Prompt();
+            Prompt1.RecievedInput += OnRecievedInput;
+            new Thread(Prompt1.Init).Start();
 
-            // initialize network
-            Client.Init(int.Parse(Config["bport"]),
-                        Config["nickname"],
+            // Initialize network
+            Client.Init(int.Parse(Config.Get("port")),
+                        Config.Get("nickname"),
                         Cryptography.GetPublic());
         }
 
-        public static void SaveConfig()
+        // Handle input
+        private static void OnRecievedInput(string input, EventArgs e)
         {
-            var newConfig = new
+            // Check is input command
+            if (input.StartsWith("/"))
             {
-                nickname = Config["nickname"],
-                csp = Config["csp"],
-                mport = Config["mport"],
-                bport = Config["bport"]
-            };
-            try
-            {
-                File.WriteAllText("config.json", JsonConvert.SerializeObject(newConfig));
+                string command = input.Substring(1);
+                Command.Execute(command);
             }
-            catch
+
+            // Or message
+            else
             {
-                Prompt.Alert("Config save error");
+                Prompt.Out(input, null, Config.Get("nickname"));
             }
         }
     }

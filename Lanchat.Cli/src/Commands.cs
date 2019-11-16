@@ -1,8 +1,8 @@
-﻿using lanchat.Cli.PromptLib;
+﻿using Lanchat.Cli.ConfigLib;
+using Lanchat.Cli.PromptLib;
 using System;
-using static Lanchat.Cli.Program.Program;
 
-namespace lanchat.Cli.CommandsLib
+namespace Lanchat.Cli.CommandsLib
 {
     public static class Command
     {
@@ -10,7 +10,7 @@ namespace lanchat.Cli.CommandsLib
         {
             string[] args = command.Split(' ');
 
-            // commands switch
+            // Commands
             switch (args[0])
             {
                 case "help":
@@ -31,7 +31,7 @@ namespace lanchat.Cli.CommandsLib
             }
         }
 
-        // methods
+        // Methods
         private static void ShowHelp()
         {
             Prompt.Out("");
@@ -45,8 +45,7 @@ namespace lanchat.Cli.CommandsLib
         {
             if (!string.IsNullOrEmpty(nick))
             {
-                Config["nickname"] = nick;
-                SaveConfig();
+                Config.Edit("nickname", nick);
                 Prompt.Notice("Nickname changed");
             }
         }
