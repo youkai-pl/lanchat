@@ -48,6 +48,7 @@ namespace Lanchat.Cli.PromptLib
             }
         }
 
+        // Read line
         private static string ReadLine()
         {
             int curIndex = 0;
@@ -66,7 +67,7 @@ namespace Lanchat.Cli.PromptLib
                     }
                     finally
                     {
-                        ResetCursor(curIndex);
+                        Rewrite(curIndex);
                         inputBuffer.Clear();
                     }
                 }
@@ -115,7 +116,7 @@ namespace Lanchat.Cli.PromptLib
                         {
                             inputBuffer.RemoveAt(curIndex - 1);
                             curIndex--;
-                            ResetCursor(curIndex);
+                            Rewrite(curIndex);
                         }
                         else
                         {
@@ -123,7 +124,7 @@ namespace Lanchat.Cli.PromptLib
                             Console.CursorTop--;
                             inputBuffer.RemoveAt(curIndex - 1);
                             curIndex--;
-                            ResetCursor(curIndex);
+                            Rewrite(curIndex);
                         }
                     }
                 }
@@ -134,14 +135,15 @@ namespace Lanchat.Cli.PromptLib
                     {
                         inputBuffer.Insert(curIndex, readKeyResult.KeyChar);
                         curIndex++;
-                        ResetCursor(curIndex);
+                        Rewrite(curIndex);
                     }
                 }
             }
             while (true);
         }
 
-        private static void ResetCursor(int curIndex)
+        // Rewrite input in consle
+        private static void Rewrite(int curIndex)
         {
             Console.CursorVisible = false;
             int linesCount = (inputBuffer.Count / Console.WindowWidth) + 1;
@@ -164,6 +166,7 @@ namespace Lanchat.Cli.PromptLib
             Console.CursorVisible = true;
         }
 
+        // Write in console 
         public static void Out(string message, Color? color = null, string nickname = null)
         {
             int linesCount;
@@ -197,17 +200,20 @@ namespace Lanchat.Cli.PromptLib
             Console.Write(promptChar + string.Join("", inputBuffer.ToArray()));
         }
 
+        // Notice formatted out
         public static void Notice(string message)
         {
             Out("[#] " + message, Color.DodgerBlue);
         }
 
+        // Alert formatted out
         public static void Alert(string message)
 
         {
             Out("[!] " + message, Color.OrangeRed);
         }
 
+        // Query
         public static string Query(string query)
         {
             Console.CursorLeft = 0;
@@ -226,6 +232,7 @@ namespace Lanchat.Cli.PromptLib
             Environment.Exit(1);
         }
 
+        // Clear line
         private static void ClearLine()
         {
             int currentLineCursor = Console.CursorTop;
@@ -234,6 +241,7 @@ namespace Lanchat.Cli.PromptLib
             Console.SetCursorPosition(0, currentLineCursor);
         }
 
+        // Get version
         private static string GetVersion()
         {
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -242,6 +250,9 @@ namespace Lanchat.Cli.PromptLib
 #endif
 #if ALPHA
         version += " Alpha";
+#endif
+#if BETA
+        version += " Beta";
 #endif
             return version;
         }
