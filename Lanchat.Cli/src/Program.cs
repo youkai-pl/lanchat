@@ -5,7 +5,7 @@ using Lanchat.Cli.CommandsLib;
 using Lanchat.Cli.ConfigLib;
 using Lanchat.Cli.PromptLib;
 using Lanchat.Common.Cryptography;
-using Lanchat.Common.Network;
+using Lanchat.Common.NetworkLib;
 using System;
 using System.Threading;
 
@@ -54,7 +54,7 @@ namespace Lanchat.Cli.Program
             new Thread(Prompt1.Init).Start();
 
             // Initialize network
-            Client.Init(int.Parse(Config.Get("port")),
+            Network.Init(int.Parse(Config.Get("port")),
                         Config.Get("nickname"),
                         Cryptography.GetPublic());
         }
@@ -73,6 +73,7 @@ namespace Lanchat.Cli.Program
             else
             {
                 Prompt.Out(input, null, Config.Get("nickname"));
+                Network.SendAll(input);
             }
         }
     }

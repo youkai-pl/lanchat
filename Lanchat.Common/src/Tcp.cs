@@ -5,40 +5,76 @@ using System.Text;
 
 namespace Lanchat.Common.TcpLib
 {
-    internal class Tcp
+    public class Host
     {
-        public static void Host(int port)
+        public void Start(int port)
         {
-            // start server
+            // Start server
             TcpListener server = new TcpListener(IPAddress.Any, port);
             server.Start();
 
-            // wait for connection
+            // Wait for connection
             while (true)
             {
                 TcpClient client = server.AcceptTcpClient();
-
                 NetworkStream nwStream = client.GetStream();
                 byte[] buffer = new byte[client.ReceiveBufferSize];
 
-                int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
+                while (client.Connected)
+                {
+                    int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
+                    string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
-                string dataReceived = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                Console.WriteLine("Received : " + dataReceived);
+                    OnTcpEvent(new
+                    {
+                        type = "message",
+                        content = dataReceived
+                    }, EventArgs.Empty);
+                }
             }
         }
 
-        public static void Connect(string ip, int port)
+        // Input event
+        public delegate void TcpEventHandler(object o, EventArgs e);
+
+        public event TcpEventHandler TcpEvent;
+
+        protected virtual void OnTcpEvent(object o, EventArgs e)
         {
-            TcpClient tcpclnt = new TcpClient(ip, port);
-            NetworkStream nwStream = tcpclnt.GetStream();
+            TcpEvent(o, EventArgs.Empty);
+        }
+    }
 
-            string textToSend = "hello world";
+    public class Client
+    {
+        private TcpClient tcpclnt;
+        private NetworkStream nwStream;
 
-            byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
+        public void Connect(string ip, int port)
+        {
+            tcpclnt = new TcpClient(ip, port);
+            nwStream = tcpclnt.GetStream();
 
-            Console.WriteLine("Sending : " + textToSend);
+            OnTcpEvent(new
+            {
+                type = "connected"
+            }, EventArgs.Empty);
+        }
+
+        public void Send(string content)
+        {
+            byte[] bytesToSend = Encoding.UTF8.GetBytes(content);
             nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+        }
+
+        // Input event
+        public delegate void TcpEventHandler(object o, EventArgs e);
+
+        public event TcpEventHandler TcpEvent;
+
+        protected virtual void OnTcpEvent(object o, EventArgs e)
+        {
+            TcpEvent(o, EventArgs.Empty);
         }
     }
 }

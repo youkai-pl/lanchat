@@ -8,12 +8,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Lanchat.Common.Network
+namespace Lanchat.Common.NetworkLib
 {
-    public static class Client
+    public static class Network
     {
-        // users list
-        public static List<User> users = new List<User>();
+        // Users list
+        private static List<User> Users = new List<User>();
+
+        // Tcp client
+        private static List<Client> Connections = new List<Client>();
 
         public static void Init(int PORT, string nickname, string publicKey)
         {
@@ -27,14 +30,16 @@ namespace Lanchat.Common.Network
                 tcpPort
             );
 
-            // create host
-            Task.Run(() => { Tcp.Host(tcpPort); });
+            // Start host
+            Host TcpHost = new Host();
+            TcpHost.TcpEvent += OnTcpEvent;
+            Task.Run(() => { TcpHost.Start(tcpPort); });
 
-            // create UDP client
-            UdpClient udpClient = new UdpClient();
+            // Create UDP client
+            var udpClient = new UdpClient();
             udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, PORT));
 
-            // broadcast
+            // Start broadcast
             Task.Run(() =>
             {
                 while (true)
@@ -45,7 +50,7 @@ namespace Lanchat.Common.Network
                 }
             });
 
-            // listen
+            // Listen broadcast
             Task.Run(() =>
             {
                 var from = new IPEndPoint(0, 0);
@@ -55,20 +60,40 @@ namespace Lanchat.Common.Network
                     var sender = from.Address.ToString();
 
                     User paperplane = JsonConvert.DeserializeObject<User>(Encoding.UTF8.GetString(recvBuffer));
-                    if (!users.Exists(x => x.Hash == paperplane.Hash) && paperplane.Hash != selfHash)
+                    if (!Users.Exists(x => x.Hash == paperplane.Hash) && paperplane.Hash != selfHash)
                     {
-                        users.Add(paperplane);
-                        Console.WriteLine(sender);
-                        Console.WriteLine(paperplane.Nickname);
-                        Console.WriteLine(paperplane.Hash);
-                        Console.WriteLine(paperplane.Port);
-                        Console.WriteLine("");
-                        //Tcp.Connect(sender, paperplane.Port);
+                        Users.Add(paperplane);
+                        // LogDetected(sender, paperplane);
+
+                        Connections.Add(new Client());
+                        Connections[Connections.Count - 1].TcpEvent += OnTcpEvent;
+                        Connections[Connections.Count - 1].Connect(sender, paperplane.Port);
                     }
                 }
             });
         }
 
+        public static void SendAll(string message)
+        {
+            Connections.ForEach(x => { x.Send(message); });
+        }
+
+        private static void OnTcpEvent(object o, EventArgs e)
+        {
+            Console.WriteLine(o);
+        }
+
+        // Log detected users info
+        private static void LogDetected(string sender, User paperplane)
+        {
+            Console.WriteLine(sender);
+            Console.WriteLine(paperplane.Nickname);
+            Console.WriteLine(paperplane.Hash);
+            Console.WriteLine(paperplane.Port);
+            Console.WriteLine("");
+        }
+
+        // Find free tcp port
         private static int FreeTcpPort()
         {
             TcpListener l = new TcpListener(IPAddress.Loopback, 0);
@@ -79,6 +104,7 @@ namespace Lanchat.Common.Network
         }
     }
 
+    // User class
     public class User
     {
         public User(string nickname, string publicKey, string hash, int port)
