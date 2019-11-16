@@ -15,9 +15,6 @@ namespace Lanchat.Common.NetworkLib
         // Users list
         private static List<User> Users = new List<User>();
 
-        // Tcp client
-        private static List<Client> Connections = new List<Client>();
-
         public static void Init(int PORT, string nickname, string publicKey)
         {
             string selfHash = Guid.NewGuid().ToString();
@@ -28,11 +25,11 @@ namespace Lanchat.Common.NetworkLib
                 publicKey,
                 selfHash,
                 tcpPort
-            );
+                );
 
             // Start host
             Host TcpHost = new Host();
-            TcpHost.TcpEvent += OnTcpEvent;
+            TcpHost.HostEvent += OnHostEvent;
             Task.Run(() => { TcpHost.Start(tcpPort); });
 
             // Create UDP client
@@ -57,40 +54,49 @@ namespace Lanchat.Common.NetworkLib
                 while (true)
                 {
                     var recvBuffer = udpClient.Receive(ref from);
-                    var sender = from.Address.ToString();
+                    var sender = from.Address;
 
                     User paperplane = JsonConvert.DeserializeObject<User>(Encoding.UTF8.GetString(recvBuffer));
                     if (!Users.Exists(x => x.Hash == paperplane.Hash) && paperplane.Hash != selfHash)
                     {
                         Users.Add(paperplane);
-                        // LogDetected(sender, paperplane);
-
-                        Connections.Add(new Client());
-                        Connections[Connections.Count - 1].TcpEvent += OnTcpEvent;
-                        Connections[Connections.Count - 1].Connect(sender, paperplane.Port);
+                        var userIndex = Users.Count - 1;
+                        Users[userIndex].Ip = sender;
+                        Users[userIndex].Connection = new Client();
+                        Users[userIndex].Connection.ClientEvent += OnClientEvent;
+                        Users[userIndex].Connection.Connect(sender, paperplane.Port);
                     }
                 }
             });
         }
-
+        
         public static void SendAll(string message)
         {
-            Connections.ForEach(x => { x.Send(message); });
+            Users.ForEach(x =>
+            {
+                if (x.Connection != null)
+                {
+                    x.Connection.Send(message);
+                }
+            });
         }
 
-        private static void OnTcpEvent(object o, EventArgs e)
+        private static void OnHostEvent(Host.EventObject o, EventArgs e)
         {
-            Console.WriteLine(o);
+            if (o.Type == "connected")
+            {
+                Console.WriteLine("connected");
+            }
+            if (o.Type == "disconnected")
+            {
+                Console.WriteLine("disconnected");
+                Users.RemoveAll(u => u.Ip.ToString() == o.Ip.Split(':')[0]);
+            }
         }
 
-        // Log detected users info
-        private static void LogDetected(string sender, User paperplane)
+        private static void OnClientEvent(object o, EventArgs e)
         {
-            Console.WriteLine(sender);
-            Console.WriteLine(paperplane.Nickname);
-            Console.WriteLine(paperplane.Hash);
-            Console.WriteLine(paperplane.Port);
-            Console.WriteLine("");
+            //Console.WriteLine(o);
         }
 
         // Find free tcp port
@@ -119,5 +125,7 @@ namespace Lanchat.Common.NetworkLib
         public string Hash { get; set; }
         public string PublicKey { get; set; }
         public int Port { get; set; }
+        public IPAddress Ip { get; set; }
+        public Client Connection { get; set; }
     }
 }

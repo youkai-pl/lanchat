@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -10,38 +11,65 @@ namespace Lanchat.Common.TcpLib
         public void Start(int port)
         {
             // Start server
-            TcpListener server = new TcpListener(IPAddress.Any, port);
-            server.Start();
+            Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            server.ReceiveTimeout = -1;
+            server.Bind(new IPEndPoint(IPAddress.Any, port));
+            server.Listen(-1);
 
-            // Wait for connection
             while (true)
             {
-                TcpClient client = server.AcceptTcpClient();
-                NetworkStream nwStream = client.GetStream();
-                byte[] buffer = new byte[client.ReceiveBufferSize];
-
-                while (client.Connected)
+                Socket client = server.Accept();
+                new System.Threading.Thread(() =>
                 {
-                    int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
-                    string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    try { Process(client); } catch (Exception ex) { Console.WriteLine("Client connection processing error: " + ex.Message); }
+                }).Start();
+            }
 
-                    OnTcpEvent(new
+            void Process(Socket client)
+            {
+                OnHostEvent(new EventObject("connected", client.RemoteEndPoint.ToString()), EventArgs.Empty);
+
+                byte[] response;
+                int received;
+
+                while (true)
+                {
+                    // Receive message from the server:
+                    response = new byte[client.ReceiveBufferSize];
+                    received = client.Receive(response);
+                    if (received == 0)
                     {
-                        type = "message",
-                        content = dataReceived
-                    }, EventArgs.Empty);
+                        OnHostEvent(new EventObject("disconnected", client.RemoteEndPoint.ToString()), EventArgs.Empty);
+                        return;
+                    }
+
+                    List<byte> respBytesList = new List<byte>(response);
+                    Console.WriteLine("Client (" + client.RemoteEndPoint + "+: " + Encoding.UTF8.GetString(respBytesList.ToArray()));
                 }
             }
         }
 
-        // Input event
-        public delegate void TcpEventHandler(object o, EventArgs e);
+        // Host event
+        public delegate void HostEventHandler(EventObject o, EventArgs e);
 
-        public event TcpEventHandler TcpEvent;
+        public event HostEventHandler HostEvent;
 
-        protected virtual void OnTcpEvent(object o, EventArgs e)
+        protected virtual void OnHostEvent(EventObject o, EventArgs e)
         {
-            TcpEvent(o, EventArgs.Empty);
+            HostEvent(o, EventArgs.Empty);
+        }
+
+        // Host event object
+        public class EventObject
+        {
+            public EventObject(string type, string ip)
+            {
+                Type = type;
+                Ip = ip;
+            }
+
+            public string Type { get; set; }
+            public string Ip { get; set; }
         }
     }
 
@@ -50,12 +78,12 @@ namespace Lanchat.Common.TcpLib
         private TcpClient tcpclnt;
         private NetworkStream nwStream;
 
-        public void Connect(string ip, int port)
+        public void Connect(IPAddress ip, int port)
         {
-            tcpclnt = new TcpClient(ip, port);
+            tcpclnt = new TcpClient(ip.ToString(), port);
             nwStream = tcpclnt.GetStream();
 
-            OnTcpEvent(new
+            OnClientEvent(new
             {
                 type = "connected"
             }, EventArgs.Empty);
@@ -68,13 +96,13 @@ namespace Lanchat.Common.TcpLib
         }
 
         // Input event
-        public delegate void TcpEventHandler(object o, EventArgs e);
+        public delegate void ClientEventHandler(object o, EventArgs e);
 
-        public event TcpEventHandler TcpEvent;
+        public event ClientEventHandler ClientEvent;
 
-        protected virtual void OnTcpEvent(object o, EventArgs e)
+        protected virtual void OnClientEvent(object o, EventArgs e)
         {
-            TcpEvent(o, EventArgs.Empty);
+            ClientEvent(o, EventArgs.Empty);
         }
     }
 }
