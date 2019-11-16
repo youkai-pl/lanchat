@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Reflection;
 using Console = Colorful.Console;
 using static Lanchat.Cli.Program.Program;
+using Lanchat.Cli.ConfigLib;
 
 namespace Lanchat.Cli.PromptLib
 {
@@ -20,7 +21,7 @@ namespace Lanchat.Cli.PromptLib
         {
             Console.Title = "Lanchat 2";
             Out("Lanchat " + GetVersion());
-            Out("Broadcast port: " + Config["port"].ToString());
+            Out("Broadcast port: " + Config.Get("port").ToString());
         }
 
         // Input event
@@ -217,9 +218,12 @@ namespace Lanchat.Cli.PromptLib
             return answer;
         }
 
-        public static void Pause()
+        // Show crash screen and stop program
+        public static void CrashScreen(Exception e)
         {
+            Alert(e.Message);
             Console.ReadKey();
+            Environment.Exit(1);
         }
 
         private static void ClearLine()

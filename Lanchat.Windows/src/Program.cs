@@ -1,5 +1,5 @@
 ﻿// Lanchat 2
-// Bartłomiej Tota 2019
+// tofudd 2019
 
 namespace Lanchat.Windows
 {

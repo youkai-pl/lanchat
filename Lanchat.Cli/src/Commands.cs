@@ -1,6 +1,6 @@
-﻿using Lanchat.Cli.PromptLib;
+﻿using Lanchat.Cli.ConfigLib;
+using Lanchat.Cli.PromptLib;
 using System;
-using static Lanchat.Cli.Program.Program;
 
 namespace Lanchat.Cli.CommandsLib
 {
@@ -45,7 +45,7 @@ namespace Lanchat.Cli.CommandsLib
         {
             if (!string.IsNullOrEmpty(nick))
             {
-                EditConfig("nickname", nick);
+                Config.Edit("nickname", nick);
                 Prompt.Notice("Nickname changed");
             }
         }

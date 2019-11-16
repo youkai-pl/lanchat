@@ -1,35 +1,23 @@
 ﻿// Lanchat 2
 // Let's all love lain
+
 using Lanchat.Cli.PromptLib;
 using Lanchat.Common.Cryptography;
 using Lanchat.Common.Network;
 using Lanchat.Cli.CommandsLib;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Threading;
+using Lanchat.Cli.ConfigLib;
 
 namespace Lanchat.Cli.Program
 {
     public static class Program
     {
-        public static IConfigurationRoot Config;
 
         public static void Main()
         {
             // Load or create config file
-            try
-            {
-                var builder = new ConfigurationBuilder()
-                        .SetBasePath(Directory.GetCurrentDirectory())
-                        .AddJsonFile("config.json", optional: false, reloadOnChange: true);
-                Config = builder.Build();
-            }
-            catch (Exception e)
-            {
-                CrashScreen(e);
-            }
+            Config.Load();
 
             // Show welcome screen
             Prompt.Welcome();
@@ -38,7 +26,7 @@ namespace Lanchat.Cli.Program
             Prompt.Out("Validating config");
 
             // Check nickname
-            if (string.IsNullOrEmpty(Config["nickname"]))
+            if (string.IsNullOrEmpty(Config.Get("nickname")))
             {
                 // If nickname is blank create new with up to 20 characters
                 string nick = Prompt.Query("Choose nickname:");
@@ -47,18 +35,18 @@ namespace Lanchat.Cli.Program
                     Prompt.Alert("Max 20 charcters");
                     nick = Prompt.Query("Choose nickname:");
                 }
-                EditConfig("nickname", nick);
+                Config.Edit("nickname", nick);
             }
 
             // Try to load rsa settings
             try
             {
-                Cryptography.Load(Config);
+                Cryptography.Load(Config.Get("csp"));
             }
             catch
             {
                 Prompt.Out("Generating RSA keys");
-                EditConfig("csp", Cryptography.Generate());
+                Config.Edit("csp", Cryptography.Generate());
             }
 
             // Initialize prompt
@@ -67,8 +55,8 @@ namespace Lanchat.Cli.Program
             new Thread(Prompt1.Init).Start();
 
             // Initialize network
-            Client.Init(int.Parse(Config["port"]),
-                        Config["nickname"],
+            Client.Init(int.Parse(Config.Get("port")),
+                        Config.Get("nickname"),
                         Cryptography.GetPublic());
         }
 
@@ -85,37 +73,7 @@ namespace Lanchat.Cli.Program
             // Or message
             else
             {
-                Prompt.Out(input, null, Config["nickname"]);
-            }
-        }
-
-        // Show crash screen and stop program
-        private static void CrashScreen(Exception e)
-        {
-            Prompt.Alert(e.Message);
-            Prompt.Pause();
-            Environment.Exit(1);
-        }
-
-        // Change config file value
-        public static void EditConfig(string key, string value)
-        {
-            Config[key] = value;
-
-            var newConfig = new
-            {
-                nickname = Config["nickname"],
-                csp = Config["csp"],
-                port = Config["port"]
-            };
-
-            try
-            {
-                File.WriteAllText("config.json", JsonConvert.SerializeObject(newConfig));
-            }
-            catch
-            {
-                Prompt.Alert("Config save error");
+                Prompt.Out(input, null, Config.Get("nickname"));
             }
         }
     }
