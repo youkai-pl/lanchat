@@ -1,19 +1,18 @@
 ﻿// Lanchat 2
 // Let's all love lain
 
+using Lanchat.Cli.CommandsLib;
+using Lanchat.Cli.ConfigLib;
 using Lanchat.Cli.PromptLib;
 using Lanchat.Common.Cryptography;
 using Lanchat.Common.Network;
-using Lanchat.Cli.CommandsLib;
 using System;
 using System.Threading;
-using Lanchat.Cli.ConfigLib;
 
 namespace Lanchat.Cli.Program
 {
     public static class Program
     {
-
         public static void Main()
         {
             // Load or create config file

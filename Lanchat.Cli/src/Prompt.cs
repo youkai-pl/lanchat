@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Lanchat.Cli.ConfigLib;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using Console = Colorful.Console;
-using static Lanchat.Cli.Program.Program;
-using Lanchat.Cli.ConfigLib;
 
 namespace Lanchat.Cli.PromptLib
 {
@@ -26,7 +25,9 @@ namespace Lanchat.Cli.PromptLib
 
         // Input event
         public delegate void RecievedInputHandler(string input, EventArgs e);
+
         public event RecievedInputHandler RecievedInput;
+
         protected virtual void OnRecievedInput(string input)
         {
             RecievedInput(input, EventArgs.Empty);
@@ -166,7 +167,7 @@ namespace Lanchat.Cli.PromptLib
             Console.CursorVisible = true;
         }
 
-        // Write in console 
+        // Write in console
         public static void Out(string message, Color? color = null, string nickname = null)
         {
             int linesCount;

@@ -1,12 +1,12 @@
-﻿using System;
-using System.IO;
-using Lanchat.Cli.PromptLib;
+﻿using Lanchat.Cli.PromptLib;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System;
+using System.IO;
 
 namespace Lanchat.Cli.ConfigLib
 {
-    class Config
+    internal class Config
     {
         private static IConfigurationRoot ConfigRoot;
 
