@@ -57,7 +57,7 @@ namespace Lanchat.Common.NetworkLib
                     var recvBuffer = udpClient.Receive(ref from);
                     var sender = from.Address;
                     User paperplane = JsonConvert.DeserializeObject<User>(Encoding.UTF8.GetString(recvBuffer));
-                    if (!Users.Exists(x => x.Ip.Equals(sender)) && paperplane.PublicKey != selfHash)
+                    if (!Users.Exists(x => x.Ip.Equals(sender)) && paperplane.Hash != selfHash)
                     {
                         Users.Add(paperplane);
                         var userIndex = Users.Count - 1;
@@ -85,7 +85,12 @@ namespace Lanchat.Common.NetworkLib
         {
             if (o.Type == "connected")
             {
+                while (!Users.Exists(x => x.Ip.Equals(o.Ip)))
+                {
+                    Thread.Sleep(25);
+                }
                 Console.WriteLine("connected");
+                Console.WriteLine(Users.First(x => x.Ip.Equals(o.Ip)).Hash);
             }
             if (o.Type == "disconnected")
             {

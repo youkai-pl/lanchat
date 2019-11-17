@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace Lanchat.Common.TcpLib
 {
@@ -19,7 +20,7 @@ namespace Lanchat.Common.TcpLib
             while (true)
             {
                 Socket client = server.Accept();
-                new System.Threading.Thread(() =>
+                new Thread(() =>
                 {
                     try { Process(client); } catch (Exception ex) { Console.WriteLine("Client connection processing error: " + ex.Message); }
                 }).Start();
