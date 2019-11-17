@@ -45,7 +45,8 @@ namespace Lanchat.Common.TcpLib
                     }
 
                     List<byte> respBytesList = new List<byte>(response);
-                    Console.WriteLine("Client (" + client.RemoteEndPoint + "+: " + Encoding.UTF8.GetString(respBytesList.ToArray()));
+                    string message = Encoding.UTF8.GetString(respBytesList.ToArray());
+                    OnHostEvent(new EventObject("message", IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString()), message), EventArgs.Empty);
                 }
             }
         }
@@ -63,14 +64,16 @@ namespace Lanchat.Common.TcpLib
         // Host event object
         public class EventObject
         {
-            public EventObject(string type, IPAddress ip)
+            public EventObject(string type, IPAddress ip, string content = null)
             {
                 Type = type;
                 Ip = ip;
+                Content = content;
             }
 
             public string Type { get; set; }
             public IPAddress Ip { get; set; }
+            public string Content { get; set; }
         }
     }
 
@@ -83,27 +86,12 @@ namespace Lanchat.Common.TcpLib
         {
             tcpclnt = new TcpClient(ip.ToString(), port);
             nwStream = tcpclnt.GetStream();
-
-            OnClientEvent(new
-            {
-                type = "connected"
-            }, EventArgs.Empty);
         }
 
         public void Send(string content)
         {
             byte[] bytesToSend = Encoding.UTF8.GetBytes(content);
             nwStream.Write(bytesToSend, 0, bytesToSend.Length);
-        }
-
-        // Input event
-        public delegate void ClientEventHandler(object o, EventArgs e);
-
-        public event ClientEventHandler ClientEvent;
-
-        protected virtual void OnClientEvent(object o, EventArgs e)
-        {
-            ClientEvent(o, EventArgs.Empty);
         }
     }
 }

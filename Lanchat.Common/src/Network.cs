@@ -63,7 +63,6 @@ namespace Lanchat.Common.NetworkLib
                         var userIndex = Users.Count - 1;
                         Users[userIndex].Ip = sender;
                         Users[userIndex].Connection = new Client();
-                        Users[userIndex].Connection.ClientEvent += OnClientEvent;
                         Users[userIndex].Connection.Connect(sender, paperplane.Port);
                     }
                 }
@@ -83,25 +82,30 @@ namespace Lanchat.Common.NetworkLib
 
         private static void OnHostEvent(Host.EventObject o, EventArgs e)
         {
+            // Handle connect
             if (o.Type == "connected")
             {
-                while (!Users.Exists(x => x.Ip.Equals(o.Ip)))
+                if (!Users.Exists(x => x.Ip.Equals(o.Ip)))
                 {
-                    Thread.Sleep(25);
+                    
                 }
-                Console.WriteLine("connected");
-                Console.WriteLine(Users.First(x => x.Ip.Equals(o.Ip)).Hash);
+
+                // Console.WriteLine("connected");
+                // Console.WriteLine(Users.First(x => x.Ip.Equals(o.Ip)).Hash);
             }
+
+            // Handle disconnect
             if (o.Type == "disconnected")
             {
                 Console.WriteLine("disconnected");
                 Users.RemoveAll(x => x.Ip.Equals(o.Ip));
             }
-        }
 
-        private static void OnClientEvent(object o, EventArgs e)
-        {
-            //Console.WriteLine(o);
+            // Handle message
+            if(o.Type == "message")
+            {
+                Console.WriteLine(o.Content);
+            }
         }
 
         // Find free tcp port
