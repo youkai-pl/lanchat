@@ -27,7 +27,7 @@ namespace Lanchat.Common.TcpLib
 
             void Process(Socket client)
             {
-                OnHostEvent(new EventObject("connected", client.RemoteEndPoint.ToString()), EventArgs.Empty);
+                OnHostEvent(new EventObject("connected", IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString())), EventArgs.Empty);
 
                 byte[] response;
                 int received;
@@ -39,7 +39,7 @@ namespace Lanchat.Common.TcpLib
                     received = client.Receive(response);
                     if (received == 0)
                     {
-                        OnHostEvent(new EventObject("disconnected", client.RemoteEndPoint.ToString()), EventArgs.Empty);
+                        OnHostEvent(new EventObject("disconnected", IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString())), EventArgs.Empty);
                         return;
                     }
 
@@ -62,14 +62,14 @@ namespace Lanchat.Common.TcpLib
         // Host event object
         public class EventObject
         {
-            public EventObject(string type, string ip)
+            public EventObject(string type, IPAddress ip)
             {
                 Type = type;
                 Ip = ip;
             }
 
             public string Type { get; set; }
-            public string Ip { get; set; }
+            public IPAddress Ip { get; set; }
         }
     }
 

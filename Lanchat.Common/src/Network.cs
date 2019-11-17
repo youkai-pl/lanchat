@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -69,7 +70,7 @@ namespace Lanchat.Common.NetworkLib
                 }
             });
         }
-        
+
         public static void SendAll(string message)
         {
             Users.ForEach(x =>
@@ -90,7 +91,7 @@ namespace Lanchat.Common.NetworkLib
             if (o.Type == "disconnected")
             {
                 Console.WriteLine("disconnected");
-                Users.RemoveAll(u => u.Ip.ToString() == o.Ip.Split(':')[0]);
+                Users.RemoveAll(x => x.Ip.Equals(o.Ip));
             }
         }
 
