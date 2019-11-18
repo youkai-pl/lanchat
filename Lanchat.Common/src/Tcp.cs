@@ -95,15 +95,19 @@ namespace Lanchat.Common.TcpLib
         // Handshake
         public class Handshake
         {
-            public Handshake(string hash, IPAddress ip)
+            public Handshake(string nickname, string publicKey, string hash, int port)
             {
+                Nickname = nickname;
+                PublicKey = publicKey;
                 Hash = hash;
-                Ip = ip;
+                Port = port;
             }
 
+            public string Nickname { get; set; }
             public string Hash { get; set; }
+            public string PublicKey { get; set; }
+            public int Port { get; set; }
             public IPAddress Ip { get; set; }
-
         }
     }
 

@@ -85,29 +85,50 @@ namespace Lanchat.Common.NetworkLib
             // Handle status
             if (o is Host.Status status)
             {
-                // Handle disconnect
-                if (status.Type == "disconnected")
+                if (CheckHandshake(status.Ip))
                 {
-                    Console.WriteLine("disconnected");
-                    Users.RemoveAll(x => x.Ip.Equals(status.Ip));
-                }
-                else
-                {
-                    Console.WriteLine(status.Ip.ToString());
-                    while (!Users.Exists(x => x.Ip.Equals(status.Ip)))
+                    // Handle disconnect
+                    if (status.Type == "disconnected")
                     {
-                        Thread.Sleep(25);
+                        Console.WriteLine("disconnected");
+                        Users.RemoveAll(x => x.Ip.Equals(status.Ip));
                     }
-                    Console.WriteLine("connected");
-                    Console.WriteLine(Users.First(x => x.Ip.Equals(status.Ip)).Hash);
+                    else if (status.Type == "connected")
+                    {
+                        Console.WriteLine(status.Ip.ToString());
+                        while (!Users.Exists(x => x.Ip.Equals(status.Ip)))
+                        {
+                            Thread.Sleep(25);
+                        }
+                        Console.WriteLine("connected");
+                        Console.WriteLine(Users.First(x => x.Ip.Equals(status.Ip)).Hash);
+                    }
                 }
             }
 
             // Handle message
             if (o is Host.Message message)
             {
-                Console.WriteLine(Users.First(x => x.Ip.Equals(message.Ip)).Nickname + ": " + message.Content);
+                if (CheckHandshake(message.Ip))
+                {
+                    Console.WriteLine(Users.First(x => x.Ip.Equals(message.Ip)).Nickname + ": " + message.Content);
+                }
             }
+
+            //Hadnle handshake
+            if (o is Host.Handshake handshake)
+            {
+                if (!Users.Exists(x => x.Ip.Equals(handshake.Ip)))
+                {
+                    Users.Add(new User(handshake.Nickname, handshake.PublicKey, handshake.Hash, handshake.Port));
+                }
+                Users.First(x => x.Ip.Equals(handshake.Ip)).Handshake = true;
+            }
+        }
+
+        private static bool CheckHandshake(IPAddress ip)
+        {
+            return Users.First(x => x.Ip.Equals(ip)).Handshake == true;
         }
 
         // Find free tcp port
@@ -130,6 +151,7 @@ namespace Lanchat.Common.NetworkLib
             PublicKey = publicKey;
             Hash = hash;
             Port = port;
+            Handshake = false;
         }
 
         public string Nickname { get; set; }
@@ -138,5 +160,6 @@ namespace Lanchat.Common.NetworkLib
         public int Port { get; set; }
         public IPAddress Ip { get; set; }
         public Client Connection { get; set; }
+        public Boolean Handshake { get; set; }
     }
 }
