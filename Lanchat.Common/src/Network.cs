@@ -63,7 +63,7 @@ namespace Lanchat.Common.NetworkLib
                         var userIndex = Users.Count - 1;
                         Users[userIndex].Ip = sender;
                         Users[userIndex].Connection = new Client();
-                        Users[userIndex].Connection.Connect(sender, paperplane.Port);
+                        Users[userIndex].Connection.Connect(sender, paperplane.Port, JsonConvert.SerializeObject(self));
                     }
                 }
             });
@@ -80,31 +80,46 @@ namespace Lanchat.Common.NetworkLib
             });
         }
 
-        private static void OnHostEvent(Host.EventObject o, EventArgs e)
+        private static void OnHostEvent(object o, EventArgs e)
         {
-            // Handle connect
-            if (o.Type == "connected")
+            // Handle status
+            if (o is Host.Status status)
             {
-                if (!Users.Exists(x => x.Ip.Equals(o.Ip)))
+                // Handle disconnect
+                if (status.Type == "disconnected")
                 {
-                    
+                    Console.WriteLine("disconnected");
+                    Users.RemoveAll(x => x.Ip.Equals(status.Ip));
                 }
-
-                // Console.WriteLine("connected");
-                // Console.WriteLine(Users.First(x => x.Ip.Equals(o.Ip)).Hash);
-            }
-
-            // Handle disconnect
-            if (o.Type == "disconnected")
-            {
-                Console.WriteLine("disconnected");
-                Users.RemoveAll(x => x.Ip.Equals(o.Ip));
+                else
+                {
+                    Console.WriteLine(status.Ip.ToString());
+                    while (!Users.Exists(x => x.Ip.Equals(status.Ip)))
+                    {
+                        Thread.Sleep(25);
+                    }
+                    Console.WriteLine("connected");
+                    Console.WriteLine(Users.First(x => x.Ip.Equals(status.Ip)).Hash);
+                }
             }
 
             // Handle message
-            if(o.Type == "message")
+            if (o is Host.Message message)
             {
-                Console.WriteLine(o.Content);
+                try
+                {
+                    var user = JsonConvert.DeserializeObject<User>(message.Content);
+                    if (!Users.Exists(x => x.Ip.Equals(message.Ip)))
+                    {
+                        Console.WriteLine("handshake");
+                        Users.Add(user);
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine(Users.First(x => x.Ip.Equals(message.Ip)).Hash);
+                    Console.WriteLine(message.Content);
+                }
             }
         }
 

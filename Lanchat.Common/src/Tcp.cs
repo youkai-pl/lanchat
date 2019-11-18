@@ -28,7 +28,7 @@ namespace Lanchat.Common.TcpLib
 
             void Process(Socket client)
             {
-                OnHostEvent(new EventObject("connected", IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString())), EventArgs.Empty);
+                OnHostEvent(new Status("connected", IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString())), EventArgs.Empty);
 
                 byte[] response;
                 int received;
@@ -40,40 +40,65 @@ namespace Lanchat.Common.TcpLib
                     received = client.Receive(response);
                     if (received == 0)
                     {
-                        OnHostEvent(new EventObject("disconnected", IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString())), EventArgs.Empty);
+                        OnHostEvent(new Status("disconnected", IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString())), EventArgs.Empty);
                         return;
                     }
 
                     List<byte> respBytesList = new List<byte>(response);
-                    string message = Encoding.UTF8.GetString(respBytesList.ToArray());
-                    OnHostEvent(new EventObject("message", IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString()), message), EventArgs.Empty);
+                    Recieve(Encoding.UTF8.GetString(respBytesList.ToArray()));
                 }
             }
         }
 
+        // Handle packet
+        void Recieve(string data)
+        {
+            var parsed = 
+        }
+
         // Host event
-        public delegate void HostEventHandler(EventObject o, EventArgs e);
+        public delegate void HostEventHandler(object o, EventArgs e);
 
         public event HostEventHandler HostEvent;
 
-        protected virtual void OnHostEvent(EventObject o, EventArgs e)
+        protected virtual void OnHostEvent(object o, EventArgs e)
         {
             HostEvent(o, EventArgs.Empty);
         }
 
-        // Host event object
-        public class EventObject
+        // Status
+        public class Status
         {
-            public EventObject(string type, IPAddress ip, string content = null)
+            public Status(string type, IPAddress ip)
             {
                 Type = type;
                 Ip = ip;
-                Content = content;
             }
 
             public string Type { get; set; }
             public IPAddress Ip { get; set; }
+        }
+
+        // Message
+        public class Message
+        {
+            public Message(string content)
+            {
+                Content = content;
+            }
+
             public string Content { get; set; }
+        }
+
+        // Handshake
+        public class Handshake
+        {
+            public Handshake(string hash)
+            {
+                Hash = hash;
+            }
+
+            public string Hash { get; set; }
         }
     }
 
@@ -82,10 +107,12 @@ namespace Lanchat.Common.TcpLib
         private TcpClient tcpclnt;
         private NetworkStream nwStream;
 
-        public void Connect(IPAddress ip, int port)
+        public void Connect(IPAddress ip, int port, string self)
         {
             tcpclnt = new TcpClient(ip.ToString(), port);
             nwStream = tcpclnt.GetStream();
+            byte[] bytesToSend = Encoding.UTF8.GetBytes(self);
+            nwStream.Write(bytesToSend, 0, bytesToSend.Length);
         }
 
         public void Send(string content)
