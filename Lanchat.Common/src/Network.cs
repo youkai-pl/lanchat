@@ -106,20 +106,7 @@ namespace Lanchat.Common.NetworkLib
             // Handle message
             if (o is Host.Message message)
             {
-                try
-                {
-                    var user = JsonConvert.DeserializeObject<User>(message.Content);
-                    if (!Users.Exists(x => x.Ip.Equals(message.Ip)))
-                    {
-                        Console.WriteLine("handshake");
-                        Users.Add(user);
-                    }
-                }
-                catch
-                {
-                    Console.WriteLine(Users.First(x => x.Ip.Equals(message.Ip)).Hash);
-                    Console.WriteLine(message.Content);
-                }
+                Console.WriteLine(Users.First(x => x.Ip.Equals(message.Ip)).Nickname + ": " + message.Content);
             }
         }
 

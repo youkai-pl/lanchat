@@ -53,7 +53,7 @@ namespace Lanchat.Common.TcpLib
         // Handle packet
         void Recieve(string data)
         {
-            var parsed = 
+            //var parsed = 
         }
 
         // Host event
@@ -82,23 +82,28 @@ namespace Lanchat.Common.TcpLib
         // Message
         public class Message
         {
-            public Message(string content)
+            public Message(string content, IPAddress ip)
             {
                 Content = content;
+                Ip = ip;
             }
 
             public string Content { get; set; }
+            public IPAddress Ip { get; set; }
         }
 
         // Handshake
         public class Handshake
         {
-            public Handshake(string hash)
+            public Handshake(string hash, IPAddress ip)
             {
                 Hash = hash;
+                Ip = ip;
             }
 
             public string Hash { get; set; }
+            public IPAddress Ip { get; set; }
+
         }
     }
 
