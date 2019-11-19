@@ -7,6 +7,7 @@ using Lanchat.Cli.PromptLib;
 using Lanchat.Common.Cryptography;
 using Lanchat.Common.NetworkLib;
 using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Lanchat.Cli.Program
@@ -15,6 +16,9 @@ namespace Lanchat.Cli.Program
     {
         public static void Main()
         {
+            // Trace listener
+            Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+
             // Load or create config file
             Config.Load();
 

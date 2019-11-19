@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -45,15 +46,24 @@ namespace Lanchat.Common.TcpLib
                     }
 
                     List<byte> respBytesList = new List<byte>(response);
-                    Recieve(Encoding.UTF8.GetString(respBytesList.ToArray()));
+                    Recieve(Encoding.UTF8.GetString(respBytesList.ToArray()), IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString()));
                 }
             }
         }
 
         // Handle packet
-        void Recieve(string data)
+        void Recieve(string data, IPAddress ip)
         {
-            //var parsed = 
+            object parsed;
+            try
+            {
+                parsed = JsonConvert.DeserializeObject(data);
+            }
+            catch
+            {
+                parsed = new Message(data, ip);
+            }
+            HostEvent(parsed, EventArgs.Empty);
         }
 
         // Host event
