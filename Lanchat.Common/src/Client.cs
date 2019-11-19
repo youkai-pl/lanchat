@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.Net;
@@ -23,12 +23,9 @@ namespace Lanchat.Common.ClientLib
                     // Try parse
                     try
                     {
-                        JObject paperplane = JObject.Parse(Encoding.UTF8.GetString(recvBuffer));
-                        if (paperplane["port"] != null && paperplane["id"] != null)
-                        {
-                            Trace.WriteLine($"Valid paperplane recived from: {from.Address}");
-                            RecievedBroadcast(paperplane, from.Address, EventArgs.Empty);
-                        }
+                        Paperplane paperplane = JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer));
+                        Trace.WriteLine($"Valid paperplane recived from: {from.Address}");
+                        RecievedBroadcast(paperplane, from.Address, EventArgs.Empty);
                     }
                     catch (Exception e)
                     {
@@ -43,9 +40,16 @@ namespace Lanchat.Common.ClientLib
         public event ClientEventHandler RecievedBroadcast;
 
         // Recieved broadcast
-        protected virtual void OnRecievedBroadcast(JObject paperplane, IPAddress sender, EventArgs e)
+        protected virtual void OnRecievedBroadcast(Paperplane paperplane, IPAddress sender, EventArgs e)
         {
             RecievedBroadcast(paperplane, sender, EventArgs.Empty);
+        }
+
+        // Paperplane class
+        public class Paperplane
+        {
+            public int Port { get; set; }
+            public Guid Id { get; set; }
         }
     }
 }
