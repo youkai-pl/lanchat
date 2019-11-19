@@ -19,7 +19,6 @@ namespace Lanchat.Common.ClientLib
                 while (true)
                 {
                     var recvBuffer = udpClient.Receive(ref from);
-                    var sender = from.Address;
 
                     // Try parse
                     try
@@ -27,7 +26,8 @@ namespace Lanchat.Common.ClientLib
                         JObject paperplane = JObject.Parse(Encoding.UTF8.GetString(recvBuffer));
                         if (paperplane["port"] != null && paperplane["id"] != null)
                         {
-                            RecievedBroadcast(paperplane, EventArgs.Empty);
+                            Trace.WriteLine($"Valid paperplane recived from: {from.Address}");
+                            RecievedBroadcast(paperplane, from.Address, EventArgs.Empty);
                         }
                     }
                     catch (Exception e)
@@ -39,10 +39,13 @@ namespace Lanchat.Common.ClientLib
         }
 
         // Client events
-        public delegate void ClientEventHandler(object o, EventArgs e);
+        public delegate void ClientEventHandler(params object[] arguments);
         public event ClientEventHandler RecievedBroadcast;
 
         // Recieved broadcast
-        protected virtual void OnRecievedBroadcast(object o, IPAddress sender, EventArgs e) => RecievedBroadcast(o, EventArgs.Empty);
+        protected virtual void OnRecievedBroadcast(JObject paperplane, IPAddress sender, EventArgs e)
+        {
+            RecievedBroadcast(paperplane, sender, EventArgs.Empty);
+        }
     }
 }

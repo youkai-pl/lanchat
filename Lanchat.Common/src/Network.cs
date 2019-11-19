@@ -9,6 +9,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -29,12 +31,13 @@ namespace Lanchat.Common.NetworkLib
             // Self
             var self = new
             {
-                selfId,
-                tcpPort
+                id = selfId,
+                port = tcpPort
             };
 
             // Create client class
             Client client = new Client();
+            client.RecievedBroadcast += OnRecievedBroadcast;
 
             // Create UDP client
             UdpClient udpClient = new UdpClient();
@@ -45,6 +48,12 @@ namespace Lanchat.Common.NetworkLib
 
             // Listen broadcast
             client.ListenBroadcast(udpClient);
+
+            void OnRecievedBroadcast(params object[] arguments)
+            {
+                Trace.WriteLine(arguments[0].ToString());
+                Trace.WriteLine(arguments[1].ToString());
+            }
         }
 
 
