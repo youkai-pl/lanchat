@@ -23,7 +23,7 @@ namespace Lanchat.Common.ClientLib
                     // Try parse
                     try
                     {
-                        Paperplane paperplane = JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer));
+                        var paperplane = new Paperplane(JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer)));
                         Trace.WriteLine($"Valid paperplane recived from: {from.Address}");
                         RecievedBroadcast(paperplane, from.Address, EventArgs.Empty);
                     }
@@ -43,13 +43,6 @@ namespace Lanchat.Common.ClientLib
         protected virtual void OnRecievedBroadcast(Paperplane paperplane, IPAddress sender, EventArgs e)
         {
             RecievedBroadcast(paperplane, sender, EventArgs.Empty);
-        }
-
-        // Paperplane class
-        public class Paperplane
-        {
-            public int Port { get; set; }
-            public Guid Id { get; set; }
         }
     }
 }

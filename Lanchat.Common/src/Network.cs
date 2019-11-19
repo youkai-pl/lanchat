@@ -51,7 +51,7 @@ namespace Lanchat.Common.NetworkLib
 
             void OnRecievedBroadcast(params object[] arguments)
             {
-                var paperplane = (Client.Paperplane)arguments[0];
+                var paperplane = (Paperplane)arguments[0];
                 if (paperplane.Id != self.id)
                 {
                     Trace.WriteLine("[OK]");
