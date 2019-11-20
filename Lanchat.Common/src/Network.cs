@@ -32,15 +32,21 @@ namespace Lanchat.Common.NetworkLib
             var self = new Paperplane(tcpPort, selfId);
 
             // Create client class
-            Client client = new Client();
+            var client = new Client();
             client.RecievedBroadcast += OnRecievedBroadcast;
+
+            // Create host class
+            var host = new Host();
 
             // Create UDP client
             UdpClient udpClient = new UdpClient();
             udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, port));
 
+            // Initialize host
+            host.StartHost(tcpPort);
+
             // Initialize broadcast
-            Host.Broadcast(udpClient, self, port);
+            host.Broadcast(udpClient, self, port);
 
             // Listen broadcast
             client.ListenBroadcast(udpClient);
