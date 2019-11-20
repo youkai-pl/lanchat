@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Lanchat.Common.HostLib;
+using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.Net;
@@ -33,6 +34,22 @@ namespace Lanchat.Common.ClientLib
                     }
                 }
             });
+        }
+
+        // Tcp client
+        private TcpClient tcpclnt;
+        private NetworkStream nwStream;
+
+        // Connect
+        public void Connect(IPAddress ip, int port, Handshake handshake)
+        {
+            // Create client and stream
+            tcpclnt = new TcpClient(ip.ToString(), port);
+            nwStream = tcpclnt.GetStream();
+
+            // Send handshake
+            byte[] bytesToSend = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(handshake));
+            nwStream.Write(bytesToSend, 0, bytesToSend.Length);
         }
 
         // Client events
