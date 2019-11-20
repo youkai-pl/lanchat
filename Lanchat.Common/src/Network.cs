@@ -29,11 +29,7 @@ namespace Lanchat.Common.NetworkLib
             var tcpPort = FreeTcpPort();
 
             // Self
-            var self = new
-            {
-                id = selfId,
-                port = tcpPort
-            };
+            var self = new Paperplane(tcpPort, selfId);
 
             // Create client class
             Client client = new Client();
@@ -51,8 +47,9 @@ namespace Lanchat.Common.NetworkLib
 
             void OnRecievedBroadcast(params object[] arguments)
             {
-                var paperplane = (Paperplane)arguments[0];
-                if (paperplane.Id != self.id)
+                var broadcast = (Paperplane)arguments[0];
+
+                if (broadcast.Id != self.Id) // Don't forget extract this to method later
                 {
                     Trace.WriteLine("[OK]");
                 }

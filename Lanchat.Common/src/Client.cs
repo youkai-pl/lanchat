@@ -23,7 +23,7 @@ namespace Lanchat.Common.ClientLib
                     // Try parse
                     try
                     {
-                        var paperplane = new Paperplane(JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer)));
+                        var paperplane = JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer));
                         Trace.WriteLine($"Valid paperplane recived from: {from.Address}");
                         RecievedBroadcast(paperplane, from.Address, EventArgs.Empty);
                     }
