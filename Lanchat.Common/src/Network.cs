@@ -17,7 +17,7 @@ namespace Lanchat.Common.NetworkLib
     public static class Network
     {
         // Users list
-        private static List<User> Users = new List<User>();
+        private static List<User> UsersList = new List<User>();
 
         public static void Init(int port, string nickname, string publicKey)
         {
@@ -49,9 +49,9 @@ namespace Lanchat.Common.NetworkLib
             {
                 var broadcast = (Paperplane)arguments[0];
 
-                if (broadcast.Id != self.Id) // Don't forget extract this to method later
+                if (IsUserSelfOrAlreadyExist(self, broadcast))
                 {
-                    Trace.WriteLine("[OK]");
+                    UsersList.Add(new User(broadcast.Id, broadcast.Port));
                 }
                 else
                 {
@@ -60,75 +60,82 @@ namespace Lanchat.Common.NetworkLib
             }
         }
 
+        // Check is paperplane come from self or user alredy exist in list
+        private static bool IsUserSelfOrAlreadyExist(Paperplane self, Paperplane broadcast)
+        {
+            return broadcast.Id != self.Id && !UsersList.Exists(x => x.Id.Equals(broadcast.Id));
+        }
+
 
         // OLD 
 
-        // Start host
-        // TcpLib.Host TcpHost = new TcpLib.Host();
-        // TcpHost.HostEvent += OnHostEvent;
-        // Task.Run(() => { TcpHost.Start(tcpPort); });
-        public static void SendAll(string message)
-        {
-            Users.ForEach(x =>
-            {
-                if (x.Connection != null)
-                {
-                    //x.Connection.Send(message);
-                }
-            });
-        }
+        //// Start host
+        //// TcpLib.Host TcpHost = new TcpLib.Host();
+        //// TcpHost.HostEvent += OnHostEvent;
+        //// Task.Run(() => { TcpHost.Start(tcpPort); });
+        //public static void SendAll(string message)
+        //{
+        //    Users.ForEach(x =>
+        //    {
+        //        if (x.Connection != null)
+        //        {
+        //            //x.Connection.Send(message);
+        //        }
+        //    });
+        //}
 
-        private static void OnHostEvent(object o, EventArgs e)
-        {
-            // Handle status
-            if (o is TcpLib.Host.Status status)
-            {
-                //if (CheckHandshake(status.Ip))
-                //{
-                // Handle disconnect
-                if (status.Type == "disconnected")
-                {
-                    Console.WriteLine("disconnected");
-                    Users.RemoveAll(x => x.Ip.Equals(status.Ip));
-                }
-                else if (status.Type == "connected")
-                {
-                    while (!Users.Exists(x => x.Ip.Equals(status.Ip)))
-                    {
-                        Thread.Sleep(25);
-                    }
-                    Console.WriteLine("connected");
-                    Console.WriteLine(Users.First(x => x.Ip.Equals(status.Ip)).Hash);
-                    Console.WriteLine(Users.First(x => x.Ip.Equals(status.Ip)).Nickname);
-                }
-                //}
-            }
 
-            // Handle message
-            if (o is TcpLib.Host.Message message)
-            {
-                //if (CheckHandshake(message.Ip))
-                //{
-                Console.WriteLine(Users.First(x => x.Ip.Equals(message.Ip)).Nickname + ": " + message.Content);
-                // }
-            }
+        //private static void OnHostEvent(object o, EventArgs e)
+        //{
+        //    // Handle status
+        //    if (o is TcpLib.Host.Status status)
+        //    {
+        //        //if (CheckHandshake(status.Ip))
+        //        //{
+        //        // Handle disconnect
+        //        if (status.Type == "disconnected")
+        //        {
+        //            Console.WriteLine("disconnected");
+        //            Users.RemoveAll(x => x.Ip.Equals(status.Ip));
+        //        }
+        //        else if (status.Type == "connected")
+        //        {
+        //            while (!Users.Exists(x => x.Ip.Equals(status.Ip)))
+        //            {
+        //                Thread.Sleep(25);
+        //            }
+        //            Console.WriteLine("connected");
+        //            Console.WriteLine(Users.First(x => x.Ip.Equals(status.Ip)).Hash);
+        //            Console.WriteLine(Users.First(x => x.Ip.Equals(status.Ip)).Nickname);
+        //        }
+        //        //}
+        //    }
 
-            //Hadnle handshake
-            if (o is TcpLib.Host.Handshake handshake)
-            {
-                Console.WriteLine("handhshake");
-                if (!Users.Exists(x => x.Ip.Equals(handshake.Ip)))
-                {
-                    Users.Add(new User(handshake.Nickname, handshake.PublicKey, handshake.Hash, handshake.Port));
-                }
-                Users.First(x => x.Ip.Equals(handshake.Ip)).Handshake = true;
-            }
-        }
+        //    // Handle message
+        //    if (o is TcpLib.Host.Message message)
+        //    {
+        //        //if (CheckHandshake(message.Ip))
+        //        //{
+        //        Console.WriteLine(Users.First(x => x.Ip.Equals(message.Ip)).Nickname + ": " + message.Content);
+        //        // }
+        //    }
 
-        private static bool CheckHandshake(IPAddress ip)
-        {
-            return Users.Exists(x => x.Ip.Equals(ip)) ? Users.First(x => x.Ip.Equals(ip)).Handshake == true : false;
-        }
+        //    //Hadnle handshake
+        //    if (o is TcpLib.Host.Handshake handshake)
+        //    {
+        //        Console.WriteLine("handhshake");
+        //        if (!Users.Exists(x => x.Ip.Equals(handshake.Ip)))
+        //        {
+        //            Users.Add(new User(handshake.Nickname, handshake.PublicKey, handshake.Hash, handshake.Port));
+        //        }
+        //        Users.First(x => x.Ip.Equals(handshake.Ip)).Handshake = true;
+        //    }
+        //}
+
+        //private static bool CheckHandshake(IPAddress ip)
+        //{
+        //    return Users.Exists(x => x.Ip.Equals(ip)) ? Users.First(x => x.Ip.Equals(ip)).Handshake == true : false;
+        //}
 
         // Find free tcp port
         private static int FreeTcpPort()
@@ -139,26 +146,5 @@ namespace Lanchat.Common.NetworkLib
             l.Stop();
             return port;
         }
-    }
-
-    // User class
-    public class User
-    {
-        public User(string nickname, string publicKey, string hash, int port)
-        {
-            Nickname = nickname;
-            PublicKey = publicKey;
-            Hash = hash;
-            Port = port;
-            Handshake = false;
-        }
-
-        public string Nickname { get; set; }
-        public string Hash { get; set; }
-        public string PublicKey { get; set; }
-        public int Port { get; set; }
-        public IPAddress Ip { get; set; }
-        public Client Connection { get; set; }
-        public Boolean Handshake { get; set; }
     }
 }
