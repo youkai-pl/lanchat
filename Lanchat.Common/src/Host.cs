@@ -118,7 +118,7 @@ namespace Lanchat.Common.HostLib
                     }
                     catch
                     {
-                        Trace.WriteLine("Recived data is not valid handshake");
+                        Trace.WriteLine(data);
                     }
                 }
             }

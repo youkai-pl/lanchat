@@ -19,6 +19,12 @@ namespace Lanchat.Common.NetworkLib
             Connection.Connect(Ip, Port, handshake);
         }
 
+        public void AcceptHandshake(Handshake handshake)
+        {
+            Nickname = handshake.Nickname;
+            PublicKey = handshake.PublicKey;
+        }
+
         public string Nickname { get; set; }
         public Guid Id { get; set; }
         public string PublicKey { get; set; }

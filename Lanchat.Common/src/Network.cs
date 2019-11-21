@@ -46,25 +46,61 @@ namespace Lanchat.Common.NetworkLib
                 if (IsUserSelfOrAlreadyExist(self, broadcast, senderIp))
                 {
                     // Create new node
-                    NodeList.Add(new Node(broadcast.Id, broadcast.Port, senderIp));
-                    // Crate connection
-                    NodeList[NodeList.Count - 1].CreateConnection(new Handshake(nickname, publicKey));
-
-                    Trace.WriteLine("New node created");
-                    Trace.WriteLine(broadcast.Id.ToString());
-                    Trace.WriteLine(broadcast.Port.ToString());
-                    Trace.WriteLine(senderIp.ToString());
+                    CreateNode(broadcast.Id, broadcast.Port, senderIp);
                 }
             }
 
+            // Handle recieved handshake
             void OnRecievedHandshake(params object[] arguments)
             {
                 var handshake = (Handshake)arguments[0];
                 var ip = (IPAddress)arguments[1];
+
                 Trace.WriteLine("Recieved handshake");
                 Trace.WriteLine(handshake.Nickname);
                 Trace.WriteLine(ip);
+
+                try
+                {
+                    NodeList.Find(x => x.Ip.Equals(ip)).AcceptHandshake(handshake);
+                }
+                catch
+                {
+                    // Create new node
+                    CreateNode(handshake.Id, handshake.Port, ip);
+                }
             }
+
+            // Create new node
+            void CreateNode(Guid id, int port, IPAddress ip, Handshake handshake = null)
+            {
+                var node = new Node(id, port, ip);
+                node.CreateConnection(new Handshake(nickname, publicKey, selfId, tcpPort));
+                NodeList.Add(node);
+
+                Trace.WriteLine("New node created");
+                Trace.WriteLine(node.Id.ToString());
+                Trace.WriteLine(node.Port.ToString());
+
+                // Auto handshake
+                if (handshake != null)
+                {
+                    node.AcceptHandshake(handshake);
+                    Trace.WriteLine("Auto handshake");
+                }
+            }
+        }
+
+        // Send message to all nodes
+        public static void SendAll(string message)
+        {
+            NodeList.ForEach(x =>
+            {
+                if (x.Connection != null)
+                {
+                    x.Connection.Send(message);
+                }
+            });
         }
 
         // Check is paperplane come from self or user alredy exist in list
