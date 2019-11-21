@@ -15,7 +15,6 @@ namespace Lanchat.Common.NetworkLib
 
         public static void Init(int port, string nickname, string publicKey)
         {
-
             // Generate id
             var selfId = Guid.NewGuid();
 
@@ -48,22 +47,22 @@ namespace Lanchat.Common.NetworkLib
             void OnRecievedBroadcast(params object[] arguments)
             {
                 var broadcast = (Paperplane)arguments[0];
+                var senderIp = (IPAddress)arguments[1];
 
-                if (IsUserSelfOrAlreadyExist(self, broadcast))
+                if (IsUserSelfOrAlreadyExist(self, broadcast, senderIp))
                 {
-                    UsersList.Add(new User(broadcast.Id, broadcast.Port));
-                }
-                else
-                {
-                    Trace.WriteLine("Self paperplane ignored");
+                    UsersList.Add(new User(broadcast.Id, broadcast.Port, senderIp));
+                    Trace.WriteLine(broadcast.Id.ToString());
+                    Trace.WriteLine(broadcast.Port.ToString());
+                    Trace.WriteLine(senderIp.ToString());
                 }
             }
         }
 
         // Check is paperplane come from self or user alredy exist in list
-        private static bool IsUserSelfOrAlreadyExist(Paperplane self, Paperplane broadcast)
+        private static bool IsUserSelfOrAlreadyExist(Paperplane self, Paperplane broadcast, IPAddress senderIp)
         {
-            return broadcast.Id != self.Id && !UsersList.Exists(x => x.Id.Equals(broadcast.Id));
+            return broadcast.Id != self.Id && !UsersList.Exists(x => x.Id.Equals(broadcast.Id)) && !UsersList.Exists(x => x.Ip.Equals(senderIp));
         }
 
 

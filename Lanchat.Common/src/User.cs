@@ -5,10 +5,11 @@ namespace Lanchat.Common.NetworkLib
 {
     class User
     {
-        public User(Guid id, int port)
+        public User(Guid id, int port, IPAddress ip)
         {
             Id = id;
             Port = port;
+            Ip = ip;
         }
 
         public string Nickname { get; set; }

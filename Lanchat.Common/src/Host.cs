@@ -28,23 +28,26 @@ namespace Lanchat.Common.HostLib
         // Start host
         public void StartHost(int port)
         {
-            // Create server
-            Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+            Task.Run(() =>
             {
-                ReceiveTimeout = -1
-            };
-            server.Bind(new IPEndPoint(IPAddress.Any, port));
-            server.Listen(-1);
-
-            // Start listening
-            while (true)
-            {
-                Socket client = server.Accept();
-                new Thread(() =>
+                // Create server
+                Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
                 {
-                    try { Process(client); } catch (Exception ex) { Console.WriteLine("Client connection processing error: " + ex.Message); }
-                }).Start();
-            }
+                    ReceiveTimeout = -1
+                };
+                server.Bind(new IPEndPoint(IPAddress.Any, port));
+                server.Listen(-1);
+
+                // Start listening
+                while (true)
+                {
+                    Socket client = server.Accept();
+                    new Thread(() =>
+                    {
+                        try { Process(client); } catch (Exception ex) { Console.WriteLine("Client connection processing error: " + ex.Message); }
+                    }).Start();
+                }
+            });
 
             // Host client process
             void Process(Socket client)

@@ -77,7 +77,7 @@ namespace Lanchat.Cli.Program
             else
             {
                 Prompt.Out(input, null, Config.Get("nickname"));
-                Network.SendAll(input);
+                //Network.SendAll(input);
             }
         }
     }

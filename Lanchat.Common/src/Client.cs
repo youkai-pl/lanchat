@@ -25,7 +25,6 @@ namespace Lanchat.Common.ClientLib
                     try
                     {
                         var paperplane = JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer));
-                        Trace.WriteLine($"Valid paperplane recived from: {from.Address}");
                         RecievedBroadcast(paperplane, from.Address, EventArgs.Empty);
                     }
                     catch (Exception e)
