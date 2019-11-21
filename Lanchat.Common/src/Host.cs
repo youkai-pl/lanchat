@@ -89,37 +89,51 @@ namespace Lanchat.Common.HostLib
             // Host client process
             void Process(Socket client)
             {
-                //OnHostEvent(new Status("connected", IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString())), EventArgs.Empty);
-
                 Trace.WriteLine("New connection on host");
 
                 byte[] response;
                 int received;
+                var ip = IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString());
 
                 while (true)
                 {
-                    // Receive message from the server:
+                    // Receive data
                     response = new byte[client.ReceiveBufferSize];
                     received = client.Receive(response);
                     if (received == 0)
                     {
-                        // handle disconnect here
+                        // Handle disconnect here
                         return;
                     }
 
+                    // Decode recieved data 
                     List<byte> respBytesList = new List<byte>(response);
-                    OnRecievedHandshake(EventArgs.Empty); // temporary
+                    var data = Encoding.UTF8.GetString(respBytesList.ToArray());
+
+                    // Try parse data as handshake
+                    try
+                    {
+                        var handshake = JsonConvert.DeserializeObject<Handshake>(data);
+                        OnRecievedHandshake(handshake, ip, EventArgs.Empty);
+                    }
+                    catch
+                    {
+                        Trace.WriteLine("Recived data is not valid handshake");
+                    }
                 }
             }
         }
 
         // Host events
         public delegate void HostEventHandler(params object[] arguments);
+
+        // Handshake recievie event
         public event HostEventHandler RecievedHandshake;
-        protected virtual void OnRecievedHandshake(EventArgs e)
+        protected virtual void OnRecievedHandshake(Handshake handshake, IPAddress ip, EventArgs e)
         {
-            RecievedHandshake(EventArgs.Empty);
+            RecievedHandshake(handshake, ip, e);
         }
+
         public event HostEventHandler RecievedBroadcast;
 
         // Recieved broadcast
