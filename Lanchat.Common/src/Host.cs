@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -11,8 +12,20 @@ namespace Lanchat.Common.HostLib
 {
     class Host
     {
+
+        private readonly UdpClient udpClient;
+        private readonly int port;
+
+        // Host constructor
+        public Host(int port)
+        {
+            this.port = port;
+            udpClient = new UdpClient();
+            udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, port));
+        }
+
         // Start broadcast
-        public void Broadcast(UdpClient udpClient, object self, int port)
+        public void Broadcast(object self)
         {
             Task.Run(() =>
             {
@@ -21,6 +34,30 @@ namespace Lanchat.Common.HostLib
                     var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(self));
                     udpClient.Send(data, data.Length, "255.255.255.255", port);
                     Thread.Sleep(1000);
+                }
+            });
+        }
+
+        // Listen other hosts broadcasts
+        public void ListenBroadcast()
+        {
+            Task.Run(() =>
+            {
+                var from = new IPEndPoint(0, 0);
+                while (true)
+                {
+                    var recvBuffer = udpClient.Receive(ref from);
+
+                    // Try parse
+                    try
+                    {
+                        var paperplane = JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer));
+                        RecievedBroadcast(paperplane, from.Address, EventArgs.Empty);
+                    }
+                    catch (Exception e)
+                    {
+                        Trace.WriteLine("Paperplane parsing error: " + e.Message);
+                    }
                 }
             });
         }
@@ -54,6 +91,8 @@ namespace Lanchat.Common.HostLib
             {
                 //OnHostEvent(new Status("connected", IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString())), EventArgs.Empty);
 
+                Trace.WriteLine("New connection on host");
+
                 byte[] response;
                 int received;
 
@@ -64,14 +103,29 @@ namespace Lanchat.Common.HostLib
                     received = client.Receive(response);
                     if (received == 0)
                     {
-                        //OnHostEvent(new Status("disconnected", IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString())), EventArgs.Empty);
+                        // handle disconnect here
                         return;
                     }
 
                     List<byte> respBytesList = new List<byte>(response);
-                    //Recieve(Encoding.UTF8.GetString(respBytesList.ToArray()), IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString()));
+                    OnRecievedHandshake(EventArgs.Empty); // temporary
                 }
             }
+        }
+
+        // Host events
+        public delegate void HostEventHandler(params object[] arguments);
+        public event HostEventHandler RecievedHandshake;
+        protected virtual void OnRecievedHandshake(EventArgs e)
+        {
+            RecievedHandshake(EventArgs.Empty);
+        }
+        public event HostEventHandler RecievedBroadcast;
+
+        // Recieved broadcast
+        protected virtual void OnRecievedBroadcast(Paperplane paperplane, IPAddress sender, EventArgs e)
+        {
+            RecievedBroadcast(paperplane, sender, EventArgs.Empty);
         }
     }
 }

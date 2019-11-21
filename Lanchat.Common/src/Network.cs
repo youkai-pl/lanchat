@@ -1,5 +1,4 @@
 ﻿using Lanchat.Common.HostLib;
-using Lanchat.Common.ClientLib;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -11,9 +10,9 @@ namespace Lanchat.Common.NetworkLib
     public static class Network
     {
         // Users list
-        private static List<User> UsersList = new List<User>();
+        private static List<Node> NodeList = new List<Node>();
 
-        public static void Init(int port, string nickname, string publicKey)
+        public static void Init(int udpPort, string nickname, string publicKey)
         {
             // Generate id
             var selfId = Guid.NewGuid();
@@ -24,26 +23,21 @@ namespace Lanchat.Common.NetworkLib
             // Self
             var self = new Paperplane(tcpPort, selfId);
 
-            // Create client class
-            var client = new Client();
-            client.RecievedBroadcast += OnRecievedBroadcast;
-
             // Create host class
-            var host = new Host();
-
-            // Create UDP client
-            UdpClient udpClient = new UdpClient();
-            udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, port));
+            var host = new Host(udpPort);
+            host.RecievedBroadcast += OnRecievedBroadcast;
+            host.RecievedHandshake += OnRecievedHandshake;
 
             // Initialize host
             host.StartHost(tcpPort);
 
             // Initialize broadcast
-            host.Broadcast(udpClient, self, port);
+            host.Broadcast(self);
 
-            // Listen broadcast
-            client.ListenBroadcast(udpClient);
+            // Listen other hosts broadcasts
+            host.ListenBroadcast();
 
+            // Recieved broadcast hadnle
             void OnRecievedBroadcast(params object[] arguments)
             {
                 var broadcast = (Paperplane)arguments[0];
@@ -51,18 +45,28 @@ namespace Lanchat.Common.NetworkLib
 
                 if (IsUserSelfOrAlreadyExist(self, broadcast, senderIp))
                 {
-                    UsersList.Add(new User(broadcast.Id, broadcast.Port, senderIp));
+                    // Create new node
+                    NodeList.Add(new Node(broadcast.Id, broadcast.Port, senderIp));
+                    // Crate connection
+                    NodeList[NodeList.Count - 1].CreateConnection(new Handshake(nickname, publicKey));
+
+                    Trace.WriteLine("New node created");
                     Trace.WriteLine(broadcast.Id.ToString());
                     Trace.WriteLine(broadcast.Port.ToString());
                     Trace.WriteLine(senderIp.ToString());
                 }
+            }
+
+            void OnRecievedHandshake(params object[] arguments)
+            {
+                Trace.WriteLine("Recieved handshake");
             }
         }
 
         // Check is paperplane come from self or user alredy exist in list
         private static bool IsUserSelfOrAlreadyExist(Paperplane self, Paperplane broadcast, IPAddress senderIp)
         {
-            return broadcast.Id != self.Id && !UsersList.Exists(x => x.Id.Equals(broadcast.Id)) && !UsersList.Exists(x => x.Ip.Equals(senderIp));
+            return broadcast.Id != self.Id && !NodeList.Exists(x => x.Id.Equals(broadcast.Id)) && !NodeList.Exists(x => x.Ip.Equals(senderIp));
         }
 
 

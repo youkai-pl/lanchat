@@ -1,15 +1,22 @@
-﻿using System;
+﻿using Lanchat.Common.HostLib;
+using System;
 using System.Net;
 
 namespace Lanchat.Common.NetworkLib
 {
-    class User
+    class Node
     {
-        public User(Guid id, int port, IPAddress ip)
+        public Node(Guid id, int port, IPAddress ip)
         {
             Id = id;
             Port = port;
             Ip = ip;
+        }
+
+        public void CreateConnection(Handshake handshake)
+        {
+            Connection = new Client();
+            Connection.Connect(Ip, Port, handshake);
         }
 
         public string Nickname { get; set; }
@@ -17,5 +24,6 @@ namespace Lanchat.Common.NetworkLib
         public string PublicKey { get; set; }
         public int Port { get; set; }
         public IPAddress Ip { get; set; }
+        public Client Connection { get; set; }
     }
 }

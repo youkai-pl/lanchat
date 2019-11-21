@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lanchat.Common.ClientLib
+namespace Lanchat.Common.HostLib
 {
     // Paperplane class
     public class Paperplane
