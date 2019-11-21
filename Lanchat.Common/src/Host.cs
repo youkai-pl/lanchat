@@ -81,7 +81,7 @@ namespace Lanchat.Common.HostLib
                     Socket client = server.Accept();
                     new Thread(() =>
                     {
-                        try { Process(client); } catch (Exception ex) { Console.WriteLine("Client connection processing error: " + ex.Message); }
+                        try { Process(client); } catch (Exception ex) { Trace.WriteLine("Client connection processing error: " + ex.Message); }
                     }).Start();
                 }
             });
@@ -102,7 +102,7 @@ namespace Lanchat.Common.HostLib
                     received = client.Receive(response);
                     if (received == 0)
                     {
-                        // Handle disconnect here
+                        OnNodeDisconnected(ip, EventArgs.Empty);
                         return;
                     }
 
@@ -134,12 +134,18 @@ namespace Lanchat.Common.HostLib
             RecievedHandshake(handshake, ip, e);
         }
 
-        public event HostEventHandler RecievedBroadcast;
-
         // Recieved broadcast
-        protected virtual void OnRecievedBroadcast(Paperplane paperplane, IPAddress sender, EventArgs e)
+        public event HostEventHandler RecievedBroadcast;
+        protected virtual void OnRecievedBroadcast(Paperplane paperplane, IPAddress ip, EventArgs e)
         {
-            RecievedBroadcast(paperplane, sender, EventArgs.Empty);
+            RecievedBroadcast(paperplane, ip, e);
+        }
+
+        // Detected disconnect
+        public event HostEventHandler NodeDisconnected;
+        protected virtual void OnNodeDisconnected(IPAddress ip, EventArgs e)
+        {
+            NodeDisconnected(ip, e);
         }
     }
 }

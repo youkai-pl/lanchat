@@ -27,6 +27,7 @@ namespace Lanchat.Common.NetworkLib
             var host = new Host(udpPort);
             host.RecievedBroadcast += OnRecievedBroadcast;
             host.RecievedHandshake += OnRecievedHandshake;
+            host.NodeDisconnected += OnNodeDisconnected;
 
             // Initialize host
             host.StartHost(tcpPort);
@@ -37,7 +38,7 @@ namespace Lanchat.Common.NetworkLib
             // Listen other hosts broadcasts
             host.ListenBroadcast();
 
-            // Recieved broadcast hadnle
+            // Handle recieved broadcast
             void OnRecievedBroadcast(params object[] arguments)
             {
                 var broadcast = (Paperplane)arguments[0];
@@ -68,6 +69,23 @@ namespace Lanchat.Common.NetworkLib
                 {
                     // Create new node
                     CreateNode(handshake.Id, handshake.Port, ip);
+                }
+            }
+
+            // Handle node disconnect
+            void OnNodeDisconnected(params object[] arguments)
+            {
+                var ip = (IPAddress)arguments[0];
+
+                try
+                {
+                    // Remove node from list
+                    Trace.WriteLine(NodeList.Find(x => x.Ip.Equals(ip)).Nickname + " disconnected");
+                    NodeList.RemoveAll(x => x.Ip.Equals(ip));
+                }
+                catch
+                {
+                    Trace.WriteLine("Node does not exist");
                 }
             }
 
