@@ -25,9 +25,13 @@ namespace Lanchat.Common.NetworkLib
 
             // Create host class
             var host = new Host(udpPort);
+
+            // Listen host events
             host.RecievedBroadcast += OnRecievedBroadcast;
-            host.RecievedHandshake += OnRecievedHandshake;
+            host.NodeConnected += OnNodeConnected;
             host.NodeDisconnected += OnNodeDisconnected;
+            host.RecievedHandshake += OnRecievedHandshake;
+            host.RecievedMessage += OnRecievedMessage;
 
             // Initialize host
             host.StartHost(tcpPort);
@@ -51,25 +55,10 @@ namespace Lanchat.Common.NetworkLib
                 }
             }
 
-            // Handle recieved handshake
-            void OnRecievedHandshake(params object[] arguments)
+            // Handle node connect
+            void OnNodeConnected(params object[] arguments)
             {
-                var handshake = (Handshake)arguments[0];
-                var ip = (IPAddress)arguments[1];
-
-                Trace.WriteLine("Recieved handshake");
-                Trace.WriteLine(handshake.Nickname);
-                Trace.WriteLine(ip);
-
-                try
-                {
-                    NodeList.Find(x => x.Ip.Equals(ip)).AcceptHandshake(handshake);
-                }
-                catch
-                {
-                    // Create new node
-                    CreateNode(handshake.Id, handshake.Port, ip);
-                }
+                Trace.WriteLine("New connection from: " + arguments[0].ToString());
             }
 
             // Handle node disconnect
@@ -89,23 +78,55 @@ namespace Lanchat.Common.NetworkLib
                 }
             }
 
+            // Handle recieved handshake
+            void OnRecievedHandshake(params object[] arguments)
+            {
+                var handshake = (Handshake)arguments[0];
+                var ip = (IPAddress)arguments[1];
+
+                Trace.WriteLine("Recieved handshake");
+                Trace.Indent();
+                Trace.WriteLine(handshake.Nickname);
+                Trace.WriteLine(ip);
+                Trace.Unindent();
+
+                if (NodeList.Exists(x => x.Ip.Equals(ip)))
+                {
+                    Trace.WriteLine("Node found and handshake accepted");
+                    NodeList.Find(x => x.Ip.Equals(ip)).AcceptHandshake(handshake);
+                }
+                else
+                {
+                    // Create new node
+                    Trace.WriteLine("New node created after recieved handshake");
+                    CreateNode(handshake.Id, handshake.Port, ip);
+                    NodeList.Find(x => x.Ip.Equals(ip)).AcceptHandshake(handshake);
+                }
+            }
+
+            // Handle message
+            void OnRecievedMessage(params object[] arguments)
+            {
+                var message = (string)arguments[0];
+                var ip = (IPAddress)arguments[1];
+
+                var userNickname = NodeList.Find(x => x.Ip.Equals(ip)).Nickname;
+                Trace.WriteLine(userNickname + ": " + message);
+            }
+
             // Create new node
-            void CreateNode(Guid id, int port, IPAddress ip, Handshake handshake = null)
+            void CreateNode(Guid id, int port, IPAddress ip)
             {
                 var node = new Node(id, port, ip);
                 node.CreateConnection(new Handshake(nickname, publicKey, selfId, tcpPort));
                 NodeList.Add(node);
 
                 Trace.WriteLine("New node created");
+                Trace.Indent();
                 Trace.WriteLine(node.Id.ToString());
                 Trace.WriteLine(node.Port.ToString());
-
-                // Auto handshake
-                if (handshake != null)
-                {
-                    node.AcceptHandshake(handshake);
-                    Trace.WriteLine("Auto handshake");
-                }
+                Trace.WriteLine(node.Nickname);
+                Trace.Unindent();
             }
         }
 

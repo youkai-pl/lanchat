@@ -88,11 +88,10 @@ namespace Lanchat.Common.HostLib
             // Host client process
             void Process(Socket client)
             {
-                Trace.WriteLine("New connection on host");
-
                 byte[] response;
                 int received;
                 var ip = IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString());
+                OnNodeConnected(ip, EventArgs.Empty);
 
                 while (true)
                 {
@@ -117,7 +116,7 @@ namespace Lanchat.Common.HostLib
                     }
                     catch
                     {
-                        Trace.WriteLine(data);
+                        OnRecievedMessage(data, ip, EventArgs.Empty);
                     }
                 }
             }
@@ -126,7 +125,15 @@ namespace Lanchat.Common.HostLib
         // Host events
         public delegate void HostEventHandler(params object[] arguments);
 
-        // Handshake recievie event
+        // Recieved broadcast
+        public event HostEventHandler RecievedBroadcast;
+
+        protected virtual void OnRecievedBroadcast(Paperplane paperplane, IPAddress ip, EventArgs e)
+        {
+            RecievedBroadcast(paperplane, ip, e);
+        }
+
+        // Recieved handshake
         public event HostEventHandler RecievedHandshake;
 
         protected virtual void OnRecievedHandshake(Handshake handshake, IPAddress ip, EventArgs e)
@@ -134,12 +141,20 @@ namespace Lanchat.Common.HostLib
             RecievedHandshake(handshake, ip, e);
         }
 
-        // Recieved broadcast
-        public event HostEventHandler RecievedBroadcast;
+        // Recieved handshake
+        public event HostEventHandler RecievedMessage;
 
-        protected virtual void OnRecievedBroadcast(Paperplane paperplane, IPAddress ip, EventArgs e)
+        protected virtual void OnRecievedMessage(string message, IPAddress ip, EventArgs e)
         {
-            RecievedBroadcast(paperplane, ip, e);
+            RecievedMessage(message, ip, e);
+        }
+
+        // Detected connect
+        public event HostEventHandler NodeConnected;
+
+        protected virtual void OnNodeConnected(IPAddress ip, EventArgs e)
+        {
+            NodeConnected(ip, e);
         }
 
         // Detected disconnect
