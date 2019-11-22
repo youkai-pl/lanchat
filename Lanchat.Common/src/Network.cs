@@ -137,7 +137,7 @@ namespace Lanchat.Common.NetworkLib
             {
                 if (x.Connection != null)
                 {
-                    x.Connection.Send(message);
+                    x.Connection.SendMessage(message);
                 }
             });
         }

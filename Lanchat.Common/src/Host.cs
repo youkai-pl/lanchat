@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -106,17 +107,21 @@ namespace Lanchat.Common.HostLib
 
                     // Decode recieved data
                     List<byte> respBytesList = new List<byte>(response);
-                    var data = Encoding.UTF8.GetString(respBytesList.ToArray());
 
-                    // Try parse data as handshake
-                    try
+                    // Parse json and get data type
+                    JObject data = JObject.Parse(Encoding.UTF8.GetString(respBytesList.ToArray()));
+                    var type = data.GetValue("type").ToString();
+
+                    // If handshake
+                    if (type == "handshake")
                     {
-                        var handshake = JsonConvert.DeserializeObject<Handshake>(data);
-                        OnRecievedHandshake(handshake, ip, EventArgs.Empty);
+                        OnRecievedHandshake(data.GetValue("content").ToObject<Handshake>(), ip, EventArgs.Empty);
                     }
-                    catch
+
+                    // If message
+                    if (type == "message")
                     {
-                        OnRecievedMessage(data, ip, EventArgs.Empty);
+                        OnRecievedMessage(data.GetValue("content").ToString(), ip, EventArgs.Empty);
                     }
                 }
             }
