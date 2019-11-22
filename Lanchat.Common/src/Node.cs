@@ -4,7 +4,7 @@ using System.Net;
 
 namespace Lanchat.Common.NetworkLib
 {
-    class Node
+    internal class Node
     {
         public Node(Guid id, int port, IPAddress ip)
         {

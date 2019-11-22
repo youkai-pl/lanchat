@@ -52,7 +52,7 @@ namespace Lanchat.Common.TcpLib
         }
 
         // Handle packet
-        void Recieve(string data, IPAddress ip)
+        private void Recieve(string data, IPAddress ip)
         {
             object parsed;
             try

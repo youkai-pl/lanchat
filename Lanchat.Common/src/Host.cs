@@ -10,9 +10,8 @@ using System.Threading.Tasks;
 
 namespace Lanchat.Common.HostLib
 {
-    class Host
+    internal class Host
     {
-
         private readonly UdpClient udpClient;
         private readonly int port;
 
@@ -106,7 +105,7 @@ namespace Lanchat.Common.HostLib
                         return;
                     }
 
-                    // Decode recieved data 
+                    // Decode recieved data
                     List<byte> respBytesList = new List<byte>(response);
                     var data = Encoding.UTF8.GetString(respBytesList.ToArray());
 
@@ -129,6 +128,7 @@ namespace Lanchat.Common.HostLib
 
         // Handshake recievie event
         public event HostEventHandler RecievedHandshake;
+
         protected virtual void OnRecievedHandshake(Handshake handshake, IPAddress ip, EventArgs e)
         {
             RecievedHandshake(handshake, ip, e);
@@ -136,6 +136,7 @@ namespace Lanchat.Common.HostLib
 
         // Recieved broadcast
         public event HostEventHandler RecievedBroadcast;
+
         protected virtual void OnRecievedBroadcast(Paperplane paperplane, IPAddress ip, EventArgs e)
         {
             RecievedBroadcast(paperplane, ip, e);
@@ -143,6 +144,7 @@ namespace Lanchat.Common.HostLib
 
         // Detected disconnect
         public event HostEventHandler NodeDisconnected;
+
         protected virtual void OnNodeDisconnected(IPAddress ip, EventArgs e)
         {
             NodeDisconnected(ip, e);

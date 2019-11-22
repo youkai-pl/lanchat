@@ -1,9 +1,9 @@
 ﻿using Lanchat.Common.HostLib;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Diagnostics;
 
 namespace Lanchat.Common.NetworkLib
 {

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -10,6 +9,7 @@ namespace Lanchat.Common.HostLib
     {
         // Tcp client
         private TcpClient tcpclnt;
+
         private NetworkStream nwStream;
 
         // Connect
