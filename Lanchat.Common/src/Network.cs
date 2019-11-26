@@ -7,24 +7,29 @@ using System.Net.Sockets;
 
 namespace Lanchat.Common.NetworkLib
 {
-    public static class Network
+    public class Network
     {
         // Users list
-        private static List<Node> NodeList = new List<Node>();
+        private static readonly List<Node> NodeList = new List<Node>();
 
-        public static void Init(int udpPort, string nickname, string publicKey)
+        // Properties
+        public string Nickname { get; set; }
+        public string PublicKey { get; set; }
+        public int BroadcastPort { get; set; }
+        public int HostPort { get; set; }
+        public Guid Id { get; set; }
+
+        public Network(int port, string nickname, string publicKey)
         {
-            // Generate id
-            var selfId = Guid.NewGuid();
-
-            // Find free port
-            var tcpPort = FreeTcpPort();
-
-            // Self
-            var self = new Paperplane(tcpPort, selfId);
+            // Set properties
+            Nickname = nickname;
+            PublicKey = publicKey;
+            BroadcastPort = port;
+            Id = Guid.NewGuid();
+            HostPort = FreeTcpPort();
 
             // Create host class
-            var host = new Host(udpPort);
+            var host = new Host(BroadcastPort);
 
             // Listen host events
             host.RecievedBroadcast += OnRecievedBroadcast;
@@ -34,100 +39,89 @@ namespace Lanchat.Common.NetworkLib
             host.RecievedMessage += OnRecievedMessage;
 
             // Initialize host
-            host.StartHost(tcpPort);
+            host.StartHost(HostPort);
 
             // Initialize broadcast
-            host.Broadcast(self);
+            host.Broadcast(new Paperplane(HostPort, Id));
 
             // Listen other hosts broadcasts
             host.ListenBroadcast();
+        }
 
-            // Handle recieved broadcast
-            void OnRecievedBroadcast(params object[] arguments)
+        // Handle recieved broadcast
+        private void OnRecievedBroadcast(object o, RecievedBroadcastEventArgs e)
+        {
+            if (IsCanAdd(e.Sender, e.SenderIP))
             {
-                var broadcast = (Paperplane)arguments[0];
-                var senderIp = (IPAddress)arguments[1];
-
-                if (IsUserSelfOrAlreadyExist(self, broadcast, senderIp))
-                {
-                    // Create new node
-                    CreateNode(broadcast.Id, broadcast.Port, senderIp);
-                }
+                // Create new node
+                CreateNode(e.Sender.Id, e.Sender.Port, e.SenderIP);
             }
+        }
 
-            // Handle node connect
-            void OnNodeConnected(params object[] arguments)
+        // Handle node connect
+        private void OnNodeConnected(object o, NodeConnectionStatusEvent e)
+        {
+            Trace.WriteLine("New connection from: " + e.NodeIP.ToString());
+        }
+
+        // Handle node disconnect
+        private void OnNodeDisconnected(object o, NodeConnectionStatusEvent e)
+        {
+            try
             {
-                Trace.WriteLine("New connection from: " + arguments[0].ToString());
+                // Remove node from list
+                Trace.WriteLine(NodeList.Find(x => x.Ip.Equals(e.NodeIP)).Nickname + " disconnected");
+                NodeList.RemoveAll(x => x.Ip.Equals(e.NodeIP));
             }
-
-            // Handle node disconnect
-            void OnNodeDisconnected(params object[] arguments)
+            catch
             {
-                var ip = (IPAddress)arguments[0];
-
-                try
-                {
-                    // Remove node from list
-                    Trace.WriteLine(NodeList.Find(x => x.Ip.Equals(ip)).Nickname + " disconnected");
-                    NodeList.RemoveAll(x => x.Ip.Equals(ip));
-                }
-                catch
-                {
-                    Trace.WriteLine("Node does not exist");
-                }
+                Trace.WriteLine("Node does not exist");
             }
+        }
 
-            // Handle recieved handshake
-            void OnRecievedHandshake(params object[] arguments)
+        // Handle recieved handshake
+        private void OnRecievedHandshake(object o, RecievedHandshakeEventArgs e)
+        {
+            Trace.WriteLine("Recieved handshake");
+            Trace.Indent();
+            Trace.WriteLine(e.NodeHandshake.Nickname);
+            Trace.WriteLine(e.SenderIP);
+            Trace.Unindent();
+
+            if (NodeList.Exists(x => x.Ip.Equals(e.SenderIP)))
             {
-                var handshake = (Handshake)arguments[0];
-                var ip = (IPAddress)arguments[1];
-
-                Trace.WriteLine("Recieved handshake");
-                Trace.Indent();
-                Trace.WriteLine(handshake.Nickname);
-                Trace.WriteLine(ip);
-                Trace.Unindent();
-
-                if (NodeList.Exists(x => x.Ip.Equals(ip)))
-                {
-                    Trace.WriteLine("Node found and handshake accepted");
-                    NodeList.Find(x => x.Ip.Equals(ip)).AcceptHandshake(handshake);
-                }
-                else
-                {
-                    // Create new node
-                    Trace.WriteLine("New node created after recieved handshake");
-                    CreateNode(handshake.Id, handshake.Port, ip);
-                    NodeList.Find(x => x.Ip.Equals(ip)).AcceptHandshake(handshake);
-                }
+                Trace.WriteLine("Node found and handshake accepted");
+                NodeList.Find(x => x.Ip.Equals(e.SenderIP)).AcceptHandshake(e.NodeHandshake);
             }
-
-            // Handle message
-            void OnRecievedMessage(params object[] arguments)
+            else
             {
-                var message = (string)arguments[0];
-                var ip = (IPAddress)arguments[1];
-
-                var userNickname = NodeList.Find(x => x.Ip.Equals(ip)).Nickname;
-                Trace.WriteLine(userNickname + ": " + message);
+                // Create new node
+                Trace.WriteLine("New node created after recieved handshake");
+                CreateNode(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP);
+                NodeList.Find(x => x.Ip.Equals(e.SenderIP)).AcceptHandshake(e.NodeHandshake);
             }
+        }
 
-            // Create new node
-            void CreateNode(Guid id, int port, IPAddress ip)
-            {
-                var node = new Node(id, port, ip);
-                node.CreateConnection(new Handshake(nickname, publicKey, selfId, tcpPort));
-                NodeList.Add(node);
+        // Handle message
+        private void OnRecievedMessage(object o, RecievedMessageEventArgs e)
+        {
+            var userNickname = NodeList.Find(x => x.Ip.Equals(e.SenderIP)).Nickname;
+            Trace.WriteLine(userNickname + ": " + e.Content);
+        }
 
-                Trace.WriteLine("New node created");
-                Trace.Indent();
-                Trace.WriteLine(node.Id.ToString());
-                Trace.WriteLine(node.Port.ToString());
-                Trace.WriteLine(node.Nickname);
-                Trace.Unindent();
-            }
+        // Create new node
+        public void CreateNode(Guid id, int port, IPAddress ip)
+        {
+            var node = new Node(id, port, ip);
+            node.CreateConnection(new Handshake(Nickname, PublicKey, Id, HostPort));
+            NodeList.Add(node);
+
+            Trace.WriteLine("New node created");
+            Trace.Indent();
+            Trace.WriteLine(node.Id.ToString());
+            Trace.WriteLine(node.Port.ToString());
+            Trace.WriteLine(node.Nickname);
+            Trace.Unindent();
         }
 
         // Send message to all nodes
@@ -143,9 +137,9 @@ namespace Lanchat.Common.NetworkLib
         }
 
         // Check is paperplane come from self or user alredy exist in list
-        private static bool IsUserSelfOrAlreadyExist(Paperplane self, Paperplane broadcast, IPAddress senderIp)
+        private bool IsCanAdd(Paperplane broadcast, IPAddress senderIp)
         {
-            return broadcast.Id != self.Id && !NodeList.Exists(x => x.Id.Equals(broadcast.Id)) && !NodeList.Exists(x => x.Ip.Equals(senderIp));
+            return broadcast.Id != Id && !NodeList.Exists(x => x.Id.Equals(broadcast.Id)) && !NodeList.Exists(x => x.Ip.Equals(senderIp));
         }
 
         // Find free tcp port

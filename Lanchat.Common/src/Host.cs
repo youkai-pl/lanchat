@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Lanchat.Common.HostLib
 {
-    internal class Host
+    class Host
     {
         private readonly UdpClient udpClient;
         private readonly int port;
@@ -52,7 +52,7 @@ namespace Lanchat.Common.HostLib
                     try
                     {
                         var paperplane = JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer));
-                        RecievedBroadcast(paperplane, from.Address, EventArgs.Empty);
+                        OnRecievedBroadcast(paperplane, from.Address);
                     }
                     catch (Exception e)
                     {
@@ -92,7 +92,7 @@ namespace Lanchat.Common.HostLib
                 byte[] response;
                 int received;
                 var ip = IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString());
-                OnNodeConnected(ip, EventArgs.Empty);
+                OnNodeConnected(ip);
 
                 while (true)
                 {
@@ -101,7 +101,7 @@ namespace Lanchat.Common.HostLib
                     received = client.Receive(response);
                     if (received == 0)
                     {
-                        OnNodeDisconnected(ip, EventArgs.Empty);
+                        OnNodeDisconnected(ip);
                         return;
                     }
 
@@ -115,59 +115,69 @@ namespace Lanchat.Common.HostLib
                     // If handshake
                     if (type == "handshake")
                     {
-                        OnRecievedHandshake(data.GetValue("content").ToObject<Handshake>(), ip, EventArgs.Empty);
+                        OnRecievedHandshake(data.GetValue("content").ToObject<Handshake>(), ip);
                     }
 
                     // If message
                     if (type == "message")
                     {
-                        OnRecievedMessage(data.GetValue("content").ToString(), ip, EventArgs.Empty);
+                        OnRecievedMessage(data.GetValue("content").ToString(), ip);
                     }
                 }
             }
         }
 
-        // Host events
-        public delegate void HostEventHandler(params object[] arguments);
-
-        // Recieved broadcast
-        public event HostEventHandler RecievedBroadcast;
-
-        protected virtual void OnRecievedBroadcast(Paperplane paperplane, IPAddress ip, EventArgs e)
+        // Recieved broadcast event
+        public event EventHandler<RecievedBroadcastEventArgs> RecievedBroadcast;
+        protected virtual void OnRecievedBroadcast(Paperplane sender, IPAddress senderIP)
         {
-            RecievedBroadcast(paperplane, ip, e);
+            RecievedBroadcast(this, new RecievedBroadcastEventArgs()
+            {
+                Sender = sender,
+                SenderIP = senderIP
+            });
         }
 
-        // Recieved handshake
-        public event HostEventHandler RecievedHandshake;
-
-        protected virtual void OnRecievedHandshake(Handshake handshake, IPAddress ip, EventArgs e)
+        // Node connected event
+        public event EventHandler<NodeConnectionStatusEvent> NodeConnected;
+        protected virtual void OnNodeConnected(IPAddress nodeIP)
         {
-            RecievedHandshake(handshake, ip, e);
+            NodeConnected(this, new NodeConnectionStatusEvent()
+            {
+                NodeIP = nodeIP
+            });
         }
 
-        // Recieved handshake
-        public event HostEventHandler RecievedMessage;
-
-        protected virtual void OnRecievedMessage(string message, IPAddress ip, EventArgs e)
+        // Node connected event
+        public event EventHandler<NodeConnectionStatusEvent> NodeDisconnected;
+        protected virtual void OnNodeDisconnected(IPAddress nodeIP)
         {
-            RecievedMessage(message, ip, e);
+            NodeDisconnected(this, new NodeConnectionStatusEvent()
+            {
+                NodeIP = nodeIP
+            });
         }
 
-        // Detected connect
-        public event HostEventHandler NodeConnected;
-
-        protected virtual void OnNodeConnected(IPAddress ip, EventArgs e)
+        // Recieved handshake event
+        public event EventHandler<RecievedHandshakeEventArgs> RecievedHandshake;
+        protected virtual void OnRecievedHandshake(Handshake handshake, IPAddress senderIP)
         {
-            NodeConnected(ip, e);
+            RecievedHandshake(this, new RecievedHandshakeEventArgs()
+            {
+                NodeHandshake = handshake,
+                SenderIP = senderIP
+            });
         }
 
-        // Detected disconnect
-        public event HostEventHandler NodeDisconnected;
-
-        protected virtual void OnNodeDisconnected(IPAddress ip, EventArgs e)
+        // Recieved handshake event
+        public event EventHandler<RecievedMessageEventArgs> RecievedMessage;
+        protected virtual void OnRecievedMessage(string content, IPAddress senderIP)
         {
-            NodeDisconnected(ip, e);
+            RecievedMessage(this, new RecievedMessageEventArgs()
+            {
+                Content = content,
+                SenderIP = senderIP
+            });
         }
     }
 }

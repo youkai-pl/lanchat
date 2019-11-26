@@ -53,14 +53,12 @@ namespace Lanchat.Cli.Program
             }
 
             // Initialize prompt
-            Prompt Prompt1 = new Prompt();
-            Prompt1.RecievedInput += OnRecievedInput;
-            new Thread(Prompt1.Init).Start();
+            Prompt prompt = new Prompt();
+            prompt.RecievedInput += OnRecievedInput;
+            new Thread(prompt.Init).Start();
 
             // Initialize network
-            Network.Init(int.Parse(Config.Get("port")),
-                        Config.Get("nickname"),
-                        Cryptography.GetPublic());
+            var network = new Network(int.Parse(Config.Get("port")), Config.Get("nickname"), Cryptography.GetPublic());
         }
 
         // Handle input
