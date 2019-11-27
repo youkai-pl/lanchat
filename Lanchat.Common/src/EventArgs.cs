@@ -12,6 +12,7 @@ namespace Lanchat.Common.HostLib
     public class NodeConnectionStatusEvent : EventArgs
     {
         public IPAddress NodeIP { get; set; }
+        public string Nickanme { get; set; }
     }
 
     public class RecievedHandshakeEventArgs : EventArgs
@@ -23,6 +24,7 @@ namespace Lanchat.Common.HostLib
     public class RecievedMessageEventArgs : EventArgs
     {
         public string Content { get; set; }
+        public string Nickanme { get; set; }
         public IPAddress SenderIP { get; set; }
     }
 }
