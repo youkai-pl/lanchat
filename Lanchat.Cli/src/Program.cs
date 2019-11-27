@@ -14,6 +14,8 @@ namespace Lanchat.Cli.Program
 {
     public static class Program
     {
+        private static Network network;
+
         public static void Main()
         {
             // Trace listener
@@ -58,7 +60,7 @@ namespace Lanchat.Cli.Program
             new Thread(prompt.Init).Start();
 
             // Initialize network
-            var network = new Network(int.Parse(Config.Get("port")), Config.Get("nickname"), Cryptography.GetPublic());
+            network = new Network(int.Parse(Config.Get("port")), Config.Get("nickname"), Cryptography.GetPublic());
         }
 
         // Handle input
@@ -75,7 +77,7 @@ namespace Lanchat.Cli.Program
             else
             {
                 Prompt.Out(input, null, Config.Get("nickname"));
-                Network.SendAll(input);
+                network.SendAll(input);
             }
         }
     }
