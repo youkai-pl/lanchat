@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Lanchat.Common.NetworkLib;
 
 namespace Lanchat.Common.HostLib
 {
@@ -169,7 +170,7 @@ namespace Lanchat.Common.HostLib
             });
         }
 
-        // Recieved handshake event
+        // Recieved message event
         public event EventHandler<RecievedMessageEventArgs> RecievedMessage;
         protected virtual void OnRecievedMessage(string content, IPAddress senderIP)
         {

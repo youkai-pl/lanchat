@@ -12,6 +12,9 @@ namespace Lanchat.Common.NetworkLib
         // Users list
         public List<Node> NodeList = new List<Node>();
 
+        // Host
+        private readonly Host host;
+
         // Properties
         public string Nickname { get; set; }
         public string PublicKey { get; set; }
@@ -29,7 +32,7 @@ namespace Lanchat.Common.NetworkLib
             HostPort = FreeTcpPort();
 
             // Create host class
-            var host = new Host(BroadcastPort);
+            host = new Host(BroadcastPort);
 
             // Listen host events
             var handlers = new NetworkHandlers(this);
@@ -38,7 +41,10 @@ namespace Lanchat.Common.NetworkLib
             host.NodeDisconnected += handlers.OnNodeDisconnected;
             host.RecievedHandshake += handlers.OnRecievedHandshake;
             host.RecievedMessage += handlers.OnRecievedMessage;
+        }
 
+        public void Start()
+        {
             // Initialize host
             host.StartHost(HostPort);
 
@@ -90,6 +96,17 @@ namespace Lanchat.Common.NetworkLib
             int port = ((IPEndPoint)l.LocalEndpoint).Port;
             l.Stop();
             return port;
+        }
+
+        // Recieved message event
+        public event EventHandler<RecievedMessageEventArgs> RecievedMessage;
+        public virtual void OnRecievedMessage(string content, string nickname)
+        {
+            RecievedMessage(this, new RecievedMessageEventArgs()
+            {
+                Content = content,
+                Nickname = nickname
+            });
         }
     }
 }

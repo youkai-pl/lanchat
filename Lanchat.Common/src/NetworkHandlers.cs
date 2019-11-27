@@ -71,6 +71,7 @@ namespace Lanchat.Common.NetworkLib
         {
             var userNickname = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP)).Nickname;
             Trace.WriteLine(userNickname + ": " + e.Content);
+            network.OnRecievedMessage(e.Content, userNickname);
         }
     }
 }

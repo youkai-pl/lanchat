@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -24,7 +23,7 @@ namespace Lanchat.Common.HostLib
             var data = new JObject
             {
                 { "type", "handshake" },
-                { "content", JObject.FromObject(handshake) }
+                { "content", JToken.FromObject(handshake) }
             };
 
             // Send
@@ -47,11 +46,8 @@ namespace Lanchat.Common.HostLib
         // Serialize and send data
         private void Send(JObject data)
         {
-            byte[] bytesToSend = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data));
+            byte[] bytesToSend = Encoding.UTF8.GetBytes(data.ToString());
             nwStream.Write(bytesToSend, 0, bytesToSend.Length);
         }
-
-        // Client events
-        public delegate void ClientEventHandler(params object[] arguments);
     }
 }

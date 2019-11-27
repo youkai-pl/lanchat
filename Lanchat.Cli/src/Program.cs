@@ -61,6 +61,8 @@ namespace Lanchat.Cli.Program
 
             // Initialize network
             network = new Network(int.Parse(Config.Get("port")), Config.Get("nickname"), Cryptography.GetPublic());
+            network.RecievedMessage += OnRecievedMessage;
+            network.Start();
         }
 
         // Handle input
@@ -79,6 +81,12 @@ namespace Lanchat.Cli.Program
                 Prompt.Out(input, null, Config.Get("nickname"));
                 network.SendAll(input);
             }
+        }
+
+        // Handle message
+        private static void OnRecievedMessage(object o, RecievedMessageEventArgs e)
+        {
+            // Console.WriteLine(e.Content + ": " + e.Nickname);
         }
     }
 }
