@@ -61,7 +61,6 @@ namespace Lanchat.Common.NetworkLib
             var node = new Node(id, port, ip);
             node.CreateConnection(new Handshake(Nickname, PublicKey, Id, HostPort));
             NodeList.Add(node);
-
             Trace.WriteLine("New node created");
             Trace.Indent();
             Trace.WriteLine(node.Id.ToString());
@@ -105,6 +104,28 @@ namespace Lanchat.Common.NetworkLib
             RecievedMessage(this, new RecievedMessageEventArgs()
             {
                 Content = content,
+                Nickname = nickname
+            });
+        }
+
+        // Node connected event
+        public event EventHandler<NodeConnectionStatusEvent> NodeConnected;
+        public virtual void OnNodeConnected(IPAddress ip, string nickname)
+        {
+            NodeConnected(this, new NodeConnectionStatusEvent()
+            {
+                NodeIP = ip,
+                Nickname = nickname
+            });
+        }
+
+        // Node disconnected event
+        public event EventHandler<NodeConnectionStatusEvent> NodeDisconnected;
+        public virtual void OnNodeDisconnected(IPAddress ip, string nickname)
+        {
+            NodeDisconnected(this, new NodeConnectionStatusEvent()
+            {
+                NodeIP = ip,
                 Nickname = nickname
             });
         }

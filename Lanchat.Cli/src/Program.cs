@@ -19,7 +19,7 @@ namespace Lanchat.Cli.Program
         public static void Main()
         {
             // Trace listener
-            Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+            // Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
 
             // Load or create config file
             Config.Load();
@@ -62,6 +62,8 @@ namespace Lanchat.Cli.Program
             // Initialize network
             network = new Network(int.Parse(Config.Get("port")), Config.Get("nickname"), Cryptography.GetPublic());
             network.RecievedMessage += OnRecievedMessage;
+            network.NodeConnected += OnNodeConnected;
+            network.NodeDisconnected += OnNodeDisconnected;
             network.Start();
         }
 
@@ -87,6 +89,21 @@ namespace Lanchat.Cli.Program
         private static void OnRecievedMessage(object o, RecievedMessageEventArgs e)
         {
             // Console.WriteLine(e.Content + ": " + e.Nickname);
+            Prompt.Out(e.Content, null, e.Nickname);
+        }
+
+        // Handle connect
+        private static void OnNodeConnected(object o, NodeConnectionStatusEvent e)
+        {
+            // Console.WriteLine(e.Nickname + " connected");
+            Prompt.Notice(e.Nickname + " connected");
+        }
+
+        // Handle disconnect
+        private static void OnNodeDisconnected(object o, NodeConnectionStatusEvent e)
+        {
+            //Console.WriteLine(e.Nickname + " disconnected");
+            Prompt.Notice(e.Nickname + " disconnected");
         }
     }
 }

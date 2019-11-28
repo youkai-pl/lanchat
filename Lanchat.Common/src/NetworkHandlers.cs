@@ -35,7 +35,9 @@ namespace Lanchat.Common.NetworkLib
             try
             {
                 // Remove node from list
-                Trace.WriteLine(network.NodeList.Find(x => x.Ip.Equals(e.NodeIP)).Nickname + " disconnected");
+                var node = network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
+                Trace.WriteLine(node.Nickname + " disconnected");
+                network.OnNodeDisconnected(node.Ip, node.Nickname);
                 network.NodeList.RemoveAll(x => x.Ip.Equals(e.NodeIP));
             }
             catch
@@ -55,6 +57,7 @@ namespace Lanchat.Common.NetworkLib
             if (network.NodeList.Exists(x => x.Ip.Equals(e.SenderIP)))
             {
                 Trace.WriteLine("Node found and handshake accepted");
+                network.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
                 network.NodeList.Find(x => x.Ip.Equals(e.SenderIP)).AcceptHandshake(e.NodeHandshake);
             }
             else
@@ -62,6 +65,7 @@ namespace Lanchat.Common.NetworkLib
                 // Create new node
                 Trace.WriteLine("New node created after recieved handshake");
                 network.CreateNode(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP);
+                network.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
                 network.NodeList.Find(x => x.Ip.Equals(e.SenderIP)).AcceptHandshake(e.NodeHandshake);
             }
         }
