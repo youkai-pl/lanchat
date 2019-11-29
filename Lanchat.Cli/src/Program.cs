@@ -7,14 +7,20 @@ using Lanchat.Cli.PromptLib;
 using Lanchat.Common.Cryptography;
 using Lanchat.Common.NetworkLib;
 using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Lanchat.Cli.Program
 {
-    public static class Program
+    public class Program
     {
-        public static void Main()
+        public Network network;
+
+        public void Main()
         {
+            // Trace listener
+            Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+
             // Load or create config file
             Config.Load();
 
@@ -49,32 +55,59 @@ namespace Lanchat.Cli.Program
             }
 
             // Initialize prompt
-            Prompt Prompt1 = new Prompt();
-            Prompt1.RecievedInput += OnRecievedInput;
-            new Thread(Prompt1.Init).Start();
+            Prompt prompt = new Prompt();
+            prompt.RecievedInput += OnRecievedInput;
+            new Thread(prompt.Init).Start();
 
             // Initialize network
-            Network.Init(int.Parse(Config.Get("port")),
-                        Config.Get("nickname"),
-                        Cryptography.GetPublic());
+            network = new Network(int.Parse(Config.Get("port")), Config.Get("nickname"), Cryptography.GetPublic());
+            network.RecievedMessage += OnRecievedMessage;
+            network.NodeConnected += OnNodeConnected;
+            network.NodeDisconnected += OnNodeDisconnected;
+            network.ChangedNickname += OnChangedNickname;
+            network.Start();
         }
 
         // Handle input
-        private static void OnRecievedInput(string input, EventArgs e)
+        private void OnRecievedInput(string input, EventArgs e)
         {
             // Check is input command
             if (input.StartsWith("/"))
             {
                 string command = input.Substring(1);
-                Command.Execute(command);
+                Command.Execute(command, this);
             }
 
             // Or message
             else
             {
                 Prompt.Out(input, null, Config.Get("nickname"));
-                Network.SendAll(input);
+                network.SendAll(input);
             }
+        }
+
+        // Handle message
+        private static void OnRecievedMessage(object o, RecievedMessageEventArgs e)
+        {
+            // Prompt.Out(e.Content, null, e.Nickname);
+        }
+
+        // Handle connect
+        private static void OnNodeConnected(object o, NodeConnectionStatusEvent e)
+        {
+            // Prompt.Notice(e.Nickname + " connected");
+        }
+
+        // Handle disconnect
+        private static void OnNodeDisconnected(object o, NodeConnectionStatusEvent e)
+        {
+            // Prompt.Notice(e.Nickname + " disconnected");
+        }
+
+        // Handle changed nickname
+        private static void OnChangedNickname(object o, ChangedNicknameEventArgs e)
+        {
+            // Prompt.Notice($"{e.OldNickname} changed nickname to {e.NewNickname}");
         }
     }
 }

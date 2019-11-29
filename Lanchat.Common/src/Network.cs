@@ -1,96 +1,103 @@
-﻿using Lanchat.Common.TcpLib;
-using Newtonsoft.Json;
+﻿using Lanchat.Common.HostLib;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Lanchat.Common.NetworkLib
 {
-    public static class Network
+    public class Network
     {
         // Users list
-        private static List<User> Users = new List<User>();
+        public List<Node> NodeList = new List<Node>();
 
-        // Tcp client
-        private static List<Client> Connections = new List<Client>();
+        // Host
+        private readonly Host host;
 
-        public static void Init(int PORT, string nickname, string publicKey)
+        // Properties
+        public string Nickname { get; set; }
+        public string PublicKey { get; set; }
+        public int BroadcastPort { get; set; }
+        public int HostPort { get; set; }
+        public Guid Id { get; set; }
+
+        public Network(int port, string nickname, string publicKey)
         {
-            string selfHash = Guid.NewGuid().ToString();
-            int tcpPort = FreeTcpPort();
+            // Set properties
+            Nickname = nickname;
+            PublicKey = publicKey;
+            BroadcastPort = port;
+            Id = Guid.NewGuid();
+            HostPort = FreeTcpPort();
 
-            User self = new User(
-                nickname,
-                publicKey,
-                selfHash,
-                tcpPort
-            );
+            // Create host class
+            host = new Host(BroadcastPort);
 
-            // Start host
-            Host TcpHost = new Host();
-            TcpHost.TcpEvent += OnTcpEvent;
-            Task.Run(() => { TcpHost.Start(tcpPort); });
+            // Listen host events
+            var handlers = new NetworkHandlers(this);
+            host.RecievedBroadcast += handlers.OnRecievedBroadcast;
+            host.NodeConnected += handlers.OnNodeConnected;
+            host.NodeDisconnected += handlers.OnNodeDisconnected;
+            host.RecievedHandshake += handlers.OnRecievedHandshake;
+            host.RecievedMessage += handlers.OnRecievedMessage;
+            host.ChangedNickname += handlers.OnChangedNickname;
+        }
 
-            // Create UDP client
-            var udpClient = new UdpClient();
-            udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, PORT));
+        public void Start()
+        {
+            // Initialize host
+            host.StartHost(HostPort);
 
-            // Start broadcast
-            Task.Run(() =>
+            // Initialize broadcast
+            host.Broadcast(new Paperplane(HostPort, Id));
+
+            // Listen other hosts broadcasts
+            host.ListenBroadcast();
+        }
+
+        // Create new node
+        public void CreateNode(Guid id, int port, IPAddress ip)
+        {
+            var node = new Node(id, port, ip);
+            node.CreateConnection(new Handshake(Nickname, PublicKey, Id, HostPort));
+            NodeList.Add(node);
+            Trace.WriteLine("New node created");
+            Trace.Indent();
+            Trace.WriteLine(node.Id.ToString());
+            Trace.WriteLine(node.Port.ToString());
+            Trace.WriteLine(node.Nickname);
+            Trace.Unindent();
+        }
+
+        // Send message to all nodes
+        public void SendAll(string message)
+        {
+            NodeList.ForEach(x =>
             {
-                while (true)
+                if (x.Connection != null)
                 {
-                    var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(self));
-                    udpClient.Send(data, data.Length, "255.255.255.255", PORT);
-                    Thread.Sleep(1000);
+                    x.Connection.SendMessage(message);
                 }
             });
+        }
 
-            // Listen broadcast
-            Task.Run(() =>
+        // Change nickname
+        public void ChangeNickname(string nickname)
+        {
+            NodeList.ForEach(x =>
             {
-                var from = new IPEndPoint(0, 0);
-                while (true)
+                if (x.Connection != null)
                 {
-                    var recvBuffer = udpClient.Receive(ref from);
-                    var sender = from.Address.ToString();
-
-                    User paperplane = JsonConvert.DeserializeObject<User>(Encoding.UTF8.GetString(recvBuffer));
-                    if (!Users.Exists(x => x.Hash == paperplane.Hash) && paperplane.Hash != selfHash)
-                    {
-                        Users.Add(paperplane);
-                        // LogDetected(sender, paperplane);
-
-                        Connections.Add(new Client());
-                        Connections[Connections.Count - 1].TcpEvent += OnTcpEvent;
-                        Connections[Connections.Count - 1].Connect(sender, paperplane.Port);
-                    }
+                    x.Connection.SendNickname(nickname);
                 }
             });
         }
 
-        public static void SendAll(string message)
+        // Check is paperplane come from self or user alredy exist in list
+        public bool IsCanAdd(Paperplane broadcast, IPAddress senderIp)
         {
-            Connections.ForEach(x => { x.Send(message); });
-        }
-
-        private static void OnTcpEvent(object o, EventArgs e)
-        {
-            Console.WriteLine(o);
-        }
-
-        // Log detected users info
-        private static void LogDetected(string sender, User paperplane)
-        {
-            Console.WriteLine(sender);
-            Console.WriteLine(paperplane.Nickname);
-            Console.WriteLine(paperplane.Hash);
-            Console.WriteLine(paperplane.Port);
-            Console.WriteLine("");
+            return broadcast.Id != Id && !NodeList.Exists(x => x.Id.Equals(broadcast.Id)) && !NodeList.Exists(x => x.Ip.Equals(senderIp));
         }
 
         // Find free tcp port
@@ -102,22 +109,50 @@ namespace Lanchat.Common.NetworkLib
             l.Stop();
             return port;
         }
-    }
 
-    // User class
-    public class User
-    {
-        public User(string nickname, string publicKey, string hash, int port)
+        // Recieved message event
+        public event EventHandler<RecievedMessageEventArgs> RecievedMessage;
+        public virtual void OnRecievedMessage(string content, string nickname)
         {
-            Nickname = nickname;
-            PublicKey = publicKey;
-            Hash = hash;
-            Port = port;
+            RecievedMessage(this, new RecievedMessageEventArgs()
+            {
+                Content = content,
+                Nickname = nickname
+            });
         }
 
-        public string Nickname { get; set; }
-        public string Hash { get; set; }
-        public string PublicKey { get; set; }
-        public int Port { get; set; }
+        // Node connected event
+        public event EventHandler<NodeConnectionStatusEvent> NodeConnected;
+        public virtual void OnNodeConnected(IPAddress ip, string nickname)
+        {
+            NodeConnected(this, new NodeConnectionStatusEvent()
+            {
+                NodeIP = ip,
+                Nickname = nickname
+            });
+        }
+
+        // Node disconnected event
+        public event EventHandler<NodeConnectionStatusEvent> NodeDisconnected;
+        public virtual void OnNodeDisconnected(IPAddress ip, string nickname)
+        {
+            NodeDisconnected(this, new NodeConnectionStatusEvent()
+            {
+                NodeIP = ip,
+                Nickname = nickname
+            });
+        }
+
+        // Changed nickname event
+        public event EventHandler<ChangedNicknameEventArgs> ChangedNickname;
+        public virtual void OnChangedNickname(string oldNickname, string newNickname, IPAddress senderIP)
+        {
+            ChangedNickname(this, new ChangedNicknameEventArgs()
+            {
+                NewNickname = newNickname,
+                OldNickname = oldNickname,
+                SenderIP = senderIP
+            });
+        }
     }
 }

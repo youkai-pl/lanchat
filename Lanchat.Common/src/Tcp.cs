@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace Lanchat.Common.TcpLib
 {
@@ -10,38 +13,111 @@ namespace Lanchat.Common.TcpLib
         public void Start(int port)
         {
             // Start server
-            TcpListener server = new TcpListener(IPAddress.Any, port);
-            server.Start();
+            Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            server.ReceiveTimeout = -1;
+            server.Bind(new IPEndPoint(IPAddress.Any, port));
+            server.Listen(-1);
 
-            // Wait for connection
             while (true)
             {
-                TcpClient client = server.AcceptTcpClient();
-                NetworkStream nwStream = client.GetStream();
-                byte[] buffer = new byte[client.ReceiveBufferSize];
-
-                while (client.Connected)
+                Socket client = server.Accept();
+                new Thread(() =>
                 {
-                    int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
-                    string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    try { Process(client); } catch (Exception ex) { Console.WriteLine("Client connection processing error: " + ex.Message); }
+                }).Start();
+            }
 
-                    OnTcpEvent(new
+            void Process(Socket client)
+            {
+                OnHostEvent(new Status("connected", IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString())), EventArgs.Empty);
+
+                byte[] response;
+                int received;
+
+                while (true)
+                {
+                    // Receive message from the server:
+                    response = new byte[client.ReceiveBufferSize];
+                    received = client.Receive(response);
+                    if (received == 0)
                     {
-                        type = "message",
-                        content = dataReceived
-                    }, EventArgs.Empty);
+                        OnHostEvent(new Status("disconnected", IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString())), EventArgs.Empty);
+                        return;
+                    }
+
+                    List<byte> respBytesList = new List<byte>(response);
+                    Recieve(Encoding.UTF8.GetString(respBytesList.ToArray()), IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString()));
                 }
             }
         }
 
-        // Input event
-        public delegate void TcpEventHandler(object o, EventArgs e);
-
-        public event TcpEventHandler TcpEvent;
-
-        protected virtual void OnTcpEvent(object o, EventArgs e)
+        // Handle packet
+        private void Recieve(string data, IPAddress ip)
         {
-            TcpEvent(o, EventArgs.Empty);
+            object parsed;
+            try
+            {
+                parsed = JsonConvert.DeserializeObject(data);
+            }
+            catch
+            {
+                parsed = new Message(data, ip);
+            }
+            HostEvent(parsed, EventArgs.Empty);
+        }
+
+        // Host event
+        public delegate void HostEventHandler(object o, EventArgs e);
+
+        public event HostEventHandler HostEvent;
+
+        protected virtual void OnHostEvent(object o, EventArgs e)
+        {
+            HostEvent(o, EventArgs.Empty);
+        }
+
+        // Status
+        public class Status
+        {
+            public Status(string type, IPAddress ip)
+            {
+                Type = type;
+                Ip = ip;
+            }
+
+            public string Type { get; set; }
+            public IPAddress Ip { get; set; }
+        }
+
+        // Message
+        public class Message
+        {
+            public Message(string content, IPAddress ip)
+            {
+                Content = content;
+                Ip = ip;
+            }
+
+            public string Content { get; set; }
+            public IPAddress Ip { get; set; }
+        }
+
+        // Handshake
+        public class Handshake
+        {
+            public Handshake(string nickname, string publicKey, string hash, int port)
+            {
+                Nickname = nickname;
+                PublicKey = publicKey;
+                Hash = hash;
+                Port = port;
+            }
+
+            public string Nickname { get; set; }
+            public string Hash { get; set; }
+            public string PublicKey { get; set; }
+            public int Port { get; set; }
+            public IPAddress Ip { get; set; }
         }
     }
 
@@ -50,31 +126,18 @@ namespace Lanchat.Common.TcpLib
         private TcpClient tcpclnt;
         private NetworkStream nwStream;
 
-        public void Connect(string ip, int port)
+        public void Connect(IPAddress ip, int port, string self)
         {
-            tcpclnt = new TcpClient(ip, port);
+            tcpclnt = new TcpClient(ip.ToString(), port);
             nwStream = tcpclnt.GetStream();
-
-            OnTcpEvent(new
-            {
-                type = "connected"
-            }, EventArgs.Empty);
+            byte[] bytesToSend = Encoding.UTF8.GetBytes(self);
+            nwStream.Write(bytesToSend, 0, bytesToSend.Length);
         }
 
         public void Send(string content)
         {
             byte[] bytesToSend = Encoding.UTF8.GetBytes(content);
             nwStream.Write(bytesToSend, 0, bytesToSend.Length);
-        }
-
-        // Input event
-        public delegate void TcpEventHandler(object o, EventArgs e);
-
-        public event TcpEventHandler TcpEvent;
-
-        protected virtual void OnTcpEvent(object o, EventArgs e)
-        {
-            TcpEvent(o, EventArgs.Empty);
         }
     }
 }
