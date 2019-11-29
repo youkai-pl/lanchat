@@ -1,6 +1,4 @@
-﻿
-using Lanchat.Common.HostLib;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -46,6 +44,7 @@ namespace Lanchat.Common.NetworkLib
                 Trace.WriteLine("Node does not exist");
             }
         }
+
         // Recieved handshake
         public void OnRecievedHandshake(object o, RecievedHandshakeEventArgs e)
         {

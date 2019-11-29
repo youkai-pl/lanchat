@@ -17,6 +17,7 @@ namespace Lanchat.Common.NetworkLib
 
         // Properties
         public string Nickname { get; set; }
+
         public string PublicKey { get; set; }
         public int BroadcastPort { get; set; }
         public int HostPort { get; set; }
@@ -112,6 +113,7 @@ namespace Lanchat.Common.NetworkLib
 
         // Recieved message event
         public event EventHandler<RecievedMessageEventArgs> RecievedMessage;
+
         public virtual void OnRecievedMessage(string content, string nickname)
         {
             RecievedMessage(this, new RecievedMessageEventArgs()
@@ -123,6 +125,7 @@ namespace Lanchat.Common.NetworkLib
 
         // Node connected event
         public event EventHandler<NodeConnectionStatusEvent> NodeConnected;
+
         public virtual void OnNodeConnected(IPAddress ip, string nickname)
         {
             NodeConnected(this, new NodeConnectionStatusEvent()
@@ -134,6 +137,7 @@ namespace Lanchat.Common.NetworkLib
 
         // Node disconnected event
         public event EventHandler<NodeConnectionStatusEvent> NodeDisconnected;
+
         public virtual void OnNodeDisconnected(IPAddress ip, string nickname)
         {
             NodeDisconnected(this, new NodeConnectionStatusEvent()
@@ -145,6 +149,7 @@ namespace Lanchat.Common.NetworkLib
 
         // Changed nickname event
         public event EventHandler<ChangedNicknameEventArgs> ChangedNickname;
+
         public virtual void OnChangedNickname(string oldNickname, string newNickname, IPAddress senderIP)
         {
             ChangedNickname(this, new ChangedNicknameEventArgs()
