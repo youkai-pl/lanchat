@@ -28,4 +28,11 @@ namespace Lanchat.Common.NetworkLib
         public string Nickname { get; set; }
         public IPAddress SenderIP { get; set; }
     }
+
+    public class ChangedNicknameEventArgs : EventArgs
+    {
+        public string NewNickname { get; set; }
+        public string OldNickname { get; set; }
+        public IPAddress SenderIP { get; set; }
+    }
 }

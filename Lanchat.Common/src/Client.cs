@@ -43,6 +43,19 @@ namespace Lanchat.Common.HostLib
             Send(data);
         }
 
+        // Change nickname
+        public void SendNickname(string nickname)
+        {
+            var data = new JObject
+            {
+                { "type", "nickname" },
+                { "content", nickname }
+            };
+
+            // Send
+            Send(data);
+        }
+
         // Serialize and send data
         private void Send(JObject data)
         {

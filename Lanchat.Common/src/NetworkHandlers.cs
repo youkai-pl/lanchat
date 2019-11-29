@@ -1,4 +1,5 @@
-﻿using Lanchat.Common.HostLib;
+﻿
+using Lanchat.Common.HostLib;
 using System.Diagnostics;
 
 namespace Lanchat.Common.NetworkLib
@@ -76,6 +77,15 @@ namespace Lanchat.Common.NetworkLib
             var userNickname = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP)).Nickname;
             Trace.WriteLine(userNickname + ": " + e.Content);
             network.OnRecievedMessage(e.Content, userNickname);
+        }
+
+        // Changed nickname
+        public void OnChangedNickname(object o, ChangedNicknameEventArgs e)
+        {
+            var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+            var oldNickname = user.Nickname;
+            user.Nickname = e.NewNickname;
+            Trace.WriteLine($"{oldNickname} nickname changed to {e.NewNickname}");
         }
     }
 }

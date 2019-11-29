@@ -41,6 +41,7 @@ namespace Lanchat.Common.NetworkLib
             host.NodeDisconnected += handlers.OnNodeDisconnected;
             host.RecievedHandshake += handlers.OnRecievedHandshake;
             host.RecievedMessage += handlers.OnRecievedMessage;
+            host.ChangedNickname += handlers.OnChangedNickname;
         }
 
         public void Start()
@@ -77,6 +78,18 @@ namespace Lanchat.Common.NetworkLib
                 if (x.Connection != null)
                 {
                     x.Connection.SendMessage(message);
+                }
+            });
+        }
+
+        // Change nickname
+        public void ChangeNickname(string nickname)
+        {
+            NodeList.ForEach(x =>
+            {
+                if (x.Connection != null)
+                {
+                    x.Connection.SendNickname(nickname);
                 }
             });
         }

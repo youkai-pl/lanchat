@@ -6,7 +6,7 @@ namespace Lanchat.Cli.CommandsLib
 {
     public static class Command
     {
-        public static void Execute(string command)
+        public static void Execute(string command, Program.Program program)
         {
             string[] args = command.Split(' ');
 
@@ -22,7 +22,7 @@ namespace Lanchat.Cli.CommandsLib
                     break;
 
                 case "nick":
-                    SetNick(args[1]);
+                    SetNick(args[1], program);
                     break;
 
                 default:
@@ -41,11 +41,12 @@ namespace Lanchat.Cli.CommandsLib
             Prompt.Out("");
         }
 
-        private static void SetNick(string nick)
+        private static void SetNick(string nick, Program.Program program)
         {
             if (!string.IsNullOrEmpty(nick))
             {
                 Config.Edit("nickname", nick);
+                program.network.ChangeNickname(nick);
                 Prompt.Notice("Nickname changed");
             }
         }

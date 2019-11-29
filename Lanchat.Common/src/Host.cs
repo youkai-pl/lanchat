@@ -124,6 +124,12 @@ namespace Lanchat.Common.HostLib
                     {
                         OnRecievedMessage(data.GetValue("content").ToString(), ip);
                     }
+
+                    // If changed nickname
+                    if (type == "nickname")
+                    {
+                        OnChangedNickname(data.GetValue("content").ToString(), ip);
+                    }
                 }
             }
         }
@@ -177,6 +183,17 @@ namespace Lanchat.Common.HostLib
             RecievedMessage(this, new RecievedMessageEventArgs()
             {
                 Content = content,
+                SenderIP = senderIP
+            });
+        }
+
+        // Changed nickname event
+        public event EventHandler<ChangedNicknameEventArgs> ChangedNickname;
+        protected virtual void OnChangedNickname(string newNickname, IPAddress senderIP)
+        {
+            ChangedNickname(this, new ChangedNicknameEventArgs()
+            {
+                NewNickname = newNickname,
                 SenderIP = senderIP
             });
         }

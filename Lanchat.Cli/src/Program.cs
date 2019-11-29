@@ -12,14 +12,14 @@ using System.Threading;
 
 namespace Lanchat.Cli.Program
 {
-    public static class Program
+    public class Program
     {
-        private static Network network;
+        public Network network;
 
-        public static void Main()
+        public void Main()
         {
             // Trace listener
-            // Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+            Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
 
             // Load or create config file
             Config.Load();
@@ -68,13 +68,13 @@ namespace Lanchat.Cli.Program
         }
 
         // Handle input
-        private static void OnRecievedInput(string input, EventArgs e)
+        private void OnRecievedInput(string input, EventArgs e)
         {
             // Check is input command
             if (input.StartsWith("/"))
             {
                 string command = input.Substring(1);
-                Command.Execute(command);
+                Command.Execute(command, this);
             }
 
             // Or message
@@ -88,22 +88,19 @@ namespace Lanchat.Cli.Program
         // Handle message
         private static void OnRecievedMessage(object o, RecievedMessageEventArgs e)
         {
-            // Console.WriteLine(e.Content + ": " + e.Nickname);
-            Prompt.Out(e.Content, null, e.Nickname);
+            // Prompt.Out(e.Content, null, e.Nickname);
         }
 
         // Handle connect
         private static void OnNodeConnected(object o, NodeConnectionStatusEvent e)
         {
-            // Console.WriteLine(e.Nickname + " connected");
-            Prompt.Notice(e.Nickname + " connected");
+            // Prompt.Notice(e.Nickname + " connected");
         }
 
         // Handle disconnect
         private static void OnNodeDisconnected(object o, NodeConnectionStatusEvent e)
         {
-            //Console.WriteLine(e.Nickname + " disconnected");
-            Prompt.Notice(e.Nickname + " disconnected");
+            // Prompt.Notice(e.Nickname + " disconnected");
         }
     }
 }
