@@ -142,5 +142,17 @@ namespace Lanchat.Common.NetworkLib
                 Nickname = nickname
             });
         }
+
+        // Changed nickname event
+        public event EventHandler<ChangedNicknameEventArgs> ChangedNickname;
+        public virtual void OnChangedNickname(string oldNickname, string newNickname, IPAddress senderIP)
+        {
+            ChangedNickname(this, new ChangedNicknameEventArgs()
+            {
+                NewNickname = newNickname,
+                OldNickname = oldNickname,
+                SenderIP = senderIP
+            });
+        }
     }
 }

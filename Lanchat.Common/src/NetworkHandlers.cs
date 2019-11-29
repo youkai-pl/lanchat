@@ -85,6 +85,7 @@ namespace Lanchat.Common.NetworkLib
             var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
             var oldNickname = user.Nickname;
             user.Nickname = e.NewNickname;
+            network.OnChangedNickname(oldNickname, e.NewNickname, e.SenderIP);
             Trace.WriteLine($"{oldNickname} nickname changed to {e.NewNickname}");
         }
     }

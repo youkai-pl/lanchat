@@ -64,6 +64,7 @@ namespace Lanchat.Cli.Program
             network.RecievedMessage += OnRecievedMessage;
             network.NodeConnected += OnNodeConnected;
             network.NodeDisconnected += OnNodeDisconnected;
+            network.ChangedNickname += OnChangedNickname;
             network.Start();
         }
 
@@ -101,6 +102,12 @@ namespace Lanchat.Cli.Program
         private static void OnNodeDisconnected(object o, NodeConnectionStatusEvent e)
         {
             // Prompt.Notice(e.Nickname + " disconnected");
+        }
+
+        // Handle changed nickname
+        private static void OnChangedNickname(object o, ChangedNicknameEventArgs e)
+        {
+            // Prompt.Notice($"{e.OldNickname} changed nickname to {e.NewNickname}");
         }
     }
 }
