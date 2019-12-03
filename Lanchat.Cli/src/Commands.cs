@@ -43,11 +43,14 @@ namespace Lanchat.Cli.CommandsLib
 
         private static void SetNick(string nick, Program.Program program)
         {
-            if (!string.IsNullOrEmpty(nick))
+            if (!string.IsNullOrEmpty(nick) && nick.Length < 20)
             {
                 Config.Edit("nickname", nick);
                 program.network.ChangeNickname(nick);
                 Prompt.Notice("Nickname changed");
+            } else
+            {
+                Prompt.Alert("Nick cannot be blank or longer than 20 characters");
             }
         }
 

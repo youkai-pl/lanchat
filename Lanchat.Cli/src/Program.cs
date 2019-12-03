@@ -36,9 +36,9 @@ namespace Lanchat.Cli.Program
             {
                 // If nickname is blank create new with up to 20 characters
                 string nick = Prompt.Query("Choose nickname:");
-                while (nick.Length > 20)
+                while (nick.Length > 20 && nick.Length != 0)
                 {
-                    Prompt.Alert("Max 20 charcters");
+                    Prompt.Alert("Nick cannot be blank or longer than 20 characters");
                     nick = Prompt.Query("Choose nickname:");
                 }
                 Config.Edit("nickname", nick);
