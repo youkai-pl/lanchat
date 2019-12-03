@@ -3,11 +3,11 @@
 namespace Lanchat.Common.NetworkLib
 {
     // Event handlers
-    public class NetworkHandlers
+    public class EventHandlers
     {
         private readonly Network network;
 
-        public NetworkHandlers(Network network)
+        public EventHandlers(Network network)
         {
             this.network = network;
         }

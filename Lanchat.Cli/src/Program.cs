@@ -35,7 +35,7 @@ namespace Lanchat.Cli.Program
             if (string.IsNullOrEmpty(Config.Get("nickname")))
             {
                 // If nickname is blank create new with up to 20 characters
-                string nick = Prompt.Query("Choose nickname:");
+                var nick = Prompt.Query("Choose nickname:");
                 while (nick.Length > 20 && nick.Length != 0)
                 {
                     Prompt.Alert("Nick cannot be blank or longer than 20 characters");
@@ -55,72 +55,21 @@ namespace Lanchat.Cli.Program
                 Config.Edit("csp", Cryptography.Generate());
             }
 
+            // Initialize event handlers
+            EventHandlers eventHandlers = new EventHandlers(this);
+
             // Initialize prompt
-            Prompt prompt = new Prompt();
-            prompt.RecievedInput += OnRecievedInput;
+            var prompt = new Prompt();
+            prompt.RecievedInput += eventHandlers.OnRecievedInput;
             new Thread(prompt.Init).Start();
 
             // Initialize network
             network = new Network(int.Parse(Config.Get("port")), Config.Get("nickname"), Cryptography.GetPublic());
-            network.RecievedMessage += OnRecievedMessage;
-            network.NodeConnected += OnNodeConnected;
-            network.NodeDisconnected += OnNodeDisconnected;
-            network.ChangedNickname += OnChangedNickname;
+            network.RecievedMessage += eventHandlers.OnRecievedMessage;
+            network.NodeConnected += eventHandlers.OnNodeConnected;
+            network.NodeDisconnected += eventHandlers.OnNodeDisconnected;
+            network.ChangedNickname += eventHandlers.OnChangedNickname;
             network.Start();
-        }
-
-        // Handle input
-        private void OnRecievedInput(string input, EventArgs e)
-        {
-            // Check is input command
-            if (input.StartsWith("/"))
-            {
-                string command = input.Substring(1);
-                Command.Execute(command, this);
-            }
-
-            // Or message
-            else
-            {
-                Prompt.Out(input, null, Config.Get("nickname"));
-                network.SendAll(input);
-            }
-        }
-
-        // Handle message
-        private void OnRecievedMessage(object o, RecievedMessageEventArgs e)
-        {
-            if (!DebugMode)
-            {
-                Prompt.Out(e.Content, null, e.Nickname);
-            }
-        }
-
-        // Handle connect
-        private void OnNodeConnected(object o, NodeConnectionStatusEvent e)
-        {
-            if (!DebugMode)
-            {
-                Prompt.Notice(e.Nickname + " connected");
-            }
-        }
-
-        // Handle disconnect
-        private void OnNodeDisconnected(object o, NodeConnectionStatusEvent e)
-        {
-            if (!DebugMode)
-            {
-                Prompt.Notice(e.Nickname + " disconnected");
-            }
-        }
-
-        // Handle changed nickname
-        private void OnChangedNickname(object o, ChangedNicknameEventArgs e)
-        {
-            if (!DebugMode)
-            {
-                Prompt.Notice($"{e.OldNickname} changed nickname to {e.NewNickname}");
-            }
         }
     }
 }

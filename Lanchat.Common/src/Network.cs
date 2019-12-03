@@ -36,7 +36,7 @@ namespace Lanchat.Common.NetworkLib
             host = new Host(BroadcastPort);
 
             // Listen host events
-            var handlers = new NetworkHandlers(this);
+            var handlers = new EventHandlers(this);
             host.RecievedBroadcast += handlers.OnRecievedBroadcast;
             host.NodeConnected += handlers.OnNodeConnected;
             host.NodeDisconnected += handlers.OnNodeDisconnected;
