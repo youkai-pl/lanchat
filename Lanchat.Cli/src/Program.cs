@@ -14,10 +14,14 @@ namespace Lanchat.Cli.Program
 {
     public class Program
     {
+        public bool DebugMode;
         public Network network;
 
         public void Main()
         {
+            // Check is debug enabled
+            Trace.Assert(DebugMode = true);
+
             // Trace listener
             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
 
@@ -26,9 +30,6 @@ namespace Lanchat.Cli.Program
 
             // Show welcome screen
             Prompt.Welcome();
-
-            // Validate config file
-            Prompt.Out("Validating config");
 
             // Check nickname
             if (string.IsNullOrEmpty(Config.Get("nickname")))
@@ -87,27 +88,39 @@ namespace Lanchat.Cli.Program
         }
 
         // Handle message
-        private static void OnRecievedMessage(object o, RecievedMessageEventArgs e)
+        private void OnRecievedMessage(object o, RecievedMessageEventArgs e)
         {
-            // Prompt.Out(e.Content, null, e.Nickname);
+            if (!DebugMode)
+            {
+                Prompt.Out(e.Content, null, e.Nickname);
+            }
         }
 
         // Handle connect
-        private static void OnNodeConnected(object o, NodeConnectionStatusEvent e)
+        private void OnNodeConnected(object o, NodeConnectionStatusEvent e)
         {
-            // Prompt.Notice(e.Nickname + " connected");
+            if (!DebugMode)
+            {
+                Prompt.Notice(e.Nickname + " connected");
+            }
         }
 
         // Handle disconnect
-        private static void OnNodeDisconnected(object o, NodeConnectionStatusEvent e)
+        private void OnNodeDisconnected(object o, NodeConnectionStatusEvent e)
         {
-            // Prompt.Notice(e.Nickname + " disconnected");
+            if (!DebugMode)
+            {
+                Prompt.Notice(e.Nickname + " disconnected");
+            }
         }
 
         // Handle changed nickname
-        private static void OnChangedNickname(object o, ChangedNicknameEventArgs e)
+        private void OnChangedNickname(object o, ChangedNicknameEventArgs e)
         {
-            // Prompt.Notice($"{e.OldNickname} changed nickname to {e.NewNickname}");
+            if (!DebugMode)
+            {
+                Prompt.Notice($"{e.OldNickname} changed nickname to {e.NewNickname}");
+            }
         }
     }
 }
