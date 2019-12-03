@@ -19,7 +19,7 @@ namespace Lanchat.Cli.PromptLib
         public static void Welcome()
         {
             Console.Title = "Lanchat 2";
-            Out("Lanchat " + GetVersion());
+            Out("Lanchat " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
             Out("Broadcast port: " + Config.Get("port").ToString());
         }
 
@@ -240,22 +240,6 @@ namespace Lanchat.Cli.PromptLib
             Console.SetCursorPosition(0, Console.CursorTop);
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, currentLineCursor);
-        }
-
-        // Get version
-        private static string GetVersion()
-        {
-            string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-#if DEBUG
-            version += " DEBUG MODE";
-#endif
-#if ALPHA
-        version += " Alpha";
-#endif
-#if BETA
-        version += " Beta";
-#endif
-            return version;
         }
     }
 }
