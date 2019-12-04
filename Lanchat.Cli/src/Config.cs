@@ -1,5 +1,4 @@
 ﻿using Lanchat.Cli.PromptLib;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
@@ -7,102 +6,81 @@ using System.IO;
 
 namespace Lanchat.Cli.ConfigLib
 {
-    internal class Config
+    public static class Config
     {
-        private static IConfigurationRoot ConfigRoot;
+        // Properties
+        private static string _Csp;
+        private static string _Nickname;
+        private static int _Port;
+
+        public static string Csp
+        {
+            get => _Csp;
+            set
+            {
+                _Csp = value;
+                Save();
+            }
+        }
+        public static string Nickname
+        {
+            get => _Nickname;
+            set
+            {
+                _Nickname = value;
+                Save();
+            }
+        }
+        public static int Port
+        {
+            get => _Port;
+            set
+            {
+                _Port = value;
+                Save();
+            }
+        }
 
         // Load config
         public static void Load()
         {
             try
             {
-                LoadConfigFile();
+                // Load config to dynamic object
+                dynamic json = JsonConvert.DeserializeObject(File.ReadAllText("config.json"));
 
-                // Rebuild and reaload config is it not valid
-                if (!ValidateConfig())
-                {
-                    Trace.WriteLine("Not valid config");
-                    RebuildConfig();
-                    LoadConfigFile();
-                }
+                // Try use loaded config
+                Csp = json.csp;
+                Nickname = json.nickname;
+                Port = json.port;
             }
             catch (Exception e)
             {
-                if (e is FileNotFoundException)
-                {
-                    RebuildConfig();
-                    LoadConfigFile();
-                }
-                else if (e is FormatException)
-                {
-                    Prompt.Alert("Corrupted config file. Hit any key to rebuild it or exit app and try fix it manually");
-                    Console.ReadKey();
-                    RebuildConfig();
-                    LoadConfigFile();
-                }
-                else
-                {
-                    Console.WriteLine(e.GetType().ToString());
-                    Prompt.CrashScreen(e);
-                }
+                Trace.WriteLine(e.GetType());
+                Trace.WriteLine(e.Message);
+
+                Csp = "";
+                Nickname = "";
+                Port = 4001;
             }
         }
 
-        // Load config from file
-        private static void LoadConfigFile()
+        // Save config
+        private static void Save()
         {
-            var builder = new ConfigurationBuilder()
-                                    .SetBasePath(Directory.GetCurrentDirectory())
-                                    .AddJsonFile("config.json", optional: false, reloadOnChange: true);
-            ConfigRoot = builder.Build();
-        }
-
-        // Rebuild config
-        private static void RebuildConfig()
-        {
-            var defaultConfig = new
+            object json = new
             {
-                csp = "",
-                nickname = "",
-                port = 4001
+                csp = Csp,
+                nickname = Nickname,
+                port = Port
             };
-
-            // Write default config to json file
-            File.WriteAllText("config.json", JsonConvert.SerializeObject(defaultConfig));
-            Trace.WriteLine("Config rebuilded");
-        }
-
-        // Validate config
-        private static bool ValidateConfig()
-        {
-            return ConfigRoot["csp"] != null && ConfigRoot["nickname"] != null && ConfigRoot["port"] != null;
-        }
-
-        // Get config value
-        public static string Get(string key)
-        {
-            return ConfigRoot[key];
-        }
-
-        // Change config value
-        public static void Edit(string key, string value)
-        {
-            ConfigRoot[key] = value;
-
-            var newConfig = new
-            {
-                nickname = ConfigRoot["nickname"],
-                csp = ConfigRoot["csp"],
-                port = ConfigRoot["port"]
-            };
-
             try
             {
-                File.WriteAllText("config.json", JsonConvert.SerializeObject(newConfig));
+                File.WriteAllText("config.json", JsonConvert.SerializeObject(json));
             }
-            catch
+            catch (Exception e)
             {
-                Prompt.Alert("Config save error");
+                Prompt.CrashScreen(e);
             }
         }
     }

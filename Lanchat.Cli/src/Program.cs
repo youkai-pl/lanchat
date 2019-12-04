@@ -1,7 +1,6 @@
 ﻿// Lanchat 2
 // Let's all love lain
 
-using Lanchat.Cli.CommandsLib;
 using Lanchat.Cli.ConfigLib;
 using Lanchat.Cli.PromptLib;
 using Lanchat.Common.Cryptography;
@@ -32,7 +31,7 @@ namespace Lanchat.Cli.Program
             Prompt.Welcome();
 
             // Check nickname
-            if (string.IsNullOrEmpty(Config.Get("nickname")))
+            if (string.IsNullOrEmpty(Config.Nickname))
             {
                 // If nickname is blank create new with up to 20 characters
                 var nick = Prompt.Query("Choose nickname:");
@@ -41,18 +40,18 @@ namespace Lanchat.Cli.Program
                     Prompt.Alert("Nick cannot be blank or longer than 20 characters");
                     nick = Prompt.Query("Choose nickname:");
                 }
-                Config.Edit("nickname", nick);
+                Config.Nickname = nick;
             }
 
             // Try to load rsa settings
             try
             {
-                Cryptography.Load(Config.Get("csp"));
+                Cryptography.Load(Config.Csp);
             }
             catch
             {
                 Prompt.Out("Generating RSA keys");
-                Config.Edit("csp", Cryptography.Generate());
+                Config.Csp = Cryptography.Generate();
             }
 
             // Initialize event handlers
@@ -64,7 +63,7 @@ namespace Lanchat.Cli.Program
             new Thread(prompt.Init).Start();
 
             // Initialize network
-            network = new Network(int.Parse(Config.Get("port")), Config.Get("nickname"), Cryptography.GetPublic());
+            network = new Network(Config.Port, Config.Nickname, Cryptography.GetPublic());
             network.RecievedMessage += eventHandlers.OnRecievedMessage;
             network.NodeConnected += eventHandlers.OnNodeConnected;
             network.NodeDisconnected += eventHandlers.OnNodeDisconnected;

@@ -20,7 +20,7 @@ namespace Lanchat.Cli.PromptLib
         {
             Console.Title = "Lanchat 2";
             Out("Lanchat " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            Out("Broadcast port: " + Config.Get("port").ToString());
+            Out("Broadcast port: " + Config.Port);
         }
 
         public event EventHandler<InputEventArgs> RecievedInput;

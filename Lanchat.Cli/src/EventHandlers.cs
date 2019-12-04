@@ -7,6 +7,7 @@ namespace Lanchat.Cli.Program
 {
     class EventHandlers
     {
+        // Constructor
         public EventHandlers(Program program)
         {
             this.program = program;
@@ -29,7 +30,7 @@ namespace Lanchat.Cli.Program
             // Or message
             else
             {
-                Prompt.Out(input, null, Config.Get("nickname"));
+                Prompt.Out(input, null, Config.Nickname);
                 program.network.SendAll(input);
             }
         }
