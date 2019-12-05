@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using Lanchat.Common.CryptographyLib;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -17,17 +18,19 @@ namespace Lanchat.Common.NetworkLib
 
         // Properties
         public string Nickname { get; set; }
-
         public string PublicKey { get; set; }
         public int BroadcastPort { get; set; }
         public int HostPort { get; set; }
         public Guid Id { get; set; }
 
-        public Network(int port, string nickname, string publicKey)
+        public Network(int port, string nickname)
         {
+            // Initialize RSA provider
+            var cryptography = new Cryptography();
+
             // Set properties
             Nickname = nickname;
-            PublicKey = publicKey;
+            PublicKey = cryptography.PublicKey;
             BroadcastPort = port;
             Id = Guid.NewGuid();
             HostPort = FreeTcpPort();

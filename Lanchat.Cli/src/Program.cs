@@ -3,7 +3,6 @@
 
 using Lanchat.Cli.ConfigLib;
 using Lanchat.Cli.PromptLib;
-using Lanchat.Common.Cryptography;
 using Lanchat.Common.NetworkLib;
 using System;
 using System.Diagnostics;
@@ -43,16 +42,6 @@ namespace Lanchat.Cli.Program
                 Config.Nickname = nick;
             }
 
-            // Try to load rsa settings
-            try
-            {
-                Cryptography.Load(Config.Csp);
-            }
-            catch
-            {
-                Prompt.Out("Generating RSA keys");
-                Config.Csp = Cryptography.Generate();
-            }
 
             // Initialize event handlers
             EventHandlers eventHandlers = new EventHandlers(this);
@@ -63,7 +52,7 @@ namespace Lanchat.Cli.Program
             new Thread(prompt.Init).Start();
 
             // Initialize network
-            network = new Network(Config.Port, Config.Nickname, Cryptography.GetPublic());
+            network = new Network(Config.Port, Config.Nickname);
             network.RecievedMessage += eventHandlers.OnRecievedMessage;
             network.NodeConnected += eventHandlers.OnNodeConnected;
             network.NodeDisconnected += eventHandlers.OnNodeDisconnected;

@@ -9,19 +9,9 @@ namespace Lanchat.Cli.ConfigLib
     public static class Config
     {
         // Properties
-        private static string _Csp;
         private static string _Nickname;
         private static int _Port;
 
-        public static string Csp
-        {
-            get => _Csp;
-            set
-            {
-                _Csp = value;
-                Save();
-            }
-        }
         public static string Nickname
         {
             get => _Nickname;
@@ -50,7 +40,6 @@ namespace Lanchat.Cli.ConfigLib
                 dynamic json = JsonConvert.DeserializeObject(File.ReadAllText("config.json"));
 
                 // Try use loaded config
-                Csp = json.csp;
                 Nickname = json.nickname;
                 Port = json.port;
             }
@@ -59,7 +48,6 @@ namespace Lanchat.Cli.ConfigLib
                 Trace.WriteLine(e.GetType());
                 Trace.WriteLine(e.Message);
 
-                Csp = "";
                 Nickname = "";
                 Port = 4001;
             }
@@ -70,7 +58,6 @@ namespace Lanchat.Cli.ConfigLib
         {
             object json = new
             {
-                csp = Csp,
                 nickname = Nickname,
                 port = Port
             };
