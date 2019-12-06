@@ -2,12 +2,23 @@
 using Lanchat.Cli.PromptLib;
 using System;
 
-namespace Lanchat.Cli.CommandsLib
+namespace Lanchat.Cli.Program
 {
-    public static class Command
+    public class Command
     {
-        public static void Execute(string command, Program.Program program)
+        // Main program reference
+        private readonly Program program;
+
+        // Constructor
+        public Command(Program program)
         {
+            this.program = program;
+        }
+
+        // Commands
+        public void Execute(string command)
+        {
+            // Split arguments
             string[] args = command.Split(' ');
 
             // Commands
@@ -22,7 +33,7 @@ namespace Lanchat.Cli.CommandsLib
                     break;
 
                 case "nick":
-                    SetNick(args[1], program);
+                    SetNick(args[1]);
                     break;
 
                 default:
@@ -31,8 +42,26 @@ namespace Lanchat.Cli.CommandsLib
             }
         }
 
-        // Methods
-        private static void ShowHelp()
+        // Exit
+        private void Exit() => Environment.Exit(0);
+
+        // Change nickname
+        private void SetNick(string nick)
+        {
+            if (!string.IsNullOrEmpty(nick) && nick.Length < 20)
+            {
+                Config.Nickname = nick;
+                program.Network.ChangeNickname(nick);
+                Prompt.Notice("Nickname changed");
+            }
+            else
+            {
+                Prompt.Alert("Nick cannot be blank or longer than 20 characters");
+            }
+        }
+
+        // Show help
+        private void ShowHelp()
         {
             Prompt.Out("");
             Prompt.Out("/exit - quit lanchat");
@@ -40,20 +69,5 @@ namespace Lanchat.Cli.CommandsLib
             Prompt.Out("/nick - change nick");
             Prompt.Out("");
         }
-
-        private static void SetNick(string nick, Program.Program program)
-        {
-            if (!string.IsNullOrEmpty(nick) && nick.Length < 20)
-            {
-                Config.Nickname = nick;
-                program.network.ChangeNickname(nick);
-                Prompt.Notice("Nickname changed");
-            } else
-            {
-                Prompt.Alert("Nick cannot be blank or longer than 20 characters");
-            }
-        }
-
-        private static void Exit() => Environment.Exit(0);
     }
 }

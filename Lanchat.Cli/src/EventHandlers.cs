@@ -1,11 +1,10 @@
-﻿using Lanchat.Cli.CommandsLib;
-using Lanchat.Cli.ConfigLib;
+﻿using Lanchat.Cli.ConfigLib;
 using Lanchat.Cli.PromptLib;
 using Lanchat.Common.NetworkLib;
 
 namespace Lanchat.Cli.Program
 {
-    class EventHandlers
+    public class EventHandlers
     {
         // Constructor
         public EventHandlers(Program program)
@@ -13,6 +12,7 @@ namespace Lanchat.Cli.Program
             this.program = program;
         }
 
+        // Main program reference
         private readonly Program program;
 
         // Handle input
@@ -23,15 +23,14 @@ namespace Lanchat.Cli.Program
             // Check is input command
             if (input.StartsWith("/"))
             {
-                string command = input.Substring(1);
-                Command.Execute(command, program);
+                program.Command.Execute(input.Substring(1));
             }
 
             // Or message
             else
             {
                 Prompt.Out(input, null, Config.Nickname);
-                program.network.SendAll(input);
+                program.Network.SendAll(input);
             }
         }
 

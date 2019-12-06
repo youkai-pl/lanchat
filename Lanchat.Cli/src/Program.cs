@@ -12,8 +12,11 @@ namespace Lanchat.Cli.Program
 {
     public class Program
     {
-        public bool DebugMode;
-        public Network network;
+        // Properties
+        public bool DebugMode { get; set; }
+        public Network Network { get; set; }
+        public Command Command { get; set; }
+        public Prompt Prompt { get; set; }
 
         public void Main()
         {
@@ -25,7 +28,7 @@ namespace Lanchat.Cli.Program
 
             // Load or create config file
             Config.Load();
-
+          
             // Show welcome screen
             Prompt.Welcome();
 
@@ -42,22 +45,24 @@ namespace Lanchat.Cli.Program
                 Config.Nickname = nick;
             }
 
+            // Initialize commands module
+            Command = new Command(this);
 
             // Initialize event handlers
-            EventHandlers eventHandlers = new EventHandlers(this);
+            var eventHandlers = new EventHandlers(this);
 
             // Initialize prompt
-            var prompt = new Prompt();
-            prompt.RecievedInput += eventHandlers.OnRecievedInput;
-            new Thread(prompt.Init).Start();
+            Prompt = new Prompt();
+            Prompt.RecievedInput += eventHandlers.OnRecievedInput;
+            new Thread(Prompt.Init).Start();
 
             // Initialize network
-            network = new Network(Config.Port, Config.Nickname);
-            network.RecievedMessage += eventHandlers.OnRecievedMessage;
-            network.NodeConnected += eventHandlers.OnNodeConnected;
-            network.NodeDisconnected += eventHandlers.OnNodeDisconnected;
-            network.ChangedNickname += eventHandlers.OnChangedNickname;
-            network.Start();
+            Network = new Network(Config.Port, Config.Nickname);
+            Network.RecievedMessage += eventHandlers.OnRecievedMessage;
+            Network.NodeConnected += eventHandlers.OnNodeConnected;
+            Network.NodeDisconnected += eventHandlers.OnNodeDisconnected;
+            Network.ChangedNickname += eventHandlers.OnChangedNickname;
+            Network.Start();
         }
     }
 }
