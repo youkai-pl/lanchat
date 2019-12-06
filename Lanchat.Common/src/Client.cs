@@ -10,7 +10,6 @@ namespace Lanchat.Common.HostLib
     {
         // Tcp client
         private TcpClient tcpclnt;
-
         private NetworkStream nwStream;
 
         // Connect
