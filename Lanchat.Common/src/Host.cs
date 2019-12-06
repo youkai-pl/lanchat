@@ -119,6 +119,12 @@ namespace Lanchat.Common.HostLib
                         OnRecievedHandshake(data.GetValue("content").ToObject<Handshake>(), ip);
                     }
 
+                    // If key
+                    if (type == "key")
+                    {
+                        OnRecivedKey(data.GetValue("content").ToString(), ip);
+                    }
+
                     // If message
                     if (type == "message")
                     {
@@ -176,6 +182,17 @@ namespace Lanchat.Common.HostLib
             RecievedHandshake(this, new RecievedHandshakeEventArgs()
             {
                 NodeHandshake = handshake,
+                SenderIP = senderIP
+            });
+        }
+
+        // Recieved symetric key event
+        public event EventHandler<RecievedKeyEventArgs> ReciecedKey;
+        protected virtual void OnRecivedKey(string encryptedKey, IPAddress senderIP)
+        {
+            ReciecedKey(this, new RecievedKeyEventArgs()
+            {
+                Key = encryptedKey,
                 SenderIP = senderIP
             });
         }

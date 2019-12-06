@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using Lanchat.Common.CryptographyLib;
 
 namespace Lanchat.Common.HostLib
 {
@@ -27,6 +28,18 @@ namespace Lanchat.Common.HostLib
             };
 
             // Send
+            Send(data);
+        }
+
+        // Send key
+        public void SendKey(string remoteKey, string symetricKey)
+        {
+            var encodedSymetricKey = Cryptography.AsymetricEncode(symetricKey, remoteKey);
+            var data = new JObject
+            {
+                {"type", "key" },
+                {"content", encodedSymetricKey}
+            };
             Send(data);
         }
 

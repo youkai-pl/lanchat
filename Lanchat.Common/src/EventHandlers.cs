@@ -58,7 +58,9 @@ namespace Lanchat.Common.NetworkLib
             {
                 Trace.WriteLine("Node found and handshake accepted");
                 network.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
-                network.NodeList.Find(x => x.Ip.Equals(e.SenderIP)).AcceptHandshake(e.NodeHandshake);
+                var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+                user.AcceptHandshake(e.NodeHandshake);
+                user.Connection.SendKey(user.PublicKey, "test");
             }
             else
             {
@@ -66,8 +68,16 @@ namespace Lanchat.Common.NetworkLib
                 Trace.WriteLine("New node created after recieved handshake");
                 network.CreateNode(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP);
                 network.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
-                network.NodeList.Find(x => x.Ip.Equals(e.SenderIP)).AcceptHandshake(e.NodeHandshake);
+                var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+                user.AcceptHandshake(e.NodeHandshake);
+                user.Connection.SendKey(user.PublicKey, "test");
             }
+        }
+
+        // Recieved symetric key
+        public void OnRecievedKey(object o, RecievedKeyEventArgs e)
+        {
+            Trace.WriteLine(network.Cryptography.AsymetricDecode(e.Key));
         }
 
         // Recieved message

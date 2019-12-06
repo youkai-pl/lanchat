@@ -22,6 +22,12 @@ namespace Lanchat.Common.NetworkLib
         public IPAddress SenderIP { get; set; }
     }
 
+    public class RecievedKeyEventArgs : EventArgs
+    {
+        public string Key { get; set; }
+        public IPAddress SenderIP { get; set; }
+    }
+
     public class RecievedMessageEventArgs : EventArgs
     {
         public string Content { get; set; }

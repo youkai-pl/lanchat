@@ -22,15 +22,16 @@ namespace Lanchat.Common.NetworkLib
         public int BroadcastPort { get; set; }
         public int HostPort { get; set; }
         public Guid Id { get; set; }
+        public Cryptography Cryptography { get; set; }
 
         public Network(int port, string nickname)
         {
             // Initialize RSA provider
-            var cryptography = new Cryptography();
+            Cryptography = new Cryptography();
 
             // Set properties
             Nickname = nickname;
-            PublicKey = cryptography.PublicKey;
+            PublicKey = Cryptography.PublicKey;
             BroadcastPort = port;
             Id = Guid.NewGuid();
             HostPort = FreeTcpPort();
@@ -44,6 +45,7 @@ namespace Lanchat.Common.NetworkLib
             host.NodeConnected += handlers.OnNodeConnected;
             host.NodeDisconnected += handlers.OnNodeDisconnected;
             host.RecievedHandshake += handlers.OnRecievedHandshake;
+            host.ReciecedKey += handlers.OnRecievedKey;
             host.RecievedMessage += handlers.OnRecievedMessage;
             host.ChangedNickname += handlers.OnChangedNickname;
         }
