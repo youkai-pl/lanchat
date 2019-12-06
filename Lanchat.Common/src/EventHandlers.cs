@@ -1,15 +1,13 @@
-﻿
-using Lanchat.Common.HostLib;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace Lanchat.Common.NetworkLib
 {
     // Event handlers
-    public class NetworkHandlers
+    public class EventHandlers
     {
         private readonly Network network;
 
-        public NetworkHandlers(Network network)
+        public EventHandlers(Network network)
         {
             this.network = network;
         }
@@ -46,6 +44,7 @@ namespace Lanchat.Common.NetworkLib
                 Trace.WriteLine("Node does not exist");
             }
         }
+
         // Recieved handshake
         public void OnRecievedHandshake(object o, RecievedHandshakeEventArgs e)
         {

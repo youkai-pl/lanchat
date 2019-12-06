@@ -1,27 +1,23 @@
 ﻿using System.Security.Cryptography;
 using System.Xml.Linq;
 
-namespace Lanchat.Common.Cryptography
+namespace Lanchat.Common.CryptographyLib
 {
-    public static class Cryptography
+    public class Cryptography
     {
-        public static RSACryptoServiceProvider csp;
-
-        public static string Generate()
+        public Cryptography()
         {
             csp = new RSACryptoServiceProvider(1024);
-            return csp.ToXmlString(true);
         }
 
-        public static void Load(string config)
-        {
-            csp = new RSACryptoServiceProvider();
-            csp.FromXmlString(config);
-        }
+        private readonly RSACryptoServiceProvider csp;
 
-        public static string GetPublic()
+        public string PublicKey
         {
-            return XElement.Parse(csp.ToXmlString(false)).Element("Modulus").Value;
+            get
+            {
+                return XElement.Parse(csp.ToXmlString(false)).Element("Modulus").Value;
+            }
         }
     }
 }

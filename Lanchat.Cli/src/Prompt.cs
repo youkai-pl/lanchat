@@ -19,18 +19,15 @@ namespace Lanchat.Cli.PromptLib
         public static void Welcome()
         {
             Console.Title = "Lanchat 2";
-            Out("Lanchat " + GetVersion());
-            Out("Broadcast port: " + Config.Get("port").ToString());
+            Out("Lanchat " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            Out("Broadcast port: " + Config.Port);
         }
 
-        // Input event
-        public delegate void RecievedInputHandler(string input, EventArgs e);
-
-        public event RecievedInputHandler RecievedInput;
+        public event EventHandler<InputEventArgs> RecievedInput;
 
         protected virtual void OnRecievedInput(string input)
         {
-            RecievedInput(input, EventArgs.Empty);
+            RecievedInput(this, new InputEventArgs() { Input = input });
         }
 
         // Read from prompt
@@ -241,21 +238,11 @@ namespace Lanchat.Cli.PromptLib
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, currentLineCursor);
         }
+    }
 
-        // Get version
-        private static string GetVersion()
-        {
-            string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-#if DEBUG
-            version += " DEBUG MODE";
-#endif
-#if ALPHA
-        version += " Alpha";
-#endif
-#if BETA
-        version += " Beta";
-#endif
-            return version;
-        }
+    // Input event args
+    public class InputEventArgs : EventArgs
+    {
+        public string Input { get; set; }
     }
 }

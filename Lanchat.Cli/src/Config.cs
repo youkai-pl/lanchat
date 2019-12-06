@@ -1,56 +1,75 @@
 ﻿using Lanchat.Cli.PromptLib;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Lanchat.Cli.ConfigLib
 {
-    internal class Config
+    public static class Config
     {
-        private static IConfigurationRoot ConfigRoot;
+        // Properties
+        private static string _Nickname;
+
+        private static int _Port;
+
+        public static string Nickname
+        {
+            get => _Nickname;
+            set
+            {
+                _Nickname = value;
+                Save();
+            }
+        }
+
+        public static int Port
+        {
+            get => _Port;
+            set
+            {
+                _Port = value;
+                Save();
+            }
+        }
 
         // Load config
         public static void Load()
         {
             try
             {
-                var builder = new ConfigurationBuilder()
-                        .SetBasePath(Directory.GetCurrentDirectory())
-                        .AddJsonFile("config.json", optional: false, reloadOnChange: true);
-                ConfigRoot = builder.Build();
+                // Load config to dynamic object
+                dynamic json = JsonConvert.DeserializeObject(File.ReadAllText("config.json"));
+
+                // Try use loaded config
+                Nickname = json.nickname;
+                Port = json.port;
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.GetType());
+                Trace.WriteLine(e.Message);
+
+                Nickname = "";
+                Port = 4001;
+            }
+        }
+
+        // Save config
+        private static void Save()
+        {
+            object json = new
+            {
+                nickname = Nickname,
+                port = Port
+            };
+            try
+            {
+                File.WriteAllText("config.json", JsonConvert.SerializeObject(json));
             }
             catch (Exception e)
             {
                 Prompt.CrashScreen(e);
-            }
-        }
-
-        // Get config value
-        public static string Get(string key)
-        {
-            return ConfigRoot[key];
-        }
-
-        // Change config value
-        public static void Edit(string key, string value)
-        {
-            ConfigRoot[key] = value;
-
-            var newConfig = new
-            {
-                nickname = ConfigRoot["nickname"],
-                csp = ConfigRoot["csp"],
-                port = ConfigRoot["port"]
-            };
-
-            try
-            {
-                File.WriteAllText("config.json", JsonConvert.SerializeObject(newConfig));
-            }
-            catch
-            {
-                Prompt.Alert("Config save error");
             }
         }
     }

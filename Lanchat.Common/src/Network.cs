@@ -1,4 +1,5 @@
-﻿using Lanchat.Common.HostLib;
+﻿using Lanchat.Common.CryptographyLib;
+using Lanchat.Common.HostLib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,11 +23,14 @@ namespace Lanchat.Common.NetworkLib
         public int HostPort { get; set; }
         public Guid Id { get; set; }
 
-        public Network(int port, string nickname, string publicKey)
+        public Network(int port, string nickname)
         {
+            // Initialize RSA provider
+            var cryptography = new Cryptography();
+
             // Set properties
             Nickname = nickname;
-            PublicKey = publicKey;
+            PublicKey = cryptography.PublicKey;
             BroadcastPort = port;
             Id = Guid.NewGuid();
             HostPort = FreeTcpPort();
@@ -35,7 +39,7 @@ namespace Lanchat.Common.NetworkLib
             host = new Host(BroadcastPort);
 
             // Listen host events
-            var handlers = new NetworkHandlers(this);
+            var handlers = new EventHandlers(this);
             host.RecievedBroadcast += handlers.OnRecievedBroadcast;
             host.NodeConnected += handlers.OnNodeConnected;
             host.NodeDisconnected += handlers.OnNodeDisconnected;
@@ -112,6 +116,7 @@ namespace Lanchat.Common.NetworkLib
 
         // Recieved message event
         public event EventHandler<RecievedMessageEventArgs> RecievedMessage;
+
         public virtual void OnRecievedMessage(string content, string nickname)
         {
             RecievedMessage(this, new RecievedMessageEventArgs()
@@ -123,6 +128,7 @@ namespace Lanchat.Common.NetworkLib
 
         // Node connected event
         public event EventHandler<NodeConnectionStatusEvent> NodeConnected;
+
         public virtual void OnNodeConnected(IPAddress ip, string nickname)
         {
             NodeConnected(this, new NodeConnectionStatusEvent()
@@ -134,6 +140,7 @@ namespace Lanchat.Common.NetworkLib
 
         // Node disconnected event
         public event EventHandler<NodeConnectionStatusEvent> NodeDisconnected;
+
         public virtual void OnNodeDisconnected(IPAddress ip, string nickname)
         {
             NodeDisconnected(this, new NodeConnectionStatusEvent()
@@ -145,6 +152,7 @@ namespace Lanchat.Common.NetworkLib
 
         // Changed nickname event
         public event EventHandler<ChangedNicknameEventArgs> ChangedNickname;
+
         public virtual void OnChangedNickname(string oldNickname, string newNickname, IPAddress senderIP)
         {
             ChangedNickname(this, new ChangedNicknameEventArgs()

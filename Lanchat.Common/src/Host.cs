@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Lanchat.Common.NetworkLib;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,10 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Lanchat.Common.NetworkLib;
 
 namespace Lanchat.Common.HostLib
 {
-    class Host
+    internal class Host
     {
         private readonly UdpClient udpClient;
         private readonly int port;
@@ -136,6 +136,7 @@ namespace Lanchat.Common.HostLib
 
         // Recieved broadcast event
         public event EventHandler<RecievedBroadcastEventArgs> RecievedBroadcast;
+
         protected virtual void OnRecievedBroadcast(Paperplane sender, IPAddress senderIP)
         {
             RecievedBroadcast(this, new RecievedBroadcastEventArgs()
@@ -147,6 +148,7 @@ namespace Lanchat.Common.HostLib
 
         // Node connected event
         public event EventHandler<NodeConnectionStatusEvent> NodeConnected;
+
         protected virtual void OnNodeConnected(IPAddress nodeIP)
         {
             NodeConnected(this, new NodeConnectionStatusEvent()
@@ -157,6 +159,7 @@ namespace Lanchat.Common.HostLib
 
         // Node connected event
         public event EventHandler<NodeConnectionStatusEvent> NodeDisconnected;
+
         protected virtual void OnNodeDisconnected(IPAddress nodeIP)
         {
             NodeDisconnected(this, new NodeConnectionStatusEvent()
@@ -167,6 +170,7 @@ namespace Lanchat.Common.HostLib
 
         // Recieved handshake event
         public event EventHandler<RecievedHandshakeEventArgs> RecievedHandshake;
+
         protected virtual void OnRecievedHandshake(Handshake handshake, IPAddress senderIP)
         {
             RecievedHandshake(this, new RecievedHandshakeEventArgs()
@@ -178,6 +182,7 @@ namespace Lanchat.Common.HostLib
 
         // Recieved message event
         public event EventHandler<RecievedMessageEventArgs> RecievedMessage;
+
         protected virtual void OnRecievedMessage(string content, IPAddress senderIP)
         {
             RecievedMessage(this, new RecievedMessageEventArgs()
@@ -189,6 +194,7 @@ namespace Lanchat.Common.HostLib
 
         // Changed nickname event
         public event EventHandler<ChangedNicknameEventArgs> ChangedNickname;
+
         protected virtual void OnChangedNickname(string newNickname, IPAddress senderIP)
         {
             ChangedNickname(this, new ChangedNicknameEventArgs()
