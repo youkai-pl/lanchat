@@ -6,7 +6,6 @@ namespace Lanchat.Cli.Program
 {
     public class EventHandlers
     {
-        // Constructor
         public EventHandlers(Program program)
         {
             this.program = program;

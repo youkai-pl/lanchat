@@ -1,10 +1,10 @@
-﻿using Lanchat.Common.HostLib;
+﻿using Lanchat.Common.CryptographyLib;
+using Lanchat.Common.HostLib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using Lanchat.Common.CryptographyLib;
 
 namespace Lanchat.Common.NetworkLib
 {

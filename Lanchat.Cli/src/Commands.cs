@@ -6,14 +6,13 @@ namespace Lanchat.Cli.Program
 {
     public class Command
     {
-        // Main program reference
-        private readonly Program program;
-
-        // Constructor
         public Command(Program program)
         {
             this.program = program;
         }
+
+        // Main program reference
+        private readonly Program program;
 
         // Commands
         public void Execute(string command)

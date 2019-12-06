@@ -11,6 +11,7 @@ namespace Lanchat.Common.CryptographyLib
         }
 
         private readonly RSACryptoServiceProvider csp;
+
         public string PublicKey
         {
             get

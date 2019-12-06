@@ -10,6 +10,7 @@ namespace Lanchat.Cli.ConfigLib
     {
         // Properties
         private static string _Nickname;
+
         private static int _Port;
 
         public static string Nickname
@@ -21,6 +22,7 @@ namespace Lanchat.Cli.ConfigLib
                 Save();
             }
         }
+
         public static int Port
         {
             get => _Port;

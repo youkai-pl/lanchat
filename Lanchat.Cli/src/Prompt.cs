@@ -24,6 +24,7 @@ namespace Lanchat.Cli.PromptLib
         }
 
         public event EventHandler<InputEventArgs> RecievedInput;
+
         protected virtual void OnRecievedInput(string input)
         {
             RecievedInput(this, new InputEventArgs() { Input = input });

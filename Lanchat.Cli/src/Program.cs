@@ -28,7 +28,7 @@ namespace Lanchat.Cli.Program
 
             // Load or create config file
             Config.Load();
-          
+
             // Show welcome screen
             Prompt.Welcome();
 
