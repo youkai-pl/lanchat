@@ -17,7 +17,7 @@ namespace Lanchat.Common.NetworkLib
             // Create connection with node
             node.CreateConnection();
             // Send handshake to node
-            node.Connection.SendHandshake(new Handshake(nickname, PublicKey, Id, HostPort));
+            node.Connection.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));
 
             // Log
             Trace.WriteLine("New node created");

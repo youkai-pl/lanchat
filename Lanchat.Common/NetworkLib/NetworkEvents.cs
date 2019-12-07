@@ -3,7 +3,7 @@ using System.Net;
 
 namespace Lanchat.Common.NetworkLib
 {
-    public class Events
+    public class NetworkEvents
     {
         // Recieved message event
         public event EventHandler<RecievedMessageEventArgs> RecievedMessage;
