@@ -5,11 +5,11 @@ using System.Net;
 namespace Lanchat.Common.NetworkLib
 {
     // Event handlers
-    public class ApiInputs
+    public class Inputs
     {
         private readonly Network network;
 
-        public ApiInputs(Network network)
+        public Inputs(Network network)
         {
             this.network = network;
         }

@@ -11,7 +11,7 @@ namespace Lanchat.Common.NetworkLib
     {
         // Private fields
         private readonly Host host;
-        private readonly ApiInputs inputs;
+        private readonly Inputs inputs;
 
         // Properties
         public string Nickname { get; set; }
@@ -21,7 +21,7 @@ namespace Lanchat.Common.NetworkLib
         public Guid Id { get; set; }
         public Cryptography Cryptography { get; set; }
         public List<Node> NodeList { get; set; }
-        public ApiOutputs Out { get; set; }
+        public Outputs Out { get; set; }
         public NetworkEvents Events { get; set; }
 
         public Network(int port, string nickname)
@@ -42,8 +42,8 @@ namespace Lanchat.Common.NetworkLib
             // Create host class
             host = new Host(BroadcastPort);
 
-            // Listen host events
-            inputs = new ApiInputs(this);
+            // Listen API events
+            inputs = new Inputs(this);
             host.RecievedBroadcast += inputs.OnRecievedBroadcast;
             host.NodeConnected += inputs.OnNodeConnected;
             host.NodeDisconnected += inputs.OnNodeDisconnected;
@@ -56,7 +56,7 @@ namespace Lanchat.Common.NetworkLib
             Events = new NetworkEvents();
 
             // Create API outputs instance 
-            Out = new ApiOutputs(this);
+            Out = new Outputs(this);
         }
 
         // Start host

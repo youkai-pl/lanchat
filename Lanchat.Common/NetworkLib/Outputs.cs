@@ -1,9 +1,9 @@
 ﻿namespace Lanchat.Common.NetworkLib
 {
-    public class ApiOutputs
+    public class Outputs
     {
         // Constructor
-        public ApiOutputs(Network network)
+        public Outputs(Network network)
         {
             this.network = network;
         }
