@@ -16,10 +16,10 @@ namespace Lanchat.Common.NetworkLib
             Aes = Cryptography.CreateAesInstance();
         }
 
-        public void CreateConnection(Handshake handshake)
+        public void CreateConnection()
         {
             Connection = new Client();
-            Connection.Connect(Ip, Port, handshake);
+            Connection.Connect(Ip, Port);
         }
 
         public void AcceptHandshake(Handshake handshake)

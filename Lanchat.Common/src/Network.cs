@@ -2,35 +2,35 @@
 using Lanchat.Common.HostLib;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 
 namespace Lanchat.Common.NetworkLib
 {
-    public class Network
+    public partial class Network
     {
-        // Users list
-        public List<Node> NodeList = new List<Node>();
-
-        // Host
+        // Private fields
+        private readonly string nickname;
         private readonly Host host;
 
         // Properties
-        public string Nickname { get; set; }
         public string PublicKey { get; set; }
         public int BroadcastPort { get; set; }
         public int HostPort { get; set; }
         public Guid Id { get; set; }
         public Cryptography Cryptography { get; set; }
+        public List<Node> NodeList { get; set; }
 
         public Network(int port, string nickname)
         {
             // Initialize RSA provider
             Cryptography = new Cryptography();
 
+            // Initialize node list
+            NodeList = new List<Node>();
+
             // Set properties
-            Nickname = nickname;
+            this.nickname = nickname;
             PublicKey = Cryptography.PublicKey;
             BroadcastPort = port;
             Id = Guid.NewGuid();
@@ -60,20 +60,6 @@ namespace Lanchat.Common.NetworkLib
 
             // Listen other hosts broadcasts
             host.ListenBroadcast();
-        }
-
-        // Create new node
-        public void CreateNode(Guid id, int port, IPAddress ip)
-        {
-            var node = new Node(id, port, ip);
-            node.CreateConnection(new Handshake(Nickname, PublicKey, Id, HostPort));
-            NodeList.Add(node);
-            Trace.WriteLine("New node created");
-            Trace.Indent();
-            Trace.WriteLine(node.Id.ToString());
-            Trace.WriteLine(node.Port.ToString());
-            Trace.WriteLine(node.Nickname);
-            Trace.Unindent();
         }
 
         // Send message to all nodes

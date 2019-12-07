@@ -13,12 +13,16 @@ namespace Lanchat.Common.HostLib
         private NetworkStream nwStream;
 
         // Connect
-        public void Connect(IPAddress ip, int port, Handshake handshake)
+        public void Connect(IPAddress ip, int port)
         {
             // Create client and stream
             tcpclnt = new TcpClient(ip.ToString(), port);
             nwStream = tcpclnt.GetStream();
+        }
 
+        // Send handshake
+        public void SendHandshake(Handshake handshake)
+        {
             // Send handshake
             var data = new JObject
             {
