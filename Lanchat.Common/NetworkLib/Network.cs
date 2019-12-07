@@ -20,6 +20,8 @@ namespace Lanchat.Common.NetworkLib
         public Guid Id { get; set; }
         public Cryptography Cryptography { get; set; }
         public List<Node> NodeList { get; set; }
+        public ApiOutputs ApiOutputs { get; set; }
+        public Events Events { get; set; }
 
         public Network(int port, string nickname)
         {
@@ -48,6 +50,12 @@ namespace Lanchat.Common.NetworkLib
             host.ReciecedKey += handlers.OnRecievedKey;
             host.RecievedMessage += handlers.OnRecievedMessage;
             host.ChangedNickname += handlers.OnChangedNickname;
+
+            // Create Events instance
+            Events = new Events();
+
+            // Create API outputs instance 
+            ApiOutputs = new ApiOutputs(this);
         }
 
         public void Start()
@@ -62,36 +70,6 @@ namespace Lanchat.Common.NetworkLib
             host.ListenBroadcast();
         }
 
-        // Send message to all nodes
-        public void SendAll(string message)
-        {
-            NodeList.ForEach(x =>
-            {
-                if (x.Connection != null)
-                {
-                    x.Connection.SendMessage(message);
-                }
-            });
-        }
-
-        // Change nickname
-        public void ChangeNickname(string nickname)
-        {
-            NodeList.ForEach(x =>
-            {
-                if (x.Connection != null)
-                {
-                    x.Connection.SendNickname(nickname);
-                }
-            });
-        }
-
-        // Check is paperplane come from self or user alredy exist in list
-        public bool IsCanAdd(Paperplane broadcast, IPAddress senderIp)
-        {
-            return broadcast.Id != Id && !NodeList.Exists(x => x.Id.Equals(broadcast.Id)) && !NodeList.Exists(x => x.Ip.Equals(senderIp));
-        }
-
         // Find free tcp port
         private static int FreeTcpPort()
         {
@@ -100,55 +78,6 @@ namespace Lanchat.Common.NetworkLib
             int port = ((IPEndPoint)l.LocalEndpoint).Port;
             l.Stop();
             return port;
-        }
-
-        // Recieved message event
-        public event EventHandler<RecievedMessageEventArgs> RecievedMessage;
-
-        public virtual void OnRecievedMessage(string content, string nickname)
-        {
-            RecievedMessage(this, new RecievedMessageEventArgs()
-            {
-                Content = content,
-                Nickname = nickname
-            });
-        }
-
-        // Node connected event
-        public event EventHandler<NodeConnectionStatusEvent> NodeConnected;
-
-        public virtual void OnNodeConnected(IPAddress ip, string nickname)
-        {
-            NodeConnected(this, new NodeConnectionStatusEvent()
-            {
-                NodeIP = ip,
-                Nickname = nickname
-            });
-        }
-
-        // Node disconnected event
-        public event EventHandler<NodeConnectionStatusEvent> NodeDisconnected;
-
-        public virtual void OnNodeDisconnected(IPAddress ip, string nickname)
-        {
-            NodeDisconnected(this, new NodeConnectionStatusEvent()
-            {
-                NodeIP = ip,
-                Nickname = nickname
-            });
-        }
-
-        // Changed nickname event
-        public event EventHandler<ChangedNicknameEventArgs> ChangedNickname;
-
-        public virtual void OnChangedNickname(string oldNickname, string newNickname, IPAddress senderIP)
-        {
-            ChangedNickname(this, new ChangedNicknameEventArgs()
-            {
-                NewNickname = newNickname,
-                OldNickname = oldNickname,
-                SenderIP = senderIP
-            });
         }
     }
 }

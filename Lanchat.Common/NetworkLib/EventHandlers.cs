@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using Lanchat.Common.HostLib;
+using System.Diagnostics;
+using System.Net;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -15,7 +17,7 @@ namespace Lanchat.Common.NetworkLib
         // Recieved broadcast
         public void OnRecievedBroadcast(object o, RecievedBroadcastEventArgs e)
         {
-            if (network.IsCanAdd(e.Sender, e.SenderIP))
+            if (IsCanAdd(e.Sender, e.SenderIP))
             {
                 // Create new node
                 network.CreateNode(e.Sender.Id, e.Sender.Port, e.SenderIP);
@@ -36,7 +38,7 @@ namespace Lanchat.Common.NetworkLib
                 // Remove node from list
                 var node = network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
                 Trace.WriteLine(node.Nickname + " disconnected");
-                network.OnNodeDisconnected(node.Ip, node.Nickname);
+                network.Events.OnNodeDisconnected(node.Ip, node.Nickname);
                 network.NodeList.RemoveAll(x => x.Ip.Equals(e.NodeIP));
             }
             catch
@@ -57,7 +59,7 @@ namespace Lanchat.Common.NetworkLib
             if (network.NodeList.Exists(x => x.Ip.Equals(e.SenderIP)))
             {
                 Trace.WriteLine("Node found and handshake accepted");
-                network.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
+                network.Events.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
                 var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
                 user.AcceptHandshake(e.NodeHandshake);
                 user.Connection.SendKey(user.PublicKey, "test");
@@ -67,7 +69,7 @@ namespace Lanchat.Common.NetworkLib
                 // Create new node
                 Trace.WriteLine("New node created after recieved handshake");
                 network.CreateNode(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP);
-                network.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
+                network.Events.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
                 var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
                 user.AcceptHandshake(e.NodeHandshake);
                 user.Connection.SendKey(user.PublicKey, "test");
@@ -85,7 +87,7 @@ namespace Lanchat.Common.NetworkLib
         {
             var userNickname = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP)).Nickname;
             Trace.WriteLine(userNickname + ": " + e.Content);
-            network.OnRecievedMessage(e.Content, userNickname);
+            network.Events.OnRecievedMessage(e.Content, userNickname);
         }
 
         // Changed nickname
@@ -94,8 +96,14 @@ namespace Lanchat.Common.NetworkLib
             var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
             var oldNickname = user.Nickname;
             user.Nickname = e.NewNickname;
-            network.OnChangedNickname(oldNickname, e.NewNickname, e.SenderIP);
+            network.Events.OnChangedNickname(oldNickname, e.NewNickname, e.SenderIP);
             Trace.WriteLine($"{oldNickname} nickname changed to {e.NewNickname}");
+        }
+
+        // Check is paperplane come from self or user alredy exist in list
+        public bool IsCanAdd(Paperplane broadcast, IPAddress senderIp)
+        {
+            return broadcast.Id != network.Id && !network.NodeList.Exists(x => x.Id.Equals(broadcast.Id)) && !network.NodeList.Exists(x => x.Ip.Equals(senderIp));
         }
     }
 }
