@@ -17,7 +17,12 @@ namespace Lanchat.Common.CryptographyLib
 
         // Fields
         private readonly AesManaged aes;
-        
+
+        // Properties
+        public string Key { get { return Convert.ToBase64String(aes.Key); } }
+        public string IV { get { return Convert.ToBase64String(aes.IV); } }
+
+
         // Encode string
         public string AesEncode(string input)
         {

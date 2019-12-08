@@ -25,7 +25,7 @@ namespace Lanchat.Common.NetworkLib
         {
             Nickname = handshake.Nickname;
             PublicKey = handshake.PublicKey;
-            Client.SendKey(PublicKey, "test");
+            Client.SendKey(new Key(Rsa.Encode(Aes.Key, PublicKey), Rsa.Encode(Aes.IV, PublicKey)));
         }
 
         public string Nickname { get; set; }

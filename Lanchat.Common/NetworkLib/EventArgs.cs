@@ -24,7 +24,9 @@ namespace Lanchat.Common.NetworkLib
 
     public class RecievedKeyEventArgs : EventArgs
     {
-        public string Key { get; set; }
+        public string AesKey { get; set; }
+        public string AesIV { get; set; }
+
         public IPAddress SenderIP { get; set; }
     }
 

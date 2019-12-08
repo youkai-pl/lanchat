@@ -126,7 +126,7 @@ namespace Lanchat.Common.HostLib
                     // If key
                     if (type == "key")
                     {
-                        Events.OnReceivedKey(data.GetValue("content").ToString(), ip);
+                        Events.OnReceivedKey(data.GetValue("content").ToObject<Key>(), ip);
                     }
 
                     // If message

@@ -27,10 +27,9 @@ namespace Lanchat.Common.HostLib
         }
 
         // Send key
-        public void SendKey(string remoteKey, string symetricKey)
+        public void SendKey(Key key)
         {
-            var encodedSymetricKey = Rsa.Encode(symetricKey, remoteKey);
-            Send("key", encodedSymetricKey);
+            Send("key", JToken.FromObject(key));
         }
 
         // Send message

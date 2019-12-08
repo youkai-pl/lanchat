@@ -56,11 +56,12 @@ namespace Lanchat.Common.HostLib
 
         // Recieved symetric key event
         public event EventHandler<RecievedKeyEventArgs> ReceivedKey;
-        public virtual void OnReceivedKey(string encryptedKey, IPAddress senderIP)
+        public virtual void OnReceivedKey(Key key, IPAddress senderIP)
         {
             ReceivedKey(this, new RecievedKeyEventArgs()
             {
-                Key = encryptedKey,
+                AesKey = key.AesKey,
+                AesIV = key.AesVI,
                 SenderIP = senderIP
             });
         }
