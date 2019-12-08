@@ -1,4 +1,4 @@
-﻿namespace Lanchat.Common.HostLib
+﻿namespace Lanchat.Common.HostLib.Types
 {
     public class Key
     {

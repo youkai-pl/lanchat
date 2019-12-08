@@ -2,6 +2,7 @@
 using System;
 using System.Net;
 using Lanchat.Common.CryptographyLib;
+using Lanchat.Common.HostLib.Types;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -25,7 +26,9 @@ namespace Lanchat.Common.NetworkLib
         {
             Nickname = handshake.Nickname;
             PublicKey = handshake.PublicKey;
-            Client.SendKey(new Key(Rsa.Encode(Aes.Key, PublicKey), Rsa.Encode(Aes.IV, PublicKey)));
+            Client.SendKey(new Key(
+                Rsa.Encode(Aes.Key, PublicKey),
+                Rsa.Encode(Aes.IV, PublicKey)));
         }
 
         public string Nickname { get; set; }

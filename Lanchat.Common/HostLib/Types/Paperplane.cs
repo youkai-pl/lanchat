@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace Lanchat.Common.HostLib
+namespace Lanchat.Common.HostLib.Types
 {
-    // Paperplane class
     public class Paperplane
     {
         public Paperplane(int port, Guid id)

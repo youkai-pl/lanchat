@@ -3,6 +3,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using Lanchat.Common.CryptographyLib;
+using System.Diagnostics;
+using Lanchat.Common.HostLib.Types;
 
 namespace Lanchat.Common.HostLib
 {

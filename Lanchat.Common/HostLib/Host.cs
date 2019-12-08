@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Lanchat.Common.HostLib.Types;
 
 namespace Lanchat.Common.HostLib
 {

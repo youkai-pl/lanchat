@@ -1,8 +1,7 @@
 ﻿using Lanchat.Common.NetworkLib;
 using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
+using Lanchat.Common.HostLib.Types;
 
 namespace Lanchat.Common.HostLib
 {
