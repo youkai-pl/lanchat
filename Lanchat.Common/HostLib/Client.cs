@@ -23,58 +23,37 @@ namespace Lanchat.Common.HostLib
         // Send handshake
         public void SendHandshake(Handshake handshake)
         {
-            // Send handshake
-            var data = new JObject
-            {
-                { "type", "handshake" },
-                { "content", JToken.FromObject(handshake) }
-            };
-
-            // Send
-            Send(data);
+            Send("handshake", JToken.FromObject(handshake));
         }
 
         // Send key
         public void SendKey(string remoteKey, string symetricKey)
         {
             var encodedSymetricKey = Rsa.Encode(symetricKey, remoteKey);
-            var data = new JObject
-            {
-                {"type", "key" },
-                {"content", encodedSymetricKey}
-            };
-            Send(data);
+            Send("key", encodedSymetricKey);
         }
 
         // Send message
         public void SendMessage(string message)
         {
-            var data = new JObject
-            {
-                { "type", "message" },
-                { "content", message }
-            };
-
-            // Send
-            Send(data);
+            Send("message", message);
         }
 
         // Change nickname
         public void SendNickname(string nickname)
         {
-            var data = new JObject
-            {
-                { "type", "nickname" },
-                { "content", nickname }
-            };
-
-            // Send
-            Send(data);
+            Send("nickname", nickname);
         }
 
         // Serialize and send data
-        private void Send(JObject data)
+        private void Send(string type, JToken content)
         {
+            var data = new JObject
+            {
+                { "type", type },
+                { "content", content }
+            };
+
             byte[] bytesToSend = Encoding.UTF8.GetBytes(data.ToString());
             nwStream.Write(bytesToSend, 0, bytesToSend.Length);
         }
