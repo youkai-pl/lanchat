@@ -1,7 +1,6 @@
 ﻿using Lanchat.Common.HostLib;
 using System;
 using System.Net;
-using System.Security.Cryptography;
 using Lanchat.Common.CryptographyLib;
 
 namespace Lanchat.Common.NetworkLib
@@ -13,27 +12,28 @@ namespace Lanchat.Common.NetworkLib
             Id = id;
             Port = port;
             Ip = ip;
-            Aes = Cryptography.CreateAesInstance();
+            Aes = new AesInstance();
         }
 
-        public void CreateConnection(Handshake handshake)
+        public void CreateConnection()
         {
-            Connection = new Client();
-            Connection.Connect(Ip, Port, handshake);
+            Client = new Client();
+            Client.Connect(Ip, Port);
         }
 
         public void AcceptHandshake(Handshake handshake)
         {
             Nickname = handshake.Nickname;
             PublicKey = handshake.PublicKey;
+            Client.SendKey(PublicKey, "test");
         }
 
         public string Nickname { get; set; }
         public Guid Id { get; set; }
         public string PublicKey { get; set; }
-        public AesManaged Aes { get; set; }
+        public AesInstance Aes { get; set; }
         public int Port { get; set; }
         public IPAddress Ip { get; set; }
-        public Client Connection { get; set; }
+        public Client Client { get; set; }
     }
 }

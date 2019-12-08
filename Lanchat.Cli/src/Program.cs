@@ -58,10 +58,10 @@ namespace Lanchat.Cli.Program
 
             // Initialize network
             Network = new Network(Config.Port, Config.Nickname);
-            Network.RecievedMessage += eventHandlers.OnRecievedMessage;
-            Network.NodeConnected += eventHandlers.OnNodeConnected;
-            Network.NodeDisconnected += eventHandlers.OnNodeDisconnected;
-            Network.ChangedNickname += eventHandlers.OnChangedNickname;
+            Network.Events.ReceivedMessage += eventHandlers.OnRecievedMessage;
+            Network.Events.NodeConnected += eventHandlers.OnNodeConnected;
+            Network.Events.NodeDisconnected += eventHandlers.OnNodeDisconnected;
+            Network.Events.ChangedNickname += eventHandlers.OnChangedNickname;
             Network.Start();
         }
     }

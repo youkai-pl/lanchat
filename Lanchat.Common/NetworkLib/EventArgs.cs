@@ -28,7 +28,7 @@ namespace Lanchat.Common.NetworkLib
         public IPAddress SenderIP { get; set; }
     }
 
-    public class RecievedMessageEventArgs : EventArgs
+    public class ReceivedMessageEventArgs : EventArgs
     {
         public string Content { get; set; }
         public string Nickname { get; set; }

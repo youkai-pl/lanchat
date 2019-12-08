@@ -29,12 +29,12 @@ namespace Lanchat.Cli.Program
             else
             {
                 Prompt.Out(input, null, Config.Nickname);
-                program.Network.SendAll(input);
+                program.Network.Out.SendAll(input);
             }
         }
 
         // Handle message
-        public void OnRecievedMessage(object o, RecievedMessageEventArgs e)
+        public void OnRecievedMessage(object o, ReceivedMessageEventArgs e)
         {
             if (!program.DebugMode)
             {
