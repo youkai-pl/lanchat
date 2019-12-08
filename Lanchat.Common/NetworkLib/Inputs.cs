@@ -95,9 +95,10 @@ namespace Lanchat.Common.NetworkLib
         // Recieved message
         public void OnReceivedMessage(object o, ReceivedMessageEventArgs e)
         {
-            var userNickname = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP)).Nickname;
-            Trace.WriteLine(userNickname + ": " + e.Content);
-            network.Events.OnReceivedMessage(e.Content, userNickname);
+            var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+            var content = user.RemoteAes.Decode(e.Content);
+            Trace.WriteLine(user.Nickname + ": " + content);
+            network.Events.OnReceivedMessage(content, user.Nickname);
         }
 
         // Changed nickname

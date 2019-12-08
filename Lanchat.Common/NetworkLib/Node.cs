@@ -18,7 +18,7 @@ namespace Lanchat.Common.NetworkLib
 
         public void CreateConnection()
         {
-            Client = new Client();
+            Client = new Client(this);
             Client.Connect(Ip, Port);
         }
 

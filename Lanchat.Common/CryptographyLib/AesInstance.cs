@@ -34,7 +34,7 @@ namespace Lanchat.Common.CryptographyLib
 
 
         // Encode string
-        public string AesEncode(string input)
+        public string Encode(string input)
         {
             byte[] encrypted;
             ICryptoTransform encryptor = aes.CreateEncryptor();
@@ -51,7 +51,7 @@ namespace Lanchat.Common.CryptographyLib
         }
 
         // Decode string
-        public string AesDecode(string input)
+        public string Decode(string input)
         {
             string plaintext = null;
             ICryptoTransform decryptor = aes.CreateDecryptor();

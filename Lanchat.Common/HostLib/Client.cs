@@ -2,14 +2,21 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using Lanchat.Common.CryptographyLib;
-using System.Diagnostics;
 using Lanchat.Common.HostLib.Types;
+using Lanchat.Common.NetworkLib;
 
 namespace Lanchat.Common.HostLib
 {
     public class Client
     {
+        public Client(Node node)
+        {
+            this.node = node;
+        }
+
+        // Fields
+        private readonly Node node;
+
         // Tcp client
         private TcpClient tcpclnt;
         private NetworkStream nwStream;
@@ -37,7 +44,7 @@ namespace Lanchat.Common.HostLib
         // Send message
         public void SendMessage(string message)
         {
-            Send("message", message);
+            Send("message", node.SelfAes.Encode(message));
         }
 
         // Change nickname
