@@ -1,8 +1,8 @@
-﻿using Lanchat.Common.HostLib;
+﻿using Lanchat.Common.CryptographyLib;
+using Lanchat.Common.HostLib;
+using Lanchat.Common.HostLib.Types;
 using System;
 using System.Net;
-using Lanchat.Common.CryptographyLib;
-using Lanchat.Common.HostLib.Types;
 
 namespace Lanchat.Common.NetworkLib
 {

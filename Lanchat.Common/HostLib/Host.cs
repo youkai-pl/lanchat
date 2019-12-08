@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Lanchat.Common.HostLib.Types;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Lanchat.Common.HostLib.Types;
 
 namespace Lanchat.Common.HostLib
 {
@@ -28,6 +28,7 @@ namespace Lanchat.Common.HostLib
 
         // Fields
         private readonly UdpClient udpClient;
+
         private readonly int port;
 
         // Start broadcast

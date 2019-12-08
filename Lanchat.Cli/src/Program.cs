@@ -14,6 +14,7 @@ namespace Lanchat.Cli.Program
     {
         // Properties
         public bool DebugMode { get; set; }
+
         public Network Network { get; set; }
         public Command Command { get; set; }
         public Prompt Prompt { get; set; }

@@ -7,6 +7,7 @@ namespace Lanchat.Common.NetworkLib
     {
         // Received message event
         public event EventHandler<ReceivedMessageEventArgs> ReceivedMessage;
+
         public virtual void OnReceivedMessage(string content, string nickname)
         {
             ReceivedMessage(this, new ReceivedMessageEventArgs()
@@ -18,6 +19,7 @@ namespace Lanchat.Common.NetworkLib
 
         // Node connected event
         public event EventHandler<NodeConnectionStatusEvent> NodeConnected;
+
         public virtual void OnNodeConnected(IPAddress ip, string nickname)
         {
             NodeConnected(this, new NodeConnectionStatusEvent()
@@ -29,6 +31,7 @@ namespace Lanchat.Common.NetworkLib
 
         // Node disconnected event
         public event EventHandler<NodeConnectionStatusEvent> NodeDisconnected;
+
         public virtual void OnNodeDisconnected(IPAddress ip, string nickname)
         {
             NodeDisconnected(this, new NodeConnectionStatusEvent()
@@ -40,6 +43,7 @@ namespace Lanchat.Common.NetworkLib
 
         // Changed nickname event
         public event EventHandler<ChangedNicknameEventArgs> ChangedNickname;
+
         public virtual void OnChangedNickname(string oldNickname, string newNickname, IPAddress senderIP)
         {
             ChangedNickname(this, new ChangedNicknameEventArgs()

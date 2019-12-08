@@ -1,7 +1,7 @@
-﻿using Lanchat.Common.NetworkLib;
+﻿using Lanchat.Common.HostLib.Types;
+using Lanchat.Common.NetworkLib;
 using System;
 using System.Net;
-using Lanchat.Common.HostLib.Types;
 
 namespace Lanchat.Common.HostLib
 {
@@ -55,6 +55,7 @@ namespace Lanchat.Common.HostLib
 
         // Recieved symetric key event
         public event EventHandler<RecievedKeyEventArgs> ReceivedKey;
+
         public virtual void OnReceivedKey(Key key, IPAddress senderIP)
         {
             ReceivedKey(this, new RecievedKeyEventArgs()

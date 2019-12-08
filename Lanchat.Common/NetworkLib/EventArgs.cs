@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Lanchat.Common.HostLib.Types;
+using System;
 using System.Net;
-using Lanchat.Common.HostLib.Types;
 
 namespace Lanchat.Common.NetworkLib
 {

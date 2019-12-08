@@ -1,10 +1,10 @@
 ﻿using Lanchat.Common.CryptographyLib;
 using Lanchat.Common.HostLib;
+using Lanchat.Common.HostLib.Types;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using Lanchat.Common.HostLib.Types;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -12,10 +12,12 @@ namespace Lanchat.Common.NetworkLib
     {
         // Private fields
         private readonly Host host;
+
         private readonly Inputs inputs;
 
         // Properties
         public string Nickname { get; set; }
+
         public string PublicKey { get; set; }
         public int BroadcastPort { get; set; }
         public int HostPort { get; set; }
@@ -56,7 +58,7 @@ namespace Lanchat.Common.NetworkLib
             // Create Events instance
             Events = new NetworkEvents();
 
-            // Create API outputs instance 
+            // Create API outputs instance
             Out = new Outputs(this);
         }
 

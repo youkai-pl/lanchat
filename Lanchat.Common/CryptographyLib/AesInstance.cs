@@ -30,8 +30,8 @@ namespace Lanchat.Common.CryptographyLib
 
         // Properties
         public string Key { get { return Convert.ToBase64String(aes.Key); } }
-        public string IV { get { return Convert.ToBase64String(aes.IV); } }
 
+        public string IV { get { return Convert.ToBase64String(aes.IV); } }
 
         // Encode string
         public string Encode(string input)
