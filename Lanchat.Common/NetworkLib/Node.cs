@@ -13,7 +13,7 @@ namespace Lanchat.Common.NetworkLib
             Id = id;
             Port = port;
             Ip = ip;
-            Aes = new AesInstance();
+            SelfAes = new AesInstance();
         }
 
         public void CreateConnection()
@@ -27,14 +27,20 @@ namespace Lanchat.Common.NetworkLib
             Nickname = handshake.Nickname;
             PublicKey = handshake.PublicKey;
             Client.SendKey(new Key(
-                Rsa.Encode(Aes.Key, PublicKey),
-                Rsa.Encode(Aes.IV, PublicKey)));
+                Rsa.Encode(SelfAes.Key, PublicKey),
+                Rsa.Encode(SelfAes.IV, PublicKey)));
+        }
+
+        public void CreateRemoteAes(string key, string iv)
+        {
+            RemoteAes = new AesInstance(key, iv);
         }
 
         public string Nickname { get; set; }
         public Guid Id { get; set; }
         public string PublicKey { get; set; }
-        public AesInstance Aes { get; set; }
+        public AesInstance SelfAes { get; set; }
+        public AesInstance RemoteAes { get; set; }
         public int Port { get; set; }
         public IPAddress Ip { get; set; }
         public Client Client { get; set; }

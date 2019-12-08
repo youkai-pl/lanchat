@@ -7,12 +7,22 @@ namespace Lanchat.Common.CryptographyLib
     // AES key generate
     public class AesInstance
     {
-        // Constructor
+        // Self AES constructor
         public AesInstance()
         {
             aes = new AesManaged();
             aes.GenerateKey();
             aes.GenerateIV();
+        }
+
+        // AES constructor with parameters
+        public AesInstance(string key, string iv)
+        {
+            aes = new AesManaged
+            {
+                Key = Convert.FromBase64String(key),
+                IV = Convert.FromBase64String(iv)
+            };
         }
 
         // Fields

@@ -88,7 +88,8 @@ namespace Lanchat.Common.NetworkLib
         // Receieved symetric key
         public void OnReceivedKey(object o, RecievedKeyEventArgs e)
         {
-            // Make something with key and vi
+            var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+            user.CreateRemoteAes(network.Rsa.Decode(e.AesKey), network.Rsa.Decode(e.AesIV));
         }
 
         // Recieved message

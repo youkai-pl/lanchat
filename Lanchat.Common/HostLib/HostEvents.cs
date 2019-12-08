@@ -60,7 +60,7 @@ namespace Lanchat.Common.HostLib
             ReceivedKey(this, new RecievedKeyEventArgs()
             {
                 AesKey = key.AesKey,
-                AesIV = key.AesVI,
+                AesIV = key.AesIV,
                 SenderIP = senderIP
             });
         }

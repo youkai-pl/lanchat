@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -27,7 +26,7 @@ namespace Lanchat.Common.CryptographyLib
         }
 
         // RSA decode
-        public string AsymetricDecode(string input)
+        public string Decode(string input)
         {
             byte[] clearOutput = csp.Decrypt(Convert.FromBase64String(input), false);
             return Encoding.UTF8.GetString(clearOutput);
