@@ -23,6 +23,6 @@
 - [ ] Plugins
 
 ### Protocol:
-- [ ] Working encrypted chat
+- [x] Working encrypted chat
 - [ ] Rooms
 - [ ] Sending files
