@@ -88,7 +88,7 @@ namespace Lanchat.Common.NetworkLib
         // Receieved symetric key
         public void OnReceivedKey(object o, RecievedKeyEventArgs e)
         {
-            Trace.WriteLine(network.Cryptography.AsymetricDecode(e.Key));
+            Trace.WriteLine(network.Rsa.AsymetricDecode(e.Key));
         }
 
         // Recieved message

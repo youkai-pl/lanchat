@@ -19,7 +19,7 @@ namespace Lanchat.Common.NetworkLib
         public int BroadcastPort { get; set; }
         public int HostPort { get; set; }
         public Guid Id { get; set; }
-        public Cryptography Cryptography { get; set; }
+        public RsaInstance Rsa { get; set; }
         public List<Node> NodeList { get; set; }
         public Outputs Out { get; set; }
         public NetworkEvents Events { get; set; }
@@ -27,14 +27,14 @@ namespace Lanchat.Common.NetworkLib
         public Network(int port, string nickname)
         {
             // Initialize RSA provider
-            Cryptography = new Cryptography();
+            Rsa = new RsaInstance();
 
             // Initialize node list
             NodeList = new List<Node>();
 
             // Set properties
             Nickname = nickname;
-            PublicKey = Cryptography.PublicKey;
+            PublicKey = Rsa.PublicKey;
             BroadcastPort = port;
             Id = Guid.NewGuid();
             HostPort = FreeTcpPort();

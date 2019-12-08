@@ -37,7 +37,7 @@ namespace Lanchat.Common.HostLib
         // Send key
         public void SendKey(string remoteKey, string symetricKey)
         {
-            var encodedSymetricKey = Cryptography.AsymetricEncode(symetricKey, remoteKey);
+            var encodedSymetricKey = Rsa.Encode(symetricKey, remoteKey);
             var data = new JObject
             {
                 {"type", "key" },
