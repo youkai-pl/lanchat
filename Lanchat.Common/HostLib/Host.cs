@@ -1,5 +1,4 @@
-﻿using Lanchat.Common.NetworkLib;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -16,10 +15,12 @@ namespace Lanchat.Common.HostLib
     {
         private readonly UdpClient udpClient;
         private readonly int port;
+        private readonly HostEvents events;
 
         // Host constructor
         public Host(int port)
         {
+            events = new HostEvents();
             this.port = port;
             udpClient = new UdpClient();
             udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, port));
@@ -53,7 +54,7 @@ namespace Lanchat.Common.HostLib
                     try
                     {
                         var paperplane = JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer));
-                        OnReceivedBroadcast(paperplane, from.Address);
+                        events.OnReceivedBroadcast(paperplane, from.Address);
                     }
                     catch (Exception e)
                     {
@@ -93,7 +94,7 @@ namespace Lanchat.Common.HostLib
                 byte[] response;
                 int received;
                 var ip = IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString());
-                OnNodeConnected(ip);
+                events.OnNodeConnected(ip);
 
                 while (true)
                 {
@@ -102,7 +103,7 @@ namespace Lanchat.Common.HostLib
                     received = client.Receive(response);
                     if (received == 0)
                     {
-                        OnNodeDisconnected(ip);
+                        events.OnNodeDisconnected(ip);
                         return;
                     }
 
@@ -116,109 +117,28 @@ namespace Lanchat.Common.HostLib
                     // If handshake
                     if (type == "handshake")
                     {
-                        OnReceivedHandshake(data.GetValue("content").ToObject<Handshake>(), ip);
+                        events.OnReceivedHandshake(data.GetValue("content").ToObject<Handshake>(), ip);
                     }
 
                     // If key
                     if (type == "key")
                     {
-                        OnReceivedKey(data.GetValue("content").ToString(), ip);
+                        events.OnReceivedKey(data.GetValue("content").ToString(), ip);
                     }
 
                     // If message
                     if (type == "message")
                     {
-                        OnReceivedMessage(data.GetValue("content").ToString(), ip);
+                        events.OnReceivedMessage(data.GetValue("content").ToString(), ip);
                     }
 
                     // If changed nickname
                     if (type == "nickname")
                     {
-                        OnChangedNickname(data.GetValue("content").ToString(), ip);
+                        events.OnChangedNickname(data.GetValue("content").ToString(), ip);
                     }
                 }
             }
-        }
-
-        // Recieved broadcast event
-        public event EventHandler<RecievedBroadcastEventArgs> RecievedBroadcast;
-
-        protected virtual void OnReceivedBroadcast(Paperplane sender, IPAddress senderIP)
-        {
-            RecievedBroadcast(this, new RecievedBroadcastEventArgs()
-            {
-                Sender = sender,
-                SenderIP = senderIP
-            });
-        }
-
-        // Node connected event
-        public event EventHandler<NodeConnectionStatusEvent> NodeConnected;
-
-        protected virtual void OnNodeConnected(IPAddress nodeIP)
-        {
-            NodeConnected(this, new NodeConnectionStatusEvent()
-            {
-                NodeIP = nodeIP
-            });
-        }
-
-        // Node connected event
-        public event EventHandler<NodeConnectionStatusEvent> NodeDisconnected;
-
-        protected virtual void OnNodeDisconnected(IPAddress nodeIP)
-        {
-            NodeDisconnected(this, new NodeConnectionStatusEvent()
-            {
-                NodeIP = nodeIP
-            });
-        }
-
-        // Recieved handshake event
-        public event EventHandler<RecievedHandshakeEventArgs> ReceivedHandshake;
-
-        protected virtual void OnReceivedHandshake(Handshake handshake, IPAddress senderIP)
-        {
-            ReceivedHandshake(this, new RecievedHandshakeEventArgs()
-            {
-                NodeHandshake = handshake,
-                SenderIP = senderIP
-            });
-        }
-
-        // Recieved symetric key event
-        public event EventHandler<RecievedKeyEventArgs> ReceivedKey;
-        protected virtual void OnReceivedKey(string encryptedKey, IPAddress senderIP)
-        {
-            ReceivedKey(this, new RecievedKeyEventArgs()
-            {
-                Key = encryptedKey,
-                SenderIP = senderIP
-            });
-        }
-
-        // Recieved message event
-        public event EventHandler<ReceivedMessageEventArgs> RecievedMessage;
-
-        protected virtual void OnReceivedMessage(string content, IPAddress senderIP)
-        {
-            RecievedMessage(this, new ReceivedMessageEventArgs()
-            {
-                Content = content,
-                SenderIP = senderIP
-            });
-        }
-
-        // Changed nickname event
-        public event EventHandler<ChangedNicknameEventArgs> ChangedNickname;
-
-        protected virtual void OnChangedNickname(string newNickname, IPAddress senderIP)
-        {
-            ChangedNickname(this, new ChangedNicknameEventArgs()
-            {
-                NewNickname = newNickname,
-                SenderIP = senderIP
-            });
         }
     }
 }
