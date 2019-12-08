@@ -15,9 +15,9 @@
         {
             network.NodeList.ForEach(x =>
             {
-                if (x.Connection != null)
+                if (x.Client != null)
                 {
-                    x.Connection.SendMessage(message);
+                    x.Client.SendMessage(message);
                 }
             });
         }
@@ -27,9 +27,9 @@
         {
             network.NodeList.ForEach(x =>
             {
-                if (x.Connection != null)
+                if (x.Client != null)
                 {
-                    x.Connection.SendNickname(nickname);
+                    x.Client.SendNickname(nickname);
                 }
             });
         }

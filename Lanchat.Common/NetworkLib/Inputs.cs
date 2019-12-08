@@ -7,12 +7,13 @@ namespace Lanchat.Common.NetworkLib
     // Event handlers
     public class Inputs
     {
-        private readonly Network network;
-
+        // Constructor
         public Inputs(Network network)
         {
             this.network = network;
         }
+
+        private readonly Network network;
 
         // Received broadcast
         public void OnReceivedBroadcast(object o, RecievedBroadcastEventArgs e)
@@ -34,18 +35,20 @@ namespace Lanchat.Common.NetworkLib
         // Node disconnected
         public void OnNodeDisconnected(object o, NodeConnectionStatusEvent e)
         {
-            try
+            // Find node in list
+            var node = network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
+            // If node exist delete it
+            if (node != null)
             {
-                // Find node
-                var node = network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
+                // Log disconnect
+                Trace.WriteLine(node.Nickname + " disconnected");
                 // Remove node from list
-                network.NodeList.RemoveAll(x => x.Ip.Equals(e.NodeIP));
+                network.NodeList.Remove(node);
                 // Emit event
                 network.Events.OnNodeDisconnected(node.Ip, node.Nickname);
-
-                Trace.WriteLine(node.Nickname + " disconnected");
             }
-            catch
+            // If node doesn't exist log exception
+            else
             {
                 Trace.WriteLine("Node does not exist");
             }
@@ -68,7 +71,6 @@ namespace Lanchat.Common.NetworkLib
                 network.Events.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
                 Trace.WriteLine("Node found and handshake accepted");
             }
-
             // If list doesn't contain node with this ip create node and accept handshake
             else
             {
@@ -83,7 +85,7 @@ namespace Lanchat.Common.NetworkLib
             }
         }
 
-        // Recieved symetric key
+        // Receieved symetric key
         public void OnReceivedKey(object o, RecievedKeyEventArgs e)
         {
             Trace.WriteLine(network.Cryptography.AsymetricDecode(e.Key));

@@ -18,15 +18,15 @@ namespace Lanchat.Common.NetworkLib
 
         public void CreateConnection()
         {
-            Connection = new Client();
-            Connection.Connect(Ip, Port);
+            Client = new Client();
+            Client.Connect(Ip, Port);
         }
 
         public void AcceptHandshake(Handshake handshake)
         {
             Nickname = handshake.Nickname;
             PublicKey = handshake.PublicKey;
-            Connection.SendKey(PublicKey, "test");
+            Client.SendKey(PublicKey, "test");
         }
 
         public string Nickname { get; set; }
@@ -35,6 +35,6 @@ namespace Lanchat.Common.NetworkLib
         public AesManaged Aes { get; set; }
         public int Port { get; set; }
         public IPAddress Ip { get; set; }
-        public Client Connection { get; set; }
+        public Client Client { get; set; }
     }
 }
