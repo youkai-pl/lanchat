@@ -60,23 +60,26 @@ namespace Lanchat.Common.NetworkLib
             Trace.WriteLine(e.SenderIP);
             Trace.Unindent();
 
+            // If node already crated just accept handhshake
             if (network.NodeList.Exists(x => x.Ip.Equals(e.SenderIP)))
             {
-                Trace.WriteLine("Node found and handshake accepted");
-                network.Events.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
                 var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
                 user.AcceptHandshake(e.NodeHandshake);
-                user.Connection.SendKey(user.PublicKey, "test");
+                network.Events.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
+                Trace.WriteLine("Node found and handshake accepted");
             }
+
+            // If list doesn't contain node with this ip create node and accept handshake
             else
             {
                 // Create new node
-                Trace.WriteLine("New node created after recieved handshake");
                 network.CreateNode(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP);
                 network.Events.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
+                Trace.WriteLine("New node created after recieved handshake");
+
+                // Accept handshake
                 var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
                 user.AcceptHandshake(e.NodeHandshake);
-                user.Connection.SendKey(user.PublicKey, "test");
             }
         }
 
