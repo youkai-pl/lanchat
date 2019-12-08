@@ -11,20 +11,23 @@ using System.Threading.Tasks;
 
 namespace Lanchat.Common.HostLib
 {
-    internal class Host
+    public class Host
     {
-        private readonly UdpClient udpClient;
-        private readonly int port;
-        private readonly HostEvents events;
-
         // Host constructor
         public Host(int port)
         {
-            events = new HostEvents();
+            Events = new HostEvents();
             this.port = port;
             udpClient = new UdpClient();
             udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, port));
         }
+
+        // Properties
+        public HostEvents Events { get; set; }
+
+        // Fields
+        private readonly UdpClient udpClient;
+        private readonly int port;
 
         // Start broadcast
         public void Broadcast(object self)
@@ -54,7 +57,7 @@ namespace Lanchat.Common.HostLib
                     try
                     {
                         var paperplane = JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer));
-                        events.OnReceivedBroadcast(paperplane, from.Address);
+                        Events.OnReceivedBroadcast(paperplane, from.Address);
                     }
                     catch (Exception e)
                     {
@@ -94,7 +97,7 @@ namespace Lanchat.Common.HostLib
                 byte[] response;
                 int received;
                 var ip = IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString());
-                events.OnNodeConnected(ip);
+                Events.OnNodeConnected(ip);
 
                 while (true)
                 {
@@ -103,7 +106,7 @@ namespace Lanchat.Common.HostLib
                     received = client.Receive(response);
                     if (received == 0)
                     {
-                        events.OnNodeDisconnected(ip);
+                        Events.OnNodeDisconnected(ip);
                         return;
                     }
 
@@ -117,25 +120,25 @@ namespace Lanchat.Common.HostLib
                     // If handshake
                     if (type == "handshake")
                     {
-                        events.OnReceivedHandshake(data.GetValue("content").ToObject<Handshake>(), ip);
+                        Events.OnReceivedHandshake(data.GetValue("content").ToObject<Handshake>(), ip);
                     }
 
                     // If key
                     if (type == "key")
                     {
-                        events.OnReceivedKey(data.GetValue("content").ToString(), ip);
+                        Events.OnReceivedKey(data.GetValue("content").ToString(), ip);
                     }
 
                     // If message
                     if (type == "message")
                     {
-                        events.OnReceivedMessage(data.GetValue("content").ToString(), ip);
+                        Events.OnReceivedMessage(data.GetValue("content").ToString(), ip);
                     }
 
                     // If changed nickname
                     if (type == "nickname")
                     {
-                        events.OnChangedNickname(data.GetValue("content").ToString(), ip);
+                        Events.OnChangedNickname(data.GetValue("content").ToString(), ip);
                     }
                 }
             }
