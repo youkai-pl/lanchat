@@ -34,7 +34,7 @@ namespace Lanchat.Cli.Program
         }
 
         // Handle message
-        public void OnRecievedMessage(object o, RecievedMessageEventArgs e)
+        public void OnRecievedMessage(object o, ReceivedMessageEventArgs e)
         {
             if (!program.DebugMode)
             {

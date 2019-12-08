@@ -14,8 +14,8 @@ namespace Lanchat.Common.NetworkLib
             this.network = network;
         }
 
-        // Recieved broadcast
-        public void OnRecievedBroadcast(object o, RecievedBroadcastEventArgs e)
+        // Received broadcast
+        public void OnReceivedBroadcast(object o, RecievedBroadcastEventArgs e)
         {
             if (IsCanAdd(e.Sender, e.SenderIP))
             {
@@ -27,6 +27,7 @@ namespace Lanchat.Common.NetworkLib
         // Node connected
         public void OnNodeConnected(object o, NodeConnectionStatusEvent e)
         {
+            // If broadcast isn't already received host will create node when the handshake is received
             Trace.WriteLine("New connection from: " + e.NodeIP.ToString());
         }
 
@@ -35,11 +36,14 @@ namespace Lanchat.Common.NetworkLib
         {
             try
             {
-                // Remove node from list
+                // Find node
                 var node = network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
-                Trace.WriteLine(node.Nickname + " disconnected");
-                network.Events.OnNodeDisconnected(node.Ip, node.Nickname);
+                // Remove node from list
                 network.NodeList.RemoveAll(x => x.Ip.Equals(e.NodeIP));
+                // Emit event
+                network.Events.OnNodeDisconnected(node.Ip, node.Nickname);
+
+                Trace.WriteLine(node.Nickname + " disconnected");
             }
             catch
             {
@@ -48,9 +52,9 @@ namespace Lanchat.Common.NetworkLib
         }
 
         // Recieved handshake
-        public void OnRecievedHandshake(object o, RecievedHandshakeEventArgs e)
+        public void OnReceivedHandshake(object o, RecievedHandshakeEventArgs e)
         {
-            Trace.WriteLine("Recieved handshake");
+            Trace.WriteLine("Received handshake");
             Trace.Indent();
             Trace.WriteLine(e.NodeHandshake.Nickname);
             Trace.WriteLine(e.SenderIP);
@@ -77,17 +81,17 @@ namespace Lanchat.Common.NetworkLib
         }
 
         // Recieved symetric key
-        public void OnRecievedKey(object o, RecievedKeyEventArgs e)
+        public void OnReceivedKey(object o, RecievedKeyEventArgs e)
         {
             Trace.WriteLine(network.Cryptography.AsymetricDecode(e.Key));
         }
 
         // Recieved message
-        public void OnRecievedMessage(object o, RecievedMessageEventArgs e)
+        public void OnReceivedMessage(object o, ReceivedMessageEventArgs e)
         {
             var userNickname = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP)).Nickname;
             Trace.WriteLine(userNickname + ": " + e.Content);
-            network.Events.OnRecievedMessage(e.Content, userNickname);
+            network.Events.OnReceivedMessage(e.Content, userNickname);
         }
 
         // Changed nickname

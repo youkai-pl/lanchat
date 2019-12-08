@@ -53,7 +53,7 @@ namespace Lanchat.Common.HostLib
                     try
                     {
                         var paperplane = JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer));
-                        OnRecievedBroadcast(paperplane, from.Address);
+                        OnReceivedBroadcast(paperplane, from.Address);
                     }
                     catch (Exception e)
                     {
@@ -116,19 +116,19 @@ namespace Lanchat.Common.HostLib
                     // If handshake
                     if (type == "handshake")
                     {
-                        OnRecievedHandshake(data.GetValue("content").ToObject<Handshake>(), ip);
+                        OnReceivedHandshake(data.GetValue("content").ToObject<Handshake>(), ip);
                     }
 
                     // If key
                     if (type == "key")
                     {
-                        OnRecivedKey(data.GetValue("content").ToString(), ip);
+                        OnReceivedKey(data.GetValue("content").ToString(), ip);
                     }
 
                     // If message
                     if (type == "message")
                     {
-                        OnRecievedMessage(data.GetValue("content").ToString(), ip);
+                        OnReceivedMessage(data.GetValue("content").ToString(), ip);
                     }
 
                     // If changed nickname
@@ -143,7 +143,7 @@ namespace Lanchat.Common.HostLib
         // Recieved broadcast event
         public event EventHandler<RecievedBroadcastEventArgs> RecievedBroadcast;
 
-        protected virtual void OnRecievedBroadcast(Paperplane sender, IPAddress senderIP)
+        protected virtual void OnReceivedBroadcast(Paperplane sender, IPAddress senderIP)
         {
             RecievedBroadcast(this, new RecievedBroadcastEventArgs()
             {
@@ -175,11 +175,11 @@ namespace Lanchat.Common.HostLib
         }
 
         // Recieved handshake event
-        public event EventHandler<RecievedHandshakeEventArgs> RecievedHandshake;
+        public event EventHandler<RecievedHandshakeEventArgs> ReceivedHandshake;
 
-        protected virtual void OnRecievedHandshake(Handshake handshake, IPAddress senderIP)
+        protected virtual void OnReceivedHandshake(Handshake handshake, IPAddress senderIP)
         {
-            RecievedHandshake(this, new RecievedHandshakeEventArgs()
+            ReceivedHandshake(this, new RecievedHandshakeEventArgs()
             {
                 NodeHandshake = handshake,
                 SenderIP = senderIP
@@ -187,10 +187,10 @@ namespace Lanchat.Common.HostLib
         }
 
         // Recieved symetric key event
-        public event EventHandler<RecievedKeyEventArgs> ReciecedKey;
-        protected virtual void OnRecivedKey(string encryptedKey, IPAddress senderIP)
+        public event EventHandler<RecievedKeyEventArgs> ReceivedKey;
+        protected virtual void OnReceivedKey(string encryptedKey, IPAddress senderIP)
         {
-            ReciecedKey(this, new RecievedKeyEventArgs()
+            ReceivedKey(this, new RecievedKeyEventArgs()
             {
                 Key = encryptedKey,
                 SenderIP = senderIP
@@ -198,11 +198,11 @@ namespace Lanchat.Common.HostLib
         }
 
         // Recieved message event
-        public event EventHandler<RecievedMessageEventArgs> RecievedMessage;
+        public event EventHandler<ReceivedMessageEventArgs> RecievedMessage;
 
-        protected virtual void OnRecievedMessage(string content, IPAddress senderIP)
+        protected virtual void OnReceivedMessage(string content, IPAddress senderIP)
         {
-            RecievedMessage(this, new RecievedMessageEventArgs()
+            RecievedMessage(this, new ReceivedMessageEventArgs()
             {
                 Content = content,
                 SenderIP = senderIP

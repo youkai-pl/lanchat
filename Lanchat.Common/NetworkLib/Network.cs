@@ -44,12 +44,12 @@ namespace Lanchat.Common.NetworkLib
 
             // Listen API events
             inputs = new Inputs(this);
-            host.RecievedBroadcast += inputs.OnRecievedBroadcast;
+            host.RecievedBroadcast += inputs.OnReceivedBroadcast;
             host.NodeConnected += inputs.OnNodeConnected;
             host.NodeDisconnected += inputs.OnNodeDisconnected;
-            host.RecievedHandshake += inputs.OnRecievedHandshake;
-            host.ReciecedKey += inputs.OnRecievedKey;
-            host.RecievedMessage += inputs.OnRecievedMessage;
+            host.ReceivedHandshake += inputs.OnReceivedHandshake;
+            host.ReceivedKey += inputs.OnReceivedKey;
+            host.RecievedMessage += inputs.OnReceivedMessage;
             host.ChangedNickname += inputs.OnChangedNickname;
 
             // Create Events instance

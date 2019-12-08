@@ -5,11 +5,11 @@ namespace Lanchat.Common.NetworkLib
 {
     public class NetworkEvents
     {
-        // Recieved message event
-        public event EventHandler<RecievedMessageEventArgs> RecievedMessage;
-        public virtual void OnRecievedMessage(string content, string nickname)
+        // Received message event
+        public event EventHandler<ReceivedMessageEventArgs> ReceivedMessage;
+        public virtual void OnReceivedMessage(string content, string nickname)
         {
-            RecievedMessage(this, new RecievedMessageEventArgs()
+            ReceivedMessage(this, new ReceivedMessageEventArgs()
             {
                 Content = content,
                 Nickname = nickname
