@@ -22,10 +22,15 @@ namespace Lanchat.Cli.Program
         public void Main()
         {
             // Check is debug enabled
-            Trace.Assert(DebugMode = true);
+            Debug.Assert(DebugMode = true);
 
             // Trace listener
             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+
+            if (DebugMode)
+            {
+                Trace.WriteLine("Debug mode enabled");
+            }
 
             // Load or create config file
             Config.Load();
