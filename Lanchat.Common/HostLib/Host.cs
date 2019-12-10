@@ -118,31 +118,33 @@ namespace Lanchat.Common.HostLib
                         List<byte> respBytesList = new List<byte>(response);
 
                         // Parse json and get data type
-                        var data = JObject.Parse(Encoding.UTF8.GetString(respBytesList.ToArray()));
-                        var type = data.GetValue("type").ToString();
+                        IList<JToken> obj = JObject.Parse(Encoding.UTF8.GetString(respBytesList.ToArray()));
+                        var type = ((JProperty)obj[0]).Name;
+                        var content = ((JProperty)obj[0]).Value;
+                        Trace.WriteLine(type);
 
                         // If handshake
                         if (type == "handshake")
                         {
-                            Events.OnReceivedHandshake(data.GetValue("content").ToObject<Handshake>(), ip);
+                            Events.OnReceivedHandshake(content.ToObject<Handshake>(), ip);
                         }
 
                         // If key
                         if (type == "key")
                         {
-                            Events.OnReceivedKey(data.GetValue("content").ToObject<Key>(), ip);
+                            Events.OnReceivedKey(content.ToObject<Key>(), ip);
                         }
 
                         // If message
                         if (type == "message")
                         {
-                            Events.OnReceivedMessage(data.GetValue("content").ToString(), ip);
+                            Events.OnReceivedMessage(content.ToString(), ip);
                         }
 
                         // If changed nickname
                         if (type == "nickname")
                         {
-                            Events.OnChangedNickname(data.GetValue("content").ToString(), ip);
+                            Events.OnChangedNickname(content.ToString(), ip);
                         }
                     }
                     catch (Exception e)

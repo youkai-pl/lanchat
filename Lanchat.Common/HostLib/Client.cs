@@ -57,11 +57,7 @@ namespace Lanchat.Common.HostLib
         // Serialize and send data
         private void Send(string type, JToken content)
         {
-            var data = new JObject
-            {
-                { "type", type },
-                { "content", content }
-            };
+            var data = new JObject(new JProperty(type, content));
 
             byte[] bytesToSend = Encoding.UTF8.GetBytes(data.ToString());
             nwStream.Write(bytesToSend, 0, bytesToSend.Length);
