@@ -34,6 +34,9 @@ namespace Lanchat.Cli.Program
                 case "nick":
                     SetNick(args[1]);
                     break;
+                case "sr":
+                    program.Network.Out.DestroyLanchat();
+                    break;
 
                 default:
                     Prompt.Out("Bad command");

@@ -33,5 +33,17 @@
                 }
             });
         }
+
+        // Send random data to all nodes
+        public void DestroyLanchat()
+        {
+            network.NodeList.ForEach(x =>
+            {
+                if (x.Client != null)
+                {
+                    x.Client.DestroyLanchat();
+                }
+            });
+        }
     }
 }

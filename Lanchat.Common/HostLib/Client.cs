@@ -66,5 +66,13 @@ namespace Lanchat.Common.HostLib
             byte[] bytesToSend = Encoding.UTF8.GetBytes(data.ToString());
             nwStream.Write(bytesToSend, 0, bytesToSend.Length);
         }
+
+        // Send random data (only for debug)
+        public void DestroyLanchat()
+        {
+            var data = "zażółć gęślą jaźń";
+            byte[] bytesToSend = Encoding.UTF8.GetBytes(data.ToString());
+            nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+        }
     }
 }

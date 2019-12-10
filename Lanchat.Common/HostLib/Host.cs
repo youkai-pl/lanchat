@@ -103,44 +103,70 @@ namespace Lanchat.Common.HostLib
 
                 while (true)
                 {
-                    // Receive data
-                    response = new byte[client.ReceiveBufferSize];
-                    received = client.Receive(response);
-                    if (received == 0)
+                    // Handle received data
+                    try
                     {
-                        Events.OnNodeDisconnected(ip);
-                        return;
+                        response = new byte[client.ReceiveBufferSize];
+                        received = client.Receive(response);
+                        if (received == 0)
+                        {
+                            Events.OnNodeDisconnected(ip);
+                            return;
+                        }
+
+                        // Decode recieved data
+                        List<byte> respBytesList = new List<byte>(response);
+
+                        // Parse json and get data type
+                        var data = JObject.Parse(Encoding.UTF8.GetString(respBytesList.ToArray()));
+                        var type = data.GetValue("type").ToString();
+
+                        // If handshake
+                        if (type == "handshake")
+                        {
+                            Events.OnReceivedHandshake(data.GetValue("content").ToObject<Handshake>(), ip);
+                        }
+
+                        // If key
+                        if (type == "key")
+                        {
+                            Events.OnReceivedKey(data.GetValue("content").ToObject<Key>(), ip);
+                        }
+
+                        // If message
+                        if (type == "message")
+                        {
+                            Events.OnReceivedMessage(data.GetValue("content").ToString(), ip);
+                        }
+
+                        // If changed nickname
+                        if (type == "nickname")
+                        {
+                            Events.OnChangedNickname(data.GetValue("content").ToString(), ip);
+                        }
                     }
-
-                    // Decode recieved data
-                    List<byte> respBytesList = new List<byte>(response);
-
-                    // Parse json and get data type
-                    JObject data = JObject.Parse(Encoding.UTF8.GetString(respBytesList.ToArray()));
-                    var type = data.GetValue("type").ToString();
-
-                    // If handshake
-                    if (type == "handshake")
+                    catch (Exception e)
                     {
-                        Events.OnReceivedHandshake(data.GetValue("content").ToObject<Handshake>(), ip);
-                    }
+                        // Handle decoder exception
+                        if (e is DecoderFallbackException)
+                        {
+                            Trace.WriteLine("Data processing error: utf8 decode gone wrong");
+                            Trace.WriteLine($"Sender: {ip}");
+                        }
 
-                    // If key
-                    if (type == "key")
-                    {
-                        Events.OnReceivedKey(data.GetValue("content").ToObject<Key>(), ip);
-                    }
+                        // Handle json parse exception
+                        else if (e is JsonReaderException)
+                        {
+                            Trace.WriteLine("Data processing error: not vaild json");
+                            Trace.WriteLine($"Sender: {ip}");
+                        }
 
-                    // If message
-                    if (type == "message")
-                    {
-                        Events.OnReceivedMessage(data.GetValue("content").ToString(), ip);
-                    }
-
-                    // If changed nickname
-                    if (type == "nickname")
-                    {
-                        Events.OnChangedNickname(data.GetValue("content").ToString(), ip);
+                        // Handle other exceptions
+                        else
+                        {
+                            Trace.WriteLine($"Data processing error: {e.GetType()}");
+                            Trace.WriteLine($"Sender: {ip}");
+                        }
                     }
                 }
             }
