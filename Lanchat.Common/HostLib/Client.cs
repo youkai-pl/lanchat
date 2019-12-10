@@ -66,7 +66,8 @@ namespace Lanchat.Common.HostLib
         // Send random data (only for debug)
         public void DestroyLanchat()
         {
-            var data = "zażółć gęślą jaźń";
+            var content = "asdasd";
+            var data = new JObject(new JProperty("message", node.SelfAes.Encode(content)));
             byte[] bytesToSend = Encoding.UTF8.GetBytes(data.ToString());
             nwStream.Write(bytesToSend, 0, bytesToSend.Length);
         }

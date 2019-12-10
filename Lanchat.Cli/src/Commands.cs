@@ -39,6 +39,10 @@ namespace Lanchat.Cli.Program
                     program.Network.Out.DestroyLanchat();
                     break;
 
+                case "list":
+                    List();
+                    break;
+
                 default:
                     Prompt.Out("Bad command");
                     break;
@@ -71,6 +75,16 @@ namespace Lanchat.Cli.Program
             Prompt.Out("/help - list of commands");
             Prompt.Out("/nick - change nick");
             Prompt.Out("");
+        }
+
+        // Show list of peers
+        private void List()
+        {
+            Prompt.Out($"Connected peers: {program.Network.NodeList.Count}");
+            foreach (var item in program.Network.NodeList)
+            {
+                Prompt.Out($"{item.Nickname} ({item.Ip})");
+            }
         }
     }
 }
