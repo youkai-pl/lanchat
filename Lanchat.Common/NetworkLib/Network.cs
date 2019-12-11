@@ -13,7 +13,7 @@ namespace Lanchat.Common.NetworkLib
         // Private fields
         private readonly Host host;
 
-        private readonly Inputs inputs;
+        private readonly HostEventsHandlers inputs;
 
         // Properties
         public string Nickname { get; set; }
@@ -24,7 +24,7 @@ namespace Lanchat.Common.NetworkLib
         public Guid Id { get; set; }
         public RsaInstance Rsa { get; set; }
         public List<Node> NodeList { get; set; }
-        public Outputs Out { get; set; }
+        public Methods Out { get; set; }
         public NetworkEvents Events { get; set; }
 
         public Network(int port, string nickname)
@@ -46,7 +46,7 @@ namespace Lanchat.Common.NetworkLib
             host = new Host(BroadcastPort);
 
             // Listen API events
-            inputs = new Inputs(this);
+            inputs = new HostEventsHandlers(this);
             host.Events.RecievedBroadcast += inputs.OnReceivedBroadcast;
             host.Events.NodeConnected += inputs.OnNodeConnected;
             host.Events.NodeDisconnected += inputs.OnNodeDisconnected;
@@ -59,7 +59,7 @@ namespace Lanchat.Common.NetworkLib
             Events = new NetworkEvents();
 
             // Create API outputs instance
-            Out = new Outputs(this);
+            Out = new Methods(this);
         }
 
         // Start host

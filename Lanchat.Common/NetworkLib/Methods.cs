@@ -1,9 +1,12 @@
-﻿namespace Lanchat.Common.NetworkLib
+﻿using System.Diagnostics;
+using System.Net;
+
+namespace Lanchat.Common.NetworkLib
 {
-    public class Outputs
+    public class Methods
     {
         // Constructor
-        public Outputs(Network network)
+        public Methods(Network network)
         {
             this.network = network;
         }

@@ -43,6 +43,14 @@ namespace Lanchat.Cli.Program
                     List();
                     break;
 
+                case "mute":
+                    Mute(args[1]);
+                    break;
+
+                case "unmute":
+                    Unmute(args[1]);
+                    break;
+
                 default:
                     Prompt.Out("Bad command");
                     break;
@@ -84,6 +92,36 @@ namespace Lanchat.Cli.Program
             foreach (var item in program.Network.NodeList)
             {
                 Prompt.Out($"{item.Nickname} ({item.Ip})");
+            }
+        }
+
+        // Mute user
+        private void Mute(string nickname)
+        {
+            var user = program.Network.NodeList.Find(x => x.Nickname.Equals(nickname));
+            if (user != null)
+            {
+                user.Mute = true;
+                Prompt.Out($"{nickname} muted");
+            }
+            else
+            {
+                Prompt.Alert("User not found");
+            }
+        }
+
+        // Unmute user
+        private void Unmute(string nickname)
+        {
+            var user = program.Network.NodeList.Find(x => x.Nickname.Equals(nickname));
+            if (user != null)
+            {
+                user.Mute = false;
+                Prompt.Out($"{nickname} unmuted");
+            }
+            else
+            {
+                Prompt.Alert("User not found");
             }
         }
     }

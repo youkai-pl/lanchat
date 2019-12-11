@@ -39,6 +39,7 @@ namespace Lanchat.Common.NetworkLib
         public string Nickname { get; set; }
         public Guid Id { get; set; }
         public string PublicKey { get; set; }
+        public bool Mute { get; set; }
         public AesInstance SelfAes { get; set; }
         public AesInstance RemoteAes { get; set; }
         public int Port { get; set; }

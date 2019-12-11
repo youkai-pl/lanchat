@@ -6,10 +6,10 @@ using System.Net;
 namespace Lanchat.Common.NetworkLib
 {
     // Event handlers
-    public class Inputs
+    public class HostEventsHandlers
     {
         // Constructor
-        public Inputs(Network network)
+        public HostEventsHandlers(Network network)
         {
             this.network = network;
         }
@@ -104,9 +104,17 @@ namespace Lanchat.Common.NetworkLib
         public void OnReceivedMessage(object o, ReceivedMessageEventArgs e)
         {
             var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
-            var content = user.RemoteAes.Decode(e.Content);
-            Trace.WriteLine(user.Nickname + ": " + content);
-            network.Events.OnReceivedMessage(content, user.Nickname);
+            if (!user.Mute)
+            {
+                var content = user.RemoteAes.Decode(e.Content);
+                Trace.WriteLine(user.Nickname + ": " + content);
+                network.Events.OnReceivedMessage(content, user.Nickname);
+            }
+            else
+            {
+                Trace.WriteLine($"Message from muted user ({e.SenderIP}) blocked");
+            }
+
         }
 
         // Changed nickname
