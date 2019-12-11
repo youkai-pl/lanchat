@@ -7,7 +7,7 @@ namespace Lanchat.Windows
     {
         private static void Main(string[] args)
         {
-            var program = new Cli.Program.Program();
+            var program = new Cli.ProgramLib.Program();
             program.Main();
         }
     }

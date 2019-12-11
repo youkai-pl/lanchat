@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using Console = Colorful.Console;
-using Lanchat.Cli.Program;
+using Lanchat.Cli.ProgramLib;
 
 namespace Lanchat.Cli.PromptLib
 {

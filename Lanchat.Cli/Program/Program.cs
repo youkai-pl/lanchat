@@ -6,8 +6,9 @@ using Lanchat.Common.NetworkLib;
 using System;
 using System.Diagnostics;
 using System.Threading;
+using Lanchat.Cli.Commands;
 
-namespace Lanchat.Cli.Program
+namespace Lanchat.Cli.ProgramLib
 {
     public class Program
     {
@@ -15,7 +16,7 @@ namespace Lanchat.Cli.Program
         public bool DebugMode { get; set; }
 
         public Network Network { get; set; }
-        public Command Command { get; set; }
+        public Command Commands { get; set; }
         public Prompt Prompt { get; set; }
 
         public void Main()
@@ -51,7 +52,7 @@ namespace Lanchat.Cli.Program
             }
 
             // Initialize commands module
-            Command = new Command(this);
+            Commands = new Command(this);
 
             // Initialize event handlers
             var eventHandlers = new EventHandlers(this);

@@ -1,7 +1,7 @@
 ﻿using Lanchat.Cli.PromptLib;
 using Lanchat.Common.NetworkLib;
 
-namespace Lanchat.Cli.Program
+namespace Lanchat.Cli.ProgramLib
 {
     public class EventHandlers
     {
@@ -21,7 +21,7 @@ namespace Lanchat.Cli.Program
             // Check is input command
             if (input.StartsWith("/"))
             {
-                program.Command.Execute(input.Substring(1));
+                program.Commands.Execute(input.Substring(1));
             }
 
             // Or message
