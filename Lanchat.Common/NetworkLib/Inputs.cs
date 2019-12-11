@@ -1,4 +1,5 @@
 ﻿using Lanchat.Common.HostLib.Types;
+using System;
 using System.Diagnostics;
 using System.Net;
 
@@ -21,7 +22,14 @@ namespace Lanchat.Common.NetworkLib
             if (IsCanAdd(e.Sender, e.SenderIP))
             {
                 // Create new node
-                network.CreateNode(e.Sender.Id, e.Sender.Port, e.SenderIP);
+                try
+                {
+                    network.CreateNode(e.Sender.Id, e.Sender.Port, e.SenderIP);
+                }
+                catch (Exception ex)
+                {
+                    Trace.Write("Connecting error: " + ex.Message);
+                }
             }
         }
 
