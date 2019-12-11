@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Lanchat.Cli.ConfigLib
+namespace Lanchat.Cli.Program
 {
     public static class Config
     {

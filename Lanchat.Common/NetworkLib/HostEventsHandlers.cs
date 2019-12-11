@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Net;
+using System.Threading;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -79,6 +80,7 @@ namespace Lanchat.Common.NetworkLib
                 network.Events.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
                 Trace.WriteLine("Node found and handshake accepted");
             }
+
             // If list doesn't contain node with this ip create node and accept handshake
             else
             {
