@@ -24,7 +24,7 @@ namespace Lanchat.Common.NetworkLib
         public Guid Id { get; set; }
         public RsaInstance Rsa { get; set; }
         public List<Node> NodeList { get; set; }
-        public Methods Out { get; set; }
+        public ApiMethods Out { get; set; }
         public NetworkEvents Events { get; set; }
 
         public Network(int port, string nickname)
@@ -59,7 +59,7 @@ namespace Lanchat.Common.NetworkLib
             Events = new NetworkEvents();
 
             // Create API outputs instance
-            Out = new Methods(this);
+            Out = new ApiMethods(this);
         }
 
         // Start host

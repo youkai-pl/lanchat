@@ -6,4 +6,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("tofudd")]
 [assembly: Guid("4e74a425-a696-40fe-9b52-f03eb0144710")]
 [assembly: AssemblyVersion("2.0.0.1003")]
-[assembly: AssemblyFileVersion("2.0.0.1003")]
+[assembly: AssemblyFileVersion("2.0.0.1004")]

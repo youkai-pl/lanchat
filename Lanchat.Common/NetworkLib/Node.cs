@@ -14,6 +14,7 @@ namespace Lanchat.Common.NetworkLib
             Port = port;
             Ip = ip;
             SelfAes = new AesInstance();
+            NicknameNum = 0;
         }
 
         public void CreateConnection()
@@ -36,7 +37,23 @@ namespace Lanchat.Common.NetworkLib
             RemoteAes = new AesInstance(key, iv);
         }
 
-        public string Nickname { get; set; }
+        public string Nickname
+        {
+            get
+            {
+                if (NicknameNum != 0)
+                {
+                    return ClearNickname + $"#{NicknameNum}";
+                }
+                else
+                {
+                    return ClearNickname;
+                }
+            }
+            set => ClearNickname = value;
+        }
+        public string ClearNickname { get; private set; }
+        public int NicknameNum { get; set; }
         public Guid Id { get; set; }
         public string PublicKey { get; set; }
         public bool Mute { get; set; }

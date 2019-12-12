@@ -48,12 +48,15 @@ namespace Lanchat.Common.NetworkLib
             // If node exist delete it
             if (node != null)
             {
+                var nickname = node.ClearNickname;
                 // Log disconnect
                 Trace.WriteLine(node.Nickname + " disconnected");
-                // Remove node from list
-                network.NodeList.Remove(node);
                 // Emit event
                 network.Events.OnNodeDisconnected(node.Ip, node.Nickname);
+                // Remove node from list
+                network.NodeList.Remove(node);
+                // Delete the number if nicknames are not duplicated now
+                CheckNickcnameDuplicates(nickname);
             }
             // If node doesn't exist log exception
             else
@@ -85,13 +88,18 @@ namespace Lanchat.Common.NetworkLib
             {
                 // Create new node
                 network.CreateNode(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP);
-                network.Events.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
                 Trace.WriteLine("New node created after recieved handshake");
 
                 // Accept handshake
                 var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
                 user.AcceptHandshake(e.NodeHandshake);
             }
+
+            // Add number to peers with same nicknames
+            CheckNickcnameDuplicates(e.NodeHandshake.Nickname);
+
+            // Emit event
+            network.Events.OnNodeConnected(e.SenderIP, network.NodeList.Find(x => x.Ip.Equals(e.SenderIP)).Nickname);
         }
 
         // Receieved symetric key
@@ -123,14 +131,36 @@ namespace Lanchat.Common.NetworkLib
             var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
             var oldNickname = user.Nickname;
             user.Nickname = e.NewNickname;
+            // Check is nickname duplicated
+            CheckNickcnameDuplicates(e.NewNickname);
             network.Events.OnChangedNickname(oldNickname, e.NewNickname, e.SenderIP);
+            // Emit event
             Trace.WriteLine($"{oldNickname} nickname changed to {e.NewNickname}");
         }
 
         // Check is paperplane come from self or user alredy exist in list
-        public bool IsCanAdd(Paperplane broadcast, IPAddress senderIp)
+        private bool IsCanAdd(Paperplane broadcast, IPAddress senderIp)
         {
             return broadcast.Id != network.Id && !network.NodeList.Exists(x => x.Id.Equals(broadcast.Id)) && !network.NodeList.Exists(x => x.Ip.Equals(senderIp));
+        }
+
+        // Check nickname duplicates
+        private void CheckNickcnameDuplicates(string nickname)
+        {
+            var users = network.NodeList.FindAll(x => x.ClearNickname == nickname);
+            if (users.Count > 1)
+            {
+                var index = 1;
+                foreach (var item in users)
+                {
+                    item.NicknameNum = index;
+                    index++;
+                }
+            }
+            else if (users.Count > 0)
+            {
+                users[0].NicknameNum = 0;
+            }
         }
     }
 }
