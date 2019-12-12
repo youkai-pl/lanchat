@@ -1,4 +1,4 @@
-﻿using Lanchat.Cli.PromptLib;
+﻿using Lanchat.Cli.Ui;
 using Lanchat.Common.NetworkLib;
 
 namespace Lanchat.Cli.ProgramLib

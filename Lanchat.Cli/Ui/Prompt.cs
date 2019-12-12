@@ -5,7 +5,7 @@ using System.Reflection;
 using Console = Colorful.Console;
 using Lanchat.Cli.ProgramLib;
 
-namespace Lanchat.Cli.PromptLib
+namespace Lanchat.Cli.Ui
 {
     public class Prompt
     {

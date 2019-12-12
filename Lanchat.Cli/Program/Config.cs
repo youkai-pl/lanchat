@@ -1,4 +1,4 @@
-﻿using Lanchat.Cli.PromptLib;
+﻿using Lanchat.Cli.Ui;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;

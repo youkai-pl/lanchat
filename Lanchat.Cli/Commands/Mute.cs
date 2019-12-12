@@ -1,4 +1,4 @@
-﻿using Lanchat.Cli.PromptLib;
+﻿using Lanchat.Cli.Ui;
 
 namespace Lanchat.Cli.Commands
 {

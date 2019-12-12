@@ -1,7 +1,7 @@
 ﻿// Lanchat 2
 // Let's all love lain
 
-using Lanchat.Cli.PromptLib;
+using Lanchat.Cli.Ui;
 using Lanchat.Common.NetworkLib;
 using System;
 using System.Diagnostics;
