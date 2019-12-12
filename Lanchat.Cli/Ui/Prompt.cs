@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Lanchat.Cli.ProgramLib;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using Console = Colorful.Console;
-using Lanchat.Cli.ProgramLib;
 
 namespace Lanchat.Cli.Ui
 {

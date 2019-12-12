@@ -1,12 +1,12 @@
 ﻿// Lanchat 2
 // Let's all love lain
 
+using Lanchat.Cli.Commands;
 using Lanchat.Cli.Ui;
 using Lanchat.Common.NetworkLib;
 using System;
 using System.Diagnostics;
 using System.Threading;
-using Lanchat.Cli.Commands;
 
 namespace Lanchat.Cli.ProgramLib
 {

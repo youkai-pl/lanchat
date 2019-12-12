@@ -2,7 +2,6 @@
 using System;
 using System.Diagnostics;
 using System.Net;
-using System.Threading;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -116,7 +115,6 @@ namespace Lanchat.Common.NetworkLib
             {
                 Trace.WriteLine($"Message from muted user ({e.SenderIP}) blocked");
             }
-
         }
 
         // Changed nickname
