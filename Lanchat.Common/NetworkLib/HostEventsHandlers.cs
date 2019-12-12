@@ -79,6 +79,7 @@ namespace Lanchat.Common.NetworkLib
                 network.Events.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
                 Trace.WriteLine("Node found and handshake accepted");
             }
+
             // If list doesn't contain node with this ip create node and accept handshake
             else
             {
@@ -114,7 +115,6 @@ namespace Lanchat.Common.NetworkLib
             {
                 Trace.WriteLine($"Message from muted user ({e.SenderIP}) blocked");
             }
-
         }
 
         // Changed nickname

@@ -1,11 +1,11 @@
-﻿using Lanchat.Cli.ConfigLib;
+﻿using Lanchat.Cli.ProgramLib;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using Console = Colorful.Console;
 
-namespace Lanchat.Cli.PromptLib
+namespace Lanchat.Cli.Ui
 {
     public class Prompt
     {
