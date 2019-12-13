@@ -1,4 +1,5 @@
-﻿using Lanchat.Cli.Ui;
+﻿using Lanchat.Cli.ProgramLib;
+using Lanchat.Cli.Ui;
 
 namespace Lanchat.Cli.Commands
 {
@@ -9,8 +10,17 @@ namespace Lanchat.Cli.Commands
             var user = program.Network.NodeList.Find(x => x.Nickname.Equals(nickname));
             if (user != null)
             {
-                user.Mute = false;
-                Prompt.Out($"{nickname} unmuted");
+                var userOnList = Config.Muted.Find(x => x.Equals(user.Ip));
+                if (userOnList != null)
+                {
+                    user.Mute = false;
+                    Config.Muted.Remove(userOnList);
+                    Config.Save();
+                    Prompt.Out($"{nickname} unmuted");
+                } else
+                {
+                    Prompt.Out("User is not muted");
+                }
             }
             else
             {

@@ -1,5 +1,6 @@
 ﻿using Lanchat.Cli.Ui;
 using Lanchat.Common.NetworkLib;
+using System.Diagnostics;
 
 namespace Lanchat.Cli.ProgramLib
 {
@@ -47,6 +48,13 @@ namespace Lanchat.Cli.ProgramLib
             if (!program.DebugMode)
             {
                 Prompt.Notice(e.Nickname + " connected");
+            }
+
+            if (Config.Muted.Exists(x => x.Equals(e.NodeIP)))
+            {
+                var user = program.Network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
+                user.Mute = true;
+                Trace.WriteLine($"{e.NodeIP} is muted");
             }
         }
 

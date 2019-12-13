@@ -1,4 +1,5 @@
 ﻿using Lanchat.Cli.Ui;
+using Lanchat.Cli.ProgramLib;
 
 namespace Lanchat.Cli.Commands
 {
@@ -10,7 +11,16 @@ namespace Lanchat.Cli.Commands
             if (user != null)
             {
                 user.Mute = true;
-                Prompt.Out($"{nickname} muted");
+                if (Config.Muted.Exists(x => x.Equals(user.Ip)))
+                {
+                    Prompt.Out("User already muted");
+                }
+                else
+                {
+                    Config.Muted.Add(user.Ip);
+                    Config.Save();
+                    Prompt.Out($"{nickname} muted");
+                }
             }
             else
             {
