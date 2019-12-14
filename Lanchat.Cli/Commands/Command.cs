@@ -43,11 +43,36 @@ namespace Lanchat.Cli.Commands
                     break;
 
                 case "mute":
-                    Mute(args[1]);
+                    if (args.Length > 1)
+                    {
+                        Mute(args[1]);
+                    }
+                    else
+                    {
+                        Prompt.Alert("Bad command syntax");
+                    }
                     break;
 
                 case "unmute":
-                    Unmute(args[1]);
+                    if (args[1] != null)
+                    {
+                        Unmute(args[1]);
+                    }
+                    else
+                    {
+                        Prompt.Alert("Bad command syntax");
+                    }
+                    break;
+
+                case "connect":
+                    if (args.Length > 2)
+                    {
+                        Connect(args[1], args[2]);
+                    }
+                    else
+                    {
+                        Prompt.Alert("Bad command syntax");
+                    }
                     break;
 
                 default:
