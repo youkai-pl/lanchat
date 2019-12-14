@@ -13,7 +13,7 @@ namespace Lanchat.Cli.Commands
         // Main program reference
         private readonly Program program;
 
-        // Commands
+        // Execute command
         public void Execute(string command)
         {
             // Split arguments
@@ -31,7 +31,14 @@ namespace Lanchat.Cli.Commands
                     break;
 
                 case "nick":
-                    Nick(args[1]);
+                    if (args[1] != null)
+                    {
+                        Nick(args[1]);
+                    }
+                    else
+                    {
+                        Prompt.Alert("Bad command syntax");
+                    }
                     break;
 
                 case "sr":
@@ -43,15 +50,36 @@ namespace Lanchat.Cli.Commands
                     break;
 
                 case "mute":
-                    Mute(args[1]);
+                    if (args[1] != null)
+                    {
+                        Mute(args[1]);
+                    }
+                    else
+                    {
+                        Prompt.Alert("Bad command syntax");
+                    }
                     break;
 
                 case "unmute":
-                    Unmute(args[1]);
+                    if (args[1] != null)
+                    {
+                        Unmute(args[1]);
+                    }
+                    else
+                    {
+                        Prompt.Alert("Bad command syntax");
+                    }
                     break;
 
                 case "connect":
-                    Connect(args[1], args[2]);
+                    if (!(args[1] == null || args[2] == null))
+                    {
+                        Connect(args[1], args[2]);
+                    }
+                    else
+                    {
+                        Prompt.Alert("Bad command syntax");
+                    }
                     break;
 
                 default:
