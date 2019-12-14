@@ -17,8 +17,7 @@ namespace Lanchat.Cli.Commands
                 }
                 else
                 {
-                    Config.Muted.Add(user.Ip);
-                    Config.Save();
+                    Config.AddMute(user.Ip);
                     Prompt.Out($"{nickname} muted");
                 }
             }

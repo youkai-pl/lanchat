@@ -11,10 +11,6 @@ namespace Lanchat.Cli.ProgramLib
     public static class Config
     {
         // Properties
-        private static string _Nickname;
-        private static int _Port;
-        private static List<IPAddress> _Muted = new List<IPAddress>();
-
         public static string Nickname
         {
             get => _Nickname;
@@ -35,15 +31,11 @@ namespace Lanchat.Cli.ProgramLib
             }
         }
 
-        public static List<IPAddress> Muted
-        {
-            get => _Muted;
-            set
-            {
-                _Muted = value;
-                Save();
-            }
-        }
+        public static List<IPAddress> Muted { get; set; } = new List<IPAddress>();
+
+        // Fields
+        private static string _Nickname;
+        private static int _Port;
 
         // Load config
         public static void Load()
@@ -61,7 +53,7 @@ namespace Lanchat.Cli.ProgramLib
                 List<string> MutedStrings = json.muted.ToObject<List<string>>();
                 for (int i = 0; i < MutedStrings.Count; i++)
                 {
-                    _Muted.Add(IPAddress.Parse(MutedStrings[i]));
+                    Muted.Add(IPAddress.Parse(MutedStrings[i]));
                 }
             }
             catch (Exception e)
@@ -76,13 +68,13 @@ namespace Lanchat.Cli.ProgramLib
         }
 
         // Save config
-        public static void Save()
+        private static void Save()
         {
             // Convert ip addresses to strings
             var MutedStrings = new List<string>();
-            for (int i = 0; i < _Muted.Count; i++)
+            for (int i = 0; i < Muted.Count; i++)
             {
-                MutedStrings.Add(_Muted[i].ToString());
+                MutedStrings.Add(Muted[i].ToString());
             }
 
             object json = new
@@ -99,6 +91,20 @@ namespace Lanchat.Cli.ProgramLib
             {
                 Prompt.CrashScreen(e);
             }
+        }
+
+        // Add muted user
+        public static void AddMute(IPAddress ip)
+        {
+            Muted.Add(ip);
+            Save();
+        }
+
+        // Remove muted user
+        public static void RemoveMute(IPAddress ip)
+        {
+            Muted.Remove(ip);
+            Save();
         }
     }
 }
