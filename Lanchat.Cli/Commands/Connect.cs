@@ -18,8 +18,7 @@ namespace Lanchat.Cli.Commands
             }
             catch(Exception e)
             {
-                Prompt.Alert("Cannot create connection");
-                Trace.WriteLine(e.Message);
+                Trace.WriteLine(e.GetType());
             }
         }
     }

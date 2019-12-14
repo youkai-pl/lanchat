@@ -50,7 +50,7 @@ namespace Lanchat.Cli.Commands
                     break;
 
                 case "mute":
-                    if (args[1] != null)
+                    if (args.Length > 1)
                     {
                         Mute(args[1]);
                     }
@@ -72,7 +72,7 @@ namespace Lanchat.Cli.Commands
                     break;
 
                 case "connect":
-                    if (!(args[1] == null || args[2] == null))
+                    if (args.Length > 2)
                     {
                         Connect(args[1], args[2]);
                     }
