@@ -17,6 +17,14 @@ namespace Lanchat.Common.NetworkLib
             NicknameNum = 0;
         }
 
+        public Node(int port, IPAddress ip)
+        {
+            Port = port;
+            Ip = ip;
+            SelfAes = new AesInstance();
+            NicknameNum = 0;
+        }
+
         public void CreateConnection()
         {
             Client = new Client(this);

@@ -50,6 +50,10 @@ namespace Lanchat.Cli.Commands
                     Unmute(args[1]);
                     break;
 
+                case "connect":
+                    Connect(args[1], args[2]);
+                    break;
+
                 default:
                     Prompt.Out("Bad command");
                     break;

@@ -1,4 +1,8 @@
-﻿namespace Lanchat.Common.NetworkLib
+﻿using System;
+using System.Diagnostics;
+using System.Net;
+
+namespace Lanchat.Common.NetworkLib
 {
     public class ApiMethods
     {
@@ -44,6 +48,24 @@
                     x.Client.DestroyLanchat();
                 }
             });
+        }
+
+        // Manual connect
+        public void Connect(IPAddress ip, int port)
+        {
+            try
+            {
+                network.CreateNode(port, ip);
+            }
+            catch(Exception e)
+            {
+                Trace.WriteLine("Manually node create failed");
+                Trace.Indent();
+                Trace.WriteLine(e.GetType());
+                Trace.WriteLine(e.Message);
+                Trace.Unindent();
+                throw new Exception();
+            }
         }
     }
 }
