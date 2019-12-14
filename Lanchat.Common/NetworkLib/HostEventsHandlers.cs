@@ -83,7 +83,6 @@ namespace Lanchat.Common.NetworkLib
             {
                 var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
                 user.AcceptHandshake(e.NodeHandshake);
-                network.Events.OnNodeConnected(e.SenderIP, e.NodeHandshake.Nickname);
                 Trace.WriteLine("Node found and handshake accepted");
             }
 

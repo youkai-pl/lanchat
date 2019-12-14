@@ -15,10 +15,10 @@ namespace Lanchat.Cli.Commands
                 {
                     user.Mute = false;
                     Config.RemoveMute(userOnList);
-                    Prompt.Out($"{nickname} unmuted");
+                    Prompt.Notice($"{nickname} unmuted");
                 } else
                 {
-                    Prompt.Out("User is not muted");
+                    Prompt.Notice("User is not muted");
                 }
             }
             else

@@ -1,6 +1,8 @@
 ﻿using Lanchat.Common.HostLib.Types;
 using Lanchat.Common.NetworkLib;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -26,8 +28,15 @@ namespace Lanchat.Common.HostLib
         public void Connect(IPAddress ip, int port)
         {
             // Create client and stream
-            tcpclnt = new TcpClient(ip.ToString(), port);
-            nwStream = tcpclnt.GetStream();
+            try
+            {
+                tcpclnt = new TcpClient(ip.ToString(), port);
+                nwStream = tcpclnt.GetStream();
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.GetType());
+            }
         }
 
         // Send handshake
