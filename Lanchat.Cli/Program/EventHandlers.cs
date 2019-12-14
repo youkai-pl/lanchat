@@ -14,7 +14,7 @@ namespace Lanchat.Cli.ProgramLib
         // Main program reference
         private readonly Program program;
 
-        // Handle input
+        // Input
         public void OnRecievedInput(object o, InputEventArgs e)
         {
             var input = e.Input;
@@ -33,7 +33,13 @@ namespace Lanchat.Cli.ProgramLib
             }
         }
 
-        // Handle message
+        // Host started
+        public void OnHostStarted(object o, HostStartedEventArgs e)
+        {
+            Prompt.Notice($"Host started on port {e.Port}");
+        }
+
+        // Recieved message
         public void OnRecievedMessage(object o, ReceivedMessageEventArgs e)
         {
             if (!program.DebugMode)
@@ -42,7 +48,7 @@ namespace Lanchat.Cli.ProgramLib
             }
         }
 
-        // Handle connect
+        // Node connection
         public void OnNodeConnected(object o, NodeConnectionStatusEvent e)
         {
             if (!program.DebugMode)
@@ -54,11 +60,11 @@ namespace Lanchat.Cli.ProgramLib
             {
                 var user = program.Network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
                 user.Mute = true;
-                Trace.WriteLine($"{e.NodeIP} is muted");
+                Trace.WriteLine($"User with ip: {e.NodeIP} is muted");
             }
         }
 
-        // Handle disconnect
+        // Node disconnection
         public void OnNodeDisconnected(object o, NodeConnectionStatusEvent e)
         {
             if (!program.DebugMode)
@@ -67,7 +73,7 @@ namespace Lanchat.Cli.ProgramLib
             }
         }
 
-        // Handle changed nickname
+        // Changed nickname
         public void OnChangedNickname(object o, ChangedNicknameEventArgs e)
         {
             if (!program.DebugMode)

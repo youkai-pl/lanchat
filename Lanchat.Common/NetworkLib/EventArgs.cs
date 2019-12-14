@@ -4,6 +4,11 @@ using System.Net;
 
 namespace Lanchat.Common.NetworkLib
 {
+    public class HostStartedEventArgs : EventArgs
+    {
+        public int Port { get; set; }
+    }
+
     public class RecievedBroadcastEventArgs : EventArgs
     {
         public Paperplane Sender { get; set; }

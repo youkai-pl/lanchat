@@ -23,7 +23,7 @@ namespace Lanchat.Cli.Commands
             switch (args[0])
             {
                 case "help":
-                    ShowHelp();
+                    Help();
                     break;
 
                 case "exit":
@@ -31,7 +31,7 @@ namespace Lanchat.Cli.Commands
                     break;
 
                 case "nick":
-                    SetNick(args[1]);
+                    Nick(args[1]);
                     break;
 
                 case "sr":

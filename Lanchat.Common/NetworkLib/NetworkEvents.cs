@@ -5,6 +5,16 @@ namespace Lanchat.Common.NetworkLib
 {
     public class NetworkEvents
     {
+        // Host started
+        public event EventHandler<HostStartedEventArgs> HostStarted;
+        public virtual void OnHostStarted(int port)
+        {
+            HostStarted(this, new HostStartedEventArgs()
+            {
+                Port = port
+            });
+        }
+
         // Received message event
         public event EventHandler<ReceivedMessageEventArgs> ReceivedMessage;
 

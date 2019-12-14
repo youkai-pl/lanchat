@@ -49,12 +49,16 @@ namespace Lanchat.Common.NetworkLib
             if (node != null)
             {
                 var nickname = node.ClearNickname;
+                
                 // Log disconnect
                 Trace.WriteLine(node.Nickname + " disconnected");
+                
                 // Emit event
                 network.Events.OnNodeDisconnected(node.Ip, node.Nickname);
+                
                 // Remove node from list
                 network.NodeList.Remove(node);
+                
                 // Delete the number if nicknames are not duplicated now
                 CheckNickcnameDuplicates(nickname);
             }
@@ -131,9 +135,11 @@ namespace Lanchat.Common.NetworkLib
             var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
             var oldNickname = user.Nickname;
             user.Nickname = e.NewNickname;
+            
             // Check is nickname duplicated
             CheckNickcnameDuplicates(e.NewNickname);
             network.Events.OnChangedNickname(oldNickname, e.NewNickname, e.SenderIP);
+            
             // Emit event
             Trace.WriteLine($"{oldNickname} nickname changed to {e.NewNickname}");
         }

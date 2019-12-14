@@ -5,7 +5,7 @@ namespace Lanchat.Cli.Commands
 {
     public partial class Command
     {
-        public void SetNick(string nick)
+        public void Nick(string nick)
         {
             if (!string.IsNullOrEmpty(nick) && nick.Length < 20)
             {

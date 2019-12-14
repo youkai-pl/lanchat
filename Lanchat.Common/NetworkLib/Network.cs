@@ -68,6 +68,9 @@ namespace Lanchat.Common.NetworkLib
             // Initialize host
             host.StartHost(HostPort);
 
+            // Emit started host event
+            Events.OnHostStarted(HostPort);
+
             // Initialize broadcast
             host.Broadcast(new Paperplane(HostPort, Id));
 

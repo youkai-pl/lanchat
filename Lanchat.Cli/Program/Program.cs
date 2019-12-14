@@ -64,6 +64,7 @@ namespace Lanchat.Cli.ProgramLib
 
             // Initialize network
             Network = new Network(Config.Port, Config.Nickname);
+            Network.Events.HostStarted += eventHandlers.OnHostStarted;
             Network.Events.ReceivedMessage += eventHandlers.OnRecievedMessage;
             Network.Events.NodeConnected += eventHandlers.OnNodeConnected;
             Network.Events.NodeDisconnected += eventHandlers.OnNodeDisconnected;
