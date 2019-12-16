@@ -10,6 +10,7 @@ namespace Lanchat.Cli.Commands
             if (!string.IsNullOrEmpty(nick) && nick.Length < 20)
             {
                 Config.Nickname = nick;
+                program.Network.Nickname = nick;
                 program.Network.Out.ChangeNickname(nick);
                 Prompt.Notice("Nickname changed");
             }

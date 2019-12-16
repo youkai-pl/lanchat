@@ -19,7 +19,7 @@ namespace Lanchat.Common.NetworkLib
         // Received broadcast
         public void OnReceivedBroadcast(object o, RecievedBroadcastEventArgs e)
         {
-            if (IsCanAdd(e.Sender, e.SenderIP))
+            if (IsNodeExist(e.Sender, e.SenderIP))
             {
                 // Create new node
                 try
@@ -144,7 +144,7 @@ namespace Lanchat.Common.NetworkLib
         }
 
         // Check is paperplane come from self or user alredy exist in list
-        private bool IsCanAdd(Paperplane broadcast, IPAddress senderIp)
+        private bool IsNodeExist(Paperplane broadcast, IPAddress senderIp)
         {
             return broadcast.Id != network.Id && !network.NodeList.Exists(x => x.Id.Equals(broadcast.Id)) && !network.NodeList.Exists(x => x.Ip.Equals(senderIp));
         }

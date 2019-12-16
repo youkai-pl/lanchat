@@ -17,7 +17,6 @@ namespace Lanchat.Common.NetworkLib
 
         // Properties
         public string Nickname { get; set; }
-
         public string PublicKey { get; set; }
         public int BroadcastPort { get; set; }
         public int HostPort { get; set; }
