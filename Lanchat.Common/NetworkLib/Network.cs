@@ -12,7 +12,6 @@ namespace Lanchat.Common.NetworkLib
     {
         // Private fields
         private readonly Host host;
-
         private readonly HostEventsHandlers inputs;
 
         // Properties
@@ -26,7 +25,7 @@ namespace Lanchat.Common.NetworkLib
         public ApiMethods Out { get; set; }
         public NetworkEvents Events { get; set; }
 
-        public Network(int port, string nickname)
+        public Network(int broadcastPort, string nickname, int hostPort = -1)
         {
             // Initialize RSA provider
             Rsa = new RsaInstance();
@@ -37,9 +36,18 @@ namespace Lanchat.Common.NetworkLib
             // Set properties
             Nickname = nickname;
             PublicKey = Rsa.PublicKey;
-            BroadcastPort = port;
+            BroadcastPort = broadcastPort;
             Id = Guid.NewGuid();
-            HostPort = FreeTcpPort();
+
+            // Check
+            if (hostPort == -1)
+            {
+                HostPort = FreeTcpPort();
+            }
+            else
+            {
+                HostPort = hostPort;
+            }
 
             // Create host class
             host = new Host(BroadcastPort);

@@ -21,12 +21,22 @@ namespace Lanchat.Cli.ProgramLib
             }
         }
 
-        public static int Port
+        public static int BroadcastPort
         {
-            get => _Port;
+            get => _BroadcastPort;
             set
             {
-                _Port = value;
+                _BroadcastPort = value;
+                Save();
+            }
+        }
+
+        public static int HostPort
+        {
+            get => _HostPort;
+            set
+            {
+                _HostPort = value;
                 Save();
             }
         }
@@ -35,7 +45,8 @@ namespace Lanchat.Cli.ProgramLib
 
         // Fields
         private static string _Nickname;
-        private static int _Port;
+        private static int _BroadcastPort;
+        private static int _HostPort;
 
         // Load config
         public static void Load()
@@ -47,7 +58,8 @@ namespace Lanchat.Cli.ProgramLib
 
                 // Try use loaded config
                 _Nickname = json.nickname;
-                _Port = json.port;
+                _BroadcastPort = json.broadcastport;
+                _HostPort = json.hostport;
 
                 // Convert strings to ip addresses
                 List<string> MutedStrings = json.muted.ToObject<List<string>>();
@@ -62,7 +74,8 @@ namespace Lanchat.Cli.ProgramLib
                 Trace.WriteLine(e.Message);
 
                 Nickname = "";
-                Port = 4001;
+                BroadcastPort = 4001;
+                HostPort = -1;
                 Muted = new List<IPAddress>();
             }
         }
@@ -80,7 +93,8 @@ namespace Lanchat.Cli.ProgramLib
             object json = new
             {
                 nickname = Nickname,
-                port = Port,
+                broadcastport = BroadcastPort,
+                hostport = HostPort,
                 muted = MutedStrings
             };
             try
