@@ -77,28 +77,29 @@ namespace Lanchat.Common.HostLib
                 // Create server
                 Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
                 {
-                    ReceiveTimeout = -1
+                    ReceiveTimeout = -1,
                 };
+
                 server.Bind(new IPEndPoint(IPAddress.Any, port));
                 server.Listen(-1);
 
                 // Start listening
                 while (true)
                 {
-                    Socket client = server.Accept();
+                    Socket socket = server.Accept();
                     new Thread(() =>
                     {
-                        try { Process(client); } catch (Exception ex) { Trace.WriteLine("Client connection processing error: " + ex.Message); }
+                        try { Process(socket); } catch (Exception ex) { Trace.WriteLine("Socket connection processing error: " + ex.Message); }
                     }).Start();
                 }
             });
 
             // Host client process
-            void Process(Socket client)
+            void Process(Socket socket)
             {
                 byte[] response;
                 int received;
-                var ip = IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString());
+                var ip = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
                 Events.OnNodeConnected(ip);
 
                 while (true)
@@ -106,8 +107,8 @@ namespace Lanchat.Common.HostLib
                     // Handle received data
                     try
                     {
-                        response = new byte[client.ReceiveBufferSize];
-                        received = client.Receive(response);
+                        response = new byte[socket.ReceiveBufferSize];
+                        received = socket.Receive(response);
                         if (received == 0)
                         {
                             Events.OnNodeDisconnected(ip);

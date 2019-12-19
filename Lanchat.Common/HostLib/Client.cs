@@ -68,8 +68,15 @@ namespace Lanchat.Common.HostLib
         {
             var data = new JObject(new JProperty(type, content));
 
-            byte[] bytesToSend = Encoding.UTF8.GetBytes(data.ToString());
-            nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+            try
+            {
+                byte[] bytesToSend = Encoding.UTF8.GetBytes(data.ToString());
+                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+            }
+            catch
+            {
+                Trace.WriteLine("Data send failed");
+            }
         }
 
         // Send random data (only for debug)
