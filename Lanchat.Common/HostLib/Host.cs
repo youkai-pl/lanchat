@@ -1,4 +1,5 @@
 ﻿using Lanchat.Common.HostLib.Types;
+using Microsoft.Win32.SafeHandles;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -72,6 +74,7 @@ namespace Lanchat.Common.HostLib
         // Start host
         public void StartHost(int port)
         {
+
             Task.Run(() =>
             {
                 // Create server
@@ -87,6 +90,8 @@ namespace Lanchat.Common.HostLib
                 while (true)
                 {
                     Socket socket = server.Accept();
+                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
+
                     new Thread(() =>
                     {
                         try { Process(socket); } catch (Exception ex) { Trace.WriteLine("Socket connection processing error: " + ex.Message); }
@@ -104,17 +109,20 @@ namespace Lanchat.Common.HostLib
 
                 while (true)
                 {
-                    // Handle received data
+                    // Rceive data
+                    response = new byte[socket.ReceiveBufferSize];
+                    received = socket.Receive(response);
+
+                    // Check connection
+                    if (!socket.IsConnected())
+                    {
+                        socket.Close();
+                        Events.OnNodeDisconnected(ip);
+                        return;
+                    }
+
                     try
                     {
-                        response = new byte[socket.ReceiveBufferSize];
-                        received = socket.Receive(response);
-                        if (received == 0)
-                        {
-                            Events.OnNodeDisconnected(ip);
-                            return;
-                        }
-
                         // Decode recieved data
                         List<byte> respBytesList = new List<byte>(response);
 
@@ -172,6 +180,22 @@ namespace Lanchat.Common.HostLib
                         }
                     }
                 }
+            }
+        }
+    }
+
+
+    public static class SocketExtensions
+    {
+        public static bool IsConnected(this Socket socket)
+        {
+            try
+            {
+                return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
+            }
+            catch (SocketException)
+            {
+                return false;
             }
         }
     }

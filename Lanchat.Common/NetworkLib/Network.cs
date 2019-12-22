@@ -3,7 +3,9 @@ using Lanchat.Common.HostLib;
 using Lanchat.Common.HostLib.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
 namespace Lanchat.Common.NetworkLib
@@ -11,8 +13,8 @@ namespace Lanchat.Common.NetworkLib
     public partial class Network
     {
         // Private fields
-        private readonly Host host;
-        private readonly HostEventsHandlers inputs;
+        private Host host;
+        private HostEventsHandlers inputs;
 
         // Properties
         public string Nickname { get; set; }
@@ -72,6 +74,7 @@ namespace Lanchat.Common.NetworkLib
         // Start host
         public void Start()
         {
+            
             // Initialize host
             host.StartHost(HostPort);
 
