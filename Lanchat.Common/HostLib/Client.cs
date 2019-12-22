@@ -78,6 +78,13 @@ namespace Lanchat.Common.HostLib
             }
         }
 
+        // Send heartbeet
+        public void Heartbeat()
+        {
+            Send("heartbeat", "test");
+            Trace.WriteLine("heartbeat sended");
+        }
+
         // Send random data (only for debug)
         public void DestroyLanchat()
         {

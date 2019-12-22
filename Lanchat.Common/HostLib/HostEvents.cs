@@ -41,7 +41,7 @@ namespace Lanchat.Common.HostLib
             });
         }
 
-        // Recieved handshake event
+        // Received handshake event
         public event EventHandler<RecievedHandshakeEventArgs> ReceivedHandshake;
 
         public virtual void OnReceivedHandshake(Handshake handshake, IPAddress senderIP)
@@ -53,7 +53,7 @@ namespace Lanchat.Common.HostLib
             });
         }
 
-        // Recieved symetric key event
+        // Received symetric key event
         public event EventHandler<RecievedKeyEventArgs> ReceivedKey;
 
         public virtual void OnReceivedKey(Key key, IPAddress senderIP)
@@ -66,7 +66,17 @@ namespace Lanchat.Common.HostLib
             });
         }
 
-        // Recieved message event
+        // Received hertbeat
+        public event EventHandler<ReceivedHeartbeatEventArgs> ReceivedHeartbeat;
+        public virtual void OnReceivedHeartbeat(IPAddress senderIP)
+        {
+            ReceivedHeartbeat(this, new ReceivedHeartbeatEventArgs()
+            {
+                SenderIP = senderIP
+            });
+        }
+
+        // Received message event
         public event EventHandler<ReceivedMessageEventArgs> RecievedMessage;
 
         public virtual void OnReceivedMessage(string content, IPAddress senderIP)

@@ -63,6 +63,7 @@ namespace Lanchat.Common.NetworkLib
             host.Events.ReceivedKey += inputs.OnReceivedKey;
             host.Events.RecievedMessage += inputs.OnReceivedMessage;
             host.Events.ChangedNickname += inputs.OnChangedNickname;
+            host.Events.ReceivedHeartbeat += inputs.OnRececeivedHeartbeat;
 
             // Create Events instance
             Events = new NetworkEvents();

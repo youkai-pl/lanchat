@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,7 +29,6 @@ namespace Lanchat.Common.HostLib
 
         // Fields
         private readonly UdpClient udpClient;
-
         private readonly int port;
 
         // Start broadcast
@@ -88,6 +88,7 @@ namespace Lanchat.Common.HostLib
                 while (true)
                 {
                     Socket socket = server.Accept();
+                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
 
                     new Thread(() =>
                     {
@@ -141,6 +142,12 @@ namespace Lanchat.Common.HostLib
                             Events.OnReceivedKey(content.ToObject<Key>(), ip);
                         }
 
+                        // If heartbeat
+                        if (type == "heartbeat")
+                        {
+                            Events.OnReceivedHeartbeat(ip);
+                        }
+
                         // If message
                         if (type == "message")
                         {
@@ -180,7 +187,6 @@ namespace Lanchat.Common.HostLib
             }
         }
     }
-
 
     public static class SocketExtensions
     {

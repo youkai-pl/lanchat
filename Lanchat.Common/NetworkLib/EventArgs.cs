@@ -35,6 +35,11 @@ namespace Lanchat.Common.NetworkLib
         public IPAddress SenderIP { get; set; }
     }
 
+    public class ReceivedHeartbeatEventArgs : EventArgs
+    {
+        public IPAddress SenderIP { get; set; }
+    }
+
     public class ReceivedMessageEventArgs : EventArgs
     {
         public string Content { get; set; }

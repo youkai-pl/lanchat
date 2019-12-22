@@ -2,7 +2,9 @@
 using Lanchat.Common.HostLib;
 using Lanchat.Common.HostLib.Types;
 using System;
+using System.Diagnostics;
 using System.Net;
+using System.Timers;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -35,7 +37,31 @@ namespace Lanchat.Common.NetworkLib
         public void CreateRemoteAes(string key, string iv)
         {
             RemoteAes = new AesInstance(key, iv);
+
+            // Start heartbeat
+            HeartbeatTimer = new Timer
+            {
+                Interval = 2000
+            };
+            HeartbeatTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            HeartbeatTimer.Start();
+            Client.Heartbeat();
         }
+
+        // Hearbeat over event
+        private void OnTimedEvent(object o, ElapsedEventArgs e)
+        {
+            if (!Heartbeat)
+            {
+                Trace.WriteLine("Heartbeat over");
+            }
+            else
+            {
+                Client.Heartbeat();
+                Heartbeat = false;
+            }
+        }
+
 
         public string Nickname
         {
@@ -52,6 +78,7 @@ namespace Lanchat.Common.NetworkLib
             }
             set => ClearNickname = value;
         }
+
         public string ClearNickname { get; private set; }
         public int NicknameNum { get; set; }
         public Guid Id { get; set; }
@@ -62,5 +89,7 @@ namespace Lanchat.Common.NetworkLib
         public int Port { get; set; }
         public IPAddress Ip { get; set; }
         public Client Client { get; set; }
+        public bool Heartbeat { get; set; }
+        public Timer HeartbeatTimer { get; set; }
     }
 }
