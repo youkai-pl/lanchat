@@ -1,5 +1,4 @@
 ﻿using Lanchat.Common.HostLib.Types;
-using Microsoft.Win32.SafeHandles;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -7,7 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -90,7 +88,6 @@ namespace Lanchat.Common.HostLib
                 while (true)
                 {
                     Socket socket = server.Accept();
-                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
 
                     new Thread(() =>
                     {
