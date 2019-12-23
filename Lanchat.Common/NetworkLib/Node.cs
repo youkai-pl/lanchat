@@ -45,10 +45,42 @@ namespace Lanchat.Common.NetworkLib
         public int NicknameNum { get; set; }
         public int Port { get; set; }
         public string PublicKey { get; set; }
-        public bool Ready { get; set; }
+        public bool Ready
+        {
+            get
+            {
+                return _Ready;
+            }
+            set
+            {
+                var prev = _Ready;
+                _Ready = value;
+                if (_Ready != prev)
+                {
+                    OnReadyChange();
+                }
+            }
+        }
         public AesInstance RemoteAes { get; set; }
         public AesInstance SelfAes { get; set; }
         public int HearbeatCount { get; set; } = 0;
+
+        // Fields
+        private bool _Ready;
+
+        // Ready property change event
+        public event EventHandler ReadyChanged;
+        protected void OnReadyChange()
+        {
+            ReadyChanged(this, EventArgs.Empty);
+        }
+
+        // Low heatbeat event
+        public event EventHandler LowHeartbeat;
+        protected void OnLowHeartbeat()
+        {
+            LowHeartbeat(this, EventArgs.Empty);
+        }
 
         // Use values from received handshake
         public void AcceptHandshake(Handshake handshake)
@@ -67,8 +99,6 @@ namespace Lanchat.Common.NetworkLib
         {
             Client = new Client(this);
             Client.Connect(Ip, Port);
-
-            StartHeartbeat();
         }
 
         // Create AES instance with received key
@@ -79,6 +109,8 @@ namespace Lanchat.Common.NetworkLib
             // Set ready to true
             Ready = true;
 
+            // Start heartbeat
+            StartHeartbeat();
         }
 
         // Start heartbeat
@@ -114,8 +146,10 @@ namespace Lanchat.Common.NetworkLib
         // Hearbeat over event
         private void OnHeartebatOver(object o, ElapsedEventArgs e)
         {
+            // If heartbeat was not received make count negative
             if (!Heartbeat)
             {
+                // Count heartbeat
                 if (HearbeatCount > 0)
                 {
                     HearbeatCount = -1;
@@ -125,12 +159,22 @@ namespace Lanchat.Common.NetworkLib
                     HearbeatCount--;
                 }
 
+                // Change ready state
+                Ready = false;
                 Trace.WriteLine($"({Ip}) ({HearbeatCount}) heartbeat over");
+
+                // If heartbeat lower than -2 call event
+                if (HearbeatCount < -2)
+                {
+                    OnLowHeartbeat();
+                }
             }
             else
             {
+                // Reset heartbeat
                 Heartbeat = false;
 
+                // Count heartbeat
                 if (HearbeatCount < 0)
                 {
                     HearbeatCount = 1;
@@ -140,6 +184,8 @@ namespace Lanchat.Common.NetworkLib
                     HearbeatCount++;
                 }
 
+                // Change ready state
+                Ready = true;
                 Trace.WriteLine($"({Ip}) ({HearbeatCount}) heartbeat ok");
             }
         }

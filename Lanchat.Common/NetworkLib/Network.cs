@@ -3,9 +3,7 @@ using Lanchat.Common.HostLib;
 using Lanchat.Common.HostLib.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
 namespace Lanchat.Common.NetworkLib

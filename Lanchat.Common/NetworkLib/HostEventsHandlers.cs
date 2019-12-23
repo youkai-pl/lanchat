@@ -103,9 +103,6 @@ namespace Lanchat.Common.NetworkLib
 
             // Add number to peers with same nicknames
             CheckNickcnameDuplicates(e.NodeHandshake.Nickname);
-
-            // Emit event
-            network.Events.OnNodeConnected(e.SenderIP, network.NodeList.Find(x => x.Ip.Equals(e.SenderIP)).Nickname);
         }
 
         // Receieved symetric key

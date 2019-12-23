@@ -12,10 +12,17 @@ namespace Lanchat.Common.NetworkLib
         {
             // Create new node with parameters
             var node = new Node(id, port, ip);
+
+            // Create node events handlers
+            node.ReadyChanged += OnReadyChanged;
+            node.LowHeartbeat += OnLowHeartbeat;
+
             // Add node to list
             NodeList.Add(node);
+
             // Create connection with node
             node.CreateConnection();
+
             // Send handshake to node
             node.Client.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));
 
@@ -25,6 +32,38 @@ namespace Lanchat.Common.NetworkLib
             Trace.WriteLine(node.Ip);
             Trace.WriteLine(node.Port.ToString());
             Trace.Unindent();
+
+            // Ready change event
+            void OnReadyChanged(object sender, EventArgs e)
+            {
+                Trace.WriteLine($"({node.Ip}) ready state changed to {node.Ready}");
+                if (node.Ready)
+                {
+                    Events.OnNodeConnected(node.Ip, node.Nickname);
+                }
+                else
+                {
+                    // Place for special event
+                }
+            }
+
+            // Low heartbeat event
+            void OnLowHeartbeat(object sender, EventArgs e)
+            {
+                Trace.WriteLine($"({ node.Ip}) heartbeat is low, connection closed");
+
+                // Log disconnect
+                Trace.WriteLine(node.Nickname + " disconnected");
+
+                // Emit event
+                Events.OnNodeDisconnected(node.Ip, node.Nickname);
+
+                // Remove node from list
+                NodeList.Remove(node);
+
+                // Dispose node
+                node.Dispose();
+            }
         }
     }
 }
