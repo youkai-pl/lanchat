@@ -18,10 +18,9 @@ namespace Lanchat.Common.HostLib
 
         // Fields
         private readonly Node node;
-
-        // Tcp client
-        private TcpClient client;
         private NetworkStream stream;
+
+        public TcpClient TcpClient { get; set; }
 
         // Connect
         public void Connect(IPAddress ip, int port)
@@ -29,8 +28,8 @@ namespace Lanchat.Common.HostLib
             // Create client and stream
             try
             {
-                client = new TcpClient(ip.ToString(), port);
-                stream = client.GetStream();
+                TcpClient = new TcpClient(ip.ToString(), port);
+                stream = TcpClient.GetStream();
             }
             catch (Exception e)
             {

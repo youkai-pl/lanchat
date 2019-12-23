@@ -8,7 +8,7 @@ using System.Timers;
 
 namespace Lanchat.Common.NetworkLib
 {
-    public class Node
+    public class Node : IDisposable
     {
         public Node(Guid id, int port, IPAddress ip)
         {
@@ -95,10 +95,15 @@ namespace Lanchat.Common.NetworkLib
             // Start sending heartbeat
             new System.Threading.Thread(() =>
             {
-                while (true)
+                while (!disposedValue)
                 {
                     System.Threading.Thread.Sleep(2000);
-                    Client.Heartbeat();
+
+                    // This shit must be check two times. In other case it trying send heartbeat after node disconnect.
+                    if (!disposedValue)
+                    {
+                        Client.Heartbeat();
+                    }
                 }
             }).Start();
         }
@@ -115,5 +120,35 @@ namespace Lanchat.Common.NetworkLib
                 Heartbeat = false;
             }
         }
+
+        // Dispose
+        #region IDisposable Support
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    HeartbeatTimer.Dispose();
+                    Client.TcpClient.Dispose();
+                }
+                disposedValue = true;
+            }
+        }
+
+        ~Node()
+        {
+            Dispose(false);
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

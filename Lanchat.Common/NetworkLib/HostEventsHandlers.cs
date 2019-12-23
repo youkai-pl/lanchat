@@ -60,6 +60,7 @@ namespace Lanchat.Common.NetworkLib
                 network.NodeList.Remove(node);
 
                 // Dispose node
+                node.Dispose();
 
                 // Delete the number if nicknames are not duplicated now
                 CheckNickcnameDuplicates(nickname);
