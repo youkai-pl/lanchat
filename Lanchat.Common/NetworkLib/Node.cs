@@ -66,7 +66,10 @@ namespace Lanchat.Common.NetworkLib
         {
             Client = new Client(this);
             Client.Connect(Ip, Port);
+
+            StartHeartbeat();
         }
+
         // Create AES instance with received key
         public void CreateRemoteAes(string key, string iv)
         {
@@ -75,21 +78,29 @@ namespace Lanchat.Common.NetworkLib
             // Set ready to true
             Ready = true;
 
-            StartHeartbeat();
         }
 
         // Start heartbeat
         public void StartHeartbeat()
         {
+            // Create heartbeat timer
             HeartbeatTimer = new Timer
             {
-                Interval = 2000
+                Interval = 2500,
+                Enabled = true
             };
             HeartbeatTimer.Elapsed += new ElapsedEventHandler(OnHeartebatOver);
-            HeartbeatTimer.Start();
+            HeartbeatTimer.Start(); ;
 
-            // Send first heartbeat
-            Client.Heartbeat();
+            // Start sending heartbeat
+            new System.Threading.Thread(() =>
+            {
+                while (true)
+                {
+                    System.Threading.Thread.Sleep(2000);
+                    Client.Heartbeat();
+                }
+            }).Start();
         }
 
         // Hearbeat over event
@@ -101,7 +112,6 @@ namespace Lanchat.Common.NetworkLib
             }
             else
             {
-                Client.Heartbeat();
                 Heartbeat = false;
             }
         }

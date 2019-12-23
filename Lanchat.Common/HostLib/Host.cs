@@ -92,7 +92,14 @@ namespace Lanchat.Common.HostLib
 
                     new Thread(() =>
                     {
-                        try { Process(socket); } catch (Exception ex) { Trace.WriteLine("Socket connection processing error: " + ex.Message); }
+                        try
+                        {
+                            Process(socket);
+                        }
+                        catch (Exception ex)
+                        {
+                            Trace.WriteLine("Socket connection processing error: " + ex.Message);
+                        }
                     }).Start();
                 }
             });
@@ -124,11 +131,12 @@ namespace Lanchat.Common.HostLib
                         // Decode recieved data
                         List<byte> respBytesList = new List<byte>(response);
 
+                        //Trace.WriteLine(Encoding.UTF8.GetString(respBytesList.ToArray()));
+
                         // Parse json and get data type
                         IList<JToken> obj = JObject.Parse(Encoding.UTF8.GetString(respBytesList.ToArray()));
                         var type = ((JProperty)obj[0]).Name;
                         var content = ((JProperty)obj[0]).Value;
-                        Trace.WriteLine(type);
 
                         // If handshake
                         if (type == "handshake")

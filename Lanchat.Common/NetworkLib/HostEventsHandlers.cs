@@ -59,8 +59,7 @@ namespace Lanchat.Common.NetworkLib
                 // Remove node from list
                 network.NodeList.Remove(node);
 
-                // Stop node heartbeat
-                node.HeartbeatTimer.Stop();
+                // Dispose node
 
                 // Delete the number if nicknames are not duplicated now
                 CheckNickcnameDuplicates(nickname);
@@ -116,7 +115,7 @@ namespace Lanchat.Common.NetworkLib
         }
 
         // Receieved heartbeat
-        public void OnRececeivedHeartbeat(object o, ReceivedHeartbeatEventArgs e)
+        public void OnReceivedHeartbeat(object o, ReceivedHeartbeatEventArgs e)
         {
             var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
             try
