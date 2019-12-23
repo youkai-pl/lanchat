@@ -19,50 +19,14 @@ namespace Lanchat.Common.NetworkLib
             NicknameNum = 0;
         }
 
-        public void CreateConnection()
-        {
-            Client = new Client(this);
-            Client.Connect(Ip, Port);
-        }
-
-        public void AcceptHandshake(Handshake handshake)
-        {
-            Nickname = handshake.Nickname;
-            PublicKey = handshake.PublicKey;
-            Client.SendKey(new Key(
-                Rsa.Encode(SelfAes.Key, PublicKey),
-                Rsa.Encode(SelfAes.IV, PublicKey)));
-        }
-
-        public void CreateRemoteAes(string key, string iv)
-        {
-            RemoteAes = new AesInstance(key, iv);
-
-            // Start heartbeat
-            HeartbeatTimer = new Timer
-            {
-                Interval = 2000
-            };
-            HeartbeatTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-            HeartbeatTimer.Start();
-            Client.Heartbeat();
-        }
-
-        // Hearbeat over event
-        private void OnTimedEvent(object o, ElapsedEventArgs e)
-        {
-            if (!Heartbeat)
-            {
-                Trace.WriteLine("Heartbeat over");
-            }
-            else
-            {
-                Client.Heartbeat();
-                Heartbeat = false;
-            }
-        }
-
-
+        // Properties
+        public string ClearNickname { get; private set; }
+        public Client Client { get; set; }
+        public bool Heartbeat { get; set; }
+        public Timer HeartbeatTimer { get; set; }
+        public Guid Id { get; set; }
+        public IPAddress Ip { get; set; }
+        public bool Mute { get; set; }
         public string Nickname
         {
             get
@@ -78,18 +42,68 @@ namespace Lanchat.Common.NetworkLib
             }
             set => ClearNickname = value;
         }
-
-        public string ClearNickname { get; private set; }
         public int NicknameNum { get; set; }
-        public Guid Id { get; set; }
-        public string PublicKey { get; set; }
-        public bool Mute { get; set; }
-        public AesInstance SelfAes { get; set; }
-        public AesInstance RemoteAes { get; set; }
         public int Port { get; set; }
-        public IPAddress Ip { get; set; }
-        public Client Client { get; set; }
-        public bool Heartbeat { get; set; }
-        public Timer HeartbeatTimer { get; set; }
+        public string PublicKey { get; set; }
+        public bool Ready { get; set; }
+        public AesInstance RemoteAes { get; set; }
+        public AesInstance SelfAes { get; set; }
+
+        // Use values from received handshake
+        public void AcceptHandshake(Handshake handshake)
+        {
+            Nickname = handshake.Nickname;
+            PublicKey = handshake.PublicKey;
+
+            // Send AES encryption key
+            Client.SendKey(new Key(
+                Rsa.Encode(SelfAes.Key, PublicKey),
+                Rsa.Encode(SelfAes.IV, PublicKey)));
+        }
+
+        // Create connection
+        public void CreateConnection()
+        {
+            Client = new Client(this);
+            Client.Connect(Ip, Port);
+        }
+        // Create AES instance with received key
+        public void CreateRemoteAes(string key, string iv)
+        {
+            RemoteAes = new AesInstance(key, iv);
+
+            // Set ready to true
+            Ready = true;
+
+            StartHeartbeat();
+        }
+
+        // Start heartbeat
+        public void StartHeartbeat()
+        {
+            HeartbeatTimer = new Timer
+            {
+                Interval = 2000
+            };
+            HeartbeatTimer.Elapsed += new ElapsedEventHandler(OnHeartebatOver);
+            HeartbeatTimer.Start();
+
+            // Send first heartbeat
+            Client.Heartbeat();
+        }
+
+        // Hearbeat over event
+        private void OnHeartebatOver(object o, ElapsedEventArgs e)
+        {
+            if (!Heartbeat)
+            {
+                Trace.WriteLine($"({Ip}) heartbeat over");
+            }
+            else
+            {
+                Client.Heartbeat();
+                Heartbeat = false;
+            }
+        }
     }
 }

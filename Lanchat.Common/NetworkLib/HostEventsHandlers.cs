@@ -59,6 +59,9 @@ namespace Lanchat.Common.NetworkLib
                 // Remove node from list
                 network.NodeList.Remove(node);
 
+                // Stop node heartbeat
+                node.HeartbeatTimer.Stop();
+
                 // Delete the number if nicknames are not duplicated now
                 CheckNickcnameDuplicates(nickname);
             }
@@ -119,11 +122,11 @@ namespace Lanchat.Common.NetworkLib
             try
             {
                 user.Heartbeat = true;
-                Trace.WriteLine("Heartbeat reseted");
+                Trace.WriteLine($"({e.SenderIP}): heartbeat reseted");
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("Heartbeat reset error");
+                Trace.WriteLine($"({e.SenderIP}): heartbeat reset error");
                 Trace.WriteLine(ex.Message);
             }
         }

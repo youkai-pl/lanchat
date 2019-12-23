@@ -65,6 +65,8 @@ namespace Lanchat.Common.HostLib
         // Serialize and send data
         private void Send(string type, JToken content)
         {
+
+            // Create json
             var data = new JObject(new JProperty(type, content));
 
             try
@@ -81,8 +83,8 @@ namespace Lanchat.Common.HostLib
         // Send heartbeet
         public void Heartbeat()
         {
-            Send("heartbeat", "test");
-            Trace.WriteLine("heartbeat sended");
+            Send("heartbeat", null);
+            Trace.WriteLine($"({node.Ip}): heartbeat sended");
         }
 
         // Send random data (only for debug)
