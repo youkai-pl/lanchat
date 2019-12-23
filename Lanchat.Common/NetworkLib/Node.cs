@@ -96,12 +96,14 @@ namespace Lanchat.Common.NetworkLib
             // Start sending heartbeat
             new System.Threading.Thread(() =>
             {
-                while (!disposedValue)
+                while (true)
                 {
                     System.Threading.Thread.Sleep(2000);
-
-                    // This shit must be check two times. In other case it trying send heartbeat after node disconnect.
-                    if (!disposedValue)
+                    if (disposedValue)
+                    {
+                        break;
+                    }
+                    else
                     {
                         Client.Heartbeat();
                     }
