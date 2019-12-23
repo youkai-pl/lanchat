@@ -25,6 +25,7 @@ namespace Lanchat.Common.HostLib
 
         // Properties
         public HostEvents Events { get; set; }
+        public List<Socket> Sockets { get; set; }
 
         // Fields
         private readonly UdpClient udpClient;
@@ -86,7 +87,7 @@ namespace Lanchat.Common.HostLib
                 // Start listening
                 while (true)
                 {
-                    Socket socket = server.Accept();
+                    var socket = server.Accept();
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
 
                     new Thread(() =>
@@ -100,6 +101,7 @@ namespace Lanchat.Common.HostLib
                             Trace.WriteLine("Socket connection processing error: " + ex.Message);
                         }
                     }).Start();
+
 
                 }
             });

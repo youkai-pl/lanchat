@@ -52,19 +52,24 @@ namespace Lanchat.Common.HostLib
         // Send message
         public void SendMessage(string message)
         {
-            Send("message", node.SelfAes.Encode(message));
+            if (node.Ready)
+            {
+                Send("message", node.SelfAes.Encode(message));
+            }
         }
 
         // Change nickname
         public void SendNickname(string nickname)
         {
-            Send("nickname", nickname);
+            if (node.Ready)
+            {
+                Send("nickname", nickname);
+            }
         }
 
         // Serialize and send data
         private void Send(string type, JToken content)
         {
-
             // Create json
             var data = new JObject(new JProperty(type, content));
 

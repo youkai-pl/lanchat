@@ -45,25 +45,11 @@ namespace Lanchat.Common.NetworkLib
         {
             // Find node in list
             var node = network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
+
             // If node exist delete it
             if (node != null)
             {
-                var nickname = node.ClearNickname;
-
-                // Log disconnect
-                Trace.WriteLine(node.Nickname + " disconnected");
-
-                // Emit event
-                network.Events.OnNodeDisconnected(node.Ip, node.Nickname);
-
-                // Remove node from list
-                network.NodeList.Remove(node);
-
-                // Dispose node
-                node.Dispose();
-
-                // Delete the number if nicknames are not duplicated now
-                CheckNickcnameDuplicates(nickname);
+                network.CloseNode(node);
             }
             // If node doesn't exist log exception
             else
@@ -102,7 +88,7 @@ namespace Lanchat.Common.NetworkLib
             }
 
             // Add number to peers with same nicknames
-            CheckNickcnameDuplicates(e.NodeHandshake.Nickname);
+            network.CheckNickcnameDuplicates(e.NodeHandshake.Nickname);
         }
 
         // Receieved symetric key
@@ -132,6 +118,7 @@ namespace Lanchat.Common.NetworkLib
         public void OnReceivedMessage(object o, ReceivedMessageEventArgs e)
         {
             var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+
             if (!user.Mute)
             {
                 var content = user.RemoteAes.Decode(e.Content);
@@ -152,7 +139,7 @@ namespace Lanchat.Common.NetworkLib
             user.Nickname = e.NewNickname;
 
             // Check is nickname duplicated
-            CheckNickcnameDuplicates(e.NewNickname);
+            network.CheckNickcnameDuplicates(e.NewNickname);
             network.Events.OnChangedNickname(oldNickname, e.NewNickname, e.SenderIP);
 
             // Emit event
@@ -163,25 +150,6 @@ namespace Lanchat.Common.NetworkLib
         private bool IsNodeExist(Paperplane broadcast, IPAddress senderIp)
         {
             return broadcast.Id != network.Id && !network.NodeList.Exists(x => x.Id.Equals(broadcast.Id)) && !network.NodeList.Exists(x => x.Ip.Equals(senderIp));
-        }
-
-        // Check nickname duplicates
-        private void CheckNickcnameDuplicates(string nickname)
-        {
-            var users = network.NodeList.FindAll(x => x.ClearNickname == nickname);
-            if (users.Count > 1)
-            {
-                var index = 1;
-                foreach (var item in users)
-                {
-                    item.NicknameNum = index;
-                    index++;
-                }
-            }
-            else if (users.Count > 0)
-            {
-                users[0].NicknameNum = 0;
-            }
         }
     }
 }

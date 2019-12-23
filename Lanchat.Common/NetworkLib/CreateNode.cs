@@ -51,18 +51,7 @@ namespace Lanchat.Common.NetworkLib
             void OnLowHeartbeat(object sender, EventArgs e)
             {
                 Trace.WriteLine($"({ node.Ip}) heartbeat is low, connection closed");
-
-                // Log disconnect
-                Trace.WriteLine(node.Nickname + " disconnected");
-
-                // Emit event
-                Events.OnNodeDisconnected(node.Ip, node.Nickname);
-
-                // Remove node from list
-                NodeList.Remove(node);
-
-                // Dispose node
-                node.Dispose();
+                CloseNode(node);
             }
         }
     }
