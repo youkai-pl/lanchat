@@ -122,11 +122,11 @@ namespace Lanchat.Common.NetworkLib
             try
             {
                 user.Heartbeat = true;
-                Trace.WriteLine($"({e.SenderIP}): heartbeat reseted");
+                // Trace.WriteLine($"({e.SenderIP}): heartbeat received");
             }
             catch (Exception ex)
             {
-                Trace.WriteLine($"({e.SenderIP}): heartbeat reset error");
+                Trace.WriteLine($"({e.SenderIP}): cannot handle heartbeat");
                 Trace.WriteLine(ex.Message);
             }
         }

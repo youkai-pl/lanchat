@@ -83,7 +83,7 @@ namespace Lanchat.Common.HostLib
         public void Heartbeat()
         {
             Send("heartbeat", null);
-            Trace.WriteLine($"({node.Ip}): heartbeat sended");
+            //Trace.WriteLine($"({node.Ip}): heartbeat sended");
         }
 
         // Send random data (only for debug)

@@ -48,6 +48,7 @@ namespace Lanchat.Common.NetworkLib
         public bool Ready { get; set; }
         public AesInstance RemoteAes { get; set; }
         public AesInstance SelfAes { get; set; }
+        public int HearbeatCount { get; set; } = 0;
 
         // Use values from received handshake
         public void AcceptHandshake(Handshake handshake)
@@ -113,11 +114,31 @@ namespace Lanchat.Common.NetworkLib
         {
             if (!Heartbeat)
             {
-                Trace.WriteLine($"({Ip}) heartbeat over");
+                if (HearbeatCount > 0)
+                {
+                    HearbeatCount = -1;
+                }
+                else
+                {
+                    HearbeatCount--;
+                }
+
+                Trace.WriteLine($"({Ip}) ({HearbeatCount}) heartbeat over");
             }
             else
             {
                 Heartbeat = false;
+
+                if (HearbeatCount < 0)
+                {
+                    HearbeatCount = 1;
+                }
+                else
+                {
+                    HearbeatCount++;
+                }
+
+                Trace.WriteLine($"({Ip}) ({HearbeatCount}) heartbeat ok");
             }
         }
 
