@@ -139,7 +139,7 @@
         </member>
         <member name="E:Lanchat.Common.NetworkLib.Events.HostStarted">
             <summary>
-            Check <see cref="T:Lanchat.Common.NetworkLib.HostStartedEventArgs"/>
+            Check <see cref="T:Lanchat.Common.NetworkLib.HostStartedEventArgs" />
             </summary>
         </member>
         <member name="M:Lanchat.Common.NetworkLib.Events.OnHostStarted(System.Int32)">
@@ -150,7 +150,7 @@
         </member>
         <member name="E:Lanchat.Common.NetworkLib.Events.ReceivedMessage">
             <summary>
-            Check <see cref="T:Lanchat.Common.NetworkLib.ReceivedMessageEventArgs"/>
+            Check <see cref="T:Lanchat.Common.NetworkLib.ReceivedMessageEventArgs" />
             </summary>
         </member>
         <member name="M:Lanchat.Common.NetworkLib.Events.OnReceivedMessage(System.String,System.String)">
@@ -162,7 +162,7 @@
         </member>
         <member name="E:Lanchat.Common.NetworkLib.Events.NodeConnected">
             <summary>
-            Check <see cref="T:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs"/>
+            Check <see cref="T:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs" />
             </summary>
         </member>
         <member name="M:Lanchat.Common.NetworkLib.Events.OnNodeConnected(System.Net.IPAddress,System.String)">
@@ -174,7 +174,7 @@
         </member>
         <member name="E:Lanchat.Common.NetworkLib.Events.NodeDisconnected">
             <summary>
-            Check <see cref="T:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs"/>
+            Check <see cref="T:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs" />
             </summary>
         </member>
         <member name="M:Lanchat.Common.NetworkLib.Events.OnNodeDisconnected(System.Net.IPAddress,System.String)">
@@ -186,7 +186,7 @@
         </member>
         <member name="E:Lanchat.Common.NetworkLib.Events.NodeSuspended">
             <summary>
-            Check <see cref="T:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs"/>
+            Check <see cref="T:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs" />
             </summary>
         </member>
         <member name="M:Lanchat.Common.NetworkLib.Events.OnNodeSuspended(System.Net.IPAddress,System.String)">
@@ -198,7 +198,7 @@
         </member>
         <member name="E:Lanchat.Common.NetworkLib.Events.NodeResumed">
             <summary>
-            Check <see cref="T:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs"/>
+            Check <see cref="T:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs" />
             </summary>
         </member>
         <member name="M:Lanchat.Common.NetworkLib.Events.OnNodeResumed(System.Net.IPAddress,System.String)">
@@ -210,7 +210,7 @@
         </member>
         <member name="E:Lanchat.Common.NetworkLib.Events.ChangedNickname">
             <summary>
-            Check <see cref="T:Lanchat.Common.NetworkLib.ChangedNicknameEventArgs"/>
+            Check <see cref="T:Lanchat.Common.NetworkLib.ChangedNicknameEventArgs" />
             </summary>
         </member>
         <member name="M:Lanchat.Common.NetworkLib.Events.OnChangedNickname(System.String,System.String,System.Net.IPAddress)">
@@ -306,7 +306,7 @@
         </member>
         <member name="P:Lanchat.Common.NetworkLib.Node.State">
             <summary>
-            Node <see cref="T:Lanchat.Common.NetworkLib.Node.Status"/>.
+            Node <see cref="T:Lanchat.Common.NetworkLib.Node.Status" />.
             </summary>
         </member>
         <member name="M:Lanchat.Common.NetworkLib.Node.OnStateChange">

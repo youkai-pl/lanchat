@@ -13,10 +13,12 @@ namespace Lanchat.Common.NetworkLib
         /// New nickname.
         /// </summary>
         public string NewNickname { get; set; }
+
         /// <summary>
         /// Old nickname.
         /// </summary>
         public string OldNickname { get; set; }
+
         /// <summary>
         /// IP of the sending node.
         /// </summary>
@@ -59,10 +61,12 @@ namespace Lanchat.Common.NetworkLib
         /// Message content.
         /// </summary>
         public string Content { get; set; }
+
         /// <summary>
         /// Sender nickname.
         /// </summary>
         public string Nickname { get; set; }
+
         /// <summary>
         /// IP of the sending node.
         /// </summary>
@@ -79,6 +83,7 @@ namespace Lanchat.Common.NetworkLib
         public Paperplane Sender { get; set; }
         public IPAddress SenderIP { get; set; }
     }
+
     internal class RecievedHandshakeEventArgs : EventArgs
     {
         public Handshake NodeHandshake { get; set; }

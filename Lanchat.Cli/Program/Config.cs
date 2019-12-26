@@ -45,6 +45,7 @@ namespace Lanchat.Cli.ProgramLib
 
         // Fields
         private static string _Nickname;
+
         private static int _BroadcastPort;
         private static int _HostPort;
 
