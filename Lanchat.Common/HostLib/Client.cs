@@ -52,7 +52,7 @@ namespace Lanchat.Common.HostLib
         // Send message
         public void SendMessage(string message)
         {
-            if (node.Ready)
+            if (node.State == Node.Status.Ready)
             {
                 Send("message", node.SelfAes.Encode(message));
             }
@@ -61,7 +61,7 @@ namespace Lanchat.Common.HostLib
         // Change nickname
         public void SendNickname(string nickname)
         {
-            if (node.Ready)
+            if (node.State == Node.Status.Ready)
             {
                 Send("nickname", nickname);
             }
@@ -88,7 +88,6 @@ namespace Lanchat.Common.HostLib
         public void Heartbeat()
         {
             Send("heartbeat", null);
-            //Trace.WriteLine($"({node.Ip}): heartbeat sended");
         }
 
         // Send random data (only for debug)

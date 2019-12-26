@@ -51,6 +51,28 @@ namespace Lanchat.Common.NetworkLib
             });
         }
 
+        // Node suspended
+        public event EventHandler<NodeConnectionStatusEvent> NodeSuspended;
+        public virtual void OnNodeSuspended(IPAddress ip, string nickname)
+        {
+            NodeSuspended(this, new NodeConnectionStatusEvent()
+            {
+                NodeIP = ip,
+                Nickname = nickname
+            });
+        }
+
+        // Node resumed
+        public event EventHandler<NodeConnectionStatusEvent> NodeResumed;
+        public virtual void OnNodeResumed(IPAddress ip, string nickname)
+        {
+            NodeSuspended(this, new NodeConnectionStatusEvent()
+            {
+                NodeIP = ip,
+                Nickname = nickname
+            });
+        }
+
         // Changed nickname event
         public event EventHandler<ChangedNicknameEventArgs> ChangedNickname;
 

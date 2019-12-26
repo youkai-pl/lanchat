@@ -17,6 +17,16 @@ namespace Lanchat.Common.NetworkLib
             Ip = ip;
             SelfAes = new AesInstance();
             NicknameNum = 0;
+            State = Status.Waiting;
+        }
+
+        // Status enum
+        public enum Status
+        {
+            Waiting,
+            Ready,
+            Suspended,
+            Resumed
         }
 
         // Properties
@@ -45,41 +55,16 @@ namespace Lanchat.Common.NetworkLib
         public int NicknameNum { get; set; }
         public int Port { get; set; }
         public string PublicKey { get; set; }
-        public bool Ready
-        {
-            get
-            {
-                return _Ready;
-            }
-            set
-            {
-                var prev = _Ready;
-                _Ready = value;
-                if (_Ready != prev)
-                {
-                    OnReadyChange();
-                }
-            }
-        }
+        public Status State { get; set; }
         public AesInstance RemoteAes { get; set; }
         public AesInstance SelfAes { get; set; }
         public int HearbeatCount { get; set; } = 0;
-
-        // Fields
-        private bool _Ready;
 
         // Ready property change event
         public event EventHandler ReadyChanged;
         protected void OnReadyChange()
         {
             ReadyChanged(this, EventArgs.Empty);
-        }
-
-        // Low heatbeat event
-        public event EventHandler LowHeartbeat;
-        protected void OnLowHeartbeat()
-        {
-            LowHeartbeat(this, EventArgs.Empty);
         }
 
         // Use values from received handshake
@@ -107,7 +92,8 @@ namespace Lanchat.Common.NetworkLib
             RemoteAes = new AesInstance(key, iv);
 
             // Set ready to true
-            Ready = true;
+            State = Status.Ready;
+            OnReadyChange();
 
             // Start heartbeat
             StartHeartbeat();
@@ -119,7 +105,7 @@ namespace Lanchat.Common.NetworkLib
             // Create heartbeat timer
             HeartbeatTimer = new Timer
             {
-                Interval = 2500,
+                Interval = 1200,
                 Enabled = true
             };
             HeartbeatTimer.Elapsed += new ElapsedEventHandler(OnHeartebatOver);
@@ -130,7 +116,7 @@ namespace Lanchat.Common.NetworkLib
             {
                 while (true)
                 {
-                    System.Threading.Thread.Sleep(2000);
+                    System.Threading.Thread.Sleep(1000);
                     if (disposedValue)
                     {
                         break;
@@ -147,29 +133,7 @@ namespace Lanchat.Common.NetworkLib
         private void OnHeartebatOver(object o, ElapsedEventArgs e)
         {
             // If heartbeat was not received make count negative
-            if (!Heartbeat)
-            {
-                // Count heartbeat
-                if (HearbeatCount > 0)
-                {
-                    HearbeatCount = -1;
-                }
-                else
-                {
-                    HearbeatCount--;
-                }
-
-                // Change ready state
-                Ready = false;
-                Trace.WriteLine($"({Ip}) ({HearbeatCount}) heartbeat over");
-
-                // If heartbeat lower than -2 call event
-                if (HearbeatCount < -2)
-                {
-                    OnLowHeartbeat();
-                }
-            }
-            else
+            if (Heartbeat)
             {
                 // Reset heartbeat
                 Heartbeat = false;
@@ -184,9 +148,33 @@ namespace Lanchat.Common.NetworkLib
                     HearbeatCount++;
                 }
 
-                // Change ready state
-                Ready = true;
+                // Change state
+                if (State == Status.Suspended)
+                {
+                    State = Status.Resumed;
+                    OnReadyChange();
+                }
                 Trace.WriteLine($"({Ip}) ({HearbeatCount}) heartbeat ok");
+            }
+            else
+            {
+                // Count heartbeat
+                if (HearbeatCount > 0)
+                {
+                    HearbeatCount = -1;
+                }
+                else
+                {
+                    HearbeatCount--;
+                }
+
+                // Change state
+                if (State != Status.Suspended)
+                {
+                    State = Status.Suspended;
+                    OnReadyChange();
+                }
+                Trace.WriteLine($"({Ip}) ({HearbeatCount}) heartbeat over");
             }
         }
 

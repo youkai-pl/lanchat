@@ -14,8 +14,7 @@ namespace Lanchat.Common.NetworkLib
             var node = new Node(id, port, ip);
 
             // Create node events handlers
-            node.ReadyChanged += OnReadyChanged;
-            node.LowHeartbeat += OnLowHeartbeat;
+            node.ReadyChanged += OnStatusChanged;
 
             // Add node to list
             NodeList.Add(node);
@@ -34,24 +33,29 @@ namespace Lanchat.Common.NetworkLib
             Trace.Unindent();
 
             // Ready change event
-            void OnReadyChanged(object sender, EventArgs e)
+            void OnStatusChanged(object sender, EventArgs e)
             {
-                Trace.WriteLine($"({node.Ip}) ready state changed to {node.Ready}");
-                if (node.Ready)
+                // Node ready
+                if (node.State == Node.Status.Ready)
                 {
+                    Trace.WriteLine($"({node.Ip}) ready");
                     Events.OnNodeConnected(node.Ip, node.Nickname);
                 }
-                else
-                {
-                    // Place for special event
-                }
-            }
 
-            // Low heartbeat event
-            void OnLowHeartbeat(object sender, EventArgs e)
-            {
-                Trace.WriteLine($"({ node.Ip}) heartbeat is low, connection closed");
-                CloseNode(node);
+                // Node suspended
+                else if (node.State == Node.Status.Suspended)
+                {
+                    Trace.WriteLine($"({node.Ip}) suspended");
+                    Events.OnNodeSuspended(node.Ip, node.Nickname);
+                }
+
+                // Node resumed
+                else if (node.State == Node.Status.Resumed)
+                {
+                    Trace.WriteLine($"({node.Ip}) resumed");
+                    node.State = Node.Status.Ready;
+                    Events.OnNodeResumed(node.Ip, node.Nickname);
+                }
             }
         }
     }

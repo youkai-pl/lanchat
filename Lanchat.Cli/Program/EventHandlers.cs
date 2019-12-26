@@ -76,6 +76,24 @@ namespace Lanchat.Cli.ProgramLib
             }
         }
 
+        // Node suspended
+        public void OnNodeSuspended(object o, NodeConnectionStatusEvent e)
+        {
+            if (!program.DebugMode)
+            {
+                Prompt.Notice(e.Nickname + " suspended. Waiting for reconnect");
+            }
+        }
+
+        // Node resumed
+        public void OnNodeResumed(object o, NodeConnectionStatusEvent e)
+        {
+            if (!program.DebugMode)
+            {
+                Prompt.Notice(e.Nickname + " reconnected");
+            }
+        }
+
         // Changed nickname
         public void OnChangedNickname(object o, ChangedNicknameEventArgs e)
         {

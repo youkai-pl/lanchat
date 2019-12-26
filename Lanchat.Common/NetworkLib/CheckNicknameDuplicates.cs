@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Lanchat.Common.NetworkLib
+﻿namespace Lanchat.Common.NetworkLib
 {
     public partial class Network
     {
