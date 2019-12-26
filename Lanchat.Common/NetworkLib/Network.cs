@@ -19,6 +19,9 @@ namespace Lanchat.Common.NetworkLib
         // Host events handlers
         private readonly HostEventsHandlers hostHandlers;
 
+        // Nickname
+        private string nickname;
+
         /// <summary>
         /// Network constructor.
         /// </summary>
@@ -76,9 +79,16 @@ namespace Lanchat.Common.NetworkLib
         public Events Events { get; set; }
 
         /// <summary>
-        /// Self nickname
+        /// Self nickname. On set it sends new nickname to connected client
         /// </summary>
-        public string Nickname { get; set; }
+        public string Nickname
+        {
+            get => nickname;
+            set
+            {
+                ChangeNickname(value);
+            }
+        }
 
         /// <summary>
         /// All nodes here
@@ -141,6 +151,19 @@ namespace Lanchat.Common.NetworkLib
             int port = ((IPEndPoint)l.LocalEndpoint).Port;
             l.Stop();
             return port;
+        }
+
+        // Change nickname
+        private void ChangeNickname(string value)
+        {
+            nickname = value;
+            NodeList.ForEach(x =>
+            {
+                if (x.Client != null)
+                {
+                    x.Client.SendNickname(nickname);
+                }
+            });
         }
     }
 }

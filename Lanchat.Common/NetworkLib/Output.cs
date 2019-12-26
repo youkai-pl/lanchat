@@ -28,20 +28,5 @@
                 }
             });
         }
-
-        /// <summary>
-        /// Broadcast new nickname
-        /// </summary>
-        /// <param name="nickname">new nickname</param>
-        public void ChangeNickname(string nickname)
-        {
-            network.NodeList.ForEach(x =>
-            {
-                if (x.Client != null)
-                {
-                    x.Client.SendNickname(nickname);
-                }
-            });
-        }
     }
 }

@@ -11,7 +11,6 @@ namespace Lanchat.Cli.Commands
             {
                 Config.Nickname = nick;
                 program.Network.Nickname = nick;
-                program.Network.Output.ChangeNickname(nick);
                 Prompt.Notice("Nickname changed");
             }
             else
