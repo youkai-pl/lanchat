@@ -221,6 +221,120 @@
             <param name="newNickname">New node nickname</param>
             <param name="senderIP">Node ip</param>
         </member>
+        <member name="T:Lanchat.Common.NetworkLib.Node">
+            <summary>
+            Represents network user.
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Node.#ctor(System.Guid,System.Int32,System.Net.IPAddress)">
+            <summary>
+            Node constructor.
+            </summary>
+            <param name="id">Node ID</param>
+            <param name="port">Node TCP port</param>
+            <param name="ip">Node IP</param>
+        </member>
+        <member name="T:Lanchat.Common.NetworkLib.Node.Status">
+            <summary>
+            Possible node states
+            </summary>
+        </member>
+        <member name="F:Lanchat.Common.NetworkLib.Node.Status.Waiting">
+            <summary>
+            Waiting for handshake and key exchange.
+            </summary>
+        </member>
+        <member name="F:Lanchat.Common.NetworkLib.Node.Status.Ready">
+            <summary>
+            Ready to use.
+            </summary>
+        </member>
+        <member name="F:Lanchat.Common.NetworkLib.Node.Status.Suspended">
+            <summary>
+            Doesn't sends heartbeat.
+            </summary>
+        </member>
+        <member name="F:Lanchat.Common.NetworkLib.Node.Status.Resumed">
+            <summary>
+            Resumed after suspend.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Node.ClearNickname">
+            <summary>
+            Nickname without number.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Node.Client">
+            <summary>
+            TCP client.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Node.HearbeatCount">
+            <summary>
+            Heartbeat counter.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Node.Heartbeat">
+            <summary>
+            Last heartbeat status.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Node.Id">
+            <summary>
+            Node ID.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Node.Ip">
+            <summary>
+            Node IP.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Node.Mute">
+            <summary>
+            Node mute value.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Node.Nickname">
+            <summary>
+            Node nickname. If nicknames are duplicated returns nickname with number.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Node.Port">
+            <summary>
+            Node TCP port.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Node.PublicKey">
+            <summary>
+            Node public RSA key.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Node.State">
+            <summary>
+            Node <see cref="T:Lanchat.Common.NetworkLib.Node.Status"/>.
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Node.OnStateChange">
+            <summary>
+            State change event.
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Node.Finalize">
+            <summary>
+            Destructor.
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Node.Dispose">
+            <summary>
+            Node dispose.
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Node.Dispose(System.Boolean)">
+            <summary>
+            Node dispose.
+            </summary>
+            <param name="disposing"> Free any other managed objects</param>
+        </member>
         <member name="T:Lanchat.Common.NetworkLib.Output">
             <summary>
             Network API outputs class.

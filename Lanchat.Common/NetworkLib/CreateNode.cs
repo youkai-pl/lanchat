@@ -8,7 +8,7 @@ namespace Lanchat.Common.NetworkLib
     public partial class Network
     {
         // Create new node
-        public void CreateNode(Guid id, int port, IPAddress ip)
+        internal void CreateNode(Guid id, int port, IPAddress ip)
         {
             // Create new node with parameters
             var node = new Node(id, port, ip);

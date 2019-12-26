@@ -4,7 +4,7 @@ namespace Lanchat.Common.NetworkLib
 {
     public partial class Network
     {
-        public void CloseNode(Node node)
+        internal void CloseNode(Node node)
         {
             var nickname = node.ClearNickname;
 

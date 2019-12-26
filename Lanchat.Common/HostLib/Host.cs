@@ -24,7 +24,7 @@ namespace Lanchat.Common.HostLib
         }
 
         // Properties
-        public HostEvents Events { get; set; }
+        internal HostEvents Events { get; set; }
 
         // Fields
         private readonly UdpClient udpClient;
