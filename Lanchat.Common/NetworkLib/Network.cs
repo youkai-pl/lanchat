@@ -74,12 +74,12 @@ namespace Lanchat.Common.NetworkLib
         }
 
         /// <summary>
-        /// Network API inputs class
+        /// Network API inputs class.
         /// </summary>
         public Events Events { get; set; }
 
         /// <summary>
-        /// Self nickname. On set it sends new nickname to connected client
+        /// Self nickname. On set it sends new nickname to connected client.
         /// </summary>
         public string Nickname
         {
@@ -91,17 +91,17 @@ namespace Lanchat.Common.NetworkLib
         }
 
         /// <summary>
-        /// All nodes here
+        /// All nodes here.
         /// </summary>
         public List<Node> NodeList { get; set; }
 
         /// <summary>
-        /// Network API outputs class
+        /// Network API outputs class.
         /// </summary>
         public Output Output { get; set; }
 
         /// <summary>
-        /// UDP broadcast port
+        /// UDP broadcast port.
         /// </summary>
         internal int BroadcastPort { get; set; }
 
@@ -116,12 +116,12 @@ namespace Lanchat.Common.NetworkLib
         internal Guid Id { get; set; }
 
         /// <summary>
-        /// Self RSA public key
+        /// Self RSA public key.
         /// </summary>
         internal string PublicKey { get; set; }
 
         /// <summary>
-        /// RSA provider
+        /// RSA provider.
         /// </summary>
         internal RsaInstance Rsa { get; set; }
 

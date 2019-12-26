@@ -1,7 +1,7 @@
 ﻿namespace Lanchat.Common.NetworkLib
 {
     /// <summary>
-    /// Network API outputs class
+    /// Network API outputs class.
     /// </summary>
     public class Output
     {
@@ -15,7 +15,7 @@
         private readonly Network network;
 
         /// <summary>
-        /// Send message to all nodes
+        /// Send message to all nodes.
         /// </summary>
         /// <param name="message">content</param>
         public void SendAll(string message)

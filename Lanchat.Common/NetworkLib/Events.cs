@@ -4,7 +4,7 @@ using System.Net;
 namespace Lanchat.Common.NetworkLib
 {
     /// <summary>
-    /// Network API inputs class
+    /// Network API inputs class.
     /// </summary>
     public class Events
     {
@@ -50,7 +50,7 @@ namespace Lanchat.Common.NetworkLib
         public event EventHandler<NodeConnectionStatusEventArgs> NodeConnected;
 
         /// <summary>
-        /// Node connected event
+        /// Node connected event.
         /// </summary>
         /// <param name="ip">Node ip</param>
         /// <param name="nickname">Node nickname</param>
@@ -69,7 +69,7 @@ namespace Lanchat.Common.NetworkLib
         public event EventHandler<NodeConnectionStatusEventArgs> NodeDisconnected;
 
         /// <summary>
-        /// Node disconnected event
+        /// Node disconnected event.
         /// </summary>
         /// <param name="ip">Node ip</param>
         /// <param name="nickname">Node nickname</param>
@@ -88,7 +88,7 @@ namespace Lanchat.Common.NetworkLib
         public event EventHandler<NodeConnectionStatusEventArgs> NodeSuspended;
 
         /// <summary>
-        /// Node suspended event
+        /// Node suspended event.
         /// </summary>
         /// <param name="ip">Node ip</param>
         /// <param name="nickname">Node nickname</param>
@@ -107,7 +107,7 @@ namespace Lanchat.Common.NetworkLib
         public event EventHandler<NodeConnectionStatusEventArgs> NodeResumed;
 
         /// <summary>
-        /// Node resumed event
+        /// Node resumed event.
         /// </summary>
         /// <param name="ip">Node ip</param>
         /// <param name="nickname">Node nickname</param>
@@ -126,7 +126,7 @@ namespace Lanchat.Common.NetworkLib
         public event EventHandler<ChangedNicknameEventArgs> ChangedNickname;
 
         /// <summary>
-        /// Node nickname change event
+        /// Node nickname change event.
         /// </summary>
         /// <param name="oldNickname">Old node nickname</param>
         /// <param name="newNickname">New node nickname</param>
