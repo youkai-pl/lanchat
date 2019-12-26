@@ -13,57 +13,11 @@ namespace Lanchat.Common.NetworkLib
     /// </summary>
     public partial class Network
     {
-        // Private fields
+        // Host
         private readonly Host host;
 
-        private readonly HostEventsHandlers inputs;
-
-        // Properties
-
-        /// <summary>
-        /// Self nickname
-        /// </summary>
-        public string Nickname { get; set; }
-
-        /// <summary>
-        /// Self RSA public key
-        /// </summary>
-        public string PublicKey { get; set; }
-
-        /// <summary>
-        /// UDP broadcast port
-        /// </summary>
-        public int BroadcastPort { get; set; }
-
-        /// <summary>
-        /// TCP host port. Set to -1 for use free ephemeral port.
-        /// </summary>
-        public int HostPort { get; set; }
-
-        /// <summary>
-        /// Self ID. Used for checking udp broadcast duplicates.
-        /// </summary>
-        public Guid Id { get; set; }
-
-        /// <summary>
-        /// RSA provider
-        /// </summary>
-        public RsaInstance Rsa { get; set; }
-
-        /// <summary>
-        /// All nodes here
-        /// </summary>
-        public List<Node> NodeList { get; set; }
-
-        /// <summary>
-        /// Network output
-        /// </summary>
-        public Output Output { get; set; }
-
-        /// <summary>
-        /// Network input
-        /// </summary>
-        public Events Events { get; set; }
+        // Host events handlers
+        private readonly HostEventsHandlers hostHandlers;
 
         /// <summary>
         /// Network constructor.
@@ -99,15 +53,15 @@ namespace Lanchat.Common.NetworkLib
             host = new Host(BroadcastPort);
 
             // Listen API events
-            inputs = new HostEventsHandlers(this);
-            host.Events.RecievedBroadcast += inputs.OnReceivedBroadcast;
-            host.Events.NodeConnected += inputs.OnNodeConnected;
-            host.Events.NodeDisconnected += inputs.OnNodeDisconnected;
-            host.Events.ReceivedHandshake += inputs.OnReceivedHandshake;
-            host.Events.ReceivedKey += inputs.OnReceivedKey;
-            host.Events.RecievedMessage += inputs.OnReceivedMessage;
-            host.Events.ChangedNickname += inputs.OnChangedNickname;
-            host.Events.ReceivedHeartbeat += inputs.OnReceivedHeartbeat;
+            hostHandlers = new HostEventsHandlers(this);
+            host.Events.RecievedBroadcast += hostHandlers.OnReceivedBroadcast;
+            host.Events.NodeConnected += hostHandlers.OnNodeConnected;
+            host.Events.NodeDisconnected += hostHandlers.OnNodeDisconnected;
+            host.Events.ReceivedHandshake += hostHandlers.OnReceivedHandshake;
+            host.Events.ReceivedKey += hostHandlers.OnReceivedKey;
+            host.Events.RecievedMessage += hostHandlers.OnReceivedMessage;
+            host.Events.ChangedNickname += hostHandlers.OnChangedNickname;
+            host.Events.ReceivedHeartbeat += hostHandlers.OnReceivedHeartbeat;
 
             // Create Events instance
             Events = new Events();
@@ -115,6 +69,51 @@ namespace Lanchat.Common.NetworkLib
             // Create API outputs instance
             Output = new Output(this);
         }
+
+        /// <summary>
+        /// Network API inputs class
+        /// </summary>
+        public Events Events { get; set; }
+
+        /// <summary>
+        /// Self nickname
+        /// </summary>
+        public string Nickname { get; set; }
+
+        /// <summary>
+        /// All nodes here
+        /// </summary>
+        public List<Node> NodeList { get; set; }
+
+        /// <summary>
+        /// Network API outputs class
+        /// </summary>
+        public Output Output { get; set; }
+
+        /// <summary>
+        /// UDP broadcast port
+        /// </summary>
+        internal int BroadcastPort { get; set; }
+
+        /// <summary>
+        /// TCP host port. Set to -1 for use free ephemeral port.
+        /// </summary>
+        internal int HostPort { get; set; }
+
+        /// <summary>
+        /// Self ID. Used for checking udp broadcast duplicates.
+        /// </summary>
+        internal Guid Id { get; set; }
+
+        /// <summary>
+        /// Self RSA public key
+        /// </summary>
+        internal string PublicKey { get; set; }
+
+        /// <summary>
+        /// RSA provider
+        /// </summary>
+        internal RsaInstance Rsa { get; set; }
 
         /// <summary>
         /// Start host, broadcast and listen.

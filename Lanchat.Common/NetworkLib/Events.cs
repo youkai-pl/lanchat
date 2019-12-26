@@ -7,6 +7,7 @@ namespace Lanchat.Common.NetworkLib
     {
         // Host started
         public event EventHandler<HostStartedEventArgs> HostStarted;
+
         public virtual void OnHostStarted(int port)
         {
             HostStarted(this, new HostStartedEventArgs()
@@ -53,6 +54,7 @@ namespace Lanchat.Common.NetworkLib
 
         // Node suspended
         public event EventHandler<NodeConnectionStatusEvent> NodeSuspended;
+
         public virtual void OnNodeSuspended(IPAddress ip, string nickname)
         {
             NodeSuspended(this, new NodeConnectionStatusEvent()
@@ -64,6 +66,7 @@ namespace Lanchat.Common.NetworkLib
 
         // Node resumed
         public event EventHandler<NodeConnectionStatusEvent> NodeResumed;
+
         public virtual void OnNodeResumed(IPAddress ip, string nickname)
         {
             NodeSuspended(this, new NodeConnectionStatusEvent()
