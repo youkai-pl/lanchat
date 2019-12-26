@@ -2,8 +2,7 @@
 {
     public partial class Network
     {
-        // Check nickname duplicates
-        public void CheckNickcnameDuplicates(string nickname)
+        internal void CheckNickcnameDuplicates(string nickname)
         {
             var users = NodeList.FindAll(x => x.ClearNickname == nickname);
             if (users.Count > 1)

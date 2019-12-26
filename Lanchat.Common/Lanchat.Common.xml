@@ -1,0 +1,236 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Lanchat.Common</name>
+    </assembly>
+    <members>
+        <member name="T:Lanchat.Common.NetworkLib.Network">
+            <summary>
+             Main class of network lib.
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Network.#ctor(System.Int32,System.String,System.Int32)">
+            <summary>
+            Network constructor.
+            </summary>
+            <param name="broadcastPort">UDP broadcast port</param>
+            <param name="nickname">Self nickname</param>
+            <param name="hostPort">TCP host port. Set to -1 to use free ephemeral port</param>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.Events">
+            <summary>
+            Network API inputs class.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.Nickname">
+            <summary>
+            Self nickname. On set it sends new nickname to connected client.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.NodeList">
+            <summary>
+            All nodes here.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.Output">
+            <summary>
+            Network API outputs class.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.BroadcastPort">
+            <summary>
+            UDP broadcast port.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.HostPort">
+            <summary>
+            TCP host port. Set to -1 for use free ephemeral port.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.Id">
+            <summary>
+            Self ID. Used for checking udp broadcast duplicates.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.PublicKey">
+            <summary>
+            Self RSA public key.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.Rsa">
+            <summary>
+            RSA provider.
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Network.Start">
+            <summary>
+            Start host, broadcast and listen.
+            </summary>
+        </member>
+        <member name="T:Lanchat.Common.NetworkLib.ChangedNicknameEventArgs">
+            <summary>
+            Changed node nickname event.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.ChangedNicknameEventArgs.NewNickname">
+            <summary>
+            New nickname.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.ChangedNicknameEventArgs.OldNickname">
+            <summary>
+            Old nickname.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.ChangedNicknameEventArgs.SenderIP">
+            <summary>
+            IP of the sending node.
+            </summary>
+        </member>
+        <member name="T:Lanchat.Common.NetworkLib.HostStartedEventArgs">
+            <summary>
+            Host started.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.HostStartedEventArgs.Port">
+            <summary>
+            Host listening port.
+            </summary>
+        </member>
+        <member name="T:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs">
+            <summary>
+            Node connection status.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs.Nickname">
+            <summary>
+            Node nickname.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs.NodeIP">
+            <summary>
+            Node ip.
+            </summary>
+        </member>
+        <member name="T:Lanchat.Common.NetworkLib.ReceivedMessageEventArgs">
+            <summary>
+            Received message.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.Content">
+            <summary>
+            Message content.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.Nickname">
+            <summary>
+            Sender nickname.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.SenderIP">
+            <summary>
+            IP of the sending node.
+            </summary>
+        </member>
+        <member name="T:Lanchat.Common.NetworkLib.Events">
+            <summary>
+            Network API inputs class.
+            </summary>
+        </member>
+        <member name="E:Lanchat.Common.NetworkLib.Events.HostStarted">
+            <summary>
+            Check <see cref="T:Lanchat.Common.NetworkLib.HostStartedEventArgs"/>
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Events.OnHostStarted(System.Int32)">
+            <summary>
+            Host properly started event.
+            </summary>
+            <param name="port">Host listen port</param>
+        </member>
+        <member name="E:Lanchat.Common.NetworkLib.Events.ReceivedMessage">
+            <summary>
+            Check <see cref="T:Lanchat.Common.NetworkLib.ReceivedMessageEventArgs"/>
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Events.OnReceivedMessage(System.String,System.String)">
+            <summary>
+            Received message event.
+            </summary>
+            <param name="content">Message content</param>
+            <param name="nickname">Sender nickname</param>
+        </member>
+        <member name="E:Lanchat.Common.NetworkLib.Events.NodeConnected">
+            <summary>
+            Check <see cref="T:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs"/>
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Events.OnNodeConnected(System.Net.IPAddress,System.String)">
+            <summary>
+            Node connected event.
+            </summary>
+            <param name="ip">Node ip</param>
+            <param name="nickname">Node nickname</param>
+        </member>
+        <member name="E:Lanchat.Common.NetworkLib.Events.NodeDisconnected">
+            <summary>
+            Check <see cref="T:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs"/>
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Events.OnNodeDisconnected(System.Net.IPAddress,System.String)">
+            <summary>
+            Node disconnected event.
+            </summary>
+            <param name="ip">Node ip</param>
+            <param name="nickname">Node nickname</param>
+        </member>
+        <member name="E:Lanchat.Common.NetworkLib.Events.NodeSuspended">
+            <summary>
+            Check <see cref="T:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs"/>
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Events.OnNodeSuspended(System.Net.IPAddress,System.String)">
+            <summary>
+            Node suspended event.
+            </summary>
+            <param name="ip">Node ip</param>
+            <param name="nickname">Node nickname</param>
+        </member>
+        <member name="E:Lanchat.Common.NetworkLib.Events.NodeResumed">
+            <summary>
+            Check <see cref="T:Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs"/>
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Events.OnNodeResumed(System.Net.IPAddress,System.String)">
+            <summary>
+            Node resumed event.
+            </summary>
+            <param name="ip">Node ip</param>
+            <param name="nickname">Node nickname</param>
+        </member>
+        <member name="E:Lanchat.Common.NetworkLib.Events.ChangedNickname">
+            <summary>
+            Check <see cref="T:Lanchat.Common.NetworkLib.ChangedNicknameEventArgs"/>
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Events.OnChangedNickname(System.String,System.String,System.Net.IPAddress)">
+            <summary>
+            Node nickname change event.
+            </summary>
+            <param name="oldNickname">Old node nickname</param>
+            <param name="newNickname">New node nickname</param>
+            <param name="senderIP">Node ip</param>
+        </member>
+        <member name="T:Lanchat.Common.NetworkLib.Output">
+            <summary>
+            Network API outputs class.
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Output.SendAll(System.String)">
+            <summary>
+            Send message to all nodes.
+            </summary>
+            <param name="message">content</param>
+        </member>
+    </members>
+</doc>

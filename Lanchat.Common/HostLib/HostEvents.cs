@@ -8,7 +8,7 @@ namespace Lanchat.Common.HostLib
     public class HostEvents
     {
         // Recieved broadcast event
-        public event EventHandler<RecievedBroadcastEventArgs> RecievedBroadcast;
+        internal event EventHandler<RecievedBroadcastEventArgs> RecievedBroadcast;
 
         public virtual void OnReceivedBroadcast(Paperplane sender, IPAddress senderIP)
         {
@@ -42,7 +42,7 @@ namespace Lanchat.Common.HostLib
         }
 
         // Received handshake event
-        public event EventHandler<RecievedHandshakeEventArgs> ReceivedHandshake;
+        internal event EventHandler<RecievedHandshakeEventArgs> ReceivedHandshake;
 
         public virtual void OnReceivedHandshake(Handshake handshake, IPAddress senderIP)
         {
@@ -54,7 +54,7 @@ namespace Lanchat.Common.HostLib
         }
 
         // Received symetric key event
-        public event EventHandler<RecievedKeyEventArgs> ReceivedKey;
+        internal event EventHandler<RecievedKeyEventArgs> ReceivedKey;
 
         public virtual void OnReceivedKey(Key key, IPAddress senderIP)
         {
@@ -67,7 +67,7 @@ namespace Lanchat.Common.HostLib
         }
 
         // Received hertbeat
-        public event EventHandler<ReceivedHeartbeatEventArgs> ReceivedHeartbeat;
+        internal event EventHandler<ReceivedHeartbeatEventArgs> ReceivedHeartbeat;
         public virtual void OnReceivedHeartbeat(IPAddress senderIP)
         {
             ReceivedHeartbeat(this, new ReceivedHeartbeatEventArgs()

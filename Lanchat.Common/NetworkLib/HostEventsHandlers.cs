@@ -17,7 +17,7 @@ namespace Lanchat.Common.NetworkLib
         private readonly Network network;
 
         // Received broadcast
-        public void OnReceivedBroadcast(object o, RecievedBroadcastEventArgs e)
+        internal void OnReceivedBroadcast(object o, RecievedBroadcastEventArgs e)
         {
             if (IsNodeExist(e.Sender, e.SenderIP))
             {
@@ -59,7 +59,7 @@ namespace Lanchat.Common.NetworkLib
         }
 
         // Recieved handshake
-        public void OnReceivedHandshake(object o, RecievedHandshakeEventArgs e)
+        internal void OnReceivedHandshake(object o, RecievedHandshakeEventArgs e)
         {
             Trace.WriteLine("Received handshake");
             Trace.Indent();
@@ -92,14 +92,14 @@ namespace Lanchat.Common.NetworkLib
         }
 
         // Receieved symetric key
-        public void OnReceivedKey(object o, RecievedKeyEventArgs e)
+        internal void OnReceivedKey(object o, RecievedKeyEventArgs e)
         {
             var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
             user.CreateRemoteAes(network.Rsa.Decode(e.AesKey), network.Rsa.Decode(e.AesIV));
         }
 
         // Receieved heartbeat
-        public void OnReceivedHeartbeat(object o, ReceivedHeartbeatEventArgs e)
+        internal void OnReceivedHeartbeat(object o, ReceivedHeartbeatEventArgs e)
         {
             var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
             try
