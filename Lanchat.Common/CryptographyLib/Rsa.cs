@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Lanchat.Common.CryptographyLib
 {
-    public static class Rsa
+    internal static class Rsa
     {
         // RSA encode
-        public static string Encode(string input, string key)
+        internal static string Encode(string input, string key)
         {
             var rsa = new RSACryptoServiceProvider();
             var rsaKeyInfo = JsonConvert.DeserializeObject<RSAParameters>(key);

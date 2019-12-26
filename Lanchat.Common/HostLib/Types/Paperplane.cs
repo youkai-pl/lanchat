@@ -2,15 +2,15 @@
 
 namespace Lanchat.Common.HostLib.Types
 {
-    public class Paperplane
+    internal class Paperplane
     {
-        public Paperplane(int port, Guid id)
+        internal Paperplane(int port, Guid id)
         {
             Port = port;
             Id = id;
         }
 
-        public int Port { get; set; }
-        public Guid Id { get; set; }
+        internal Guid Id { get; set; }
+        internal int Port { get; set; }
     }
 }

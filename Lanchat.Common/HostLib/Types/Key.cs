@@ -1,14 +1,14 @@
 ﻿namespace Lanchat.Common.HostLib.Types
 {
-    public class Key
+    internal class Key
     {
-        public Key(string aeskey, string aesiv)
+        internal Key(string aeskey, string aesiv)
         {
             AesKey = aeskey;
             AesIV = aesiv;
         }
 
-        public string AesKey { get; set; }
-        public string AesIV { get; set; }
+        internal string AesIV { get; set; }
+        internal string AesKey { get; set; }
     }
 }

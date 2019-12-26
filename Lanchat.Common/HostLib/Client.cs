@@ -9,21 +9,22 @@ using System.Text;
 
 namespace Lanchat.Common.HostLib
 {
-    public class Client
+    internal class Client
     {
-        public Client(Node node)
+        // Fields
+        private readonly Node node;
+
+        private NetworkStream stream;
+
+        internal Client(Node node)
         {
             this.node = node;
         }
 
-        // Fields
-        private readonly Node node;
-        private NetworkStream stream;
-
-        public TcpClient TcpClient { get; set; }
+        internal TcpClient TcpClient { get; set; }
 
         // Connect
-        public void Connect(IPAddress ip, int port)
+        internal void Connect(IPAddress ip, int port)
         {
             // Create client and stream
             try
@@ -37,38 +38,14 @@ namespace Lanchat.Common.HostLib
             }
         }
 
-        // Send handshake
-        public void SendHandshake(Handshake handshake)
+        // Send heartbeet
+        internal void Heartbeat()
         {
-            Send("handshake", JToken.FromObject(handshake));
-        }
-
-        // Send key
-        public void SendKey(Key key)
-        {
-            Send("key", JToken.FromObject(key));
-        }
-
-        // Send message
-        public void SendMessage(string message)
-        {
-            if (node.State == Node.Status.Ready)
-            {
-                Send("message", node.SelfAes.Encode(message));
-            }
-        }
-
-        // Change nickname
-        public void SendNickname(string nickname)
-        {
-            if (node.State == Node.Status.Ready)
-            {
-                Send("nickname", nickname);
-            }
+            Send("heartbeat", null);
         }
 
         // Serialize and send data
-        private void Send(string type, JToken content)
+        internal void Send(string type, JToken content)
         {
             // Create json
             var data = new JObject(new JProperty(type, content));
@@ -84,19 +61,34 @@ namespace Lanchat.Common.HostLib
             }
         }
 
-        // Send heartbeet
-        public void Heartbeat()
+        // Send handshake
+        internal void SendHandshake(Handshake handshake)
         {
-            Send("heartbeat", null);
+            Send("handshake", JToken.FromObject(handshake));
         }
 
-        // Send random data (only for debug)
-        public void DestroyLanchat()
+        // Send key
+        internal void SendKey(Key key)
         {
-            var content = "asdasd";
-            var data = new JObject(new JProperty("message", node.SelfAes.Encode(content)));
-            byte[] bytesToSend = Encoding.UTF8.GetBytes(data.ToString());
-            stream.Write(bytesToSend, 0, bytesToSend.Length);
+            Send("key", JToken.FromObject(key));
+        }
+
+        // Send message
+        internal void SendMessage(string message)
+        {
+            if (node.State == Node.Status.Ready)
+            {
+                Send("message", node.SelfAes.Encode(message));
+            }
+        }
+
+        // Change nickname
+        internal void SendNickname(string nickname)
+        {
+            if (node.State == Node.Status.Ready)
+            {
+                Send("nickname", nickname);
+            }
         }
     }
 }

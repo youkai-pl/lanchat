@@ -12,10 +12,30 @@ using System.Threading.Tasks;
 
 namespace Lanchat.Common.HostLib
 {
-    public class Host
+    internal static class SocketExtensions
     {
+        internal static bool IsConnected(this Socket socket)
+        {
+            try
+            {
+                return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
+            }
+            catch (SocketException)
+            {
+                return false;
+            }
+        }
+    }
+
+    internal class Host
+    {
+        private readonly int port;
+
+        // Fields
+        private readonly UdpClient udpClient;
+
         // Host constructor
-        public Host(int port)
+        internal Host(int port)
         {
             Events = new HostEvents();
             this.port = port;
@@ -26,12 +46,8 @@ namespace Lanchat.Common.HostLib
         // Properties
         internal HostEvents Events { get; set; }
 
-        // Fields
-        private readonly UdpClient udpClient;
-        private readonly int port;
-
         // Start broadcast
-        public void Broadcast(object self)
+        internal void Broadcast(object self)
         {
             Task.Run(() =>
             {
@@ -45,7 +61,7 @@ namespace Lanchat.Common.HostLib
         }
 
         // Listen other hosts broadcasts
-        public void ListenBroadcast()
+        internal void ListenBroadcast()
         {
             Task.Run(() =>
             {
@@ -69,9 +85,8 @@ namespace Lanchat.Common.HostLib
         }
 
         // Start host
-        public void StartHost(int port)
+        internal void StartHost(int port)
         {
-
             Task.Run(() =>
             {
                 // Create server
@@ -105,7 +120,6 @@ namespace Lanchat.Common.HostLib
             // Host client process
             void Process(Socket socket)
             {
-
                 byte[] response;
                 int received;
                 var ip = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
@@ -196,21 +210,6 @@ namespace Lanchat.Common.HostLib
                 }
 
                 Trace.WriteLine($"Socket for {ip} closed");
-            }
-        }
-    }
-
-    public static class SocketExtensions
-    {
-        public static bool IsConnected(this Socket socket)
-        {
-            try
-            {
-                return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
-            }
-            catch (SocketException)
-            {
-                return false;
             }
         }
     }

@@ -6,15 +6,55 @@ using System.Net;
 namespace Lanchat.Common.NetworkLib
 {
     // Event handlers
-    public class HostEventsHandlers
+    internal class HostEventsHandlers
     {
+        private readonly Network network;
+
         // Constructor
-        public HostEventsHandlers(Network network)
+        internal HostEventsHandlers(Network network)
         {
             this.network = network;
         }
 
-        private readonly Network network;
+        // Changed nickname
+        internal void OnChangedNickname(object o, ChangedNicknameEventArgs e)
+        {
+            var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+            var oldNickname = user.Nickname;
+            user.Nickname = e.NewNickname;
+
+            // Check is nickname duplicated
+            network.CheckNickcnameDuplicates(e.NewNickname);
+            network.Events.OnChangedNickname(oldNickname, e.NewNickname, e.SenderIP);
+
+            // Emit event
+            Trace.WriteLine($"{oldNickname} nickname changed to {e.NewNickname}");
+        }
+
+        // Node connected
+        internal void OnNodeConnected(object o, NodeConnectionStatusEventArgs e)
+        {
+            // If broadcast isn't already received host will create node when the handshake is received
+            Trace.WriteLine("New connection from: " + e.NodeIP.ToString());
+        }
+
+        // Node disconnected
+        internal void OnNodeDisconnected(object o, NodeConnectionStatusEventArgs e)
+        {
+            // Find node in list
+            var node = network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
+
+            // If node exist delete it
+            if (node != null)
+            {
+                network.CloseNode(node);
+            }
+            // If node doesn't exist log exception
+            else
+            {
+                Trace.WriteLine("Node does not exist");
+            }
+        }
 
         // Received broadcast
         internal void OnReceivedBroadcast(object o, RecievedBroadcastEventArgs e)
@@ -30,31 +70,6 @@ namespace Lanchat.Common.NetworkLib
                 {
                     Trace.Write("Connecting error: " + ex.Message);
                 }
-            }
-        }
-
-        // Node connected
-        public void OnNodeConnected(object o, NodeConnectionStatusEventArgs e)
-        {
-            // If broadcast isn't already received host will create node when the handshake is received
-            Trace.WriteLine("New connection from: " + e.NodeIP.ToString());
-        }
-
-        // Node disconnected
-        public void OnNodeDisconnected(object o, NodeConnectionStatusEventArgs e)
-        {
-            // Find node in list
-            var node = network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
-
-            // If node exist delete it
-            if (node != null)
-            {
-                network.CloseNode(node);
-            }
-            // If node doesn't exist log exception
-            else
-            {
-                Trace.WriteLine("Node does not exist");
             }
         }
 
@@ -91,13 +106,6 @@ namespace Lanchat.Common.NetworkLib
             network.CheckNickcnameDuplicates(e.NodeHandshake.Nickname);
         }
 
-        // Receieved symetric key
-        internal void OnReceivedKey(object o, RecievedKeyEventArgs e)
-        {
-            var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
-            user.CreateRemoteAes(network.Rsa.Decode(e.AesKey), network.Rsa.Decode(e.AesIV));
-        }
-
         // Receieved heartbeat
         internal void OnReceivedHeartbeat(object o, ReceivedHeartbeatEventArgs e)
         {
@@ -114,8 +122,15 @@ namespace Lanchat.Common.NetworkLib
             }
         }
 
+        // Receieved symetric key
+        internal void OnReceivedKey(object o, RecievedKeyEventArgs e)
+        {
+            var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+            user.CreateRemoteAes(network.Rsa.Decode(e.AesKey), network.Rsa.Decode(e.AesIV));
+        }
+
         // Recieved message
-        public void OnReceivedMessage(object o, ReceivedMessageEventArgs e)
+        internal void OnReceivedMessage(object o, ReceivedMessageEventArgs e)
         {
             var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
 
@@ -129,21 +144,6 @@ namespace Lanchat.Common.NetworkLib
             {
                 Trace.WriteLine($"Message from muted user ({e.SenderIP}) blocked");
             }
-        }
-
-        // Changed nickname
-        public void OnChangedNickname(object o, ChangedNicknameEventArgs e)
-        {
-            var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
-            var oldNickname = user.Nickname;
-            user.Nickname = e.NewNickname;
-
-            // Check is nickname duplicated
-            network.CheckNickcnameDuplicates(e.NewNickname);
-            network.Events.OnChangedNickname(oldNickname, e.NewNickname, e.SenderIP);
-
-            // Emit event
-            Trace.WriteLine($"{oldNickname} nickname changed to {e.NewNickname}");
         }
 
         // Check is paperplane come from self or user alredy exist in list

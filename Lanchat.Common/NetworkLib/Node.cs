@@ -64,11 +64,6 @@ namespace Lanchat.Common.NetworkLib
         public string ClearNickname { get; private set; }
 
         /// <summary>
-        /// TCP client.
-        /// </summary>
-        public Client Client { get; set; }
-
-        /// <summary>
         /// Heartbeat counter.
         /// </summary>
         public int HearbeatCount { get; set; } = 0;
@@ -127,6 +122,7 @@ namespace Lanchat.Common.NetworkLib
         /// </summary>
         public Status State { get; set; }
 
+        internal Client Client { get; set; }
         internal Timer HeartbeatTimer { get; set; }
         internal int NicknameNum { get; set; }
         internal AesInstance RemoteAes { get; set; }

@@ -5,19 +5,19 @@ using System.Text;
 
 namespace Lanchat.Common.CryptographyLib
 {
-    public class RsaInstance
+    internal class RsaInstance
     {
+        // RSA Provider
+        private readonly RSACryptoServiceProvider csp;
+
         // Constructor
-        public RsaInstance()
+        internal RsaInstance()
         {
             csp = new RSACryptoServiceProvider(1024);
         }
 
-        // RSA Provider
-        private readonly RSACryptoServiceProvider csp;
-
         // Public key
-        public string PublicKey
+        internal string PublicKey
         {
             get
             {
@@ -26,7 +26,7 @@ namespace Lanchat.Common.CryptographyLib
         }
 
         // RSA decode
-        public string Decode(string input)
+        internal string Decode(string input)
         {
             byte[] clearOutput = csp.Decrypt(Convert.FromBase64String(input), false);
             return Encoding.UTF8.GetString(clearOutput);

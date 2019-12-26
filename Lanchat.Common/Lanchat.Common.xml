@@ -264,11 +264,6 @@
             Nickname without number.
             </summary>
         </member>
-        <member name="P:Lanchat.Common.NetworkLib.Node.Client">
-            <summary>
-            TCP client.
-            </summary>
-        </member>
         <member name="P:Lanchat.Common.NetworkLib.Node.HearbeatCount">
             <summary>
             Heartbeat counter.

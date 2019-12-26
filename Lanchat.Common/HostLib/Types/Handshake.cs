@@ -2,9 +2,9 @@
 
 namespace Lanchat.Common.HostLib.Types
 {
-    public class Handshake
+    internal class Handshake
     {
-        public Handshake(string nickname, string publicKey, Guid id, int port)
+        internal Handshake(string nickname, string publicKey, Guid id, int port)
         {
             Nickname = nickname;
             PublicKey = publicKey;
@@ -12,9 +12,9 @@ namespace Lanchat.Common.HostLib.Types
             Port = port;
         }
 
-        public string Nickname { get; set; }
-        public string PublicKey { get; set; }
-        public Guid Id { get; set; }
-        public int Port { get; set; }
+        internal Guid Id { get; set; }
+        internal string Nickname { get; set; }
+        internal int Port { get; set; }
+        internal string PublicKey { get; set; }
     }
 }
