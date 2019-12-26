@@ -20,22 +20,22 @@ namespace Lanchat.Common.HostLib
         }
 
         // Node connected event
-        public event EventHandler<NodeConnectionStatusEvent> NodeConnected;
+        public event EventHandler<NodeConnectionStatusEventArgs> NodeConnected;
 
         public virtual void OnNodeConnected(IPAddress nodeIP)
         {
-            NodeConnected(this, new NodeConnectionStatusEvent()
+            NodeConnected(this, new NodeConnectionStatusEventArgs()
             {
                 NodeIP = nodeIP
             });
         }
 
         // Node connected event
-        public event EventHandler<NodeConnectionStatusEvent> NodeDisconnected;
+        public event EventHandler<NodeConnectionStatusEventArgs> NodeDisconnected;
 
         public virtual void OnNodeDisconnected(IPAddress nodeIP)
         {
-            NodeDisconnected(this, new NodeConnectionStatusEvent()
+            NodeDisconnected(this, new NodeConnectionStatusEventArgs()
             {
                 NodeIP = nodeIP
             });

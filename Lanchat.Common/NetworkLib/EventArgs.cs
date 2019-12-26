@@ -15,7 +15,7 @@ namespace Lanchat.Common.NetworkLib
         public IPAddress SenderIP { get; set; }
     }
 
-    public class NodeConnectionStatusEvent : EventArgs
+    public class NodeConnectionStatusEventArgs : EventArgs
     {
         public IPAddress NodeIP { get; set; }
         public string Nickname { get; set; }

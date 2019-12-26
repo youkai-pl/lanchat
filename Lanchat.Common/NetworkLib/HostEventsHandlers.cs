@@ -34,14 +34,14 @@ namespace Lanchat.Common.NetworkLib
         }
 
         // Node connected
-        public void OnNodeConnected(object o, NodeConnectionStatusEvent e)
+        public void OnNodeConnected(object o, NodeConnectionStatusEventArgs e)
         {
             // If broadcast isn't already received host will create node when the handshake is received
             Trace.WriteLine("New connection from: " + e.NodeIP.ToString());
         }
 
         // Node disconnected
-        public void OnNodeDisconnected(object o, NodeConnectionStatusEvent e)
+        public void OnNodeDisconnected(object o, NodeConnectionStatusEventArgs e)
         {
             // Find node in list
             var node = network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
