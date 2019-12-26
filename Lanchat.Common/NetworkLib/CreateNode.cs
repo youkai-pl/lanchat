@@ -12,10 +12,16 @@ namespace Lanchat.Common.NetworkLib
         {
             // Create new node with parameters
             var node = new Node(id, port, ip);
+
+            // Create node events handlers
+            node.ReadyChanged += OnStatusChanged;
+
             // Add node to list
             NodeList.Add(node);
+
             // Create connection with node
             node.CreateConnection();
+
             // Send handshake to node
             node.Client.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));
 
@@ -25,6 +31,32 @@ namespace Lanchat.Common.NetworkLib
             Trace.WriteLine(node.Ip);
             Trace.WriteLine(node.Port.ToString());
             Trace.Unindent();
+
+            // Ready change event
+            void OnStatusChanged(object sender, EventArgs e)
+            {
+                // Node ready
+                if (node.State == Node.Status.Ready)
+                {
+                    Trace.WriteLine($"({node.Ip}) ready");
+                    Events.OnNodeConnected(node.Ip, node.Nickname);
+                }
+
+                // Node suspended
+                else if (node.State == Node.Status.Suspended)
+                {
+                    Trace.WriteLine($"({node.Ip}) suspended");
+                    Events.OnNodeSuspended(node.Ip, node.Nickname);
+                }
+
+                // Node resumed
+                else if (node.State == Node.Status.Resumed)
+                {
+                    Trace.WriteLine($"({node.Ip}) resumed");
+                    node.State = Node.Status.Ready;
+                    Events.OnNodeResumed(node.Ip, node.Nickname);
+                }
+            }
         }
     }
 }

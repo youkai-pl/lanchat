@@ -18,11 +18,9 @@ namespace Lanchat.Common.HostLib
 
         // Fields
         private readonly Node node;
+        private NetworkStream stream;
 
-        // Tcp client
-        private TcpClient tcpclnt;
-
-        private NetworkStream nwStream;
+        public TcpClient TcpClient { get; set; }
 
         // Connect
         public void Connect(IPAddress ip, int port)
@@ -30,8 +28,8 @@ namespace Lanchat.Common.HostLib
             // Create client and stream
             try
             {
-                tcpclnt = new TcpClient(ip.ToString(), port);
-                nwStream = tcpclnt.GetStream();
+                TcpClient = new TcpClient(ip.ToString(), port);
+                stream = TcpClient.GetStream();
             }
             catch (Exception e)
             {
@@ -54,29 +52,42 @@ namespace Lanchat.Common.HostLib
         // Send message
         public void SendMessage(string message)
         {
-            Send("message", node.SelfAes.Encode(message));
+            if (node.State == Node.Status.Ready)
+            {
+                Send("message", node.SelfAes.Encode(message));
+            }
         }
 
         // Change nickname
         public void SendNickname(string nickname)
         {
-            Send("nickname", nickname);
+            if (node.State == Node.Status.Ready)
+            {
+                Send("nickname", nickname);
+            }
         }
 
         // Serialize and send data
         private void Send(string type, JToken content)
         {
+            // Create json
             var data = new JObject(new JProperty(type, content));
 
             try
             {
                 byte[] bytesToSend = Encoding.UTF8.GetBytes(data.ToString());
-                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+                stream.Write(bytesToSend, 0, bytesToSend.Length);
             }
             catch
             {
                 Trace.WriteLine("Data send failed");
             }
+        }
+
+        // Send heartbeet
+        public void Heartbeat()
+        {
+            Send("heartbeat", null);
         }
 
         // Send random data (only for debug)
@@ -85,7 +96,7 @@ namespace Lanchat.Common.HostLib
             var content = "asdasd";
             var data = new JObject(new JProperty("message", node.SelfAes.Encode(content)));
             byte[] bytesToSend = Encoding.UTF8.GetBytes(data.ToString());
-            nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+            stream.Write(bytesToSend, 0, bytesToSend.Length);
         }
     }
 }

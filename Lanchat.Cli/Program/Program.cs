@@ -67,7 +67,11 @@ namespace Lanchat.Cli.ProgramLib
             Network.Events.ReceivedMessage += eventHandlers.OnRecievedMessage;
             Network.Events.NodeConnected += eventHandlers.OnNodeConnected;
             Network.Events.NodeDisconnected += eventHandlers.OnNodeDisconnected;
+            Network.Events.NodeSuspended += eventHandlers.OnNodeSuspended;
+            Network.Events.NodeResumed += eventHandlers.OnNodeResumed;
             Network.Events.ChangedNickname += eventHandlers.OnChangedNickname;
+
+            // Start network
             Network.Start();
         }
     }

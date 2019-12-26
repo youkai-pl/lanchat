@@ -11,8 +11,8 @@ namespace Lanchat.Common.NetworkLib
     public partial class Network
     {
         // Private fields
-        private readonly Host host;
-        private readonly HostEventsHandlers inputs;
+        private Host host;
+        private HostEventsHandlers inputs;
 
         // Properties
         public string Nickname { get; set; }
@@ -61,6 +61,7 @@ namespace Lanchat.Common.NetworkLib
             host.Events.ReceivedKey += inputs.OnReceivedKey;
             host.Events.RecievedMessage += inputs.OnReceivedMessage;
             host.Events.ChangedNickname += inputs.OnChangedNickname;
+            host.Events.ReceivedHeartbeat += inputs.OnReceivedHeartbeat;
 
             // Create Events instance
             Events = new NetworkEvents();
@@ -72,6 +73,7 @@ namespace Lanchat.Common.NetworkLib
         // Start host
         public void Start()
         {
+            
             // Initialize host
             host.StartHost(HostPort);
 

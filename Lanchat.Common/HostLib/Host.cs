@@ -28,7 +28,6 @@ namespace Lanchat.Common.HostLib
 
         // Fields
         private readonly UdpClient udpClient;
-
         private readonly int port;
 
         // Start broadcast
@@ -72,6 +71,7 @@ namespace Lanchat.Common.HostLib
         // Start host
         public void StartHost(int port)
         {
+
             Task.Run(() =>
             {
                 // Create server
@@ -86,10 +86,18 @@ namespace Lanchat.Common.HostLib
                 // Start listening
                 while (true)
                 {
-                    Socket socket = server.Accept();
+                    var socket = server.Accept();
+                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
                     new Thread(() =>
                     {
-                        try { Process(socket); } catch (Exception ex) { Trace.WriteLine("Socket connection processing error: " + ex.Message); }
+                        try
+                        {
+                            Process(socket);
+                        }
+                        catch (Exception ex)
+                        {
+                            Trace.WriteLine("Socket connection processing error: " + ex.Message);
+                        }
                     }).Start();
                 }
             });
@@ -97,32 +105,40 @@ namespace Lanchat.Common.HostLib
             // Host client process
             void Process(Socket socket)
             {
+
                 byte[] response;
                 int received;
                 var ip = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
+
+                Trace.WriteLine($"Socket created for {ip}");
+
                 Events.OnNodeConnected(ip);
 
                 while (true)
                 {
-                    // Handle received data
+                    // Rceive data
+                    response = new byte[socket.ReceiveBufferSize];
+                    received = socket.Receive(response);
+
+                    // Check connection
+                    if (!socket.IsConnected())
+                    {
+                        socket.Close();
+                        Events.OnNodeDisconnected(ip);
+                        break;
+                    }
+
                     try
                     {
-                        response = new byte[socket.ReceiveBufferSize];
-                        received = socket.Receive(response);
-                        if (received == 0)
-                        {
-                            Events.OnNodeDisconnected(ip);
-                            return;
-                        }
-
                         // Decode recieved data
                         List<byte> respBytesList = new List<byte>(response);
+
+                        //Trace.WriteLine(Encoding.UTF8.GetString(respBytesList.ToArray()));
 
                         // Parse json and get data type
                         IList<JToken> obj = JObject.Parse(Encoding.UTF8.GetString(respBytesList.ToArray()));
                         var type = ((JProperty)obj[0]).Name;
                         var content = ((JProperty)obj[0]).Value;
-                        Trace.WriteLine(type);
 
                         // If handshake
                         if (type == "handshake")
@@ -134,6 +150,12 @@ namespace Lanchat.Common.HostLib
                         if (type == "key")
                         {
                             Events.OnReceivedKey(content.ToObject<Key>(), ip);
+                        }
+
+                        // If heartbeat
+                        if (type == "heartbeat")
+                        {
+                            Events.OnReceivedHeartbeat(ip);
                         }
 
                         // If message
@@ -172,6 +194,23 @@ namespace Lanchat.Common.HostLib
                         }
                     }
                 }
+
+                Trace.WriteLine($"Socket for {ip} closed");
+            }
+        }
+    }
+
+    public static class SocketExtensions
+    {
+        public static bool IsConnected(this Socket socket)
+        {
+            try
+            {
+                return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
+            }
+            catch (SocketException)
+            {
+                return false;
             }
         }
     }
