@@ -22,12 +22,21 @@
     <DocumentationFile>D:\dev\c#\lanchat\Lanchat.Common\Lanchat.Common.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <DocumentationMarkdown>$(MSBuildProjectDirectory)..\..\docs\Lanchat.Common.md</DocumentationMarkdown>
+    <VsxmdAutoDeleteXml>True</VsxmdAutoDeleteXml>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" Link="SharedAssemblyInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Vsxmd" Version="1.4.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
