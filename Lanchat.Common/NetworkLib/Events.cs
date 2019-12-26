@@ -3,7 +3,7 @@ using System.Net;
 
 namespace Lanchat.Common.NetworkLib
 {
-    public class NetworkEvents
+    public class Events
     {
         // Host started
         public event EventHandler<HostStartedEventArgs> HostStarted;

@@ -8,23 +8,69 @@ using System.Net.Sockets;
 
 namespace Lanchat.Common.NetworkLib
 {
+    /// <summary>
+    ///  Main class of network lib.
+    /// </summary>
     public partial class Network
     {
         // Private fields
-        private Host host;
-        private HostEventsHandlers inputs;
+        private readonly Host host;
+
+        private readonly HostEventsHandlers inputs;
 
         // Properties
-        public string Nickname { get; set; }
-        public string PublicKey { get; set; }
-        public int BroadcastPort { get; set; }
-        public int HostPort { get; set; }
-        public Guid Id { get; set; }
-        public RsaInstance Rsa { get; set; }
-        public List<Node> NodeList { get; set; }
-        public ApiMethods Out { get; set; }
-        public NetworkEvents Events { get; set; }
 
+        /// <summary>
+        /// Self nickname
+        /// </summary>
+        public string Nickname { get; set; }
+
+        /// <summary>
+        /// Self RSA public key
+        /// </summary>
+        public string PublicKey { get; set; }
+
+        /// <summary>
+        /// UDP broadcast port
+        /// </summary>
+        public int BroadcastPort { get; set; }
+
+        /// <summary>
+        /// TCP host port. Set to -1 for use free ephemeral port.
+        /// </summary>
+        public int HostPort { get; set; }
+
+        /// <summary>
+        /// Self ID. Used for checking udp broadcast duplicates.
+        /// </summary>
+        public Guid Id { get; set; }
+
+        /// <summary>
+        /// RSA provider
+        /// </summary>
+        public RsaInstance Rsa { get; set; }
+
+        /// <summary>
+        /// All nodes here
+        /// </summary>
+        public List<Node> NodeList { get; set; }
+
+        /// <summary>
+        /// Network output
+        /// </summary>
+        public Output Output { get; set; }
+
+        /// <summary>
+        /// Network input
+        /// </summary>
+        public Events Events { get; set; }
+
+        /// <summary>
+        /// Network constructor.
+        /// </summary>
+        /// <param name="broadcastPort">UDP broadcast port</param>
+        /// <param name="nickname">Self nickname</param>
+        /// <param name="hostPort">TCP host port. Set to -1 to use free ephemeral port</param>
         public Network(int broadcastPort, string nickname, int hostPort = -1)
         {
             // Initialize RSA provider
@@ -64,16 +110,17 @@ namespace Lanchat.Common.NetworkLib
             host.Events.ReceivedHeartbeat += inputs.OnReceivedHeartbeat;
 
             // Create Events instance
-            Events = new NetworkEvents();
+            Events = new Events();
 
             // Create API outputs instance
-            Out = new ApiMethods(this);
+            Output = new Output(this);
         }
 
-        // Start host
+        /// <summary>
+        /// Start host, broadcast and listen.
+        /// </summary>
         public void Start()
         {
-            
             // Initialize host
             host.StartHost(HostPort);
 
