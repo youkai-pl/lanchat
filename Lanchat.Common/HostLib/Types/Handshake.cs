@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Lanchat.Common.HostLib.Types
 {
     internal class Handshake
     {
+        [JsonConstructor]
         internal Handshake(string nickname, string publicKey, Guid id, int port)
         {
             Nickname = nickname;
@@ -12,9 +14,16 @@ namespace Lanchat.Common.HostLib.Types
             Port = port;
         }
 
+        [JsonProperty]
         internal Guid Id { get; set; }
+
+        [JsonProperty]
         internal string Nickname { get; set; }
+
+        [JsonProperty]
         internal int Port { get; set; }
+
+        [JsonProperty]
         internal string PublicKey { get; set; }
     }
 }

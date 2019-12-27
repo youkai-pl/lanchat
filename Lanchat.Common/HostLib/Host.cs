@@ -74,7 +74,6 @@ namespace Lanchat.Common.HostLib
                     try
                     {
                         var paperplane = JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer));
-                        Trace.WriteLine(paperplane.Id, paperplane.Port.ToString());
                         Events.OnReceivedBroadcast(paperplane, from.Address);
                     }
                     catch (Exception e)
