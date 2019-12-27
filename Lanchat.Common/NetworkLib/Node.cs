@@ -1,5 +1,4 @@
-﻿using Lanchat.Common.CryptographyLib;
-using Lanchat.Common.HostLib;
+﻿using Lanchat.Common.Cryptography;
 using Lanchat.Common.HostLib.Types;
 using System;
 using System.Diagnostics;

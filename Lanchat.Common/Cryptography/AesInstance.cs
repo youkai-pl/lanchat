@@ -2,7 +2,7 @@
 using System.IO;
 using System.Security.Cryptography;
 
-namespace Lanchat.Common.CryptographyLib
+namespace Lanchat.Common.Cryptography
 {
     // AES key generate
     internal class AesInstance

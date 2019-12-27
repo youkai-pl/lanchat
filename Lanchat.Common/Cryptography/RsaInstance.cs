@@ -3,7 +3,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Lanchat.Common.CryptographyLib
+namespace Lanchat.Common.Cryptography
 {
     internal class RsaInstance
     {
