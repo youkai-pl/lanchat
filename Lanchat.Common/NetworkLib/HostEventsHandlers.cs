@@ -24,7 +24,7 @@ namespace Lanchat.Common.NetworkLib
             user.Nickname = e.NewNickname;
 
             // Check is nickname duplicated
-            network.CheckNickcnameDuplicates(e.NewNickname);
+            CheckNickcnameDuplicates(e.NewNickname);
             network.Events.OnChangedNickname(oldNickname, e.NewNickname, e.SenderIP);
 
             // Emit event
@@ -47,7 +47,7 @@ namespace Lanchat.Common.NetworkLib
             // If node exist delete it
             if (node != null)
             {
-                network.CloseNode(node);
+                CloseNode(node);
             }
             // If node doesn't exist log exception
             else
@@ -64,7 +64,7 @@ namespace Lanchat.Common.NetworkLib
                 // Create new node
                 try
                 {
-                    network.CreateNode(e.Sender.Id, e.Sender.Port, e.SenderIP);
+                    CreateNode(e.Sender.Id, e.Sender.Port, e.SenderIP);
                 }
                 catch (Exception ex)
                 {
@@ -94,7 +94,7 @@ namespace Lanchat.Common.NetworkLib
             else
             {
                 // Create new node
-                network.CreateNode(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP);
+                CreateNode(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP);
                 Trace.WriteLine("New node created after recieved handshake");
 
                 // Accept handshake
@@ -103,7 +103,7 @@ namespace Lanchat.Common.NetworkLib
             }
 
             // Add number to peers with same nicknames
-            network.CheckNickcnameDuplicates(e.NodeHandshake.Nickname);
+            CheckNickcnameDuplicates(e.NodeHandshake.Nickname);
         }
 
         // Receieved heartbeat
@@ -143,6 +143,98 @@ namespace Lanchat.Common.NetworkLib
             else
             {
                 Trace.WriteLine($"Message from muted user ({e.SenderIP}) blocked");
+            }
+        }
+
+        // Check nickname duplicates
+        private void CheckNickcnameDuplicates(string nickname)
+        {
+            var users = network.NodeList.FindAll(x => x.ClearNickname == nickname);
+            if (users.Count > 1)
+            {
+                var index = 1;
+                foreach (var item in users)
+                {
+                    item.NicknameNum = index;
+                    index++;
+                }
+            }
+            else if (users.Count > 0)
+            {
+                users[0].NicknameNum = 0;
+            }
+        }
+
+        // Close node
+        private void CloseNode(Node node)
+        {
+            var nickname = node.ClearNickname;
+
+            // Log disconnect
+            Trace.WriteLine(node.Nickname + " disconnected");
+
+            // Emit event
+            network.Events.OnNodeDisconnected(node.Ip, node.Nickname);
+
+            // Remove node from list
+            network.NodeList.Remove(node);
+
+            // Dispose node
+            node.Dispose();
+
+            // Delete the number if nicknames are not duplicated now
+            CheckNickcnameDuplicates(nickname);
+        }
+
+        // Create node
+        private void CreateNode(Guid id, int port, IPAddress ip)
+        {
+            // Create new node with parameters
+            var node = new Node(id, port, ip);
+
+            // Create node events handlers
+            node.ReadyChanged += OnStatusChanged;
+
+            // Add node to list
+            network.NodeList.Add(node);
+
+            // Create connection with node
+            node.CreateConnection();
+
+            // Send handshake to node
+            node.Client.SendHandshake(new Handshake(network.Nickname, network.PublicKey, network.Id, network.HostPort));
+
+            // Log
+            Trace.WriteLine("New node created");
+            Trace.Indent();
+            Trace.WriteLine(node.Ip);
+            Trace.WriteLine(node.Port.ToString());
+            Trace.Unindent();
+
+            // Ready change event
+            void OnStatusChanged(object sender, EventArgs e)
+            {
+                // Node ready
+                if (node.State == Status.Ready)
+                {
+                    Trace.WriteLine($"({node.Ip}) ready");
+                    network.Events.OnNodeConnected(node.Ip, node.Nickname);
+                }
+
+                // Node suspended
+                else if (node.State == Status.Suspended)
+                {
+                    Trace.WriteLine($"({node.Ip}) suspended");
+                    network.Events.OnNodeSuspended(node.Ip, node.Nickname);
+                }
+
+                // Node resumed
+                else if (node.State == Status.Resumed)
+                {
+                    Trace.WriteLine($"({node.Ip}) resumed");
+                    node.State = Status.Ready;
+                    network.Events.OnNodeResumed(node.Ip, node.Nickname);
+                }
             }
         }
 

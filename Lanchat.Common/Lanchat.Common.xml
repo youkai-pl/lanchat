@@ -104,69 +104,6 @@
             </summary>
             <param name="message">content</param>
         </member>
-        <member name="T:Lanchat.Common.NetworkLib.Network">
-            <summary>
-             Main class of network lib.
-            </summary>
-        </member>
-        <member name="M:Lanchat.Common.NetworkLib.Network.#ctor(System.Int32,System.String,System.Int32)">
-            <summary>
-            Network constructor.
-            </summary>
-            <param name="broadcastPort">UDP broadcast port</param>
-            <param name="nickname">Self nickname</param>
-            <param name="hostPort">TCP host port. Set to -1 to use free ephemeral port</param>
-        </member>
-        <member name="P:Lanchat.Common.NetworkLib.Network.Events">
-            <summary>
-            Network API inputs class.
-            </summary>
-        </member>
-        <member name="P:Lanchat.Common.NetworkLib.Network.Nickname">
-            <summary>
-            Self nickname. On set it sends new nickname to connected client.
-            </summary>
-        </member>
-        <member name="P:Lanchat.Common.NetworkLib.Network.NodeList">
-            <summary>
-            All nodes here.
-            </summary>
-        </member>
-        <member name="P:Lanchat.Common.NetworkLib.Network.Output">
-            <summary>
-            Network API outputs class.
-            </summary>
-        </member>
-        <member name="P:Lanchat.Common.NetworkLib.Network.BroadcastPort">
-            <summary>
-            UDP broadcast port.
-            </summary>
-        </member>
-        <member name="P:Lanchat.Common.NetworkLib.Network.HostPort">
-            <summary>
-            TCP host port. Set to -1 for use free ephemeral port.
-            </summary>
-        </member>
-        <member name="P:Lanchat.Common.NetworkLib.Network.Id">
-            <summary>
-            Self ID. Used for checking udp broadcast duplicates.
-            </summary>
-        </member>
-        <member name="P:Lanchat.Common.NetworkLib.Network.PublicKey">
-            <summary>
-            Self RSA public key.
-            </summary>
-        </member>
-        <member name="P:Lanchat.Common.NetworkLib.Network.Rsa">
-            <summary>
-            RSA provider.
-            </summary>
-        </member>
-        <member name="M:Lanchat.Common.NetworkLib.Network.Start">
-            <summary>
-            Start host, broadcast and listen.
-            </summary>
-        </member>
         <member name="T:Lanchat.Common.NetworkLib.ChangedNicknameEventArgs">
             <summary>
             Changed node nickname event.
@@ -230,6 +167,69 @@
         <member name="P:Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.SenderIP">
             <summary>
             IP of the sending node.
+            </summary>
+        </member>
+        <member name="T:Lanchat.Common.NetworkLib.Network">
+            <summary>
+             Main class of network lib.
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Network.#ctor(System.Int32,System.String,System.Int32)">
+            <summary>
+            Network constructor.
+            </summary>
+            <param name="broadcastPort">UDP broadcast port</param>
+            <param name="nickname">Self nickname</param>
+            <param name="hostPort">TCP host port. Set to -1 to use free ephemeral port</param>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.Events">
+            <summary>
+            Network API inputs class.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.Nickname">
+            <summary>
+            Self nickname. On set it sends new nickname to connected client.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.NodeList">
+            <summary>
+            All nodes here.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.Output">
+            <summary>
+            Network API outputs class.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.BroadcastPort">
+            <summary>
+            UDP broadcast port.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.HostPort">
+            <summary>
+            TCP host port. Set to -1 for use free ephemeral port.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.Id">
+            <summary>
+            Self ID. Used for checking udp broadcast duplicates.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.PublicKey">
+            <summary>
+            Self RSA public key.
+            </summary>
+        </member>
+        <member name="P:Lanchat.Common.NetworkLib.Network.Rsa">
+            <summary>
+            RSA provider.
+            </summary>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Network.Start">
+            <summary>
+            Start host, broadcast and listen.
             </summary>
         </member>
         <member name="T:Lanchat.Common.NetworkLib.Node">

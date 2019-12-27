@@ -12,7 +12,7 @@ namespace Lanchat.Common.NetworkLib
     /// <summary>
     ///  Main class of network lib.
     /// </summary>
-    public partial class Network
+    public class Network
     {
         // Host
         private readonly Host host;
