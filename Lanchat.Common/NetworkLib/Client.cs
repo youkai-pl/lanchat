@@ -76,7 +76,7 @@ namespace Lanchat.Common.HostLib
         // Send message
         internal void SendMessage(string message)
         {
-            if (node.State == Node.Status.Ready)
+            if (node.State == Status.Ready)
             {
                 Send("message", node.SelfAes.Encode(message));
             }
@@ -85,7 +85,7 @@ namespace Lanchat.Common.HostLib
         // Change nickname
         internal void SendNickname(string nickname)
         {
-            if (node.State == Node.Status.Ready)
+            if (node.State == Status.Ready)
             {
                 Send("nickname", nickname);
             }

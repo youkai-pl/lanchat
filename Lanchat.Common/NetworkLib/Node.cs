@@ -33,32 +33,6 @@ namespace Lanchat.Common.NetworkLib
         internal event EventHandler ReadyChanged;
 
         /// <summary>
-        /// Possible node states
-        /// </summary>
-        public enum Status
-        {
-            /// <summary>
-            /// Waiting for handshake and key exchange.
-            /// </summary>
-            Waiting,
-
-            /// <summary>
-            /// Ready to use.
-            /// </summary>
-            Ready,
-
-            /// <summary>
-            /// Doesn't sends heartbeat.
-            /// </summary>
-            Suspended,
-
-            /// <summary>
-            /// Resumed after suspend.
-            /// </summary>
-            Resumed
-        }
-
-        /// <summary>
         /// Nickname without number.
         /// </summary>
         public string ClearNickname { get; private set; }

@@ -36,24 +36,24 @@ namespace Lanchat.Common.NetworkLib
             void OnStatusChanged(object sender, EventArgs e)
             {
                 // Node ready
-                if (node.State == Node.Status.Ready)
+                if (node.State == Status.Ready)
                 {
                     Trace.WriteLine($"({node.Ip}) ready");
                     Events.OnNodeConnected(node.Ip, node.Nickname);
                 }
 
                 // Node suspended
-                else if (node.State == Node.Status.Suspended)
+                else if (node.State == Status.Suspended)
                 {
                     Trace.WriteLine($"({node.Ip}) suspended");
                     Events.OnNodeSuspended(node.Ip, node.Nickname);
                 }
 
                 // Node resumed
-                else if (node.State == Node.Status.Resumed)
+                else if (node.State == Status.Resumed)
                 {
                     Trace.WriteLine($"({node.Ip}) resumed");
-                    node.State = Node.Status.Ready;
+                    node.State = Status.Ready;
                     Events.OnNodeResumed(node.Ip, node.Nickname);
                 }
             }

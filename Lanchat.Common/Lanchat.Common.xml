@@ -245,31 +245,6 @@
             <param name="port">Node TCP port</param>
             <param name="ip">Node IP</param>
         </member>
-        <member name="T:Lanchat.Common.NetworkLib.Node.Status">
-            <summary>
-            Possible node states
-            </summary>
-        </member>
-        <member name="F:Lanchat.Common.NetworkLib.Node.Status.Waiting">
-            <summary>
-            Waiting for handshake and key exchange.
-            </summary>
-        </member>
-        <member name="F:Lanchat.Common.NetworkLib.Node.Status.Ready">
-            <summary>
-            Ready to use.
-            </summary>
-        </member>
-        <member name="F:Lanchat.Common.NetworkLib.Node.Status.Suspended">
-            <summary>
-            Doesn't sends heartbeat.
-            </summary>
-        </member>
-        <member name="F:Lanchat.Common.NetworkLib.Node.Status.Resumed">
-            <summary>
-            Resumed after suspend.
-            </summary>
-        </member>
         <member name="P:Lanchat.Common.NetworkLib.Node.ClearNickname">
             <summary>
             Nickname without number.
@@ -317,7 +292,7 @@
         </member>
         <member name="P:Lanchat.Common.NetworkLib.Node.State">
             <summary>
-            Node <see cref="T:Lanchat.Common.NetworkLib.Node.Status"/>.
+            Node <see cref="T:Lanchat.Common.Types.Status"/>.
             </summary>
         </member>
         <member name="M:Lanchat.Common.NetworkLib.Node.OnStateChange">
@@ -340,6 +315,31 @@
             Node dispose.
             </summary>
             <param name="disposing"> Free any other managed objects</param>
+        </member>
+        <member name="T:Lanchat.Common.Types.Status">
+            <summary>
+            Possible node states
+            </summary>
+        </member>
+        <member name="F:Lanchat.Common.Types.Status.Waiting">
+            <summary>
+            Waiting for handshake and key exchange.
+            </summary>
+        </member>
+        <member name="F:Lanchat.Common.Types.Status.Ready">
+            <summary>
+            Ready to use.
+            </summary>
+        </member>
+        <member name="F:Lanchat.Common.Types.Status.Suspended">
+            <summary>
+            Doesn't sends heartbeat.
+            </summary>
+        </member>
+        <member name="F:Lanchat.Common.Types.Status.Resumed">
+            <summary>
+            Resumed after suspend.
+            </summary>
         </member>
     </members>
 </doc>
