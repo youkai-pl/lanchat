@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using Lanchat.Common.NetworkLib.Api;
 
 namespace Lanchat.Common.NetworkLib
 {

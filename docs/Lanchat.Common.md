@@ -7,14 +7,14 @@
   - [NewNickname](#P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-NewNickname 'Lanchat.Common.NetworkLib.ChangedNicknameEventArgs.NewNickname')
   - [OldNickname](#P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-OldNickname 'Lanchat.Common.NetworkLib.ChangedNicknameEventArgs.OldNickname')
   - [SenderIP](#P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-SenderIP 'Lanchat.Common.NetworkLib.ChangedNicknameEventArgs.SenderIP')
-- [Events](#T-Lanchat-Common-NetworkLib-Events 'Lanchat.Common.NetworkLib.Events')
-  - [OnChangedNickname(oldNickname,newNickname,senderIP)](#M-Lanchat-Common-NetworkLib-Events-OnChangedNickname-System-String,System-String,System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Events.OnChangedNickname(System.String,System.String,System.Net.IPAddress)')
-  - [OnHostStarted(port)](#M-Lanchat-Common-NetworkLib-Events-OnHostStarted-System-Int32- 'Lanchat.Common.NetworkLib.Events.OnHostStarted(System.Int32)')
-  - [OnNodeConnected(ip,nickname)](#M-Lanchat-Common-NetworkLib-Events-OnNodeConnected-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Events.OnNodeConnected(System.Net.IPAddress,System.String)')
-  - [OnNodeDisconnected(ip,nickname)](#M-Lanchat-Common-NetworkLib-Events-OnNodeDisconnected-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Events.OnNodeDisconnected(System.Net.IPAddress,System.String)')
-  - [OnNodeResumed(ip,nickname)](#M-Lanchat-Common-NetworkLib-Events-OnNodeResumed-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Events.OnNodeResumed(System.Net.IPAddress,System.String)')
-  - [OnNodeSuspended(ip,nickname)](#M-Lanchat-Common-NetworkLib-Events-OnNodeSuspended-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Events.OnNodeSuspended(System.Net.IPAddress,System.String)')
-  - [OnReceivedMessage(content,nickname)](#M-Lanchat-Common-NetworkLib-Events-OnReceivedMessage-System-String,System-String- 'Lanchat.Common.NetworkLib.Events.OnReceivedMessage(System.String,System.String)')
+- [Events](#T-Lanchat-Common-NetworkLib-Api-Events 'Lanchat.Common.NetworkLib.Api.Events')
+  - [OnChangedNickname(oldNickname,newNickname,senderIP)](#M-Lanchat-Common-NetworkLib-Api-Events-OnChangedNickname-System-String,System-String,System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Api.Events.OnChangedNickname(System.String,System.String,System.Net.IPAddress)')
+  - [OnHostStarted(port)](#M-Lanchat-Common-NetworkLib-Api-Events-OnHostStarted-System-Int32- 'Lanchat.Common.NetworkLib.Api.Events.OnHostStarted(System.Int32)')
+  - [OnNodeConnected(ip,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeConnected-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeConnected(System.Net.IPAddress,System.String)')
+  - [OnNodeDisconnected(ip,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeDisconnected-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeDisconnected(System.Net.IPAddress,System.String)')
+  - [OnNodeResumed(ip,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeResumed-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeResumed(System.Net.IPAddress,System.String)')
+  - [OnNodeSuspended(ip,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeSuspended-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeSuspended(System.Net.IPAddress,System.String)')
+  - [OnReceivedMessage(content,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnReceivedMessage-System-String,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnReceivedMessage(System.String,System.String)')
 - [HostStartedEventArgs](#T-Lanchat-Common-NetworkLib-HostStartedEventArgs 'Lanchat.Common.NetworkLib.HostStartedEventArgs')
   - [Port](#P-Lanchat-Common-NetworkLib-HostStartedEventArgs-Port 'Lanchat.Common.NetworkLib.HostStartedEventArgs.Port')
 - [Network](#T-Lanchat-Common-NetworkLib-Network 'Lanchat.Common.NetworkLib.Network')
@@ -48,8 +48,8 @@
 - [NodeConnectionStatusEventArgs](#T-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs')
   - [Nickname](#P-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs-Nickname 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs.Nickname')
   - [NodeIP](#P-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs-NodeIP 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs.NodeIP')
-- [Output](#T-Lanchat-Common-NetworkLib-Output 'Lanchat.Common.NetworkLib.Output')
-  - [SendAll(message)](#M-Lanchat-Common-NetworkLib-Output-SendAll-System-String- 'Lanchat.Common.NetworkLib.Output.SendAll(System.String)')
+- [Output](#T-Lanchat-Common-NetworkLib-Api-Output 'Lanchat.Common.NetworkLib.Api.Output')
+  - [SendAll(message)](#M-Lanchat-Common-NetworkLib-Api-Output-SendAll-System-String- 'Lanchat.Common.NetworkLib.Api.Output.SendAll(System.String)')
 - [ReceivedMessageEventArgs](#T-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs')
   - [Content](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Content 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.Content')
   - [Nickname](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Nickname 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.Nickname')
@@ -92,18 +92,18 @@ Old nickname.
 
 IP of the sending node.
 
-<a name='T-Lanchat-Common-NetworkLib-Events'></a>
+<a name='T-Lanchat-Common-NetworkLib-Api-Events'></a>
 ## Events `type`
 
 ##### Namespace
 
-Lanchat.Common.NetworkLib
+Lanchat.Common.NetworkLib.Api
 
 ##### Summary
 
 Network API inputs class.
 
-<a name='M-Lanchat-Common-NetworkLib-Events-OnChangedNickname-System-String,System-String,System-Net-IPAddress-'></a>
+<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnChangedNickname-System-String,System-String,System-Net-IPAddress-'></a>
 ### OnChangedNickname(oldNickname,newNickname,senderIP) `method`
 
 ##### Summary
@@ -118,7 +118,7 @@ Node nickname change event.
 | newNickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | New node nickname |
 | senderIP | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node ip |
 
-<a name='M-Lanchat-Common-NetworkLib-Events-OnHostStarted-System-Int32-'></a>
+<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnHostStarted-System-Int32-'></a>
 ### OnHostStarted(port) `method`
 
 ##### Summary
@@ -131,7 +131,7 @@ Host properly started event.
 | ---- | ---- | ----------- |
 | port | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Host listen port |
 
-<a name='M-Lanchat-Common-NetworkLib-Events-OnNodeConnected-System-Net-IPAddress,System-String-'></a>
+<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnNodeConnected-System-Net-IPAddress,System-String-'></a>
 ### OnNodeConnected(ip,nickname) `method`
 
 ##### Summary
@@ -145,7 +145,7 @@ Node connected event.
 | ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node ip |
 | nickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Node nickname |
 
-<a name='M-Lanchat-Common-NetworkLib-Events-OnNodeDisconnected-System-Net-IPAddress,System-String-'></a>
+<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnNodeDisconnected-System-Net-IPAddress,System-String-'></a>
 ### OnNodeDisconnected(ip,nickname) `method`
 
 ##### Summary
@@ -159,7 +159,7 @@ Node disconnected event.
 | ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node ip |
 | nickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Node nickname |
 
-<a name='M-Lanchat-Common-NetworkLib-Events-OnNodeResumed-System-Net-IPAddress,System-String-'></a>
+<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnNodeResumed-System-Net-IPAddress,System-String-'></a>
 ### OnNodeResumed(ip,nickname) `method`
 
 ##### Summary
@@ -173,7 +173,7 @@ Node resumed event.
 | ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node ip |
 | nickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Node nickname |
 
-<a name='M-Lanchat-Common-NetworkLib-Events-OnNodeSuspended-System-Net-IPAddress,System-String-'></a>
+<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnNodeSuspended-System-Net-IPAddress,System-String-'></a>
 ### OnNodeSuspended(ip,nickname) `method`
 
 ##### Summary
@@ -187,7 +187,7 @@ Node suspended event.
 | ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node ip |
 | nickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Node nickname |
 
-<a name='M-Lanchat-Common-NetworkLib-Events-OnReceivedMessage-System-String,System-String-'></a>
+<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnReceivedMessage-System-String,System-String-'></a>
 ### OnReceivedMessage(content,nickname) `method`
 
 ##### Summary
@@ -486,18 +486,18 @@ Node nickname.
 
 Node ip.
 
-<a name='T-Lanchat-Common-NetworkLib-Output'></a>
+<a name='T-Lanchat-Common-NetworkLib-Api-Output'></a>
 ## Output `type`
 
 ##### Namespace
 
-Lanchat.Common.NetworkLib
+Lanchat.Common.NetworkLib.Api
 
 ##### Summary
 
 Network API outputs class.
 
-<a name='M-Lanchat-Common-NetworkLib-Output-SendAll-System-String-'></a>
+<a name='M-Lanchat-Common-NetworkLib-Api-Output-SendAll-System-String-'></a>
 ### SendAll(message) `method`
 
 ##### Summary

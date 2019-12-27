@@ -1,4 +1,4 @@
-﻿namespace Lanchat.Common.NetworkLib
+﻿namespace Lanchat.Common.NetworkLib.Api
 {
     /// <summary>
     /// Network API outputs class.

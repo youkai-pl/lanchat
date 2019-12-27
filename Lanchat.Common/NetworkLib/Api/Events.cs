@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace Lanchat.Common.NetworkLib
+namespace Lanchat.Common.NetworkLib.Api
 {
     /// <summary>
     /// Network API inputs class.
