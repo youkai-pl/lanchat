@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace Lanchat.Common.HostLib.Types
+namespace Lanchat.Common.Types
 {
     internal class Handshake
     {

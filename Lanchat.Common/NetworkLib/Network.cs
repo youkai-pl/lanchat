@@ -1,6 +1,6 @@
 ﻿using Lanchat.Common.Cryptography;
 using Lanchat.Common.HostLib;
-using Lanchat.Common.HostLib.Types;
+using Lanchat.Common.Types;
 using System;
 using System.Collections.Generic;
 using System.Net;

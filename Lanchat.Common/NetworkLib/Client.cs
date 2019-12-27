@@ -1,4 +1,5 @@
-﻿using Lanchat.Common.HostLib.Types;
+﻿using Lanchat.Common.Types;
+using Lanchat.Common.NetworkLib;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
@@ -6,7 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Lanchat.Common.NetworkLib
+namespace Lanchat.Common.HostLib
 {
     internal class Client
     {

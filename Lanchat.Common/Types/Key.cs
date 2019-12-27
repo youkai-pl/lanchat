@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Lanchat.Common.HostLib.Types
+namespace Lanchat.Common.Types
 {
     internal class Key
     {

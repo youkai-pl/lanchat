@@ -1,4 +1,4 @@
-﻿using Lanchat.Common.HostLib.Types;
+﻿using Lanchat.Common.Types;
 using Lanchat.Common.NetworkLib;
 using System;
 using System.Net;
