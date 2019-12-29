@@ -232,6 +232,7 @@ namespace Lanchat.Common.NetworkLib
                 else if (node.State == Status.Resumed)
                 {
                     Trace.WriteLine($"({node.Ip}) resumed");
+                    node.Client.ResumeConnection();
                     node.State = Status.Ready;
                     network.Events.OnNodeResumed(node.Ip, node.Nickname);
                 }

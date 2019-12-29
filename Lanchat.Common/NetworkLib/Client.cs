@@ -91,10 +91,10 @@ namespace Lanchat.Common.HostLib
             }
         }
 
-        // Request status
-        internal void Request()
+        // Request nickname
+        internal void ResumeConnection()
         {
-            Send("request/nickname", null);
+            Send("request:nickname", null);
         }
     }
 }
