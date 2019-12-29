@@ -154,11 +154,9 @@ namespace Lanchat.Common.NetworkLib
         // Received request
         internal void OnReceivedRequest(object o, ReceivedRequestEventArgs e)
         {
-            Trace.WriteLine("tset");
             var node = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
             if (node != null)
             {
-                Trace.WriteLine("tseaddt");
                 node.Client.SendNickname(network.Nickname);
             }
         }
