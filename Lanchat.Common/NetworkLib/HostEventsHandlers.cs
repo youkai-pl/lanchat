@@ -19,16 +19,21 @@ namespace Lanchat.Common.NetworkLib
         // Changed nickname
         internal void OnChangedNickname(object o, ChangedNicknameEventArgs e)
         {
-            var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
-            var oldNickname = user.Nickname;
-            user.Nickname = e.NewNickname;
+            var node = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+            var oldNickname = node.Nickname;
 
-            // Check is nickname duplicated
-            CheckNickcnameDuplicates(e.NewNickname);
-            network.Events.OnChangedNickname(oldNickname, e.NewNickname, e.SenderIP);
+            if (oldNickname != e.NewNickname)
+            {
+                // Change node nickname
+                node.Nickname = e.NewNickname;
 
-            // Emit event
-            Trace.WriteLine($"{oldNickname} nickname changed to {e.NewNickname}");
+                // Check is nickname duplicated
+                CheckNickcnameDuplicates(e.NewNickname);
+                network.Events.OnChangedNickname(oldNickname, e.NewNickname, e.SenderIP);
+
+                // Emit event
+                Trace.WriteLine($"{oldNickname} nickname changed to {e.NewNickname}");
+            }
         }
 
         // Node connected
@@ -85,8 +90,8 @@ namespace Lanchat.Common.NetworkLib
             // If node already crated just accept handhshake
             if (network.NodeList.Exists(x => x.Ip.Equals(e.SenderIP)))
             {
-                var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
-                user.AcceptHandshake(e.NodeHandshake);
+                var node = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+                node.AcceptHandshake(e.NodeHandshake);
                 Trace.WriteLine("Node found and handshake accepted");
             }
 
@@ -98,8 +103,8 @@ namespace Lanchat.Common.NetworkLib
                 Trace.WriteLine("New node created after recieved handshake");
 
                 // Accept handshake
-                var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
-                user.AcceptHandshake(e.NodeHandshake);
+                var node = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+                node.AcceptHandshake(e.NodeHandshake);
             }
 
             // Add number to peers with same nicknames
@@ -109,10 +114,10 @@ namespace Lanchat.Common.NetworkLib
         // Receieved heartbeat
         internal void OnReceivedHeartbeat(object o, ReceivedHeartbeatEventArgs e)
         {
-            var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+            var node = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
             try
             {
-                user.Heartbeat = true;
+                node.Heartbeat = true;
                 // Trace.WriteLine($"({e.SenderIP}): heartbeat received");
             }
             catch (Exception ex)
@@ -125,20 +130,20 @@ namespace Lanchat.Common.NetworkLib
         // Receieved symetric key
         internal void OnReceivedKey(object o, RecievedKeyEventArgs e)
         {
-            var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
-            user.CreateRemoteAes(network.Rsa.Decode(e.AesKey), network.Rsa.Decode(e.AesIV));
+            var node = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+            node.CreateRemoteAes(network.Rsa.Decode(e.AesKey), network.Rsa.Decode(e.AesIV));
         }
 
-        // Recieved message
+        // Receieved message
         internal void OnReceivedMessage(object o, ReceivedMessageEventArgs e)
         {
-            var user = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+            var node = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
 
-            if (!user.Mute)
+            if (!node.Mute)
             {
-                var content = user.RemoteAes.Decode(e.Content);
-                Trace.WriteLine(user.Nickname + ": " + content);
-                network.Events.OnReceivedMessage(content, user.Nickname);
+                var content = node.RemoteAes.Decode(e.Content);
+                Trace.WriteLine(node.Nickname + ": " + content);
+                network.Events.OnReceivedMessage(content, node.Nickname);
             }
             else
             {
@@ -146,22 +151,34 @@ namespace Lanchat.Common.NetworkLib
             }
         }
 
+        // Received request
+        internal void OnReceivedRequest(object o, ReceivedRequestEventArgs e)
+        {
+            Trace.WriteLine("tset");
+            var node = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+            if (node != null)
+            {
+                Trace.WriteLine("tseaddt");
+                node.Client.SendNickname(network.Nickname);
+            }
+        }
+
         // Check nickname duplicates
         private void CheckNickcnameDuplicates(string nickname)
         {
-            var users = network.NodeList.FindAll(x => x.ClearNickname == nickname);
-            if (users.Count > 1)
+            var nodes = network.NodeList.FindAll(x => x.ClearNickname == nickname);
+            if (nodes.Count > 1)
             {
                 var index = 1;
-                foreach (var item in users)
+                foreach (var item in nodes)
                 {
                     item.NicknameNum = index;
                     index++;
                 }
             }
-            else if (users.Count > 0)
+            else if (nodes.Count > 0)
             {
-                users[0].NicknameNum = 0;
+                nodes[0].NicknameNum = 0;
             }
         }
 

@@ -32,7 +32,7 @@ namespace Lanchat.Common.HostLib
         internal event EventHandler<RecievedBroadcastEventArgs> RecievedBroadcast;
 
         // Received request
-        internal event EventHandler<ReceivedRequest> ReceivedRequest;
+        internal event EventHandler<ReceivedRequestEventArgs> ReceivedRequest;
 
         internal virtual void OnChangedNickname(string newNickname, IPAddress senderIP)
         {
@@ -106,7 +106,7 @@ namespace Lanchat.Common.HostLib
 
         internal virtual void OnReceivedRequest(string requestType, IPAddress senderIP)
         {
-            ReceivedRequest(this, new ReceivedRequest()
+            ReceivedRequest(this, new ReceivedRequestEventArgs()
             {
                 Type = requestType,
                 SenderIP = senderIP

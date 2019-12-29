@@ -97,7 +97,7 @@ namespace Lanchat.Common.NetworkLib
         internal IPAddress SenderIP { get; set; }
     }
 
-    internal class ReceivedRequest : EventArgs
+    internal class ReceivedRequestEventArgs : EventArgs
     {
         internal string Type { get; set; }
         internal IPAddress SenderIP { get; set; }

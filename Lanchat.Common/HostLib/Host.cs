@@ -125,8 +125,6 @@ namespace Lanchat.Common.HostLib
                 int received;
                 var ip = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
 
-                Trace.WriteLine($"Socket created for {ip}");
-
                 Events.OnNodeConnected(ip);
 
                 while (true)
@@ -178,8 +176,6 @@ namespace Lanchat.Common.HostLib
                             var type = ((JProperty)obj[0]).Name;
                             var content = ((JProperty)obj[0]).Value;
 
-                            Trace.WriteLine(type);
-
                             // Type: handshake
                             if (type == "handshake")
                             {
@@ -210,8 +206,8 @@ namespace Lanchat.Common.HostLib
                                 Events.OnChangedNickname(content.ToString(), ip);
                             }
 
-                            // Type: request/nickname
-                            if (type == "request/nickname")
+                            // Type: request:nickname
+                            if (type == "request:nickname")
                             {
                                 Events.OnReceivedRequest("nickname", ip);
                             }
