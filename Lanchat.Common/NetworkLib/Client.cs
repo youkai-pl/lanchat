@@ -90,5 +90,11 @@ namespace Lanchat.Common.HostLib
                 Send("nickname", nickname);
             }
         }
+
+        // Request status
+        internal void Request()
+        {
+            Send("request/nickname", null);
+        }
     }
 }

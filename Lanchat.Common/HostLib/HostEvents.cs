@@ -7,29 +7,32 @@ namespace Lanchat.Common.HostLib
 {
     internal class HostEvents
     {
-        // Changed nickname event
+        // Changed nickname
         internal event EventHandler<ChangedNicknameEventArgs> ChangedNickname;
 
-        // Node connected event
+        // Node connected
         internal event EventHandler<NodeConnectionStatusEventArgs> NodeConnected;
 
-        // Node connected event
+        // Node connected
         internal event EventHandler<NodeConnectionStatusEventArgs> NodeDisconnected;
 
-        // Received message event
+        // Received message
         internal event EventHandler<ReceivedMessageEventArgs> RecievedMessage;
 
-        // Received handshake event
+        // Received handshake
         internal event EventHandler<RecievedHandshakeEventArgs> ReceivedHandshake;
 
         // Received hertbeat
         internal event EventHandler<ReceivedHeartbeatEventArgs> ReceivedHeartbeat;
 
-        // Received symetric key event
+        // Received symetric key
         internal event EventHandler<RecievedKeyEventArgs> ReceivedKey;
 
-        // Recieved broadcast event
+        // Receieved broadcast
         internal event EventHandler<RecievedBroadcastEventArgs> RecievedBroadcast;
+
+        // Received request
+        internal event EventHandler<ReceivedRequest> ReceivedRequest;
 
         internal virtual void OnChangedNickname(string newNickname, IPAddress senderIP)
         {
@@ -97,6 +100,15 @@ namespace Lanchat.Common.HostLib
             RecievedBroadcast(this, new RecievedBroadcastEventArgs()
             {
                 Sender = sender,
+                SenderIP = senderIP
+            });
+        }
+
+        internal virtual void OnReceivedRequest(string requestType, IPAddress senderIP)
+        {
+            ReceivedRequest(this, new ReceivedRequest()
+            {
+                Type = requestType,
                 SenderIP = senderIP
             });
         }

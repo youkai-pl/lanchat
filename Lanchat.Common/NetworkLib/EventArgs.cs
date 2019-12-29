@@ -75,25 +75,31 @@ namespace Lanchat.Common.NetworkLib
 
     internal class ReceivedHeartbeatEventArgs : EventArgs
     {
-        public IPAddress SenderIP { get; set; }
+        internal IPAddress SenderIP { get; set; }
     }
 
     internal class RecievedBroadcastEventArgs : EventArgs
     {
-        public Paperplane Sender { get; set; }
-        public IPAddress SenderIP { get; set; }
+        internal Paperplane Sender { get; set; }
+        internal IPAddress SenderIP { get; set; }
     }
 
     internal class RecievedHandshakeEventArgs : EventArgs
     {
-        public Handshake NodeHandshake { get; set; }
-        public IPAddress SenderIP { get; set; }
+        internal Handshake NodeHandshake { get; set; }
+        internal IPAddress SenderIP { get; set; }
     }
 
     internal class RecievedKeyEventArgs : EventArgs
     {
-        public string AesIV { get; set; }
-        public string AesKey { get; set; }
-        public IPAddress SenderIP { get; set; }
+        internal string AesIV { get; set; }
+        internal string AesKey { get; set; }
+        internal IPAddress SenderIP { get; set; }
+    }
+
+    internal class ReceivedRequest : EventArgs
+    {
+        internal string Type { get; set; }
+        internal IPAddress SenderIP { get; set; }
     }
 }

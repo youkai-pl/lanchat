@@ -154,34 +154,40 @@ namespace Lanchat.Common.HostLib
                         var type = ((JProperty)obj[0]).Name;
                         var content = ((JProperty)obj[0]).Value;
 
-                        // If handshake
+                        // Type: handshake
                         if (type == "handshake")
                         {
                             Events.OnReceivedHandshake(content.ToObject<Handshake>(), ip);
                         }
 
-                        // If key
+                        // Type: key
                         if (type == "key")
                         {
                             Events.OnReceivedKey(content.ToObject<Key>(), ip);
                         }
 
-                        // If heartbeat
+                        // Type: heartbeat
                         if (type == "heartbeat")
                         {
                             Events.OnReceivedHeartbeat(ip);
                         }
 
-                        // If message
+                        // Type: message
                         if (type == "message")
                         {
                             Events.OnReceivedMessage(content.ToString(), ip);
                         }
 
-                        // If changed nickname
+                        // Type: nickname
                         if (type == "nickname")
                         {
                             Events.OnChangedNickname(content.ToString(), ip);
+                        }
+
+                        // Type: request/nickname
+                        if (type == "request/nickname")
+                        {
+                            Events.OnReceivedRequest("nickname", ip);
                         }
                     }
                     catch (Exception e)
