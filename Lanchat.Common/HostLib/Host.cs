@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -144,50 +145,76 @@ namespace Lanchat.Common.HostLib
 
                     try
                     {
-                        // Decode recieved data
+                        // Create byte array
                         List<byte> respBytesList = new List<byte>(response);
 
-                        //Trace.WriteLine(Encoding.UTF8.GetString(respBytesList.ToArray()));
+                        // Decode data
+                        var data = Encoding.UTF8.GetString(respBytesList.ToArray());
 
-                        // Parse json and get data type
-                        IList<JToken> obj = JObject.Parse(Encoding.UTF8.GetString(respBytesList.ToArray()));
-                        var type = ((JProperty)obj[0]).Name;
-                        var content = ((JProperty)obj[0]).Value;
-
-                        // Type: handshake
-                        if (type == "handshake")
+                        // Parse jsons
+                        IList<JObject> buffer = new List<JObject>();
+                        JsonTextReader reader = new JsonTextReader(new StringReader(data))
                         {
-                            Events.OnReceivedHandshake(content.ToObject<Handshake>(), ip);
+                            SupportMultipleContent = true
+                        };
+
+                        while (true)
+                        {
+                            if (!reader.Read())
+                            {
+                                break;
+                            }
+
+                            JsonSerializer serializer = new JsonSerializer();
+                            JObject packet = serializer.Deserialize<JObject>(reader);
+
+                            buffer.Add(packet);
                         }
 
-                        // Type: key
-                        if (type == "key")
+                        // Process all parsed jsons from buffer
+                        foreach (JObject packet in buffer)
                         {
-                            Events.OnReceivedKey(content.ToObject<Key>(), ip);
-                        }
+                            IList<JToken> obj = packet;
+                            var type = ((JProperty)obj[0]).Name;
+                            var content = ((JProperty)obj[0]).Value;
 
-                        // Type: heartbeat
-                        if (type == "heartbeat")
-                        {
-                            Events.OnReceivedHeartbeat(ip);
-                        }
+                            Trace.WriteLine(type);
 
-                        // Type: message
-                        if (type == "message")
-                        {
-                            Events.OnReceivedMessage(content.ToString(), ip);
-                        }
+                            // Type: handshake
+                            if (type == "handshake")
+                            {
+                                Events.OnReceivedHandshake(content.ToObject<Handshake>(), ip);
+                            }
 
-                        // Type: nickname
-                        if (type == "nickname")
-                        {
-                            Events.OnChangedNickname(content.ToString(), ip);
-                        }
+                            // Type: key
+                            if (type == "key")
+                            {
+                                Events.OnReceivedKey(content.ToObject<Key>(), ip);
+                            }
 
-                        // Type: request/nickname
-                        if (type == "request/nickname")
-                        {
-                            Events.OnReceivedRequest("nickname", ip);
+                            // Type: heartbeat
+                            if (type == "heartbeat")
+                            {
+                                Events.OnReceivedHeartbeat(ip);
+                            }
+
+                            // Type: message
+                            if (type == "message")
+                            {
+                                Events.OnReceivedMessage(content.ToString(), ip);
+                            }
+
+                            // Type: nickname
+                            if (type == "nickname")
+                            {
+                                Events.OnChangedNickname(content.ToString(), ip);
+                            }
+
+                            // Type: request/nickname
+                            if (type == "request/nickname")
+                            {
+                                Events.OnReceivedRequest("nickname", ip);
+                            }
                         }
                     }
                     catch (Exception e)
