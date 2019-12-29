@@ -2,13 +2,13 @@
 using System.IO;
 using System.Security.Cryptography;
 
-namespace Lanchat.Common.CryptographyLib
+namespace Lanchat.Common.Cryptography
 {
     // AES key generate
-    public class AesInstance
+    internal class Aes
     {
         // Self AES constructor
-        public AesInstance()
+        internal Aes()
         {
             aes = new AesManaged();
             aes.GenerateKey();
@@ -16,7 +16,7 @@ namespace Lanchat.Common.CryptographyLib
         }
 
         // AES constructor with parameters
-        public AesInstance(string key, string iv)
+        internal Aes(string key, string iv)
         {
             aes = new AesManaged
             {
@@ -29,12 +29,12 @@ namespace Lanchat.Common.CryptographyLib
         private readonly AesManaged aes;
 
         // Properties
-        public string Key { get { return Convert.ToBase64String(aes.Key); } }
+        internal string Key { get { return Convert.ToBase64String(aes.Key); } }
 
-        public string IV { get { return Convert.ToBase64String(aes.IV); } }
+        internal string IV { get { return Convert.ToBase64String(aes.IV); } }
 
         // Encode string
-        public string Encode(string input)
+        internal string Encode(string input)
         {
             byte[] encrypted;
             ICryptoTransform encryptor = aes.CreateEncryptor();
@@ -51,7 +51,7 @@ namespace Lanchat.Common.CryptographyLib
         }
 
         // Decode string
-        public string Decode(string input)
+        internal string Decode(string input)
         {
             string plaintext = null;
             ICryptoTransform decryptor = aes.CreateDecryptor();

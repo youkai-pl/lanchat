@@ -16,7 +16,8 @@ namespace Lanchat.Cli.Commands
                     user.Mute = false;
                     Config.RemoveMute(userOnList);
                     Prompt.Notice($"{nickname} unmuted");
-                } else
+                }
+                else
                 {
                     Prompt.Notice("User is not muted");
                 }

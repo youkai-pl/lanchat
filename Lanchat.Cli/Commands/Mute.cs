@@ -1,5 +1,5 @@
-﻿using Lanchat.Cli.Ui;
-using Lanchat.Cli.ProgramLib;
+﻿using Lanchat.Cli.ProgramLib;
+using Lanchat.Cli.Ui;
 
 namespace Lanchat.Cli.Commands
 {

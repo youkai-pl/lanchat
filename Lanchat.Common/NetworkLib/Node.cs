@@ -1,6 +1,6 @@
-﻿using Lanchat.Common.CryptographyLib;
+﻿using Lanchat.Common.Cryptography;
 using Lanchat.Common.HostLib;
-using Lanchat.Common.HostLib.Types;
+using Lanchat.Common.Types;
 using System;
 using System.Diagnostics;
 using System.Net;
@@ -8,35 +8,63 @@ using System.Timers;
 
 namespace Lanchat.Common.NetworkLib
 {
+    /// <summary>
+    /// Represents network user.
+    /// </summary>
     public class Node : IDisposable
     {
-        public Node(Guid id, int port, IPAddress ip)
+        /// <summary>
+        /// Node constructor.
+        /// </summary>
+        /// <param name="id">Node ID</param>
+        /// <param name="port">Node TCP port</param>
+        /// <param name="ip">Node IP</param>
+        internal Node(Guid id, int port, IPAddress ip)
         {
             Id = id;
             Port = port;
             Ip = ip;
-            SelfAes = new AesInstance();
+            SelfAes = new Aes();
             NicknameNum = 0;
             State = Status.Waiting;
         }
 
-        // Status enum
-        public enum Status
-        {
-            Waiting,
-            Ready,
-            Suspended,
-            Resumed
-        }
+        // Ready property change event
+        internal event EventHandler ReadyChanged;
 
-        // Properties
+        /// <summary>
+        /// Nickname without number.
+        /// </summary>
         public string ClearNickname { get; private set; }
-        public Client Client { get; set; }
+
+        /// <summary>
+        /// Heartbeat counter.
+        /// </summary>
+        public int HearbeatCount { get; set; } = 0;
+
+        /// <summary>
+        /// Last heartbeat status.
+        /// </summary>
         public bool Heartbeat { get; set; }
-        public Timer HeartbeatTimer { get; set; }
+
+        /// <summary>
+        /// Node ID.
+        /// </summary>
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// Node IP.
+        /// </summary>
         public IPAddress Ip { get; set; }
+
+        /// <summary>
+        /// Node mute value.
+        /// </summary>
         public bool Mute { get; set; }
+
+        /// <summary>
+        /// Node nickname. If nicknames are duplicated returns nickname with number.
+        /// </summary>
         public string Nickname
         {
             get
@@ -52,23 +80,30 @@ namespace Lanchat.Common.NetworkLib
             }
             set => ClearNickname = value;
         }
-        public int NicknameNum { get; set; }
-        public int Port { get; set; }
-        public string PublicKey { get; set; }
-        public Status State { get; set; }
-        public AesInstance RemoteAes { get; set; }
-        public AesInstance SelfAes { get; set; }
-        public int HearbeatCount { get; set; } = 0;
 
-        // Ready property change event
-        public event EventHandler ReadyChanged;
-        protected void OnReadyChange()
-        {
-            ReadyChanged(this, EventArgs.Empty);
-        }
+        /// <summary>
+        /// Node TCP port.
+        /// </summary>
+        public int Port { get; set; }
+
+        /// <summary>
+        /// Node public RSA key.
+        /// </summary>
+        public string PublicKey { get; set; }
+
+        /// <summary>
+        /// Node <see cref="Status"/>.
+        /// </summary>
+        public Status State { get; set; }
+
+        internal Client Client { get; set; }
+        internal Timer HeartbeatTimer { get; set; }
+        internal int NicknameNum { get; set; }
+        internal Aes RemoteAes { get; set; }
+        internal Aes SelfAes { get; set; }
 
         // Use values from received handshake
-        public void AcceptHandshake(Handshake handshake)
+        internal void AcceptHandshake(Handshake handshake)
         {
             Nickname = handshake.Nickname;
             PublicKey = handshake.PublicKey;
@@ -80,27 +115,27 @@ namespace Lanchat.Common.NetworkLib
         }
 
         // Create connection
-        public void CreateConnection()
+        internal void CreateConnection()
         {
             Client = new Client(this);
             Client.Connect(Ip, Port);
         }
 
         // Create AES instance with received key
-        public void CreateRemoteAes(string key, string iv)
+        internal void CreateRemoteAes(string key, string iv)
         {
-            RemoteAes = new AesInstance(key, iv);
+            RemoteAes = new Aes(key, iv);
 
             // Set ready to true
             State = Status.Ready;
-            OnReadyChange();
+            OnStateChange();
 
             // Start heartbeat
             StartHeartbeat();
         }
 
         // Start heartbeat
-        public void StartHeartbeat()
+        internal void StartHeartbeat()
         {
             // Create heartbeat timer
             HeartbeatTimer = new Timer
@@ -129,6 +164,14 @@ namespace Lanchat.Common.NetworkLib
             }).Start();
         }
 
+        /// <summary>
+        /// State change event.
+        /// </summary>
+        protected void OnStateChange()
+        {
+            ReadyChanged(this, EventArgs.Empty);
+        }
+
         // Hearbeat over event
         private void OnHeartebatOver(object o, ElapsedEventArgs e)
         {
@@ -152,7 +195,7 @@ namespace Lanchat.Common.NetworkLib
                 if (State == Status.Suspended)
                 {
                     State = Status.Resumed;
-                    OnReadyChange();
+                    OnStateChange();
                 }
                 Trace.WriteLine($"({Ip}) ({HearbeatCount}) heartbeat ok");
             }
@@ -172,16 +215,40 @@ namespace Lanchat.Common.NetworkLib
                 if (State != Status.Suspended)
                 {
                     State = Status.Suspended;
-                    OnReadyChange();
+                    OnStateChange();
                 }
                 Trace.WriteLine($"({Ip}) ({HearbeatCount}) heartbeat over");
             }
         }
 
         // Dispose
+
         #region IDisposable Support
+
         private bool disposedValue = false;
 
+        /// <summary>
+        /// Destructor.
+        /// </summary>
+        ~Node()
+        {
+            Dispose(false);
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        /// <summary>
+        /// Node dispose.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Node dispose.
+        /// </summary>
+        /// <param name="disposing"> Free any other managed objects</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -195,17 +262,6 @@ namespace Lanchat.Common.NetworkLib
             }
         }
 
-        ~Node()
-        {
-            Dispose(false);
-        }
-
-        // This code added to correctly implement the disposable pattern.
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        #endregion
+        #endregion IDisposable Support
     }
 }

@@ -29,7 +29,7 @@ namespace Lanchat.Cli.ProgramLib
             else
             {
                 Prompt.Out(input, null, Config.Nickname);
-                program.Network.Out.SendAll(input);
+                program.Network.Output.SendAll(input);
             }
         }
 
@@ -52,7 +52,7 @@ namespace Lanchat.Cli.ProgramLib
         }
 
         // Node connection
-        public void OnNodeConnected(object o, NodeConnectionStatusEvent e)
+        public void OnNodeConnected(object o, NodeConnectionStatusEventArgs e)
         {
             if (!program.DebugMode)
             {
@@ -68,7 +68,7 @@ namespace Lanchat.Cli.ProgramLib
         }
 
         // Node disconnection
-        public void OnNodeDisconnected(object o, NodeConnectionStatusEvent e)
+        public void OnNodeDisconnected(object o, NodeConnectionStatusEventArgs e)
         {
             if (!program.DebugMode)
             {
@@ -77,7 +77,7 @@ namespace Lanchat.Cli.ProgramLib
         }
 
         // Node suspended
-        public void OnNodeSuspended(object o, NodeConnectionStatusEvent e)
+        public void OnNodeSuspended(object o, NodeConnectionStatusEventArgs e)
         {
             if (!program.DebugMode)
             {
@@ -86,7 +86,7 @@ namespace Lanchat.Cli.ProgramLib
         }
 
         // Node resumed
-        public void OnNodeResumed(object o, NodeConnectionStatusEvent e)
+        public void OnNodeResumed(object o, NodeConnectionStatusEventArgs e)
         {
             if (!program.DebugMode)
             {

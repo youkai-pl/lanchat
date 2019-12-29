@@ -34,10 +34,6 @@ namespace Lanchat.Cli.Commands
                     Nick(args[1]);
                     break;
 
-                case "d1":
-                    program.Network.Out.DestroyLanchat();
-                    break;
-
                 case "list":
                     List();
                     break;
