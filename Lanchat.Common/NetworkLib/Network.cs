@@ -32,7 +32,7 @@ namespace Lanchat.Common.NetworkLib
         public Network(int broadcastPort, string nickname, int hostPort = -1)
         {
             // Initialize RSA provider
-            Rsa = new RsaInstance();
+            Rsa = new Rsa();
 
             // Initialize node list
             NodeList = new List<Node>();
@@ -124,7 +124,7 @@ namespace Lanchat.Common.NetworkLib
         /// <summary>
         /// RSA provider.
         /// </summary>
-        internal RsaInstance Rsa { get; set; }
+        internal Rsa Rsa { get; set; }
 
         /// <summary>
         /// Start host, broadcast and listen.

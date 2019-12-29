@@ -24,7 +24,7 @@ namespace Lanchat.Common.NetworkLib
             Id = id;
             Port = port;
             Ip = ip;
-            SelfAes = new AesInstance();
+            SelfAes = new Aes();
             NicknameNum = 0;
             State = Status.Waiting;
         }
@@ -99,8 +99,8 @@ namespace Lanchat.Common.NetworkLib
         internal Client Client { get; set; }
         internal Timer HeartbeatTimer { get; set; }
         internal int NicknameNum { get; set; }
-        internal AesInstance RemoteAes { get; set; }
-        internal AesInstance SelfAes { get; set; }
+        internal Aes RemoteAes { get; set; }
+        internal Aes SelfAes { get; set; }
 
         // Use values from received handshake
         internal void AcceptHandshake(Handshake handshake)
@@ -124,7 +124,7 @@ namespace Lanchat.Common.NetworkLib
         // Create AES instance with received key
         internal void CreateRemoteAes(string key, string iv)
         {
-            RemoteAes = new AesInstance(key, iv);
+            RemoteAes = new Aes(key, iv);
 
             // Set ready to true
             State = Status.Ready;

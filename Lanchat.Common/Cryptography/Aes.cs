@@ -5,10 +5,10 @@ using System.Security.Cryptography;
 namespace Lanchat.Common.Cryptography
 {
     // AES key generate
-    internal class AesInstance
+    internal class Aes
     {
         // Self AES constructor
-        internal AesInstance()
+        internal Aes()
         {
             aes = new AesManaged();
             aes.GenerateKey();
@@ -16,7 +16,7 @@ namespace Lanchat.Common.Cryptography
         }
 
         // AES constructor with parameters
-        internal AesInstance(string key, string iv)
+        internal Aes(string key, string iv)
         {
             aes = new AesManaged
             {
