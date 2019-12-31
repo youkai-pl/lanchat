@@ -1,4 +1,4 @@
-# Lanchat API 1.0
+~~# Lanchat API 1.0~~ **Deprecated**
 
 * [Client side socket commands](#client-side-socket-commands)
     * [auth](#auth)

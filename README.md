@@ -13,7 +13,7 @@
 * [Archived branch](https://github.com/tofudd/lanchat/tree/1.x).
 
 ### What abut the client
-* I know is still shitty.
+* I know it's still shitty.
 * I'll work on WPF app right now.
 
 ## Get started
@@ -30,6 +30,9 @@ For Windows:
 For Linux & MacOS:
 
 * I currently don't provide build for other systems, but you can compile it yourself.
+
+## Docs
+* [Lanchat.Common](https://github.com/tofudd/lanchat/blob/master/docs/Lanchat.Common.md)
 
 ## Directories guide
 * Lanchat.Cli - Terminal Lanchat client app
