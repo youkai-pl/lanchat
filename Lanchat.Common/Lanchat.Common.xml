@@ -169,6 +169,16 @@
             IP of the sending node.
             </summary>
         </member>
+        <member name="T:Lanchat.Common.NetworkLib.NodeAlreadyExistException">
+            <summary>
+            Node already exist in list.
+            </summary>
+        </member>
+        <member name="T:Lanchat.Common.NetworkLib.ConnectionFailedException">
+            <summary>
+            Cannot establish connection.
+            </summary>
+        </member>
         <member name="T:Lanchat.Common.NetworkLib.Network">
             <summary>
              Main class of network lib.

@@ -159,7 +159,7 @@ namespace Lanchat.Common.NetworkLib
             }
             else
             {
-                throw new InvalidOperationException("Node already connected");
+                throw new NodeAlreadyExistException();
             }
         }
 
@@ -169,14 +169,14 @@ namespace Lanchat.Common.NetworkLib
             // Create node events handlers
             node.ReadyChanged += OnStatusChanged;
 
-            // Add node to list
-            NodeList.Add(node);
-
             // Create connection with node
             node.CreateConnection();
 
             // Send handshake to node
             node.Client.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));
+
+            // Add node to list
+            NodeList.Add(node);
 
             // Log
             Trace.WriteLine("New node created");
