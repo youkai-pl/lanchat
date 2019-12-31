@@ -71,7 +71,7 @@ namespace Lanchat.Common.NetworkLib
                 // Create new node
                 try
                 {
-                    CreateNode(e.Sender.Id, e.Sender.Port, e.SenderIP);
+                    network.CreateNode(new Node(e.Sender.Id, e.Sender.Port, e.SenderIP));
                 }
                 catch (Exception ex)
                 {
@@ -92,7 +92,7 @@ namespace Lanchat.Common.NetworkLib
             // If node already crated just accept handhshake
             if (GetNode(e.SenderIP) != null)
             {
-                var node = network.NodeList.Find(x => x.Ip.Equals(e.SenderIP));
+                var node = GetNode(e.SenderIP);
                 node.AcceptHandshake(e.NodeHandshake);
                 Trace.WriteLine("Node found and handshake accepted");
             }
@@ -101,7 +101,7 @@ namespace Lanchat.Common.NetworkLib
             else
             {
                 // Create new node
-                CreateNode(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP);
+                network.CreateNode(new Node(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP));
                 Trace.WriteLine("New node created after recieved handshake");
 
                 // Accept handshake
@@ -207,59 +207,6 @@ namespace Lanchat.Common.NetworkLib
 
             // Delete the number if nicknames are not duplicated now
             CheckNickcnameDuplicates(nickname);
-        }
-
-        // Create node
-        private void CreateNode(Guid id, int port, IPAddress ip)
-        {
-            // Create new node with parameters
-            var node = new Node(id, port, ip);
-
-            // Create node events handlers
-            node.ReadyChanged += OnStatusChanged;
-
-            // Add node to list
-            network.NodeList.Add(node);
-
-            // Create connection with node
-            node.CreateConnection();
-
-            // Send handshake to node
-            node.Client.SendHandshake(new Handshake(network.Nickname, network.PublicKey, network.Id, network.HostPort));
-
-            // Log
-            Trace.WriteLine("New node created");
-            Trace.Indent();
-            Trace.WriteLine(node.Ip);
-            Trace.WriteLine(node.Port.ToString());
-            Trace.Unindent();
-
-            // Ready change event
-            void OnStatusChanged(object sender, EventArgs e)
-            {
-                // Node ready
-                if (node.State == Status.Ready)
-                {
-                    Trace.WriteLine($"({node.Ip}) ready");
-                    network.Events.OnNodeConnected(node.Ip, node.Nickname);
-                }
-
-                // Node suspended
-                else if (node.State == Status.Suspended)
-                {
-                    Trace.WriteLine($"({node.Ip}) suspended");
-                    network.Events.OnNodeSuspended(node.Ip, node.Nickname);
-                }
-
-                // Node resumed
-                else if (node.State == Status.Resumed)
-                {
-                    Trace.WriteLine($"({node.Ip}) resumed");
-                    node.Client.ResumeConnection();
-                    node.State = Status.Ready;
-                    network.Events.OnNodeResumed(node.Ip, node.Nickname);
-                }
-            }
         }
 
         // Check is paperplane come from self or user alredy exist in list

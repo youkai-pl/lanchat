@@ -36,6 +36,7 @@ namespace Lanchat.Cli.ProgramLib
         // Host started
         public void OnHostStarted(object o, HostStartedEventArgs e)
         {
+            Trace.WriteLine($"Host started on port {e.Port}");
             if (!program.DebugMode)
             {
                 Prompt.Notice($"Host started on port {e.Port}");

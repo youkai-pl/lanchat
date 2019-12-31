@@ -35,6 +35,7 @@ namespace Lanchat.Common.HostLib
             catch (Exception e)
             {
                 Trace.WriteLine(e.GetType());
+                throw new ConnectionFailedException();
             }
         }
 

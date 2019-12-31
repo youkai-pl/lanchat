@@ -2,6 +2,7 @@
 using Lanchat.Common.HostLib;
 using Lanchat.Common.Types;
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Timers;
 
@@ -21,6 +22,20 @@ namespace Lanchat.Common.NetworkLib
         internal Node(Guid id, int port, IPAddress ip)
         {
             Id = id;
+            Port = port;
+            Ip = ip;
+            SelfAes = new Aes();
+            NicknameNum = 0;
+            State = Status.Waiting;
+        }
+
+        /// <summary>
+        /// Node constructor without id.
+        /// </summary>
+        /// <param name="port">Node TCP port</param>
+        /// <param name="ip">Node IP</param>
+        internal Node(int port, IPAddress ip)
+        {
             Port = port;
             Ip = ip;
             SelfAes = new Aes();
@@ -106,6 +121,11 @@ namespace Lanchat.Common.NetworkLib
         {
             Nickname = handshake.Nickname;
             PublicKey = handshake.PublicKey;
+
+            if (Id == null)
+            {
+                Id = handshake.Id;
+            }
 
             // Send AES encryption key
             Client.SendKey(new Key(
