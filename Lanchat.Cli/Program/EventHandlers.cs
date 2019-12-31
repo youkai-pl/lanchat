@@ -29,14 +29,17 @@ namespace Lanchat.Cli.ProgramLib
             else
             {
                 Prompt.Out(input, null, Config.Nickname);
-                program.Network.Out.SendAll(input);
+                program.Network.Output.SendAll(input);
             }
         }
 
         // Host started
         public void OnHostStarted(object o, HostStartedEventArgs e)
         {
-            Prompt.Notice($"Host started on port {e.Port}");
+            if (!program.DebugMode)
+            {
+                Prompt.Notice($"Host started on port {e.Port}");
+            }
         }
 
         // Recieved message
@@ -49,7 +52,7 @@ namespace Lanchat.Cli.ProgramLib
         }
 
         // Node connection
-        public void OnNodeConnected(object o, NodeConnectionStatusEvent e)
+        public void OnNodeConnected(object o, NodeConnectionStatusEventArgs e)
         {
             if (!program.DebugMode)
             {
@@ -65,11 +68,29 @@ namespace Lanchat.Cli.ProgramLib
         }
 
         // Node disconnection
-        public void OnNodeDisconnected(object o, NodeConnectionStatusEvent e)
+        public void OnNodeDisconnected(object o, NodeConnectionStatusEventArgs e)
         {
             if (!program.DebugMode)
             {
                 Prompt.Notice(e.Nickname + " disconnected");
+            }
+        }
+
+        // Node suspended
+        public void OnNodeSuspended(object o, NodeConnectionStatusEventArgs e)
+        {
+            if (!program.DebugMode)
+            {
+                Prompt.Notice(e.Nickname + " suspended. Waiting for reconnect");
+            }
+        }
+
+        // Node resumed
+        public void OnNodeResumed(object o, NodeConnectionStatusEventArgs e)
+        {
+            if (!program.DebugMode)
+            {
+                Prompt.Notice(e.Nickname + " reconnected");
             }
         }
 

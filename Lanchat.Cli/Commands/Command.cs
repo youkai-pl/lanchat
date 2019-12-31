@@ -13,7 +13,7 @@ namespace Lanchat.Cli.Commands
         // Main program reference
         private readonly Program program;
 
-        // Execute command
+        // Commands
         public void Execute(string command)
         {
             // Split arguments
@@ -31,18 +31,7 @@ namespace Lanchat.Cli.Commands
                     break;
 
                 case "nick":
-                    if (args[1] != null)
-                    {
-                        Nick(args[1]);
-                    }
-                    else
-                    {
-                        Prompt.Alert("Bad command syntax");
-                    }
-                    break;
-
-                case "sr":
-                    program.Network.Out.DestroyLanchat();
+                    Nick(args[1]);
                     break;
 
                 case "list":
@@ -71,16 +60,16 @@ namespace Lanchat.Cli.Commands
                     }
                     break;
 
-                case "connect":
-                    if (args.Length > 2)
-                    {
-                        Connect(args[1], args[2]);
-                    }
-                    else
-                    {
-                        Prompt.Alert("Bad command syntax");
-                    }
-                    break;
+                //case "connect":
+                //    if (args.Length > 2)
+                //    {
+                //        Connect(args[1], args[2]);
+                //    }
+                //    else
+                //    {
+                //        Prompt.Alert("Bad command syntax");
+                //    }
+                //    break;
 
                 default:
                     Prompt.Out("Bad command");

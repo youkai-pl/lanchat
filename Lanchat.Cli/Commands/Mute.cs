@@ -1,5 +1,5 @@
-﻿using Lanchat.Cli.Ui;
-using Lanchat.Cli.ProgramLib;
+﻿using Lanchat.Cli.ProgramLib;
+using Lanchat.Cli.Ui;
 
 namespace Lanchat.Cli.Commands
 {
@@ -18,7 +18,7 @@ namespace Lanchat.Cli.Commands
                 else
                 {
                     Config.AddMute(user.Ip);
-                    Prompt.Out($"{nickname} muted");
+                    Prompt.Notice($"{nickname} muted");
                 }
             }
             else

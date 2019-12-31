@@ -1,51 +1,105 @@
-﻿using Lanchat.Common.HostLib.Types;
+﻿using Lanchat.Common.Types;
 using System;
 using System.Net;
 
 namespace Lanchat.Common.NetworkLib
 {
+    /// <summary>
+    /// Changed node nickname event.
+    /// </summary>
+    public class ChangedNicknameEventArgs : EventArgs
+    {
+        /// <summary>
+        /// New nickname.
+        /// </summary>
+        public string NewNickname { get; set; }
+
+        /// <summary>
+        /// Old nickname.
+        /// </summary>
+        public string OldNickname { get; set; }
+
+        /// <summary>
+        /// IP of the sending node.
+        /// </summary>
+        public IPAddress SenderIP { get; set; }
+    }
+
+    /// <summary>
+    /// Host started.
+    /// </summary>
     public class HostStartedEventArgs : EventArgs
     {
+        /// <summary>
+        /// Host listening port.
+        /// </summary>
         public int Port { get; set; }
     }
 
-    public class RecievedBroadcastEventArgs : EventArgs
+    /// <summary>
+    /// Node connection status.
+    /// </summary>
+    public class NodeConnectionStatusEventArgs : EventArgs
     {
-        public Paperplane Sender { get; set; }
-        public IPAddress SenderIP { get; set; }
-    }
-
-    public class NodeConnectionStatusEvent : EventArgs
-    {
-        public IPAddress NodeIP { get; set; }
+        /// <summary>
+        /// Node nickname.
+        /// </summary>
         public string Nickname { get; set; }
+
+        /// <summary>
+        /// Node ip.
+        /// </summary>
+        public IPAddress NodeIP { get; set; }
     }
 
-    public class RecievedHandshakeEventArgs : EventArgs
-    {
-        public Handshake NodeHandshake { get; set; }
-        public IPAddress SenderIP { get; set; }
-    }
-
-    public class RecievedKeyEventArgs : EventArgs
-    {
-        public string AesKey { get; set; }
-        public string AesIV { get; set; }
-
-        public IPAddress SenderIP { get; set; }
-    }
-
+    /// <summary>
+    /// Received message.
+    /// </summary>
     public class ReceivedMessageEventArgs : EventArgs
     {
+        /// <summary>
+        /// Message content.
+        /// </summary>
         public string Content { get; set; }
+
+        /// <summary>
+        /// Sender nickname.
+        /// </summary>
         public string Nickname { get; set; }
+
+        /// <summary>
+        /// IP of the sending node.
+        /// </summary>
         public IPAddress SenderIP { get; set; }
     }
 
-    public class ChangedNicknameEventArgs : EventArgs
+    internal class ReceivedHeartbeatEventArgs : EventArgs
     {
-        public string NewNickname { get; set; }
-        public string OldNickname { get; set; }
-        public IPAddress SenderIP { get; set; }
+        internal IPAddress SenderIP { get; set; }
+    }
+
+    internal class RecievedBroadcastEventArgs : EventArgs
+    {
+        internal Paperplane Sender { get; set; }
+        internal IPAddress SenderIP { get; set; }
+    }
+
+    internal class RecievedHandshakeEventArgs : EventArgs
+    {
+        internal Handshake NodeHandshake { get; set; }
+        internal IPAddress SenderIP { get; set; }
+    }
+
+    internal class RecievedKeyEventArgs : EventArgs
+    {
+        internal string AesIV { get; set; }
+        internal string AesKey { get; set; }
+        internal IPAddress SenderIP { get; set; }
+    }
+
+    internal class ReceivedRequestEventArgs : EventArgs
+    {
+        internal string Type { get; set; }
+        internal IPAddress SenderIP { get; set; }
     }
 }

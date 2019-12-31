@@ -1,9 +1,10 @@
-﻿using Lanchat.Common.HostLib.Types;
+﻿using Lanchat.Common.Types;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -12,10 +13,30 @@ using System.Threading.Tasks;
 
 namespace Lanchat.Common.HostLib
 {
-    public class Host
+    internal static class SocketExtensions
     {
+        internal static bool IsConnected(this Socket socket)
+        {
+            try
+            {
+                return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
+            }
+            catch (SocketException)
+            {
+                return false;
+            }
+        }
+    }
+
+    internal class Host
+    {
+        private readonly int port;
+
+        // Fields
+        private readonly UdpClient udpClient;
+
         // Host constructor
-        public Host(int port)
+        internal Host(int port)
         {
             Events = new HostEvents();
             this.port = port;
@@ -24,15 +45,10 @@ namespace Lanchat.Common.HostLib
         }
 
         // Properties
-        public HostEvents Events { get; set; }
-
-        // Fields
-        private readonly UdpClient udpClient;
-
-        private readonly int port;
+        internal HostEvents Events { get; set; }
 
         // Start broadcast
-        public void Broadcast(object self)
+        internal void Broadcast(object self)
         {
             Task.Run(() =>
             {
@@ -46,7 +62,7 @@ namespace Lanchat.Common.HostLib
         }
 
         // Listen other hosts broadcasts
-        public void ListenBroadcast()
+        internal void ListenBroadcast()
         {
             Task.Run(() =>
             {
@@ -70,81 +86,131 @@ namespace Lanchat.Common.HostLib
         }
 
         // Start host
-        public void StartHost(int port)
+        internal void StartHost(int port)
         {
             Task.Run(() =>
             {
                 // Create server
                 Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
                 {
-                    ReceiveTimeout = -1
+                    ReceiveTimeout = -1,
                 };
+
                 server.Bind(new IPEndPoint(IPAddress.Any, port));
                 server.Listen(-1);
 
                 // Start listening
                 while (true)
                 {
-                    Socket client = server.Accept();
+                    var socket = server.Accept();
+                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
                     new Thread(() =>
                     {
-                        try { Process(client); } catch (Exception ex) { Trace.WriteLine("Client connection processing error: " + ex.Message); }
+                        try
+                        {
+                            Process(socket);
+                        }
+                        catch (Exception ex)
+                        {
+                            Trace.WriteLine("Socket connection processing error: " + ex.Message);
+                        }
                     }).Start();
                 }
             });
 
             // Host client process
-            void Process(Socket client)
+            void Process(Socket socket)
             {
                 byte[] response;
                 int received;
-                var ip = IPAddress.Parse(((IPEndPoint)client.RemoteEndPoint).Address.ToString());
+                var ip = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
+
                 Events.OnNodeConnected(ip);
 
                 while (true)
                 {
-                    // Handle received data
+                    // Rceive data
+                    response = new byte[socket.ReceiveBufferSize];
+                    received = socket.Receive(response);
+
+                    // Check connection
+                    if (!socket.IsConnected())
+                    {
+                        socket.Close();
+                        Events.OnNodeDisconnected(ip);
+                        break;
+                    }
+
                     try
                     {
-                        response = new byte[client.ReceiveBufferSize];
-                        received = client.Receive(response);
-                        if (received == 0)
-                        {
-                            Events.OnNodeDisconnected(ip);
-                            return;
-                        }
-
-                        // Decode recieved data
+                        // Create byte array
                         List<byte> respBytesList = new List<byte>(response);
 
-                        // Parse json and get data type
-                        IList<JToken> obj = JObject.Parse(Encoding.UTF8.GetString(respBytesList.ToArray()));
-                        var type = ((JProperty)obj[0]).Name;
-                        var content = ((JProperty)obj[0]).Value;
-                        Trace.WriteLine(type);
+                        // Decode data
+                        var data = Encoding.UTF8.GetString(respBytesList.ToArray());
 
-                        // If handshake
-                        if (type == "handshake")
+                        // Parse jsons
+                        IList<JObject> buffer = new List<JObject>();
+                        JsonTextReader reader = new JsonTextReader(new StringReader(data))
                         {
-                            Events.OnReceivedHandshake(content.ToObject<Handshake>(), ip);
+                            SupportMultipleContent = true
+                        };
+
+                        while (true)
+                        {
+                            if (!reader.Read())
+                            {
+                                break;
+                            }
+
+                            JsonSerializer serializer = new JsonSerializer();
+                            JObject packet = serializer.Deserialize<JObject>(reader);
+
+                            buffer.Add(packet);
                         }
 
-                        // If key
-                        if (type == "key")
+                        // Process all parsed jsons from buffer
+                        foreach (JObject packet in buffer)
                         {
-                            Events.OnReceivedKey(content.ToObject<Key>(), ip);
-                        }
+                            IList<JToken> obj = packet;
+                            var type = ((JProperty)obj[0]).Name;
+                            var content = ((JProperty)obj[0]).Value;
 
-                        // If message
-                        if (type == "message")
-                        {
-                            Events.OnReceivedMessage(content.ToString(), ip);
-                        }
+                            // Type: handshake
+                            if (type == "handshake")
+                            {
+                                Events.OnReceivedHandshake(content.ToObject<Handshake>(), ip);
+                            }
 
-                        // If changed nickname
-                        if (type == "nickname")
-                        {
-                            Events.OnChangedNickname(content.ToString(), ip);
+                            // Type: key
+                            if (type == "key")
+                            {
+                                Events.OnReceivedKey(content.ToObject<Key>(), ip);
+                            }
+
+                            // Type: heartbeat
+                            if (type == "heartbeat")
+                            {
+                                Events.OnReceivedHeartbeat(ip);
+                            }
+
+                            // Type: message
+                            if (type == "message")
+                            {
+                                Events.OnReceivedMessage(content.ToString(), ip);
+                            }
+
+                            // Type: nickname
+                            if (type == "nickname")
+                            {
+                                Events.OnChangedNickname(content.ToString(), ip);
+                            }
+
+                            // Type: request:nickname
+                            if (type == "request:nickname")
+                            {
+                                Events.OnReceivedRequest("nickname", ip);
+                            }
                         }
                     }
                     catch (Exception e)
@@ -171,6 +237,8 @@ namespace Lanchat.Common.HostLib
                         }
                     }
                 }
+
+                Trace.WriteLine($"Socket for {ip} closed");
             }
         }
     }

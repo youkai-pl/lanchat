@@ -24,11 +24,10 @@ namespace Lanchat.Cli.ProgramLib
             // Check is debug enabled
             Debug.Assert(DebugMode = true);
 
-            // Trace listener
-            Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
-
             if (DebugMode)
             {
+                // Trace listener
+                Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
                 Trace.WriteLine("Debug mode enabled");
             }
 
@@ -42,7 +41,7 @@ namespace Lanchat.Cli.ProgramLib
             if (string.IsNullOrEmpty(Config.Nickname))
             {
                 // If nickname is blank create new with up to 20 characters
-                var nick = Prompt.Query("Choose nickname:");
+                var nick = Prompt.Query("Nickname:");
                 while (nick.Length > 20 && nick.Length != 0)
                 {
                     Prompt.Alert("Nick cannot be blank or longer than 20 characters");
@@ -63,12 +62,16 @@ namespace Lanchat.Cli.ProgramLib
             new Thread(Prompt.Init).Start();
 
             // Initialize network
-            Network = new Network(Config.Port, Config.Nickname);
+            Network = new Network(Config.BroadcastPort, Config.Nickname, Config.HostPort);
             Network.Events.HostStarted += eventHandlers.OnHostStarted;
             Network.Events.ReceivedMessage += eventHandlers.OnRecievedMessage;
             Network.Events.NodeConnected += eventHandlers.OnNodeConnected;
             Network.Events.NodeDisconnected += eventHandlers.OnNodeDisconnected;
+            Network.Events.NodeSuspended += eventHandlers.OnNodeSuspended;
+            Network.Events.NodeResumed += eventHandlers.OnNodeResumed;
             Network.Events.ChangedNickname += eventHandlers.OnChangedNickname;
+
+            // Start network
             Network.Start();
         }
     }
