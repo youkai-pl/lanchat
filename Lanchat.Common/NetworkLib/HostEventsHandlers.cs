@@ -161,6 +161,22 @@ namespace Lanchat.Common.NetworkLib
             }
         }
 
+        // Received list
+        internal void OnReceivedList(object o, ReceivedListEventArgs e)
+        {
+            foreach (var item in e.List)
+            {
+                try
+                {
+                    network.CreateNode(new Node(item.Port, IPAddress.Parse(item.Ip)), false);
+                }
+                catch
+                {
+                    Trace.WriteLine("Create node by list failed");
+                }
+            }
+        }
+
         // Get node by IP
         private Node GetNode(IPAddress ip)
         {

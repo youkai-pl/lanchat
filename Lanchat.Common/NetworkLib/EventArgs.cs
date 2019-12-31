@@ -1,5 +1,6 @@
 ﻿using Lanchat.Common.Types;
 using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace Lanchat.Common.NetworkLib
@@ -101,5 +102,10 @@ namespace Lanchat.Common.NetworkLib
     {
         internal string Type { get; set; }
         internal IPAddress SenderIP { get; set; }
+    }
+
+    internal class ReceivedListEventArgs : EventArgs
+    {
+        internal List<ListItem> List { get; set; }
     }
 }

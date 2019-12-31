@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Lanchat.Common.HostLib
 {
@@ -96,6 +97,19 @@ namespace Lanchat.Common.HostLib
         internal void ResumeConnection()
         {
             Send("request", "nickname");
+        }
+
+        // Send list
+        internal void SendList(List<Node> nodes)
+        {
+            var list = new List<JToken>();
+
+            foreach (var item in nodes)
+            {
+                list.Add(JToken.FromObject(new ListItem(item.Ip.ToString(), item.Port)));
+            }
+
+            Send("list", JToken.FromObject(list));
         }
     }
 }

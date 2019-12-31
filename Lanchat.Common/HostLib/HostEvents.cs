@@ -2,6 +2,7 @@
 using Lanchat.Common.NetworkLib;
 using System;
 using System.Net;
+using System.Collections.Generic;
 
 namespace Lanchat.Common.HostLib
 {
@@ -33,6 +34,9 @@ namespace Lanchat.Common.HostLib
 
         // Received request
         internal event EventHandler<ReceivedRequestEventArgs> ReceivedRequest;
+
+        // Received list
+        internal event EventHandler<ReceivedListEventArgs> ReceivedList;
 
         internal virtual void OnChangedNickname(string newNickname, IPAddress senderIP)
         {
@@ -110,6 +114,14 @@ namespace Lanchat.Common.HostLib
             {
                 Type = requestType,
                 SenderIP = senderIP
+            });
+        }
+
+        internal virtual void OnReceivedList(List<ListItem> list)
+        {
+            ReceivedList(this, new ReceivedListEventArgs()
+            {
+                List = list
             });
         }
     }

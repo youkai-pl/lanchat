@@ -59,15 +59,16 @@ namespace Lanchat.Common.NetworkLib
 
             // Listen API events
             hostHandlers = new HostEventsHandlers(this);
-            host.Events.RecievedBroadcast += hostHandlers.OnReceivedBroadcast;
             host.Events.NodeConnected += hostHandlers.OnNodeConnected;
             host.Events.NodeDisconnected += hostHandlers.OnNodeDisconnected;
+            host.Events.RecievedBroadcast += hostHandlers.OnReceivedBroadcast;
             host.Events.ReceivedHandshake += hostHandlers.OnReceivedHandshake;
             host.Events.ReceivedKey += hostHandlers.OnReceivedKey;
             host.Events.RecievedMessage += hostHandlers.OnReceivedMessage;
-            host.Events.ChangedNickname += hostHandlers.OnChangedNickname;
             host.Events.ReceivedHeartbeat += hostHandlers.OnReceivedHeartbeat;
             host.Events.ReceivedRequest += hostHandlers.OnReceivedRequest;
+            host.Events.ReceivedList += hostHandlers.OnReceivedList;
+            host.Events.ChangedNickname += hostHandlers.OnChangedNickname;
 
             // Create Events instance
             Events = new Events();
@@ -173,7 +174,7 @@ namespace Lanchat.Common.NetworkLib
                 {
                     node.CreateConnection();
                 }
-                
+
                 // If node already exist but connection is failed and is created manual
                 else if (manual && checkNode.State == Status.Failed)
                 {
@@ -190,9 +191,16 @@ namespace Lanchat.Common.NetworkLib
                     throw new NodeAlreadyExistException();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                Trace.WriteLine("Connection failed");
+                if (ex is NodeAlreadyExistException)
+                {
+                    Trace.WriteLine("Node already exist");
+                }
+                else
+                {
+                    Trace.WriteLine("Connection failed");
+                }
 
                 if (manual)
                 {
@@ -208,15 +216,21 @@ namespace Lanchat.Common.NetworkLib
             // Send handshake to node
             node.Client.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));
 
+            // Send list
+            node.Client.SendList(NodeList);
+
             // Add node to list
             NodeList.Add(node);
 
             // Log
-            Trace.WriteLine("New node created");
-            Trace.Indent();
-            Trace.WriteLine(node.Ip);
-            Trace.WriteLine(node.Port.ToString());
-            Trace.Unindent();
+            if (node.State != Status.Failed)
+            {
+                Trace.WriteLine("New node created");
+                Trace.Indent();
+                Trace.WriteLine(node.Ip);
+                Trace.WriteLine(node.Port.ToString());
+                Trace.Unindent();
+            }
 
             // Ready change event
             void OnStatusChanged(object sender, EventArgs e)

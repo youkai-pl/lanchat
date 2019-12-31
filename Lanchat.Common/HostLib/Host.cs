@@ -206,6 +206,12 @@ namespace Lanchat.Common.HostLib
                                 Events.OnChangedNickname(content.ToString(), ip);
                             }
 
+                            // Type: list
+                            if (type == "list")
+                            {
+                                Events.OnReceivedList(content.ToObject<List<ListItem>>());
+                            }
+
                             // Type: request
                             if (type == "request")
                             {
