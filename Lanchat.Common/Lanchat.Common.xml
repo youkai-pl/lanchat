@@ -365,5 +365,10 @@
             Resumed after suspend.
             </summary>
         </member>
+        <member name="F:Lanchat.Common.Types.Status.Failed">
+            <summary>
+            Connection failed. Auto-connect blocked.
+            </summary>
+        </member>
     </members>
 </doc>

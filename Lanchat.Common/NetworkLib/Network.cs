@@ -153,24 +153,57 @@ namespace Lanchat.Common.NetworkLib
         /// <param name="port">Node host port</param>
         public void Connect(IPAddress ip, int port)
         {
-            if (!NodeList.Exists(x => x.Ip.Equals(ip)))
-            {
-                CreateNode(new Node(port, ip));
-            }
-            else
-            {
-                throw new NodeAlreadyExistException();
-            }
+            CreateNode(new Node(port, ip), true);
         }
 
         // Create node
-        internal void CreateNode(Node node)
+        internal void CreateNode(Node node, bool manual)
         {
             // Create node events handlers
             node.ReadyChanged += OnStatusChanged;
 
             // Create connection with node
-            node.CreateConnection();
+            try
+            {
+                // Check is node exist
+                var checkNode = NodeList.Find(x => x.Ip.Equals(node.Ip));
+
+                // If node doesn't exist create connection in new node
+                if (checkNode == null)
+                {
+                    node.CreateConnection();
+                }
+                
+                // If node already exist but connection is failed and is created manual
+                else if (manual && checkNode.State == Status.Failed)
+                {
+                    // Dispose old node
+                    checkNode.Dispose();
+
+                    // Create connection
+                    node.CreateConnection();
+                }
+
+                // Else throw error
+                else
+                {
+                    throw new NodeAlreadyExistException();
+                }
+            }
+            catch
+            {
+                Trace.WriteLine("Connection failed");
+
+                if (manual)
+                {
+                    throw new ConnectionFailedException();
+                }
+                else
+                {
+                    // Prevent auto connecting to this node.
+                    node.State = Status.Failed;
+                }
+            }
 
             // Send handshake to node
             node.Client.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));

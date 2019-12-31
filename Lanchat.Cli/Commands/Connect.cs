@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net;
+﻿using System.Net;
 using System.Threading;
 using Lanchat.Cli.Ui;
 
@@ -23,15 +21,13 @@ namespace Lanchat.Cli.Commands
                         program.Network.Connect(parsedIP, parsedPort);
 
                     }
-                    catch (Exception e)
+                    catch
                     {
-                        Trace.WriteLine("Connect command error: " + e.GetType());
                         Prompt.Alert("Manual connection failed");
                     };
                 }
-                catch (Exception e)
+                catch
                 {
-                    Trace.WriteLine("Connect command error: " + e.GetType());
                     Prompt.Alert("Incorrect values");
                 }
             }).Start();

@@ -36,8 +36,6 @@ namespace Lanchat.Common.NetworkLib
             }
         }
 
-
-
         // Node connected
         internal void OnNodeConnected(object o, NodeConnectionStatusEventArgs e)
         {
@@ -71,7 +69,7 @@ namespace Lanchat.Common.NetworkLib
                 // Create new node
                 try
                 {
-                    network.CreateNode(new Node(e.Sender.Id, e.Sender.Port, e.SenderIP));
+                    network.CreateNode(new Node(e.Sender.Id, e.Sender.Port, e.SenderIP), false);
                 }
                 catch (Exception ex)
                 {
@@ -101,7 +99,7 @@ namespace Lanchat.Common.NetworkLib
             else
             {
                 // Create new node
-                network.CreateNode(new Node(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP));
+                network.CreateNode(new Node(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP), false);
                 Trace.WriteLine("New node created after recieved handshake");
 
                 // Accept handshake

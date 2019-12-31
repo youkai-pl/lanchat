@@ -1,4 +1,6 @@
 ﻿using Lanchat.Cli.Ui;
+using Lanchat.Common.Types;
+using System.Collections.Generic;
 
 namespace Lanchat.Cli.Commands
 {
@@ -6,10 +8,23 @@ namespace Lanchat.Cli.Commands
     {
         public void List()
         {
-            Prompt.Out($"Connected peers: {program.Network.NodeList.Count}");
+            var nodes = new List<string>();
+            var count = 0;
+
             foreach (var item in program.Network.NodeList)
             {
-                Prompt.Out($"{item.Nickname} ({item.Ip})");
+                if (item.State != Status.Failed)
+                {
+                    nodes.Add($"{item.Nickname} ({item.Ip})");
+                    count++;
+                }
+            }
+
+            Prompt.Out($"Connected peers: {count}");
+
+            foreach (var item in nodes)
+            {
+                Prompt.Out(item);
             }
         }
     }

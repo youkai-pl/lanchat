@@ -23,6 +23,11 @@
         /// <summary>
         /// Resumed after suspend.
         /// </summary>
-        Resumed
+        Resumed,
+
+        /// <summary>
+        /// Connection failed. Auto-connect blocked.
+        /// </summary>
+        Failed
     }
 }
