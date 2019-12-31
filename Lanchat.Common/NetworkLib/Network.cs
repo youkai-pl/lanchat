@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using Lanchat.Common.NetworkLib.Api;
+using System.Diagnostics;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -139,10 +140,77 @@ namespace Lanchat.Common.NetworkLib
             Events.OnHostStarted(HostPort);
 
             // Initialize broadcast
-            // host.Broadcast(new Paperplane(HostPort, Id));
+            host.Broadcast(new Paperplane(HostPort, Id));
 
             // Listen other hosts broadcasts
             host.ListenBroadcast();
+        }
+
+        /// <summary>
+        /// Manual connect.
+        /// </summary>
+        /// <param name="ip">Node ip</param>
+        /// <param name="port">Node host port</param>
+        public void Connect(IPAddress ip, int port)
+        {
+            if (!NodeList.Exists(x => x.Ip.Equals(ip)))
+            {
+                CreateNode(new Node(port, ip));
+            }
+            else
+            {
+                throw new InvalidOperationException("Node already connected");
+            }
+        }
+
+        // Create node
+        internal void CreateNode(Node node)
+        {
+            // Create node events handlers
+            node.ReadyChanged += OnStatusChanged;
+
+            // Add node to list
+            NodeList.Add(node);
+
+            // Create connection with node
+            node.CreateConnection();
+
+            // Send handshake to node
+            node.Client.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));
+
+            // Log
+            Trace.WriteLine("New node created");
+            Trace.Indent();
+            Trace.WriteLine(node.Ip);
+            Trace.WriteLine(node.Port.ToString());
+            Trace.Unindent();
+
+            // Ready change event
+            void OnStatusChanged(object sender, EventArgs e)
+            {
+                // Node ready
+                if (node.State == Status.Ready)
+                {
+                    Trace.WriteLine($"({node.Ip}) ready");
+                    Events.OnNodeConnected(node.Ip, node.Nickname);
+                }
+
+                // Node suspended
+                else if (node.State == Status.Suspended)
+                {
+                    Trace.WriteLine($"({node.Ip}) suspended");
+                    Events.OnNodeSuspended(node.Ip, node.Nickname);
+                }
+
+                // Node resumed
+                else if (node.State == Status.Resumed)
+                {
+                    Trace.WriteLine($"({node.Ip}) resumed");
+                    node.Client.ResumeConnection();
+                    node.State = Status.Ready;
+                    Events.OnNodeResumed(node.Ip, node.Nickname);
+                }
+            }
         }
 
         // Find free tcp port

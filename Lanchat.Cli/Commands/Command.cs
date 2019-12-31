@@ -60,16 +60,16 @@ namespace Lanchat.Cli.Commands
                     }
                     break;
 
-                //case "connect":
-                //    if (args.Length > 2)
-                //    {
-                //        Connect(args[1], args[2]);
-                //    }
-                //    else
-                //    {
-                //        Prompt.Alert("Bad command syntax");
-                //    }
-                //    break;
+                case "connect":
+                    if (args.Length > 2)
+                    {
+                        Connect(args[1], args[2]);
+                    }
+                    else
+                    {
+                        Prompt.Alert("Bad command syntax");
+                    }
+                    break;
 
                 default:
                     Prompt.Out("Bad command");

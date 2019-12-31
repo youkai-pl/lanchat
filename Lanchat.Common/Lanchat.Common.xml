@@ -232,6 +232,13 @@
             Start host, broadcast and listen.
             </summary>
         </member>
+        <member name="M:Lanchat.Common.NetworkLib.Network.Connect(System.Net.IPAddress,System.Int32)">
+            <summary>
+            Manual connect.
+            </summary>
+            <param name="ip">Node ip</param>
+            <param name="port">Node host port</param>
+        </member>
         <member name="T:Lanchat.Common.NetworkLib.Node">
             <summary>
             Represents network user.
@@ -242,6 +249,13 @@
             Node constructor.
             </summary>
             <param name="id">Node ID</param>
+            <param name="port">Node TCP port</param>
+            <param name="ip">Node IP</param>
+        </member>
+        <member name="M:Lanchat.Common.NetworkLib.Node.#ctor(System.Int32,System.Net.IPAddress)">
+            <summary>
+            Node constructor without id.
+            </summary>
             <param name="port">Node TCP port</param>
             <param name="ip">Node IP</param>
         </member>
