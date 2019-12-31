@@ -206,10 +206,14 @@ namespace Lanchat.Common.HostLib
                                 Events.OnChangedNickname(content.ToString(), ip);
                             }
 
-                            // Type: request:nickname
-                            if (type == "request:nickname")
+                            // Type: request
+                            if (type == "request")
                             {
-                                Events.OnReceivedRequest("nickname", ip);
+                                // Request type: nickname
+                                if (content.ToString() == "nickname")
+                                {
+                                    Events.OnReceivedRequest("nickname", ip);
+                                }
                             }
                         }
                     }

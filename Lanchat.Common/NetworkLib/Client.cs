@@ -95,7 +95,7 @@ namespace Lanchat.Common.HostLib
         // Request nickname
         internal void ResumeConnection()
         {
-            Send("request:nickname", null);
+            Send("request", "nickname");
         }
     }
 }
