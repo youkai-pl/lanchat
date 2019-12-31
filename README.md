@@ -9,7 +9,13 @@ Requirements:
 * For Windows: `.NET 4.7.2` (If your Windows is updated you probably already have it)
 * For Linux or MacOS `.NET Core 3.0`
 
+For Windows:
+
 Get last [release](https://github.com/tofudd/lanchat/releases) and uznip files. No need to install.
+
+For Linux & MacOS:
+
+I currently don't provide build for other systems, but you can compile it yourself.
 
 ## Directories guide
 * Lanchat.Cli - Terminal Lanchat client app
