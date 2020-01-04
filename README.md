@@ -21,7 +21,7 @@
 Requirements:
 
 * For Windows: `.NET 4.7.2` (If your Windows is updated you probably already have it)
-* For Linux or MacOS `.NET Core 3.0`
+* For Linux or macOS `.NET Core 3.0`
 
 For Windows:
 
@@ -35,10 +35,10 @@ For Linux & MacOS:
 * [Lanchat.Common](https://github.com/tofudd/lanchat/blob/master/docs/Lanchat.Common.md)
 
 ## Directories guide
-* Lanchat.Cli - Terminal Lanchat client app
-* Lanchat.Common - Library with classes common for other projects
-* Lanchat.Core - .Net Core project for Lanchat Cli
-* Lanchat.Windows - .Net Framework project for Lanchat Cli
+* `Lanchat.Cli` - Terminal Lanchat client app
+* `Lanchat.Common` - Library with classes common for other projects
+* `Lanchat.Core` - .Net Core project for Linux and macOS
+* `Lanchat.Windows` - .Net Framework project for Windows
 
 ## Versioning
 >MAJOR.MINOR.PATCH.BUILD
