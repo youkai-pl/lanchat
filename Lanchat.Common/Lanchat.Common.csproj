@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\dev\c#\lanchat\Lanchat.Common\Lanchat.Common.xml</DocumentationFile>
+    <DocumentationFile>Lanchat.Common.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
