@@ -1,42 +1,32 @@
-﻿using Lanchat.Common.Types;
-using Lanchat.Common.NetworkLib;
+﻿using Lanchat.Common.NetworkLib;
+using Lanchat.Common.Types;
 using System;
-using System.Net;
 using System.Collections.Generic;
+using System.Net;
 
 namespace Lanchat.Common.HostLib
 {
     internal class HostEvents
     {
-        // Changed nickname
         internal event EventHandler<ChangedNicknameEventArgs> ChangedNickname;
 
-        // Node connected
         internal event EventHandler<NodeConnectionStatusEventArgs> NodeConnected;
 
-        // Node connected
         internal event EventHandler<NodeConnectionStatusEventArgs> NodeDisconnected;
 
-        // Received message
-        internal event EventHandler<ReceivedMessageEventArgs> RecievedMessage;
-
-        // Received handshake
         internal event EventHandler<RecievedHandshakeEventArgs> ReceivedHandshake;
 
-        // Received hertbeat
         internal event EventHandler<ReceivedHeartbeatEventArgs> ReceivedHeartbeat;
 
-        // Received symetric key
         internal event EventHandler<RecievedKeyEventArgs> ReceivedKey;
 
-        // Receieved broadcast
-        internal event EventHandler<RecievedBroadcastEventArgs> RecievedBroadcast;
+        internal event EventHandler<ReceivedListEventArgs> ReceivedList;
 
-        // Received request
         internal event EventHandler<ReceivedRequestEventArgs> ReceivedRequest;
 
-        // Received list
-        internal event EventHandler<ReceivedListEventArgs> ReceivedList;
+        internal event EventHandler<RecievedBroadcastEventArgs> RecievedBroadcast;
+
+        internal event EventHandler<ReceivedMessageEventArgs> RecievedMessage;
 
         internal virtual void OnChangedNickname(string newNickname, IPAddress senderIP)
         {
@@ -60,6 +50,15 @@ namespace Lanchat.Common.HostLib
             NodeDisconnected(this, new NodeConnectionStatusEventArgs()
             {
                 NodeIP = nodeIP
+            });
+        }
+
+        internal virtual void OnReceivedBroadcast(Paperplane sender, IPAddress senderIP)
+        {
+            RecievedBroadcast(this, new RecievedBroadcastEventArgs()
+            {
+                Sender = sender,
+                SenderIP = senderIP
             });
         }
 
@@ -90,20 +89,19 @@ namespace Lanchat.Common.HostLib
             });
         }
 
+        internal virtual void OnReceivedList(List<ListItem> list)
+        {
+            ReceivedList(this, new ReceivedListEventArgs()
+            {
+                List = list
+            });
+        }
+
         internal virtual void OnReceivedMessage(string content, IPAddress senderIP)
         {
             RecievedMessage(this, new ReceivedMessageEventArgs()
             {
                 Content = content,
-                SenderIP = senderIP
-            });
-        }
-
-        internal virtual void OnReceivedBroadcast(Paperplane sender, IPAddress senderIP)
-        {
-            RecievedBroadcast(this, new RecievedBroadcastEventArgs()
-            {
-                Sender = sender,
                 SenderIP = senderIP
             });
         }
@@ -114,14 +112,6 @@ namespace Lanchat.Common.HostLib
             {
                 Type = requestType,
                 SenderIP = senderIP
-            });
-        }
-
-        internal virtual void OnReceivedList(List<ListItem> list)
-        {
-            ReceivedList(this, new ReceivedListEventArgs()
-            {
-                List = list
             });
         }
     }

@@ -141,7 +141,7 @@ namespace Lanchat.Common.NetworkLib
             Events.OnHostStarted(HostPort);
 
             // Initialize broadcast
-            host.Broadcast(new Paperplane(HostPort, Id));
+            host.StartBroadcast(new Paperplane(HostPort, Id));
 
             // Listen other hosts broadcasts
             host.ListenBroadcast();

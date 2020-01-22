@@ -32,10 +32,8 @@ namespace Lanchat.Common.HostLib
     {
         private readonly int port;
 
-        // Fields
         private readonly UdpClient udpClient;
 
-        // Host constructor
         internal Host(int port)
         {
             Events = new HostEvents();
@@ -44,24 +42,8 @@ namespace Lanchat.Common.HostLib
             udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, port));
         }
 
-        // Properties
         internal HostEvents Events { get; set; }
 
-        // Start broadcast
-        internal void Broadcast(object self)
-        {
-            Task.Run(() =>
-            {
-                while (true)
-                {
-                    var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(self));
-                    udpClient.Send(data, data.Length, "255.255.255.255", port);
-                    Thread.Sleep(1000);
-                }
-            });
-        }
-
-        // Listen other hosts broadcasts
         internal void ListenBroadcast()
         {
             Task.Run(() =>
@@ -85,12 +67,22 @@ namespace Lanchat.Common.HostLib
             });
         }
 
-        // Start host
+        internal void StartBroadcast(object self)
+        {
+            Task.Run(() =>
+              {
+                  while (true)
+                  {
+                      var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(self));
+                      udpClient.Send(data, data.Length, "255.255.255.255", port);
+                      Thread.Sleep(1000);
+                  }
+              });
+        }
         internal void StartHost(int port)
         {
             Task.Run(() =>
             {
-                // Create server
                 Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
                 {
                     ReceiveTimeout = -1,
@@ -99,7 +91,6 @@ namespace Lanchat.Common.HostLib
                 server.Bind(new IPEndPoint(IPAddress.Any, port));
                 server.Listen(-1);
 
-                // Start listening
                 while (true)
                 {
                     var socket = server.Accept();
@@ -129,11 +120,9 @@ namespace Lanchat.Common.HostLib
 
                 while (true)
                 {
-                    // Rceive data
                     response = new byte[socket.ReceiveBufferSize];
                     received = socket.Receive(response);
 
-                    // Check connection
                     if (!socket.IsConnected())
                     {
                         socket.Close();
@@ -143,10 +132,7 @@ namespace Lanchat.Common.HostLib
 
                     try
                     {
-                        // Create byte array
-                        List<byte> respBytesList = new List<byte>(response);
-
-                        // Decode data
+                        var respBytesList = new List<byte>(response);
                         var data = Encoding.UTF8.GetString(respBytesList.ToArray());
 
                         // Parse jsons
@@ -176,43 +162,41 @@ namespace Lanchat.Common.HostLib
                             var type = ((JProperty)obj[0]).Name;
                             var content = ((JProperty)obj[0]).Value;
 
-                            // Type: handshake
+                            // Normal events
+
                             if (type == "handshake")
                             {
                                 Events.OnReceivedHandshake(content.ToObject<Handshake>(), ip);
                             }
 
-                            // Type: key
                             if (type == "key")
                             {
                                 Events.OnReceivedKey(content.ToObject<Key>(), ip);
                             }
 
-                            // Type: heartbeat
                             if (type == "heartbeat")
                             {
                                 Events.OnReceivedHeartbeat(ip);
                             }
 
-                            // Type: message
                             if (type == "message")
                             {
                                 Events.OnReceivedMessage(content.ToString(), ip);
                             }
 
-                            // Type: nickname
                             if (type == "nickname")
                             {
                                 Events.OnChangedNickname(content.ToString(), ip);
                             }
 
-                            // Type: list
+
                             if (type == "list")
                             {
                                 Events.OnReceivedList(content.ToObject<List<ListItem>>());
                             }
 
-                            // Type: request
+                            // Requests
+
                             if (type == "request")
                             {
                                 // Request type: nickname
