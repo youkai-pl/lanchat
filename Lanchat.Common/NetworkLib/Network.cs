@@ -74,7 +74,7 @@ namespace Lanchat.Common.NetworkLib
             Events = new Events();
 
             // Create API outputs instance
-            Output = new Output(this);
+            Output = new Methods(this);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Lanchat.Common.NetworkLib
         /// <summary>
         /// Network API outputs class.
         /// </summary>
-        public Output Output { get; set; }
+        public Methods Output { get; set; }
 
         /// <summary>
         /// UDP broadcast port.
