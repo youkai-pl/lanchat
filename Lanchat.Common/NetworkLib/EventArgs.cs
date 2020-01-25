@@ -79,6 +79,17 @@ namespace Lanchat.Common.NetworkLib
         internal IPAddress SenderIP { get; set; }
     }
 
+    internal class ReceivedListEventArgs : EventArgs
+    {
+        internal List<ListItem> List { get; set; }
+    }
+
+    internal class ReceivedRequestEventArgs : EventArgs
+    {
+        internal IPAddress SenderIP { get; set; }
+        internal string Type { get; set; }
+    }
+
     internal class RecievedBroadcastEventArgs : EventArgs
     {
         internal Paperplane Sender { get; set; }
@@ -96,16 +107,5 @@ namespace Lanchat.Common.NetworkLib
         internal string AesIV { get; set; }
         internal string AesKey { get; set; }
         internal IPAddress SenderIP { get; set; }
-    }
-
-    internal class ReceivedRequestEventArgs : EventArgs
-    {
-        internal string Type { get; set; }
-        internal IPAddress SenderIP { get; set; }
-    }
-
-    internal class ReceivedListEventArgs : EventArgs
-    {
-        internal List<ListItem> List { get; set; }
     }
 }

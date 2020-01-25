@@ -15,13 +15,9 @@ namespace Lanchat.Common.NetworkLib
     /// </summary>
     public class Network
     {
-        // Host
+
         private readonly Host host;
-
-        // Host events handlers
         private readonly HostEventsHandlers hostHandlers;
-
-        // Nickname
         private string nickname;
 
         /// <summary>
