@@ -13,7 +13,7 @@ namespace Lanchat.Common.Types
 
         [JsonProperty]
         internal string Ip { get; set; }
-        
+
         [JsonProperty]
         internal int Port { get; set; }
     }

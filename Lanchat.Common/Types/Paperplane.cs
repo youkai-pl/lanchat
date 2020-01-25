@@ -14,6 +14,7 @@ namespace Lanchat.Common.Types
 
         [JsonProperty]
         internal Guid Id { get; set; }
+
         [JsonProperty]
         internal int Port { get; set; }
     }
