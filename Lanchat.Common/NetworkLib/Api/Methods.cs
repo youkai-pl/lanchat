@@ -5,14 +5,12 @@
     /// </summary>
     public class Methods
     {
-        // Constructor
+        private readonly Network network;
+
         internal Methods(Network network)
         {
             this.network = network;
         }
-
-        // Fields
-        private readonly Network network;
 
         /// <summary>
         /// Send message to all nodes.
