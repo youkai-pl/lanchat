@@ -7,16 +7,13 @@ namespace Lanchat.Common.Cryptography
 {
     internal class Rsa
     {
-        // RSA Provider
         private readonly RSACryptoServiceProvider csp;
 
-        // Constructor
         internal Rsa()
         {
             csp = new RSACryptoServiceProvider(1024);
         }
 
-        // Get self public key
         internal string PublicKey
         {
             get

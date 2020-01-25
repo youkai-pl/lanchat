@@ -4,10 +4,11 @@ using System.Security.Cryptography;
 
 namespace Lanchat.Common.Cryptography
 {
-    // AES key generate
     internal class Aes
     {
-        // Self AES constructor
+        private readonly AesManaged aes;
+
+        // Create instance with random key
         internal Aes()
         {
             aes = new AesManaged();
@@ -15,7 +16,7 @@ namespace Lanchat.Common.Cryptography
             aes.GenerateIV();
         }
 
-        // AES constructor with parameters
+        // Create instance with speciefed key
         internal Aes(string key, string iv)
         {
             aes = new AesManaged
@@ -25,15 +26,36 @@ namespace Lanchat.Common.Cryptography
             };
         }
 
-        // Fields
-        private readonly AesManaged aes;
+        internal string IV
+        {
+            get
+            {
+                return Convert.ToBase64String(aes.IV);
+            }
+        }
+        internal string Key
+        {
+            get
+            {
+                return Convert.ToBase64String(aes.Key);
+            }
+        }
 
-        // Properties
-        internal string Key { get { return Convert.ToBase64String(aes.Key); } }
+        internal string Decode(string input)
+        {
+            string plaintext = null;
+            ICryptoTransform decryptor = aes.CreateDecryptor();
+            using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(input)))
+            {
+                using (CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+                {
+                    using (StreamReader reader = new StreamReader(cs))
+                        plaintext = reader.ReadToEnd();
+                }
+            }
+            return plaintext;
+        }
 
-        internal string IV { get { return Convert.ToBase64String(aes.IV); } }
-
-        // Encode string
         internal string Encode(string input)
         {
             byte[] encrypted;
@@ -48,22 +70,6 @@ namespace Lanchat.Common.Cryptography
                 }
             }
             return Convert.ToBase64String(encrypted);
-        }
-
-        // Decode string
-        internal string Decode(string input)
-        {
-            string plaintext = null;
-            ICryptoTransform decryptor = aes.CreateDecryptor();
-            using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(input)))
-            {
-                using (CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
-                {
-                    using (StreamReader reader = new StreamReader(cs))
-                        plaintext = reader.ReadToEnd();
-                }
-            }
-            return plaintext;
         }
     }
 }
