@@ -4,13 +4,14 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
 namespace Lanchat.Common.HostLib
 {
-    internal class Client
+    internal class Client : IDisposable
     {
         private readonly Node node;
 
@@ -44,15 +45,21 @@ namespace Lanchat.Common.HostLib
 
         internal void Send(string type, JToken content)
         {
+            var data = new JObject(new JProperty(type, content));
+            byte[] bytesToSend = Encoding.UTF8.GetBytes(data.ToString());
+
             try
             {
-                var data = new JObject(new JProperty(type, content));
-                byte[] bytesToSend = Encoding.UTF8.GetBytes(data.ToString());
+
                 stream.Write(bytesToSend, 0, bytesToSend.Length);
             }
-            catch (Exception e)
+            catch (IOException)
             {
-                Trace.WriteLine($"Data send failed: {e.Message}");
+                Trace.WriteLine($"Error occurred during writing to stream");
+            }
+            catch (InvalidOperationException)
+            {
+                Trace.WriteLine($"Unable to write to stream");
             }
         }
 
@@ -98,5 +105,33 @@ namespace Lanchat.Common.HostLib
                 Send("nickname", nickname);
             }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    TcpClient.Dispose();
+                }
+                disposedValue = true;
+            }
+        }
+
+        ~Client()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
