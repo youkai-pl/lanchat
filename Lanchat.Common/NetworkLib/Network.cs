@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using Lanchat.Common.NetworkLib.Api;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -93,7 +94,7 @@ namespace Lanchat.Common.NetworkLib
         /// <summary>
         /// All nodes here.
         /// </summary>
-        public List<Node> NodeList { get; set; }
+        public List<Node> NodeList { get; }
 
         /// <summary>
         /// Network API outputs class.
@@ -224,7 +225,7 @@ namespace Lanchat.Common.NetworkLib
                 Trace.WriteLine("New node created");
                 Trace.Indent();
                 Trace.WriteLine(node.Ip);
-                Trace.WriteLine(node.Port.ToString());
+                Trace.WriteLine(node.Port.ToString(CultureInfo.CurrentCulture));
                 Trace.Unindent();
             }
 

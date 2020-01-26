@@ -18,6 +18,8 @@
   - [OnReceivedMessage(content,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnReceivedMessage-System-String,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnReceivedMessage(System.String,System.String)')
 - [HostStartedEventArgs](#T-Lanchat-Common-NetworkLib-HostStartedEventArgs 'Lanchat.Common.NetworkLib.HostStartedEventArgs')
   - [Port](#P-Lanchat-Common-NetworkLib-HostStartedEventArgs-Port 'Lanchat.Common.NetworkLib.HostStartedEventArgs.Port')
+- [Methods](#T-Lanchat-Common-NetworkLib-Api-Methods 'Lanchat.Common.NetworkLib.Api.Methods')
+  - [SendAll(message)](#M-Lanchat-Common-NetworkLib-Api-Methods-SendAll-System-String- 'Lanchat.Common.NetworkLib.Api.Methods.SendAll(System.String)')
 - [Network](#T-Lanchat-Common-NetworkLib-Network 'Lanchat.Common.NetworkLib.Network')
   - [#ctor(broadcastPort,nickname,hostPort)](#M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32- 'Lanchat.Common.NetworkLib.Network.#ctor(System.Int32,System.String,System.Int32)')
   - [BroadcastPort](#P-Lanchat-Common-NetworkLib-Network-BroadcastPort 'Lanchat.Common.NetworkLib.Network.BroadcastPort')
@@ -52,8 +54,6 @@
 - [NodeConnectionStatusEventArgs](#T-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs')
   - [Nickname](#P-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs-Nickname 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs.Nickname')
   - [NodeIP](#P-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs-NodeIP 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs.NodeIP')
-- [Output](#T-Lanchat-Common-NetworkLib-Api-Output 'Lanchat.Common.NetworkLib.Api.Output')
-  - [SendAll(message)](#M-Lanchat-Common-NetworkLib-Api-Output-SendAll-System-String- 'Lanchat.Common.NetworkLib.Api.Output.SendAll(System.String)')
 - [ReceivedMessageEventArgs](#T-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs')
   - [Content](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Content 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.Content')
   - [Nickname](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Nickname 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.Nickname')
@@ -234,6 +234,30 @@ Host started.
 ##### Summary
 
 Host listening port.
+
+<a name='T-Lanchat-Common-NetworkLib-Api-Methods'></a>
+## Methods `type`
+
+##### Namespace
+
+Lanchat.Common.NetworkLib.Api
+
+##### Summary
+
+Network API outputs class.
+
+<a name='M-Lanchat-Common-NetworkLib-Api-Methods-SendAll-System-String-'></a>
+### SendAll(message) `method`
+
+##### Summary
+
+Send message to all nodes.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| message | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | content |
 
 <a name='T-Lanchat-Common-NetworkLib-Network'></a>
 ## Network `type`
@@ -540,30 +564,6 @@ Node nickname.
 ##### Summary
 
 Node ip.
-
-<a name='T-Lanchat-Common-NetworkLib-Api-Output'></a>
-## Output `type`
-
-##### Namespace
-
-Lanchat.Common.NetworkLib.Api
-
-##### Summary
-
-Network API outputs class.
-
-<a name='M-Lanchat-Common-NetworkLib-Api-Output-SendAll-System-String-'></a>
-### SendAll(message) `method`
-
-##### Summary
-
-Send message to all nodes.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| message | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | content |
 
 <a name='T-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs'></a>
 ## ReceivedMessageEventArgs `type`
