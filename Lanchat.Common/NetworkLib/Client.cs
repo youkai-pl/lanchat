@@ -55,11 +55,11 @@ namespace Lanchat.Common.HostLib
             }
             catch (IOException)
             {
-                Trace.WriteLine($"Error occurred during writing to stream");
+                Trace.WriteLine($"An error occurred when accessing the socket");
             }
             catch (InvalidOperationException)
             {
-                Trace.WriteLine($"Unable to write to stream");
+                Trace.WriteLine($"The NetworkStream does not support writing");
             }
         }
 

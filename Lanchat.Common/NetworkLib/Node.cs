@@ -253,7 +253,6 @@ namespace Lanchat.Common.NetworkLib
             Dispose(false);
         }
 
-        // This code added to correctly implement the disposable pattern.
         /// <summary>
         /// Node dispose.
         /// </summary>
