@@ -29,7 +29,7 @@ namespace Lanchat.Cli.ProgramLib
             else
             {
                 Prompt.Out(input, null, Config.Nickname);
-                program.Network.Output.SendAll(input);
+                program.Network.Methods.SendAll(input);
             }
         }
 

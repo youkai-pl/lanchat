@@ -1,11 +1,9 @@
 ﻿using Lanchat.Common.Types;
-using System;
 using System.Diagnostics;
 using System.Net;
 
 namespace Lanchat.Common.NetworkLib
 {
-
     internal class HostEventsHandlers
     {
         private readonly Network network;
@@ -38,25 +36,14 @@ namespace Lanchat.Common.NetworkLib
 
         internal void OnNodeDisconnected(object o, NodeConnectionStatusEventArgs e)
         {
-            var node = GetNode(e.NodeIP);
-
-
-            CloseNode(node);
-
+            CloseNode(GetNode(e.NodeIP));
         }
 
         internal void OnReceivedBroadcast(object o, RecievedBroadcastEventArgs e)
         {
-            if (IsNodeExist(e.Sender, e.SenderIP))
+            if (CheckBroadcastID(e.Sender, e.SenderIP))
             {
-                try
-                {
-                    network.CreateNode(new Node(e.Sender.Id, e.Sender.Port, e.SenderIP), false);
-                }
-                catch (Exception ex)
-                {
-                    Trace.Write("Connecting error: " + ex.Message);
-                }
+                network.CreateNode(new Node(e.Sender.Id, e.Sender.Port, e.SenderIP), false);
             }
         }
 
@@ -91,15 +78,7 @@ namespace Lanchat.Common.NetworkLib
         internal void OnReceivedHeartbeat(object o, ReceivedHeartbeatEventArgs e)
         {
             var node = GetNode(e.SenderIP);
-            try
-            {
-                node.Heartbeat = true;
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine($"({e.SenderIP}): cannot handle heartbeat");
-                Trace.WriteLine(ex.Message);
-            }
+            node.Heartbeat = true;
         }
 
         internal void OnReceivedKey(object o, RecievedKeyEventArgs e)
@@ -112,14 +91,7 @@ namespace Lanchat.Common.NetworkLib
         {
             foreach (var item in e.List)
             {
-                try
-                {
-                    network.CreateNode(new Node(item.Port, IPAddress.Parse(item.Ip)), false);
-                }
-                catch
-                {
-                    Trace.WriteLine("Create node by list failed");
-                }
+                network.CreateNode(new Node(item.Port, IPAddress.Parse(item.Ip)), false);
             }
         }
 
@@ -149,6 +121,11 @@ namespace Lanchat.Common.NetworkLib
         }
 
         // Methods
+
+        private bool CheckBroadcastID(Paperplane broadcast, IPAddress senderIp)
+        {
+            return broadcast.Id != network.Id && !network.NodeList.Exists(x => x.Id.Equals(broadcast.Id)) && !network.NodeList.Exists(x => x.Ip.Equals(senderIp));
+        }
 
         private void CheckNickcnameDuplicates(string nickname)
         {
@@ -188,12 +165,6 @@ namespace Lanchat.Common.NetworkLib
         private Node GetNode(IPAddress ip)
         {
             return network.NodeList.Find(x => x.Ip.Equals(ip));
-        }
-
-        // SHIT
-        private bool IsNodeExist(Paperplane broadcast, IPAddress senderIp)
-        {
-            return broadcast.Id != network.Id && !network.NodeList.Exists(x => x.Id.Equals(broadcast.Id)) && !network.NodeList.Exists(x => x.Ip.Equals(senderIp));
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Lanchat.Cli.Commands
                     try
                     {
 
-                        program.Network.Connect(parsedIP, parsedPort);
+                        program.Network.Methods.Connect(parsedIP, parsedPort);
 
                     }
                     catch

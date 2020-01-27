@@ -50,7 +50,6 @@ namespace Lanchat.Common.HostLib
 
             try
             {
-
                 stream.Write(bytesToSend, 0, bytesToSend.Length);
             }
             catch (IOException)
@@ -116,6 +115,7 @@ namespace Lanchat.Common.HostLib
                 if (disposing)
                 {
                     TcpClient.Dispose();
+                    stream.Dispose();
                 }
                 disposedValue = true;
             }
@@ -123,7 +123,6 @@ namespace Lanchat.Common.HostLib
 
         ~Client()
         {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(false);
         }
 

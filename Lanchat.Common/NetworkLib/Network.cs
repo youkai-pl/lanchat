@@ -71,7 +71,7 @@ namespace Lanchat.Common.NetworkLib
             Events = new Events();
 
             // Create API outputs instance
-            Output = new Methods(this);
+            Methods = new Methods(this);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Lanchat.Common.NetworkLib
         /// <summary>
         /// Network API outputs class.
         /// </summary>
-        public Methods Output { get; set; }
+        public Methods Methods { get; set; }
 
         /// <summary>
         /// UDP broadcast port.
@@ -144,23 +144,11 @@ namespace Lanchat.Common.NetworkLib
             host.ListenBroadcast();
         }
 
-        /// <summary>
-        /// Manual connect.
-        /// </summary>
-        /// <param name="ip">Node ip</param>
-        /// <param name="port">Node host port</param>
-        public void Connect(IPAddress ip, int port)
-        {
-            CreateNode(new Node(port, ip), true);
-        }
-
         // Create node
         internal void CreateNode(Node node, bool manual)
         {
-            // Create node events handlers
             node.ReadyChanged += OnStatusChanged;
 
-            // Create connection with node
             try
             {
                 // Check is node exist

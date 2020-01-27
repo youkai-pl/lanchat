@@ -1,4 +1,6 @@
-﻿namespace Lanchat.Common.NetworkLib.Api
+﻿using System.Net;
+
+namespace Lanchat.Common.NetworkLib.Api
 {
     /// <summary>
     /// Network API outputs class.
@@ -25,6 +27,16 @@
                     x.Client.SendMessage(message);
                 }
             });
+        }
+
+        /// <summary>
+        /// Manual connect.
+        /// </summary>
+        /// <param name="ip">Node ip</param>
+        /// <param name="port">Node host port</param>
+        public void Connect(IPAddress ip, int port)
+        {
+            network.CreateNode(new Node(port, ip), true);
         }
     }
 }
