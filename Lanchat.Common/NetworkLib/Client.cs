@@ -105,32 +105,10 @@ namespace Lanchat.Common.HostLib
             }
         }
 
-        #region IDisposable Support
-        private bool disposedValue = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    TcpClient.Dispose();
-                    stream.Dispose();
-                }
-                disposedValue = true;
-            }
-        }
-
-        ~Client()
-        {
-            Dispose(false);
-        }
-
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            stream.Dispose();
+            TcpClient.Dispose();
         }
-        #endregion
     }
 }

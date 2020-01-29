@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace Lanchat.Common.Cryptography
 {
-    internal class Aes
+    internal class Aes : IDisposable
     {
         private readonly AesManaged aes;
 
@@ -39,6 +39,11 @@ namespace Lanchat.Common.Cryptography
             {
                 return Convert.ToBase64String(aes.Key);
             }
+        }
+
+        public void Dispose()
+        {
+            aes.Dispose();
         }
 
         internal string Decode(string input)

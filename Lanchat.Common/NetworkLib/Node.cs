@@ -273,7 +273,7 @@ namespace Lanchat.Common.NetworkLib
                 if (disposing)
                 {
                     HeartbeatTimer.Dispose();
-                    Client.TcpClient.Dispose();
+                    Client.Dispose();
                 }
                 disposedValue = true;
             }

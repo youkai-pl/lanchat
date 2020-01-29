@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Lanchat.Common.Cryptography
 {
-    internal class Rsa
+    internal class Rsa : IDisposable
     {
         private readonly RSACryptoServiceProvider csp;
 
@@ -22,6 +22,11 @@ namespace Lanchat.Common.Cryptography
             }
         }
 
+        public void Dispose()
+        {
+            csp.Dispose();
+        }
+
         // RSA encode with specific key
         internal static string Encode(string input, string key)
         {
@@ -29,6 +34,7 @@ namespace Lanchat.Common.Cryptography
             var rsaKeyInfo = JsonConvert.DeserializeObject<RSAParameters>(key);
             rsa.ImportParameters(rsaKeyInfo);
             var encryptedOutput = rsa.Encrypt(Encoding.UTF8.GetBytes(input), false);
+            rsa.Dispose();
             return Convert.ToBase64String(encryptedOutput);
         }
 

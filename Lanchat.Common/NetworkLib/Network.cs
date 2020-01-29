@@ -232,6 +232,7 @@ namespace Lanchat.Common.NetworkLib
                 if (disposing)
                 {
                     host.Dispose();
+                    Rsa.Dispose();
                 }
 
                 disposedValue = true;

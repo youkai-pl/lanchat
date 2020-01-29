@@ -44,6 +44,11 @@ namespace Lanchat.Common.HostLib
 
         internal HostEvents Events { get; set; }
 
+        public void Dispose()
+        {
+            udpClient.Dispose();
+        }
+
         internal void ListenBroadcast()
         {
             Task.Run(() =>
@@ -225,33 +230,5 @@ namespace Lanchat.Common.HostLib
                 }
             }
         }
-
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    udpClient.Dispose();
-                }
-
-                disposedValue = true;
-            }
-        }
-
-        ~Host()
-        {
-            Dispose(false);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        #endregion
     }
 }
