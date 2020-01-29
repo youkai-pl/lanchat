@@ -102,8 +102,11 @@ namespace Lanchat.Common.NetworkLib
             if (!node.Mute)
             {
                 var content = node.RemoteAes.Decode(e.Content);
-                Trace.WriteLine(node.Nickname + ": " + content);
-                network.Events.OnReceivedMessage(content, node.Nickname);
+                if (!string.IsNullOrWhiteSpace(content))
+                {
+                    Trace.WriteLine(node.Nickname + ": " + content);
+                    network.Events.OnReceivedMessage(content, node.Nickname);
+                }
             }
             else
             {

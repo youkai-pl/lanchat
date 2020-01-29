@@ -37,7 +37,7 @@ namespace Lanchat.Cli.Ui
             while (true)
             {
                 string input = ReadLine();
-                if (!string.IsNullOrEmpty(input))
+                if (!string.IsNullOrWhiteSpace(input))
                 {
                     OnRecievedInput(input);
                 }
