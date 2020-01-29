@@ -28,7 +28,7 @@ namespace Lanchat.Common.HostLib
         }
     }
 
-    internal class Host
+    internal class Host : IDisposable
     {
         private readonly int port;
 
@@ -59,9 +59,9 @@ namespace Lanchat.Common.HostLib
                         var paperplane = JsonConvert.DeserializeObject<Paperplane>(Encoding.UTF8.GetString(recvBuffer));
                         Events.OnReceivedBroadcast(paperplane, from.Address);
                     }
-                    catch (Exception e)
+                    catch (JsonSerializationException)
                     {
-                        Trace.WriteLine("Paperplane parsing error: " + e.Message);
+                        Trace.WriteLine($"({from.Address}) Paperplane parsing error");
                     }
                 }
             });
@@ -79,6 +79,7 @@ namespace Lanchat.Common.HostLib
                   }
               });
         }
+
         internal void StartHost(int port)
         {
             Task.Run(() =>
@@ -94,27 +95,31 @@ namespace Lanchat.Common.HostLib
                 while (true)
                 {
                     var socket = server.Accept();
+                    var ip = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
+
                     new Thread(() =>
                     {
                         try
                         {
-                            Process(socket);
+                            Process(socket, ip);
                         }
-                        catch (Exception ex)
+                        catch (SocketException)
                         {
-                            Trace.WriteLine("Socket connection processing error: " + ex.Message);
+                            // Disconnect node on exception
+                            Trace.WriteLine($"({ip}) Socket exception. Node will be disconnected");
+                            Events.OnNodeDisconnected(ip);
+                            socket.Close();
                         }
                     }).Start();
                 }
             });
 
-            // Host client process
-            void Process(Socket socket)
+            // Client process
+            void Process(Socket socket, IPAddress ip)
             {
                 byte[] response;
                 int received;
-                var ip = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
 
                 Events.OnNodeConnected(ip);
 
@@ -125,6 +130,7 @@ namespace Lanchat.Common.HostLib
 
                     if (!socket.IsConnected())
                     {
+                        Trace.WriteLine($"({ip}) Socket for {ip} closed");
                         socket.Close();
                         Events.OnNodeDisconnected(ip);
                         break;
@@ -162,7 +168,7 @@ namespace Lanchat.Common.HostLib
                             var type = ((JProperty)obj[0]).Name;
                             var content = ((JProperty)obj[0]).Value;
 
-                            // Normal events
+                            // Events
 
                             if (type == "handshake")
                             {
@@ -179,6 +185,8 @@ namespace Lanchat.Common.HostLib
                                 Events.OnReceivedHeartbeat(ip);
                             }
 
+                            // Data
+
                             if (type == "message")
                             {
                                 Events.OnReceivedMessage(content.ToString(), ip);
@@ -188,7 +196,6 @@ namespace Lanchat.Common.HostLib
                             {
                                 Events.OnChangedNickname(content.ToString(), ip);
                             }
-
 
                             if (type == "list")
                             {
@@ -207,33 +214,44 @@ namespace Lanchat.Common.HostLib
                             }
                         }
                     }
-                    catch (Exception e)
+                    catch (DecoderFallbackException)
                     {
-                        // Handle decoder exception
-                        if (e is DecoderFallbackException)
-                        {
-                            Trace.WriteLine("Data processing error: utf8 decode gone wrong");
-                            Trace.WriteLine($"Sender: {ip}");
-                        }
-
-                        // Handle json parse exception
-                        else if (e is JsonReaderException)
-                        {
-                            Trace.WriteLine("Data processing error: not vaild json");
-                            Trace.WriteLine($"Sender: {ip}");
-                        }
-
-                        // Handle other exceptions
-                        else
-                        {
-                            Trace.WriteLine($"Data processing error: {e.GetType()}");
-                            Trace.WriteLine($"Sender: {ip}");
-                        }
+                        Trace.WriteLine($"({ip}) Data processing error: utf8 decode gone wrong");
+                    }
+                    catch (JsonReaderException)
+                    {
+                        Trace.WriteLine($"({ip}) Data processing error: not vaild json");
                     }
                 }
-
-                Trace.WriteLine($"Socket for {ip} closed");
             }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    udpClient.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        ~Host()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

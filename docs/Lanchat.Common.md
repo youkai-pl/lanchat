@@ -19,6 +19,7 @@
 - [HostStartedEventArgs](#T-Lanchat-Common-NetworkLib-HostStartedEventArgs 'Lanchat.Common.NetworkLib.HostStartedEventArgs')
   - [Port](#P-Lanchat-Common-NetworkLib-HostStartedEventArgs-Port 'Lanchat.Common.NetworkLib.HostStartedEventArgs.Port')
 - [Methods](#T-Lanchat-Common-NetworkLib-Api-Methods 'Lanchat.Common.NetworkLib.Api.Methods')
+  - [Connect(ip,port)](#M-Lanchat-Common-NetworkLib-Api-Methods-Connect-System-Net-IPAddress,System-Int32- 'Lanchat.Common.NetworkLib.Api.Methods.Connect(System.Net.IPAddress,System.Int32)')
   - [SendAll(message)](#M-Lanchat-Common-NetworkLib-Api-Methods-SendAll-System-String- 'Lanchat.Common.NetworkLib.Api.Methods.SendAll(System.String)')
 - [Network](#T-Lanchat-Common-NetworkLib-Network 'Lanchat.Common.NetworkLib.Network')
   - [#ctor(broadcastPort,nickname,hostPort)](#M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32- 'Lanchat.Common.NetworkLib.Network.#ctor(System.Int32,System.String,System.Int32)')
@@ -26,12 +27,14 @@
   - [Events](#P-Lanchat-Common-NetworkLib-Network-Events 'Lanchat.Common.NetworkLib.Network.Events')
   - [HostPort](#P-Lanchat-Common-NetworkLib-Network-HostPort 'Lanchat.Common.NetworkLib.Network.HostPort')
   - [Id](#P-Lanchat-Common-NetworkLib-Network-Id 'Lanchat.Common.NetworkLib.Network.Id')
+  - [Methods](#P-Lanchat-Common-NetworkLib-Network-Methods 'Lanchat.Common.NetworkLib.Network.Methods')
   - [Nickname](#P-Lanchat-Common-NetworkLib-Network-Nickname 'Lanchat.Common.NetworkLib.Network.Nickname')
   - [NodeList](#P-Lanchat-Common-NetworkLib-Network-NodeList 'Lanchat.Common.NetworkLib.Network.NodeList')
-  - [Output](#P-Lanchat-Common-NetworkLib-Network-Output 'Lanchat.Common.NetworkLib.Network.Output')
   - [PublicKey](#P-Lanchat-Common-NetworkLib-Network-PublicKey 'Lanchat.Common.NetworkLib.Network.PublicKey')
   - [Rsa](#P-Lanchat-Common-NetworkLib-Network-Rsa 'Lanchat.Common.NetworkLib.Network.Rsa')
-  - [Connect(ip,port)](#M-Lanchat-Common-NetworkLib-Network-Connect-System-Net-IPAddress,System-Int32- 'Lanchat.Common.NetworkLib.Network.Connect(System.Net.IPAddress,System.Int32)')
+  - [Dispose(disposing)](#M-Lanchat-Common-NetworkLib-Network-Dispose-System-Boolean- 'Lanchat.Common.NetworkLib.Network.Dispose(System.Boolean)')
+  - [Dispose()](#M-Lanchat-Common-NetworkLib-Network-Dispose 'Lanchat.Common.NetworkLib.Network.Dispose')
+  - [Finalize()](#M-Lanchat-Common-NetworkLib-Network-Finalize 'Lanchat.Common.NetworkLib.Network.Finalize')
   - [Start()](#M-Lanchat-Common-NetworkLib-Network-Start 'Lanchat.Common.NetworkLib.Network.Start')
 - [Node](#T-Lanchat-Common-NetworkLib-Node 'Lanchat.Common.NetworkLib.Node')
   - [#ctor(id,port,ip)](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Guid,System-Int32,System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Guid,System.Int32,System.Net.IPAddress)')
@@ -59,7 +62,6 @@
   - [Nickname](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Nickname 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.Nickname')
   - [SenderIP](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-SenderIP 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.SenderIP')
 - [Status](#T-Lanchat-Common-Types-Status 'Lanchat.Common.Types.Status')
-  - [Failed](#F-Lanchat-Common-Types-Status-Failed 'Lanchat.Common.Types.Status.Failed')
   - [Ready](#F-Lanchat-Common-Types-Status-Ready 'Lanchat.Common.Types.Status.Ready')
   - [Resumed](#F-Lanchat-Common-Types-Status-Resumed 'Lanchat.Common.Types.Status.Resumed')
   - [Suspended](#F-Lanchat-Common-Types-Status-Suspended 'Lanchat.Common.Types.Status.Suspended')
@@ -246,6 +248,20 @@ Lanchat.Common.NetworkLib.Api
 
 Network API outputs class.
 
+<a name='M-Lanchat-Common-NetworkLib-Api-Methods-Connect-System-Net-IPAddress,System-Int32-'></a>
+### Connect(ip,port) `method`
+
+##### Summary
+
+Manual connect.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node ip |
+| port | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Node host port |
+
 <a name='M-Lanchat-Common-NetworkLib-Api-Methods-SendAll-System-String-'></a>
 ### SendAll(message) `method`
 
@@ -313,6 +329,13 @@ TCP host port. Set to -1 for use free ephemeral port.
 
 Self ID. Used for checking udp broadcast duplicates.
 
+<a name='P-Lanchat-Common-NetworkLib-Network-Methods'></a>
+### Methods `property`
+
+##### Summary
+
+Network API outputs class.
+
 <a name='P-Lanchat-Common-NetworkLib-Network-Nickname'></a>
 ### Nickname `property`
 
@@ -326,13 +349,6 @@ Self nickname. On set it sends new nickname to connected client.
 ##### Summary
 
 All nodes here.
-
-<a name='P-Lanchat-Common-NetworkLib-Network-Output'></a>
-### Output `property`
-
-##### Summary
-
-Network API outputs class.
 
 <a name='P-Lanchat-Common-NetworkLib-Network-PublicKey'></a>
 ### PublicKey `property`
@@ -348,19 +364,40 @@ Self RSA public key.
 
 RSA provider.
 
-<a name='M-Lanchat-Common-NetworkLib-Network-Connect-System-Net-IPAddress,System-Int32-'></a>
-### Connect(ip,port) `method`
+<a name='M-Lanchat-Common-NetworkLib-Network-Dispose-System-Boolean-'></a>
+### Dispose(disposing) `method`
 
 ##### Summary
 
-Manual connect.
+Dispose network.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node ip |
-| port | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Node host port |
+| disposing | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') |  |
+
+<a name='M-Lanchat-Common-NetworkLib-Network-Dispose'></a>
+### Dispose() `method`
+
+##### Summary
+
+Dispose network.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Lanchat-Common-NetworkLib-Network-Finalize'></a>
+### Finalize() `method`
+
+##### Summary
+
+Dispose network.
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='M-Lanchat-Common-NetworkLib-Network-Start'></a>
 ### Start() `method`
@@ -607,13 +644,6 @@ Lanchat.Common.Types
 ##### Summary
 
 Possible node states
-
-<a name='F-Lanchat-Common-Types-Status-Failed'></a>
-### Failed `constants`
-
-##### Summary
-
-Connection failed. Auto-connect blocked.
 
 <a name='F-Lanchat-Common-Types-Status-Ready'></a>
 ### Ready `constants`

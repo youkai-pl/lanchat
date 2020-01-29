@@ -1,6 +1,8 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading;
 using Lanchat.Cli.Ui;
+using Lanchat.Common.NetworkLib;
 
 namespace Lanchat.Cli.Commands
 {
@@ -21,14 +23,22 @@ namespace Lanchat.Cli.Commands
                         program.Network.Methods.Connect(parsedIP, parsedPort);
 
                     }
-                    catch
+                    catch (ConnectionFailedException)
                     {
                         Prompt.Alert("Manual connection failed");
-                    };
+                    }
+                    catch (NodeAlreadyExistException)
+                    {
+                        Prompt.Alert("Node already connected");
+                    }
                 }
-                catch
+                catch (Exception e)
                 {
-                    Prompt.Alert("Incorrect values");
+                    if (e is ArgumentNullException || e is FormatException)
+                    {
+                        Prompt.Alert("Incorrect values");
+                        return;
+                    }
                 }
             }).Start();
         }

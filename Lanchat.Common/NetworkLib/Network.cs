@@ -14,7 +14,7 @@ namespace Lanchat.Common.NetworkLib
     /// <summary>
     ///  Main class of network lib.
     /// </summary>
-    public class Network
+    public class Network : IDisposable
     {
 
         private readonly Host host;
@@ -131,85 +131,35 @@ namespace Lanchat.Common.NetworkLib
         /// </summary>
         public void Start()
         {
-            // Initialize host
             host.StartHost(HostPort);
-
-            // Emit started host event
             Events.OnHostStarted(HostPort);
-
-            // Initialize broadcast
             host.StartBroadcast(new Paperplane(HostPort, Id));
-
-            // Listen other hosts broadcasts
             host.ListenBroadcast();
         }
 
         // Create node
         internal void CreateNode(Node node, bool manual)
         {
-            node.ReadyChanged += OnStatusChanged;
 
-            try
+            // Check is node with same ip alredy exist
+            var existingNode = NodeList.Find(x => x.Ip.Equals(node.Ip));
+
+            if (existingNode != null)
             {
-                // Check is node exist
-                var checkNode = NodeList.Find(x => x.Ip.Equals(node.Ip));
-
-                // If node doesn't exist create connection in new node
-                if (checkNode == null)
-                {
-                    node.CreateConnection();
-                }
-
-                // If node already exist but connection is failed and is created manual
-                else if (manual && checkNode.State == Status.Failed)
-                {
-                    // Dispose old node
-                    checkNode.Dispose();
-
-                    // Create connection
-                    node.CreateConnection();
-                }
-
-                // Else throw error
-                else
+                Trace.WriteLine($"({node.Ip}) Node already exist");
+                if (manual)
                 {
                     throw new NodeAlreadyExistException();
                 }
             }
-            catch (Exception ex)
+            else
             {
-                if (ex is NodeAlreadyExistException)
-                {
-                    Trace.WriteLine("Node already exist");
-                }
-                else
-                {
-                    Trace.WriteLine("Connection failed");
-                }
+                node.ReadyChanged += OnStatusChanged;
+                node.CreateConnection();
+                node.Client.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));
+                node.Client.SendList(NodeList);
+                NodeList.Add(node);
 
-                if (manual)
-                {
-                    throw new ConnectionFailedException();
-                }
-                else
-                {
-                    // Prevent auto connecting to this node.
-                    node.State = Status.Failed;
-                }
-            }
-
-            // Send handshake to node
-            node.Client.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));
-
-            // Send list
-            node.Client.SendList(NodeList);
-
-            // Add node to list
-            NodeList.Add(node);
-
-            // Log
-            if (node.State != Status.Failed)
-            {
                 Trace.WriteLine("New node created");
                 Trace.Indent();
                 Trace.WriteLine(node.Ip);
@@ -267,5 +217,43 @@ namespace Lanchat.Common.NetworkLib
                 }
             });
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        /// <summary>
+        /// Dispose network.
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    host.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        /// <summary>
+        /// Dispose network.
+        /// </summary>
+        ~Network()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// Dispose network.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

@@ -13,11 +13,8 @@ namespace Lanchat.Cli.Commands
 
             foreach (var item in program.Network.NodeList)
             {
-                if (item.State != Status.Failed)
-                {
-                    nodes.Add($"{item.Nickname} ({item.Ip})");
-                    count++;
-                }
+                nodes.Add($"{item.Nickname} ({item.Ip})");
+                count++;
             }
 
             Prompt.Out($"Connected peers: {count}");
