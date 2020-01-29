@@ -12,14 +12,12 @@ namespace Lanchat.Cli.ProgramLib
 {
     public class Program
     {
-        // Properties
-        public bool DebugMode { get; set; }
-
-        public Network Network { get; set; }
         public Command Commands { get; set; }
+        public bool DebugMode { get; set; }
+        public Network Network { get; set; }
         public Prompt Prompt { get; set; }
 
-        public void Main()
+        public void Start()
         {
             // Check is debug enabled
             Debug.Assert(DebugMode = true);
@@ -31,10 +29,7 @@ namespace Lanchat.Cli.ProgramLib
                 Trace.WriteLine("Debug mode enabled");
             }
 
-            // Load or create config file
             Config.Load();
-
-            // Show welcome screen
             Prompt.Welcome();
 
             // Check nickname
@@ -70,9 +65,13 @@ namespace Lanchat.Cli.ProgramLib
             Network.Events.NodeSuspended += eventHandlers.OnNodeSuspended;
             Network.Events.NodeResumed += eventHandlers.OnNodeResumed;
             Network.Events.ChangedNickname += eventHandlers.OnChangedNickname;
-
-            // Start network
             Network.Start();
+        }
+
+        private static void Main(string[] args)
+        {
+            var program = new Program();
+            program.Start();
         }
     }
 }

@@ -35,10 +35,8 @@ For Linux & MacOS:
 * [Lanchat.Common](https://github.com/tofudd/lanchat/blob/master/docs/Lanchat.Common.md)
 
 ## Directories guide
-* `Lanchat.Cli` - Terminal Lanchat client app
+* `Lanchat.Cli` - Lanchat client for terminal
 * `Lanchat.Common` - Library with classes common for other projects
-* `Lanchat.Core` - .Net Core project for Linux and macOS
-* `Lanchat.Windows` - .Net Framework project for Windows
 
 ## Versioning
 >MAJOR.MINOR.PATCH.BUILD

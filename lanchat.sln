@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lanchat.Core", "Lanchat.Core\Lanchat.Core.csproj", "{E34FDF59-658C-4F04-ADCB-ABC048FB5048}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lanchat.Windows", "Lanchat.Windows\Lanchat.Windows.csproj", "{4E74A425-A696-40FE-9B52-F03EB0144710}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lanchat.Cli", "Lanchat.Cli\Lanchat.Cli.csproj", "{AB0D2375-ECD4-4C66-B25C-4E3ED07E97B6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lanchat.Common", "Lanchat.Common\Lanchat.Common.csproj", "{985DE563-99FD-4A36-A28A-800264D5A716}"
@@ -23,18 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E34FDF59-658C-4F04-ADCB-ABC048FB5048}.Alpha|Any CPU.ActiveCfg = Alpha|Any CPU
-		{E34FDF59-658C-4F04-ADCB-ABC048FB5048}.Alpha|Any CPU.Build.0 = Alpha|Any CPU
-		{E34FDF59-658C-4F04-ADCB-ABC048FB5048}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E34FDF59-658C-4F04-ADCB-ABC048FB5048}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E34FDF59-658C-4F04-ADCB-ABC048FB5048}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E34FDF59-658C-4F04-ADCB-ABC048FB5048}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E74A425-A696-40FE-9B52-F03EB0144710}.Alpha|Any CPU.ActiveCfg = Alpha|Any CPU
-		{4E74A425-A696-40FE-9B52-F03EB0144710}.Alpha|Any CPU.Build.0 = Alpha|Any CPU
-		{4E74A425-A696-40FE-9B52-F03EB0144710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E74A425-A696-40FE-9B52-F03EB0144710}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E74A425-A696-40FE-9B52-F03EB0144710}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E74A425-A696-40FE-9B52-F03EB0144710}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB0D2375-ECD4-4C66-B25C-4E3ED07E97B6}.Alpha|Any CPU.ActiveCfg = Alpha|Any CPU
 		{AB0D2375-ECD4-4C66-B25C-4E3ED07E97B6}.Alpha|Any CPU.Build.0 = Alpha|Any CPU
 		{AB0D2375-ECD4-4C66-B25C-4E3ED07E97B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
