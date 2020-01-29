@@ -39,6 +39,7 @@ namespace Lanchat.Common.NetworkLib
             CloseNode(GetNode(e.NodeIP));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
         internal void OnReceivedBroadcast(object o, RecievedBroadcastEventArgs e)
         {
             if (CheckBroadcastID(e.Sender, e.SenderIP))
@@ -47,6 +48,7 @@ namespace Lanchat.Common.NetworkLib
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
         internal void OnReceivedHandshake(object o, RecievedHandshakeEventArgs e)
         {
             Trace.WriteLine("Received handshake");
@@ -66,9 +68,10 @@ namespace Lanchat.Common.NetworkLib
             // If list doesn't contain node with this ip create node and accept handshake
             else
             {
-                network.CreateNode(new Node(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP), false);
+                var node = new Node(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP);
+                network.CreateNode(node, false);
                 Trace.WriteLine("New node created after recieved handshake");
-                var node = GetNode(e.SenderIP);
+                node = GetNode(e.SenderIP);
                 node.AcceptHandshake(e.NodeHandshake);
             }
 
@@ -87,6 +90,7 @@ namespace Lanchat.Common.NetworkLib
             node.CreateRemoteAes(network.Rsa.Decode(e.AesKey), network.Rsa.Decode(e.AesIV));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
         internal void OnReceivedList(object o, ReceivedListEventArgs e)
         {
             foreach (var item in e.List)

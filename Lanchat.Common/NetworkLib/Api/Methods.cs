@@ -29,11 +29,13 @@ namespace Lanchat.Common.NetworkLib.Api
             });
         }
 
+
         /// <summary>
         /// Manual connect.
         /// </summary>
         /// <param name="ip">Node ip</param>
         /// <param name="port">Node host port</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
         public void Connect(IPAddress ip, int port)
         {
             network.CreateNode(new Node(port, ip), true);
