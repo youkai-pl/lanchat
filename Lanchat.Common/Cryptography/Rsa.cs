@@ -11,7 +11,7 @@ namespace Lanchat.Common.Cryptography
 
         internal Rsa()
         {
-            csp = new RSACryptoServiceProvider(1024);
+            csp = new RSACryptoServiceProvider(2048);
         }
 
         internal string PublicKey
