@@ -2,19 +2,10 @@
 <img src="https://www.tofu.ovh/files/lanchat2_logo.png" width="500">
 </p>
 
-## Beta Release yeeeee
-### What's inside?
-* Major features of *Lanchat.Common* is ready.
-* And all works fine on Debian VM's and Debian/Windows connections.
-* *Lanchat.Cli* client app is still have some bugs but can be use.
 
-### So why is this in master branch?
+## Lanchat 1.x note
 * Lanchat *1.x* is no longer supported.
 * [Archived branch](https://github.com/tofudd/lanchat/tree/1.x).
-
-### What abut the client
-* I know it's still shitty.
-* I'll work on WPF app right now.
 
 ## Get started
 

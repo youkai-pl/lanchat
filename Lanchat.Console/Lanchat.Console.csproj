@@ -6,9 +6,10 @@
     <Configurations>Debug;Release;Alpha</Configurations>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <OutputType>Exe</OutputType>
-    <StartupObject />
+    <StartupObject>Lanchat.Console.ProgramLib.Program</StartupObject>
     <AssemblyName>Lanchat</AssemblyName>
     <RootNamespace>Lanchat.Console</RootNamespace>
+    <PackageLicenseFile></PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Alpha|AnyCPU'">
@@ -25,6 +26,11 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.0|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
