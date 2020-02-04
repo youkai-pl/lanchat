@@ -14,7 +14,8 @@ Requirements:
 * For Windows: `.NET 4.7.2`
 * For Linux or macOS: `.NET Core 3.0`
 
-[Download here](https://github.com/tofudd/lanchat/releases)
+[Get Lanchat](https://github.com/tofudd/lanchat/releases)
+[Get .NET Runtime for Linux and macOS](https://dotnet.microsoft.com/download/dotnet-core/3.1)
 
 ### How to run Lanchat on linux
 
