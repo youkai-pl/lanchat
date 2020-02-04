@@ -20,25 +20,21 @@
 
 Requirements:
 
-* For Windows: `.NET 4.7.2` (If your Windows is updated you probably already have it)
-* For Linux or macOS `.NET Core 3.0`
+* For Windows: `.NET 4.7.2`
+* For Linux or macOS: `.NET Core 3.0`
 
-For Windows:
+[Download here](https://github.com/tofudd/lanchat/releases)
 
-* Get last [release](https://github.com/tofudd/lanchat/releases) and uznip files. No need to install.
+## Contribute
 
-For Linux & MacOS:
-
-* I currently don't provide build for other systems, but you can compile it yourself.
-
-## Docs
+### Docs
 * [Lanchat.Common](https://github.com/tofudd/lanchat/blob/master/docs/Lanchat.Common.md)
 
-## Directories guide
-* `Lanchat.Cli` - Lanchat client for terminal
-* `Lanchat.Common` - Library with classes common for other projects
+### Directories guide
+* `Lanchat.Console` - Terminal Lanchat client
+* `Lanchat.Common` - Common library
 
-## Versioning
+### Versioning
 >MAJOR.MINOR.PATCH.BUILD
 
 Build:
@@ -46,23 +42,17 @@ Build:
 * 2xxx - Beta
 * 3xxx - Release
 
-## Planned changes
-* change language to C#
-* moderation will be replaced with client-side features
-* working without central host in lan mode
-* rooms
-* encrytpion
-
-## Todo
-### Client:
-- [x] Basic prompt
-- [x] Linux support
-- [ ] Separated prompts for rooms
-- [ ] Themes support
-- [ ] Multi languages
-- [ ] ~~Plugins~~ I think it' s unnecessary for now
-
-### Protocol:
+### Todo
+#### Common library:
 - [x] Working encrypted chat
 - [ ] Rooms
 - [ ] Sending files
+
+#### Console client:
+- [x] Basic prompt
+- [x] Linux support
+- [ ] Separated prompts for rooms
+
+#### Desktop client:
+- [ ] All possibilities of the console version
+- [ ] Themes
