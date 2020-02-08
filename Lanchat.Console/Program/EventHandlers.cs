@@ -48,7 +48,7 @@ namespace Lanchat.Console.ProgramLib
         {
             if (!program.DebugMode)
             {
-                Prompt.Out(e.Content, null, e.Nickname);
+                Prompt.Out(e.Content.Trim(), null, e.Nickname);
             }
         }
 
