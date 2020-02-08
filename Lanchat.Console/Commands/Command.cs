@@ -71,6 +71,10 @@ namespace Lanchat.Console.Commands
                     }
                     break;
 
+                case "debug":
+                    Debug();
+                    break;
+
                 default:
                     Prompt.Out("Bad command");
                     break;

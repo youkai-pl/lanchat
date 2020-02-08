@@ -1,9 +1,9 @@
 ﻿// Lanchat 2
 // Let's all love lain
 
+using Lanchat.Common.NetworkLib;
 using Lanchat.Console.Commands;
 using Lanchat.Console.Ui;
-using Lanchat.Common.NetworkLib;
 using System.Diagnostics;
 using System.Threading;
 
@@ -11,22 +11,37 @@ namespace Lanchat.Console.ProgramLib
 {
     public class Program
     {
+        private bool _DeugMode;
         public Command Commands { get; set; }
-        public bool DebugMode { get; set; }
+        public bool DebugMode
+        {
+            get
+            {
+                return _DeugMode;
+            }
+
+            set
+            {
+                _DeugMode = value;
+                if (value)
+                {
+                    Trace.Listeners.Add(new TextWriterTraceListener(System.Console.Out));
+                    Prompt.Notice("Debug mode enabled");
+                }
+                else
+                {
+                    Trace.Listeners.Clear();
+                    Prompt.Notice("Debug mode disabled");
+                }
+            }
+        }
+
         public Network Network { get; set; }
         public Prompt Prompt { get; set; }
-
         public void Start()
         {
             // Check is debug enabled
             Debug.Assert(DebugMode = true);
-
-            if (DebugMode)
-            {
-                // Trace listener
-                Trace.Listeners.Add(new TextWriterTraceListener(System.Console.Out));
-                Trace.WriteLine("Debug mode enabled");
-            }
 
             Config.Load();
             Prompt.Welcome();
