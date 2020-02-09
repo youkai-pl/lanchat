@@ -7,17 +7,17 @@ namespace Lanchat.Console.Commands
     {
         public void Mute(string nickname)
         {
-            var user = program.Network.NodeList.Find(x => x.Nickname.Equals(nickname));
-            if (user != null)
+            var node = program.Network.NodeList.Find(x => x.Nickname.Equals(nickname));
+            if (node != null)
             {
-                user.Mute = true;
-                if (Config.Muted.Exists(x => x.Equals(user.Ip)))
+                node.Mute = true;
+                if (Config.Muted.Exists(x => x.Equals(node.Ip)))
                 {
                     Prompt.Out("User already muted");
                 }
                 else
                 {
-                    Config.AddMute(user.Ip);
+                    Config.AddMute(node.Ip);
                     Prompt.Notice($"{nickname} muted");
                 }
             }
