@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 
 namespace Lanchat.Console.ProgramLib
 {
     public static class Config
     {
-        // Properties
         public static string Nickname
         {
             get => _Nickname;
@@ -42,20 +42,36 @@ namespace Lanchat.Console.ProgramLib
         }
 
         public static List<IPAddress> Muted { get; set; } = new List<IPAddress>();
-
-        // Fields
         private static string _Nickname;
-
         private static int _BroadcastPort;
         private static int _HostPort;
+
+        private static string configPath;
 
         // Load config
         public static void Load()
         {
             try
             {
+                // Detect OS
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Lanchat2/";
+                }
+
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    configPath = Environment.GetEnvironmentVariable("HOME") + "/.Lancaht2/";
+                }
+                
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    configPath = Environment.GetEnvironmentVariable("HOME") + "/Library/Preferences/.Lancaht2/";
+                }
+
+
                 // Load config to dynamic object
-                dynamic json = JsonConvert.DeserializeObject(File.ReadAllText("config.json"));
+                dynamic json = JsonConvert.DeserializeObject(File.ReadAllText(configPath + "config.json"));
 
                 // Try use loaded config
                 _Nickname = json.nickname;
@@ -100,7 +116,12 @@ namespace Lanchat.Console.ProgramLib
             };
             try
             {
-                File.WriteAllText("config.json", JsonConvert.SerializeObject(json, Formatting.Indented));
+                if (!Directory.Exists(configPath))
+                {
+                    Directory.CreateDirectory(configPath);
+                }
+
+                File.WriteAllText(configPath + "config.json", JsonConvert.SerializeObject(json, Formatting.Indented));
             }
             catch (Exception e)
             {
