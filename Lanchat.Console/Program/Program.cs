@@ -47,14 +47,14 @@ namespace Lanchat.Console.ProgramLib
             Prompt.Welcome();
 
             // Check nickname
-            if (string.IsNullOrEmpty(Config.Nickname))
+            if (string.IsNullOrWhiteSpace(Config.Nickname))
             {
-                // If nickname is blank create new with up to 20 characters
-                var nick = Prompt.Query("Nickname:");
-                while (nick.Length > 20 && nick.Length != 0)
+                var nick = Prompt.Query("Nickname:").Trim();
+
+                while (nick.Length >= 20 || string.IsNullOrWhiteSpace(nick))
                 {
                     Prompt.Alert("Nick cannot be blank or longer than 20 characters");
-                    nick = Prompt.Query("Choose nickname:");
+                    nick = Prompt.Query("Choose nickname:").Trim();
                 }
                 Config.Nickname = nick;
             }

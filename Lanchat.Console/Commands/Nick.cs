@@ -7,15 +7,16 @@ namespace Lanchat.Console.Commands
     {
         public void Nick(string nick)
         {
-            if (!string.IsNullOrEmpty(nick) && nick.Length < 20)
-            {
-                Config.Nickname = nick;
-                program.Network.Nickname = nick;
-                Prompt.Notice("Nickname changed");
+            var nickname = nick.Trim();
+            if (nickname.Length >= 20 || string.IsNullOrWhiteSpace(nickname))
+            {     
+                Prompt.Alert("Nick cannot be blank or longer than 20 characters");
             }
             else
             {
-                Prompt.Alert("Nick cannot be blank or longer than 20 characters");
+                Config.Nickname = nickname;
+                program.Network.Nickname = nickname;
+                Prompt.Notice("Nickname changed");
             }
         }
     }

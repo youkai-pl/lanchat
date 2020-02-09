@@ -1,5 +1,6 @@
 ﻿using Lanchat.Console.ProgramLib;
 using Lanchat.Console.Ui;
+using System.Linq;
 
 namespace Lanchat.Console.Commands
 {
@@ -31,7 +32,14 @@ namespace Lanchat.Console.Commands
                     break;
 
                 case "nick":
-                    Nick(args[1]);
+                    if (args[1] != null)
+                    {
+                        Nick(string.Join(" ", args.Skip(1)));
+                    }
+                    else
+                    {
+                        Prompt.Alert("Bad command syntax");
+                    }
                     break;
 
                 case "list":
@@ -41,7 +49,7 @@ namespace Lanchat.Console.Commands
                 case "mute":
                     if (args.Length > 1)
                     {
-                        Mute(args[1]);
+                        Mute(string.Join(" ", args.Skip(1)));
                     }
                     else
                     {
@@ -52,7 +60,7 @@ namespace Lanchat.Console.Commands
                 case "unmute":
                     if (args[1] != null)
                     {
-                        Unmute(args[1]);
+                        Unmute(string.Join(" ", args.Skip(1)));
                     }
                     else
                     {
