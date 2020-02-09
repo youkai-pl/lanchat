@@ -1,6 +1,7 @@
 ﻿using Lanchat.Console.Ui;
 using Lanchat.Common.Types;
 using System.Collections.Generic;
+using Lanchat.Common.NetworkLib;
 
 namespace Lanchat.Console.Commands
 {
@@ -8,33 +9,40 @@ namespace Lanchat.Console.Commands
     {
         public void List()
         {
-            var nodes = new List<string>();
+            var list = new List<string>();
             var count = 0;
 
             foreach (var item in program.Network.NodeList)
             {
-                nodes.Add($"{item.Nickname} ({GetStatus(item.State)})");
+                list.Add($"{item.Nickname} ({GetStatus(item)})");
                 count++;
             }
 
             Prompt.Out("");
             Prompt.Out($"Connected peers: {count}");
 
-            foreach (var item in nodes)
+            foreach (var item in list)
             {
                 Prompt.Out(item);
             }
         }
 
-        private string GetStatus(Status status)
+        private string GetStatus(Node item)
         {
-            if (status == Status.Ready)
+            if (item.State == Status.Ready)
             {
-                return "\u001b[92monline\u001b[0m";
+                if (item.Mute)
+                {
+                    return "\u001b[93mmuted\u001b[0m";
+                }
+                else
+                {
+                    return "\u001b[92monline\u001b[0m";
+                }
             }
             else
             {
-                return "\u001b[91offline\u001b[0m"; 
+                return "\u001b[91offline\u001b[0m";
             }
         }
     }
