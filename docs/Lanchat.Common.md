@@ -419,7 +419,7 @@ Lanchat.Common.NetworkLib
 
 ##### Summary
 
-Represents network user.
+Represents network node.
 
 <a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Guid,System-Int32,System-Net-IPAddress-'></a>
 ### #ctor(id,port,ip) `constructor`

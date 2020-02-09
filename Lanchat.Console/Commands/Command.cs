@@ -79,6 +79,10 @@ namespace Lanchat.Console.Commands
                     }
                     break;
 
+                case "about":
+                    About();
+                    break;
+
                 case "debug":
                     Debug();
                     break;
