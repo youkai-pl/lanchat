@@ -114,7 +114,7 @@ namespace Lanchat.Common.NetworkLib
             }
             else
             {
-                Trace.WriteLine($"Message from muted user ({e.SenderIP}) blocked");
+                Trace.WriteLine($"Message from muted node ({e.SenderIP}) blocked");
             }
         }
 

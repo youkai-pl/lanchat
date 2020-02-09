@@ -7,14 +7,14 @@ namespace Lanchat.Console.Commands
     {
         public void Unmute(string nickname)
         {
-            var user = program.Network.NodeList.Find(x => x.Nickname.Equals(nickname));
-            if (user != null)
+            var node = program.Network.NodeList.Find(x => x.Nickname.Equals(nickname));
+            if (node != null)
             {
-                var userOnList = Config.Muted.Find(x => x.Equals(user.Ip));
-                if (userOnList != null)
+                var savedNode = Config.Muted.Find(x => x.Equals(node.Ip));
+                if (savedNode != null)
                 {
-                    user.Mute = false;
-                    Config.RemoveMute(userOnList);
+                    node.Mute = false;
+                    Config.RemoveMute(savedNode);
                     Prompt.Notice($"{nickname} unmuted");
                 }
                 else

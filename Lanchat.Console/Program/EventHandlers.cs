@@ -62,9 +62,9 @@ namespace Lanchat.Console.ProgramLib
 
             if (Config.Muted.Exists(x => x.Equals(e.NodeIP)))
             {
-                var user = program.Network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
-                user.Mute = true;
-                Trace.WriteLine($"User with ip: {e.NodeIP} is muted");
+                var node = program.Network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
+                node.Mute = true;
+                Trace.WriteLine($"Node with ip: {e.NodeIP} is muted");
             }
         }
 

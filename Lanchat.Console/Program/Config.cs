@@ -108,14 +108,14 @@ namespace Lanchat.Console.ProgramLib
             }
         }
 
-        // Add muted user
+        // Add muted node
         public static void AddMute(IPAddress ip)
         {
             Muted.Add(ip);
             Save();
         }
 
-        // Remove muted user
+        // Remove muted node
         public static void RemoveMute(IPAddress ip)
         {
             Muted.Remove(ip);

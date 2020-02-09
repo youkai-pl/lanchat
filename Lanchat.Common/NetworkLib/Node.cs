@@ -8,7 +8,7 @@ using System.Timers;
 namespace Lanchat.Common.NetworkLib
 {
     /// <summary>
-    /// Represents network user.
+    /// Represents network node.
     /// </summary>
     public class Node : IDisposable
     {
