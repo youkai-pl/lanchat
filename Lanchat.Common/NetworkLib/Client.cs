@@ -54,17 +54,18 @@ namespace Lanchat.Common.HostLib
             }
             catch (IOException)
             {
-                Trace.WriteLine($"An error occurred when accessing the socket");
+                Trace.WriteLine($"[CLIENT] Socket error ({node.Ip})");
             }
             catch (InvalidOperationException)
             {
-                Trace.WriteLine($"The NetworkStream does not support writing");
+                Trace.WriteLine($"[CLIENT] NetworkStream error ({node.Ip})");
             }
         }
 
         internal void SendHandshake(Handshake handshake)
         {
             Send("handshake", JToken.FromObject(handshake));
+            Trace.WriteLine($"[CLIENT] Handshake sent ({node.Ip})");
         }
 
         internal void SendHeartbeat()
@@ -75,6 +76,7 @@ namespace Lanchat.Common.HostLib
         internal void SendKey(Key key)
         {
             Send("key", JToken.FromObject(key));
+            Trace.WriteLine($"[CLIENT] Aes key sent ({node.Ip})");
         }
 
         internal void SendList(List<Node> nodes)
@@ -87,6 +89,7 @@ namespace Lanchat.Common.HostLib
             }
 
             Send("list", JToken.FromObject(list));
+            Trace.WriteLine($"[CLIENT] Nodes list sent ({node.Ip})");
         }
 
         internal void SendMessage(string message)
@@ -94,6 +97,7 @@ namespace Lanchat.Common.HostLib
             if (node.State == Status.Ready)
             {
                 Send("message", node.SelfAes.Encode(message));
+                Trace.WriteLine($"[CLIENT] Message not sent. Node isn't ready ({node.Ip} / {message})");
             }
         }
 
@@ -102,6 +106,12 @@ namespace Lanchat.Common.HostLib
             if (node.State == Status.Ready)
             {
                 Send("nickname", nickname);
+                Trace.WriteLine($"[CLIENT] Nickname sent ({node.Ip})");
+            }
+            else
+            {
+                Trace.WriteLine($"[CLIENT] Nickname not sent. Node isn't ready ({node.Ip})");
+
             }
         }
 

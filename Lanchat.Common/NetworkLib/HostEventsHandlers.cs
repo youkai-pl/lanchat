@@ -25,13 +25,12 @@ namespace Lanchat.Common.NetworkLib
                 node.Nickname = e.NewNickname;
                 CheckNickcnameDuplicates(e.NewNickname);
                 network.Events.OnChangedNickname(oldNickname, e.NewNickname, e.SenderIP);
-                Trace.WriteLine($"{oldNickname} nickname changed to {e.NewNickname}");
+                Trace.WriteLine($"[NETOWRK] Nickname change ({node.Ip} {oldNickname} / {e.NewNickname})");
             }
         }
 
         internal void OnNodeConnected(object o, NodeConnectionStatusEventArgs e)
         {
-            Trace.WriteLine("New connection from: " + e.NodeIP.ToString());
         }
 
         internal void OnNodeDisconnected(object o, NodeConnectionStatusEventArgs e)
@@ -42,6 +41,7 @@ namespace Lanchat.Common.NetworkLib
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
         internal void OnReceivedBroadcast(object o, RecievedBroadcastEventArgs e)
         {
+            Trace.WriteLine($"[NETOWRK] Broadcast received ({e.SenderIP})");
             if (CheckBroadcastID(e.Sender, e.SenderIP))
             {
                 network.CreateNode(new Node(e.Sender.Id, e.Sender.Port, e.SenderIP), false);
@@ -51,18 +51,14 @@ namespace Lanchat.Common.NetworkLib
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
         internal void OnReceivedHandshake(object o, RecievedHandshakeEventArgs e)
         {
-            Trace.WriteLine("Received handshake");
-            Trace.Indent();
-            Trace.WriteLine(e.NodeHandshake.Nickname);
-            Trace.WriteLine(e.SenderIP);
-            Trace.Unindent();
+            Trace.WriteLine($"[NETOWRK] Received handshake ({e.SenderIP} / {e.NodeHandshake.Nickname})");
 
             // If node already crated just accept handhshake
             if (GetNode(e.SenderIP) != null)
             {
                 var node = GetNode(e.SenderIP);
                 node.AcceptHandshake(e.NodeHandshake);
-                Trace.WriteLine("Node found and handshake accepted");
+                Trace.WriteLine($"[NETOWRK] Handshake recieved for existing node ({e.SenderIP})");
             }
 
             // If list doesn't contain node with this ip create node and accept handshake
@@ -70,9 +66,9 @@ namespace Lanchat.Common.NetworkLib
             {
                 var node = new Node(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP);
                 network.CreateNode(node, false);
-                Trace.WriteLine("New node created after recieved handshake");
                 node = GetNode(e.SenderIP);
                 node.AcceptHandshake(e.NodeHandshake);
+                Trace.WriteLine($"[NETOWRK] Handshake recieved for new node ({e.SenderIP})");
             }
 
             CheckNickcnameDuplicates(e.NodeHandshake.Nickname);
@@ -86,6 +82,7 @@ namespace Lanchat.Common.NetworkLib
 
         internal void OnReceivedKey(object o, RecievedKeyEventArgs e)
         {
+            Trace.WriteLine($"[NETOWRK] AES key received ({e.SenderIP})");
             var node = GetNode(e.SenderIP);
             node.CreateRemoteAes(network.Rsa.Decode(e.AesKey), network.Rsa.Decode(e.AesIV));
         }
@@ -93,6 +90,7 @@ namespace Lanchat.Common.NetworkLib
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
         internal void OnReceivedList(object o, ReceivedListEventArgs e)
         {
+            Trace.WriteLine($"[NETOWRK] Nodes list received");
             foreach (var item in e.List)
             {
                 network.CreateNode(new Node(item.Port, IPAddress.Parse(item.Ip)), false);
@@ -106,20 +104,21 @@ namespace Lanchat.Common.NetworkLib
             if (!node.Mute)
             {
                 var content = node.RemoteAes.Decode(e.Content);
+                Trace.WriteLine($"[NETOWRK] Message received ({node.Ip} / {content})");
                 if (!string.IsNullOrWhiteSpace(content))
                 {
-                    Trace.WriteLine(node.Nickname + ": " + content);
                     network.Events.OnReceivedMessage(content, node.Nickname);
                 }
             }
             else
             {
-                Trace.WriteLine($"Message from muted node ({e.SenderIP}) blocked");
+                Trace.WriteLine($"[NETOWRK] Message muted ({e.SenderIP})");
             }
         }
 
         internal void OnReceivedRequest(object o, ReceivedRequestEventArgs e)
         {
+            Trace.WriteLine($"[NETOWRK] Request received ({e.SenderIP} / {e.Type})");
             var node = GetNode(e.SenderIP);
             if (node != null)
             {
@@ -154,19 +153,12 @@ namespace Lanchat.Common.NetworkLib
 
         private void CloseNode(Node node)
         {
-            if (node != null)
-            {
-                var nickname = node.ClearNickname;
-                Trace.WriteLine(node.Nickname + " disconnected");
-                network.Events.OnNodeDisconnected(node.Ip, node.Nickname);
-                network.NodeList.Remove(node);
-                node.Dispose();
-                CheckNickcnameDuplicates(nickname);
-            }
-            else
-            {
-                Trace.WriteLine("Node does not exist");
-            }
+            var nickname = node.ClearNickname;
+            Trace.WriteLine($"[NETWORK] Node disconnected ({node.Ip})");
+            network.Events.OnNodeDisconnected(node.Ip, node.Nickname);
+            network.NodeList.Remove(node);
+            node.Dispose();
+            CheckNickcnameDuplicates(nickname);
         }
 
         private Node GetNode(IPAddress ip)

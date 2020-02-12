@@ -36,7 +36,7 @@ namespace Lanchat.Console.ProgramLib
         // Host started
         public void OnHostStarted(object o, HostStartedEventArgs e)
         {
-            Trace.WriteLine($"Host started on port {e.Port}");
+            Trace.WriteLine($"[APP] Host started on port {e.Port}");
             if (!program.DebugMode)
             {
                 Prompt.Notice($"Host started on port {e.Port}");
@@ -64,7 +64,6 @@ namespace Lanchat.Console.ProgramLib
             {
                 var node = program.Network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
                 node.Mute = true;
-                Trace.WriteLine($"Node with ip: {e.NodeIP} is muted");
             }
         }
 

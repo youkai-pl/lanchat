@@ -96,8 +96,7 @@ namespace Lanchat.Console.ProgramLib
             }
             catch (Exception e)
             {
-                Trace.WriteLine(e.GetType());
-                Trace.WriteLine(e.Message);
+                Trace.WriteLine($"[APP] Config load error ({e.Message})");
 
                 Nickname = "";
                 BroadcastPort = 4001;

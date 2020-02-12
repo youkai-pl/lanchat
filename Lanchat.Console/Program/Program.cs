@@ -55,6 +55,7 @@ namespace Lanchat.Console.ProgramLib
             Trace.Listeners.Add(new TimeTraceListener($"{Config.Path}{DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss")}.log"));
             Trace.IndentSize = 11;
             Trace.AutoFlush = true;
+            Trace.WriteLine("[APP] Logging started");
 
             // Delete old log files
             new Thread(() =>
