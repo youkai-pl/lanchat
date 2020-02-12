@@ -11,15 +11,11 @@ namespace Lanchat.Console.ProgramLib
 {
     public static class Config
     {
-        public static string Nickname
-        {
-            get => _Nickname;
-            set
-            {
-                _Nickname = value;
-                Save();
-            }
-        }
+        private static int _BroadcastPort;
+
+        private static int _HostPort;
+
+        private static string _Nickname;
 
         public static int BroadcastPort
         {
@@ -30,6 +26,8 @@ namespace Lanchat.Console.ProgramLib
                 Save();
             }
         }
+
+        public static string Path { get; set; }
 
         public static int HostPort
         {
@@ -42,11 +40,22 @@ namespace Lanchat.Console.ProgramLib
         }
 
         public static List<IPAddress> Muted { get; set; } = new List<IPAddress>();
-        private static string _Nickname;
-        private static int _BroadcastPort;
-        private static int _HostPort;
 
-        private static string configPath;
+        public static string Nickname
+        {
+            get => _Nickname;
+            set
+            {
+                _Nickname = value;
+                Save();
+            }
+        }
+        // Add muted node
+        public static void AddMute(IPAddress ip)
+        {
+            Muted.Add(ip);
+            Save();
+        }
 
         // Load config
         public static void Load()
@@ -56,22 +65,22 @@ namespace Lanchat.Console.ProgramLib
                 // Detect OS
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Lanchat2/";
+                    Path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Lanchat2/";
                 }
 
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
-                    configPath = Environment.GetEnvironmentVariable("HOME") + "/.Lancaht2/";
+                    Path = Environment.GetEnvironmentVariable("HOME") + "/.Lancaht2/";
                 }
                 
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
-                    configPath = Environment.GetEnvironmentVariable("HOME") + "/Library/Preferences/.Lancaht2/";
+                    Path = Environment.GetEnvironmentVariable("HOME") + "/Library/Preferences/.Lancaht2/";
                 }
 
 
                 // Load config to dynamic object
-                dynamic json = JsonConvert.DeserializeObject(File.ReadAllText(configPath + "config.json"));
+                dynamic json = JsonConvert.DeserializeObject(File.ReadAllText(Path + "config.json"));
 
                 // Try use loaded config
                 _Nickname = json.nickname;
@@ -87,14 +96,20 @@ namespace Lanchat.Console.ProgramLib
             }
             catch (Exception e)
             {
-                Trace.WriteLine(e.GetType());
-                Trace.WriteLine(e.Message);
+                Trace.WriteLine($"[APP] Config load error ({e.Message})");
 
                 Nickname = "";
                 BroadcastPort = 4001;
                 HostPort = -1;
                 Muted = new List<IPAddress>();
             }
+        }
+
+        // Remove muted node
+        public static void RemoveMute(IPAddress ip)
+        {
+            Muted.Remove(ip);
+            Save();
         }
 
         // Save config
@@ -116,31 +131,17 @@ namespace Lanchat.Console.ProgramLib
             };
             try
             {
-                if (!Directory.Exists(configPath))
+                if (!Directory.Exists(Path))
                 {
-                    Directory.CreateDirectory(configPath);
+                    Directory.CreateDirectory(Path);
                 }
 
-                File.WriteAllText(configPath + "config.json", JsonConvert.SerializeObject(json, Formatting.Indented));
+                File.WriteAllText(Path + "config.json", JsonConvert.SerializeObject(json, Formatting.Indented));
             }
             catch (Exception e)
             {
                 Prompt.CrashScreen(e);
             }
-        }
-
-        // Add muted node
-        public static void AddMute(IPAddress ip)
-        {
-            Muted.Add(ip);
-            Save();
-        }
-
-        // Remove muted node
-        public static void RemoveMute(IPAddress ip)
-        {
-            Muted.Remove(ip);
-            Save();
         }
     }
 }

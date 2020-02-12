@@ -4,7 +4,10 @@
 using Lanchat.Common.NetworkLib;
 using Lanchat.Console.Commands;
 using Lanchat.Console.Ui;
+using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace Lanchat.Console.ProgramLib
@@ -12,7 +15,9 @@ namespace Lanchat.Console.ProgramLib
     public class Program
     {
         private bool _DeugMode;
+        private TraceListener consoleTraceListener;
         public Command Commands { get; set; }
+
         public bool DebugMode
         {
             get
@@ -25,12 +30,14 @@ namespace Lanchat.Console.ProgramLib
                 _DeugMode = value;
                 if (value)
                 {
-                    Trace.Listeners.Add(new TextWriterTraceListener(System.Console.Out));
+                    consoleTraceListener = new TimeTraceListener(System.Console.Out);
+                    Trace.Listeners.Add(consoleTraceListener);
                     Prompt.Notice("Debug mode enabled");
                 }
                 else
                 {
-                    Trace.Listeners.Clear();
+                    Trace.Listeners.Remove(consoleTraceListener);
+                    consoleTraceListener.Dispose();
                     Prompt.Notice("Debug mode disabled");
                 }
             }
@@ -38,12 +45,27 @@ namespace Lanchat.Console.ProgramLib
 
         public Network Network { get; set; }
         public Prompt Prompt { get; set; }
+
         public void Start()
         {
-            // Check is debug enabled
             Debug.Assert(DebugMode = true);
-
             Config.Load();
+
+            // Start logging
+            Trace.Listeners.Add(new TimeTraceListener($"{Config.Path}{DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss")}.log"));
+            Trace.IndentSize = 11;
+            Trace.AutoFlush = true;
+            Trace.WriteLine("[APP] Logging started");
+
+            // Delete old log files
+            new Thread(() =>
+            {
+                foreach (var fi in new DirectoryInfo(Config.Path).GetFiles("*.log").OrderByDescending(x => x.LastWriteTime).Skip(5))
+                {
+                    fi.Delete();
+                }
+            }).Start();
+
             Prompt.Welcome();
 
             // Check nickname
@@ -86,6 +108,29 @@ namespace Lanchat.Console.ProgramLib
         {
             var program = new Program();
             program.Start();
+        }
+
+        public class TimeTraceListener : TextWriterTraceListener
+        {
+            public TimeTraceListener(string fileName) : base(fileName)
+            {
+            }
+
+            public TimeTraceListener(TextWriter writer) : base(writer)
+            {
+            }
+
+            public override void WriteLine(string message)
+            {
+                if (IndentLevel > 0)
+                {
+                    base.WriteLine(message);
+                }
+                else
+                {
+                    base.WriteLine(DateTime.Now.ToString("[HH:mm:ss] ") + message);
+                }
+            }
         }
     }
 }

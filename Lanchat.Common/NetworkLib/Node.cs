@@ -215,7 +215,6 @@ namespace Lanchat.Common.NetworkLib
                     State = Status.Resumed;
                     OnStateChange();
                 }
-                // Trace.WriteLine($"({Ip}) ({HearbeatCount}) heartbeat ok");
             }
             else
             {
@@ -235,7 +234,6 @@ namespace Lanchat.Common.NetworkLib
                     State = Status.Suspended;
                     OnStateChange();
                 }
-                // Trace.WriteLine($"({Ip}) ({HearbeatCount}) heartbeat over");
             }
         }
 
