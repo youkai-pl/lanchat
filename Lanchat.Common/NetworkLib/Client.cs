@@ -97,6 +97,10 @@ namespace Lanchat.Common.HostLib
             if (node.State == Status.Ready)
             {
                 Send("message", node.SelfAes.Encode(message));
+                Trace.WriteLine($"[CLIENT] Messag sent ({node.Ip} / {message})");
+            }
+            else
+            {
                 Trace.WriteLine($"[CLIENT] Message not sent. Node isn't ready ({node.Ip} / {message})");
             }
         }
@@ -111,7 +115,6 @@ namespace Lanchat.Common.HostLib
             else
             {
                 Trace.WriteLine($"[CLIENT] Nickname not sent. Node isn't ready ({node.Ip})");
-
             }
         }
 

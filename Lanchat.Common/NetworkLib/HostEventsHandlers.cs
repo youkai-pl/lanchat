@@ -41,9 +41,9 @@ namespace Lanchat.Common.NetworkLib
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
         internal void OnReceivedBroadcast(object o, RecievedBroadcastEventArgs e)
         {
-            Trace.WriteLine($"[NETOWRK] Broadcast received ({e.SenderIP})");
             if (CheckBroadcastID(e.Sender, e.SenderIP))
             {
+                Trace.WriteLine($"[NETOWRK] Broadcast received ({e.SenderIP})");
                 network.CreateNode(new Node(e.Sender.Id, e.Sender.Port, e.SenderIP), false);
             }
         }

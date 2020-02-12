@@ -60,7 +60,7 @@ namespace Lanchat.Console.ProgramLib
             // Delete old log files
             new Thread(() =>
             {
-                foreach (var fi in new DirectoryInfo(Config.Path).GetFiles("*.log").OrderByDescending(x => x.LastWriteTime).Skip(4))
+                foreach (var fi in new DirectoryInfo(Config.Path).GetFiles("*.log").OrderByDescending(x => x.LastWriteTime).Skip(5))
                 {
                     fi.Delete();
                 }
