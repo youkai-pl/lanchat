@@ -97,7 +97,7 @@ namespace Lanchat.Common.HostLib
             if (node.State == Status.Ready)
             {
                 Send("message", node.SelfAes.Encode(message));
-                Trace.WriteLine($"[CLIENT] Messag sent ({node.Ip} / {message})");
+                Trace.WriteLine($"[CLIENT] Message sent ({node.Ip} / {message})");
             }
             else
             {
