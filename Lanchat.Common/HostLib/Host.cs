@@ -53,6 +53,7 @@ namespace Lanchat.Common.HostLib
         {
             Task.Run(() =>
             {
+                Trace.WriteLine("[HOST] UDP listen started");
                 var from = new IPEndPoint(0, 0);
                 while (true)
                 {
@@ -66,7 +67,7 @@ namespace Lanchat.Common.HostLib
                     }
                     catch (JsonSerializationException)
                     {
-                        Trace.WriteLine($"({from.Address}) Paperplane parsing error");
+                        Trace.WriteLine($"[HOST] Paperplane parsing error ({from.Address})");
                     }
                 }
             });
@@ -76,6 +77,7 @@ namespace Lanchat.Common.HostLib
         {
             Task.Run(() =>
               {
+                  Trace.WriteLine("[HOST] UDP broadcast started");
                   while (true)
                   {
                       var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(self));
@@ -97,6 +99,7 @@ namespace Lanchat.Common.HostLib
                 server.Bind(new IPEndPoint(IPAddress.Any, port));
                 server.Listen(-1);
 
+                Trace.WriteLine("[HOST] TCP host started");
                 while (true)
                 {
                     var socket = server.Accept();
@@ -112,7 +115,7 @@ namespace Lanchat.Common.HostLib
                         catch (SocketException)
                         {
                             // Disconnect node on exception
-                            Trace.WriteLine($"({ip}) Socket exception. Node will be disconnected");
+                            Trace.WriteLine($"[HOST] Socket exception. Node will be disconnected ({ip})");
                             Events.OnNodeDisconnected(ip);
                             socket.Close();
                         }
@@ -135,7 +138,7 @@ namespace Lanchat.Common.HostLib
 
                     if (!socket.IsConnected())
                     {
-                        Trace.WriteLine($"({ip}) Socket for {ip} closed");
+                        Trace.WriteLine($"[HOST] Socket closed ({ip})");
                         socket.Close();
                         Events.OnNodeDisconnected(ip);
                         break;
@@ -221,11 +224,11 @@ namespace Lanchat.Common.HostLib
                     }
                     catch (DecoderFallbackException)
                     {
-                        Trace.WriteLine($"({ip}) Data processing error: utf8 decode gone wrong");
+                        Trace.WriteLine($"[HOST] Data processing error: utf8 decode gone wrong ({ip})");
                     }
                     catch (JsonReaderException)
                     {
-                        Trace.WriteLine($"({ip}) Data processing error: not vaild json");
+                        Trace.WriteLine($"([HOST] Data processing error: not vaild json ({ip})");
                     }
                 }
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
 using Console = Colorful.Console;
@@ -223,6 +224,7 @@ namespace Lanchat.Console.Ui
         // Show crash screen and stop program
         public static void CrashScreen(Exception e)
         {
+            Trace.WriteLine($"[APP] Crash ({e.Message})");
             Alert(e.Message);
             Colorful.Console.ReadKey();
             Environment.Exit(1);

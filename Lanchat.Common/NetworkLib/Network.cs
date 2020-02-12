@@ -72,6 +72,8 @@ namespace Lanchat.Common.NetworkLib
 
             // Create API outputs instance
             Methods = new Methods(this);
+
+            Trace.WriteLine("[NETWORK] Network initialized");
         }
 
         /// <summary>
@@ -146,7 +148,7 @@ namespace Lanchat.Common.NetworkLib
 
             if (existingNode != null)
             {
-                Trace.WriteLine($"({node.Ip}) Node already exist");
+                Trace.WriteLine($"[NETWORK] Node already exist ({node.Ip})");
                 if (manual)
                 {
                     throw new NodeAlreadyExistException();
@@ -160,11 +162,7 @@ namespace Lanchat.Common.NetworkLib
                 node.Client.SendList(NodeList);
                 NodeList.Add(node);
 
-                Trace.WriteLine("New node created");
-                Trace.Indent();
-                Trace.WriteLine(node.Ip);
-                Trace.WriteLine(node.Port.ToString(CultureInfo.CurrentCulture));
-                Trace.Unindent();
+                Trace.WriteLine($"[NETWORK] Node created ({node.Ip}:{node.Port.ToString(CultureInfo.CurrentCulture)})");
             }
 
             // Ready change event
@@ -173,24 +171,24 @@ namespace Lanchat.Common.NetworkLib
                 // Node ready
                 if (node.State == Status.Ready)
                 {
-                    Trace.WriteLine($"({node.Ip}) ready");
                     Events.OnNodeConnected(node.Ip, node.Nickname);
+                    Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / ready)");
                 }
 
                 // Node suspended
                 else if (node.State == Status.Suspended)
                 {
-                    Trace.WriteLine($"({node.Ip}) suspended");
                     Events.OnNodeSuspended(node.Ip, node.Nickname);
+                    Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / suspended)");
                 }
 
                 // Node resumed
                 else if (node.State == Status.Resumed)
                 {
-                    Trace.WriteLine($"({node.Ip}) resumed");
                     node.Client.ResumeConnection();
                     node.State = Status.Ready;
                     Events.OnNodeResumed(node.Ip, node.Nickname);
+                    Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / resumed)");
                 }
             }
         }
