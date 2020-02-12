@@ -7,6 +7,7 @@ using Lanchat.Console.Ui;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace Lanchat.Console.ProgramLib
@@ -47,14 +48,22 @@ namespace Lanchat.Console.ProgramLib
 
         public void Start()
         {
-            // Check is debug enabled
             Debug.Assert(DebugMode = true);
-
             Config.Load();
 
+            // Start logging
             Trace.Listeners.Add(new TimeTraceListener($"{Config.Path}{DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss")}.log"));
             Trace.IndentSize = 11;
             Trace.AutoFlush = true;
+
+            // Delete old log files
+            new Thread(() =>
+            {
+                foreach (var fi in new DirectoryInfo(Config.Path).GetFiles("*.log").OrderByDescending(x => x.LastWriteTime).Skip(4))
+                {
+                    fi.Delete();
+                }
+            }).Start();
 
             Prompt.Welcome();
 
