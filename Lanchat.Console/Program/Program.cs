@@ -6,6 +6,7 @@ using Lanchat.Console.Commands;
 using Lanchat.Console.Ui;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 
 namespace Lanchat.Console.ProgramLib
@@ -15,6 +16,7 @@ namespace Lanchat.Console.ProgramLib
         private bool _DeugMode;
         private TraceListener consoleTraceListener;
         public Command Commands { get; set; }
+
         public bool DebugMode
         {
             get
@@ -27,7 +29,7 @@ namespace Lanchat.Console.ProgramLib
                 _DeugMode = value;
                 if (value)
                 {
-                    consoleTraceListener = new TextWriterTraceListener(System.Console.Out, "Console");
+                    consoleTraceListener = new TimeTraceListener(System.Console.Out);
                     Trace.Listeners.Add(consoleTraceListener);
                     Prompt.Notice("Debug mode enabled");
                 }
@@ -42,6 +44,7 @@ namespace Lanchat.Console.ProgramLib
 
         public Network Network { get; set; }
         public Prompt Prompt { get; set; }
+
         public void Start()
         {
             // Check is debug enabled
@@ -49,9 +52,8 @@ namespace Lanchat.Console.ProgramLib
 
             Config.Load();
 
-            // Start log
-            Trace.Listeners.Add(new TextWriterTraceListener($"{Config.Path}{DateTime.Now.ToString("yyyy_MM_dd")}.log", "LogFile"));
-            
+            Trace.Listeners.Add(new TimeTraceListener($"{Config.Path}{DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss")}.log"));
+            Trace.IndentSize = 11;
             Trace.AutoFlush = true;
 
             Prompt.Welcome();
@@ -96,6 +98,29 @@ namespace Lanchat.Console.ProgramLib
         {
             var program = new Program();
             program.Start();
+        }
+
+        public class TimeTraceListener : TextWriterTraceListener
+        {
+            public TimeTraceListener(string fileName) : base(fileName)
+            {
+            }
+
+            public TimeTraceListener(TextWriter writer) : base(writer)
+            {
+            }
+
+            public override void WriteLine(string message)
+            {
+                if (IndentLevel > 0)
+                {
+                    base.WriteLine(message);
+                }
+                else
+                {
+                    base.WriteLine(DateTime.Now.ToString("[HH:mm:ss] ") + message);
+                }
+            }
         }
     }
 }
