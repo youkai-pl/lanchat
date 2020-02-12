@@ -4,6 +4,7 @@
 using Lanchat.Common.NetworkLib;
 using Lanchat.Console.Commands;
 using Lanchat.Console.Ui;
+using System;
 using System.Diagnostics;
 using System.Threading;
 
@@ -12,6 +13,7 @@ namespace Lanchat.Console.ProgramLib
     public class Program
     {
         private bool _DeugMode;
+        private TraceListener consoleTraceListener;
         public Command Commands { get; set; }
         public bool DebugMode
         {
@@ -25,12 +27,14 @@ namespace Lanchat.Console.ProgramLib
                 _DeugMode = value;
                 if (value)
                 {
-                    Trace.Listeners.Add(new TextWriterTraceListener(System.Console.Out));
+                    consoleTraceListener = new TextWriterTraceListener(System.Console.Out, "Console");
+                    Trace.Listeners.Add(consoleTraceListener);
                     Prompt.Notice("Debug mode enabled");
                 }
                 else
                 {
-                    Trace.Listeners.Clear();
+                    Trace.Listeners.Remove(consoleTraceListener);
+                    consoleTraceListener.Dispose();
                     Prompt.Notice("Debug mode disabled");
                 }
             }
@@ -44,6 +48,12 @@ namespace Lanchat.Console.ProgramLib
             Debug.Assert(DebugMode = true);
 
             Config.Load();
+
+            // Start log
+            Trace.Listeners.Add(new TextWriterTraceListener($"{Config.Path}{DateTime.Now.ToString("yyyy_MM_dd")}.log", "LogFile"));
+            
+            Trace.AutoFlush = true;
+
             Prompt.Welcome();
 
             // Check nickname
