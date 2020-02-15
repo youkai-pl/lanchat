@@ -1,5 +1,4 @@
 ﻿using Lanchat.Common.Cryptography;
-using Lanchat.Common.HostLib;
 using Lanchat.Common.Types;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,6 @@ namespace Lanchat.Common.NetworkLib
     /// </summary>
     public class Network : IDisposable
     {
-
         private readonly Host host;
         private readonly HostEventsHandlers hostHandlers;
         private string nickname;

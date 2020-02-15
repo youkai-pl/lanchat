@@ -1,5 +1,4 @@
-﻿using Lanchat.Common.NetworkLib;
-using Lanchat.Common.Types;
+﻿using Lanchat.Common.Types;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Lanchat.Common.HostLib
+namespace Lanchat.Common.NetworkLib
 {
     internal class Client : IDisposable
     {
