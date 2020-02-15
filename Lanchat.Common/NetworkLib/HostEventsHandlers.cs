@@ -104,7 +104,7 @@ namespace Lanchat.Common.NetworkLib
             if (!node.Mute)
             {
                 var content = node.RemoteAes.Decode(e.Content);
-                Trace.WriteLine($"[NETOWRK] Message received ({node.Ip} / {content})");
+                Trace.WriteLine($"[NETOWRK] Message received ({node.Ip})");
                 if (!string.IsNullOrWhiteSpace(content))
                 {
                     network.Events.OnReceivedMessage(content, node.Nickname);
