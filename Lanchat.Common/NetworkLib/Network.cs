@@ -61,7 +61,6 @@ namespace Lanchat.Common.NetworkLib
             host.Events.ReceivedKey += hostHandlers.OnReceivedKey;
             host.Events.RecievedMessage += hostHandlers.OnReceivedMessage;
             host.Events.ReceivedHeartbeat += hostHandlers.OnReceivedHeartbeat;
-            host.Events.ReceivedRequest += hostHandlers.OnReceivedRequest;
             host.Events.ReceivedList += hostHandlers.OnReceivedList;
             host.Events.ChangedNickname += hostHandlers.OnChangedNickname;
 
@@ -87,6 +86,7 @@ namespace Lanchat.Common.NetworkLib
             get => nickname;
             set
             {
+                nickname = value;
                 ChangeNickname(value);
             }
         }
@@ -140,11 +140,8 @@ namespace Lanchat.Common.NetworkLib
         // Create node
         internal void CreateNode(Node node, bool manual)
         {
-
             // Check is node with same ip alredy exist
-            var existingNode = NodeList.Find(x => x.Ip.Equals(node.Ip));
-
-            if (existingNode != null)
+            if (NodeList.Find(x => x.Ip.Equals(node.Ip)) != null)
             {
                 Trace.WriteLine($"[NETWORK] Node already exist ({node.Ip})");
                 if (manual)
@@ -154,16 +151,34 @@ namespace Lanchat.Common.NetworkLib
             }
             else
             {
-                node.ReadyChanged += OnStatusChanged;
-                node.CreateConnection();
-                node.Client.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));
-                node.Client.SendList(NodeList);
+                node.StateChanged += OnStatusChanged;
+                node.HandshakeAccepted += OnHandshakeAccepted;
+
+                if (node.Port != 0)
+                {
+                    node.CreateConnection();
+                    node.Client.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));
+                    node.Client.SendList(NodeList);
+                }
+                else
+                {
+                    Trace.WriteLine($"[NETWORK] One way connection. Waiting for handshake ({node.Ip})");
+                }
+
                 NodeList.Add(node);
 
-                Trace.WriteLine($"[NETWORK] Node created ({node.Ip}:{node.Port.ToString(CultureInfo.CurrentCulture)})");
+                Trace.WriteLine($"[NETWORK] Node created successful ({node.Ip}:{node.Port.ToString(CultureInfo.CurrentCulture)})");
             }
 
-            // Ready change event
+            // Handshake accepted event handler
+            void OnHandshakeAccepted(object sender, EventArgs e)
+            {
+                Trace.WriteLine("adsadsadsadsadsad");
+                node.Client.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));
+                node.Client.SendList(NodeList);
+            }
+
+            // Ready change event handler
             void OnStatusChanged(object sender, EventArgs e)
             {
                 // Node ready
@@ -183,7 +198,7 @@ namespace Lanchat.Common.NetworkLib
                 // Node resumed
                 else if (node.State == Status.Resumed)
                 {
-                    node.Client.ResumeConnection();
+                    node.Client.ResumeConnection(Nickname);
                     node.State = Status.Ready;
                     Events.OnNodeResumed(node.Ip, node.Nickname);
                     Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / resumed)");
@@ -204,12 +219,11 @@ namespace Lanchat.Common.NetworkLib
         // Change nickname
         private void ChangeNickname(string value)
         {
-            nickname = value;
             NodeList.ForEach(x =>
             {
                 if (x.Client != null)
                 {
-                    x.Client.SendNickname(nickname);
+                    x.Client.SendNickname(value);
                 }
             });
         }

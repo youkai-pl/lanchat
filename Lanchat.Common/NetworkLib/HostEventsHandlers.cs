@@ -29,8 +29,22 @@ namespace Lanchat.Common.NetworkLib
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
         internal void OnNodeConnected(object o, NodeConnectionStatusEventArgs e)
         {
+            Trace.WriteLine($"[NETWORK] Connection detected ({e.NodeIP})");
+
+            var node = GetNode(e.NodeIP);
+
+            if (node != null)
+            {
+                node.Socket = e.Socket;
+                Trace.WriteLine($"[NETWORK] Node found. Socket assigned ({e.NodeIP})");
+            }
+            else
+            {
+                network.CreateNode(new Node(e.Socket, e.NodeIP), false);
+            }
         }
 
         internal void OnNodeDisconnected(object o, NodeConnectionStatusEventArgs e)
@@ -48,28 +62,12 @@ namespace Lanchat.Common.NetworkLib
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
         internal void OnReceivedHandshake(object o, RecievedHandshakeEventArgs e)
         {
             Trace.WriteLine($"[NETOWRK] Received handshake ({e.SenderIP} / {e.NodeHandshake.Nickname})");
-
-            // If node already crated just accept handhshake
-            if (GetNode(e.SenderIP) != null)
-            {
-                var node = GetNode(e.SenderIP);
-                node.AcceptHandshake(e.NodeHandshake);
-                Trace.WriteLine($"[NETOWRK] Handshake recieved for existing node ({e.SenderIP})");
-            }
-
-            // If list doesn't contain node with this ip create node and accept handshake
-            else
-            {
-                var node = new Node(e.NodeHandshake.Id, e.NodeHandshake.Port, e.SenderIP);
-                network.CreateNode(node, false);
-                node = GetNode(e.SenderIP);
-                node.AcceptHandshake(e.NodeHandshake);
-                Trace.WriteLine($"[NETOWRK] Handshake recieved for new node ({e.SenderIP})");
-            }
+            var node = GetNode(e.SenderIP);
+            node.AcceptHandshake(e.NodeHandshake);
+            Trace.WriteLine($"[NETOWRK] Handshake accepted ({e.SenderIP})");
 
             CheckNickcnameDuplicates(e.NodeHandshake.Nickname);
         }
@@ -93,7 +91,7 @@ namespace Lanchat.Common.NetworkLib
             Trace.WriteLine($"[NETOWRK] Nodes list received");
             foreach (var item in e.List)
             {
-                network.CreateNode(new Node(item.Port, IPAddress.Parse(item.Ip)), false);
+                //network.CreateNode(new Node(item.Port, IPAddress.Parse(item.Ip)), false);
             }
         }
 
@@ -113,16 +111,6 @@ namespace Lanchat.Common.NetworkLib
             else
             {
                 Trace.WriteLine($"[NETOWRK] Message muted ({e.SenderIP})");
-            }
-        }
-
-        internal void OnReceivedRequest(object o, ReceivedRequestEventArgs e)
-        {
-            Trace.WriteLine($"[NETOWRK] Request received ({e.SenderIP} / {e.Type})");
-            var node = GetNode(e.SenderIP);
-            if (node != null)
-            {
-                node.Client.SendNickname(network.Nickname);
             }
         }
 

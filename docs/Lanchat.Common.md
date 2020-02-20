@@ -39,6 +39,7 @@
 - [Node](#T-Lanchat-Common-NetworkLib-Node 'Lanchat.Common.NetworkLib.Node')
   - [#ctor(id,port,ip)](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Guid,System-Int32,System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Guid,System.Int32,System.Net.IPAddress)')
   - [#ctor(port,ip)](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Int32,System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Int32,System.Net.IPAddress)')
+  - [#ctor()](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-Sockets-Socket,System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Net.Sockets.Socket,System.Net.IPAddress)')
   - [ClearNickname](#P-Lanchat-Common-NetworkLib-Node-ClearNickname 'Lanchat.Common.NetworkLib.Node.ClearNickname')
   - [HearbeatCount](#P-Lanchat-Common-NetworkLib-Node-HearbeatCount 'Lanchat.Common.NetworkLib.Node.HearbeatCount')
   - [Heartbeat](#P-Lanchat-Common-NetworkLib-Node-Heartbeat 'Lanchat.Common.NetworkLib.Node.Heartbeat')
@@ -52,6 +53,7 @@
   - [Dispose()](#M-Lanchat-Common-NetworkLib-Node-Dispose 'Lanchat.Common.NetworkLib.Node.Dispose')
   - [Dispose(disposing)](#M-Lanchat-Common-NetworkLib-Node-Dispose-System-Boolean- 'Lanchat.Common.NetworkLib.Node.Dispose(System.Boolean)')
   - [Finalize()](#M-Lanchat-Common-NetworkLib-Node-Finalize 'Lanchat.Common.NetworkLib.Node.Finalize')
+  - [OnHandshakeAccepted()](#M-Lanchat-Common-NetworkLib-Node-OnHandshakeAccepted 'Lanchat.Common.NetworkLib.Node.OnHandshakeAccepted')
   - [OnStateChange()](#M-Lanchat-Common-NetworkLib-Node-OnStateChange 'Lanchat.Common.NetworkLib.Node.OnStateChange')
 - [NodeAlreadyExistException](#T-Lanchat-Common-NetworkLib-NodeAlreadyExistException 'Lanchat.Common.NetworkLib.NodeAlreadyExistException')
 - [NodeConnectionStatusEventArgs](#T-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs')
@@ -426,7 +428,7 @@ Represents network node.
 
 ##### Summary
 
-Node constructor.
+Full node constructor.
 
 ##### Parameters
 
@@ -449,6 +451,17 @@ Node constructor without id.
 | ---- | ---- | ----------- |
 | port | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Node TCP port |
 | ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node IP |
+
+<a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-Sockets-Socket,System-Net-IPAddress-'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Node constructor with socket.
+
+##### Parameters
+
+This constructor has no parameters.
 
 <a name='P-Lanchat-Common-NetworkLib-Node-ClearNickname'></a>
 ### ClearNickname `property`
@@ -550,6 +563,17 @@ Node dispose.
 ##### Summary
 
 Destructor.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Lanchat-Common-NetworkLib-Node-OnHandshakeAccepted'></a>
+### OnHandshakeAccepted() `method`
+
+##### Summary
+
+Handshake accepted event.
 
 ##### Parameters
 

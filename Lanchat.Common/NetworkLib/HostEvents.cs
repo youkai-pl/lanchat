@@ -3,6 +3,7 @@ using Lanchat.Common.Types;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Sockets;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -37,11 +38,12 @@ namespace Lanchat.Common.NetworkLib
             });
         }
 
-        internal virtual void OnNodeConnected(IPAddress nodeIP)
+        internal virtual void OnNodeConnected(Socket socket, IPAddress ip)
         {
             NodeConnected(this, new NodeConnectionStatusEventArgs()
             {
-                NodeIP = nodeIP
+                Socket = socket,
+                NodeIP = ip
             });
         }
 

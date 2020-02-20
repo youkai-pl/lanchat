@@ -37,9 +37,9 @@ namespace Lanchat.Common.NetworkLib
             }
         }
 
-        internal void ResumeConnection()
+        internal void ResumeConnection(string selfNickname)
         {
-            Send("request", "nickname");
+            SendNickname(selfNickname);
         }
 
         internal void Send(string type, JToken content)

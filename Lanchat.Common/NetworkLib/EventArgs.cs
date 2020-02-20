@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Sockets;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -51,6 +52,8 @@ namespace Lanchat.Common.NetworkLib
         /// Node ip.
         /// </summary>
         public IPAddress NodeIP { get; set; }
+
+        internal Socket Socket { get; set; }
     }
 
     /// <summary>

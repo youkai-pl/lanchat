@@ -2,6 +2,7 @@
 using Lanchat.Common.Types;
 using System;
 using System.Net;
+using System.Net.Sockets;
 using System.Timers;
 
 namespace Lanchat.Common.NetworkLib
@@ -12,7 +13,7 @@ namespace Lanchat.Common.NetworkLib
     public class Node : IDisposable
     {
         /// <summary>
-        /// Node constructor.
+        /// Full node constructor.
         /// </summary>
         /// <param name="id">Node ID</param>
         /// <param name="port">Node TCP port</param>
@@ -41,8 +42,23 @@ namespace Lanchat.Common.NetworkLib
             State = Status.Waiting;
         }
 
-        // Ready property change event
-        internal event EventHandler ReadyChanged;
+        /// <summary>
+        /// Node constructor with socket.
+        /// </summary>
+        internal Node(Socket socket, IPAddress ip)
+        {
+            Socket = socket;
+            Ip = ip;
+            SelfAes = new Aes();
+            NicknameNum = 0;
+            State = Status.Waiting;
+        }
+
+        // Events
+        internal event EventHandler StateChanged;
+        internal event EventHandler HandshakeAccepted;
+
+        internal Socket Socket { get; set; }
 
         /// <summary>
         /// Nickname without number.
@@ -125,10 +141,16 @@ namespace Lanchat.Common.NetworkLib
                 Id = handshake.Id;
             }
 
-            // Send AES encryption key
+            if (Port == 0)
+            {
+                Port = handshake.Port;
+                CreateConnection();
+                OnHandshakeAccepted();
+            }
+
             Client.SendKey(new Key(
-                Rsa.Encode(SelfAes.Key, PublicKey),
-                Rsa.Encode(SelfAes.IV, PublicKey)));
+                     Rsa.Encode(SelfAes.Key, PublicKey),
+                     Rsa.Encode(SelfAes.IV, PublicKey)));
         }
 
         // Create connection
@@ -186,7 +208,15 @@ namespace Lanchat.Common.NetworkLib
         /// </summary>
         protected void OnStateChange()
         {
-            ReadyChanged(this, EventArgs.Empty);
+            StateChanged(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Handshake accepted event.
+        /// </summary>
+        protected void OnHandshakeAccepted()
+        {
+            HandshakeAccepted(this, EventArgs.Empty);
         }
 
         // Hearbeat over event
