@@ -58,7 +58,7 @@ namespace Lanchat.Common.NetworkLib
             if (CheckBroadcastID(e.Sender, e.SenderIP))
             {
                 Trace.WriteLine($"[NETOWRK] Broadcast received ({e.SenderIP})");
-                network.CreateNode(new Node(e.Sender.Id, e.Sender.Port, e.SenderIP), false);
+                network.CreateNode(new Node(e.Sender.Port, e.SenderIP), false);
             }
         }
 
@@ -91,7 +91,13 @@ namespace Lanchat.Common.NetworkLib
             Trace.WriteLine($"[NETOWRK] Nodes list received");
             foreach (var item in e.List)
             {
-                //network.CreateNode(new Node(item.Port, IPAddress.Parse(item.Ip)), false);
+                var ip = IPAddress.Parse(item.Ip);
+                Trace.WriteLine(ip);
+                Trace.WriteLine(e.LocalAddress.ToString());
+                if (ip != e.LocalAddress)
+                {
+                    //network.CreateNode(new Node(item.Port, ip), false);
+                }
             }
         }
 
@@ -118,7 +124,7 @@ namespace Lanchat.Common.NetworkLib
 
         private bool CheckBroadcastID(Paperplane broadcast, IPAddress senderIp)
         {
-            return broadcast.Id != network.Id && !network.NodeList.Exists(x => x.Id.Equals(broadcast.Id)) && !network.NodeList.Exists(x => x.Ip.Equals(senderIp));
+            return broadcast.Id != network.Id && !network.NodeList.Exists(x => x.Ip.Equals(senderIp));
         }
 
         private void CheckNickcnameDuplicates(string nickname)

@@ -208,7 +208,7 @@ namespace Lanchat.Common.NetworkLib
 
                         if (type == "list")
                         {
-                            Events.OnReceivedList(content.ToObject<List<ListItem>>());
+                            Events.OnReceivedList(content.ToObject<List<ListItem>>(), IPAddress.Parse(((IPEndPoint)socket.LocalEndPoint).Address.ToString()));
                         }
                     }
                 }

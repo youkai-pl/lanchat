@@ -85,6 +85,7 @@ namespace Lanchat.Common.NetworkLib
     internal class ReceivedListEventArgs : EventArgs
     {
         internal List<ListItem> List { get; set; }
+        internal IPAddress LocalAddress { get; set; }
     }
 
     internal class ReceivedRequestEventArgs : EventArgs

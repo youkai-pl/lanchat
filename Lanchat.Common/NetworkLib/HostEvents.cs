@@ -91,11 +91,12 @@ namespace Lanchat.Common.NetworkLib
             });
         }
 
-        internal virtual void OnReceivedList(List<ListItem> list)
+        internal virtual void OnReceivedList(List<ListItem> list, IPAddress localAddress)
         {
             ReceivedList(this, new ReceivedListEventArgs()
             {
-                List = list
+                List = list,
+                LocalAddress = localAddress
             });
         }
 

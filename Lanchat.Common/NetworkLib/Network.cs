@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using Lanchat.Common.NetworkLib.Api;
 using System.Diagnostics;
 using System.Globalization;
+using System.Timers;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -153,11 +154,12 @@ namespace Lanchat.Common.NetworkLib
             {
                 node.StateChanged += OnStatusChanged;
                 node.HandshakeAccepted += OnHandshakeAccepted;
+                node.HandshakeTimeout += OnHandshakeTimeout;
 
                 if (node.Port != 0)
                 {
                     node.CreateConnection();
-                    node.Client.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));
+                    node.Client.SendHandshake(new Handshake(Nickname, PublicKey, HostPort));
                     node.Client.SendList(NodeList);
                 }
                 else
@@ -173,8 +175,7 @@ namespace Lanchat.Common.NetworkLib
             // Handshake accepted event handler
             void OnHandshakeAccepted(object sender, EventArgs e)
             {
-                Trace.WriteLine("adsadsadsadsadsad");
-                node.Client.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));
+                node.Client.SendHandshake(new Handshake(Nickname, PublicKey, HostPort));
                 node.Client.SendList(NodeList);
             }
 
@@ -202,6 +203,18 @@ namespace Lanchat.Common.NetworkLib
                     node.State = Status.Ready;
                     Events.OnNodeResumed(node.Ip, node.Nickname);
                     Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / resumed)");
+                }
+            }
+
+            void OnHandshakeTimeout(object o, EventArgs e)
+            {
+                node.HandshakeTimer.Dispose();
+
+                if (node.Handshake == null)
+                {
+                    Trace.WriteLine($"[NODE] Handshake timed out {node.Ip}");
+                    NodeList.Remove(node);
+                    node.Dispose();
                 }
             }
         }

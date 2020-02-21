@@ -1,6 +1,7 @@
 ﻿using Lanchat.Common.Cryptography;
 using Lanchat.Common.Types;
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Timers;
@@ -13,23 +14,7 @@ namespace Lanchat.Common.NetworkLib
     public class Node : IDisposable
     {
         /// <summary>
-        /// Full node constructor.
-        /// </summary>
-        /// <param name="id">Node ID</param>
-        /// <param name="port">Node TCP port</param>
-        /// <param name="ip">Node IP</param>
-        internal Node(Guid id, int port, IPAddress ip)
-        {
-            Id = id;
-            Port = port;
-            Ip = ip;
-            SelfAes = new Aes();
-            NicknameNum = 0;
-            State = Status.Waiting;
-        }
-
-        /// <summary>
-        /// Node constructor without id.
+        /// Node constructor with known port.
         /// </summary>
         /// <param name="port">Node TCP port</param>
         /// <param name="ip">Node IP</param>
@@ -40,6 +25,9 @@ namespace Lanchat.Common.NetworkLib
             SelfAes = new Aes();
             NicknameNum = 0;
             State = Status.Waiting;
+            HandshakeTimer = new Timer { Interval = 5000 };
+
+            WaitForHandshake();
         }
 
         /// <summary>
@@ -52,13 +40,10 @@ namespace Lanchat.Common.NetworkLib
             SelfAes = new Aes();
             NicknameNum = 0;
             State = Status.Waiting;
+            HandshakeTimer = new Timer { Interval = 5000 };
+
+            WaitForHandshake();
         }
-
-        // Events
-        internal event EventHandler StateChanged;
-        internal event EventHandler HandshakeAccepted;
-
-        internal Socket Socket { get; set; }
 
         /// <summary>
         /// Nickname without number.
@@ -74,11 +59,6 @@ namespace Lanchat.Common.NetworkLib
         /// Last heartbeat status.
         /// </summary>
         public bool Heartbeat { get; set; }
-
-        /// <summary>
-        /// Node ID.
-        /// </summary>
-        public Guid Id { get; set; }
 
         /// <summary>
         /// Node IP.
@@ -115,31 +95,31 @@ namespace Lanchat.Common.NetworkLib
         public int Port { get; set; }
 
         /// <summary>
-        /// Node public RSA key.
-        /// </summary>
-        public string PublicKey { get; set; }
-
-        /// <summary>
         /// Node <see cref="Status"/>.
         /// </summary>
         public Status State { get; set; }
 
+        /// <summary>
+        /// Handshake.
+        /// </summary>
+        public Handshake Handshake { get; set; }
+
         internal Client Client { get; set; }
         internal Timer HeartbeatTimer { get; set; }
+        internal Timer HandshakeTimer { get; set; }
         internal int NicknameNum { get; set; }
         internal Aes RemoteAes { get; set; }
         internal Aes SelfAes { get; set; }
+        internal Socket Socket { get; set; }
 
-        // Use values from received handshake
+        internal event EventHandler HandshakeAccepted;
+        internal event EventHandler HandshakeTimeout;
+        internal event EventHandler StateChanged;
+
         internal void AcceptHandshake(Handshake handshake)
         {
+            Handshake = handshake;
             Nickname = handshake.Nickname;
-            PublicKey = handshake.PublicKey;
-
-            if (Id == null)
-            {
-                Id = handshake.Id;
-            }
 
             if (Port == 0)
             {
@@ -149,43 +129,36 @@ namespace Lanchat.Common.NetworkLib
             }
 
             Client.SendKey(new Key(
-                     Rsa.Encode(SelfAes.Key, PublicKey),
-                     Rsa.Encode(SelfAes.IV, PublicKey)));
+                     Rsa.Encode(SelfAes.Key, Handshake.PublicKey),
+                     Rsa.Encode(SelfAes.IV, Handshake.PublicKey)));
         }
 
-        // Create connection
         internal void CreateConnection()
         {
             Client = new Client(this);
             Client.Connect(Ip, Port);
         }
 
-        // Create AES instance with received key
         internal void CreateRemoteAes(string key, string iv)
         {
             RemoteAes = new Aes(key, iv);
 
-            // Set ready to true
             State = Status.Ready;
             OnStateChange();
 
-            // Start heartbeat
             StartHeartbeat();
         }
 
-        // Start heartbeat
         internal void StartHeartbeat()
         {
-            // Create heartbeat timer
             HeartbeatTimer = new Timer
             {
                 Interval = 1200,
                 Enabled = true
             };
             HeartbeatTimer.Elapsed += new ElapsedEventHandler(OnHeartebatOver);
-            HeartbeatTimer.Start(); ;
+            HeartbeatTimer.Start();
 
-            // Start sending heartbeat
             new System.Threading.Thread(() =>
             {
                 while (true)
@@ -203,12 +176,11 @@ namespace Lanchat.Common.NetworkLib
             }).Start();
         }
 
-        /// <summary>
-        /// State change event.
-        /// </summary>
-        protected void OnStateChange()
+        internal void WaitForHandshake()
         {
-            StateChanged(this, EventArgs.Empty);
+            // Wait for handshake
+            HandshakeTimer.Elapsed += new ElapsedEventHandler(OnHandshakeTimeout);
+            HandshakeTimer.Start();
         }
 
         /// <summary>
@@ -218,6 +190,23 @@ namespace Lanchat.Common.NetworkLib
         {
             HandshakeAccepted(this, EventArgs.Empty);
         }
+
+        /// <summary>
+        /// State change event.
+        /// </summary>
+        protected void OnStateChange()
+        {
+            StateChanged(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Handshake timeout event
+        /// </summary>
+        protected void OnHandshakeTimeout(object o, ElapsedEventArgs e)
+        {
+            HandshakeTimeout(this, EventArgs.Empty);
+        }
+
 
         // Hearbeat over event
         private void OnHeartebatOver(object o, ElapsedEventArgs e)
