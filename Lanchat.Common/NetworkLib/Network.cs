@@ -152,9 +152,7 @@ namespace Lanchat.Common.NetworkLib
             }
             else
             {
-                node.StateChanged += OnStatusChanged;
-                node.HandshakeAccepted += OnHandshakeAccepted;
-                node.HandshakeTimeout += OnHandshakeTimeout;
+                _ = new NodeEventsHandlers(this, node);
 
                 if (node.Port != 0)
                 {
@@ -172,51 +170,7 @@ namespace Lanchat.Common.NetworkLib
                 Trace.WriteLine($"[NETWORK] Node created successful ({node.Ip}:{node.Port.ToString(CultureInfo.CurrentCulture)})");
             }
 
-            // Handshake accepted event handler
-            void OnHandshakeAccepted(object sender, EventArgs e)
-            {
-                node.Client.SendHandshake(new Handshake(Nickname, PublicKey, HostPort));
-                node.Client.SendList(NodeList);
-            }
 
-            // Ready change event handler
-            void OnStatusChanged(object sender, EventArgs e)
-            {
-                // Node ready
-                if (node.State == Status.Ready)
-                {
-                    Events.OnNodeConnected(node.Ip, node.Nickname);
-                    Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / ready)");
-                }
-
-                // Node suspended
-                else if (node.State == Status.Suspended)
-                {
-                    Events.OnNodeSuspended(node.Ip, node.Nickname);
-                    Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / suspended)");
-                }
-
-                // Node resumed
-                else if (node.State == Status.Resumed)
-                {
-                    node.Client.ResumeConnection(Nickname);
-                    node.State = Status.Ready;
-                    Events.OnNodeResumed(node.Ip, node.Nickname);
-                    Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / resumed)");
-                }
-            }
-
-            void OnHandshakeTimeout(object o, EventArgs e)
-            {
-                node.HandshakeTimer.Dispose();
-
-                if (node.Handshake == null)
-                {
-                    Trace.WriteLine($"[NODE] Handshake timed out {node.Ip}");
-                    NodeList.Remove(node);
-                    node.Dispose();
-                }
-            }
         }
 
         // Find free tcp port

@@ -92,11 +92,10 @@ namespace Lanchat.Common.NetworkLib
             foreach (var item in e.List)
             {
                 var ip = IPAddress.Parse(item.Ip);
-                Trace.WriteLine(ip);
-                Trace.WriteLine(e.LocalAddress.ToString());
-                if (ip != e.LocalAddress)
+
+                if (!ip.Equals(e.LocalAddress))
                 {
-                    //network.CreateNode(new Node(item.Port, ip), false);
+                    network.CreateNode(new Node(item.Port, ip), false);
                 }
             }
         }
