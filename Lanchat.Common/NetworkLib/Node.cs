@@ -22,26 +22,27 @@ namespace Lanchat.Common.NetworkLib
         {
             Port = port;
             Ip = ip;
-            SelfAes = new Aes();
-            NicknameNum = 0;
-            State = Status.Waiting;
-            HandshakeTimer = new Timer { Interval = 5000 };
-
-            WaitForHandshake();
+            CommonConstructor();
         }
 
         /// <summary>
         /// Node constructor with socket.
         /// </summary>
-        internal Node(Socket socket, IPAddress ip)
+        internal Node(Socket socket)
         {
             Socket = socket;
-            Ip = ip;
+            Ip = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
+            CommonConstructor();
+        }
+
+        // Stuff common for all constructors
+        private void CommonConstructor()
+        {
             SelfAes = new Aes();
             NicknameNum = 0;
             State = Status.Waiting;
-            HandshakeTimer = new Timer { Interval = 5000 };
-
+            HandshakeTimer = new Timer { Interval = 5000, Enabled = false };
+            HeartbeatTimer = new Timer { Interval = 1200, Enabled = false };
             WaitForHandshake();
         }
 
@@ -111,9 +112,9 @@ namespace Lanchat.Common.NetworkLib
         internal Aes RemoteAes { get; set; }
         internal Aes SelfAes { get; set; }
         internal Socket Socket { get; set; }
+        internal NodeEventsHandlers EventsHandlers { get; set; }
 
         internal event EventHandler HandshakeAccepted;
-        internal event EventHandler HandshakeTimeout;
         internal event EventHandler StateChanged;
 
         internal void AcceptHandshake(Handshake handshake)
@@ -151,11 +152,6 @@ namespace Lanchat.Common.NetworkLib
 
         internal void StartHeartbeat()
         {
-            HeartbeatTimer = new Timer
-            {
-                Interval = 1200,
-                Enabled = true
-            };
             HeartbeatTimer.Elapsed += new ElapsedEventHandler(OnHeartebatOver);
             HeartbeatTimer.Start();
 
@@ -179,7 +175,6 @@ namespace Lanchat.Common.NetworkLib
         internal void WaitForHandshake()
         {
             // Wait for handshake
-            HandshakeTimer.Elapsed += new ElapsedEventHandler(OnHandshakeTimeout);
             HandshakeTimer.Start();
         }
 
@@ -198,15 +193,6 @@ namespace Lanchat.Common.NetworkLib
         {
             StateChanged(this, EventArgs.Empty);
         }
-
-        /// <summary>
-        /// Handshake timeout event
-        /// </summary>
-        protected void OnHandshakeTimeout(object o, ElapsedEventArgs e)
-        {
-            HandshakeTimeout(this, EventArgs.Empty);
-        }
-
 
         // Hearbeat over event
         private void OnHeartebatOver(object o, ElapsedEventArgs e)
@@ -289,7 +275,10 @@ namespace Lanchat.Common.NetworkLib
                 if (disposing)
                 {
                     HeartbeatTimer.Dispose();
-                    Client.Dispose();
+                    if(Client != null)
+                    {
+                        Client.Dispose();
+                    }
                 }
                 disposedValue = true;
             }

@@ -105,7 +105,7 @@ namespace Lanchat.Common.NetworkLib
                     var socket = server.Accept();
                     var ip = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
-                    Events.OnNodeConnected(socket, ip);
+                    Events.OnNodeConnected(socket);
                     new Thread(() =>
                     {
                         try

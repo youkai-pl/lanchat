@@ -43,7 +43,7 @@ namespace Lanchat.Common.NetworkLib
             }
             else
             {
-                network.CreateNode(new Node(e.Socket, e.NodeIP), false);
+                network.CreateNode(new Node(e.Socket), false);
             }
         }
 

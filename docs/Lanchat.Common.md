@@ -43,7 +43,7 @@
   - [Start()](#M-Lanchat-Common-NetworkLib-Network-Start 'Lanchat.Common.NetworkLib.Network.Start')
 - [Node](#T-Lanchat-Common-NetworkLib-Node 'Lanchat.Common.NetworkLib.Node')
   - [#ctor(port,ip)](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Int32,System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Int32,System.Net.IPAddress)')
-  - [#ctor()](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-Sockets-Socket,System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Net.Sockets.Socket,System.Net.IPAddress)')
+  - [#ctor()](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-Sockets-Socket- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Net.Sockets.Socket)')
   - [ClearNickname](#P-Lanchat-Common-NetworkLib-Node-ClearNickname 'Lanchat.Common.NetworkLib.Node.ClearNickname')
   - [Handshake](#P-Lanchat-Common-NetworkLib-Node-Handshake 'Lanchat.Common.NetworkLib.Node.Handshake')
   - [HearbeatCount](#P-Lanchat-Common-NetworkLib-Node-HearbeatCount 'Lanchat.Common.NetworkLib.Node.HearbeatCount')
@@ -57,7 +57,6 @@
   - [Dispose(disposing)](#M-Lanchat-Common-NetworkLib-Node-Dispose-System-Boolean- 'Lanchat.Common.NetworkLib.Node.Dispose(System.Boolean)')
   - [Finalize()](#M-Lanchat-Common-NetworkLib-Node-Finalize 'Lanchat.Common.NetworkLib.Node.Finalize')
   - [OnHandshakeAccepted()](#M-Lanchat-Common-NetworkLib-Node-OnHandshakeAccepted 'Lanchat.Common.NetworkLib.Node.OnHandshakeAccepted')
-  - [OnHandshakeTimeout()](#M-Lanchat-Common-NetworkLib-Node-OnHandshakeTimeout-System-Object,System-Timers-ElapsedEventArgs- 'Lanchat.Common.NetworkLib.Node.OnHandshakeTimeout(System.Object,System.Timers.ElapsedEventArgs)')
   - [OnStateChange()](#M-Lanchat-Common-NetworkLib-Node-OnStateChange 'Lanchat.Common.NetworkLib.Node.OnStateChange')
 - [NodeAlreadyExistException](#T-Lanchat-Common-NetworkLib-NodeAlreadyExistException 'Lanchat.Common.NetworkLib.NodeAlreadyExistException')
 - [NodeConnectionStatusEventArgs](#T-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs')
@@ -488,7 +487,7 @@ Node constructor with known port.
 | port | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Node TCP port |
 | ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node IP |
 
-<a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-Sockets-Socket,System-Net-IPAddress-'></a>
+<a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-Sockets-Socket-'></a>
 ### #ctor() `constructor`
 
 ##### Summary
@@ -603,17 +602,6 @@ This method has no parameters.
 ##### Summary
 
 Handshake accepted event.
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-Lanchat-Common-NetworkLib-Node-OnHandshakeTimeout-System-Object,System-Timers-ElapsedEventArgs-'></a>
-### OnHandshakeTimeout() `method`
-
-##### Summary
-
-Handshake timeout event
 
 ##### Parameters
 

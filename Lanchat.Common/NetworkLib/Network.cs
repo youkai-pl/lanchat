@@ -149,12 +149,14 @@ namespace Lanchat.Common.NetworkLib
                 {
                     throw new NodeAlreadyExistException();
                 }
+
+                node.Dispose();
             }
             else
             {
                 NodeList.Add(node);
-
-                _ = new NodeEventsHandlers(this, node);
+                node.HandshakeTimer.Start();
+                node.EventsHandlers = new NodeEventsHandlers(this, node);
 
                 if (node.Port != 0)
                 {

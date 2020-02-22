@@ -38,12 +38,11 @@ namespace Lanchat.Common.NetworkLib
             });
         }
 
-        internal virtual void OnNodeConnected(Socket socket, IPAddress ip)
+        internal virtual void OnNodeConnected(Socket socket)
         {
             NodeConnected(this, new NodeConnectionStatusEventArgs()
             {
                 Socket = socket,
-                NodeIP = ip
             });
         }
 

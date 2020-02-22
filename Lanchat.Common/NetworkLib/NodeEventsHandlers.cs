@@ -16,7 +16,7 @@ namespace Lanchat.Common.NetworkLib
 
             node.StateChanged += OnStatusChanged;
             node.HandshakeAccepted += OnHandshakeAccepted;
-            node.HandshakeTimeout += OnHandshakeTimeout;
+            node.HandshakeTimer.Elapsed += OnHandshakeTimeout;
         }
 
         private void OnHandshakeAccepted(object sender, EventArgs e)
@@ -34,6 +34,10 @@ namespace Lanchat.Common.NetworkLib
                 Trace.WriteLine($"[NODE] Handshake timed out {node.Ip}");
                 network.NodeList.Remove(node);
                 node.Dispose();
+            }
+            else
+            {
+                Trace.WriteLine($"[NODE] Handshake received on time {node.Ip}");
             }
         }
 
