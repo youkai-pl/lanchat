@@ -152,6 +152,8 @@ namespace Lanchat.Common.NetworkLib
             }
             else
             {
+                NodeList.Add(node);
+
                 _ = new NodeEventsHandlers(this, node);
 
                 if (node.Port != 0)
@@ -165,12 +167,8 @@ namespace Lanchat.Common.NetworkLib
                     Trace.WriteLine($"[NETWORK] One way connection. Waiting for handshake ({node.Ip})");
                 }
 
-                NodeList.Add(node);
-
                 Trace.WriteLine($"[NETWORK] Node created successful ({node.Ip}:{node.Port.ToString(CultureInfo.CurrentCulture)})");
             }
-
-
         }
 
         // Find free tcp port

@@ -19,15 +19,25 @@ namespace Lanchat.Common.NetworkLib
             node.HandshakeTimeout += OnHandshakeTimeout;
         }
 
-        // Handshake accepted event handler
-        internal void OnHandshakeAccepted(object sender, EventArgs e)
+        private void OnHandshakeAccepted(object sender, EventArgs e)
         {
             node.Client.SendHandshake(new Handshake(network.Nickname, network.PublicKey, network.HostPort));
             node.Client.SendList(network.NodeList);
         }
 
-        // Ready change event handler
-        internal void OnStatusChanged(object sender, EventArgs e)
+        private void OnHandshakeTimeout(object o, EventArgs e)
+        {
+            node.HandshakeTimer.Dispose();
+
+            if (node.Handshake == null)
+            {
+                Trace.WriteLine($"[NODE] Handshake timed out {node.Ip}");
+                network.NodeList.Remove(node);
+                node.Dispose();
+            }
+        }
+
+        private void OnStatusChanged(object sender, EventArgs e)
         {
             // Node ready
             if (node.State == Status.Ready)
@@ -50,18 +60,6 @@ namespace Lanchat.Common.NetworkLib
                 node.State = Status.Ready;
                 network.Events.OnNodeResumed(node.Ip, node.Nickname);
                 Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / resumed)");
-            }
-        }
-
-        internal void OnHandshakeTimeout(object o, EventArgs e)
-        {
-            node.HandshakeTimer.Dispose();
-
-            if (node.Handshake == null)
-            {
-                Trace.WriteLine($"[NODE] Handshake timed out {node.Ip}");
-                network.NodeList.Remove(node);
-                node.Dispose();
             }
         }
     }
