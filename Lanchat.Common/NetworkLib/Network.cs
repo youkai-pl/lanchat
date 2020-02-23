@@ -1,13 +1,13 @@
 ﻿using Lanchat.Common.Cryptography;
-using Lanchat.Common.HostLib;
+using Lanchat.Common.NetworkLib.Api;
+using Lanchat.Common.NetworkLib.Handlers;
 using Lanchat.Common.Types;
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-using Lanchat.Common.NetworkLib.Api;
 using System.Diagnostics;
 using System.Globalization;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -16,9 +16,7 @@ namespace Lanchat.Common.NetworkLib
     /// </summary>
     public class Network : IDisposable
     {
-
         private readonly Host host;
-        private readonly HostEventsHandlers hostHandlers;
         private string nickname;
 
         /// <summary>
@@ -29,19 +27,13 @@ namespace Lanchat.Common.NetworkLib
         /// <param name="hostPort">TCP host port. Set to -1 to use free ephemeral port</param>
         public Network(int broadcastPort, string nickname, int hostPort = -1)
         {
-            // Initialize RSA provider
             Rsa = new Rsa();
-
-            // Initialize node list
             NodeList = new List<Node>();
-
-            // Set properties
             Nickname = nickname;
             PublicKey = Rsa.PublicKey;
             BroadcastPort = broadcastPort;
             Id = Guid.NewGuid();
 
-            // Check
             if (hostPort == -1)
             {
                 HostPort = FreeTcpPort();
@@ -51,26 +43,9 @@ namespace Lanchat.Common.NetworkLib
                 HostPort = hostPort;
             }
 
-            // Create host class
             host = new Host(BroadcastPort);
-
-            // Listen API events
-            hostHandlers = new HostEventsHandlers(this);
-            host.Events.NodeConnected += hostHandlers.OnNodeConnected;
-            host.Events.NodeDisconnected += hostHandlers.OnNodeDisconnected;
-            host.Events.RecievedBroadcast += hostHandlers.OnReceivedBroadcast;
-            host.Events.ReceivedHandshake += hostHandlers.OnReceivedHandshake;
-            host.Events.ReceivedKey += hostHandlers.OnReceivedKey;
-            host.Events.RecievedMessage += hostHandlers.OnReceivedMessage;
-            host.Events.ReceivedHeartbeat += hostHandlers.OnReceivedHeartbeat;
-            host.Events.ReceivedRequest += hostHandlers.OnReceivedRequest;
-            host.Events.ReceivedList += hostHandlers.OnReceivedList;
-            host.Events.ChangedNickname += hostHandlers.OnChangedNickname;
-
-            // Create Events instance
-            Events = new Events();
-
-            // Create API outputs instance
+            _ = new HostEventsHandlers(this, host);
+            Events = new Api.Events();
             Methods = new Methods(this);
 
             Trace.WriteLine("[NETWORK] Network initialized");
@@ -79,7 +54,7 @@ namespace Lanchat.Common.NetworkLib
         /// <summary>
         /// Network API inputs class.
         /// </summary>
-        public Events Events { get; set; }
+        public Api.Events Events { get; set; }
 
         /// <summary>
         /// Self nickname. On set it sends new nickname to connected client.
@@ -89,6 +64,7 @@ namespace Lanchat.Common.NetworkLib
             get => nickname;
             set
             {
+                nickname = value;
                 ChangeNickname(value);
             }
         }
@@ -139,57 +115,76 @@ namespace Lanchat.Common.NetworkLib
             host.ListenBroadcast();
         }
 
-        // Create node
-        internal void CreateNode(Node node, bool manual)
+        internal void CreateNode(IPAddress ip = null, int port = 0, bool manual = false, Socket socket = null)
         {
+            // Get ip form socket
+            if (ip == null)
+            {
+                ip = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
+            }
 
             // Check is node with same ip alredy exist
-            var existingNode = NodeList.Find(x => x.Ip.Equals(node.Ip));
-
-            if (existingNode != null)
+            if (NodeList.Find(x => x.Ip.Equals(ip)) == null)
             {
-                Trace.WriteLine($"[NETWORK] Node already exist ({node.Ip})");
+                var node = new Node(ip);
+                node.EventsHandlers = new NodeEventsHandlers(this, node);
+                NodeList.Add(node);
+                if (socket != null)
+                {
+                    node.Socket = socket;
+                    node.StartProcess();
+                }
+
+                // Create a connection if the port is known
+                if (port != 0)
+                {
+                    node.Port = port;
+                    node.CreateConnection();
+                    node.Client.SendHandshake(new Handshake(Nickname, PublicKey, HostPort));
+                    node.Client.SendList(NodeList);
+                }
+                else
+                {
+                    Trace.WriteLine($"[NETWORK] One way connection. Waiting for handshake ({node.Ip})");
+                }
+
+                Trace.WriteLine($"[NETWORK] Node created successful ({node.Ip}:{node.Port.ToString(CultureInfo.CurrentCulture)})");
+            }
+            else
+            {
+                Trace.WriteLine($"[NETWORK] Node already exist ({ip})");
                 if (manual)
                 {
                     throw new NodeAlreadyExistException();
                 }
             }
-            else
-            {
-                node.ReadyChanged += OnStatusChanged;
-                node.CreateConnection();
-                node.Client.SendHandshake(new Handshake(Nickname, PublicKey, Id, HostPort));
-                node.Client.SendList(NodeList);
-                NodeList.Add(node);
+        }
 
-                Trace.WriteLine($"[NETWORK] Node created ({node.Ip}:{node.Port.ToString(CultureInfo.CurrentCulture)})");
+        internal void CloseNode(Node node)
+        {
+            var nickname = node.ClearNickname;
+            Trace.WriteLine($"[NETWORK] Node disconnected ({node.Ip})");
+            Events.OnNodeDisconnected(node.Ip, node.Nickname);
+            NodeList.Remove(node);
+            node.Dispose();
+            CheckNickcnameDuplicates(nickname);
+        }
+
+        internal void CheckNickcnameDuplicates(string nickname)
+        {
+            var nodes = NodeList.FindAll(x => x.ClearNickname == nickname);
+            if (nodes.Count > 1)
+            {
+                var index = 1;
+                foreach (var item in nodes)
+                {
+                    item.NicknameNum = index;
+                    index++;
+                }
             }
-
-            // Ready change event
-            void OnStatusChanged(object sender, EventArgs e)
+            else if (nodes.Count > 0)
             {
-                // Node ready
-                if (node.State == Status.Ready)
-                {
-                    Events.OnNodeConnected(node.Ip, node.Nickname);
-                    Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / ready)");
-                }
-
-                // Node suspended
-                else if (node.State == Status.Suspended)
-                {
-                    Events.OnNodeSuspended(node.Ip, node.Nickname);
-                    Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / suspended)");
-                }
-
-                // Node resumed
-                else if (node.State == Status.Resumed)
-                {
-                    node.Client.ResumeConnection();
-                    node.State = Status.Ready;
-                    Events.OnNodeResumed(node.Ip, node.Nickname);
-                    Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / resumed)");
-                }
+                nodes[0].NicknameNum = 0;
             }
         }
 
@@ -206,17 +201,17 @@ namespace Lanchat.Common.NetworkLib
         // Change nickname
         private void ChangeNickname(string value)
         {
-            nickname = value;
             NodeList.ForEach(x =>
             {
                 if (x.Client != null)
                 {
-                    x.Client.SendNickname(nickname);
+                    x.Client.SendNickname(value);
                 }
             });
         }
 
         #region IDisposable Support
+
         private bool disposedValue = false; // To detect redundant calls
 
         /// <summary>
@@ -253,6 +248,7 @@ namespace Lanchat.Common.NetworkLib
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        #endregion
+
+        #endregion IDisposable Support
     }
 }

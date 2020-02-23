@@ -32,7 +32,7 @@ namespace Lanchat.Console.Commands
                     break;
 
                 case "nick":
-                    if (args[1] != null)
+                    if (args.Length > 1)
                     {
                         Nick(string.Join(" ", args.Skip(1)));
                     }

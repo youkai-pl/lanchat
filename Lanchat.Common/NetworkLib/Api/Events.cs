@@ -48,14 +48,12 @@ namespace Lanchat.Common.NetworkLib.Api
         /// </summary>
         /// <param name="oldNickname">Old node nickname</param>
         /// <param name="newNickname">New node nickname</param>
-        /// <param name="senderIP">Node ip</param>
-        public virtual void OnChangedNickname(string oldNickname, string newNickname, IPAddress senderIP)
+        public virtual void OnChangedNickname(string oldNickname, string newNickname)
         {
             ChangedNickname(this, new ChangedNicknameEventArgs()
             {
                 NewNickname = newNickname,
                 OldNickname = oldNickname,
-                SenderIP = senderIP
             });
         }
 
@@ -70,6 +68,7 @@ namespace Lanchat.Common.NetworkLib.Api
                 Port = port
             });
         }
+
         /// <summary>
         /// Node connected event.
         /// </summary>
@@ -79,7 +78,6 @@ namespace Lanchat.Common.NetworkLib.Api
         {
             NodeConnected(this, new NodeConnectionStatusEventArgs()
             {
-                NodeIP = ip,
                 Nickname = nickname
             });
         }
@@ -93,7 +91,6 @@ namespace Lanchat.Common.NetworkLib.Api
         {
             NodeDisconnected(this, new NodeConnectionStatusEventArgs()
             {
-                NodeIP = ip,
                 Nickname = nickname
             });
         }
@@ -107,7 +104,6 @@ namespace Lanchat.Common.NetworkLib.Api
         {
             NodeResumed(this, new NodeConnectionStatusEventArgs()
             {
-                NodeIP = ip,
                 Nickname = nickname
             });
         }
@@ -121,7 +117,6 @@ namespace Lanchat.Common.NetworkLib.Api
         {
             NodeSuspended(this, new NodeConnectionStatusEventArgs()
             {
-                NodeIP = ip,
                 Nickname = nickname
             });
         }

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Lanchat.Common.NetworkLib;
+using Lanchat.Console.Ui;
+using System;
 using System.Net;
 using System.Threading;
-using Lanchat.Console.Ui;
-using Lanchat.Common.NetworkLib;
 
 namespace Lanchat.Console.Commands
 {
@@ -19,9 +19,7 @@ namespace Lanchat.Console.Commands
                     Prompt.Notice($"Attempting connect to {ip} on port {port}");
                     try
                     {
-
                         program.Network.Methods.Connect(parsedIP, parsedPort);
-
                     }
                     catch (ConnectionFailedException)
                     {

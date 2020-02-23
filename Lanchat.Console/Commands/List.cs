@@ -1,7 +1,7 @@
-﻿using Lanchat.Console.Ui;
+﻿using Lanchat.Common.NetworkLib;
 using Lanchat.Common.Types;
+using Lanchat.Console.Ui;
 using System.Collections.Generic;
-using Lanchat.Common.NetworkLib;
 
 namespace Lanchat.Console.Commands
 {
@@ -27,22 +27,22 @@ namespace Lanchat.Console.Commands
             }
         }
 
-        private string GetStatus(Node item)
+        private static string GetStatus(Node item)
         {
             if (item.State == Status.Ready)
             {
                 if (item.Mute)
                 {
-                    return "\u001b[93mmuted\u001b[0m";
+                    return "muted";
                 }
                 else
                 {
-                    return "\u001b[92monline\u001b[0m";
+                    return "online";
                 }
             }
             else
             {
-                return "\u001b[91offline\u001b[0m";
+                return "offline";
             }
         }
     }

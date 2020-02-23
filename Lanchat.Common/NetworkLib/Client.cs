@@ -1,5 +1,4 @@
-﻿using Lanchat.Common.NetworkLib;
-using Lanchat.Common.Types;
+﻿using Lanchat.Common.Types;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Lanchat.Common.HostLib
+namespace Lanchat.Common.NetworkLib
 {
     internal class Client : IDisposable
     {
@@ -38,9 +37,9 @@ namespace Lanchat.Common.HostLib
             }
         }
 
-        internal void ResumeConnection()
+        internal void ResumeConnection(string selfNickname)
         {
-            Send("request", "nickname");
+            SendNickname(selfNickname);
         }
 
         internal void Send(string type, JToken content)
@@ -97,11 +96,11 @@ namespace Lanchat.Common.HostLib
             if (node.State == Status.Ready)
             {
                 Send("message", node.SelfAes.Encode(message));
-                Trace.WriteLine($"[CLIENT] Message sent ({node.Ip} / {message})");
+                Trace.WriteLine($"[CLIENT] Message sent ({node.Ip})");
             }
             else
             {
-                Trace.WriteLine($"[CLIENT] Message not sent. Node isn't ready ({node.Ip} / {message})");
+                Trace.WriteLine($"[CLIENT] Message not sent. Node isn't ready ({node.Ip})");
             }
         }
 

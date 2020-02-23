@@ -1,8 +1,16 @@
 ﻿using Lanchat.Common.Cryptography;
-using Lanchat.Common.HostLib;
+using Lanchat.Common.NetworkLib.Events;
+using Lanchat.Common.NetworkLib.Handlers;
 using Lanchat.Common.Types;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Timers;
 
 namespace Lanchat.Common.NetworkLib
@@ -13,42 +21,30 @@ namespace Lanchat.Common.NetworkLib
     public class Node : IDisposable
     {
         /// <summary>
-        /// Node constructor.
+        /// Node constructor with known port.
         /// </summary>
-        /// <param name="id">Node ID</param>
-        /// <param name="port">Node TCP port</param>
         /// <param name="ip">Node IP</param>
-        internal Node(Guid id, int port, IPAddress ip)
+        internal Node(IPAddress ip)
         {
-            Id = id;
-            Port = port;
+            Events = new NodeEvents();
             Ip = ip;
             SelfAes = new Aes();
             NicknameNum = 0;
             State = Status.Waiting;
+            HandshakeTimer = new Timer { Interval = 5000, Enabled = true };
+            HeartbeatTimer = new Timer { Interval = 1200, Enabled = false };
+            WaitForHandshake();
         }
-
-        /// <summary>
-        /// Node constructor without id.
-        /// </summary>
-        /// <param name="port">Node TCP port</param>
-        /// <param name="ip">Node IP</param>
-        internal Node(int port, IPAddress ip)
-        {
-            Port = port;
-            Ip = ip;
-            SelfAes = new Aes();
-            NicknameNum = 0;
-            State = Status.Waiting;
-        }
-
-        // Ready property change event
-        internal event EventHandler ReadyChanged;
 
         /// <summary>
         /// Nickname without number.
         /// </summary>
         public string ClearNickname { get; private set; }
+
+        /// <summary>
+        /// Handshake.
+        /// </summary>
+        public Handshake Handshake { get; set; }
 
         /// <summary>
         /// Heartbeat counter.
@@ -59,11 +55,6 @@ namespace Lanchat.Common.NetworkLib
         /// Last heartbeat status.
         /// </summary>
         public bool Heartbeat { get; set; }
-
-        /// <summary>
-        /// Node ID.
-        /// </summary>
-        public Guid Id { get; set; }
 
         /// <summary>
         /// Node IP.
@@ -100,71 +91,157 @@ namespace Lanchat.Common.NetworkLib
         public int Port { get; set; }
 
         /// <summary>
-        /// Node public RSA key.
-        /// </summary>
-        public string PublicKey { get; set; }
-
-        /// <summary>
         /// Node <see cref="Status"/>.
         /// </summary>
         public Status State { get; set; }
 
         internal Client Client { get; set; }
+        internal NodeEvents Events { get; set; }
+        internal NodeEventsHandlers EventsHandlers { get; set; }
+        internal Timer HandshakeTimer { get; set; }
         internal Timer HeartbeatTimer { get; set; }
         internal int NicknameNum { get; set; }
         internal Aes RemoteAes { get; set; }
         internal Aes SelfAes { get; set; }
+        internal Socket Socket { get; set; }
 
-        // Use values from received handshake
         internal void AcceptHandshake(Handshake handshake)
         {
+            Handshake = handshake;
             Nickname = handshake.Nickname;
-            PublicKey = handshake.PublicKey;
 
-            if (Id == null)
+            if (Port == 0)
             {
-                Id = handshake.Id;
+                Port = handshake.Port;
+                CreateConnection();
+                Events.OnHandshakeAccepted();
             }
 
-            // Send AES encryption key
             Client.SendKey(new Key(
-                Rsa.Encode(SelfAes.Key, PublicKey),
-                Rsa.Encode(SelfAes.IV, PublicKey)));
+                     Rsa.Encode(SelfAes.Key, Handshake.PublicKey),
+                     Rsa.Encode(SelfAes.IV, Handshake.PublicKey)));
         }
 
-        // Create connection
         internal void CreateConnection()
         {
             Client = new Client(this);
             Client.Connect(Ip, Port);
         }
 
-        // Create AES instance with received key
         internal void CreateRemoteAes(string key, string iv)
         {
             RemoteAes = new Aes(key, iv);
 
-            // Set ready to true
             State = Status.Ready;
-            OnStateChange();
+            Events.OnStateChange();
 
-            // Start heartbeat
             StartHeartbeat();
         }
 
-        // Start heartbeat
+        internal void Process()
+        {
+            byte[] response;
+
+            while (true)
+            {
+                response = new byte[Socket.ReceiveBufferSize];
+                _ = Socket.Receive(response);
+
+                if (!Socket.IsConnected())
+                {
+                    Trace.WriteLine($"[HOST] Socket closed ({Ip})");
+                    Socket.Close();
+                    Events.OnNodeDisconnected(Ip);
+                    break;
+                }
+
+                try
+                {
+                    var respBytesList = new List<byte>(response);
+                    var data = Encoding.UTF8.GetString(respBytesList.ToArray());
+
+                    // Parse jsons
+                    IList<JObject> buffer = new List<JObject>();
+
+                    JsonTextReader reader = new JsonTextReader(new StringReader(data))
+                    {
+                        SupportMultipleContent = true
+                    };
+
+                    using (reader)
+                    {
+                        while (true)
+                        {
+                            if (!reader.Read())
+                            {
+                                break;
+                            }
+
+                            JsonSerializer serializer = new JsonSerializer();
+                            JObject packet = serializer.Deserialize<JObject>(reader);
+
+                            buffer.Add(packet);
+                        }
+                    }
+
+                    // Process all parsed jsons from buffer
+                    foreach (JObject packet in buffer)
+                    {
+                        IList<JToken> obj = packet;
+                        var type = ((JProperty)obj[0]).Name;
+                        var content = ((JProperty)obj[0]).Value;
+
+                        // Events
+
+                        if (type == "handshake")
+                        {
+                            Events.OnReceivedHandshake(content.ToObject<Handshake>());
+                        }
+
+                        if (type == "key")
+                        {
+                            Events.OnReceivedKey(content.ToObject<Key>());
+                        }
+
+                        if (type == "heartbeat")
+                        {
+                            Events.OnReceivedHeartbeat();
+                        }
+
+                        // Data
+
+                        if (type == "message")
+                        {
+                            Events.OnReceivedMessage(content.ToString());
+                        }
+
+                        if (type == "nickname")
+                        {
+                            Events.OnChangedNickname(content.ToString());
+                        }
+
+                        if (type == "list")
+                        {
+                            Events.OnReceivedList(content.ToObject<List<ListItem>>(), IPAddress.Parse(((IPEndPoint)Socket.LocalEndPoint).Address.ToString()));
+                        }
+                    }
+                }
+                catch (DecoderFallbackException)
+                {
+                    Trace.WriteLine($"[HOST] Data processing error: utf8 decode gone wrong ({Ip})");
+                }
+                catch (JsonReaderException)
+                {
+                    Trace.WriteLine($"([HOST] Data processing error: not vaild json ({Ip})");
+                }
+            }
+        }
+
         internal void StartHeartbeat()
         {
-            // Create heartbeat timer
-            HeartbeatTimer = new Timer
-            {
-                Interval = 1200,
-                Enabled = true
-            };
             HeartbeatTimer.Elapsed += new ElapsedEventHandler(OnHeartebatOver);
-            HeartbeatTimer.Start(); ;
+            HeartbeatTimer.Start();
 
-            // Start sending heartbeat
             new System.Threading.Thread(() =>
             {
                 while (true)
@@ -182,12 +259,28 @@ namespace Lanchat.Common.NetworkLib
             }).Start();
         }
 
-        /// <summary>
-        /// State change event.
-        /// </summary>
-        protected void OnStateChange()
+        internal void StartProcess()
         {
-            ReadyChanged(this, EventArgs.Empty);
+            new System.Threading.Thread(() =>
+            {
+                try
+                {
+                    Process();
+                }
+                catch (SocketException)
+                {
+                    // Disconnect node on exception
+                    Trace.WriteLine($"[HOST] Socket exception. Node will be disconnected ({Ip})");
+                    Events.OnNodeDisconnected(Ip);
+                    Socket.Close();
+                }
+            }).Start();
+        }
+
+        internal void WaitForHandshake()
+        {
+            // Wait for handshake
+            HandshakeTimer.Start();
         }
 
         // Hearbeat over event
@@ -213,7 +306,7 @@ namespace Lanchat.Common.NetworkLib
                 if (State == Status.Suspended)
                 {
                     State = Status.Resumed;
-                    OnStateChange();
+                    Events.OnStateChange();
                 }
             }
             else
@@ -232,7 +325,7 @@ namespace Lanchat.Common.NetworkLib
                 if (State != Status.Suspended)
                 {
                     State = Status.Suspended;
-                    OnStateChange();
+                    Events.OnStateChange();
                 }
             }
         }
@@ -270,8 +363,14 @@ namespace Lanchat.Common.NetworkLib
             {
                 if (disposing)
                 {
-                    HeartbeatTimer.Dispose();
-                    Client.Dispose();
+                    if (HeartbeatTimer != null)
+                    {
+                        HeartbeatTimer.Dispose();
+                    }
+                    if (Client != null)
+                    {
+                        Client.Dispose();
+                    }
                 }
                 disposedValue = true;
             }

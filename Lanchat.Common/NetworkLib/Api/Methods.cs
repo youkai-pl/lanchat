@@ -29,7 +29,6 @@ namespace Lanchat.Common.NetworkLib.Api
             });
         }
 
-
         /// <summary>
         /// Manual connect.
         /// </summary>
@@ -38,7 +37,7 @@ namespace Lanchat.Common.NetworkLib.Api
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
         public void Connect(IPAddress ip, int port)
         {
-            network.CreateNode(new Node(port, ip), true);
+            network.CreateNode(ip, port, true);
         }
     }
 }
