@@ -1,13 +1,12 @@
 ﻿using Lanchat.Common.Cryptography;
+using Lanchat.Common.NetworkLib.Api;
 using Lanchat.Common.Types;
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-using Lanchat.Common.NetworkLib.Api;
 using System.Diagnostics;
 using System.Globalization;
-using System.Timers;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -138,28 +137,29 @@ namespace Lanchat.Common.NetworkLib
             host.ListenBroadcast();
         }
 
-        // Create node
-        internal void CreateNode(Node node, bool manual)
+        internal void CreateNode(IPAddress ip = null, int port = 0, bool manual = false, Socket socket = null)
         {
-            // Check is node with same ip alredy exist
-            if (NodeList.Find(x => x.Ip.Equals(node.Ip)) != null)
+            // Get ip form socket
+            if (ip == null)
             {
-                Trace.WriteLine($"[NETWORK] Node already exist ({node.Ip})");
-                if (manual)
+                ip = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
+            }
+
+            // Check is node with same ip alredy exist
+            if (NodeList.Find(x => x.Ip.Equals(ip)) == null)
+            {
+                var node = new Node(ip);
+                node.EventsHandlers = new NodeEventsHandlers(this, node);
+                NodeList.Add(node);
+                if (socket != null)
                 {
-                    throw new NodeAlreadyExistException();
+                    node.Socket = socket;
                 }
 
-                node.Dispose();
-            }
-            else
-            {
-                NodeList.Add(node);
-                node.HandshakeTimer.Start();
-                node.EventsHandlers = new NodeEventsHandlers(this, node);
-
-                if (node.Port != 0)
+                // Create a connection if the port is known
+                if (port != 0)
                 {
+                    node.Port = port;
                     node.CreateConnection();
                     node.Client.SendHandshake(new Handshake(Nickname, PublicKey, HostPort));
                     node.Client.SendList(NodeList);
@@ -170,6 +170,14 @@ namespace Lanchat.Common.NetworkLib
                 }
 
                 Trace.WriteLine($"[NETWORK] Node created successful ({node.Ip}:{node.Port.ToString(CultureInfo.CurrentCulture)})");
+            }
+            else
+            {
+                Trace.WriteLine($"[NETWORK] Node already exist ({ip})");
+                if (manual)
+                {
+                    throw new NodeAlreadyExistException();
+                }
             }
         }
 
@@ -196,6 +204,7 @@ namespace Lanchat.Common.NetworkLib
         }
 
         #region IDisposable Support
+
         private bool disposedValue = false; // To detect redundant calls
 
         /// <summary>
@@ -232,6 +241,7 @@ namespace Lanchat.Common.NetworkLib
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        #endregion
+
+        #endregion IDisposable Support
     }
 }

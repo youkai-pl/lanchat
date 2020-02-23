@@ -16,32 +16,14 @@ namespace Lanchat.Common.NetworkLib
         /// <summary>
         /// Node constructor with known port.
         /// </summary>
-        /// <param name="port">Node TCP port</param>
         /// <param name="ip">Node IP</param>
-        internal Node(int port, IPAddress ip)
+        internal Node(IPAddress ip)
         {
-            Port = port;
             Ip = ip;
-            CommonConstructor();
-        }
-
-        /// <summary>
-        /// Node constructor with socket.
-        /// </summary>
-        internal Node(Socket socket)
-        {
-            Socket = socket;
-            Ip = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
-            CommonConstructor();
-        }
-
-        // Stuff common for all constructors
-        private void CommonConstructor()
-        {
             SelfAes = new Aes();
             NicknameNum = 0;
             State = Status.Waiting;
-            HandshakeTimer = new Timer { Interval = 5000, Enabled = false };
+            HandshakeTimer = new Timer { Interval = 5000, Enabled = true };
             HeartbeatTimer = new Timer { Interval = 1200, Enabled = false };
             WaitForHandshake();
         }
@@ -274,8 +256,11 @@ namespace Lanchat.Common.NetworkLib
             {
                 if (disposing)
                 {
-                    HeartbeatTimer.Dispose();
-                    if(Client != null)
+                    if (HeartbeatTimer != null)
+                    {
+                        HeartbeatTimer.Dispose();
+                    }
+                    if (Client != null)
                     {
                         Client.Dispose();
                     }

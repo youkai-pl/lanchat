@@ -43,7 +43,7 @@ namespace Lanchat.Common.NetworkLib
             }
             else
             {
-                network.CreateNode(new Node(e.Socket), false);
+                network.CreateNode(socket: e.Socket);
             }
         }
 
@@ -58,7 +58,7 @@ namespace Lanchat.Common.NetworkLib
             if (CheckBroadcastID(e.Sender, e.SenderIP))
             {
                 Trace.WriteLine($"[NETOWRK] Broadcast received ({e.SenderIP})");
-                network.CreateNode(new Node(e.Sender.Port, e.SenderIP), false);
+                network.CreateNode(e.SenderIP, e.Sender.Port);
             }
         }
 
@@ -95,7 +95,7 @@ namespace Lanchat.Common.NetworkLib
 
                 if (!ip.Equals(e.LocalAddress))
                 {
-                    network.CreateNode(new Node(item.Port, ip), false);
+                    network.CreateNode(ip, item.Port);
                 }
             }
         }

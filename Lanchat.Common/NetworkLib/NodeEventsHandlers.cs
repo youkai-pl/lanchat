@@ -35,10 +35,6 @@ namespace Lanchat.Common.NetworkLib
                 network.NodeList.Remove(node);
                 node.Dispose();
             }
-            else
-            {
-                Trace.WriteLine($"[NODE] Handshake received on time {node.Ip}");
-            }
         }
 
         private void OnStatusChanged(object sender, EventArgs e)

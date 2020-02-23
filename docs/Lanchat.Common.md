@@ -42,8 +42,7 @@
   - [Finalize()](#M-Lanchat-Common-NetworkLib-Network-Finalize 'Lanchat.Common.NetworkLib.Network.Finalize')
   - [Start()](#M-Lanchat-Common-NetworkLib-Network-Start 'Lanchat.Common.NetworkLib.Network.Start')
 - [Node](#T-Lanchat-Common-NetworkLib-Node 'Lanchat.Common.NetworkLib.Node')
-  - [#ctor(port,ip)](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Int32,System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Int32,System.Net.IPAddress)')
-  - [#ctor()](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-Sockets-Socket- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Net.Sockets.Socket)')
+  - [#ctor(ip)](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Net.IPAddress)')
   - [ClearNickname](#P-Lanchat-Common-NetworkLib-Node-ClearNickname 'Lanchat.Common.NetworkLib.Node.ClearNickname')
   - [Handshake](#P-Lanchat-Common-NetworkLib-Node-Handshake 'Lanchat.Common.NetworkLib.Node.Handshake')
   - [HearbeatCount](#P-Lanchat-Common-NetworkLib-Node-HearbeatCount 'Lanchat.Common.NetworkLib.Node.HearbeatCount')
@@ -473,8 +472,8 @@ Lanchat.Common.NetworkLib
 
 Represents network node.
 
-<a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Int32,System-Net-IPAddress-'></a>
-### #ctor(port,ip) `constructor`
+<a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-IPAddress-'></a>
+### #ctor(ip) `constructor`
 
 ##### Summary
 
@@ -484,19 +483,7 @@ Node constructor with known port.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| port | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Node TCP port |
 | ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node IP |
-
-<a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-Sockets-Socket-'></a>
-### #ctor() `constructor`
-
-##### Summary
-
-Node constructor with socket.
-
-##### Parameters
-
-This constructor has no parameters.
 
 <a name='P-Lanchat-Common-NetworkLib-Node-ClearNickname'></a>
 ### ClearNickname `property`
