@@ -53,16 +53,7 @@ namespace Lanchat.Common.NetworkLib
             host = new Host(BroadcastPort);
 
             // Listen API events
-            hostHandlers = new HostEventsHandlers(this);
-            host.Events.NodeConnected += hostHandlers.OnNodeConnected;
-            host.Events.NodeDisconnected += hostHandlers.OnNodeDisconnected;
-            host.Events.RecievedBroadcast += hostHandlers.OnReceivedBroadcast;
-            host.Events.ReceivedHandshake += hostHandlers.OnReceivedHandshake;
-            host.Events.ReceivedKey += hostHandlers.OnReceivedKey;
-            host.Events.RecievedMessage += hostHandlers.OnReceivedMessage;
-            host.Events.ReceivedHeartbeat += hostHandlers.OnReceivedHeartbeat;
-            host.Events.ReceivedList += hostHandlers.OnReceivedList;
-            host.Events.ChangedNickname += hostHandlers.OnChangedNickname;
+            hostHandlers = new HostEventsHandlers(this, host);            
 
             // Create Events instance
             Events = new Events();
@@ -154,6 +145,7 @@ namespace Lanchat.Common.NetworkLib
                 if (socket != null)
                 {
                     node.Socket = socket;
+                    node.StartProcess();
                 }
 
                 // Create a connection if the port is known
@@ -178,6 +170,34 @@ namespace Lanchat.Common.NetworkLib
                 {
                     throw new NodeAlreadyExistException();
                 }
+            }
+        }
+
+        internal void CloseNode(Node node)
+        {
+            var nickname = node.ClearNickname;
+            Trace.WriteLine($"[NETWORK] Node disconnected ({node.Ip})");
+            Events.OnNodeDisconnected(node.Ip, node.Nickname);
+            NodeList.Remove(node);
+            node.Dispose();
+            CheckNickcnameDuplicates(nickname);
+        }
+
+        internal void CheckNickcnameDuplicates(string nickname)
+        {
+            var nodes = NodeList.FindAll(x => x.ClearNickname == nickname);
+            if (nodes.Count > 1)
+            {
+                var index = 1;
+                foreach (var item in nodes)
+                {
+                    item.NicknameNum = index;
+                    index++;
+                }
+            }
+            else if (nodes.Count > 0)
+            {
+                nodes[0].NicknameNum = 0;
             }
         }
 

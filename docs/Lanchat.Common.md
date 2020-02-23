@@ -6,10 +6,9 @@
 - [ChangedNicknameEventArgs](#T-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs 'Lanchat.Common.NetworkLib.ChangedNicknameEventArgs')
   - [NewNickname](#P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-NewNickname 'Lanchat.Common.NetworkLib.ChangedNicknameEventArgs.NewNickname')
   - [OldNickname](#P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-OldNickname 'Lanchat.Common.NetworkLib.ChangedNicknameEventArgs.OldNickname')
-  - [SenderIP](#P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-SenderIP 'Lanchat.Common.NetworkLib.ChangedNicknameEventArgs.SenderIP')
 - [ConnectionFailedException](#T-Lanchat-Common-NetworkLib-ConnectionFailedException 'Lanchat.Common.NetworkLib.ConnectionFailedException')
 - [Events](#T-Lanchat-Common-NetworkLib-Api-Events 'Lanchat.Common.NetworkLib.Api.Events')
-  - [OnChangedNickname(oldNickname,newNickname,senderIP)](#M-Lanchat-Common-NetworkLib-Api-Events-OnChangedNickname-System-String,System-String,System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Api.Events.OnChangedNickname(System.String,System.String,System.Net.IPAddress)')
+  - [OnChangedNickname(oldNickname,newNickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnChangedNickname-System-String,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnChangedNickname(System.String,System.String)')
   - [OnHostStarted(port)](#M-Lanchat-Common-NetworkLib-Api-Events-OnHostStarted-System-Int32- 'Lanchat.Common.NetworkLib.Api.Events.OnHostStarted(System.Int32)')
   - [OnNodeConnected(ip,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeConnected-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeConnected(System.Net.IPAddress,System.String)')
   - [OnNodeDisconnected(ip,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeDisconnected-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeDisconnected(System.Net.IPAddress,System.String)')
@@ -55,8 +54,6 @@
   - [Dispose()](#M-Lanchat-Common-NetworkLib-Node-Dispose 'Lanchat.Common.NetworkLib.Node.Dispose')
   - [Dispose(disposing)](#M-Lanchat-Common-NetworkLib-Node-Dispose-System-Boolean- 'Lanchat.Common.NetworkLib.Node.Dispose(System.Boolean)')
   - [Finalize()](#M-Lanchat-Common-NetworkLib-Node-Finalize 'Lanchat.Common.NetworkLib.Node.Finalize')
-  - [OnHandshakeAccepted()](#M-Lanchat-Common-NetworkLib-Node-OnHandshakeAccepted 'Lanchat.Common.NetworkLib.Node.OnHandshakeAccepted')
-  - [OnStateChange()](#M-Lanchat-Common-NetworkLib-Node-OnStateChange 'Lanchat.Common.NetworkLib.Node.OnStateChange')
 - [NodeAlreadyExistException](#T-Lanchat-Common-NetworkLib-NodeAlreadyExistException 'Lanchat.Common.NetworkLib.NodeAlreadyExistException')
 - [NodeConnectionStatusEventArgs](#T-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs')
   - [Nickname](#P-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs-Nickname 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs.Nickname')
@@ -64,7 +61,6 @@
 - [ReceivedMessageEventArgs](#T-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs')
   - [Content](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Content 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.Content')
   - [Nickname](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Nickname 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.Nickname')
-  - [SenderIP](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-SenderIP 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.SenderIP')
 - [Status](#T-Lanchat-Common-Types-Status 'Lanchat.Common.Types.Status')
   - [Ready](#F-Lanchat-Common-Types-Status-Ready 'Lanchat.Common.Types.Status.Ready')
   - [Resumed](#F-Lanchat-Common-Types-Status-Resumed 'Lanchat.Common.Types.Status.Resumed')
@@ -96,13 +92,6 @@ New nickname.
 
 Old nickname.
 
-<a name='P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-SenderIP'></a>
-### SenderIP `property`
-
-##### Summary
-
-IP of the sending node.
-
 <a name='T-Lanchat-Common-NetworkLib-ConnectionFailedException'></a>
 ## ConnectionFailedException `type`
 
@@ -125,8 +114,8 @@ Lanchat.Common.NetworkLib.Api
 
 Network API inputs class.
 
-<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnChangedNickname-System-String,System-String,System-Net-IPAddress-'></a>
-### OnChangedNickname(oldNickname,newNickname,senderIP) `method`
+<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnChangedNickname-System-String,System-String-'></a>
+### OnChangedNickname(oldNickname,newNickname) `method`
 
 ##### Summary
 
@@ -138,7 +127,6 @@ Node nickname change event.
 | ---- | ---- | ----------- |
 | oldNickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Old node nickname |
 | newNickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | New node nickname |
-| senderIP | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node ip |
 
 <a name='M-Lanchat-Common-NetworkLib-Api-Events-OnHostStarted-System-Int32-'></a>
 ### OnHostStarted(port) `method`
@@ -583,28 +571,6 @@ Destructor.
 
 This method has no parameters.
 
-<a name='M-Lanchat-Common-NetworkLib-Node-OnHandshakeAccepted'></a>
-### OnHandshakeAccepted() `method`
-
-##### Summary
-
-Handshake accepted event.
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-Lanchat-Common-NetworkLib-Node-OnStateChange'></a>
-### OnStateChange() `method`
-
-##### Summary
-
-State change event.
-
-##### Parameters
-
-This method has no parameters.
-
 <a name='T-Lanchat-Common-NetworkLib-NodeAlreadyExistException'></a>
 ## NodeAlreadyExistException `type`
 
@@ -665,13 +631,6 @@ Message content.
 ##### Summary
 
 Sender nickname.
-
-<a name='P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-SenderIP'></a>
-### SenderIP `property`
-
-##### Summary
-
-IP of the sending node.
 
 <a name='T-Lanchat-Common-Types-Status'></a>
 ## Status `type`

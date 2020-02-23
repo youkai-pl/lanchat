@@ -1,9 +1,14 @@
 ﻿using Lanchat.Common.Cryptography;
 using Lanchat.Common.Types;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Timers;
 
 namespace Lanchat.Common.NetworkLib
@@ -19,6 +24,7 @@ namespace Lanchat.Common.NetworkLib
         /// <param name="ip">Node IP</param>
         internal Node(IPAddress ip)
         {
+            Events = new NodeEvents();
             Ip = ip;
             SelfAes = new Aes();
             NicknameNum = 0;
@@ -95,9 +101,7 @@ namespace Lanchat.Common.NetworkLib
         internal Aes SelfAes { get; set; }
         internal Socket Socket { get; set; }
         internal NodeEventsHandlers EventsHandlers { get; set; }
-
-        internal event EventHandler HandshakeAccepted;
-        internal event EventHandler StateChanged;
+        internal NodeEvents Events { get; set; }
 
         internal void AcceptHandshake(Handshake handshake)
         {
@@ -108,7 +112,7 @@ namespace Lanchat.Common.NetworkLib
             {
                 Port = handshake.Port;
                 CreateConnection();
-                OnHandshakeAccepted();
+                Events.OnHandshakeAccepted();
             }
 
             Client.SendKey(new Key(
@@ -127,7 +131,7 @@ namespace Lanchat.Common.NetworkLib
             RemoteAes = new Aes(key, iv);
 
             State = Status.Ready;
-            OnStateChange();
+            Events.OnStateChange();
 
             StartHeartbeat();
         }
@@ -154,26 +158,127 @@ namespace Lanchat.Common.NetworkLib
             }).Start();
         }
 
+        internal void StartProcess()
+        {
+            new System.Threading.Thread(() =>
+            {
+                try
+                {
+                    Process();
+                }
+                catch (SocketException)
+                {
+                    // Disconnect node on exception
+                    Trace.WriteLine($"[HOST] Socket exception. Node will be disconnected ({Ip})");
+                    Events.OnNodeDisconnected(Ip);
+                    Socket.Close();
+                }
+            }).Start();
+        }
+
+        internal void Process()
+        {
+            byte[] response;
+
+            while (true)
+            {
+                response = new byte[Socket.ReceiveBufferSize];
+                _ = Socket.Receive(response);
+
+                if (!Socket.IsConnected())
+                {
+                    Trace.WriteLine($"[HOST] Socket closed ({Ip})");
+                    Socket.Close();
+                    Events.OnNodeDisconnected(Ip);
+                    break;
+                }
+
+                try
+                {
+                    var respBytesList = new List<byte>(response);
+                    var data = Encoding.UTF8.GetString(respBytesList.ToArray());
+
+                    // Parse jsons
+                    IList<JObject> buffer = new List<JObject>();
+
+                    JsonTextReader reader = new JsonTextReader(new StringReader(data))
+                    {
+                        SupportMultipleContent = true
+                    };
+
+                    using (reader)
+                    {
+                        while (true)
+                        {
+                            if (!reader.Read())
+                            {
+                                break;
+                            }
+
+                            JsonSerializer serializer = new JsonSerializer();
+                            JObject packet = serializer.Deserialize<JObject>(reader);
+
+                            buffer.Add(packet);
+                        }
+                    }
+
+                    // Process all parsed jsons from buffer
+                    foreach (JObject packet in buffer)
+                    {
+                        IList<JToken> obj = packet;
+                        var type = ((JProperty)obj[0]).Name;
+                        var content = ((JProperty)obj[0]).Value;
+
+                        // Events
+
+                        if (type == "handshake")
+                        {
+                            Events.OnReceivedHandshake(content.ToObject<Handshake>());
+                        }
+
+                        if (type == "key")
+                        {
+                            Events.OnReceivedKey(content.ToObject<Key>());
+                        }
+
+                        if (type == "heartbeat")
+                        {
+                            Events.OnReceivedHeartbeat();
+                        }
+
+                        // Data
+
+                        if (type == "message")
+                        {
+                            Events.OnReceivedMessage(content.ToString());
+                        }
+
+                        if (type == "nickname")
+                        {
+                            Events.OnChangedNickname(content.ToString());
+                        }
+
+                        if (type == "list")
+                        {
+                            Events.OnReceivedList(content.ToObject<List<ListItem>>(), IPAddress.Parse(((IPEndPoint)Socket.LocalEndPoint).Address.ToString()));
+                        }
+                    }
+                }
+                catch (DecoderFallbackException)
+                {
+                    Trace.WriteLine($"[HOST] Data processing error: utf8 decode gone wrong ({Ip})");
+                }
+                catch (JsonReaderException)
+                {
+                    Trace.WriteLine($"([HOST] Data processing error: not vaild json ({Ip})");
+                }
+            }
+        }
+
         internal void WaitForHandshake()
         {
             // Wait for handshake
             HandshakeTimer.Start();
-        }
-
-        /// <summary>
-        /// Handshake accepted event.
-        /// </summary>
-        protected void OnHandshakeAccepted()
-        {
-            HandshakeAccepted(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// State change event.
-        /// </summary>
-        protected void OnStateChange()
-        {
-            StateChanged(this, EventArgs.Empty);
         }
 
         // Hearbeat over event
@@ -199,7 +304,7 @@ namespace Lanchat.Common.NetworkLib
                 if (State == Status.Suspended)
                 {
                     State = Status.Resumed;
-                    OnStateChange();
+                    Events.OnStateChange();
                 }
             }
             else
@@ -218,7 +323,7 @@ namespace Lanchat.Common.NetworkLib
                 if (State != Status.Suspended)
                 {
                     State = Status.Suspended;
-                    OnStateChange();
+                    Events.OnStateChange();
                 }
             }
         }
