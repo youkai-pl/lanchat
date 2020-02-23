@@ -6,16 +6,20 @@
 - [ChangedNicknameEventArgs](#T-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs 'Lanchat.Common.NetworkLib.ChangedNicknameEventArgs')
   - [NewNickname](#P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-NewNickname 'Lanchat.Common.NetworkLib.ChangedNicknameEventArgs.NewNickname')
   - [OldNickname](#P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-OldNickname 'Lanchat.Common.NetworkLib.ChangedNicknameEventArgs.OldNickname')
-  - [SenderIP](#P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-SenderIP 'Lanchat.Common.NetworkLib.ChangedNicknameEventArgs.SenderIP')
 - [ConnectionFailedException](#T-Lanchat-Common-NetworkLib-ConnectionFailedException 'Lanchat.Common.NetworkLib.ConnectionFailedException')
 - [Events](#T-Lanchat-Common-NetworkLib-Api-Events 'Lanchat.Common.NetworkLib.Api.Events')
-  - [OnChangedNickname(oldNickname,newNickname,senderIP)](#M-Lanchat-Common-NetworkLib-Api-Events-OnChangedNickname-System-String,System-String,System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Api.Events.OnChangedNickname(System.String,System.String,System.Net.IPAddress)')
+  - [OnChangedNickname(oldNickname,newNickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnChangedNickname-System-String,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnChangedNickname(System.String,System.String)')
   - [OnHostStarted(port)](#M-Lanchat-Common-NetworkLib-Api-Events-OnHostStarted-System-Int32- 'Lanchat.Common.NetworkLib.Api.Events.OnHostStarted(System.Int32)')
   - [OnNodeConnected(ip,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeConnected-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeConnected(System.Net.IPAddress,System.String)')
   - [OnNodeDisconnected(ip,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeDisconnected-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeDisconnected(System.Net.IPAddress,System.String)')
   - [OnNodeResumed(ip,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeResumed-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeResumed(System.Net.IPAddress,System.String)')
   - [OnNodeSuspended(ip,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeSuspended-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeSuspended(System.Net.IPAddress,System.String)')
   - [OnReceivedMessage(content,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnReceivedMessage-System-String,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnReceivedMessage(System.String,System.String)')
+- [Handshake](#T-Lanchat-Common-Types-Handshake 'Lanchat.Common.Types.Handshake')
+  - [#ctor(nickname,publicKey,port)](#M-Lanchat-Common-Types-Handshake-#ctor-System-String,System-String,System-Int32- 'Lanchat.Common.Types.Handshake.#ctor(System.String,System.String,System.Int32)')
+  - [Nickname](#P-Lanchat-Common-Types-Handshake-Nickname 'Lanchat.Common.Types.Handshake.Nickname')
+  - [Port](#P-Lanchat-Common-Types-Handshake-Port 'Lanchat.Common.Types.Handshake.Port')
+  - [PublicKey](#P-Lanchat-Common-Types-Handshake-PublicKey 'Lanchat.Common.Types.Handshake.PublicKey')
 - [HostStartedEventArgs](#T-Lanchat-Common-NetworkLib-HostStartedEventArgs 'Lanchat.Common.NetworkLib.HostStartedEventArgs')
   - [Port](#P-Lanchat-Common-NetworkLib-HostStartedEventArgs-Port 'Lanchat.Common.NetworkLib.HostStartedEventArgs.Port')
 - [Methods](#T-Lanchat-Common-NetworkLib-Api-Methods 'Lanchat.Common.NetworkLib.Api.Methods')
@@ -37,22 +41,19 @@
   - [Finalize()](#M-Lanchat-Common-NetworkLib-Network-Finalize 'Lanchat.Common.NetworkLib.Network.Finalize')
   - [Start()](#M-Lanchat-Common-NetworkLib-Network-Start 'Lanchat.Common.NetworkLib.Network.Start')
 - [Node](#T-Lanchat-Common-NetworkLib-Node 'Lanchat.Common.NetworkLib.Node')
-  - [#ctor(id,port,ip)](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Guid,System-Int32,System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Guid,System.Int32,System.Net.IPAddress)')
-  - [#ctor(port,ip)](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Int32,System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Int32,System.Net.IPAddress)')
+  - [#ctor(ip)](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Net.IPAddress)')
   - [ClearNickname](#P-Lanchat-Common-NetworkLib-Node-ClearNickname 'Lanchat.Common.NetworkLib.Node.ClearNickname')
+  - [Handshake](#P-Lanchat-Common-NetworkLib-Node-Handshake 'Lanchat.Common.NetworkLib.Node.Handshake')
   - [HearbeatCount](#P-Lanchat-Common-NetworkLib-Node-HearbeatCount 'Lanchat.Common.NetworkLib.Node.HearbeatCount')
   - [Heartbeat](#P-Lanchat-Common-NetworkLib-Node-Heartbeat 'Lanchat.Common.NetworkLib.Node.Heartbeat')
-  - [Id](#P-Lanchat-Common-NetworkLib-Node-Id 'Lanchat.Common.NetworkLib.Node.Id')
   - [Ip](#P-Lanchat-Common-NetworkLib-Node-Ip 'Lanchat.Common.NetworkLib.Node.Ip')
   - [Mute](#P-Lanchat-Common-NetworkLib-Node-Mute 'Lanchat.Common.NetworkLib.Node.Mute')
   - [Nickname](#P-Lanchat-Common-NetworkLib-Node-Nickname 'Lanchat.Common.NetworkLib.Node.Nickname')
   - [Port](#P-Lanchat-Common-NetworkLib-Node-Port 'Lanchat.Common.NetworkLib.Node.Port')
-  - [PublicKey](#P-Lanchat-Common-NetworkLib-Node-PublicKey 'Lanchat.Common.NetworkLib.Node.PublicKey')
   - [State](#P-Lanchat-Common-NetworkLib-Node-State 'Lanchat.Common.NetworkLib.Node.State')
   - [Dispose()](#M-Lanchat-Common-NetworkLib-Node-Dispose 'Lanchat.Common.NetworkLib.Node.Dispose')
   - [Dispose(disposing)](#M-Lanchat-Common-NetworkLib-Node-Dispose-System-Boolean- 'Lanchat.Common.NetworkLib.Node.Dispose(System.Boolean)')
   - [Finalize()](#M-Lanchat-Common-NetworkLib-Node-Finalize 'Lanchat.Common.NetworkLib.Node.Finalize')
-  - [OnStateChange()](#M-Lanchat-Common-NetworkLib-Node-OnStateChange 'Lanchat.Common.NetworkLib.Node.OnStateChange')
 - [NodeAlreadyExistException](#T-Lanchat-Common-NetworkLib-NodeAlreadyExistException 'Lanchat.Common.NetworkLib.NodeAlreadyExistException')
 - [NodeConnectionStatusEventArgs](#T-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs')
   - [Nickname](#P-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs-Nickname 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs.Nickname')
@@ -60,7 +61,6 @@
 - [ReceivedMessageEventArgs](#T-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs')
   - [Content](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Content 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.Content')
   - [Nickname](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Nickname 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.Nickname')
-  - [SenderIP](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-SenderIP 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.SenderIP')
 - [Status](#T-Lanchat-Common-Types-Status 'Lanchat.Common.Types.Status')
   - [Ready](#F-Lanchat-Common-Types-Status-Ready 'Lanchat.Common.Types.Status.Ready')
   - [Resumed](#F-Lanchat-Common-Types-Status-Resumed 'Lanchat.Common.Types.Status.Resumed')
@@ -92,13 +92,6 @@ New nickname.
 
 Old nickname.
 
-<a name='P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-SenderIP'></a>
-### SenderIP `property`
-
-##### Summary
-
-IP of the sending node.
-
 <a name='T-Lanchat-Common-NetworkLib-ConnectionFailedException'></a>
 ## ConnectionFailedException `type`
 
@@ -121,8 +114,8 @@ Lanchat.Common.NetworkLib.Api
 
 Network API inputs class.
 
-<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnChangedNickname-System-String,System-String,System-Net-IPAddress-'></a>
-### OnChangedNickname(oldNickname,newNickname,senderIP) `method`
+<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnChangedNickname-System-String,System-String-'></a>
+### OnChangedNickname(oldNickname,newNickname) `method`
 
 ##### Summary
 
@@ -134,7 +127,6 @@ Node nickname change event.
 | ---- | ---- | ----------- |
 | oldNickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Old node nickname |
 | newNickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | New node nickname |
-| senderIP | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node ip |
 
 <a name='M-Lanchat-Common-NetworkLib-Api-Events-OnHostStarted-System-Int32-'></a>
 ### OnHostStarted(port) `method`
@@ -218,6 +210,53 @@ Received message event.
 | ---- | ---- | ----------- |
 | content | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Message content |
 | nickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Sender nickname |
+
+<a name='T-Lanchat-Common-Types-Handshake'></a>
+## Handshake `type`
+
+##### Namespace
+
+Lanchat.Common.Types
+
+##### Summary
+
+Hansshake.
+
+<a name='M-Lanchat-Common-Types-Handshake-#ctor-System-String,System-String,System-Int32-'></a>
+### #ctor(nickname,publicKey,port) `constructor`
+
+##### Summary
+
+Handshake constructor.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| nickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Node nickname |
+| publicKey | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Public RSA key |
+| port | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Node host port |
+
+<a name='P-Lanchat-Common-Types-Handshake-Nickname'></a>
+### Nickname `property`
+
+##### Summary
+
+Node nickname.
+
+<a name='P-Lanchat-Common-Types-Handshake-Port'></a>
+### Port `property`
+
+##### Summary
+
+Node host port.
+
+<a name='P-Lanchat-Common-Types-Handshake-PublicKey'></a>
+### PublicKey `property`
+
+##### Summary
+
+Node host port.
 
 <a name='T-Lanchat-Common-NetworkLib-HostStartedEventArgs'></a>
 ## HostStartedEventArgs `type`
@@ -421,33 +460,17 @@ Lanchat.Common.NetworkLib
 
 Represents network node.
 
-<a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Guid,System-Int32,System-Net-IPAddress-'></a>
-### #ctor(id,port,ip) `constructor`
+<a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-IPAddress-'></a>
+### #ctor(ip) `constructor`
 
 ##### Summary
 
-Node constructor.
+Node constructor with known port.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| id | [System.Guid](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Guid 'System.Guid') | Node ID |
-| port | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Node TCP port |
-| ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node IP |
-
-<a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Int32,System-Net-IPAddress-'></a>
-### #ctor(port,ip) `constructor`
-
-##### Summary
-
-Node constructor without id.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| port | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Node TCP port |
 | ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node IP |
 
 <a name='P-Lanchat-Common-NetworkLib-Node-ClearNickname'></a>
@@ -456,6 +479,13 @@ Node constructor without id.
 ##### Summary
 
 Nickname without number.
+
+<a name='P-Lanchat-Common-NetworkLib-Node-Handshake'></a>
+### Handshake `property`
+
+##### Summary
+
+Handshake.
 
 <a name='P-Lanchat-Common-NetworkLib-Node-HearbeatCount'></a>
 ### HearbeatCount `property`
@@ -470,13 +500,6 @@ Heartbeat counter.
 ##### Summary
 
 Last heartbeat status.
-
-<a name='P-Lanchat-Common-NetworkLib-Node-Id'></a>
-### Id `property`
-
-##### Summary
-
-Node ID.
 
 <a name='P-Lanchat-Common-NetworkLib-Node-Ip'></a>
 ### Ip `property`
@@ -505,13 +528,6 @@ Node nickname. If nicknames are duplicated returns nickname with number.
 ##### Summary
 
 Node TCP port.
-
-<a name='P-Lanchat-Common-NetworkLib-Node-PublicKey'></a>
-### PublicKey `property`
-
-##### Summary
-
-Node public RSA key.
 
 <a name='P-Lanchat-Common-NetworkLib-Node-State'></a>
 ### State `property`
@@ -550,17 +566,6 @@ Node dispose.
 ##### Summary
 
 Destructor.
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-Lanchat-Common-NetworkLib-Node-OnStateChange'></a>
-### OnStateChange() `method`
-
-##### Summary
-
-State change event.
 
 ##### Parameters
 
@@ -626,13 +631,6 @@ Message content.
 ##### Summary
 
 Sender nickname.
-
-<a name='P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-SenderIP'></a>
-### SenderIP `property`
-
-##### Summary
-
-IP of the sending node.
 
 <a name='T-Lanchat-Common-Types-Status'></a>
 ## Status `type`

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Sockets;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -19,11 +20,6 @@ namespace Lanchat.Common.NetworkLib
         /// Old nickname.
         /// </summary>
         public string OldNickname { get; set; }
-
-        /// <summary>
-        /// IP of the sending node.
-        /// </summary>
-        public IPAddress SenderIP { get; set; }
     }
 
     /// <summary>
@@ -51,6 +47,8 @@ namespace Lanchat.Common.NetworkLib
         /// Node ip.
         /// </summary>
         public IPAddress NodeIP { get; set; }
+
+        internal Socket Socket { get; set; }
     }
 
     /// <summary>
@@ -67,27 +65,12 @@ namespace Lanchat.Common.NetworkLib
         /// Sender nickname.
         /// </summary>
         public string Nickname { get; set; }
-
-        /// <summary>
-        /// IP of the sending node.
-        /// </summary>
-        public IPAddress SenderIP { get; set; }
-    }
-
-    internal class ReceivedHeartbeatEventArgs : EventArgs
-    {
-        internal IPAddress SenderIP { get; set; }
     }
 
     internal class ReceivedListEventArgs : EventArgs
     {
         internal List<ListItem> List { get; set; }
-    }
-
-    internal class ReceivedRequestEventArgs : EventArgs
-    {
-        internal IPAddress SenderIP { get; set; }
-        internal string Type { get; set; }
+        internal IPAddress LocalAddress { get; set; }
     }
 
     internal class RecievedBroadcastEventArgs : EventArgs
@@ -99,13 +82,11 @@ namespace Lanchat.Common.NetworkLib
     internal class RecievedHandshakeEventArgs : EventArgs
     {
         internal Handshake NodeHandshake { get; set; }
-        internal IPAddress SenderIP { get; set; }
     }
 
     internal class RecievedKeyEventArgs : EventArgs
     {
         internal string AesIV { get; set; }
         internal string AesKey { get; set; }
-        internal IPAddress SenderIP { get; set; }
     }
 }

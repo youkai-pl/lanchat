@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
-using Console = Colorful.Console;
 
 namespace Lanchat.Console.Ui
 {

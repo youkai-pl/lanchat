@@ -1,10 +1,8 @@
-﻿using Lanchat.Common.Types;
+﻿using Lanchat.Common.NetworkLib.Events;
+using Lanchat.Common.Types;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -105,133 +103,9 @@ namespace Lanchat.Common.NetworkLib
                     var socket = server.Accept();
                     var ip = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
-
-                    new Thread(() =>
-                    {
-                        try
-                        {
-                            Process(socket, ip);
-                        }
-                        catch (SocketException)
-                        {
-                            // Disconnect node on exception
-                            Trace.WriteLine($"[HOST] Socket exception. Node will be disconnected ({ip})");
-                            Events.OnNodeDisconnected(ip);
-                            socket.Close();
-                        }
-                    }).Start();
+                    Events.OnNodeConnected(socket, ip);
                 }
             });
-
-            // Client process
-            void Process(Socket socket, IPAddress ip)
-            {
-                byte[] response;
-                int received;
-
-                Events.OnNodeConnected(ip);
-
-                while (true)
-                {
-                    response = new byte[socket.ReceiveBufferSize];
-                    received = socket.Receive(response);
-
-                    if (!socket.IsConnected())
-                    {
-                        Trace.WriteLine($"[HOST] Socket closed ({ip})");
-                        socket.Close();
-                        Events.OnNodeDisconnected(ip);
-                        break;
-                    }
-
-                    try
-                    {
-                        var respBytesList = new List<byte>(response);
-                        var data = Encoding.UTF8.GetString(respBytesList.ToArray());
-
-                        // Parse jsons
-                        IList<JObject> buffer = new List<JObject>();
-                        JsonTextReader reader = new JsonTextReader(new StringReader(data))
-                        {
-                            SupportMultipleContent = true
-                        };
-
-                        while (true)
-                        {
-                            if (!reader.Read())
-                            {
-                                break;
-                            }
-
-                            JsonSerializer serializer = new JsonSerializer();
-                            JObject packet = serializer.Deserialize<JObject>(reader);
-
-                            buffer.Add(packet);
-                        }
-
-                        // Process all parsed jsons from buffer
-                        foreach (JObject packet in buffer)
-                        {
-                            IList<JToken> obj = packet;
-                            var type = ((JProperty)obj[0]).Name;
-                            var content = ((JProperty)obj[0]).Value;
-
-                            // Events
-
-                            if (type == "handshake")
-                            {
-                                Events.OnReceivedHandshake(content.ToObject<Handshake>(), ip);
-                            }
-
-                            if (type == "key")
-                            {
-                                Events.OnReceivedKey(content.ToObject<Key>(), ip);
-                            }
-
-                            if (type == "heartbeat")
-                            {
-                                Events.OnReceivedHeartbeat(ip);
-                            }
-
-                            // Data
-
-                            if (type == "message")
-                            {
-                                Events.OnReceivedMessage(content.ToString(), ip);
-                            }
-
-                            if (type == "nickname")
-                            {
-                                Events.OnChangedNickname(content.ToString(), ip);
-                            }
-
-                            if (type == "list")
-                            {
-                                Events.OnReceivedList(content.ToObject<List<ListItem>>());
-                            }
-
-                            // Requests
-
-                            if (type == "request")
-                            {
-                                // Request type: nickname
-                                if (content.ToString() == "nickname")
-                                {
-                                    Events.OnReceivedRequest("nickname", ip);
-                                }
-                            }
-                        }
-                    }
-                    catch (DecoderFallbackException)
-                    {
-                        Trace.WriteLine($"[HOST] Data processing error: utf8 decode gone wrong ({ip})");
-                    }
-                    catch (JsonReaderException)
-                    {
-                        Trace.WriteLine($"([HOST] Data processing error: not vaild json ({ip})");
-                    }
-                }
-            }
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using Lanchat.Console.Ui;
+﻿using Lanchat.Common.NetworkLib;
 using Lanchat.Common.Types;
+using Lanchat.Console.Ui;
 using System.Collections.Generic;
-using Lanchat.Common.NetworkLib;
 
 namespace Lanchat.Console.Commands
 {

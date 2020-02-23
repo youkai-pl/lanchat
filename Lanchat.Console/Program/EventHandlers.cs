@@ -1,5 +1,5 @@
-﻿using Lanchat.Console.Ui;
-using Lanchat.Common.NetworkLib;
+﻿using Lanchat.Common.NetworkLib;
+using Lanchat.Console.Ui;
 using System.Diagnostics;
 
 namespace Lanchat.Console.ProgramLib

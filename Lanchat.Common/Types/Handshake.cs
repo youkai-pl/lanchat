@@ -1,29 +1,42 @@
 ﻿using Newtonsoft.Json;
-using System;
 
 namespace Lanchat.Common.Types
 {
-    internal class Handshake
+    /// <summary>
+    /// Hansshake.
+    /// </summary>
+    public class Handshake
     {
+        /// <summary>
+        /// Handshake constructor.
+        /// </summary>
+        /// <param name="nickname">Node nickname</param>
+        /// <param name="publicKey">Public RSA key</param>
+        /// <param name="port">Node host port</param>
         [JsonConstructor]
-        internal Handshake(string nickname, string publicKey, Guid id, int port)
+        public Handshake(string nickname, string publicKey, int port)
         {
             Nickname = nickname;
             PublicKey = publicKey;
-            Id = id;
             Port = port;
         }
 
+        /// <summary>
+        /// Node nickname.
+        /// </summary>
         [JsonProperty]
-        internal Guid Id { get; set; }
+        public string Nickname { get; set; }
 
+        /// <summary>
+        /// Node host port.
+        /// </summary>
         [JsonProperty]
-        internal string Nickname { get; set; }
+        public int Port { get; set; }
 
+        /// <summary>
+        /// Node host port.
+        /// </summary>
         [JsonProperty]
-        internal int Port { get; set; }
-
-        [JsonProperty]
-        internal string PublicKey { get; set; }
+        public string PublicKey { get; set; }
     }
 }
