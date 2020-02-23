@@ -50,6 +50,7 @@ namespace Lanchat.Console.ProgramLib
                 Save();
             }
         }
+
         // Add muted node
         public static void AddMute(IPAddress ip)
         {
@@ -67,17 +68,14 @@ namespace Lanchat.Console.ProgramLib
                 {
                     Path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Lanchat2/";
                 }
-
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
                     Path = Environment.GetEnvironmentVariable("HOME") + "/.Lancaht2/";
                 }
-                
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
                     Path = Environment.GetEnvironmentVariable("HOME") + "/Library/Preferences/.Lancaht2/";
                 }
-
 
                 // Load config to dynamic object
                 dynamic json = JsonConvert.DeserializeObject(File.ReadAllText(Path + "config.json"));

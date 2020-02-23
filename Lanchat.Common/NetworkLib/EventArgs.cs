@@ -42,10 +42,12 @@ namespace Lanchat.Common.NetworkLib
         /// Node nickname.
         /// </summary>
         public string Nickname { get; set; }
+
         /// <summary>
         /// Node ip.
         /// </summary>
         public IPAddress NodeIP { get; set; }
+
         internal Socket Socket { get; set; }
     }
 

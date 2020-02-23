@@ -1,4 +1,6 @@
 ﻿using Lanchat.Common.Cryptography;
+using Lanchat.Common.NetworkLib.Events;
+using Lanchat.Common.NetworkLib.Handlers;
 using Lanchat.Common.Types;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -38,6 +40,11 @@ namespace Lanchat.Common.NetworkLib
         /// Nickname without number.
         /// </summary>
         public string ClearNickname { get; private set; }
+
+        /// <summary>
+        /// Handshake.
+        /// </summary>
+        public Handshake Handshake { get; set; }
 
         /// <summary>
         /// Heartbeat counter.
@@ -88,20 +95,15 @@ namespace Lanchat.Common.NetworkLib
         /// </summary>
         public Status State { get; set; }
 
-        /// <summary>
-        /// Handshake.
-        /// </summary>
-        public Handshake Handshake { get; set; }
-
         internal Client Client { get; set; }
-        internal Timer HeartbeatTimer { get; set; }
+        internal NodeEvents Events { get; set; }
+        internal NodeEventsHandlers EventsHandlers { get; set; }
         internal Timer HandshakeTimer { get; set; }
+        internal Timer HeartbeatTimer { get; set; }
         internal int NicknameNum { get; set; }
         internal Aes RemoteAes { get; set; }
         internal Aes SelfAes { get; set; }
         internal Socket Socket { get; set; }
-        internal NodeEventsHandlers EventsHandlers { get; set; }
-        internal NodeEvents Events { get; set; }
 
         internal void AcceptHandshake(Handshake handshake)
         {
@@ -134,46 +136,6 @@ namespace Lanchat.Common.NetworkLib
             Events.OnStateChange();
 
             StartHeartbeat();
-        }
-
-        internal void StartHeartbeat()
-        {
-            HeartbeatTimer.Elapsed += new ElapsedEventHandler(OnHeartebatOver);
-            HeartbeatTimer.Start();
-
-            new System.Threading.Thread(() =>
-            {
-                while (true)
-                {
-                    System.Threading.Thread.Sleep(1000);
-                    if (disposedValue)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Client.SendHeartbeat();
-                    }
-                }
-            }).Start();
-        }
-
-        internal void StartProcess()
-        {
-            new System.Threading.Thread(() =>
-            {
-                try
-                {
-                    Process();
-                }
-                catch (SocketException)
-                {
-                    // Disconnect node on exception
-                    Trace.WriteLine($"[HOST] Socket exception. Node will be disconnected ({Ip})");
-                    Events.OnNodeDisconnected(Ip);
-                    Socket.Close();
-                }
-            }).Start();
         }
 
         internal void Process()
@@ -273,6 +235,46 @@ namespace Lanchat.Common.NetworkLib
                     Trace.WriteLine($"([HOST] Data processing error: not vaild json ({Ip})");
                 }
             }
+        }
+
+        internal void StartHeartbeat()
+        {
+            HeartbeatTimer.Elapsed += new ElapsedEventHandler(OnHeartebatOver);
+            HeartbeatTimer.Start();
+
+            new System.Threading.Thread(() =>
+            {
+                while (true)
+                {
+                    System.Threading.Thread.Sleep(1000);
+                    if (disposedValue)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Client.SendHeartbeat();
+                    }
+                }
+            }).Start();
+        }
+
+        internal void StartProcess()
+        {
+            new System.Threading.Thread(() =>
+            {
+                try
+                {
+                    Process();
+                }
+                catch (SocketException)
+                {
+                    // Disconnect node on exception
+                    Trace.WriteLine($"[HOST] Socket exception. Node will be disconnected ({Ip})");
+                    Events.OnNodeDisconnected(Ip);
+                    Socket.Close();
+                }
+            }).Start();
         }
 
         internal void WaitForHandshake()

@@ -33,6 +33,7 @@ namespace Lanchat.Common.Cryptography
                 return Convert.ToBase64String(aes.IV);
             }
         }
+
         internal string Key
         {
             get

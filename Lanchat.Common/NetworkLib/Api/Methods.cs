@@ -29,7 +29,6 @@ namespace Lanchat.Common.NetworkLib.Api
             });
         }
 
-
         /// <summary>
         /// Manual connect.
         /// </summary>

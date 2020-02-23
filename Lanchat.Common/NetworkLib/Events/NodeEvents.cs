@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 
-namespace Lanchat.Common.NetworkLib
+namespace Lanchat.Common.NetworkLib.Events
 {
     internal class NodeEvents
     {

@@ -1,5 +1,6 @@
 ﻿using Lanchat.Common.Cryptography;
 using Lanchat.Common.NetworkLib.Api;
+using Lanchat.Common.NetworkLib.Handlers;
 using Lanchat.Common.Types;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,6 @@ namespace Lanchat.Common.NetworkLib
     public class Network : IDisposable
     {
         private readonly Host host;
-        private readonly HostEventsHandlers hostHandlers;
         private string nickname;
 
         /// <summary>
@@ -27,19 +27,13 @@ namespace Lanchat.Common.NetworkLib
         /// <param name="hostPort">TCP host port. Set to -1 to use free ephemeral port</param>
         public Network(int broadcastPort, string nickname, int hostPort = -1)
         {
-            // Initialize RSA provider
             Rsa = new Rsa();
-
-            // Initialize node list
             NodeList = new List<Node>();
-
-            // Set properties
             Nickname = nickname;
             PublicKey = Rsa.PublicKey;
             BroadcastPort = broadcastPort;
             Id = Guid.NewGuid();
 
-            // Check
             if (hostPort == -1)
             {
                 HostPort = FreeTcpPort();
@@ -49,16 +43,9 @@ namespace Lanchat.Common.NetworkLib
                 HostPort = hostPort;
             }
 
-            // Create host class
             host = new Host(BroadcastPort);
-
-            // Listen API events
-            hostHandlers = new HostEventsHandlers(this, host);            
-
-            // Create Events instance
-            Events = new Events();
-
-            // Create API outputs instance
+            _ = new HostEventsHandlers(this, host);
+            Events = new Api.Events();
             Methods = new Methods(this);
 
             Trace.WriteLine("[NETWORK] Network initialized");
@@ -67,7 +54,7 @@ namespace Lanchat.Common.NetworkLib
         /// <summary>
         /// Network API inputs class.
         /// </summary>
-        public Events Events { get; set; }
+        public Api.Events Events { get; set; }
 
         /// <summary>
         /// Self nickname. On set it sends new nickname to connected client.

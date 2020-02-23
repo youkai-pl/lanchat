@@ -68,6 +68,7 @@ namespace Lanchat.Common.NetworkLib.Api
                 Port = port
             });
         }
+
         /// <summary>
         /// Node connected event.
         /// </summary>

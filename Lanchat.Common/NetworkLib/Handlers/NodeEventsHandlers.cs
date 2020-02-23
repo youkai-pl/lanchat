@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Net;
 
-namespace Lanchat.Common.NetworkLib
+namespace Lanchat.Common.NetworkLib.Handlers
 {
     internal class NodeEventsHandlers
     {
