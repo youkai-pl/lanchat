@@ -93,7 +93,7 @@ namespace Lanchat.Console.ProgramLib
             new Thread(Prompt.Init).Start();
 
             // Initialize network
-            Network = new Network(Config.BroadcastPort, Config.Nickname, Config.HostPort);
+            Network = new Network(Config.BroadcastPort, Config.Nickname, Config.HostPort, Config.HeartbeatTimeout);
             Network.Events.HostStarted += eventHandlers.OnHostStarted;
             Network.Events.ReceivedMessage += eventHandlers.OnRecievedMessage;
             Network.Events.NodeConnected += eventHandlers.OnNodeConnected;

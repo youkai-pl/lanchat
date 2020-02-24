@@ -25,13 +25,15 @@ namespace Lanchat.Common.NetworkLib
         /// <param name="broadcastPort">UDP broadcast port</param>
         /// <param name="nickname">Self nickname</param>
         /// <param name="hostPort">TCP host port. Set to -1 to use free ephemeral port</param>
-        public Network(int broadcastPort, string nickname, int hostPort = -1)
+        /// <param name="heartbeatTimeout">Heartbeat lifetime in ms</param>
+        public Network(int broadcastPort, string nickname, int hostPort = -1, int heartbeatTimeout = 5000)
         {
             Rsa = new Rsa();
             NodeList = new List<Node>();
             Nickname = nickname;
             PublicKey = Rsa.PublicKey;
             BroadcastPort = broadcastPort;
+            HeartbeatTimeout = heartbeatTimeout;
             Id = Guid.NewGuid();
 
             if (hostPort == -1)
@@ -57,6 +59,11 @@ namespace Lanchat.Common.NetworkLib
         public Api.Events Events { get; set; }
 
         /// <summary>
+        /// Network API outputs class.
+        /// </summary>
+        public Methods Methods { get; set; }
+
+        /// <summary>
         /// Self nickname. On set it sends new nickname to connected client.
         /// </summary>
         public string Nickname
@@ -74,34 +81,16 @@ namespace Lanchat.Common.NetworkLib
         /// </summary>
         public List<Node> NodeList { get; }
 
-        /// <summary>
-        /// Network API outputs class.
-        /// </summary>
-        public Methods Methods { get; set; }
-
-        /// <summary>
-        /// UDP broadcast port.
-        /// </summary>
         internal int BroadcastPort { get; set; }
 
-        /// <summary>
-        /// TCP host port. Set to -1 for use free ephemeral port.
-        /// </summary>
+        internal int HeartbeatTimeout { get; set; }
+
         internal int HostPort { get; set; }
 
-        /// <summary>
-        /// Self ID. Used for checking udp broadcast duplicates.
-        /// </summary>
         internal Guid Id { get; set; }
 
-        /// <summary>
-        /// Self RSA public key.
-        /// </summary>
         internal string PublicKey { get; set; }
 
-        /// <summary>
-        /// RSA provider.
-        /// </summary>
         internal Rsa Rsa { get; set; }
 
         /// <summary>
@@ -113,6 +102,34 @@ namespace Lanchat.Common.NetworkLib
             Events.OnHostStarted(HostPort);
             host.StartBroadcast(new Paperplane(HostPort, Id));
             host.ListenBroadcast();
+        }
+
+        internal void CheckNickcnameDuplicates(string nickname)
+        {
+            var nodes = NodeList.FindAll(x => x.ClearNickname == nickname);
+            if (nodes.Count > 1)
+            {
+                var index = 1;
+                foreach (var item in nodes)
+                {
+                    item.NicknameNum = index;
+                    index++;
+                }
+            }
+            else if (nodes.Count > 0)
+            {
+                nodes[0].NicknameNum = 0;
+            }
+        }
+
+        internal void CloseNode(Node node)
+        {
+            var nickname = node.ClearNickname;
+            Trace.WriteLine($"[NETWORK] Node disconnected ({node.Ip})");
+            Events.OnNodeDisconnected(node.Ip, node.Nickname);
+            NodeList.Remove(node);
+            node.Dispose();
+            CheckNickcnameDuplicates(nickname);
         }
 
         internal void CreateNode(IPAddress ip = null, int port = 0, bool manual = false, Socket socket = null)
@@ -158,35 +175,6 @@ namespace Lanchat.Common.NetworkLib
                 }
             }
         }
-
-        internal void CloseNode(Node node)
-        {
-            var nickname = node.ClearNickname;
-            Trace.WriteLine($"[NETWORK] Node disconnected ({node.Ip})");
-            Events.OnNodeDisconnected(node.Ip, node.Nickname);
-            NodeList.Remove(node);
-            node.Dispose();
-            CheckNickcnameDuplicates(nickname);
-        }
-
-        internal void CheckNickcnameDuplicates(string nickname)
-        {
-            var nodes = NodeList.FindAll(x => x.ClearNickname == nickname);
-            if (nodes.Count > 1)
-            {
-                var index = 1;
-                foreach (var item in nodes)
-                {
-                    item.NicknameNum = index;
-                    index++;
-                }
-            }
-            else if (nodes.Count > 0)
-            {
-                nodes[0].NicknameNum = 0;
-            }
-        }
-
         // Find free tcp port
         private static int FreeTcpPort()
         {
@@ -216,24 +204,6 @@ namespace Lanchat.Common.NetworkLib
         /// <summary>
         /// Dispose network.
         /// </summary>
-        /// <param name="disposing"></param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    host.Dispose();
-                    Rsa.Dispose();
-                }
-
-                disposedValue = true;
-            }
-        }
-
-        /// <summary>
-        /// Dispose network.
-        /// </summary>
         ~Network()
         {
             Dispose(false);
@@ -248,6 +218,23 @@ namespace Lanchat.Common.NetworkLib
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Dispose network.
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    host.Dispose();
+                    Rsa.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
         #endregion IDisposable Support
     }
 }

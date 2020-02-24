@@ -28,7 +28,7 @@ namespace Lanchat.Common.NetworkLib
         internal Node(IPAddress ip, Network network)
         {
             ConnectionTimer = new Timer { Interval = 10000, Enabled = false };
-            HeartbeatTimer = new Timer { Interval = 5000, Enabled = false };
+            HeartbeatTimer = new Timer { Interval = network.HeartbeatTimeout, Enabled = false };
             Events = new NodeEvents();
             EventsHandlers = new NodeEventsHandlers(network, this);
             Ip = ip;
