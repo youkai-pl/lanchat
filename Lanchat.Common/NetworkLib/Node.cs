@@ -295,7 +295,14 @@ namespace Lanchat.Common.NetworkLib
             if (Heartbeat)
             {
                 Heartbeat = false;
-                State = Status.Ready;
+                if (State == Status.Suspended)
+                {
+                    State = Status.Resumed;
+                }
+                else
+                {
+                    State = Status.Ready;
+                }
             }
             else
             {

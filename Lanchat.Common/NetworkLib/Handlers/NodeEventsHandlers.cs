@@ -15,7 +15,7 @@ namespace Lanchat.Common.NetworkLib.Handlers
             this.network = network;
             this.node = node;
 
-            node.Events.StateChanged += OnStatusChanged;
+            node.Events.StateChanged += OnStateChanged;
             node.Events.HandshakeAccepted += OnHandshakeAccepted;
             node.ConnectionTimer.Elapsed += OnConnectionTimer;
             node.Events.ReceivedHandshake += OnReceivedHandshake;
@@ -65,7 +65,6 @@ namespace Lanchat.Common.NetworkLib.Handlers
             node.CreateRemoteAes(network.Rsa.Decode(e.AesKey), network.Rsa.Decode(e.AesIV));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
         internal void OnReceivedList(object o, ReceivedListEventArgs e)
         {
             Trace.WriteLine($"[NETOWRK] Nodes list received");
@@ -115,7 +114,7 @@ namespace Lanchat.Common.NetworkLib.Handlers
             }
         }
 
-        private void OnStatusChanged(object sender, EventArgs e)
+        private void OnStateChanged(object sender, EventArgs e)
         {
             // Node ready
             if (node.State == Status.Ready)
@@ -127,8 +126,9 @@ namespace Lanchat.Common.NetworkLib.Handlers
             // Node suspended
             else if (node.State == Status.Suspended)
             {
-                network.Events.OnNodeSuspended(node.Ip, node.Nickname);
-                Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / suspended)");
+                // network.Events.OnNodeSuspended(node.Ip, node.Nickname);
+                // Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / suspended)");
+                network.CloseNode(node);
             }
 
             // Node resumed
@@ -139,12 +139,6 @@ namespace Lanchat.Common.NetworkLib.Handlers
                 network.Events.OnNodeResumed(node.Ip, node.Nickname);
                 Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / resumed)");
             }
-        }
-
-        // Methods
-        private bool CheckBroadcastID(Paperplane broadcast, IPAddress senderIp)
-        {
-            return broadcast.Id != network.Id && !network.NodeList.Exists(x => x.Ip.Equals(senderIp));
         }
     }
 }
