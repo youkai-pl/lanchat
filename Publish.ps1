@@ -10,6 +10,9 @@ dotnet publish Lanchat.Console\Lanchat.Console.csproj /p:PublishProfile=Lanchat.
 dotnet publish Lanchat.Console\Lanchat.Console.csproj /p:PublishProfile=Lanchat.Console\Properties\PublishProfiles\Linux.pubxml -f netcoreapp3.0 -c Release
 dotnet publish Lanchat.Console\Lanchat.Console.csproj /p:PublishProfile=Lanchat.Console\Properties\PublishProfiles\Mac.pubxml -f netcoreapp3.0 -c Release
 
+$Version = [System.Reflection.Assembly]::LoadFrom("$CurrentDir\Lanchat.Console\bin\Publish\Windows\Lanchat.exe").GetName().Version.ToString()
+
+
 echo Merging
 $ilmergePath = "$env:USERPROFILE\.nuget\packages\ilmerge\3.0.29\tools\net452\ILMerge.exe"
 Set-Alias ILMerge $ilmergePath
@@ -32,7 +35,6 @@ if (-not (Test-Path -Path $7zipPath -PathType Leaf)) {
 
 Set-Alias 7zip $7zipPath
 
-$Version = [System.Reflection.Assembly]::LoadFrom("$CurrentDir\Lanchat.Console\bin\Publish\Windows\Lanchat.exe").GetName().Version.ToString()
 
 7zip a -r "Lanchat.Console\bin\Publish\Lanchat_Windows_$Version.zip" "$CurrentDir\Lanchat.Console\bin\Publish\Windows\*"
 7zip a -r "Lanchat.Console\bin\Publish\Lanchat_Linux_$Version.zip" "$CurrentDir\Lanchat.Console\bin\Publish\Linux\*"

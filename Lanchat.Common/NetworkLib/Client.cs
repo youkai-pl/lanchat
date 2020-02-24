@@ -16,7 +16,7 @@ namespace Lanchat.Common.NetworkLib
 
         private NetworkStream stream;
 
-        public TcpClient TcpClient;
+        internal TcpClient TcpClient;
 
         internal Client(Node node)
         {
@@ -96,7 +96,7 @@ namespace Lanchat.Common.NetworkLib
             if (node.State == Status.Ready)
             {
                 Send("message", node.SelfAes.Encode(message));
-                Trace.WriteLine($"[CLIENT] Messag sent ({node.Ip})");
+                Trace.WriteLine($"[CLIENT] Message sent ({node.Ip})");
             }
             else
             {

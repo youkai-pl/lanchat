@@ -24,16 +24,18 @@ namespace Lanchat.Common.NetworkLib
         /// Node constructor with known port.
         /// </summary>
         /// <param name="ip">Node IP</param>
-        internal Node(IPAddress ip)
+        /// <param name="network">Network</param>
+        internal Node(IPAddress ip, Network network)
         {
+            ConnectionTimer = new Timer { Interval = 10000, Enabled = false };
+            HeartbeatTimer = new Timer { Interval = 5000, Enabled = false };
             Events = new NodeEvents();
+            EventsHandlers = new NodeEventsHandlers(network, this);
             Ip = ip;
             SelfAes = new Aes();
             NicknameNum = 0;
             State = Status.Waiting;
-            HandshakeTimer = new Timer { Interval = 5000, Enabled = true };
-            HeartbeatTimer = new Timer { Interval = 1200, Enabled = false };
-            WaitForHandshake();
+            ConnectionTimer.Start();
         }
 
         /// <summary>
@@ -45,11 +47,6 @@ namespace Lanchat.Common.NetworkLib
         /// Handshake.
         /// </summary>
         public Handshake Handshake { get; set; }
-
-        /// <summary>
-        /// Heartbeat counter.
-        /// </summary>
-        public int HearbeatCount { get; set; } = 0;
 
         /// <summary>
         /// Last heartbeat status.
@@ -90,15 +87,29 @@ namespace Lanchat.Common.NetworkLib
         /// </summary>
         public int Port { get; set; }
 
+        private Status _State;
+
         /// <summary>
         /// Node <see cref="Status"/>.
         /// </summary>
-        public Status State { get; set; }
+        public Status State
+        {
+            get { return _State; }
+            set
+            {
+                var previousState = State;
+                _State = value;
+                if (previousState != value)
+                {
+                    Events.OnStateChange();
+                }
+            }
+        }
 
         internal Client Client { get; set; }
+        internal Timer ConnectionTimer { get; set; }
         internal NodeEvents Events { get; set; }
         internal NodeEventsHandlers EventsHandlers { get; set; }
-        internal Timer HandshakeTimer { get; set; }
         internal Timer HeartbeatTimer { get; set; }
         internal int NicknameNum { get; set; }
         internal Aes RemoteAes { get; set; }
@@ -131,11 +142,7 @@ namespace Lanchat.Common.NetworkLib
         internal void CreateRemoteAes(string key, string iv)
         {
             RemoteAes = new Aes(key, iv);
-
-            State = Status.Ready;
-            Events.OnStateChange();
-
-            StartHeartbeat();
+            Activate();
         }
 
         internal void Process()
@@ -277,56 +284,22 @@ namespace Lanchat.Common.NetworkLib
             }).Start();
         }
 
-        internal void WaitForHandshake()
+        private void Activate()
         {
-            // Wait for handshake
-            HandshakeTimer.Start();
+            State = Status.Ready;
+            StartHeartbeat();
         }
 
-        // Hearbeat over event
         private void OnHeartebatOver(object o, ElapsedEventArgs e)
         {
-            // If heartbeat was not received make count negative
             if (Heartbeat)
             {
-                // Reset heartbeat
                 Heartbeat = false;
-
-                // Count heartbeat
-                if (HearbeatCount < 0)
-                {
-                    HearbeatCount = 1;
-                }
-                else
-                {
-                    HearbeatCount++;
-                }
-
-                // Change state
-                if (State == Status.Suspended)
-                {
-                    State = Status.Resumed;
-                    Events.OnStateChange();
-                }
+                State = Status.Ready;
             }
             else
             {
-                // Count heartbeat
-                if (HearbeatCount > 0)
-                {
-                    HearbeatCount = -1;
-                }
-                else
-                {
-                    HearbeatCount--;
-                }
-
-                // Change state
-                if (State != Status.Suspended)
-                {
-                    State = Status.Suspended;
-                    Events.OnStateChange();
-                }
+                State = Status.Suspended;
             }
         }
 

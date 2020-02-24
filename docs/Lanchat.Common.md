@@ -41,10 +41,9 @@
   - [Finalize()](#M-Lanchat-Common-NetworkLib-Network-Finalize 'Lanchat.Common.NetworkLib.Network.Finalize')
   - [Start()](#M-Lanchat-Common-NetworkLib-Network-Start 'Lanchat.Common.NetworkLib.Network.Start')
 - [Node](#T-Lanchat-Common-NetworkLib-Node 'Lanchat.Common.NetworkLib.Node')
-  - [#ctor(ip)](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Net.IPAddress)')
+  - [#ctor(ip,network)](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Net.IPAddress,Lanchat.Common.NetworkLib.Network)')
   - [ClearNickname](#P-Lanchat-Common-NetworkLib-Node-ClearNickname 'Lanchat.Common.NetworkLib.Node.ClearNickname')
   - [Handshake](#P-Lanchat-Common-NetworkLib-Node-Handshake 'Lanchat.Common.NetworkLib.Node.Handshake')
-  - [HearbeatCount](#P-Lanchat-Common-NetworkLib-Node-HearbeatCount 'Lanchat.Common.NetworkLib.Node.HearbeatCount')
   - [Heartbeat](#P-Lanchat-Common-NetworkLib-Node-Heartbeat 'Lanchat.Common.NetworkLib.Node.Heartbeat')
   - [Ip](#P-Lanchat-Common-NetworkLib-Node-Ip 'Lanchat.Common.NetworkLib.Node.Ip')
   - [Mute](#P-Lanchat-Common-NetworkLib-Node-Mute 'Lanchat.Common.NetworkLib.Node.Mute')
@@ -460,8 +459,8 @@ Lanchat.Common.NetworkLib
 
 Represents network node.
 
-<a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-IPAddress-'></a>
-### #ctor(ip) `constructor`
+<a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network-'></a>
+### #ctor(ip,network) `constructor`
 
 ##### Summary
 
@@ -472,6 +471,7 @@ Node constructor with known port.
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node IP |
+| network | [Lanchat.Common.NetworkLib.Network](#T-Lanchat-Common-NetworkLib-Network 'Lanchat.Common.NetworkLib.Network') | Network |
 
 <a name='P-Lanchat-Common-NetworkLib-Node-ClearNickname'></a>
 ### ClearNickname `property`
@@ -486,13 +486,6 @@ Nickname without number.
 ##### Summary
 
 Handshake.
-
-<a name='P-Lanchat-Common-NetworkLib-Node-HearbeatCount'></a>
-### HearbeatCount `property`
-
-##### Summary
-
-Heartbeat counter.
 
 <a name='P-Lanchat-Common-NetworkLib-Node-Heartbeat'></a>
 ### Heartbeat `property`

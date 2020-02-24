@@ -17,7 +17,7 @@ namespace Lanchat.Common.NetworkLib.Handlers
 
             node.Events.StateChanged += OnStatusChanged;
             node.Events.HandshakeAccepted += OnHandshakeAccepted;
-            node.HandshakeTimer.Elapsed += OnHandshakeTimeout;
+            node.ConnectionTimer.Elapsed += OnConnectionTimer;
             node.Events.ReceivedHandshake += OnReceivedHandshake;
             node.Events.ReceivedKey += OnReceivedKey;
             node.Events.RecievedMessage += OnReceivedMessage;
@@ -103,13 +103,13 @@ namespace Lanchat.Common.NetworkLib.Handlers
             node.Client.SendList(network.NodeList);
         }
 
-        private void OnHandshakeTimeout(object o, EventArgs e)
+        private void OnConnectionTimer(object o, EventArgs e)
         {
-            node.HandshakeTimer.Dispose();
+            node.ConnectionTimer.Dispose();
 
-            if (node.Handshake == null)
+            if (node.State != Status.Ready)
             {
-                Trace.WriteLine($"[NODE] Handshake timed out {node.Ip}");
+                Trace.WriteLine($"[NODE] Connection timed out ({node.Ip})");
                 network.NodeList.Remove(node);
                 node.Dispose();
             }
