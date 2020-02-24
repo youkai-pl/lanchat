@@ -51,6 +51,19 @@ namespace Lanchat.Console.ProgramLib
             }
         }
 
+        private static int _HeartbeatTimeout;
+
+        public static int HeartbeatTimeout
+        {
+            get { return _HeartbeatTimeout; }
+            set
+            {
+                _HeartbeatTimeout = value;
+                Save();
+            }
+        }
+
+
         // Add muted node
         public static void AddMute(IPAddress ip)
         {
@@ -84,6 +97,7 @@ namespace Lanchat.Console.ProgramLib
                 _Nickname = json.nickname;
                 _BroadcastPort = json.broadcastport;
                 _HostPort = json.hostport;
+                _HeartbeatTimeout = json.heartbeat;
 
                 // Convert strings to ip addresses
                 List<string> MutedStrings = json.muted.ToObject<List<string>>();
@@ -100,6 +114,7 @@ namespace Lanchat.Console.ProgramLib
                 BroadcastPort = 4001;
                 HostPort = -1;
                 Muted = new List<IPAddress>();
+                HeartbeatTimeout = 5000;
             }
         }
 
@@ -125,7 +140,8 @@ namespace Lanchat.Console.ProgramLib
                 nickname = Nickname,
                 broadcastport = BroadcastPort,
                 hostport = HostPort,
-                muted = MutedStrings
+                muted = MutedStrings,
+                heartbeat = HeartbeatTimeout
             };
             try
             {

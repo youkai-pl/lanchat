@@ -16,7 +16,7 @@ namespace Lanchat.Common.NetworkLib
 
         private NetworkStream stream;
 
-        public TcpClient TcpClient;
+        internal TcpClient TcpClient;
 
         internal Client(Node node)
         {

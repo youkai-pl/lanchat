@@ -26,25 +26,19 @@
   - [Connect(ip,port)](#M-Lanchat-Common-NetworkLib-Api-Methods-Connect-System-Net-IPAddress,System-Int32- 'Lanchat.Common.NetworkLib.Api.Methods.Connect(System.Net.IPAddress,System.Int32)')
   - [SendAll(message)](#M-Lanchat-Common-NetworkLib-Api-Methods-SendAll-System-String- 'Lanchat.Common.NetworkLib.Api.Methods.SendAll(System.String)')
 - [Network](#T-Lanchat-Common-NetworkLib-Network 'Lanchat.Common.NetworkLib.Network')
-  - [#ctor(broadcastPort,nickname,hostPort)](#M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32- 'Lanchat.Common.NetworkLib.Network.#ctor(System.Int32,System.String,System.Int32)')
-  - [BroadcastPort](#P-Lanchat-Common-NetworkLib-Network-BroadcastPort 'Lanchat.Common.NetworkLib.Network.BroadcastPort')
+  - [#ctor(broadcastPort,nickname,hostPort,heartbeatTimeout)](#M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32,System-Int32- 'Lanchat.Common.NetworkLib.Network.#ctor(System.Int32,System.String,System.Int32,System.Int32)')
   - [Events](#P-Lanchat-Common-NetworkLib-Network-Events 'Lanchat.Common.NetworkLib.Network.Events')
-  - [HostPort](#P-Lanchat-Common-NetworkLib-Network-HostPort 'Lanchat.Common.NetworkLib.Network.HostPort')
-  - [Id](#P-Lanchat-Common-NetworkLib-Network-Id 'Lanchat.Common.NetworkLib.Network.Id')
   - [Methods](#P-Lanchat-Common-NetworkLib-Network-Methods 'Lanchat.Common.NetworkLib.Network.Methods')
   - [Nickname](#P-Lanchat-Common-NetworkLib-Network-Nickname 'Lanchat.Common.NetworkLib.Network.Nickname')
   - [NodeList](#P-Lanchat-Common-NetworkLib-Network-NodeList 'Lanchat.Common.NetworkLib.Network.NodeList')
-  - [PublicKey](#P-Lanchat-Common-NetworkLib-Network-PublicKey 'Lanchat.Common.NetworkLib.Network.PublicKey')
-  - [Rsa](#P-Lanchat-Common-NetworkLib-Network-Rsa 'Lanchat.Common.NetworkLib.Network.Rsa')
-  - [Dispose(disposing)](#M-Lanchat-Common-NetworkLib-Network-Dispose-System-Boolean- 'Lanchat.Common.NetworkLib.Network.Dispose(System.Boolean)')
   - [Dispose()](#M-Lanchat-Common-NetworkLib-Network-Dispose 'Lanchat.Common.NetworkLib.Network.Dispose')
+  - [Dispose(disposing)](#M-Lanchat-Common-NetworkLib-Network-Dispose-System-Boolean- 'Lanchat.Common.NetworkLib.Network.Dispose(System.Boolean)')
   - [Finalize()](#M-Lanchat-Common-NetworkLib-Network-Finalize 'Lanchat.Common.NetworkLib.Network.Finalize')
   - [Start()](#M-Lanchat-Common-NetworkLib-Network-Start 'Lanchat.Common.NetworkLib.Network.Start')
 - [Node](#T-Lanchat-Common-NetworkLib-Node 'Lanchat.Common.NetworkLib.Node')
-  - [#ctor(ip)](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Net.IPAddress)')
+  - [#ctor(ip,network)](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Net.IPAddress,Lanchat.Common.NetworkLib.Network)')
   - [ClearNickname](#P-Lanchat-Common-NetworkLib-Node-ClearNickname 'Lanchat.Common.NetworkLib.Node.ClearNickname')
   - [Handshake](#P-Lanchat-Common-NetworkLib-Node-Handshake 'Lanchat.Common.NetworkLib.Node.Handshake')
-  - [HearbeatCount](#P-Lanchat-Common-NetworkLib-Node-HearbeatCount 'Lanchat.Common.NetworkLib.Node.HearbeatCount')
   - [Heartbeat](#P-Lanchat-Common-NetworkLib-Node-Heartbeat 'Lanchat.Common.NetworkLib.Node.Heartbeat')
   - [Ip](#P-Lanchat-Common-NetworkLib-Node-Ip 'Lanchat.Common.NetworkLib.Node.Ip')
   - [Mute](#P-Lanchat-Common-NetworkLib-Node-Mute 'Lanchat.Common.NetworkLib.Node.Mute')
@@ -325,8 +319,8 @@ Lanchat.Common.NetworkLib
 
 Main class of network lib.
 
-<a name='M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32-'></a>
-### #ctor(broadcastPort,nickname,hostPort) `constructor`
+<a name='M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32,System-Int32-'></a>
+### #ctor(broadcastPort,nickname,hostPort,heartbeatTimeout) `constructor`
 
 ##### Summary
 
@@ -339,13 +333,7 @@ Network constructor.
 | broadcastPort | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | UDP broadcast port |
 | nickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Self nickname |
 | hostPort | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | TCP host port. Set to -1 to use free ephemeral port |
-
-<a name='P-Lanchat-Common-NetworkLib-Network-BroadcastPort'></a>
-### BroadcastPort `property`
-
-##### Summary
-
-UDP broadcast port.
+| heartbeatTimeout | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Heartbeat lifetime in ms |
 
 <a name='P-Lanchat-Common-NetworkLib-Network-Events'></a>
 ### Events `property`
@@ -353,20 +341,6 @@ UDP broadcast port.
 ##### Summary
 
 Network API inputs class.
-
-<a name='P-Lanchat-Common-NetworkLib-Network-HostPort'></a>
-### HostPort `property`
-
-##### Summary
-
-TCP host port. Set to -1 for use free ephemeral port.
-
-<a name='P-Lanchat-Common-NetworkLib-Network-Id'></a>
-### Id `property`
-
-##### Summary
-
-Self ID. Used for checking udp broadcast duplicates.
 
 <a name='P-Lanchat-Common-NetworkLib-Network-Methods'></a>
 ### Methods `property`
@@ -389,19 +363,16 @@ Self nickname. On set it sends new nickname to connected client.
 
 All nodes here.
 
-<a name='P-Lanchat-Common-NetworkLib-Network-PublicKey'></a>
-### PublicKey `property`
+<a name='M-Lanchat-Common-NetworkLib-Network-Dispose'></a>
+### Dispose() `method`
 
 ##### Summary
 
-Self RSA public key.
+Dispose network.
 
-<a name='P-Lanchat-Common-NetworkLib-Network-Rsa'></a>
-### Rsa `property`
+##### Parameters
 
-##### Summary
-
-RSA provider.
+This method has no parameters.
 
 <a name='M-Lanchat-Common-NetworkLib-Network-Dispose-System-Boolean-'></a>
 ### Dispose(disposing) `method`
@@ -415,17 +386,6 @@ Dispose network.
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | disposing | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') |  |
-
-<a name='M-Lanchat-Common-NetworkLib-Network-Dispose'></a>
-### Dispose() `method`
-
-##### Summary
-
-Dispose network.
-
-##### Parameters
-
-This method has no parameters.
 
 <a name='M-Lanchat-Common-NetworkLib-Network-Finalize'></a>
 ### Finalize() `method`
@@ -460,8 +420,8 @@ Lanchat.Common.NetworkLib
 
 Represents network node.
 
-<a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-IPAddress-'></a>
-### #ctor(ip) `constructor`
+<a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network-'></a>
+### #ctor(ip,network) `constructor`
 
 ##### Summary
 
@@ -472,6 +432,7 @@ Node constructor with known port.
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node IP |
+| network | [Lanchat.Common.NetworkLib.Network](#T-Lanchat-Common-NetworkLib-Network 'Lanchat.Common.NetworkLib.Network') | Network |
 
 <a name='P-Lanchat-Common-NetworkLib-Node-ClearNickname'></a>
 ### ClearNickname `property`
@@ -486,13 +447,6 @@ Nickname without number.
 ##### Summary
 
 Handshake.
-
-<a name='P-Lanchat-Common-NetworkLib-Node-HearbeatCount'></a>
-### HearbeatCount `property`
-
-##### Summary
-
-Heartbeat counter.
 
 <a name='P-Lanchat-Common-NetworkLib-Node-Heartbeat'></a>
 ### Heartbeat `property`

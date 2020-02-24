@@ -18,7 +18,6 @@ namespace Lanchat.Common.NetworkLib.Handlers
             host.Events.RecievedBroadcast += OnReceivedBroadcast;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
         internal void OnNodeConnected(object o, NodeConnectionStatusEventArgs e)
         {
             Trace.WriteLine($"[NETWORK] Connection detected ({e.NodeIP})");
@@ -37,7 +36,6 @@ namespace Lanchat.Common.NetworkLib.Handlers
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
         internal void OnReceivedBroadcast(object o, RecievedBroadcastEventArgs e)
         {
             if (CheckBroadcastID(e.Sender, e.SenderIP))
