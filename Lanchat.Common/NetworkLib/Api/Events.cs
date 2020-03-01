@@ -78,7 +78,8 @@ namespace Lanchat.Common.NetworkLib.Api
         {
             NodeConnected(this, new NodeConnectionStatusEventArgs()
             {
-                Nickname = nickname
+                Nickname = nickname,
+                NodeIP = ip
             });
         }
 

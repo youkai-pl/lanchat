@@ -11,13 +11,13 @@ namespace Lanchat.Console.Commands
             if (node != null)
             {
                 node.Mute = true;
-                if (Config.Muted.Exists(x => x.Equals(node.Ip)))
+                if (program.Config.Muted.Exists(x => x.Equals(node.Ip)))
                 {
                     Prompt.Out("User already muted");
                 }
                 else
                 {
-                    Config.AddMute(node.Ip);
+                    program.Config.AddMute(node.Ip);
                     Prompt.Notice($"{nickname} muted");
                 }
             }

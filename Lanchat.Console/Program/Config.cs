@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -9,15 +10,26 @@ using System.Runtime.InteropServices;
 
 namespace Lanchat.Console.ProgramLib
 {
-    public static class Config
+    public class Config
     {
         private static int _BroadcastPort;
-
+        private static int _HeartbeatTimeout;
         private static int _HostPort;
-
         private static string _Nickname;
 
-        public static int BroadcastPort
+        [JsonConstructor]
+        public Config(string nickname, int broadcast, int host, List<string> muted, int heartbeat)
+        {
+            Nickname = nickname;
+            BroadcastPort = broadcast;
+            HostPort = host;
+            HeartbeatTimeout = heartbeat;
+            Muted = muted ?? new List<string>();
+        }
+
+        [DefaultValue(4001)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int BroadcastPort
         {
             get => _BroadcastPort;
             set
@@ -27,33 +39,9 @@ namespace Lanchat.Console.ProgramLib
             }
         }
 
-        public static string Path { get; set; }
-
-        public static int HostPort
-        {
-            get => _HostPort;
-            set
-            {
-                _HostPort = value;
-                Save();
-            }
-        }
-
-        public static List<IPAddress> Muted { get; set; } = new List<IPAddress>();
-
-        public static string Nickname
-        {
-            get => _Nickname;
-            set
-            {
-                _Nickname = value;
-                Save();
-            }
-        }
-
-        private static int _HeartbeatTimeout;
-
-        public static int HeartbeatTimeout
+        [DefaultValue(5000)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int HeartbeatTimeout
         {
             get { return _HeartbeatTimeout; }
             set
@@ -63,20 +51,40 @@ namespace Lanchat.Console.ProgramLib
             }
         }
 
-
-        // Add muted node
-        public static void AddMute(IPAddress ip)
+        [DefaultValue(-1)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int HostPort
         {
-            Muted.Add(ip);
-            Save();
+            get => _HostPort;
+            set
+            {
+                _HostPort = value;
+                Save();
+            }
         }
 
-        // Load config
-        public static void Load()
+        [DefaultValue(null)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public List<string> Muted { get; private set; }
+
+        [DefaultValue("")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public string Nickname
+        {
+            get => _Nickname;
+            set
+            {
+                _Nickname = value;
+                Save();
+            }
+        }
+
+        public static string Path { get; private set; }
+
+        public static Config Load()
         {
             try
             {
-                // Detect OS
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
                     Path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Lanchat2/";
@@ -90,59 +98,39 @@ namespace Lanchat.Console.ProgramLib
                     Path = Environment.GetEnvironmentVariable("HOME") + "/Library/Preferences/.Lancaht2/";
                 }
 
-                // Load config to dynamic object
-                dynamic json = JsonConvert.DeserializeObject(File.ReadAllText(Path + "config.json"));
-
-                // Try use loaded config
-                _Nickname = json.nickname;
-                _BroadcastPort = json.broadcastport;
-                _HostPort = json.hostport;
-                _HeartbeatTimeout = json.heartbeat;
-
-                // Convert strings to ip addresses
-                List<string> MutedStrings = json.muted.ToObject<List<string>>();
-                for (int i = 0; i < MutedStrings.Count; i++)
-                {
-                    Muted.Add(IPAddress.Parse(MutedStrings[i]));
-                }
+                return JsonConvert.DeserializeObject<Config>(File.ReadAllText(Path + "config.json"));
             }
             catch (Exception e)
             {
-                Trace.WriteLine($"[APP] Config load error ({e.Message})");
-
-                Nickname = "";
-                BroadcastPort = 4001;
-                HostPort = -1;
-                Muted = new List<IPAddress>();
-                HeartbeatTimeout = 5000;
+                if (e is FileNotFoundException || e is JsonSerializationException || e is JsonReaderException)
+                {
+                    Trace.WriteLine($"[APP] Config load error");
+                    return JsonConvert.DeserializeObject<Config>("{}");
+                }
+                throw;
             }
         }
 
-        // Remove muted node
-        public static void RemoveMute(IPAddress ip)
+        public void AddMute(IPAddress ip)
         {
-            Muted.Remove(ip);
-            Save();
+            if (ip != null)
+            {
+                Muted.Add(ip.ToString());
+                Save();
+            }
         }
 
-        // Save config
-        private static void Save()
+        public void RemoveMute(IPAddress ip)
         {
-            // Convert ip addresses to strings
-            var MutedStrings = new List<string>();
-            for (int i = 0; i < Muted.Count; i++)
+            if (ip != null)
             {
-                MutedStrings.Add(Muted[i].ToString());
+                Muted.Remove(ip.ToString());
+                Save();
             }
+        }
 
-            object json = new
-            {
-                nickname = Nickname,
-                broadcastport = BroadcastPort,
-                hostport = HostPort,
-                muted = MutedStrings,
-                heartbeat = HeartbeatTimeout
-            };
+        private void Save()
+        {
             try
             {
                 if (!Directory.Exists(Path))
@@ -150,11 +138,16 @@ namespace Lanchat.Console.ProgramLib
                     Directory.CreateDirectory(Path);
                 }
 
-                File.WriteAllText(Path + "config.json", JsonConvert.SerializeObject(json, Formatting.Indented));
+                File.WriteAllText(Path + "config.json", JsonConvert.SerializeObject(this, Formatting.Indented));
             }
             catch (Exception e)
             {
-                Prompt.CrashScreen(e);
+                if (e is DirectoryNotFoundException || e is UnauthorizedAccessException)
+                {
+                    Prompt.CrashScreen(e);
+                    return;
+                }
+                throw;
             }
         }
     }
