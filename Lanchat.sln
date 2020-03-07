@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{4A81DEED-94C6-424D-93D6-65CB8C0C0F81}"
 	ProjectSection(SolutionItems) = preProject
-		API.md = API.md
+		Docs\API.md = Docs\API.md
 		Docs\Guide.md = Docs\Guide.md
 		Docs\Lanchat.Common.md = Docs\Lanchat.Common.md
 		Docs\LICENSE.md = Docs\LICENSE.md
