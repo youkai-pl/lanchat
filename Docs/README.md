@@ -40,7 +40,9 @@ If .NET Core runtime is installed get newest Lanachat release for linux. Unzip f
 ## Contribute
 
 ### Docs
-* [Lanchat.Common](https://github.com/tofudd/lanchat/blob/master/docs/Lanchat.Common.md)
+* [Lanchat.Common](https://github.com/tofudd/lanchat/blob/master/Docs/Lanchat.Common.md)
+* [Guide](https://github.com/tofudd/lanchat/blob/master/Docs/Guide.md)
+* [API](https://github.com/tofudd/lanchat/blob/master/Docs/API.md)
 
 ### Directories guide
 * `Lanchat.Console` - Terminal Lanchat client

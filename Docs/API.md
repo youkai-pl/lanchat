@@ -1,36 +1,8 @@
-# Lancaht 2 network API and guide
+# Lancaht 2 API
 
-Version 2.0.0.2007
+All data is sent as json with have one root key and one or more childs.
 
-## How it works
-
-### Node
-
-Lanchat instances are called nodes. Every node has separated TCP client and host. 
-They also use UDP broadcasts to detect other nodes on the network.
-
-<img src="./Assets/Network.svg" width="350">
-
-### Connection
-
-There are three ways to establish connection between two nodes.
-
-* Broadcast
-* Nodes list
-* Manual
-
-<img src="./Assets/Connection.svg">
-
-### Heartbeat
-
-Nodes send blank package every second for detect broken connections. 
-If node doesn't receive heartbeat within the time specified in config (5 seconds in default) it closes socket.
-
-## API
-
-### Transmitted data
-
-#### Examples
+## Examples
 ```json
 {
     "message": "W60NmRuhifxSLM7V9sPtOg=="
@@ -55,9 +27,9 @@ If node doesn't receive heartbeat within the time specified in config (5 seconds
 }
 ```
 
-### List
+## Data types
 
-#### paperplane
+### paperplane
 
 Used for detecting nodes by UDP broadcasts
 
@@ -66,7 +38,7 @@ Used for detecting nodes by UDP broadcasts
 | Id   | Guid  | Used to recognize self broadcasts |
 | Port | int   | TCP host port number              |
 
-#### handshake
+### handshake
 
 Contains information required to create a connection
 
@@ -76,7 +48,7 @@ Contains information required to create a connection
 | Port      | int    | TCP host port number                                    |
 | PublicKey | string | RSA public key serialized from RSACryptoServiceProvider |
 
-#### key
+### key
 
 AES key encrypted with RSA
 
@@ -85,11 +57,11 @@ AES key encrypted with RSA
 | AesKey | string | -                                                       |
 | AesIV  | string | -                                                       |
 
-#### heartbeat
+### heartbeat
 
 Empty packet sent to check connection status
 
-#### message
+### message
 
 Message encrypted with AES and base64 (for transport)
 
@@ -97,7 +69,7 @@ Message encrypted with AES and base64 (for transport)
 | ---- | ------ | ------------------------------------------------------- |
 | root | string | Encrypted message content                               |
 
-#### nickname
+### nickname
 
 Packet sent after node nickname change or node reconnect
 
@@ -105,7 +77,7 @@ Packet sent after node nickname change or node reconnect
 | -------- | ------ | ------------------------------------------------------- |
 | root     | string | Node Nickname                                           |
 
-#### list
+### list
 
 List of IP addresses of nodes connected to the sending node. 
 Used when UDP broadcast doesn't work for some reason
