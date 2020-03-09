@@ -141,7 +141,7 @@ namespace Lanchat.Common.NetworkLib
             }
 
             // Check is node with same ip alredy exist
-            if (NodeList.Find(x => x.Ip.Equals(ip)) == null)
+            if (Methods.GetNode(ip) == null)
             {
                 var node = new Node(ip, this);
                 NodeList.Add(node);

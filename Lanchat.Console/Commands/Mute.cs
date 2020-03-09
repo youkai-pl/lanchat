@@ -1,5 +1,4 @@
-﻿using Lanchat.Console.ProgramLib;
-using Lanchat.Console.Ui;
+﻿using Lanchat.Console.Ui;
 
 namespace Lanchat.Console.Commands
 {
@@ -7,7 +6,7 @@ namespace Lanchat.Console.Commands
     {
         public void Mute(string nickname)
         {
-            var node = program.Network.NodeList.Find(x => x.Nickname.Equals(nickname));
+            var node = program.Network.Methods.GetNode(nickname);
             if (node != null)
             {
                 node.Mute = true;
