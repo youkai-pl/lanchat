@@ -15,6 +15,36 @@ namespace Lanchat.Common.NetworkLib.Api
         }
 
         /// <summary>
+        /// Manual connect.
+        /// </summary>
+        /// <param name="ip">Node ip</param>
+        /// <param name="port">Node host port</param>
+        public void Connect(IPAddress ip, int port)
+        {
+            network.CreateNode(ip, port, true);
+        }
+
+        /// <summary>
+        /// Get node by IP.
+        /// </summary>
+        /// <param name="ip">IP address</param>
+        /// <returns></returns>
+        public Node GetNode(IPAddress ip)
+        {
+            return network.NodeList.Find(x => x.Ip.Equals(ip));
+        }
+
+        /// <summary>
+        /// Get node by nickname.
+        /// </summary>
+        /// <param name="nickname">Nickname</param>
+        /// <returns></returns>
+        public Node GetNode(string nickname)
+        {
+            return network.NodeList.Find(x => x.Nickname == nickname);
+        }
+
+        /// <summary>
         /// Send message to all nodes.
         /// </summary>
         /// <param name="message">content</param>
@@ -27,17 +57,6 @@ namespace Lanchat.Common.NetworkLib.Api
                     x.Client.SendMessage(message);
                 }
             });
-        }
-
-        /// <summary>
-        /// Manual connect.
-        /// </summary>
-        /// <param name="ip">Node ip</param>
-        /// <param name="port">Node host port</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
-        public void Connect(IPAddress ip, int port)
-        {
-            network.CreateNode(ip, port, true);
         }
     }
 }

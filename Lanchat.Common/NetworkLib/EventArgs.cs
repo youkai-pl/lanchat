@@ -65,6 +65,11 @@ namespace Lanchat.Common.NetworkLib
         /// Sender nickname.
         /// </summary>
         public string Nickname { get; set; }
+
+        /// <summary>
+        /// Private message.
+        /// </summary>
+        public bool Private { get; set; }
     }
 
     internal class ReceivedListEventArgs : EventArgs

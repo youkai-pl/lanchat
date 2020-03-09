@@ -21,7 +21,7 @@ namespace Lanchat.Common.NetworkLib.Events
 
         internal event EventHandler<ReceivedListEventArgs> ReceivedList;
 
-        internal event EventHandler<ReceivedMessageEventArgs> RecievedMessage;
+        internal event EventHandler<ReceivedMessageEventArgs> ReceivedMessage;
 
         internal event EventHandler StateChanged;
 
@@ -76,9 +76,18 @@ namespace Lanchat.Common.NetworkLib.Events
 
         internal virtual void OnReceivedMessage(string content)
         {
-            RecievedMessage(this, new ReceivedMessageEventArgs()
+            ReceivedMessage(this, new ReceivedMessageEventArgs()
             {
                 Content = content,
+            });
+        }
+
+        internal virtual void OnReceivedPrivateMessage(string content)
+        {
+            ReceivedMessage(this, new ReceivedMessageEventArgs()
+            {
+                Content = content,
+                Private = true
             });
         }
 

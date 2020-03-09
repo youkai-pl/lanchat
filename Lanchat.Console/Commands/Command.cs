@@ -88,7 +88,17 @@ namespace Lanchat.Console.Commands
                     break;
 
                 default:
-                    Prompt.Out("Bad command");
+                    int index = command.IndexOf('/');
+                    if (index > 0)
+                    {
+                        var nickname = command.Substring(0, index);
+                        var message = command.Substring(index+1);
+                        PrivateMessage(nickname, message);
+                    }
+                    else
+                    {
+                        Prompt.Alert("Incorrect command. Check /help");
+                    }
                     break;
             }
         }

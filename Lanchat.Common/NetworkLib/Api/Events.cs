@@ -78,7 +78,8 @@ namespace Lanchat.Common.NetworkLib.Api
         {
             NodeConnected(this, new NodeConnectionStatusEventArgs()
             {
-                Nickname = nickname
+                Nickname = nickname,
+                NodeIP = ip
             });
         }
 
@@ -126,12 +127,13 @@ namespace Lanchat.Common.NetworkLib.Api
         /// </summary>
         /// <param name="content">Message content</param>
         /// <param name="nickname">Sender nickname</param>
-        public virtual void OnReceivedMessage(string content, string nickname)
+        public virtual void OnReceivedMessage(string content, string nickname, bool privateMessage)
         {
             ReceivedMessage(this, new ReceivedMessageEventArgs()
             {
                 Content = content,
-                Nickname = nickname
+                Nickname = nickname,
+                Private = privateMessage
             });
         }
     }

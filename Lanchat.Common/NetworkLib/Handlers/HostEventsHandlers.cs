@@ -7,13 +7,10 @@ namespace Lanchat.Common.NetworkLib.Handlers
     internal class HostEventsHandlers
     {
         private readonly Network network;
-        private readonly Host host;
 
         internal HostEventsHandlers(Network network, Host host)
         {
             this.network = network;
-            this.host = host;
-
             host.Events.NodeConnected += OnNodeConnected;
             host.Events.RecievedBroadcast += OnReceivedBroadcast;
         }
@@ -22,7 +19,7 @@ namespace Lanchat.Common.NetworkLib.Handlers
         {
             Trace.WriteLine($"[NETWORK] Connection detected ({e.NodeIP})");
 
-            var node = GetNode(e.NodeIP);
+            var node = network.Methods.GetNode(e.NodeIP);
 
             if (node != null)
             {
@@ -50,11 +47,6 @@ namespace Lanchat.Common.NetworkLib.Handlers
         private bool CheckBroadcastID(Paperplane broadcast, IPAddress senderIp)
         {
             return broadcast.Id != network.Id && !network.NodeList.Exists(x => x.Ip.Equals(senderIp));
-        }
-
-        private Node GetNode(IPAddress ip)
-        {
-            return network.NodeList.Find(x => x.Ip.Equals(ip));
         }
     }
 }

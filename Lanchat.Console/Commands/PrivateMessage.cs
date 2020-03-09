@@ -4,20 +4,19 @@ namespace Lanchat.Console.Commands
 {
     public partial class Command
     {
-        public void Mute(string nickname)
+        public void PrivateMessage(string nickname, string message)
         {
             var node = program.Network.Methods.GetNode(nickname);
             if (node != null)
             {
-                node.Mute = true;
-                if (program.Config.Muted.Exists(x => x.Equals(node.Ip)))
+                if (string.IsNullOrWhiteSpace(message))
                 {
-                    Prompt.Out("User already muted");
+                    Prompt.Alert("Message cannot be blank");
                 }
                 else
                 {
-                    program.Config.AddMute(node.Ip);
-                    Prompt.Notice($"{nickname} muted");
+                    Prompt.Out(message, null, program.Config.Nickname + " -> " + nickname);
+                    node.SendPrivate(message);
                 }
             }
             else

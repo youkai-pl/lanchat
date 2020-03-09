@@ -1,6 +1,7 @@
 ﻿using Lanchat.Common.NetworkLib;
 using Lanchat.Console.Ui;
 using System.Diagnostics;
+using System.Net;
 
 namespace Lanchat.Console.ProgramLib
 {
@@ -28,7 +29,7 @@ namespace Lanchat.Console.ProgramLib
             // Or message
             else
             {
-                Prompt.Out(input, null, Config.Nickname);
+                Prompt.Out(input, null, program.Config.Nickname);
                 program.Network.Methods.SendAll(input);
             }
         }
@@ -44,11 +45,21 @@ namespace Lanchat.Console.ProgramLib
         }
 
         // Recieved message
-        public void OnRecievedMessage(object o, ReceivedMessageEventArgs e)
+        public void OnReceivedMessage(object o, ReceivedMessageEventArgs e)
         {
+            Trace.WriteLine(e.Private);
+
             if (!program.DebugMode)
             {
-                Prompt.Out(e.Content.Trim(), null, e.Nickname);
+
+                if (e.Private)
+                {
+                    Prompt.Out(e.Content.Trim(), null, e.Nickname + " -> " + program.Config.Nickname);
+                }
+                else
+                {
+                    Prompt.Out(e.Content.Trim(), null, e.Nickname);
+                }
             }
         }
 
@@ -60,7 +71,7 @@ namespace Lanchat.Console.ProgramLib
                 Prompt.Notice(e.Nickname + " connected");
             }
 
-            if (Config.Muted.Exists(x => x.Equals(e.NodeIP)))
+            if (program.Config.Muted.Exists(x => x == e.NodeIP.ToString()))
             {
                 var node = program.Network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
                 node.Mute = true;

@@ -45,11 +45,12 @@ namespace Lanchat.Console.ProgramLib
 
         public Network Network { get; set; }
         public Prompt Prompt { get; set; }
+        public Config Config { get; set; }
 
         public void Start()
         {
             Debug.Assert(DebugMode = true);
-            Config.Load();
+            Config = Config.Load();
 
             // Start logging
             Trace.Listeners.Add(new TimeTraceListener($"{Config.Path}{DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss")}.log"));
@@ -95,7 +96,7 @@ namespace Lanchat.Console.ProgramLib
             // Initialize network
             Network = new Network(Config.BroadcastPort, Config.Nickname, Config.HostPort, Config.HeartbeatTimeout);
             Network.Events.HostStarted += eventHandlers.OnHostStarted;
-            Network.Events.ReceivedMessage += eventHandlers.OnRecievedMessage;
+            Network.Events.ReceivedMessage += eventHandlers.OnReceivedMessage;
             Network.Events.NodeConnected += eventHandlers.OnNodeConnected;
             Network.Events.NodeDisconnected += eventHandlers.OnNodeDisconnected;
             Network.Events.NodeSuspended += eventHandlers.OnNodeSuspended;
