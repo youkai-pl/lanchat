@@ -91,6 +91,19 @@ namespace Lanchat.Common.NetworkLib
             Trace.WriteLine($"[CLIENT] Nodes list sent ({node.Ip})");
         }
 
+        internal void SendPrivate(string message)
+        {
+            if (node.State == Status.Ready)
+            {
+                Send("private", node.SelfAes.Encode(message));
+                Trace.WriteLine($"[CLIENT] Private message sent ({node.Ip})");
+            }
+            else
+            {
+                Trace.WriteLine($"[CLIENT] Private message not sent. Node isn't ready ({node.Ip})");
+            }
+        }
+
         internal void SendMessage(string message)
         {
             if (node.State == Status.Ready)

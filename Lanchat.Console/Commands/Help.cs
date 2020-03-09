@@ -14,6 +14,8 @@ namespace Lanchat.Console.Commands
             Prompt.Out("/nick <nickname> ");
             Prompt.Out("/unmute <nickname>");
             Prompt.Out("");
+            Prompt.Out("/someone nickname/private message");
+            Prompt.Out("");
         }
     }
 }

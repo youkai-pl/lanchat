@@ -45,11 +45,21 @@ namespace Lanchat.Console.ProgramLib
         }
 
         // Recieved message
-        public void OnRecievedMessage(object o, ReceivedMessageEventArgs e)
+        public void OnReceivedMessage(object o, ReceivedMessageEventArgs e)
         {
+            Trace.WriteLine(e.Private);
+
             if (!program.DebugMode)
             {
-                Prompt.Out(e.Content.Trim(), null, e.Nickname);
+
+                if (e.Private)
+                {
+                    Prompt.Out(e.Content.Trim(), null, e.Nickname + " -> " + program.Config.Nickname);
+                }
+                else
+                {
+                    Prompt.Out(e.Content.Trim(), null, e.Nickname);
+                }
             }
         }
 

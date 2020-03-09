@@ -198,6 +198,11 @@ namespace Lanchat.Common.NetworkLib
                         var type = ((JProperty)obj[0]).Name;
                         var content = ((JProperty)obj[0]).Value;
 
+                        if(type != "heartbeat")
+                        {
+                            Trace.WriteLine($"[NODE] Received data ({type})({Ip})");
+                        }
+
                         // Events
 
                         if (type == "handshake")
@@ -220,6 +225,11 @@ namespace Lanchat.Common.NetworkLib
                         if (type == "message")
                         {
                             Events.OnReceivedMessage(content.ToString());
+                        }
+
+                        if (type == "private")
+                        {
+                            Events.OnReceivedPrivateMessage(content.ToString());
                         }
 
                         if (type == "nickname")
@@ -308,6 +318,15 @@ namespace Lanchat.Common.NetworkLib
             {
                 State = Status.Suspended;
             }
+        }
+
+        /// <summary>
+        /// Send private message.
+        /// </summary>
+        /// <param name="message">content</param>
+        public void SendPrivate(string message)
+        {
+            Client.SendPrivate(message);
         }
 
         // Dispose

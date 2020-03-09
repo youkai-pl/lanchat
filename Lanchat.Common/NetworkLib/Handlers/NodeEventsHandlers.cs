@@ -20,7 +20,7 @@ namespace Lanchat.Common.NetworkLib.Handlers
             node.ConnectionTimer.Elapsed += OnConnectionTimer;
             node.Events.ReceivedHandshake += OnReceivedHandshake;
             node.Events.ReceivedKey += OnReceivedKey;
-            node.Events.RecievedMessage += OnReceivedMessage;
+            node.Events.ReceivedMessage += OnReceivedMessage;
             node.Events.ReceivedList += OnReceivedList;
             node.Events.ReceivedHeartbeat += OnReceivedHeartbeat;
             node.Events.ChangedNickname += OnChangedNickname;
@@ -87,7 +87,7 @@ namespace Lanchat.Common.NetworkLib.Handlers
                 Trace.WriteLine($"[NETOWRK] Message received ({node.Ip})");
                 if (!string.IsNullOrWhiteSpace(content))
                 {
-                    network.Events.OnReceivedMessage(content, node.Nickname);
+                    network.Events.OnReceivedMessage(content, node.Nickname, e.Private);
                 }
             }
             else

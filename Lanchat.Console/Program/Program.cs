@@ -96,7 +96,7 @@ namespace Lanchat.Console.ProgramLib
             // Initialize network
             Network = new Network(Config.BroadcastPort, Config.Nickname, Config.HostPort, Config.HeartbeatTimeout);
             Network.Events.HostStarted += eventHandlers.OnHostStarted;
-            Network.Events.ReceivedMessage += eventHandlers.OnRecievedMessage;
+            Network.Events.ReceivedMessage += eventHandlers.OnReceivedMessage;
             Network.Events.NodeConnected += eventHandlers.OnNodeConnected;
             Network.Events.NodeDisconnected += eventHandlers.OnNodeDisconnected;
             Network.Events.NodeSuspended += eventHandlers.OnNodeSuspended;
