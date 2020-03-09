@@ -10,9 +10,6 @@ dotnet publish Lanchat.Console\Lanchat.Console.csproj /p:PublishProfile=Lanchat.
 dotnet publish Lanchat.Console\Lanchat.Console.csproj /p:PublishProfile=Lanchat.Console\Properties\PublishProfiles\Linux.pubxml -f netcoreapp3.0 -c Release
 dotnet publish Lanchat.Console\Lanchat.Console.csproj /p:PublishProfile=Lanchat.Console\Properties\PublishProfiles\Mac.pubxml -f netcoreapp3.0 -c Release
 
-$Version = [System.Reflection.Assembly]::LoadFrom("$CurrentDir\Lanchat.Console\bin\Publish\Windows\Lanchat.exe").GetName().Version.ToString()
-
-
 echo Merging
 $ilmergePath = "$env:USERPROFILE\.nuget\packages\ilmerge\3.0.29\tools\net452\ILMerge.exe"
 Set-Alias ILMerge $ilmergePath
@@ -20,6 +17,8 @@ Set-Alias ILMerge $ilmergePath
 $WindowsBuildPath = "$CurrentDir\Lanchat.Console\bin\Publish\Windows"
 
 ILMerge /out:"$WindowsBuildPath\Lanchat.exe" "$WindowsBuildPath\Lanchat.exe" "$WindowsBuildPath\Colorful.Console.dll" "$WindowsBuildPath\Lanchat.Common.dll" "$WindowsBuildPath\Newtonsoft.Json.dll"
+
+$Version = (get-item -Path "$CurrentDir\Lanchat.Console\bin\Publish\Windows\Lanchat.exe").VersionInfo.FileVersion.ToString()
 
 echo Removing unnecessary files
 
