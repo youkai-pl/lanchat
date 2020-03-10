@@ -31,7 +31,7 @@ All data is sent as json with have one root key and one or more childs.
 
 ### paperplane
 
-Used for detecting nodes by UDP broadcasts
+Used for detecting nodes by UDP broadcasts.
 
 | Key  | Value | Description                       | 
 | ---- | ----- | --------------------------------- |
@@ -40,7 +40,7 @@ Used for detecting nodes by UDP broadcasts
 
 ### handshake
 
-Contains information required to create a connection
+Contains information required to create a connection.
 
 | Key       | Value  | Description                                             | 
 | --------- | ------ | ------------------------------------------------------- |
@@ -50,7 +50,7 @@ Contains information required to create a connection
 
 ### key
 
-AES key encrypted with RSA
+AES key encrypted with RSA.
 
 | Key    | Value  | Description                                             | 
 | ------ | ------ | :-----------------------------------------------------: |
@@ -59,11 +59,19 @@ AES key encrypted with RSA
 
 ### heartbeat
 
-Empty packet sent to check connection status
+Empty packet sent to check connection status.
 
 ### message
 
-Message encrypted with AES and base64 (for transport)
+Message encrypted with AES and base64 (for transport) sent to all nodes.
+
+| Key  | Value  | Description                                             | 
+| ---- | ------ | ------------------------------------------------------- |
+| root | string | Encrypted message content                               |
+
+### private
+
+Private message.
 
 | Key  | Value  | Description                                             | 
 | ---- | ------ | ------------------------------------------------------- |
@@ -71,7 +79,7 @@ Message encrypted with AES and base64 (for transport)
 
 ### nickname
 
-Packet sent after node nickname change or node reconnect
+Packet sent after node nickname change or node reconnect.
 
 | Key      | Value  | Description                                             | 
 | -------- | ------ | ------------------------------------------------------- |
@@ -80,7 +88,7 @@ Packet sent after node nickname change or node reconnect
 ### list
 
 List of IP addresses of nodes connected to the sending node. 
-Used when UDP broadcast doesn't work for some reason
+Used when UDP broadcast doesn't work for some reason.
 
 | Key           | Value         | Description                                              | 
 | ------------- | ------------- | -------------------------------------------------------- |
