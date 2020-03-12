@@ -11,21 +11,6 @@ using System.Threading.Tasks;
 
 namespace Lanchat.Common.NetworkLib
 {
-    internal static class SocketExtensions
-    {
-        internal static bool IsConnected(this Socket socket)
-        {
-            try
-            {
-                return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
-            }
-            catch (SocketException)
-            {
-                return false;
-            }
-        }
-    }
-
     internal class Host : IDisposable
     {
         private readonly int port;
