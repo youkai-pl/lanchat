@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 
-namespace Lanchat.Common.NetworkLib.Events.Args
+namespace Lanchat.Common.NetworkLib.InternalEvents.Args
 {
     internal class RecievedBroadcastEventArgs : EventArgs
     {

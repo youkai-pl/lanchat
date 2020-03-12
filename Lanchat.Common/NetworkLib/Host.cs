@@ -1,4 +1,4 @@
-﻿using Lanchat.Common.NetworkLib.Events;
+﻿using Lanchat.Common.NetworkLib.InternalEvents;
 using Lanchat.Common.Types;
 using Newtonsoft.Json;
 using System;

@@ -1,10 +1,10 @@
-﻿using Lanchat.Common.NetworkLib.Events.Args;
+﻿using Lanchat.Common.NetworkLib.InternalEvents.Args;
 using Lanchat.Common.Types;
 using System;
 using System.Net;
 using System.Net.Sockets;
 
-namespace Lanchat.Common.NetworkLib.Events
+namespace Lanchat.Common.NetworkLib.InternalEvents
 {
     internal class HostEvents
     {

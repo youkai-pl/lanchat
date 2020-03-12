@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 
-namespace Lanchat.Common.NetworkLib.Events.Args
+namespace Lanchat.Common.NetworkLib.InternalEvents.Args
 {
     internal class ReceivedListEventArgs : EventArgs
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lanchat.Common.NetworkLib.Events.Args
+namespace Lanchat.Common.NetworkLib.InternalEvents.Args
 {
     internal class RecievedKeyEventArgs : EventArgs
     {

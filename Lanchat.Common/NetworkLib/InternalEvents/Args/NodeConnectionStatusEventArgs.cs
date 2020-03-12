@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace Lanchat.Common.NetworkLib.Events.Args
+namespace Lanchat.Common.NetworkLib.InternalEvents.Args
 {
     /// <summary>
     /// Node connection status.
