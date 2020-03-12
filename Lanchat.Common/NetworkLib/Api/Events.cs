@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lanchat.Common.NetworkLib.Events.Args;
+using System;
 using System.Net;
 
 namespace Lanchat.Common.NetworkLib.Api

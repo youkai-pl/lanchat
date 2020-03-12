@@ -1,7 +1,6 @@
-﻿using Lanchat.Common.NetworkLib;
+﻿using Lanchat.Common.NetworkLib.Events.Args;
 using Lanchat.Console.Ui;
 using System.Diagnostics;
-using System.Net;
 
 namespace Lanchat.Console.ProgramLib
 {

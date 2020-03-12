@@ -1,4 +1,5 @@
-﻿using Lanchat.Common.Types;
+﻿using Lanchat.Common.NetworkLib.Events.Args;
+using Lanchat.Common.Types;
 using System;
 using System.Diagnostics;
 using System.Net;
