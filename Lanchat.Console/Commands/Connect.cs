@@ -1,4 +1,4 @@
-﻿using Lanchat.Common.NetworkLib;
+﻿using Lanchat.Common.NetworkLib.Exceptions;
 using Lanchat.Console.Ui;
 using System;
 using System.Net;

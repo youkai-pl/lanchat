@@ -1,4 +1,5 @@
-﻿using Lanchat.Common.Types;
+﻿using Lanchat.Common.NetworkLib.Exceptions;
+using Lanchat.Common.Types;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;

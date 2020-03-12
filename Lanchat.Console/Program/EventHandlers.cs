@@ -50,7 +50,6 @@ namespace Lanchat.Console.ProgramLib
 
             if (!program.DebugMode)
             {
-
                 if (e.Private)
                 {
                     Prompt.Out(e.Content.Trim(), null, e.Nickname + " -> " + program.Config.Nickname);

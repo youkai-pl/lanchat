@@ -1,5 +1,6 @@
 ﻿using Lanchat.Common.Cryptography;
 using Lanchat.Common.NetworkLib.Api;
+using Lanchat.Common.NetworkLib.Exceptions;
 using Lanchat.Common.NetworkLib.Handlers;
 using Lanchat.Common.Types;
 using System;

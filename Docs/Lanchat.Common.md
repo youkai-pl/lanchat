@@ -3,10 +3,10 @@
 
 ## Contents
 
-- [ChangedNicknameEventArgs](#T-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs 'Lanchat.Common.NetworkLib.ChangedNicknameEventArgs')
-  - [NewNickname](#P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-NewNickname 'Lanchat.Common.NetworkLib.ChangedNicknameEventArgs.NewNickname')
-  - [OldNickname](#P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-OldNickname 'Lanchat.Common.NetworkLib.ChangedNicknameEventArgs.OldNickname')
-- [ConnectionFailedException](#T-Lanchat-Common-NetworkLib-ConnectionFailedException 'Lanchat.Common.NetworkLib.ConnectionFailedException')
+- [ChangedNicknameEventArgs](#T-Lanchat-Common-NetworkLib-Events-Args-ChangedNicknameEventArgs 'Lanchat.Common.NetworkLib.Events.Args.ChangedNicknameEventArgs')
+  - [NewNickname](#P-Lanchat-Common-NetworkLib-Events-Args-ChangedNicknameEventArgs-NewNickname 'Lanchat.Common.NetworkLib.Events.Args.ChangedNicknameEventArgs.NewNickname')
+  - [OldNickname](#P-Lanchat-Common-NetworkLib-Events-Args-ChangedNicknameEventArgs-OldNickname 'Lanchat.Common.NetworkLib.Events.Args.ChangedNicknameEventArgs.OldNickname')
+- [ConnectionFailedException](#T-Lanchat-Common-NetworkLib-Exceptions-ConnectionFailedException 'Lanchat.Common.NetworkLib.Exceptions.ConnectionFailedException')
 - [Events](#T-Lanchat-Common-NetworkLib-Api-Events 'Lanchat.Common.NetworkLib.Api.Events')
   - [OnChangedNickname(oldNickname,newNickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnChangedNickname-System-String,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnChangedNickname(System.String,System.String)')
   - [OnHostStarted(port)](#M-Lanchat-Common-NetworkLib-Api-Events-OnHostStarted-System-Int32- 'Lanchat.Common.NetworkLib.Api.Events.OnHostStarted(System.Int32)')
@@ -20,8 +20,8 @@
   - [Nickname](#P-Lanchat-Common-Types-Handshake-Nickname 'Lanchat.Common.Types.Handshake.Nickname')
   - [Port](#P-Lanchat-Common-Types-Handshake-Port 'Lanchat.Common.Types.Handshake.Port')
   - [PublicKey](#P-Lanchat-Common-Types-Handshake-PublicKey 'Lanchat.Common.Types.Handshake.PublicKey')
-- [HostStartedEventArgs](#T-Lanchat-Common-NetworkLib-HostStartedEventArgs 'Lanchat.Common.NetworkLib.HostStartedEventArgs')
-  - [Port](#P-Lanchat-Common-NetworkLib-HostStartedEventArgs-Port 'Lanchat.Common.NetworkLib.HostStartedEventArgs.Port')
+- [HostStartedEventArgs](#T-Lanchat-Common-NetworkLib-Events-Args-HostStartedEventArgs 'Lanchat.Common.NetworkLib.Events.Args.HostStartedEventArgs')
+  - [Port](#P-Lanchat-Common-NetworkLib-Events-Args-HostStartedEventArgs-Port 'Lanchat.Common.NetworkLib.Events.Args.HostStartedEventArgs.Port')
 - [Methods](#T-Lanchat-Common-NetworkLib-Api-Methods 'Lanchat.Common.NetworkLib.Api.Methods')
   - [Connect(ip,port)](#M-Lanchat-Common-NetworkLib-Api-Methods-Connect-System-Net-IPAddress,System-Int32- 'Lanchat.Common.NetworkLib.Api.Methods.Connect(System.Net.IPAddress,System.Int32)')
   - [GetNode(ip)](#M-Lanchat-Common-NetworkLib-Api-Methods-GetNode-System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Api.Methods.GetNode(System.Net.IPAddress)')
@@ -51,51 +51,51 @@
   - [Dispose(disposing)](#M-Lanchat-Common-NetworkLib-Node-Dispose-System-Boolean- 'Lanchat.Common.NetworkLib.Node.Dispose(System.Boolean)')
   - [Finalize()](#M-Lanchat-Common-NetworkLib-Node-Finalize 'Lanchat.Common.NetworkLib.Node.Finalize')
   - [SendPrivate(message)](#M-Lanchat-Common-NetworkLib-Node-SendPrivate-System-String- 'Lanchat.Common.NetworkLib.Node.SendPrivate(System.String)')
-- [NodeAlreadyExistException](#T-Lanchat-Common-NetworkLib-NodeAlreadyExistException 'Lanchat.Common.NetworkLib.NodeAlreadyExistException')
-- [NodeConnectionStatusEventArgs](#T-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs')
-  - [Nickname](#P-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs-Nickname 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs.Nickname')
-  - [NodeIP](#P-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs-NodeIP 'Lanchat.Common.NetworkLib.NodeConnectionStatusEventArgs.NodeIP')
-- [ReceivedMessageEventArgs](#T-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs')
-  - [Content](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Content 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.Content')
-  - [Nickname](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Nickname 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.Nickname')
-  - [Private](#P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Private 'Lanchat.Common.NetworkLib.ReceivedMessageEventArgs.Private')
+- [NodeAlreadyExistException](#T-Lanchat-Common-NetworkLib-Exceptions-NodeAlreadyExistException 'Lanchat.Common.NetworkLib.Exceptions.NodeAlreadyExistException')
+- [NodeConnectionStatusEventArgs](#T-Lanchat-Common-NetworkLib-Events-Args-NodeConnectionStatusEventArgs 'Lanchat.Common.NetworkLib.Events.Args.NodeConnectionStatusEventArgs')
+  - [Nickname](#P-Lanchat-Common-NetworkLib-Events-Args-NodeConnectionStatusEventArgs-Nickname 'Lanchat.Common.NetworkLib.Events.Args.NodeConnectionStatusEventArgs.Nickname')
+  - [NodeIP](#P-Lanchat-Common-NetworkLib-Events-Args-NodeConnectionStatusEventArgs-NodeIP 'Lanchat.Common.NetworkLib.Events.Args.NodeConnectionStatusEventArgs.NodeIP')
+- [ReceivedMessageEventArgs](#T-Lanchat-Common-NetworkLib-Events-Args-ReceivedMessageEventArgs 'Lanchat.Common.NetworkLib.Events.Args.ReceivedMessageEventArgs')
+  - [Content](#P-Lanchat-Common-NetworkLib-Events-Args-ReceivedMessageEventArgs-Content 'Lanchat.Common.NetworkLib.Events.Args.ReceivedMessageEventArgs.Content')
+  - [Nickname](#P-Lanchat-Common-NetworkLib-Events-Args-ReceivedMessageEventArgs-Nickname 'Lanchat.Common.NetworkLib.Events.Args.ReceivedMessageEventArgs.Nickname')
+  - [Private](#P-Lanchat-Common-NetworkLib-Events-Args-ReceivedMessageEventArgs-Private 'Lanchat.Common.NetworkLib.Events.Args.ReceivedMessageEventArgs.Private')
 - [Status](#T-Lanchat-Common-Types-Status 'Lanchat.Common.Types.Status')
   - [Ready](#F-Lanchat-Common-Types-Status-Ready 'Lanchat.Common.Types.Status.Ready')
   - [Resumed](#F-Lanchat-Common-Types-Status-Resumed 'Lanchat.Common.Types.Status.Resumed')
   - [Suspended](#F-Lanchat-Common-Types-Status-Suspended 'Lanchat.Common.Types.Status.Suspended')
   - [Waiting](#F-Lanchat-Common-Types-Status-Waiting 'Lanchat.Common.Types.Status.Waiting')
 
-<a name='T-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs'></a>
+<a name='T-Lanchat-Common-NetworkLib-Events-Args-ChangedNicknameEventArgs'></a>
 ## ChangedNicknameEventArgs `type`
 
 ##### Namespace
 
-Lanchat.Common.NetworkLib
+Lanchat.Common.NetworkLib.Events.Args
 
 ##### Summary
 
 Changed node nickname event.
 
-<a name='P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-NewNickname'></a>
+<a name='P-Lanchat-Common-NetworkLib-Events-Args-ChangedNicknameEventArgs-NewNickname'></a>
 ### NewNickname `property`
 
 ##### Summary
 
 New nickname.
 
-<a name='P-Lanchat-Common-NetworkLib-ChangedNicknameEventArgs-OldNickname'></a>
+<a name='P-Lanchat-Common-NetworkLib-Events-Args-ChangedNicknameEventArgs-OldNickname'></a>
 ### OldNickname `property`
 
 ##### Summary
 
 Old nickname.
 
-<a name='T-Lanchat-Common-NetworkLib-ConnectionFailedException'></a>
+<a name='T-Lanchat-Common-NetworkLib-Exceptions-ConnectionFailedException'></a>
 ## ConnectionFailedException `type`
 
 ##### Namespace
 
-Lanchat.Common.NetworkLib
+Lanchat.Common.NetworkLib.Exceptions
 
 ##### Summary
 
@@ -256,18 +256,18 @@ Node host port.
 
 Node host port.
 
-<a name='T-Lanchat-Common-NetworkLib-HostStartedEventArgs'></a>
+<a name='T-Lanchat-Common-NetworkLib-Events-Args-HostStartedEventArgs'></a>
 ## HostStartedEventArgs `type`
 
 ##### Namespace
 
-Lanchat.Common.NetworkLib
+Lanchat.Common.NetworkLib.Events.Args
 
 ##### Summary
 
 Host started.
 
-<a name='P-Lanchat-Common-NetworkLib-HostStartedEventArgs-Port'></a>
+<a name='P-Lanchat-Common-NetworkLib-Events-Args-HostStartedEventArgs-Port'></a>
 ### Port `property`
 
 ##### Summary
@@ -576,68 +576,68 @@ Send private message.
 | ---- | ---- | ----------- |
 | message | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | content |
 
-<a name='T-Lanchat-Common-NetworkLib-NodeAlreadyExistException'></a>
+<a name='T-Lanchat-Common-NetworkLib-Exceptions-NodeAlreadyExistException'></a>
 ## NodeAlreadyExistException `type`
 
 ##### Namespace
 
-Lanchat.Common.NetworkLib
+Lanchat.Common.NetworkLib.Exceptions
 
 ##### Summary
 
 Node already exist in list.
 
-<a name='T-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs'></a>
+<a name='T-Lanchat-Common-NetworkLib-Events-Args-NodeConnectionStatusEventArgs'></a>
 ## NodeConnectionStatusEventArgs `type`
 
 ##### Namespace
 
-Lanchat.Common.NetworkLib
+Lanchat.Common.NetworkLib.Events.Args
 
 ##### Summary
 
 Node connection status.
 
-<a name='P-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs-Nickname'></a>
+<a name='P-Lanchat-Common-NetworkLib-Events-Args-NodeConnectionStatusEventArgs-Nickname'></a>
 ### Nickname `property`
 
 ##### Summary
 
 Node nickname.
 
-<a name='P-Lanchat-Common-NetworkLib-NodeConnectionStatusEventArgs-NodeIP'></a>
+<a name='P-Lanchat-Common-NetworkLib-Events-Args-NodeConnectionStatusEventArgs-NodeIP'></a>
 ### NodeIP `property`
 
 ##### Summary
 
 Node ip.
 
-<a name='T-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs'></a>
+<a name='T-Lanchat-Common-NetworkLib-Events-Args-ReceivedMessageEventArgs'></a>
 ## ReceivedMessageEventArgs `type`
 
 ##### Namespace
 
-Lanchat.Common.NetworkLib
+Lanchat.Common.NetworkLib.Events.Args
 
 ##### Summary
 
 Received message.
 
-<a name='P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Content'></a>
+<a name='P-Lanchat-Common-NetworkLib-Events-Args-ReceivedMessageEventArgs-Content'></a>
 ### Content `property`
 
 ##### Summary
 
 Message content.
 
-<a name='P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Nickname'></a>
+<a name='P-Lanchat-Common-NetworkLib-Events-Args-ReceivedMessageEventArgs-Nickname'></a>
 ### Nickname `property`
 
 ##### Summary
 
 Sender nickname.
 
-<a name='P-Lanchat-Common-NetworkLib-ReceivedMessageEventArgs-Private'></a>
+<a name='P-Lanchat-Common-NetworkLib-Events-Args-ReceivedMessageEventArgs-Private'></a>
 ### Private `property`
 
 ##### Summary
