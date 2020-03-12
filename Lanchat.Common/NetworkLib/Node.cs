@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Timers;
+using System.Linq;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -20,6 +21,8 @@ namespace Lanchat.Common.NetworkLib
     /// </summary>
     public class Node : IDisposable
     {
+        private Status _State;
+
         /// <summary>
         /// Node constructor with known port.
         /// </summary>
@@ -87,8 +90,6 @@ namespace Lanchat.Common.NetworkLib
         /// </summary>
         public int Port { get; set; }
 
-        private Status _State;
-
         /// <summary>
         /// Node <see cref="Status"/>.
         /// </summary>
@@ -115,6 +116,15 @@ namespace Lanchat.Common.NetworkLib
         internal Aes RemoteAes { get; set; }
         internal Aes SelfAes { get; set; }
         internal Socket Socket { get; set; }
+
+        /// <summary>
+        /// Send private message.
+        /// </summary>
+        /// <param name="message">content</param>
+        public void SendPrivate(string message)
+        {
+            Client.SendPrivate(message);
+        }
 
         internal void AcceptHandshake(Handshake handshake)
         {
@@ -147,29 +157,20 @@ namespace Lanchat.Common.NetworkLib
 
         internal void Process()
         {
-            byte[] response;
+            byte[] streamBuffer;
 
-            while (true)
+            while (Socket.IsConnected())
             {
-                response = new byte[Socket.ReceiveBufferSize];
-                _ = Socket.Receive(response);
+                // Read stream
+                streamBuffer = new byte[Socket.ReceiveBufferSize];
+                _ = Socket.Receive(streamBuffer);
 
-                if (!Socket.IsConnected())
-                {
-                    Trace.WriteLine($"[HOST] Socket closed ({Ip})");
-                    Socket.Close();
-                    Events.OnNodeDisconnected(Ip);
-                    break;
-                }
-
+                // Get string
+                var respBytesList = new List<byte>(streamBuffer);
+                var data = Encoding.UTF8.GetString(respBytesList.ToArray());
+                
                 try
                 {
-                    var respBytesList = new List<byte>(response);
-                    var data = Encoding.UTF8.GetString(respBytesList.ToArray());
-
-                    // Parse jsons
-                    IList<JObject> buffer = new List<JObject>();
-
                     JsonTextReader reader = new JsonTextReader(new StringReader(data))
                     {
                         SupportMultipleContent = true
@@ -177,69 +178,10 @@ namespace Lanchat.Common.NetworkLib
 
                     using (reader)
                     {
-                        while (true)
+                        while (reader.Read())
                         {
-                            if (!reader.Read())
-                            {
-                                break;
-                            }
-
                             JsonSerializer serializer = new JsonSerializer();
-                            JObject packet = serializer.Deserialize<JObject>(reader);
-
-                            buffer.Add(packet);
-                        }
-                    }
-
-                    // Process all parsed jsons from buffer
-                    foreach (JObject packet in buffer)
-                    {
-                        IList<JToken> obj = packet;
-                        var type = ((JProperty)obj[0]).Name;
-                        var content = ((JProperty)obj[0]).Value;
-
-                        if(type != "heartbeat")
-                        {
-                            Trace.WriteLine($"[NODE] Received data ({type})({Ip})");
-                        }
-
-                        // Events
-
-                        if (type == "handshake")
-                        {
-                            Events.OnReceivedHandshake(content.ToObject<Handshake>());
-                        }
-
-                        if (type == "key")
-                        {
-                            Events.OnReceivedKey(content.ToObject<Key>());
-                        }
-
-                        if (type == "heartbeat")
-                        {
-                            Events.OnReceivedHeartbeat();
-                        }
-
-                        // Data
-
-                        if (type == "message")
-                        {
-                            Events.OnReceivedMessage(content.ToString());
-                        }
-
-                        if (type == "private")
-                        {
-                            Events.OnReceivedPrivateMessage(content.ToString());
-                        }
-
-                        if (type == "nickname")
-                        {
-                            Events.OnChangedNickname(content.ToString());
-                        }
-
-                        if (type == "list")
-                        {
-                            Events.OnReceivedList(content.ToObject<List<ListItem>>(), IPAddress.Parse(((IPEndPoint)Socket.LocalEndPoint).Address.ToString()));
+                            HandleReceivedData(serializer.Deserialize<JObject>(reader));
                         }
                     }
                 }
@@ -251,6 +193,51 @@ namespace Lanchat.Common.NetworkLib
                 {
                     Trace.WriteLine($"([HOST] Data processing error: not vaild json ({Ip})");
                 }
+            }
+
+            Trace.WriteLine($"[HOST] Socket closed ({Ip})");
+            Socket.Close();
+            Events.OnNodeDisconnected(Ip);
+        }
+
+        private void HandleReceivedData(JObject json)
+        {
+            var type = json.Properties().Select(p => p.Name).FirstOrDefault();
+            var content = json.Properties().Select(p => p.Value).FirstOrDefault();
+
+            if (type == "handshake")
+            {
+                Events.OnReceivedHandshake(content.ToObject<Handshake>());
+            }
+
+            if (type == "key")
+            {
+                Events.OnReceivedKey(content.ToObject<Key>());
+            }
+
+            if (type == "heartbeat")
+            {
+                Events.OnReceivedHeartbeat();
+            }
+
+            if (type == "message")
+            {
+                Events.OnReceivedMessage(content.ToString());
+            }
+
+            if (type == "private")
+            {
+                Events.OnReceivedPrivateMessage(content.ToString());
+            }
+
+            if (type == "nickname")
+            {
+                Events.OnChangedNickname(content.ToString());
+            }
+
+            if (type == "list")
+            {
+                Events.OnReceivedList(content.ToObject<List<ListItem>>(), IPAddress.Parse(((IPEndPoint)Socket.LocalEndPoint).Address.ToString()));
             }
         }
 
@@ -319,16 +306,6 @@ namespace Lanchat.Common.NetworkLib
                 State = Status.Suspended;
             }
         }
-
-        /// <summary>
-        /// Send private message.
-        /// </summary>
-        /// <param name="message">content</param>
-        public void SendPrivate(string message)
-        {
-            Client.SendPrivate(message);
-        }
-
         // Dispose
 
         #region IDisposable Support

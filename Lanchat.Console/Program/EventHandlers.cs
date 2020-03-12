@@ -46,8 +46,6 @@ namespace Lanchat.Console.ProgramLib
         // Recieved message
         public void OnReceivedMessage(object o, ReceivedMessageEventArgs e)
         {
-            Trace.WriteLine(e.Private);
-
             if (!program.DebugMode)
             {
                 if (e.Private)
