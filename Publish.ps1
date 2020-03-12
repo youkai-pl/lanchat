@@ -1,5 +1,4 @@
-Write-Host "Preparing" -fore green 
-
+Write-Output "Preparing..."
 $CurrentDir = (Get-Item -Path '.\' -Verbose)
 $ILMergePath = "$env:USERPROFILE\.nuget\packages\ilmerge\3.0.29\tools\net452\ILMerge.exe"
 $WindowsBuildPath = "$CurrentDir\Lanchat.Console\bin\Publish\Windows"
@@ -12,25 +11,25 @@ if (-not (Test-Path -Path $7zipPath -PathType Leaf)) {
     throw "7 zip file '$7zipPath' not found"
 }
 
-Write-Host "Cleaning" -fore green 
+Write-Output "Cleaning..."
 
 rm -r -fo "Lanchat.Console\bin\Publish"
 
-Write-Host "Building" -fore green 
+Write-Output "Building..."
 
 dotnet publish Lanchat.Console\Lanchat.Console.csproj /p:PublishProfile=Lanchat.Console\Properties\PublishProfiles\Windows.pubxml -f net472 -c Release -v m
 dotnet publish Lanchat.Console\Lanchat.Console.csproj /p:PublishProfile=Lanchat.Console\Properties\PublishProfiles\Linux.pubxml -f netcoreapp3.0 -c Release -v m
 dotnet publish Lanchat.Console\Lanchat.Console.csproj /p:PublishProfile=Lanchat.Console\Properties\PublishProfiles\Mac.pubxml -f netcoreapp3.0 -c Release -v m
 
-Write-Host "Merging" -fore green 
+Write-Output "Merging..."
 
 ILMerge /out:"$WindowsBuildPath\Lanchat.exe" "$WindowsBuildPath\Lanchat.exe" "$WindowsBuildPath\Colorful.Console.dll" "$WindowsBuildPath\Lanchat.Common.dll" "$WindowsBuildPath\Newtonsoft.Json.dll"
 
-Write-Host "Removing unnecessary files" -fore green 
+Write-Output "Removing unnecessary files..." 
 
 Get-ChildItem -Path $WindowsBuildPath -Recurse | Remove-Item -Exclude "Lanchat.exe" -Recurse -force 
 
-Write-Host "Packing" -fore green 
+Write-Output "Packing..." 
 
 $Version = (get-item -Path "$CurrentDir\Lanchat.Console\bin\Publish\Windows\Lanchat.exe").VersionInfo.FileVersion.ToString()
 
@@ -38,4 +37,4 @@ $Version = (get-item -Path "$CurrentDir\Lanchat.Console\bin\Publish\Windows\Lanc
 7zip a -r -bb "Lanchat.Console\bin\Publish\Lanchat_Linux_$Version.zip" "$CurrentDir\Lanchat.Console\bin\Publish\Linux\*"
 7zip a -r -bb "Lanchat.Console\bin\Publish\Lanchat_Mac_$Version.zip" "$CurrentDir\Lanchat.Console\bin\Publish\Mac\*"
 
-Write-Host "All done!!!" -fore green 
+Write-Output "All done!!!" 
