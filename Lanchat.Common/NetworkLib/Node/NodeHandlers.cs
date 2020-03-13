@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 
-namespace Lanchat.Common.NetworkLib
+namespace Lanchat.Common.NetworkLib.Node
 {
     internal class NodeHandlers
     {
         private readonly Network network;
-        private readonly Node node;
+        private readonly NodeInstance node;
 
-        public NodeHandlers(Network network, Node node)
+        public NodeHandlers(Network network, NodeInstance node)
         {
             this.network = network;
             this.node = node;

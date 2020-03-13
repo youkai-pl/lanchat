@@ -2,6 +2,7 @@
 using Lanchat.Common.NetworkLib.Api;
 using Lanchat.Common.NetworkLib.Exceptions;
 using Lanchat.Common.NetworkLib.Host;
+using Lanchat.Common.NetworkLib.Node;
 using Lanchat.Common.Types;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace Lanchat.Common.NetworkLib
         public Network(int broadcastPort, string nickname, int hostPort = -1, int heartbeatTimeout = 5000)
         {
             Rsa = new Rsa();
-            NodeList = new List<Node>();
+            NodeList = new List<NodeInstance>();
             Nickname = nickname;
             PublicKey = Rsa.PublicKey;
             BroadcastPort = broadcastPort;
@@ -80,7 +81,7 @@ namespace Lanchat.Common.NetworkLib
         /// <summary>
         /// All nodes here.
         /// </summary>
-        public List<Node> NodeList { get; }
+        public List<NodeInstance> NodeList { get; }
 
         internal int BroadcastPort { get; set; }
 
@@ -123,7 +124,7 @@ namespace Lanchat.Common.NetworkLib
             }
         }
 
-        internal void CloseNode(Node node)
+        internal void CloseNode(NodeInstance node)
         {
             var nickname = node.ClearNickname;
             Trace.WriteLine($"[NETWORK] Node disconnected ({node.Ip})");
@@ -144,7 +145,7 @@ namespace Lanchat.Common.NetworkLib
             // Check is node with same ip alredy exist
             if (Methods.GetNode(ip) == null)
             {
-                var node = new Node(ip, this);
+                var node = new NodeInstance(ip, this);
                 NodeList.Add(node);
                 if (socket != null)
                 {

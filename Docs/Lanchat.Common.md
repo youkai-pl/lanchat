@@ -41,24 +41,24 @@
   - [Dispose(disposing)](#M-Lanchat-Common-NetworkLib-Network-Dispose-System-Boolean- 'Lanchat.Common.NetworkLib.Network.Dispose(System.Boolean)')
   - [Finalize()](#M-Lanchat-Common-NetworkLib-Network-Finalize 'Lanchat.Common.NetworkLib.Network.Finalize')
   - [Start()](#M-Lanchat-Common-NetworkLib-Network-Start 'Lanchat.Common.NetworkLib.Network.Start')
-- [Node](#T-Lanchat-Common-NetworkLib-Node 'Lanchat.Common.NetworkLib.Node')
-  - [#ctor(ip,network)](#M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network- 'Lanchat.Common.NetworkLib.Node.#ctor(System.Net.IPAddress,Lanchat.Common.NetworkLib.Network)')
-  - [ClearNickname](#P-Lanchat-Common-NetworkLib-Node-ClearNickname 'Lanchat.Common.NetworkLib.Node.ClearNickname')
-  - [Handshake](#P-Lanchat-Common-NetworkLib-Node-Handshake 'Lanchat.Common.NetworkLib.Node.Handshake')
-  - [Heartbeat](#P-Lanchat-Common-NetworkLib-Node-Heartbeat 'Lanchat.Common.NetworkLib.Node.Heartbeat')
-  - [Ip](#P-Lanchat-Common-NetworkLib-Node-Ip 'Lanchat.Common.NetworkLib.Node.Ip')
-  - [Mute](#P-Lanchat-Common-NetworkLib-Node-Mute 'Lanchat.Common.NetworkLib.Node.Mute')
-  - [Nickname](#P-Lanchat-Common-NetworkLib-Node-Nickname 'Lanchat.Common.NetworkLib.Node.Nickname')
-  - [Port](#P-Lanchat-Common-NetworkLib-Node-Port 'Lanchat.Common.NetworkLib.Node.Port')
-  - [State](#P-Lanchat-Common-NetworkLib-Node-State 'Lanchat.Common.NetworkLib.Node.State')
-  - [Dispose()](#M-Lanchat-Common-NetworkLib-Node-Dispose 'Lanchat.Common.NetworkLib.Node.Dispose')
-  - [Dispose(disposing)](#M-Lanchat-Common-NetworkLib-Node-Dispose-System-Boolean- 'Lanchat.Common.NetworkLib.Node.Dispose(System.Boolean)')
-  - [Finalize()](#M-Lanchat-Common-NetworkLib-Node-Finalize 'Lanchat.Common.NetworkLib.Node.Finalize')
-  - [SendPrivate(message)](#M-Lanchat-Common-NetworkLib-Node-SendPrivate-System-String- 'Lanchat.Common.NetworkLib.Node.SendPrivate(System.String)')
 - [NodeAlreadyExistException](#T-Lanchat-Common-NetworkLib-Exceptions-NodeAlreadyExistException 'Lanchat.Common.NetworkLib.Exceptions.NodeAlreadyExistException')
 - [NodeConnectionStatusEventArgs](#T-Lanchat-Common-NetworkLib-EventsArgs-NodeConnectionStatusEventArgs 'Lanchat.Common.NetworkLib.EventsArgs.NodeConnectionStatusEventArgs')
   - [Nickname](#P-Lanchat-Common-NetworkLib-EventsArgs-NodeConnectionStatusEventArgs-Nickname 'Lanchat.Common.NetworkLib.EventsArgs.NodeConnectionStatusEventArgs.Nickname')
   - [NodeIP](#P-Lanchat-Common-NetworkLib-EventsArgs-NodeConnectionStatusEventArgs-NodeIP 'Lanchat.Common.NetworkLib.EventsArgs.NodeConnectionStatusEventArgs.NodeIP')
+- [NodeInstance](#T-Lanchat-Common-NetworkLib-Node-NodeInstance 'Lanchat.Common.NetworkLib.Node.NodeInstance')
+  - [#ctor(ip,network)](#M-Lanchat-Common-NetworkLib-Node-NodeInstance-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network- 'Lanchat.Common.NetworkLib.Node.NodeInstance.#ctor(System.Net.IPAddress,Lanchat.Common.NetworkLib.Network)')
+  - [ClearNickname](#P-Lanchat-Common-NetworkLib-Node-NodeInstance-ClearNickname 'Lanchat.Common.NetworkLib.Node.NodeInstance.ClearNickname')
+  - [Handshake](#P-Lanchat-Common-NetworkLib-Node-NodeInstance-Handshake 'Lanchat.Common.NetworkLib.Node.NodeInstance.Handshake')
+  - [Heartbeat](#P-Lanchat-Common-NetworkLib-Node-NodeInstance-Heartbeat 'Lanchat.Common.NetworkLib.Node.NodeInstance.Heartbeat')
+  - [Ip](#P-Lanchat-Common-NetworkLib-Node-NodeInstance-Ip 'Lanchat.Common.NetworkLib.Node.NodeInstance.Ip')
+  - [Mute](#P-Lanchat-Common-NetworkLib-Node-NodeInstance-Mute 'Lanchat.Common.NetworkLib.Node.NodeInstance.Mute')
+  - [Nickname](#P-Lanchat-Common-NetworkLib-Node-NodeInstance-Nickname 'Lanchat.Common.NetworkLib.Node.NodeInstance.Nickname')
+  - [Port](#P-Lanchat-Common-NetworkLib-Node-NodeInstance-Port 'Lanchat.Common.NetworkLib.Node.NodeInstance.Port')
+  - [State](#P-Lanchat-Common-NetworkLib-Node-NodeInstance-State 'Lanchat.Common.NetworkLib.Node.NodeInstance.State')
+  - [Dispose()](#M-Lanchat-Common-NetworkLib-Node-NodeInstance-Dispose 'Lanchat.Common.NetworkLib.Node.NodeInstance.Dispose')
+  - [Dispose(disposing)](#M-Lanchat-Common-NetworkLib-Node-NodeInstance-Dispose-System-Boolean- 'Lanchat.Common.NetworkLib.Node.NodeInstance.Dispose(System.Boolean)')
+  - [Finalize()](#M-Lanchat-Common-NetworkLib-Node-NodeInstance-Finalize 'Lanchat.Common.NetworkLib.Node.NodeInstance.Finalize')
+  - [SendPrivate(message)](#M-Lanchat-Common-NetworkLib-Node-NodeInstance-SendPrivate-System-String- 'Lanchat.Common.NetworkLib.Node.NodeInstance.SendPrivate(System.String)')
 - [ReceivedMessageEventArgs](#T-Lanchat-Common-NetworkLib-EventsArgs-ReceivedMessageEventArgs 'Lanchat.Common.NetworkLib.EventsArgs.ReceivedMessageEventArgs')
   - [Content](#P-Lanchat-Common-NetworkLib-EventsArgs-ReceivedMessageEventArgs-Content 'Lanchat.Common.NetworkLib.EventsArgs.ReceivedMessageEventArgs.Content')
   - [Nickname](#P-Lanchat-Common-NetworkLib-EventsArgs-ReceivedMessageEventArgs-Nickname 'Lanchat.Common.NetworkLib.EventsArgs.ReceivedMessageEventArgs.Nickname')
@@ -484,135 +484,6 @@ Start host, broadcast and listen.
 
 This method has no parameters.
 
-<a name='T-Lanchat-Common-NetworkLib-Node'></a>
-## Node `type`
-
-##### Namespace
-
-Lanchat.Common.NetworkLib
-
-##### Summary
-
-Represents network node.
-
-<a name='M-Lanchat-Common-NetworkLib-Node-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network-'></a>
-### #ctor(ip,network) `constructor`
-
-##### Summary
-
-Node constructor with known port.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node IP |
-| network | [Lanchat.Common.NetworkLib.Network](#T-Lanchat-Common-NetworkLib-Network 'Lanchat.Common.NetworkLib.Network') | Network |
-
-<a name='P-Lanchat-Common-NetworkLib-Node-ClearNickname'></a>
-### ClearNickname `property`
-
-##### Summary
-
-Nickname without number.
-
-<a name='P-Lanchat-Common-NetworkLib-Node-Handshake'></a>
-### Handshake `property`
-
-##### Summary
-
-Handshake.
-
-<a name='P-Lanchat-Common-NetworkLib-Node-Heartbeat'></a>
-### Heartbeat `property`
-
-##### Summary
-
-Last heartbeat status.
-
-<a name='P-Lanchat-Common-NetworkLib-Node-Ip'></a>
-### Ip `property`
-
-##### Summary
-
-Node IP.
-
-<a name='P-Lanchat-Common-NetworkLib-Node-Mute'></a>
-### Mute `property`
-
-##### Summary
-
-Node mute value.
-
-<a name='P-Lanchat-Common-NetworkLib-Node-Nickname'></a>
-### Nickname `property`
-
-##### Summary
-
-Node nickname. If nicknames are duplicated returns nickname with number.
-
-<a name='P-Lanchat-Common-NetworkLib-Node-Port'></a>
-### Port `property`
-
-##### Summary
-
-Node TCP port.
-
-<a name='P-Lanchat-Common-NetworkLib-Node-State'></a>
-### State `property`
-
-##### Summary
-
-Node [Status](#T-Lanchat-Common-Types-Status 'Lanchat.Common.Types.Status').
-
-<a name='M-Lanchat-Common-NetworkLib-Node-Dispose'></a>
-### Dispose() `method`
-
-##### Summary
-
-Node dispose.
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-Lanchat-Common-NetworkLib-Node-Dispose-System-Boolean-'></a>
-### Dispose(disposing) `method`
-
-##### Summary
-
-Node dispose.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| disposing | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') | Free any other managed objects |
-
-<a name='M-Lanchat-Common-NetworkLib-Node-Finalize'></a>
-### Finalize() `method`
-
-##### Summary
-
-Destructor.
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-Lanchat-Common-NetworkLib-Node-SendPrivate-System-String-'></a>
-### SendPrivate(message) `method`
-
-##### Summary
-
-Send private message.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| message | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | content |
-
 <a name='T-Lanchat-Common-NetworkLib-Exceptions-NodeAlreadyExistException'></a>
 ## NodeAlreadyExistException `type`
 
@@ -648,6 +519,135 @@ Node nickname.
 ##### Summary
 
 Node ip.
+
+<a name='T-Lanchat-Common-NetworkLib-Node-NodeInstance'></a>
+## NodeInstance `type`
+
+##### Namespace
+
+Lanchat.Common.NetworkLib.Node
+
+##### Summary
+
+Represents network node.
+
+<a name='M-Lanchat-Common-NetworkLib-Node-NodeInstance-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network-'></a>
+### #ctor(ip,network) `constructor`
+
+##### Summary
+
+Node constructor with known port.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node IP |
+| network | [Lanchat.Common.NetworkLib.Network](#T-Lanchat-Common-NetworkLib-Network 'Lanchat.Common.NetworkLib.Network') | Network |
+
+<a name='P-Lanchat-Common-NetworkLib-Node-NodeInstance-ClearNickname'></a>
+### ClearNickname `property`
+
+##### Summary
+
+Nickname without number.
+
+<a name='P-Lanchat-Common-NetworkLib-Node-NodeInstance-Handshake'></a>
+### Handshake `property`
+
+##### Summary
+
+Handshake.
+
+<a name='P-Lanchat-Common-NetworkLib-Node-NodeInstance-Heartbeat'></a>
+### Heartbeat `property`
+
+##### Summary
+
+Last heartbeat status.
+
+<a name='P-Lanchat-Common-NetworkLib-Node-NodeInstance-Ip'></a>
+### Ip `property`
+
+##### Summary
+
+Node IP.
+
+<a name='P-Lanchat-Common-NetworkLib-Node-NodeInstance-Mute'></a>
+### Mute `property`
+
+##### Summary
+
+Node mute value.
+
+<a name='P-Lanchat-Common-NetworkLib-Node-NodeInstance-Nickname'></a>
+### Nickname `property`
+
+##### Summary
+
+Node nickname. If nicknames are duplicated returns nickname with number.
+
+<a name='P-Lanchat-Common-NetworkLib-Node-NodeInstance-Port'></a>
+### Port `property`
+
+##### Summary
+
+Node TCP port.
+
+<a name='P-Lanchat-Common-NetworkLib-Node-NodeInstance-State'></a>
+### State `property`
+
+##### Summary
+
+Node [Status](#T-Lanchat-Common-Types-Status 'Lanchat.Common.Types.Status').
+
+<a name='M-Lanchat-Common-NetworkLib-Node-NodeInstance-Dispose'></a>
+### Dispose() `method`
+
+##### Summary
+
+Node dispose.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Lanchat-Common-NetworkLib-Node-NodeInstance-Dispose-System-Boolean-'></a>
+### Dispose(disposing) `method`
+
+##### Summary
+
+Node dispose.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| disposing | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') | Free any other managed objects |
+
+<a name='M-Lanchat-Common-NetworkLib-Node-NodeInstance-Finalize'></a>
+### Finalize() `method`
+
+##### Summary
+
+Destructor.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Lanchat-Common-NetworkLib-Node-NodeInstance-SendPrivate-System-String-'></a>
+### SendPrivate(message) `method`
+
+##### Summary
+
+Send private message.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| message | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | content |
 
 <a name='T-Lanchat-Common-NetworkLib-EventsArgs-ReceivedMessageEventArgs'></a>
 ## ReceivedMessageEventArgs `type`

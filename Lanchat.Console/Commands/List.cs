@@ -1,4 +1,4 @@
-﻿using Lanchat.Common.NetworkLib;
+﻿using Lanchat.Common.NetworkLib.Node;
 using Lanchat.Common.Types;
 using Lanchat.Console.Ui;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ namespace Lanchat.Console.Commands
             }
         }
 
-        private static string GetStatus(Node item)
+        private static string GetStatus(NodeInstance item)
         {
             if (item.State == Status.Ready)
             {

@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Lanchat.Common.NetworkLib.Node;
+using System.Net;
 
 namespace Lanchat.Common.NetworkLib.Api
 {
@@ -29,7 +30,7 @@ namespace Lanchat.Common.NetworkLib.Api
         /// </summary>
         /// <param name="ip">IP address</param>
         /// <returns></returns>
-        public Node GetNode(IPAddress ip)
+        public NodeInstance GetNode(IPAddress ip)
         {
             return network.NodeList.Find(x => x.Ip.Equals(ip));
         }
@@ -39,7 +40,7 @@ namespace Lanchat.Common.NetworkLib.Api
         /// </summary>
         /// <param name="nickname">Nickname</param>
         /// <returns></returns>
-        public Node GetNode(string nickname)
+        public NodeInstance GetNode(string nickname)
         {
             return network.NodeList.Find(x => x.Nickname == nickname);
         }
