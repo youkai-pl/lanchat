@@ -4,7 +4,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 
-namespace Lanchat.Common.NetworkLib.InternalEvents
+namespace Lanchat.Common.NetworkLib.Host
 {
     internal class HostEvents
     {

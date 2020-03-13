@@ -1,5 +1,4 @@
-﻿using Lanchat.Common.NetworkLib.InternalEvents;
-using Lanchat.Common.Types;
+﻿using Lanchat.Common.Types;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
@@ -9,15 +8,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Lanchat.Common.NetworkLib
+namespace Lanchat.Common.NetworkLib.Host
 {
-    internal class Host : IDisposable
+    internal class HostInstance : IDisposable
     {
         private readonly int port;
 
         private readonly UdpClient udpClient;
 
-        internal Host(int port)
+        internal HostInstance(int port)
         {
             Events = new HostEvents();
             this.port = port;

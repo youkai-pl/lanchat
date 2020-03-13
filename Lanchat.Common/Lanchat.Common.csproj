@@ -39,4 +39,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="NetworkLib\Handlers\" />
+    <Folder Include="NetworkLib\InternalEvents\" />
+  </ItemGroup>
+
 </Project>

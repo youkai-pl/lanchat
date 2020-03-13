@@ -1,5 +1,4 @@
 ﻿using Lanchat.Common.Cryptography;
-using Lanchat.Common.NetworkLib.InternalEvents;
 using Lanchat.Common.Types;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

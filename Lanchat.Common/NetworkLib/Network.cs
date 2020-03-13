@@ -1,7 +1,7 @@
 ﻿using Lanchat.Common.Cryptography;
 using Lanchat.Common.NetworkLib.Api;
 using Lanchat.Common.NetworkLib.Exceptions;
-using Lanchat.Common.NetworkLib.Handlers;
+using Lanchat.Common.NetworkLib.Host;
 using Lanchat.Common.Types;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace Lanchat.Common.NetworkLib
     /// </summary>
     public class Network : IDisposable
     {
-        private readonly Host host;
+        private readonly HostInstance host;
         private string nickname;
 
         /// <summary>
@@ -46,9 +46,9 @@ namespace Lanchat.Common.NetworkLib
                 HostPort = hostPort;
             }
 
-            host = new Host(BroadcastPort);
+            host = new HostInstance(BroadcastPort);
             _ = new HostEventsHandlers(this, host);
-            Events = new Api.Events();
+            Events = new Events();
             Methods = new Methods(this);
 
             Trace.WriteLine("[NETWORK] Network initialized");

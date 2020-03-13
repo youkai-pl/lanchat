@@ -3,13 +3,13 @@ using Lanchat.Common.Types;
 using System.Diagnostics;
 using System.Net;
 
-namespace Lanchat.Common.NetworkLib.Handlers
+namespace Lanchat.Common.NetworkLib.Host
 {
     internal class HostEventsHandlers
     {
         private readonly Network network;
 
-        internal HostEventsHandlers(Network network, Host host)
+        internal HostEventsHandlers(Network network, HostInstance host)
         {
             this.network = network;
             host.Events.NodeConnected += OnNodeConnected;
