@@ -1,7 +1,7 @@
 ﻿using Lanchat.Common.Types;
 using System;
 
-namespace Lanchat.Common.NetworkLib.InternalEvents.Args
+namespace Lanchat.Common.NetworkLib.EventsArgs
 {
     /// <summary>
     /// Received message.

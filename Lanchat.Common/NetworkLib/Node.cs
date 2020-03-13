@@ -31,7 +31,6 @@ namespace Lanchat.Common.NetworkLib
         {
             ConnectionTimer = new Timer { Interval = 10000, Enabled = false };
             HeartbeatTimer = new Timer { Interval = network.HeartbeatTimeout, Enabled = false };
-            Events = new NodeEvents();
             Handlers = new NodeHandlers(network, this);
             Ip = ip;
             SelfAes = new Aes();
@@ -108,7 +107,6 @@ namespace Lanchat.Common.NetworkLib
 
         internal Client Client { get; set; }
         internal Timer ConnectionTimer { get; set; }
-        internal NodeEvents Events { get; set; }
         internal NodeHandlers Handlers { get; set; }
         internal Timer HeartbeatTimer { get; set; }
         internal int NicknameNum { get; set; }

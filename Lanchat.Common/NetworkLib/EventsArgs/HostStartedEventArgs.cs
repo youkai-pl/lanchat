@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lanchat.Common.NetworkLib.InternalEvents.Args
+namespace Lanchat.Common.NetworkLib.EventsArgs
 {
     /// <summary>
     /// Host started.
