@@ -1,4 +1,5 @@
 ﻿using Lanchat.Common.NetworkLib.EventsArgs;
+using Lanchat.Common.NetworkLib.Node;
 using Lanchat.Common.Types;
 using System;
 using System.Net;
@@ -12,12 +13,20 @@ namespace Lanchat.Common.NetworkLib.Host
 
         internal event EventHandler<RecievedBroadcastEventArgs> RecievedBroadcast;
 
+        internal virtual void OnNodeConnected(NodeInstance node)
+        {
+            NodeConnected(this, new NodeConnectionStatusEventArgs()
+            {
+                Node = node
+            });
+        }
+
         internal virtual void OnNodeConnected(Socket socket, IPAddress ip)
         {
             NodeConnected(this, new NodeConnectionStatusEventArgs()
             {
                 Socket = socket,
-                NodeIP = ip
+                Ip = ip
             });
         }
 

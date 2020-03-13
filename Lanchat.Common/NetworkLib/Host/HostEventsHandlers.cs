@@ -18,15 +18,15 @@ namespace Lanchat.Common.NetworkLib.Host
 
         internal void OnNodeConnected(object o, NodeConnectionStatusEventArgs e)
         {
-            Trace.WriteLine($"[NETWORK] Connection detected ({e.NodeIP})");
+            Trace.WriteLine($"[NETWORK] Connection detected ({e.Ip})");
 
-            var node = network.Methods.GetNode(e.NodeIP);
+            var node = network.Methods.GetNode(e.Ip);
 
             if (node != null)
             {
                 node.Socket = e.Socket;
                 node.StartProcess();
-                Trace.WriteLine($"[NETWORK] Node found. Socket assigned ({e.NodeIP})");
+                Trace.WriteLine($"[NETWORK] Node found. Socket assigned ({e.Ip})");
             }
             else
             {

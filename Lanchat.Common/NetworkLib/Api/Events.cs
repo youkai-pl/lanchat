@@ -1,4 +1,5 @@
 ﻿using Lanchat.Common.NetworkLib.EventsArgs;
+using Lanchat.Common.NetworkLib.Node;
 using Lanchat.Common.Types;
 using System;
 using System.Net;
@@ -72,55 +73,50 @@ namespace Lanchat.Common.NetworkLib.Api
         }
 
         /// <summary>
-        /// Node connected event.
+        /// Node suspended event.
         /// </summary>
-        /// <param name="ip">Node ip</param>
-        /// <param name="nickname">Node nickname</param>
-        public virtual void OnNodeConnected(IPAddress ip, string nickname)
+        /// <param name="node">Node</param>
+        public virtual void OnNodeConnected(NodeInstance node)
         {
             NodeConnected(this, new NodeConnectionStatusEventArgs()
             {
-                Nickname = nickname,
-                NodeIP = ip
-            });
-        }
-
-        /// <summary>
-        /// Node disconnected event.
-        /// </summary>
-        /// <param name="ip">Node ip</param>
-        /// <param name="nickname">Node nickname</param>
-        public virtual void OnNodeDisconnected(IPAddress ip, string nickname)
-        {
-            NodeDisconnected(this, new NodeConnectionStatusEventArgs()
-            {
-                Nickname = nickname
-            });
-        }
-
-        /// <summary>
-        /// Node resumed event.
-        /// </summary>
-        /// <param name="ip">Node ip</param>
-        /// <param name="nickname">Node nickname</param>
-        public virtual void OnNodeResumed(IPAddress ip, string nickname)
-        {
-            NodeResumed(this, new NodeConnectionStatusEventArgs()
-            {
-                Nickname = nickname
+                Node = node
             });
         }
 
         /// <summary>
         /// Node suspended event.
         /// </summary>
-        /// <param name="ip">Node ip</param>
-        /// <param name="nickname">Node nickname</param>
-        public virtual void OnNodeSuspended(IPAddress ip, string nickname)
+        /// <param name="node">Node</param>
+        public virtual void OnNodeDisconnected(NodeInstance node)
+        {
+            NodeDisconnected(this, new NodeConnectionStatusEventArgs()
+            {
+                Node = node
+            });
+        }
+
+        /// <summary>
+        /// Node suspended event.
+        /// </summary>
+        /// <param name="node">Node</param>
+        public virtual void OnNodeResumed(NodeInstance node)
+        {
+            NodeResumed(this, new NodeConnectionStatusEventArgs()
+            {
+                Node = node
+            });
+        }
+
+        /// <summary>
+        /// Node suspended event.
+        /// </summary>
+        /// <param name="node">Node</param>
+        public virtual void OnNodeSuspended(NodeInstance node)
         {
             NodeSuspended(this, new NodeConnectionStatusEventArgs()
             {
-                Nickname = nickname
+                Node = node,
             });
         }
 
@@ -128,14 +124,14 @@ namespace Lanchat.Common.NetworkLib.Api
         /// Received message event.
         /// </summary>
         /// <param name="content">Message content</param>
-        /// <param name="nickname">Sender nickname</param>
+        /// <param name="node">Sender</param>
         /// <param name="target">Message target</param>
-        public virtual void OnReceivedMessage(string content, string nickname, MessageTarget target)
+        public virtual void OnReceivedMessage(string content, NodeInstance node, MessageTarget target)
         {
             ReceivedMessage(this, new ReceivedMessageEventArgs()
             {
                 Content = content,
-                Nickname = nickname,
+                Node = node,
                 Target = target
             });
         }

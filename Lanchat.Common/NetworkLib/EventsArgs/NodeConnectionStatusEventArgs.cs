@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lanchat.Common.NetworkLib.Node;
+using System;
 using System.Net;
 using System.Net.Sockets;
 
@@ -10,15 +11,11 @@ namespace Lanchat.Common.NetworkLib.EventsArgs
     public class NodeConnectionStatusEventArgs : EventArgs
     {
         /// <summary>
-        /// Node nickname.
+        /// Node.
         /// </summary>
-        public string Nickname { get; set; }
+        public NodeInstance Node { get; set; }
 
-        /// <summary>
-        /// Node ip.
-        /// </summary>
-        public IPAddress NodeIP { get; set; }
-
+        internal IPAddress Ip { get; set; }
         internal Socket Socket { get; set; }
     }
 }

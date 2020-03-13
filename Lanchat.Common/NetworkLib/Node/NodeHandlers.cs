@@ -77,7 +77,7 @@ namespace Lanchat.Common.NetworkLib.Node
                 Trace.WriteLine($"[NETOWRK] Message received ({node.Ip})");
                 if (!string.IsNullOrWhiteSpace(decodedContent))
                 {
-                    network.Events.OnReceivedMessage(decodedContent, node.Nickname, target);
+                    network.Events.OnReceivedMessage(decodedContent, node, target);
                 }
             }
             else
@@ -109,7 +109,7 @@ namespace Lanchat.Common.NetworkLib.Node
             // Node ready
             if (node.State == Status.Ready)
             {
-                network.Events.OnNodeConnected(node.Ip, node.Nickname);
+                network.Events.OnNodeConnected(node);
                 Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / ready)");
             }
 
@@ -126,7 +126,7 @@ namespace Lanchat.Common.NetworkLib.Node
             {
                 node.Client.ResumeConnection(network.Nickname);
                 node.State = Status.Ready;
-                network.Events.OnNodeResumed(node.Ip, node.Nickname);
+                network.Events.OnNodeResumed(node);
                 Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / resumed)");
             }
         }

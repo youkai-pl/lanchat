@@ -128,7 +128,7 @@ namespace Lanchat.Common.NetworkLib
         {
             var nickname = node.ClearNickname;
             Trace.WriteLine($"[NETWORK] Node disconnected ({node.Ip})");
-            Events.OnNodeDisconnected(node.Ip, node.Nickname);
+            Events.OnNodeDisconnected(node);
             NodeList.Remove(node);
             node.Dispose();
             CheckNickcnameDuplicates(nickname);

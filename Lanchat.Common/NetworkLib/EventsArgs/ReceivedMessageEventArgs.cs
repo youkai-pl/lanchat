@@ -1,4 +1,5 @@
-﻿using Lanchat.Common.Types;
+﻿using Lanchat.Common.NetworkLib.Node;
+using Lanchat.Common.Types;
 using System;
 
 namespace Lanchat.Common.NetworkLib.EventsArgs
@@ -14,9 +15,9 @@ namespace Lanchat.Common.NetworkLib.EventsArgs
         public string Content { get; set; }
 
         /// <summary>
-        /// Sender nickname.
+        /// Sender.
         /// </summary>
-        public string Nickname { get; set; }
+        public NodeInstance Node { get; set; }
 
         /// <summary>
         /// Message target.

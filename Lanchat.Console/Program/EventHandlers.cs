@@ -51,11 +51,11 @@ namespace Lanchat.Console.ProgramLib
             {
                 if (e.Target == MessageTarget.Private)
                 {
-                    Prompt.Out(e.Content.Trim(), null, e.Nickname + " -> " + program.Config.Nickname);
+                    Prompt.Out(e.Content.Trim(), null, e.Node.Nickname + " -> " + program.Config.Nickname);
                 }
                 else
                 {
-                    Prompt.Out(e.Content.Trim(), null, e.Nickname);
+                    Prompt.Out(e.Content.Trim(), null, e.Node.Nickname);
                 }
             }
         }
@@ -65,12 +65,12 @@ namespace Lanchat.Console.ProgramLib
         {
             if (!program.DebugMode)
             {
-                Prompt.Notice(e.Nickname + " connected");
+                Prompt.Notice(e.Node.Nickname + " connected");
             }
 
-            if (program.Config.Muted.Exists(x => x == e.NodeIP.ToString()))
+            if (program.Config.Muted.Exists(x => x == e.Node.Ip.ToString()))
             {
-                var node = program.Network.NodeList.Find(x => x.Ip.Equals(e.NodeIP));
+                var node = program.Network.NodeList.Find(x => x.Ip.Equals(e.Node.Ip));
                 node.Mute = true;
             }
         }
@@ -80,7 +80,7 @@ namespace Lanchat.Console.ProgramLib
         {
             if (!program.DebugMode)
             {
-                Prompt.Notice(e.Nickname + " disconnected");
+                Prompt.Notice(e.Node.Nickname + " disconnected");
             }
         }
 
@@ -89,7 +89,7 @@ namespace Lanchat.Console.ProgramLib
         {
             if (!program.DebugMode)
             {
-                Prompt.Notice(e.Nickname + " suspended. Waiting for reconnect");
+                Prompt.Notice(e.Node.Nickname + " suspended. Waiting for reconnect");
             }
         }
 
@@ -98,7 +98,7 @@ namespace Lanchat.Console.ProgramLib
         {
             if (!program.DebugMode)
             {
-                Prompt.Notice(e.Nickname + " reconnected");
+                Prompt.Notice(e.Node.Nickname + " reconnected");
             }
         }
 
