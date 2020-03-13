@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lanchat.Common.Types;
+using System;
 
 namespace Lanchat.Common.NetworkLib.InternalEvents.Args
 {
@@ -18,8 +19,8 @@ namespace Lanchat.Common.NetworkLib.InternalEvents.Args
         public string Nickname { get; set; }
 
         /// <summary>
-        /// Private message.
+        /// Message target.
         /// </summary>
-        public bool Private { get; set; }
+        public MessageTarget Target { get; set; }
     }
 }

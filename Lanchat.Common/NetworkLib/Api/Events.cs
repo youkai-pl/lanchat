@@ -1,4 +1,5 @@
 ﻿using Lanchat.Common.NetworkLib.InternalEvents.Args;
+using Lanchat.Common.Types;
 using System;
 using System.Net;
 
@@ -128,14 +129,14 @@ namespace Lanchat.Common.NetworkLib.Api
         /// </summary>
         /// <param name="content">Message content</param>
         /// <param name="nickname">Sender nickname</param>
-        /// <param name="privateMessage">Private message</param>
-        public virtual void OnReceivedMessage(string content, string nickname, bool privateMessage)
+        /// <param name="target">Message target</param>
+        public virtual void OnReceivedMessage(string content, string nickname, MessageTarget target)
         {
             ReceivedMessage(this, new ReceivedMessageEventArgs()
             {
                 Content = content,
                 Nickname = nickname,
-                Private = privateMessage
+                Target = target
             });
         }
     }

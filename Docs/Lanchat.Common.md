@@ -14,7 +14,7 @@
   - [OnNodeDisconnected(ip,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeDisconnected-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeDisconnected(System.Net.IPAddress,System.String)')
   - [OnNodeResumed(ip,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeResumed-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeResumed(System.Net.IPAddress,System.String)')
   - [OnNodeSuspended(ip,nickname)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeSuspended-System-Net-IPAddress,System-String- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeSuspended(System.Net.IPAddress,System.String)')
-  - [OnReceivedMessage(content,nickname,privateMessage)](#M-Lanchat-Common-NetworkLib-Api-Events-OnReceivedMessage-System-String,System-String,System-Boolean- 'Lanchat.Common.NetworkLib.Api.Events.OnReceivedMessage(System.String,System.String,System.Boolean)')
+  - [OnReceivedMessage(content,nickname,target)](#M-Lanchat-Common-NetworkLib-Api-Events-OnReceivedMessage-System-String,System-String,Lanchat-Common-Types-MessageTarget- 'Lanchat.Common.NetworkLib.Api.Events.OnReceivedMessage(System.String,System.String,Lanchat.Common.Types.MessageTarget)')
 - [Handshake](#T-Lanchat-Common-Types-Handshake 'Lanchat.Common.Types.Handshake')
   - [#ctor(nickname,publicKey,port)](#M-Lanchat-Common-Types-Handshake-#ctor-System-String,System-String,System-Int32- 'Lanchat.Common.Types.Handshake.#ctor(System.String,System.String,System.Int32)')
   - [Nickname](#P-Lanchat-Common-Types-Handshake-Nickname 'Lanchat.Common.Types.Handshake.Nickname')
@@ -22,6 +22,10 @@
   - [PublicKey](#P-Lanchat-Common-Types-Handshake-PublicKey 'Lanchat.Common.Types.Handshake.PublicKey')
 - [HostStartedEventArgs](#T-Lanchat-Common-NetworkLib-InternalEvents-Args-HostStartedEventArgs 'Lanchat.Common.NetworkLib.InternalEvents.Args.HostStartedEventArgs')
   - [Port](#P-Lanchat-Common-NetworkLib-InternalEvents-Args-HostStartedEventArgs-Port 'Lanchat.Common.NetworkLib.InternalEvents.Args.HostStartedEventArgs.Port')
+- [MessageTarget](#T-Lanchat-Common-Types-MessageTarget 'Lanchat.Common.Types.MessageTarget')
+  - [Broadcast](#F-Lanchat-Common-Types-MessageTarget-Broadcast 'Lanchat.Common.Types.MessageTarget.Broadcast')
+  - [Group](#F-Lanchat-Common-Types-MessageTarget-Group 'Lanchat.Common.Types.MessageTarget.Group')
+  - [Private](#F-Lanchat-Common-Types-MessageTarget-Private 'Lanchat.Common.Types.MessageTarget.Private')
 - [Methods](#T-Lanchat-Common-NetworkLib-Api-Methods 'Lanchat.Common.NetworkLib.Api.Methods')
   - [Connect(ip,port)](#M-Lanchat-Common-NetworkLib-Api-Methods-Connect-System-Net-IPAddress,System-Int32- 'Lanchat.Common.NetworkLib.Api.Methods.Connect(System.Net.IPAddress,System.Int32)')
   - [GetNode(ip)](#M-Lanchat-Common-NetworkLib-Api-Methods-GetNode-System-Net-IPAddress- 'Lanchat.Common.NetworkLib.Api.Methods.GetNode(System.Net.IPAddress)')
@@ -58,7 +62,7 @@
 - [ReceivedMessageEventArgs](#T-Lanchat-Common-NetworkLib-InternalEvents-Args-ReceivedMessageEventArgs 'Lanchat.Common.NetworkLib.InternalEvents.Args.ReceivedMessageEventArgs')
   - [Content](#P-Lanchat-Common-NetworkLib-InternalEvents-Args-ReceivedMessageEventArgs-Content 'Lanchat.Common.NetworkLib.InternalEvents.Args.ReceivedMessageEventArgs.Content')
   - [Nickname](#P-Lanchat-Common-NetworkLib-InternalEvents-Args-ReceivedMessageEventArgs-Nickname 'Lanchat.Common.NetworkLib.InternalEvents.Args.ReceivedMessageEventArgs.Nickname')
-  - [Private](#P-Lanchat-Common-NetworkLib-InternalEvents-Args-ReceivedMessageEventArgs-Private 'Lanchat.Common.NetworkLib.InternalEvents.Args.ReceivedMessageEventArgs.Private')
+  - [Target](#P-Lanchat-Common-NetworkLib-InternalEvents-Args-ReceivedMessageEventArgs-Target 'Lanchat.Common.NetworkLib.InternalEvents.Args.ReceivedMessageEventArgs.Target')
 - [Status](#T-Lanchat-Common-Types-Status 'Lanchat.Common.Types.Status')
   - [Ready](#F-Lanchat-Common-Types-Status-Ready 'Lanchat.Common.Types.Status.Ready')
   - [Resumed](#F-Lanchat-Common-Types-Status-Resumed 'Lanchat.Common.Types.Status.Resumed')
@@ -195,8 +199,8 @@ Node suspended event.
 | ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node ip |
 | nickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Node nickname |
 
-<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnReceivedMessage-System-String,System-String,System-Boolean-'></a>
-### OnReceivedMessage(content,nickname,privateMessage) `method`
+<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnReceivedMessage-System-String,System-String,Lanchat-Common-Types-MessageTarget-'></a>
+### OnReceivedMessage(content,nickname,target) `method`
 
 ##### Summary
 
@@ -208,7 +212,7 @@ Received message event.
 | ---- | ---- | ----------- |
 | content | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Message content |
 | nickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Sender nickname |
-| privateMessage | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') | Private message |
+| target | [Lanchat.Common.Types.MessageTarget](#T-Lanchat-Common-Types-MessageTarget 'Lanchat.Common.Types.MessageTarget') | Message target |
 
 <a name='T-Lanchat-Common-Types-Handshake'></a>
 ## Handshake `type`
@@ -274,6 +278,38 @@ Host started.
 ##### Summary
 
 Host listening port.
+
+<a name='T-Lanchat-Common-Types-MessageTarget'></a>
+## MessageTarget `type`
+
+##### Namespace
+
+Lanchat.Common.Types
+
+##### Summary
+
+Message target.
+
+<a name='F-Lanchat-Common-Types-MessageTarget-Broadcast'></a>
+### Broadcast `constants`
+
+##### Summary
+
+For all nodes.
+
+<a name='F-Lanchat-Common-Types-MessageTarget-Group'></a>
+### Group `constants`
+
+##### Summary
+
+For group of nodes.
+
+<a name='F-Lanchat-Common-Types-MessageTarget-Private'></a>
+### Private `constants`
+
+##### Summary
+
+For specified node.
 
 <a name='T-Lanchat-Common-NetworkLib-Api-Methods'></a>
 ## Methods `type`
@@ -638,12 +674,12 @@ Message content.
 
 Sender nickname.
 
-<a name='P-Lanchat-Common-NetworkLib-InternalEvents-Args-ReceivedMessageEventArgs-Private'></a>
-### Private `property`
+<a name='P-Lanchat-Common-NetworkLib-InternalEvents-Args-ReceivedMessageEventArgs-Target'></a>
+### Target `property`
 
 ##### Summary
 
-Private message.
+Message target.
 
 <a name='T-Lanchat-Common-Types-Status'></a>
 ## Status `type`

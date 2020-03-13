@@ -1,94 +1,83 @@
-﻿using Lanchat.Common.NetworkLib.InternalEvents.Args;
-using Lanchat.Common.Types;
+﻿using Lanchat.Common.Types;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 
-namespace Lanchat.Common.NetworkLib.Handlers
+namespace Lanchat.Common.NetworkLib
 {
-    internal class NodeEventsHandlers
+    internal class NodeHandlers
     {
         private readonly Network network;
         private readonly Node node;
 
-        public NodeEventsHandlers(Network network, Node node)
+        public NodeHandlers(Network network, Node node)
         {
             this.network = network;
             this.node = node;
-
-            node.Events.StateChanged += OnStateChanged;
-            node.Events.HandshakeAccepted += OnHandshakeAccepted;
-            node.ConnectionTimer.Elapsed += OnConnectionTimer;
-            node.Events.ReceivedHandshake += OnReceivedHandshake;
-            node.Events.ReceivedKey += OnReceivedKey;
-            node.Events.ReceivedMessage += OnReceivedMessage;
-            node.Events.ReceivedList += OnReceivedList;
-            node.Events.ReceivedHeartbeat += OnReceivedHeartbeat;
-            node.Events.ChangedNickname += OnChangedNickname;
-            node.Events.NodeDisconnected += OnNodeDisconnected;
         }
 
-        internal void OnChangedNickname(object o, ChangedNicknameEventArgs e)
+        internal void OnChangedNickname(string newNickname)
         {
             var oldNickname = node.Nickname;
 
-            if (oldNickname != e.NewNickname)
+            if (oldNickname != newNickname)
             {
-                node.Nickname = e.NewNickname;
-                network.CheckNickcnameDuplicates(e.NewNickname);
-                network.Events.OnChangedNickname(oldNickname, e.NewNickname);
-                Trace.WriteLine($"[NETOWRK] Nickname change ({node.Ip} {oldNickname} / {e.NewNickname})");
+                node.Nickname = newNickname;
+                network.CheckNickcnameDuplicates(newNickname);
+                network.Events.OnChangedNickname(oldNickname, newNickname);
+                Trace.WriteLine($"[NETOWRK] Nickname change ({node.Ip} {oldNickname} / {newNickname})");
             }
         }
 
-        internal void OnNodeDisconnected(object sender, EventArgs e)
+        internal void OnNodeDisconnected()
         {
             network.CloseNode(node);
         }
 
-        internal void OnReceivedHandshake(object o, RecievedHandshakeEventArgs e)
+        internal void OnReceivedHandshake(Handshake handshake)
         {
-            Trace.WriteLine($"[NETOWRK] Received handshake ({node.Ip} / {e.NodeHandshake.Nickname})");
-            node.AcceptHandshake(e.NodeHandshake);
+            Trace.WriteLine($"[NETOWRK] Received handshake ({node.Ip} / {handshake.Nickname})");
+            node.AcceptHandshake(handshake);
             Trace.WriteLine($"[NETOWRK] Handshake accepted ({node.Ip})");
 
-            network.CheckNickcnameDuplicates(e.NodeHandshake.Nickname);
+            network.CheckNickcnameDuplicates(handshake.Nickname);
         }
 
-        internal void OnReceivedHeartbeat(object sender, EventArgs e)
+        internal void OnReceivedHeartbeat()
         {
             node.Heartbeat = true;
         }
 
-        internal void OnReceivedKey(object o, RecievedKeyEventArgs e)
+        internal void OnReceivedKey(Key key)
         {
             Trace.WriteLine($"[NETOWRK] AES key received ({node.Ip})");
-            node.CreateRemoteAes(network.Rsa.Decode(e.AesKey), network.Rsa.Decode(e.AesIV));
+            node.CreateRemoteAes(network.Rsa.Decode(key.AesKey), network.Rsa.Decode(key.AesIV));
         }
 
-        internal void OnReceivedList(object o, ReceivedListEventArgs e)
+        internal void OnReceivedList(List<ListItem> list, IPAddress localAddress)
         {
             Trace.WriteLine($"[NETOWRK] Nodes list received");
-            foreach (var item in e.List)
+            foreach (var item in list)
             {
                 var ip = IPAddress.Parse(item.Ip);
 
-                if (!ip.Equals(e.LocalAddress))
+                if (!ip.Equals(localAddress))
                 {
                     network.CreateNode(ip, item.Port);
                 }
             }
         }
 
-        internal void OnReceivedMessage(object o, ReceivedMessageEventArgs e)
+        internal void OnReceivedMessage(string content, MessageTarget target)
         {
             if (!node.Mute)
             {
-                var content = node.RemoteAes.Decode(e.Content);
+                var decodedContent = node.RemoteAes.Decode(content);
                 Trace.WriteLine($"[NETOWRK] Message received ({node.Ip})");
-                if (!string.IsNullOrWhiteSpace(content))
+                if (!string.IsNullOrWhiteSpace(decodedContent))
                 {
-                    network.Events.OnReceivedMessage(content, node.Nickname, e.Private);
+                    network.Events.OnReceivedMessage(decodedContent, node.Nickname, target);
                 }
             }
             else
@@ -97,7 +86,7 @@ namespace Lanchat.Common.NetworkLib.Handlers
             }
         }
 
-        private void OnHandshakeAccepted(object sender, EventArgs e)
+        internal void OnHandshakeAccepted()
         {
             node.Client.SendHandshake(new Handshake(network.Nickname, network.PublicKey, network.HostPort));
             node.Client.SendList(network.NodeList);
@@ -115,7 +104,7 @@ namespace Lanchat.Common.NetworkLib.Handlers
             }
         }
 
-        private void OnStateChanged(object sender, EventArgs e)
+        internal void OnStateChanged()
         {
             // Node ready
             if (node.State == Status.Ready)

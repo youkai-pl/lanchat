@@ -1,4 +1,5 @@
 ﻿using Lanchat.Common.NetworkLib.InternalEvents.Args;
+using Lanchat.Common.Types;
 using Lanchat.Console.Ui;
 using System.Diagnostics;
 
@@ -48,7 +49,7 @@ namespace Lanchat.Console.ProgramLib
         {
             if (!program.DebugMode)
             {
-                if (e.Private)
+                if (e.Target == MessageTarget.Private)
                 {
                     Prompt.Out(e.Content.Trim(), null, e.Nickname + " -> " + program.Config.Nickname);
                 }

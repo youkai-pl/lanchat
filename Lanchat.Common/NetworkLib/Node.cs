@@ -1,6 +1,5 @@
 ﻿using Lanchat.Common.Cryptography;
 using Lanchat.Common.NetworkLib.InternalEvents;
-using Lanchat.Common.NetworkLib.Handlers;
 using Lanchat.Common.Types;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -33,7 +32,7 @@ namespace Lanchat.Common.NetworkLib
             ConnectionTimer = new Timer { Interval = 10000, Enabled = false };
             HeartbeatTimer = new Timer { Interval = network.HeartbeatTimeout, Enabled = false };
             Events = new NodeEvents();
-            EventsHandlers = new NodeEventsHandlers(network, this);
+            Handlers = new NodeHandlers(network, this);
             Ip = ip;
             SelfAes = new Aes();
             NicknameNum = 0;
@@ -102,7 +101,7 @@ namespace Lanchat.Common.NetworkLib
                 _State = value;
                 if (previousState != value)
                 {
-                    Events.OnStateChange();
+                    Handlers.OnStateChanged();
                 }
             }
         }
@@ -110,7 +109,7 @@ namespace Lanchat.Common.NetworkLib
         internal Client Client { get; set; }
         internal Timer ConnectionTimer { get; set; }
         internal NodeEvents Events { get; set; }
-        internal NodeEventsHandlers EventsHandlers { get; set; }
+        internal NodeHandlers Handlers { get; set; }
         internal Timer HeartbeatTimer { get; set; }
         internal int NicknameNum { get; set; }
         internal Aes RemoteAes { get; set; }
@@ -135,7 +134,7 @@ namespace Lanchat.Common.NetworkLib
             {
                 Port = handshake.Port;
                 CreateConnection();
-                Events.OnHandshakeAccepted();
+                Handlers.OnHandshakeAccepted();
             }
 
             Client.SendKey(new Key(
@@ -197,7 +196,7 @@ namespace Lanchat.Common.NetworkLib
 
             Trace.WriteLine($"[HOST] Socket closed ({Ip})");
             Socket.Close();
-            Events.OnNodeDisconnected(Ip);
+            Handlers.OnNodeDisconnected();
         }
 
         private void HandleReceivedData(JObject json)
@@ -207,37 +206,37 @@ namespace Lanchat.Common.NetworkLib
 
             if (type == "handshake")
             {
-                Events.OnReceivedHandshake(content.ToObject<Handshake>());
+                Handlers.OnReceivedHandshake(content.ToObject<Handshake>());
             }
 
             if (type == "key")
             {
-                Events.OnReceivedKey(content.ToObject<Key>());
+                Handlers.OnReceivedKey(content.ToObject<Key>());
             }
 
             if (type == "heartbeat")
             {
-                Events.OnReceivedHeartbeat();
+                Handlers.OnReceivedHeartbeat();
             }
 
             if (type == "message")
             {
-                Events.OnReceivedMessage(content.ToString());
+                Handlers.OnReceivedMessage(content.ToString(), MessageTarget.Broadcast);
             }
 
             if (type == "private")
             {
-                Events.OnReceivedPrivateMessage(content.ToString());
+                Handlers.OnReceivedMessage(content.ToString(), MessageTarget.Private);
             }
 
             if (type == "nickname")
             {
-                Events.OnChangedNickname(content.ToString());
+                Handlers.OnChangedNickname(content.ToString());
             }
 
             if (type == "list")
             {
-                Events.OnReceivedList(content.ToObject<List<ListItem>>(), IPAddress.Parse(((IPEndPoint)Socket.LocalEndPoint).Address.ToString()));
+                Handlers.OnReceivedList(content.ToObject<List<ListItem>>(), IPAddress.Parse(((IPEndPoint)Socket.LocalEndPoint).Address.ToString()));
             }
         }
 
@@ -275,7 +274,7 @@ namespace Lanchat.Common.NetworkLib
                 {
                     // Disconnect node on exception
                     Trace.WriteLine($"[HOST] Socket exception. Node will be disconnected ({Ip})");
-                    Events.OnNodeDisconnected(Ip);
+                    Handlers.OnNodeDisconnected();
                     Socket.Close();
                 }
             }).Start();
