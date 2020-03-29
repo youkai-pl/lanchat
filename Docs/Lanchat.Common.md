@@ -45,7 +45,7 @@
 - [NodeConnectionStatusEventArgs](#T-Lanchat-Common-NetworkLib-EventsArgs-NodeConnectionStatusEventArgs 'Lanchat.Common.NetworkLib.EventsArgs.NodeConnectionStatusEventArgs')
   - [Node](#P-Lanchat-Common-NetworkLib-EventsArgs-NodeConnectionStatusEventArgs-Node 'Lanchat.Common.NetworkLib.EventsArgs.NodeConnectionStatusEventArgs.Node')
 - [NodeInstance](#T-Lanchat-Common-NetworkLib-Node-NodeInstance 'Lanchat.Common.NetworkLib.Node.NodeInstance')
-  - [#ctor(ip,network)](#M-Lanchat-Common-NetworkLib-Node-NodeInstance-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network,System-Boolean- 'Lanchat.Common.NetworkLib.Node.NodeInstance.#ctor(System.Net.IPAddress,Lanchat.Common.NetworkLib.Network,System.Boolean)')
+  - [#ctor(ip,network,reconnect)](#M-Lanchat-Common-NetworkLib-Node-NodeInstance-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network,System-Boolean- 'Lanchat.Common.NetworkLib.Node.NodeInstance.#ctor(System.Net.IPAddress,Lanchat.Common.NetworkLib.Network,System.Boolean)')
   - [ClearNickname](#P-Lanchat-Common-NetworkLib-Node-NodeInstance-ClearNickname 'Lanchat.Common.NetworkLib.Node.NodeInstance.ClearNickname')
   - [Handshake](#P-Lanchat-Common-NetworkLib-Node-NodeInstance-Handshake 'Lanchat.Common.NetworkLib.Node.NodeInstance.Handshake')
   - [Heartbeat](#P-Lanchat-Common-NetworkLib-Node-NodeInstance-Heartbeat 'Lanchat.Common.NetworkLib.Node.NodeInstance.Heartbeat')
@@ -520,7 +520,7 @@ Lanchat.Common.NetworkLib.Node
 Represents network node.
 
 <a name='M-Lanchat-Common-NetworkLib-Node-NodeInstance-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network,System-Boolean-'></a>
-### #ctor(ip,network) `constructor`
+### #ctor(ip,network,reconnect) `constructor`
 
 ##### Summary
 
@@ -532,6 +532,7 @@ Node constructor with known port.
 | ---- | ---- | ----------- |
 | ip | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node IP |
 | network | [Lanchat.Common.NetworkLib.Network](#T-Lanchat-Common-NetworkLib-Network 'Lanchat.Common.NetworkLib.Network') | Network |
+| reconnect | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') | Node is under reconnecting |
 
 <a name='P-Lanchat-Common-NetworkLib-Node-NodeInstance-ClearNickname'></a>
 ### ClearNickname `property`

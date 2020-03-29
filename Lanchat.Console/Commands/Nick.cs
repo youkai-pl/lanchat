@@ -6,7 +6,7 @@ namespace Lanchat.Console.Commands
     {
         public void Nick(string nick)
         {
-            var nickname = nick.Trim();
+            var nickname = nick.Trim().Replace(" ", "_");
             if (nickname.Length >= 20 || string.IsNullOrWhiteSpace(nickname))
             {
                 Prompt.Alert("Nick cannot be blank or longer than 20 characters");

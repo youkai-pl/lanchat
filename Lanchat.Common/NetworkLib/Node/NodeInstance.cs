@@ -85,7 +85,13 @@ namespace Lanchat.Common.NetworkLib.Node
                     return ClearNickname;
                 }
             }
-            set => ClearNickname = value;
+            set
+            {
+                if (value != null)
+                {
+                    ClearNickname = value.Replace(" ", "_");
+                }
+            }
         }
 
         /// <summary>
