@@ -24,6 +24,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NetworkLib\Handlers\**" />
+    <Compile Remove="NetworkLib\InternalEvents\**" />
+    <EmbeddedResource Remove="NetworkLib\Handlers\**" />
+    <EmbeddedResource Remove="NetworkLib\InternalEvents\**" />
+    <None Remove="NetworkLib\Handlers\**" />
+    <None Remove="NetworkLib\InternalEvents\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" Link="SharedAssemblyInfo.cs" />
   </ItemGroup>
 
@@ -37,11 +46,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="NetworkLib\Handlers\" />
-    <Folder Include="NetworkLib\InternalEvents\" />
   </ItemGroup>
 
 </Project>

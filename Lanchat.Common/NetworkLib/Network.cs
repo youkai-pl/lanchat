@@ -58,7 +58,7 @@ namespace Lanchat.Common.NetworkLib
         /// <summary>
         /// Network API inputs class.
         /// </summary>
-        public Api.Events Events { get; set; }
+        public Events Events { get; set; }
 
         /// <summary>
         /// Network API outputs class.
@@ -177,6 +177,7 @@ namespace Lanchat.Common.NetworkLib
                 }
             }
         }
+
         // Find free tcp port
         private static int FreeTcpPort()
         {

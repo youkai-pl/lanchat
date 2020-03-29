@@ -29,7 +29,8 @@ namespace Lanchat.Common.NetworkLib.Node
         internal NodeInstance(IPAddress ip, Network network)
         {
             ConnectionTimer = new Timer { Interval = 10000, Enabled = false };
-            HeartbeatTimer = new Timer { Interval = network.HeartbeatTimeout, Enabled = false };
+            HeartbeatReceiveTimer = new Timer { Interval = network.HeartbeatTimeout, Enabled = false };
+            HeartbeatSendTimer = new Timer { Interval = network.HeartbeatTimeout - 100, Enabled = false };
             Handlers = new NodeHandlers(network, this);
             Ip = ip;
             SelfAes = new Aes();
@@ -107,7 +108,8 @@ namespace Lanchat.Common.NetworkLib.Node
         internal Client Client { get; set; }
         internal Timer ConnectionTimer { get; set; }
         internal NodeHandlers Handlers { get; set; }
-        internal Timer HeartbeatTimer { get; set; }
+        internal Timer HeartbeatReceiveTimer { get; set; }
+        internal Timer HeartbeatSendTimer { get; set; }
         internal int NicknameNum { get; set; }
         internal Aes RemoteAes { get; set; }
         internal Aes SelfAes { get; set; }
@@ -155,18 +157,16 @@ namespace Lanchat.Common.NetworkLib.Node
         {
             byte[] streamBuffer;
 
-            while (Socket.IsConnected())
+            while (true)
             {
-                // Read stream
-                streamBuffer = new byte[Socket.ReceiveBufferSize];
-                _ = Socket.Receive(streamBuffer);
-
-                // Get string
-                var respBytesList = new List<byte>(streamBuffer);
-                var data = Encoding.UTF8.GetString(respBytesList.ToArray());
-                
                 try
                 {
+                    // Read stream
+                    streamBuffer = new byte[Socket.ReceiveBufferSize];
+                    _ = Socket.Receive(streamBuffer);
+                    var respBytesList = new List<byte>(streamBuffer);
+                    var data = Encoding.UTF8.GetString(respBytesList.ToArray());
+
                     JsonTextReader reader = new JsonTextReader(new StringReader(data))
                     {
                         SupportMultipleContent = true
@@ -181,6 +181,13 @@ namespace Lanchat.Common.NetworkLib.Node
                         }
                     }
                 }
+                catch (ObjectDisposedException)
+                {
+                    Trace.WriteLine($"[HOST] Socket closed ({Ip})");
+                    Socket.Close();
+                    Handlers.OnNodeDisconnected();
+                    break;
+                }
                 catch (DecoderFallbackException)
                 {
                     Trace.WriteLine($"[HOST] Data processing error: utf8 decode gone wrong ({Ip})");
@@ -190,10 +197,35 @@ namespace Lanchat.Common.NetworkLib.Node
                     Trace.WriteLine($"([HOST] Data processing error: not vaild json ({Ip})");
                 }
             }
+        }
 
-            Trace.WriteLine($"[HOST] Socket closed ({Ip})");
-            Socket.Close();
-            Handlers.OnNodeDisconnected();
+        internal void StartHeartbeat()
+        {
+            HeartbeatReceiveTimer.Elapsed += new ElapsedEventHandler(Handlers.OnHeartbeatReceiveTimer);
+            HeartbeatReceiveTimer.Start();
+            HeartbeatSendTimer.Elapsed += new ElapsedEventHandler(Handlers.OnHeartbeatSendTimer);
+            HeartbeatSendTimer.Start();
+        }
+
+        internal void StartProcess()
+        {
+            new System.Threading.Thread(() =>
+            {
+                try
+                {
+                    Process();
+                }
+                catch (SocketException)
+                {
+                    Trace.WriteLine($"[HOST] Socket exception. ({Ip})");
+                }
+            }).Start();
+        }
+
+        private void Activate()
+        {
+            State = Status.Ready;
+            StartHeartbeat();
         }
 
         private void HandleReceivedData(JObject json)
@@ -236,72 +268,6 @@ namespace Lanchat.Common.NetworkLib.Node
                 Handlers.OnReceivedList(content.ToObject<List<ListItem>>(), IPAddress.Parse(((IPEndPoint)Socket.LocalEndPoint).Address.ToString()));
             }
         }
-
-        internal void StartHeartbeat()
-        {
-            HeartbeatTimer.Elapsed += new ElapsedEventHandler(OnHeartebatOver);
-            HeartbeatTimer.Start();
-
-            new System.Threading.Thread(() =>
-            {
-                while (true)
-                {
-                    System.Threading.Thread.Sleep(1000);
-                    if (disposedValue)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Client.SendHeartbeat();
-                    }
-                }
-            }).Start();
-        }
-
-        internal void StartProcess()
-        {
-            new System.Threading.Thread(() =>
-            {
-                try
-                {
-                    Process();
-                }
-                catch (SocketException)
-                {
-                    // Disconnect node on exception
-                    Trace.WriteLine($"[HOST] Socket exception. Node will be disconnected ({Ip})");
-                    Handlers.OnNodeDisconnected();
-                    Socket.Close();
-                }
-            }).Start();
-        }
-
-        private void Activate()
-        {
-            State = Status.Ready;
-            StartHeartbeat();
-        }
-
-        private void OnHeartebatOver(object o, ElapsedEventArgs e)
-        {
-            if (Heartbeat)
-            {
-                Heartbeat = false;
-                if (State == Status.Suspended)
-                {
-                    State = Status.Resumed;
-                }
-                else
-                {
-                    State = Status.Ready;
-                }
-            }
-            else
-            {
-                State = Status.Suspended;
-            }
-        }
         // Dispose
 
         #region IDisposable Support
@@ -335,13 +301,21 @@ namespace Lanchat.Common.NetworkLib.Node
             {
                 if (disposing)
                 {
-                    if (HeartbeatTimer != null)
+                    if (HeartbeatReceiveTimer != null)
                     {
-                        HeartbeatTimer.Dispose();
+                        HeartbeatReceiveTimer.Dispose();
+                    }
+                    if (HeartbeatSendTimer != null)
+                    {
+                        HeartbeatSendTimer.Dispose();
                     }
                     if (Client != null)
                     {
                         Client.Dispose();
+                    }
+                    if (Socket != null)
+                    {
+                        Socket.Close();
                     }
                 }
                 disposedValue = true;

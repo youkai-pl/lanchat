@@ -38,11 +38,6 @@ namespace Lanchat.Common.NetworkLib.Node
             }
         }
 
-        internal void ResumeConnection(string selfNickname)
-        {
-            SendNickname(selfNickname);
-        }
-
         internal void Send(string type, JToken content)
         {
             var data = new JObject(new JProperty(type, content));
@@ -133,8 +128,8 @@ namespace Lanchat.Common.NetworkLib.Node
 
         public void Dispose()
         {
-            stream.Dispose();
-            TcpClient.Dispose();
+            stream.Close();
+            TcpClient.Close();
         }
     }
 }

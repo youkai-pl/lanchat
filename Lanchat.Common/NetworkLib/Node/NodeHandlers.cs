@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
+using System.Timers;
 
 namespace Lanchat.Common.NetworkLib.Node
 {
@@ -92,7 +93,32 @@ namespace Lanchat.Common.NetworkLib.Node
             node.Client.SendList(network.NodeList);
         }
 
-        private void OnConnectionTimer(object o, EventArgs e)
+        internal void OnHeartbeatReceiveTimer(object o, ElapsedEventArgs e)
+        {
+            if (node.Heartbeat)
+            {
+                node.Heartbeat = false;
+                if (node.State == Status.Suspended)
+                {
+                    node.State = Status.Resumed;
+                }
+                else
+                {
+                    node.State = Status.Ready;
+                }
+            }
+            else
+            {
+                node.State = Status.Suspended;
+            }
+        }
+
+        internal void OnHeartbeatSendTimer(object o, ElapsedEventArgs e)
+        {
+            node.Client.SendHeartbeat();
+        }
+
+        private void OnConnectionTimerElapsed(object o, EventArgs e)
         {
             node.ConnectionTimer.Dispose();
 
@@ -124,7 +150,6 @@ namespace Lanchat.Common.NetworkLib.Node
             // Node resumed
             else if (node.State == Status.Resumed)
             {
-                node.Client.ResumeConnection(network.Nickname);
                 node.State = Status.Ready;
                 network.Events.OnNodeResumed(node);
                 Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / resumed)");
