@@ -26,7 +26,7 @@ namespace Lanchat.Common.NetworkLib.Node
         /// </summary>
         /// <param name="ip">Node IP</param>
         /// <param name="network">Network</param>
-        internal NodeInstance(IPAddress ip, Network network)
+        internal NodeInstance(IPAddress ip, Network network, bool reconnect)
         {
             Handlers = new NodeHandlers(network, this);
             ConnectionTimer = new Timer { Interval = network.ConnectionTimeout, Enabled = false };
@@ -39,6 +39,7 @@ namespace Lanchat.Common.NetworkLib.Node
             SelfAes = new Aes();
             NicknameNum = 0;
             State = Status.Waiting;
+            Reconnect = reconnect;
             ConnectionTimer.Start();
         }
 
@@ -117,6 +118,7 @@ namespace Lanchat.Common.NetworkLib.Node
         internal Aes RemoteAes { get; set; }
         internal Aes SelfAes { get; set; }
         internal Socket Socket { get; set; }
+        internal bool Reconnect { get; set; }
 
         /// <summary>
         /// Send private message.
@@ -203,23 +205,24 @@ namespace Lanchat.Common.NetworkLib.Node
         internal void MakeReady()
         {
             State = Status.Ready;
+            Reconnect = false;
             HeartbeatReceiveTimer.Start();
             HeartbeatSendTimer.Start();
         }
 
         internal void StartProcess()
         {
-             new System.Threading.Thread(() =>
-            {
-                try
-                {
-                    Process();
-                }
-                catch (SocketException)
-                {
-                    Trace.WriteLine($"[NODE] Socket exception. ({Ip})");
-                }
-            }).Start();
+            new System.Threading.Thread(() =>
+           {
+               try
+               {
+                   Process();
+               }
+               catch (SocketException)
+               {
+                   Trace.WriteLine($"[NODE] Socket exception. ({Ip})");
+               }
+           }).Start();
         }
 
         private void HandleReceivedData(JObject json)
@@ -262,7 +265,6 @@ namespace Lanchat.Common.NetworkLib.Node
                 Handlers.OnReceivedList(content.ToObject<List<ListItem>>(), IPAddress.Parse(((IPEndPoint)Socket.LocalEndPoint).Address.ToString()));
             }
         }
-        // Dispose
 
         #region IDisposable Support
 

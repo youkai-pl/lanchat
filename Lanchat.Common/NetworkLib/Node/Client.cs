@@ -55,6 +55,10 @@ namespace Lanchat.Common.NetworkLib.Node
             {
                 Trace.WriteLine($"[CLIENT] NetworkStream error ({node.Ip})");
             }
+            catch (NullReferenceException)
+            {
+                Trace.WriteLine($"[CLIENT] Stream closed error ({node.Ip})");
+            }
         }
 
         internal void SendHandshake(Handshake handshake)
@@ -128,8 +132,14 @@ namespace Lanchat.Common.NetworkLib.Node
 
         public void Dispose()
         {
-            stream.Close();
-            TcpClient.Close();
+            if (stream != null)
+            {
+                stream.Close();
+            }
+            if (TcpClient != null)
+            {
+                TcpClient.Close();
+            }
         }
     }
 }

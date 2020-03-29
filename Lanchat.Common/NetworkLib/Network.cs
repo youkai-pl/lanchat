@@ -124,15 +124,26 @@ namespace Lanchat.Common.NetworkLib
 
         internal void CloseNode(NodeInstance node)
         {
-            var nickname = node.ClearNickname;
-            Trace.WriteLine($"[NETWORK] Node disconnected ({node.Ip})");
-            Events.OnNodeDisconnected(node);
-            NodeList.Remove(node);
-            node.Dispose();
-            CheckNickcnameDuplicates(nickname);
+            if (node.Reconnect)
+            {
+                var nickname = node.ClearNickname;
+                Trace.WriteLine($"[NETWORK] Node disconnected ({node.Ip})");
+                Events.OnNodeDisconnected(node);
+                NodeList.Remove(node);
+                node.Dispose();
+                CheckNickcnameDuplicates(nickname);
+            }
+            else
+            {
+                var ip = node.Ip;
+                var port = node.Port;
+                NodeList.Remove(node);
+                node.Dispose();
+                CreateNode(ip, port, reconnect: true);
+            }
         }
 
-        internal void CreateNode(IPAddress ip = null, int port = 0, bool manual = false, Socket socket = null)
+        internal void CreateNode(IPAddress ip = null, int port = 0, bool manual = false, Socket socket = null, bool reconnect = false)
         {
             // Get ip form socket
             if (ip == null)
@@ -143,7 +154,7 @@ namespace Lanchat.Common.NetworkLib
             // Check is node with same ip alredy exist
             if (Methods.GetNode(ip) == null)
             {
-                var node = new NodeInstance(ip, this);
+                var node = new NodeInstance(ip, this, reconnect);
                 NodeList.Add(node);
                 if (socket != null)
                 {
@@ -155,16 +166,31 @@ namespace Lanchat.Common.NetworkLib
                 if (port != 0)
                 {
                     node.Port = port;
-                    node.CreateConnection();
-                    node.Client.SendHandshake(new Handshake(Nickname, PublicKey, HostPort));
-                    node.Client.SendList(NodeList);
+                    try
+                    {
+                        node.CreateConnection();
+                        node.Client.SendHandshake(new Handshake(Nickname, PublicKey, HostPort));
+                        node.Client.SendList(NodeList);
+                    }
+                    catch (ConnectionFailedException)
+                    {
+                        Trace.WriteLine($"[NETWORK] Connection failed ({node.Ip})");
+                        CloseNode(node);
+                    }
                 }
                 else
                 {
                     Trace.WriteLine($"[NETWORK] One way connection. Waiting for handshake ({node.Ip})");
                 }
 
-                Trace.WriteLine($"[NETWORK] Node created successful ({node.Ip}:{node.Port.ToString(CultureInfo.CurrentCulture)})");
+                if (reconnect)
+                {
+                    Trace.WriteLine($"[NETWORK] Reconnecting ({node.Ip}:{node.Port.ToString(CultureInfo.CurrentCulture)})");
+                }
+                else
+                {
+                    Trace.WriteLine($"[NETWORK] Node created ({node.Ip}:{node.Port.ToString(CultureInfo.CurrentCulture)})");
+                }
             }
             else
             {

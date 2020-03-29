@@ -120,14 +120,12 @@ namespace Lanchat.Common.NetworkLib.Node
 
         internal void OnStateChanged()
         {
-            // Node ready
             if (node.State == Status.Ready)
             {
                 network.Events.OnNodeConnected(node);
                 Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / ready)");
             }
 
-            // Node disconnected
             else if (node.State == Status.Closed)
             {
                 network.CloseNode(node);
