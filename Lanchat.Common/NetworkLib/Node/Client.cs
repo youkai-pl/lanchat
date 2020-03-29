@@ -38,11 +38,6 @@ namespace Lanchat.Common.NetworkLib.Node
             }
         }
 
-        internal void ResumeConnection(string selfNickname)
-        {
-            SendNickname(selfNickname);
-        }
-
         internal void Send(string type, JToken content)
         {
             var data = new JObject(new JProperty(type, content));
@@ -59,6 +54,10 @@ namespace Lanchat.Common.NetworkLib.Node
             catch (InvalidOperationException)
             {
                 Trace.WriteLine($"[CLIENT] NetworkStream error ({node.Ip})");
+            }
+            catch (NullReferenceException)
+            {
+                Trace.WriteLine($"[CLIENT] Stream closed error ({node.Ip})");
             }
         }
 
@@ -133,8 +132,14 @@ namespace Lanchat.Common.NetworkLib.Node
 
         public void Dispose()
         {
-            stream.Dispose();
-            TcpClient.Dispose();
+            if (stream != null)
+            {
+                stream.Close();
+            }
+            if (TcpClient != null)
+            {
+                TcpClient.Close();
+            }
         }
     }
 }

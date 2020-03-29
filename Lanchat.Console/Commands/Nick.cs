@@ -1,5 +1,4 @@
-﻿using Lanchat.Console.ProgramLib;
-using Lanchat.Console.Ui;
+﻿using Lanchat.Console.Ui;
 
 namespace Lanchat.Console.Commands
 {

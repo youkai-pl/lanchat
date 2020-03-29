@@ -1,4 +1,5 @@
 ﻿using Lanchat.Common.NetworkLib.Node;
+using System.Linq;
 using System.Net;
 
 namespace Lanchat.Common.NetworkLib.Api
@@ -51,7 +52,7 @@ namespace Lanchat.Common.NetworkLib.Api
         /// <param name="message">content</param>
         public void SendAll(string message)
         {
-            network.NodeList.ForEach(x =>
+            network.NodeList.ToList().ForEach(x =>
             {
                 if (x.Client != null)
                 {

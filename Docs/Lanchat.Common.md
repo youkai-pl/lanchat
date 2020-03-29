@@ -32,7 +32,7 @@
   - [GetNode(nickname)](#M-Lanchat-Common-NetworkLib-Api-Methods-GetNode-System-String- 'Lanchat.Common.NetworkLib.Api.Methods.GetNode(System.String)')
   - [SendAll(message)](#M-Lanchat-Common-NetworkLib-Api-Methods-SendAll-System-String- 'Lanchat.Common.NetworkLib.Api.Methods.SendAll(System.String)')
 - [Network](#T-Lanchat-Common-NetworkLib-Network 'Lanchat.Common.NetworkLib.Network')
-  - [#ctor(broadcastPort,nickname,hostPort,heartbeatTimeout)](#M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32,System-Int32- 'Lanchat.Common.NetworkLib.Network.#ctor(System.Int32,System.String,System.Int32,System.Int32)')
+  - [#ctor(broadcastPort,nickname,hostPort,heartbeatTimeout,connectionTimeout)](#M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32,System-Int32,System-Int32- 'Lanchat.Common.NetworkLib.Network.#ctor(System.Int32,System.String,System.Int32,System.Int32,System.Int32)')
   - [Events](#P-Lanchat-Common-NetworkLib-Network-Events 'Lanchat.Common.NetworkLib.Network.Events')
   - [Methods](#P-Lanchat-Common-NetworkLib-Network-Methods 'Lanchat.Common.NetworkLib.Network.Methods')
   - [Nickname](#P-Lanchat-Common-NetworkLib-Network-Nickname 'Lanchat.Common.NetworkLib.Network.Nickname')
@@ -45,7 +45,7 @@
 - [NodeConnectionStatusEventArgs](#T-Lanchat-Common-NetworkLib-EventsArgs-NodeConnectionStatusEventArgs 'Lanchat.Common.NetworkLib.EventsArgs.NodeConnectionStatusEventArgs')
   - [Node](#P-Lanchat-Common-NetworkLib-EventsArgs-NodeConnectionStatusEventArgs-Node 'Lanchat.Common.NetworkLib.EventsArgs.NodeConnectionStatusEventArgs.Node')
 - [NodeInstance](#T-Lanchat-Common-NetworkLib-Node-NodeInstance 'Lanchat.Common.NetworkLib.Node.NodeInstance')
-  - [#ctor(ip,network)](#M-Lanchat-Common-NetworkLib-Node-NodeInstance-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network- 'Lanchat.Common.NetworkLib.Node.NodeInstance.#ctor(System.Net.IPAddress,Lanchat.Common.NetworkLib.Network)')
+  - [#ctor(ip,network)](#M-Lanchat-Common-NetworkLib-Node-NodeInstance-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network,System-Boolean- 'Lanchat.Common.NetworkLib.Node.NodeInstance.#ctor(System.Net.IPAddress,Lanchat.Common.NetworkLib.Network,System.Boolean)')
   - [ClearNickname](#P-Lanchat-Common-NetworkLib-Node-NodeInstance-ClearNickname 'Lanchat.Common.NetworkLib.Node.NodeInstance.ClearNickname')
   - [Handshake](#P-Lanchat-Common-NetworkLib-Node-NodeInstance-Handshake 'Lanchat.Common.NetworkLib.Node.NodeInstance.Handshake')
   - [Heartbeat](#P-Lanchat-Common-NetworkLib-Node-NodeInstance-Heartbeat 'Lanchat.Common.NetworkLib.Node.NodeInstance.Heartbeat')
@@ -63,9 +63,8 @@
   - [Node](#P-Lanchat-Common-NetworkLib-EventsArgs-ReceivedMessageEventArgs-Node 'Lanchat.Common.NetworkLib.EventsArgs.ReceivedMessageEventArgs.Node')
   - [Target](#P-Lanchat-Common-NetworkLib-EventsArgs-ReceivedMessageEventArgs-Target 'Lanchat.Common.NetworkLib.EventsArgs.ReceivedMessageEventArgs.Target')
 - [Status](#T-Lanchat-Common-Types-Status 'Lanchat.Common.Types.Status')
+  - [Closed](#F-Lanchat-Common-Types-Status-Closed 'Lanchat.Common.Types.Status.Closed')
   - [Ready](#F-Lanchat-Common-Types-Status-Ready 'Lanchat.Common.Types.Status.Ready')
-  - [Resumed](#F-Lanchat-Common-Types-Status-Resumed 'Lanchat.Common.Types.Status.Resumed')
-  - [Suspended](#F-Lanchat-Common-Types-Status-Suspended 'Lanchat.Common.Types.Status.Suspended')
   - [Waiting](#F-Lanchat-Common-Types-Status-Waiting 'Lanchat.Common.Types.Status.Waiting')
 
 <a name='T-Lanchat-Common-NetworkLib-EventsArgs-ChangedNicknameEventArgs'></a>
@@ -389,8 +388,8 @@ Lanchat.Common.NetworkLib
 
 Main class of network lib.
 
-<a name='M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32,System-Int32-'></a>
-### #ctor(broadcastPort,nickname,hostPort,heartbeatTimeout) `constructor`
+<a name='M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32,System-Int32,System-Int32-'></a>
+### #ctor(broadcastPort,nickname,hostPort,heartbeatTimeout,connectionTimeout) `constructor`
 
 ##### Summary
 
@@ -404,6 +403,7 @@ Network constructor.
 | nickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Self nickname |
 | hostPort | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | TCP host port. Set to -1 to use free ephemeral port |
 | heartbeatTimeout | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Heartbeat lifetime in ms |
+| connectionTimeout | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Node connection timeout |
 
 <a name='P-Lanchat-Common-NetworkLib-Network-Events'></a>
 ### Events `property`
@@ -519,7 +519,7 @@ Lanchat.Common.NetworkLib.Node
 
 Represents network node.
 
-<a name='M-Lanchat-Common-NetworkLib-Node-NodeInstance-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network-'></a>
+<a name='M-Lanchat-Common-NetworkLib-Node-NodeInstance-#ctor-System-Net-IPAddress,Lanchat-Common-NetworkLib-Network,System-Boolean-'></a>
 ### #ctor(ip,network) `constructor`
 
 ##### Summary
@@ -680,26 +680,19 @@ Lanchat.Common.Types
 
 Possible node states
 
+<a name='F-Lanchat-Common-Types-Status-Closed'></a>
+### Closed `constants`
+
+##### Summary
+
+Connection with node closed.
+
 <a name='F-Lanchat-Common-Types-Status-Ready'></a>
 ### Ready `constants`
 
 ##### Summary
 
 Ready to use.
-
-<a name='F-Lanchat-Common-Types-Status-Resumed'></a>
-### Resumed `constants`
-
-##### Summary
-
-Resumed after suspend.
-
-<a name='F-Lanchat-Common-Types-Status-Suspended'></a>
-### Suspended `constants`
-
-##### Summary
-
-Doesn't sends heartbeat.
 
 <a name='F-Lanchat-Common-Types-Status-Waiting'></a>
 ### Waiting `constants`

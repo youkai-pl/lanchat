@@ -16,13 +16,8 @@
         Ready,
 
         /// <summary>
-        /// Doesn't sends heartbeat.
+        /// Connection with node closed.
         /// </summary>
-        Suspended,
-
-        /// <summary>
-        /// Resumed after suspend.
-        /// </summary>
-        Resumed
+        Closed
     }
 }

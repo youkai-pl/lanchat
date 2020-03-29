@@ -92,7 +92,7 @@ namespace Lanchat.Console.Commands
                     if (index > 0)
                     {
                         var nickname = command.Substring(0, index);
-                        var message = command.Substring(index+1);
+                        var message = command.Substring(index + 1);
                         PrivateMessage(nickname, message);
                     }
                     else

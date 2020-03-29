@@ -6,11 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Timers;
-using System.Linq;
 
 namespace Lanchat.Common.NetworkLib.Node
 {
@@ -26,15 +26,21 @@ namespace Lanchat.Common.NetworkLib.Node
         /// </summary>
         /// <param name="ip">Node IP</param>
         /// <param name="network">Network</param>
-        internal NodeInstance(IPAddress ip, Network network)
+        /// <param name="reconnect">Node is under reconnecting</param>
+        internal NodeInstance(IPAddress ip, Network network, bool reconnect)
         {
-            ConnectionTimer = new Timer { Interval = 10000, Enabled = false };
-            HeartbeatTimer = new Timer { Interval = network.HeartbeatTimeout, Enabled = false };
             Handlers = new NodeHandlers(network, this);
+            ConnectionTimer = new Timer { Interval = network.ConnectionTimeout, Enabled = false };
+            HeartbeatSendTimer = new Timer { Interval = network.HeartbeatTimeout - 100, Enabled = false };
+            HeartbeatReceiveTimer = new Timer { Interval = network.HeartbeatTimeout, Enabled = false };
+            ConnectionTimer.Elapsed += new ElapsedEventHandler(Handlers.OnConnectionTimerElapsed);
+            HeartbeatSendTimer.Elapsed += new ElapsedEventHandler(Handlers.OnHeartbeatSendTimer);
+            HeartbeatReceiveTimer.Elapsed += new ElapsedEventHandler(Handlers.OnHeartbeatReceiveTimer);
             Ip = ip;
             SelfAes = new Aes();
             NicknameNum = 0;
             State = Status.Waiting;
+            Reconnect = reconnect;
             ConnectionTimer.Start();
         }
 
@@ -107,8 +113,10 @@ namespace Lanchat.Common.NetworkLib.Node
         internal Client Client { get; set; }
         internal Timer ConnectionTimer { get; set; }
         internal NodeHandlers Handlers { get; set; }
-        internal Timer HeartbeatTimer { get; set; }
+        internal Timer HeartbeatReceiveTimer { get; set; }
+        internal Timer HeartbeatSendTimer { get; set; }
         internal int NicknameNum { get; set; }
+        internal bool Reconnect { get; set; }
         internal Aes RemoteAes { get; set; }
         internal Aes SelfAes { get; set; }
         internal Socket Socket { get; set; }
@@ -148,25 +156,31 @@ namespace Lanchat.Common.NetworkLib.Node
         internal void CreateRemoteAes(string key, string iv)
         {
             RemoteAes = new Aes(key, iv);
-            Activate();
+            MakeReady();
+        }
+
+        internal void MakeReady()
+        {
+            State = Status.Ready;
+            Reconnect = false;
+            HeartbeatReceiveTimer.Start();
+            HeartbeatSendTimer.Start();
         }
 
         internal void Process()
         {
             byte[] streamBuffer;
 
-            while (Socket.IsConnected())
+            while (!disposedValue)
             {
-                // Read stream
-                streamBuffer = new byte[Socket.ReceiveBufferSize];
-                _ = Socket.Receive(streamBuffer);
-
-                // Get string
-                var respBytesList = new List<byte>(streamBuffer);
-                var data = Encoding.UTF8.GetString(respBytesList.ToArray());
-                
                 try
                 {
+                    // Read stream
+                    streamBuffer = new byte[Socket.ReceiveBufferSize];
+                    _ = Socket.Receive(streamBuffer);
+                    var respBytesList = new List<byte>(streamBuffer);
+                    var data = Encoding.UTF8.GetString(respBytesList.ToArray());
+
                     JsonTextReader reader = new JsonTextReader(new StringReader(data))
                     {
                         SupportMultipleContent = true
@@ -181,19 +195,35 @@ namespace Lanchat.Common.NetworkLib.Node
                         }
                     }
                 }
+                catch (ObjectDisposedException)
+                {
+                    Trace.WriteLine($"[NODE] Socket already closed ({Ip})");
+                    break;
+                }
                 catch (DecoderFallbackException)
                 {
-                    Trace.WriteLine($"[HOST] Data processing error: utf8 decode gone wrong ({Ip})");
+                    Trace.WriteLine($"[NODE] Data processing error: utf8 decode gone wrong ({Ip})");
                 }
                 catch (JsonReaderException)
                 {
-                    Trace.WriteLine($"([HOST] Data processing error: not vaild json ({Ip})");
+                    Trace.WriteLine($"([NODE] Data processing error: not vaild json ({Ip})");
                 }
             }
+        }
 
-            Trace.WriteLine($"[HOST] Socket closed ({Ip})");
-            Socket.Close();
-            Handlers.OnNodeDisconnected();
+        internal void StartProcess()
+        {
+            new System.Threading.Thread(() =>
+           {
+               try
+               {
+                   Process();
+               }
+               catch (SocketException)
+               {
+                   Trace.WriteLine($"[NODE] Socket exception. ({Ip})");
+               }
+           }).Start();
         }
 
         private void HandleReceivedData(JObject json)
@@ -237,73 +267,6 @@ namespace Lanchat.Common.NetworkLib.Node
             }
         }
 
-        internal void StartHeartbeat()
-        {
-            HeartbeatTimer.Elapsed += new ElapsedEventHandler(OnHeartebatOver);
-            HeartbeatTimer.Start();
-
-            new System.Threading.Thread(() =>
-            {
-                while (true)
-                {
-                    System.Threading.Thread.Sleep(1000);
-                    if (disposedValue)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Client.SendHeartbeat();
-                    }
-                }
-            }).Start();
-        }
-
-        internal void StartProcess()
-        {
-            new System.Threading.Thread(() =>
-            {
-                try
-                {
-                    Process();
-                }
-                catch (SocketException)
-                {
-                    // Disconnect node on exception
-                    Trace.WriteLine($"[HOST] Socket exception. Node will be disconnected ({Ip})");
-                    Handlers.OnNodeDisconnected();
-                    Socket.Close();
-                }
-            }).Start();
-        }
-
-        private void Activate()
-        {
-            State = Status.Ready;
-            StartHeartbeat();
-        }
-
-        private void OnHeartebatOver(object o, ElapsedEventArgs e)
-        {
-            if (Heartbeat)
-            {
-                Heartbeat = false;
-                if (State == Status.Suspended)
-                {
-                    State = Status.Resumed;
-                }
-                else
-                {
-                    State = Status.Ready;
-                }
-            }
-            else
-            {
-                State = Status.Suspended;
-            }
-        }
-        // Dispose
-
         #region IDisposable Support
 
         private bool disposedValue = false;
@@ -335,13 +298,21 @@ namespace Lanchat.Common.NetworkLib.Node
             {
                 if (disposing)
                 {
-                    if (HeartbeatTimer != null)
+                    if (HeartbeatReceiveTimer != null)
                     {
-                        HeartbeatTimer.Dispose();
+                        HeartbeatReceiveTimer.Dispose();
+                    }
+                    if (HeartbeatSendTimer != null)
+                    {
+                        HeartbeatSendTimer.Dispose();
                     }
                     if (Client != null)
                     {
                         Client.Dispose();
+                    }
+                    if (Socket != null)
+                    {
+                        Socket.Close();
                     }
                 }
                 disposedValue = true;

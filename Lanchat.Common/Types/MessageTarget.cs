@@ -9,12 +9,12 @@
         /// For all nodes.
         /// </summary>
         Broadcast,
-        
+
         /// <summary>
         /// For group of nodes.
         /// </summary>
         Group,
-        
+
         /// <summary>
         /// For specified node.
         /// </summary>
