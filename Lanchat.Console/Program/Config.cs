@@ -14,16 +14,18 @@ namespace Lanchat.Console.ProgramLib
     {
         private static int _BroadcastPort;
         private static int _HeartbeatTimeout;
+        private static int _ConnectionTimeout;
         private static int _HostPort;
         private static string _Nickname;
 
         [JsonConstructor]
-        public Config(string nickname, int broadcast, int host, List<string> muted, int heartbeat)
+        public Config(string nickname, int broadcast, int host, List<string> muted, int heartbeat, int connection)
         {
             Nickname = nickname;
             BroadcastPort = broadcast;
             HostPort = host;
             HeartbeatTimeout = heartbeat;
+            ConnectionTimeout = connection;
             Muted = muted ?? new List<string>();
         }
 
@@ -47,6 +49,18 @@ namespace Lanchat.Console.ProgramLib
             set
             {
                 _HeartbeatTimeout = value;
+                Save();
+            }
+        }
+
+        [DefaultValue(5000)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int ConnectionTimeout
+        {
+            get { return _ConnectionTimeout; }
+            set
+            {
+                _ConnectionTimeout = value;
                 Save();
             }
         }

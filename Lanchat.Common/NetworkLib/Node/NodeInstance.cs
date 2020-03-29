@@ -9,9 +9,8 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Timers;
 using System.Linq;
-using System.Threading;
+using System.Timers;
 
 namespace Lanchat.Common.NetworkLib.Node
 {
@@ -29,12 +28,13 @@ namespace Lanchat.Common.NetworkLib.Node
         /// <param name="network">Network</param>
         internal NodeInstance(IPAddress ip, Network network)
         {
-            ConnectionTimer = new System.Timers.Timer { Interval = 10000, Enabled = false };
             Handlers = new NodeHandlers(network, this);
-            HeartbeatReceiveTimer = new System.Timers.Timer { Interval = network.HeartbeatTimeout, Enabled = false };
-            HeartbeatReceiveTimer.Elapsed += new ElapsedEventHandler(Handlers.OnHeartbeatReceiveTimer);
-            HeartbeatSendTimer = new System.Timers.Timer { Interval = network.HeartbeatTimeout - 100, Enabled = false };
+            ConnectionTimer = new Timer { Interval = network.ConnectionTimeout, Enabled = false };
+            HeartbeatSendTimer = new Timer { Interval = network.HeartbeatTimeout - 100, Enabled = false };
+            HeartbeatReceiveTimer = new Timer { Interval = network.HeartbeatTimeout, Enabled = false };
+            ConnectionTimer.Elapsed += new ElapsedEventHandler(Handlers.OnConnectionTimerElapsed);
             HeartbeatSendTimer.Elapsed += new ElapsedEventHandler(Handlers.OnHeartbeatSendTimer);
+            HeartbeatReceiveTimer.Elapsed += new ElapsedEventHandler(Handlers.OnHeartbeatReceiveTimer);
             Ip = ip;
             SelfAes = new Aes();
             NicknameNum = 0;
@@ -109,10 +109,10 @@ namespace Lanchat.Common.NetworkLib.Node
         }
 
         internal Client Client { get; set; }
-        internal System.Timers.Timer ConnectionTimer { get; set; }
+        internal Timer ConnectionTimer { get; set; }
         internal NodeHandlers Handlers { get; set; }
-        internal System.Timers.Timer HeartbeatReceiveTimer { get; set; }
-        internal System.Timers.Timer HeartbeatSendTimer { get; set; }
+        internal Timer HeartbeatReceiveTimer { get; set; }
+        internal Timer HeartbeatSendTimer { get; set; }
         internal int NicknameNum { get; set; }
         internal Aes RemoteAes { get; set; }
         internal Aes SelfAes { get; set; }
@@ -186,7 +186,7 @@ namespace Lanchat.Common.NetworkLib.Node
                 }
                 catch (ObjectDisposedException)
                 {
-                    Trace.WriteLine($"[NODE] Socket closed ({Ip})");
+                    Trace.WriteLine($"[NODE] Socket already closed ({Ip})");
                     break;
                 }
                 catch (DecoderFallbackException)
@@ -209,7 +209,7 @@ namespace Lanchat.Common.NetworkLib.Node
 
         internal void StartProcess()
         {
-             new Thread(() =>
+             new System.Threading.Thread(() =>
             {
                 try
                 {

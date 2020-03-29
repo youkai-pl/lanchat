@@ -106,7 +106,7 @@ namespace Lanchat.Common.NetworkLib.Node
             node.Client.SendHeartbeat();
         }
 
-        private void OnConnectionTimerElapsed(object o, EventArgs e)
+        internal void OnConnectionTimerElapsed(object o, ElapsedEventArgs e)
         {
             node.ConnectionTimer.Dispose();
 

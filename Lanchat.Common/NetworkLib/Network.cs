@@ -28,7 +28,8 @@ namespace Lanchat.Common.NetworkLib
         /// <param name="nickname">Self nickname</param>
         /// <param name="hostPort">TCP host port. Set to -1 to use free ephemeral port</param>
         /// <param name="heartbeatTimeout">Heartbeat lifetime in ms</param>
-        public Network(int broadcastPort, string nickname, int hostPort = -1, int heartbeatTimeout = 5000)
+        /// <param name="connectionTimeout">Node connection timeout</param>
+        public Network(int broadcastPort, string nickname, int hostPort = -1, int heartbeatTimeout = 5000, int connectionTimeout = 10000)
         {
             Rsa = new Rsa();
             NodeList = new List<NodeInstance>();
@@ -36,6 +37,7 @@ namespace Lanchat.Common.NetworkLib
             PublicKey = Rsa.PublicKey;
             BroadcastPort = broadcastPort;
             HeartbeatTimeout = heartbeatTimeout;
+            ConnectionTimeout = connectionTimeout;
             Id = Guid.NewGuid();
 
             if (hostPort == -1)
@@ -84,15 +86,11 @@ namespace Lanchat.Common.NetworkLib
         public List<NodeInstance> NodeList { get; }
 
         internal int BroadcastPort { get; set; }
-
         internal int HeartbeatTimeout { get; set; }
-
+        internal int ConnectionTimeout { get; set; }
         internal int HostPort { get; set; }
-
         internal Guid Id { get; set; }
-
         internal string PublicKey { get; set; }
-
         internal Rsa Rsa { get; set; }
 
         /// <summary>
