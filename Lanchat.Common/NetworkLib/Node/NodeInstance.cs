@@ -6,10 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Linq;
 using System.Timers;
 
 namespace Lanchat.Common.NetworkLib.Node
@@ -26,6 +26,7 @@ namespace Lanchat.Common.NetworkLib.Node
         /// </summary>
         /// <param name="ip">Node IP</param>
         /// <param name="network">Network</param>
+        /// <param name="reconnect">Node is under reconnecting</param>
         internal NodeInstance(IPAddress ip, Network network, bool reconnect)
         {
             Handlers = new NodeHandlers(network, this);
@@ -115,10 +116,10 @@ namespace Lanchat.Common.NetworkLib.Node
         internal Timer HeartbeatReceiveTimer { get; set; }
         internal Timer HeartbeatSendTimer { get; set; }
         internal int NicknameNum { get; set; }
+        internal bool Reconnect { get; set; }
         internal Aes RemoteAes { get; set; }
         internal Aes SelfAes { get; set; }
         internal Socket Socket { get; set; }
-        internal bool Reconnect { get; set; }
 
         /// <summary>
         /// Send private message.
@@ -156,6 +157,14 @@ namespace Lanchat.Common.NetworkLib.Node
         {
             RemoteAes = new Aes(key, iv);
             MakeReady();
+        }
+
+        internal void MakeReady()
+        {
+            State = Status.Ready;
+            Reconnect = false;
+            HeartbeatReceiveTimer.Start();
+            HeartbeatSendTimer.Start();
         }
 
         internal void Process()
@@ -200,14 +209,6 @@ namespace Lanchat.Common.NetworkLib.Node
                     Trace.WriteLine($"([NODE] Data processing error: not vaild json ({Ip})");
                 }
             }
-        }
-
-        internal void MakeReady()
-        {
-            State = Status.Ready;
-            Reconnect = false;
-            HeartbeatReceiveTimer.Start();
-            HeartbeatSendTimer.Start();
         }
 
         internal void StartProcess()

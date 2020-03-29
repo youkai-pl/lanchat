@@ -1,5 +1,4 @@
 ﻿using Lanchat.Common.Types;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
@@ -29,6 +28,42 @@ namespace Lanchat.Common.NetworkLib.Node
                 network.Events.OnChangedNickname(oldNickname, newNickname);
                 Trace.WriteLine($"[NETOWRK] Nickname change ({node.Ip} {oldNickname} / {newNickname})");
             }
+        }
+
+        internal void OnConnectionTimerElapsed(object o, ElapsedEventArgs e)
+        {
+            node.ConnectionTimer.Dispose();
+
+            if (node.State != Status.Ready)
+            {
+                Trace.WriteLine($"[NODE] Connection timed out ({node.Ip})");
+                network.NodeList.Remove(node);
+                node.Dispose();
+            }
+        }
+
+        internal void OnHandshakeAccepted()
+        {
+            node.Client.SendHandshake(new Handshake(network.Nickname, network.PublicKey, network.HostPort));
+            node.Client.SendList(network.NodeList);
+        }
+
+        internal void OnHeartbeatReceiveTimer(object o, ElapsedEventArgs e)
+        {
+            if (node.Heartbeat)
+            {
+                node.Heartbeat = false;
+                node.State = Status.Ready;
+            }
+            else
+            {
+                node.State = Status.Closed;
+            }
+        }
+
+        internal void OnHeartbeatSendTimer(object o, ElapsedEventArgs e)
+        {
+            node.Client.SendHeartbeat();
         }
 
         internal void OnReceivedHandshake(Handshake handshake)
@@ -82,42 +117,6 @@ namespace Lanchat.Common.NetworkLib.Node
             }
         }
 
-        internal void OnHandshakeAccepted()
-        {
-            node.Client.SendHandshake(new Handshake(network.Nickname, network.PublicKey, network.HostPort));
-            node.Client.SendList(network.NodeList);
-        }
-
-        internal void OnHeartbeatReceiveTimer(object o, ElapsedEventArgs e)
-        {
-            if (node.Heartbeat)
-            {
-                node.Heartbeat = false;
-                node.State = Status.Ready;
-            }
-            else
-            {
-                node.State = Status.Closed;
-            }
-        }
-
-        internal void OnHeartbeatSendTimer(object o, ElapsedEventArgs e)
-        {
-            node.Client.SendHeartbeat();
-        }
-
-        internal void OnConnectionTimerElapsed(object o, ElapsedEventArgs e)
-        {
-            node.ConnectionTimer.Dispose();
-
-            if (node.State != Status.Ready)
-            {
-                Trace.WriteLine($"[NODE] Connection timed out ({node.Ip})");
-                network.NodeList.Remove(node);
-                node.Dispose();
-            }
-        }
-
         internal void OnStateChanged()
         {
             if (node.State == Status.Ready)
@@ -125,7 +124,6 @@ namespace Lanchat.Common.NetworkLib.Node
                 network.Events.OnNodeConnected(node);
                 Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / ready)");
             }
-
             else if (node.State == Status.Closed)
             {
                 network.CloseNode(node);

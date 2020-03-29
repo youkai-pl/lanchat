@@ -86,8 +86,8 @@ namespace Lanchat.Common.NetworkLib
         public List<NodeInstance> NodeList { get; }
 
         internal int BroadcastPort { get; set; }
-        internal int HeartbeatTimeout { get; set; }
         internal int ConnectionTimeout { get; set; }
+        internal int HeartbeatTimeout { get; set; }
         internal int HostPort { get; set; }
         internal Guid Id { get; set; }
         internal string PublicKey { get; set; }
@@ -124,6 +124,7 @@ namespace Lanchat.Common.NetworkLib
 
         internal void CloseNode(NodeInstance node)
         {
+            // If node is already under reconnecting close it
             if (node.Reconnect)
             {
                 var nickname = node.ClearNickname;
@@ -133,6 +134,8 @@ namespace Lanchat.Common.NetworkLib
                 node.Dispose();
                 CheckNickcnameDuplicates(nickname);
             }
+
+            // Attempt reconnect
             else
             {
                 var ip = node.Ip;
@@ -262,6 +265,7 @@ namespace Lanchat.Common.NetworkLib
                 disposedValue = true;
             }
         }
+
         #endregion IDisposable Support
     }
 }

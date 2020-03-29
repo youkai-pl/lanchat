@@ -2,7 +2,6 @@
 using Lanchat.Common.NetworkLib.Node;
 using Lanchat.Common.Types;
 using System;
-using System.Net;
 
 namespace Lanchat.Common.NetworkLib.Api
 {
