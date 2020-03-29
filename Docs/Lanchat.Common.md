@@ -63,9 +63,8 @@
   - [Node](#P-Lanchat-Common-NetworkLib-EventsArgs-ReceivedMessageEventArgs-Node 'Lanchat.Common.NetworkLib.EventsArgs.ReceivedMessageEventArgs.Node')
   - [Target](#P-Lanchat-Common-NetworkLib-EventsArgs-ReceivedMessageEventArgs-Target 'Lanchat.Common.NetworkLib.EventsArgs.ReceivedMessageEventArgs.Target')
 - [Status](#T-Lanchat-Common-Types-Status 'Lanchat.Common.Types.Status')
+  - [Closed](#F-Lanchat-Common-Types-Status-Closed 'Lanchat.Common.Types.Status.Closed')
   - [Ready](#F-Lanchat-Common-Types-Status-Ready 'Lanchat.Common.Types.Status.Ready')
-  - [Resumed](#F-Lanchat-Common-Types-Status-Resumed 'Lanchat.Common.Types.Status.Resumed')
-  - [Suspended](#F-Lanchat-Common-Types-Status-Suspended 'Lanchat.Common.Types.Status.Suspended')
   - [Waiting](#F-Lanchat-Common-Types-Status-Waiting 'Lanchat.Common.Types.Status.Waiting')
 
 <a name='T-Lanchat-Common-NetworkLib-EventsArgs-ChangedNicknameEventArgs'></a>
@@ -680,26 +679,19 @@ Lanchat.Common.Types
 
 Possible node states
 
+<a name='F-Lanchat-Common-Types-Status-Closed'></a>
+### Closed `constants`
+
+##### Summary
+
+Connection with node closed.
+
 <a name='F-Lanchat-Common-Types-Status-Ready'></a>
 ### Ready `constants`
 
 ##### Summary
 
 Ready to use.
-
-<a name='F-Lanchat-Common-Types-Status-Resumed'></a>
-### Resumed `constants`
-
-##### Summary
-
-Resumed after suspend.
-
-<a name='F-Lanchat-Common-Types-Status-Suspended'></a>
-### Suspended `constants`
-
-##### Summary
-
-Doesn't sends heartbeat.
 
 <a name='F-Lanchat-Common-Types-Status-Waiting'></a>
 ### Waiting `constants`

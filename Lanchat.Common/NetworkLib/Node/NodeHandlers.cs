@@ -31,11 +31,6 @@ namespace Lanchat.Common.NetworkLib.Node
             }
         }
 
-        internal void OnNodeDisconnected()
-        {
-            network.CloseNode(node);
-        }
-
         internal void OnReceivedHandshake(Handshake handshake)
         {
             Trace.WriteLine($"[NETOWRK] Received handshake ({node.Ip} / {handshake.Nickname})");
@@ -98,18 +93,11 @@ namespace Lanchat.Common.NetworkLib.Node
             if (node.Heartbeat)
             {
                 node.Heartbeat = false;
-                if (node.State == Status.Suspended)
-                {
-                    node.State = Status.Resumed;
-                }
-                else
-                {
-                    node.State = Status.Ready;
-                }
+                node.State = Status.Ready;
             }
             else
             {
-                node.State = Status.Suspended;
+                node.State = Status.Closed;
             }
         }
 
@@ -139,20 +127,10 @@ namespace Lanchat.Common.NetworkLib.Node
                 Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / ready)");
             }
 
-            // Node suspended
-            else if (node.State == Status.Suspended)
+            // Node disconnected
+            else if (node.State == Status.Closed)
             {
-                // network.Events.OnNodeSuspended(node.Ip, node.Nickname);
-                // Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / suspended)");
                 network.CloseNode(node);
-            }
-
-            // Node resumed
-            else if (node.State == Status.Resumed)
-            {
-                node.State = Status.Ready;
-                network.Events.OnNodeResumed(node);
-                Trace.WriteLine($"[NETWORK] Node state changed ({node.Ip} / resumed)");
             }
         }
     }

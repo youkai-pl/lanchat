@@ -11,6 +11,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Timers;
 using System.Linq;
+using System.Threading;
 
 namespace Lanchat.Common.NetworkLib.Node
 {
@@ -28,10 +29,12 @@ namespace Lanchat.Common.NetworkLib.Node
         /// <param name="network">Network</param>
         internal NodeInstance(IPAddress ip, Network network)
         {
-            ConnectionTimer = new Timer { Interval = 10000, Enabled = false };
-            HeartbeatReceiveTimer = new Timer { Interval = network.HeartbeatTimeout, Enabled = false };
-            HeartbeatSendTimer = new Timer { Interval = network.HeartbeatTimeout - 100, Enabled = false };
+            ConnectionTimer = new System.Timers.Timer { Interval = 10000, Enabled = false };
             Handlers = new NodeHandlers(network, this);
+            HeartbeatReceiveTimer = new System.Timers.Timer { Interval = network.HeartbeatTimeout, Enabled = false };
+            HeartbeatReceiveTimer.Elapsed += new ElapsedEventHandler(Handlers.OnHeartbeatReceiveTimer);
+            HeartbeatSendTimer = new System.Timers.Timer { Interval = network.HeartbeatTimeout - 100, Enabled = false };
+            HeartbeatSendTimer.Elapsed += new ElapsedEventHandler(Handlers.OnHeartbeatSendTimer);
             Ip = ip;
             SelfAes = new Aes();
             NicknameNum = 0;
@@ -106,10 +109,10 @@ namespace Lanchat.Common.NetworkLib.Node
         }
 
         internal Client Client { get; set; }
-        internal Timer ConnectionTimer { get; set; }
+        internal System.Timers.Timer ConnectionTimer { get; set; }
         internal NodeHandlers Handlers { get; set; }
-        internal Timer HeartbeatReceiveTimer { get; set; }
-        internal Timer HeartbeatSendTimer { get; set; }
+        internal System.Timers.Timer HeartbeatReceiveTimer { get; set; }
+        internal System.Timers.Timer HeartbeatSendTimer { get; set; }
         internal int NicknameNum { get; set; }
         internal Aes RemoteAes { get; set; }
         internal Aes SelfAes { get; set; }
@@ -150,14 +153,14 @@ namespace Lanchat.Common.NetworkLib.Node
         internal void CreateRemoteAes(string key, string iv)
         {
             RemoteAes = new Aes(key, iv);
-            Activate();
+            MakeReady();
         }
 
         internal void Process()
         {
             byte[] streamBuffer;
 
-            while (true)
+            while (!disposedValue)
             {
                 try
                 {
@@ -183,33 +186,30 @@ namespace Lanchat.Common.NetworkLib.Node
                 }
                 catch (ObjectDisposedException)
                 {
-                    Trace.WriteLine($"[HOST] Socket closed ({Ip})");
-                    Socket.Close();
-                    Handlers.OnNodeDisconnected();
+                    Trace.WriteLine($"[NODE] Socket closed ({Ip})");
                     break;
                 }
                 catch (DecoderFallbackException)
                 {
-                    Trace.WriteLine($"[HOST] Data processing error: utf8 decode gone wrong ({Ip})");
+                    Trace.WriteLine($"[NODE] Data processing error: utf8 decode gone wrong ({Ip})");
                 }
                 catch (JsonReaderException)
                 {
-                    Trace.WriteLine($"([HOST] Data processing error: not vaild json ({Ip})");
+                    Trace.WriteLine($"([NODE] Data processing error: not vaild json ({Ip})");
                 }
             }
         }
 
-        internal void StartHeartbeat()
+        internal void MakeReady()
         {
-            HeartbeatReceiveTimer.Elapsed += new ElapsedEventHandler(Handlers.OnHeartbeatReceiveTimer);
+            State = Status.Ready;
             HeartbeatReceiveTimer.Start();
-            HeartbeatSendTimer.Elapsed += new ElapsedEventHandler(Handlers.OnHeartbeatSendTimer);
             HeartbeatSendTimer.Start();
         }
 
         internal void StartProcess()
         {
-            new System.Threading.Thread(() =>
+             new Thread(() =>
             {
                 try
                 {
@@ -217,15 +217,9 @@ namespace Lanchat.Common.NetworkLib.Node
                 }
                 catch (SocketException)
                 {
-                    Trace.WriteLine($"[HOST] Socket exception. ({Ip})");
+                    Trace.WriteLine($"[NODE] Socket exception. ({Ip})");
                 }
             }).Start();
-        }
-
-        private void Activate()
-        {
-            State = Status.Ready;
-            StartHeartbeat();
         }
 
         private void HandleReceivedData(JObject json)
