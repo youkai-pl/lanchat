@@ -120,6 +120,9 @@
   <data name="Alert_DebugMode" xml:space="preserve">
     <value>Debug mode enabled</value>
   </data>
+  <data name="PromptIndicator" xml:space="preserve">
+    <value>&gt; </value>
+  </data>
   <data name="WindowTitle" xml:space="preserve">
     <value>Lanchat 2</value>
   </data>

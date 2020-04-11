@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
+using Lanchat.Terminal.Ui;
 
 namespace Lanchat.Terminal
 {
@@ -13,6 +15,13 @@ namespace Lanchat.Terminal
             {
                 // Attach trace here
             }
+
+            Config = Config.Load();
+
+            new Thread(() =>
+            {
+                Prompt.Start();
+            }).Start();
         }
     }
 }

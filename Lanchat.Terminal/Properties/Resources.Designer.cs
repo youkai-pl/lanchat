@@ -70,6 +70,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &gt; .
+        /// </summary>
+        internal static string PromptIndicator {
+            get {
+                return ResourceManager.GetString("PromptIndicator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lanchat 2.
         /// </summary>
         internal static string WindowTitle {
