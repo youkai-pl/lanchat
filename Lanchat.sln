@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{4A81DEED-9
 		Docs\README.md = Docs\README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lanchat.Terminal", "Lanchat.Terminal\Lanchat.Terminal.csproj", "{114B420B-A1B0-49BE-A203-79DDC63C45E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{985DE563-99FD-4A36-A28A-800264D5A716}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{985DE563-99FD-4A36-A28A-800264D5A716}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{985DE563-99FD-4A36-A28A-800264D5A716}.Release|Any CPU.Build.0 = Release|Any CPU
+		{114B420B-A1B0-49BE-A203-79DDC63C45E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{114B420B-A1B0-49BE-A203-79DDC63C45E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{114B420B-A1B0-49BE-A203-79DDC63C45E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{114B420B-A1B0-49BE-A203-79DDC63C45E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
