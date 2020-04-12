@@ -19,7 +19,7 @@ namespace Lanchat.Terminal.Ui
 		{
 			if (inputEvent.Key.Key != ConsoleKey.Enter) return;
 
-			_logPanel.Add(_textBox.Text);
+			_logPanel.Add(_textBox.Text, Prompt.OutputType.Message);
 
 			_textBox.Text = string.Empty;
 			inputEvent.Handled = true;

@@ -81,9 +81,9 @@ namespace Lanchat.Terminal.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Lanchat 2.
         /// </summary>
-        internal static string WindowTitle {
+        internal static string Title {
             get {
-                return ResourceManager.GetString("WindowTitle", resourceCulture);
+                return ResourceManager.GetString("Title", resourceCulture);
             }
         }
     }
