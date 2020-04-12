@@ -4,6 +4,9 @@
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFrameworks>netcoreapp3.1;net472</TargetFrameworks>
+    <PackageIcon>icon.ico</PackageIcon>
+    <AssemblyName>Lanchat</AssemblyName>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

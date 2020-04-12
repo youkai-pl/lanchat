@@ -22,7 +22,14 @@ namespace Lanchat.Terminal.Ui
 
         public void OnInput(InputEvent inputEvent)
         {
-            if (inputEvent.Key.Key != ConsoleKey.Enter) return;
+            if (inputEvent != null)
+            {
+                if (inputEvent.Key.Key != ConsoleKey.Enter) return;
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(inputEvent));
+            }
 
             if (!string.IsNullOrWhiteSpace(input.Text))
             {

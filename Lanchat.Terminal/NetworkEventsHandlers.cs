@@ -2,6 +2,7 @@
 using Lanchat.Common.NetworkLib.EventsArgs;
 using Lanchat.Common.Types;
 using Lanchat.Terminal.Ui;
+using System;
 
 namespace Lanchat.Terminal
 {
@@ -18,50 +19,99 @@ namespace Lanchat.Terminal
 
         public void OnHostStarted(object o, HostStartedEventArgs e)
         {
-            Prompt.Log.Add($"Host started on port {e.Port}", Prompt.OutputType.Clear);
+            if (e != null)
+            {
+                Prompt.Log.Add($"Host started on port {e.Port}", Prompt.OutputType.Clear);
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
         }
 
         public void OnReceivedMessage(object o, ReceivedMessageEventArgs e)
         {
-            if (e.Target == MessageTarget.Private)
+            if (e != null)
             {
-                Prompt.Log.Add(e.Content.Trim(), Prompt.OutputType.PrivateMessage, $"{e.Node.Nickname}");
+                if (e.Target == MessageTarget.Private)
+                {
+                    Prompt.Log.Add(e.Content.Trim(), Prompt.OutputType.PrivateMessage, $"{e.Node.Nickname}");
+                }
+                else
+                {
+                    Prompt.Log.Add(e.Content.Trim(), Prompt.OutputType.Message, e.Node.Nickname);
+                }
             }
             else
             {
-                Prompt.Log.Add(e.Content.Trim(), Prompt.OutputType.Message, e.Node.Nickname);
+                throw new ArgumentNullException(nameof(e));
             }
         }
 
         public void OnNodeConnected(object o, NodeConnectionStatusEventArgs e)
         {
-            Prompt.Log.Add($"{e.Node.Nickname} connected", Prompt.OutputType.Notify);
-
-            if (config.Muted.Exists(x => x == e.Node.Ip.ToString()))
+            if (e != null)
             {
-                var node = network.NodeList.Find(x => x.Ip.Equals(e.Node.Ip));
-                node.Mute = true;
+                Prompt.Log.Add($"{e.Node.Nickname} connected", Prompt.OutputType.Notify);
+
+                if (config.Muted.Exists(x => x == e.Node.Ip.ToString()))
+                {
+                    var node = network.NodeList.Find(x => x.Ip.Equals(e.Node.Ip));
+                    node.Mute = true;
+                }
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(e));
             }
         }
 
         public void OnNodeDisconnected(object o, NodeConnectionStatusEventArgs e)
         {
-            Prompt.Log.Add($"{e.Node.Nickname} disconnected", Prompt.OutputType.Notify);
+            if (e != null)
+            {
+                Prompt.Log.Add($"{e.Node.Nickname} disconnected", Prompt.OutputType.Notify);
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
         }
 
         public void OnNodeSuspended(object o, NodeConnectionStatusEventArgs e)
         {
-            Prompt.Log.Add($"{e.Node.Nickname} suspended. Waiting for reconnect", Prompt.OutputType.Notify);
+            if (e != null)
+            {
+                Prompt.Log.Add($"{e.Node.Nickname} suspended. Waiting for reconnect", Prompt.OutputType.Notify);
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
         }
 
         public void OnNodeResumed(object o, NodeConnectionStatusEventArgs e)
         {
-            Prompt.Log.Add($"{e.Node.Nickname} reconnected", Prompt.OutputType.Notify);
+            if (e != null)
+            {
+                Prompt.Log.Add($"{e.Node.Nickname} reconnected", Prompt.OutputType.Notify);
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
         }
 
         public void OnChangedNickname(object o, ChangedNicknameEventArgs e)
         {
-            Prompt.Log.Add($"{e.OldNickname} changed nickname to {e.NewNickname}", Prompt.OutputType.Notify);
+            if (e != null)
+            {
+                Prompt.Log.Add($"{e.OldNickname} changed nickname to {e.NewNickname}", Prompt.OutputType.Notify);
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
         }
     }
 }
