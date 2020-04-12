@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading;
 using Lanchat.Terminal.Ui;
 using Lanchat.Common.NetworkLib;
 
@@ -14,9 +13,9 @@ namespace Lanchat.Terminal
 
         static void Main(string[] args)
         {
-            if (Array.IndexOf(args, "-debug") > -1)
+            if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
             {
-                // Attach trace here
+                Trace.WriteLine(Properties.Resources.Alert_DebugMode);
             }
 
             Config = Config.Load();
@@ -31,7 +30,7 @@ namespace Lanchat.Terminal
             Network.Events.NodeResumed += NetworkEventsHandlers.OnNodeResumed;
             Network.Events.ChangedNickname += NetworkEventsHandlers.OnChangedNickname;
 
-            Prompt.Start(Config);
+            Prompt.Start(Config, Network);
             Network.Start();
         }
     }

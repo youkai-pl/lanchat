@@ -53,7 +53,7 @@ namespace Lanchat.Terminal.Ui
                             Children = new[]
                         {
                                 new TextBlock {Text = $"{DateTime.Now.ToString("HH:mm:ss", CultureInfo.CurrentCulture)} ", Color=ConsoleColor.DarkGray},
-                                new TextBlock {Text = $"{nickname}: ", Color=ConsoleColor.DarkCyan},
+                                new TextBlock {Text = $"{nickname} ", Color=ConsoleColor.DarkCyan},
                                 new TextBlock {Text = line}
                             }
                         }

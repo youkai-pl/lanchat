@@ -4,6 +4,7 @@ using ConsoleGUI.Controls;
 using ConsoleGUI.Input;
 using ConsoleGUI.Space;
 using Figgle;
+using Lanchat.Common.NetworkLib;
 using System;
 using System.Reflection;
 using System.Threading;
@@ -12,7 +13,7 @@ namespace Lanchat.Terminal.Ui
 {
     internal class Prompt
     {
-        public static IInputListener[] input;
+        public static IInputListener[] InputListener;
         public static LogPanel Log;
         public static TextBlock Status = new TextBlock();
         public static TextBlock Nodes = new TextBlock();
@@ -26,7 +27,7 @@ namespace Lanchat.Terminal.Ui
             Notify
         }
 
-        public static void Start(Config config)
+        public static void Start(Config config, Network network)
         {
             // Layout
             Log = new LogPanel();
@@ -94,9 +95,9 @@ namespace Lanchat.Terminal.Ui
             Nodes.Text = Properties.Resources.Status_Waiting;
             PromptIndicator.Text = Properties.Resources.PromptIndicator_Default;
             ConsoleManager.Content = dockPanel;
-            Prompt.input = new IInputListener[]
+            Prompt.InputListener = new IInputListener[]
             {
-                new InputController(input, Log),
+                new InputController(input, Log, config, network),
                 input
             };
 
@@ -110,7 +111,7 @@ namespace Lanchat.Terminal.Ui
                 while (true)
                 {
                     Thread.Sleep(10);
-                    ConsoleManager.ReadInput(Prompt.input);
+                    ConsoleManager.ReadInput(Prompt.InputListener);
                     ConsoleManager.AdjustBufferSize();
                 }
             }).Start();

@@ -1,28 +1,44 @@
 ﻿using ConsoleGUI.Controls;
 using ConsoleGUI.Input;
+using Lanchat.Common.NetworkLib;
 using System;
 
 namespace Lanchat.Terminal.Ui
 {
-	class InputController : IInputListener
-	{
-		private readonly TextBox _textBox;
-		private readonly LogPanel _logPanel;
+    class InputController : IInputListener
+    {
+        private readonly TextBox input;
+        private readonly LogPanel log;
+        private readonly Config config;
+        private readonly Network network;
 
-		public InputController(TextBox textBox, LogPanel logPanel)
-		{
-			_textBox = textBox;
-			_logPanel = logPanel;
-		}
+        public InputController(TextBox input, LogPanel log, Config config, Network network)
+        {
+            this.input = input;
+            this.log = log;
+            this.config = config;
+            this.network = network;
+        }
 
-		public void OnInput(InputEvent inputEvent)
-		{
-			if (inputEvent.Key.Key != ConsoleKey.Enter) return;
+        public void OnInput(InputEvent inputEvent)
+        {
+            if (inputEvent.Key.Key != ConsoleKey.Enter) return;
 
-			_logPanel.Add(_textBox.Text, Prompt.OutputType.Message);
+            if (!string.IsNullOrWhiteSpace(input.Text))
+            {
+                if (input.Text.StartsWith("/", StringComparison.CurrentCulture))
+                {
+                    log.Add(input.Text, Prompt.OutputType.Clear);
+                }
+                else
+                {
+                    log.Add(input.Text, Prompt.OutputType.Message, config.Nickname);
+                    network.Methods.SendAll(input.Text);
+                }
+            }
 
-			_textBox.Text = string.Empty;
-			inputEvent.Handled = true;
-		}
-	}
+            input.Text = string.Empty;
+            inputEvent.Handled = true;
+        }
+    }
 }
