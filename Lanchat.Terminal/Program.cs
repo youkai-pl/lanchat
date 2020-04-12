@@ -2,12 +2,15 @@
 using System.Diagnostics;
 using System.Threading;
 using Lanchat.Terminal.Ui;
+using Lanchat.Common.NetworkLib;
 
 namespace Lanchat.Terminal
 {
     class Program
     {
         internal static Config Config { get; set; }
+        internal static Network Network { get; set; }
+        internal static NetworkEventsHandlers NetworkEventsHandlers { get; set; }
 
         static void Main(string[] args)
         {
@@ -18,10 +21,18 @@ namespace Lanchat.Terminal
 
             Config = Config.Load();
 
-            new Thread(() =>
-            {
-                Prompt.Start();
-            }).Start();
+            NetworkEventsHandlers = new NetworkEventsHandlers(Config, Network);
+            Network = new Network(Config.BroadcastPort, Config.Nickname, Config.HostPort, Config.HeartbeatTimeout, Config.ConnectionTimeout);
+            Network.Events.HostStarted += NetworkEventsHandlers.OnHostStarted;
+            Network.Events.ReceivedMessage += NetworkEventsHandlers.OnReceivedMessage;
+            Network.Events.NodeConnected += NetworkEventsHandlers.OnNodeConnected;
+            Network.Events.NodeDisconnected += NetworkEventsHandlers.OnNodeDisconnected;
+            Network.Events.NodeSuspended += NetworkEventsHandlers.OnNodeSuspended;
+            Network.Events.NodeResumed += NetworkEventsHandlers.OnNodeResumed;
+            Network.Events.ChangedNickname += NetworkEventsHandlers.OnChangedNickname;
+
+            Prompt.Start(Config);
+            Network.Start();
         }
     }
 }

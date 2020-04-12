@@ -72,9 +72,18 @@ namespace Lanchat.Terminal.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &gt; .
         /// </summary>
-        internal static string PromptIndicator {
+        internal static string PromptIndicator_Default {
             get {
-                return ResourceManager.GetString("PromptIndicator", resourceCulture);
+                return ResourceManager.GetString("PromptIndicator_Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string PromptIndicator_SetNickname {
+            get {
+                return ResourceManager.GetString("PromptIndicator_SetNickname", resourceCulture);
             }
         }
         

@@ -5,6 +5,7 @@ using ConsoleGUI.Input;
 using ConsoleGUI.Space;
 using Figgle;
 using System;
+using System.Reflection;
 using System.Threading;
 
 namespace Lanchat.Terminal.Ui
@@ -12,9 +13,10 @@ namespace Lanchat.Terminal.Ui
     internal class Prompt
     {
         public static IInputListener[] input;
-        public static LogPanel log;
-        public static TextBlock status;
-        public static TextBlock nodes;
+        public static LogPanel Log;
+        public static TextBlock Status = new TextBlock();
+        public static TextBlock Nodes = new TextBlock();
+        public static TextBlock PromptIndicator = new TextBlock();
 
         public enum OutputType
         {
@@ -24,12 +26,10 @@ namespace Lanchat.Terminal.Ui
             Notify
         }
 
-        public static void Start()
+        public static void Start(Config config)
         {
             // Layout
-            log = new LogPanel();
-            status = new TextBlock();
-            nodes = new TextBlock();
+            Log = new LogPanel();
             var input = new TextBox();
 
             var dockPanel = new DockPanel
@@ -50,7 +50,7 @@ namespace Lanchat.Terminal.Ui
                             {
                                 new Style
                                 {
-                                    Content = new TextBlock { Text = Properties.Resources.PromptIndicator }
+                                    Content = PromptIndicator
                                 },
                                 input
                             }
@@ -60,7 +60,7 @@ namespace Lanchat.Terminal.Ui
                     {
                         VerticalContentPlacement = Box.VerticalPlacement.Bottom,
                         HorizontalContentPlacement = Box.HorizontalPlacement.Stretch,
-                        Content = log
+                        Content = Log
                     }
                 },
 
@@ -77,9 +77,9 @@ namespace Lanchat.Terminal.Ui
                             Content = new HorizontalStackPanel
                             {
                                 Children = new IControl[] {
-                                    status,
+                                    Status,
                                     new VerticalSeparator(),
-                                    nodes
+                                    Nodes
                                 }
                             }
                         }
@@ -90,25 +90,30 @@ namespace Lanchat.Terminal.Ui
             ConsoleManager.Console = new SimplifiedConsole();
             ConsoleManager.Setup();
             ConsoleManager.Resize(new Size(100, 30));
-            status.Text = Properties.Resources.Status_Waiting;
-            nodes.Text = Properties.Resources.Status_Waiting;
+            Status.Text = Properties.Resources.Status_Waiting;
+            Nodes.Text = Properties.Resources.Status_Waiting;
+            PromptIndicator.Text = Properties.Resources.PromptIndicator_Default;
             ConsoleManager.Content = dockPanel;
             Prompt.input = new IInputListener[]
             {
-                new InputController(input, log),
+                new InputController(input, Log),
                 input
             };
 
             // Write hello screen
-            log.Add(FiggleFonts.Standard.Render(Properties.Resources.Title), OutputType.Clear);
+            Log.Add(FiggleFonts.Standard.Render(Properties.Resources.Title), OutputType.Clear);
+            Log.Add(Assembly.GetExecutingAssembly().GetName().Version.ToString(), OutputType.Clear);
 
             // Read input
-            for (int i = 0; ; i++)
+            new Thread(() =>
             {
-                Thread.Sleep(10);
-                ConsoleManager.ReadInput(Prompt.input);
-                ConsoleManager.AdjustBufferSize();
-            }
+                while (true)
+                {
+                    Thread.Sleep(10);
+                    ConsoleManager.ReadInput(Prompt.input);
+                    ConsoleManager.AdjustBufferSize();
+                }
+            }).Start();
         }
     }
 }

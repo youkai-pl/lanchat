@@ -120,8 +120,11 @@
   <data name="Alert_DebugMode" xml:space="preserve">
     <value>Debug mode enabled</value>
   </data>
-  <data name="PromptIndicator" xml:space="preserve">
+  <data name="PromptIndicator_Default" xml:space="preserve">
     <value>&gt; </value>
+  </data>
+  <data name="PromptIndicator_SetNickname" xml:space="preserve">
+    <value />
   </data>
   <data name="Status_Waiting" xml:space="preserve">
     <value>Waiting</value>
