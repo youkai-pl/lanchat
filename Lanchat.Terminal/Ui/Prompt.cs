@@ -91,6 +91,7 @@ namespace Lanchat.Terminal.Ui
 
             ConsoleManager.Console = new SimplifiedConsole();
             ConsoleManager.Setup();
+            Console.Title = "Lanchat 2";
             ConsoleManager.Resize(new Size(100, 30));
             Status.Text = Properties.Resources.Status_Waiting;
             Nodes.Text = Properties.Resources.Status_Waiting;
