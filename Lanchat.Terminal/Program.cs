@@ -18,8 +18,8 @@ namespace Lanchat.Terminal
 
             Config = Config.Load();
 
-            NetworkEventsHandlers = new NetworkEventsHandlers(Config, Network);
             Network = new Network(Config.BroadcastPort, Config.Nickname, Config.HostPort, Config.HeartbeatTimeout, Config.ConnectionTimeout);
+            NetworkEventsHandlers = new NetworkEventsHandlers(Config, Network);
             Network.Events.HostStarted += NetworkEventsHandlers.OnHostStarted;
             Network.Events.ReceivedMessage += NetworkEventsHandlers.OnReceivedMessage;
             Network.Events.NodeConnected += NetworkEventsHandlers.OnNodeConnected;

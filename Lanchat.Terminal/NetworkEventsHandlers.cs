@@ -3,7 +3,7 @@ using Lanchat.Common.NetworkLib.EventsArgs;
 using Lanchat.Common.Types;
 using Lanchat.Terminal.Ui;
 using System;
-
+using System.Globalization;
 namespace Lanchat.Terminal
 {
     public class NetworkEventsHandlers
@@ -22,6 +22,9 @@ namespace Lanchat.Terminal
             if (e != null)
             {
                 Prompt.Log.Add($"Host started on port {e.Port}", Prompt.OutputType.Clear);
+                Prompt.Port.Text = e.Port.ToString(CultureInfo.CurrentCulture);
+                Prompt.Nodes.Text = network.NodeList.Count.ToString(CultureInfo.CurrentCulture);
+                Prompt.Status.Text = "#broadcast";
             }
             else
             {
@@ -53,7 +56,7 @@ namespace Lanchat.Terminal
             if (e != null)
             {
                 Prompt.Log.Add($"{e.Node.Nickname} connected", Prompt.OutputType.Notify);
-
+                Prompt.Nodes.Text = network.NodeList.Count.ToString(CultureInfo.CurrentCulture);
                 if (config.Muted.Exists(x => x == e.Node.Ip.ToString()))
                 {
                     var node = network.NodeList.Find(x => x.Ip.Equals(e.Node.Ip));
@@ -71,6 +74,7 @@ namespace Lanchat.Terminal
             if (e != null)
             {
                 Prompt.Log.Add($"{e.Node.Nickname} disconnected", Prompt.OutputType.Notify);
+                Prompt.Nodes.Text = network.NodeList.Count.ToString(CultureInfo.CurrentCulture);
             }
             else
             {

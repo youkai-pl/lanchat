@@ -17,6 +17,7 @@ namespace Lanchat.Terminal.Ui
         internal static LogPanel Log;
         internal static TextBlock Status = new TextBlock();
         internal static TextBlock Nodes = new TextBlock();
+        internal static TextBlock Port = new TextBlock();
         internal static TextBlock PromptIndicator = new TextBlock();
 
         public enum OutputType
@@ -81,6 +82,10 @@ namespace Lanchat.Terminal.Ui
                                 Children = new IControl[] {
                                     Status,
                                     new VerticalSeparator(),
+                                    new TextBlock(){Text= "Port: "},
+                                    Port,
+                                    new VerticalSeparator(),
+                                    new TextBlock(){Text= "Nodes: "},
                                     Nodes
                                 }
                             }
@@ -93,9 +98,12 @@ namespace Lanchat.Terminal.Ui
             ConsoleManager.Setup();
             Console.Title = "Lanchat 2";
             ConsoleManager.Resize(new Size(100, 30));
+
             Status.Text = Properties.Resources.Status_Waiting;
+            Port.Text = Properties.Resources.Status_Waiting;
             Nodes.Text = Properties.Resources.Status_Waiting;
             PromptIndicator.Text = Properties.Resources.PromptIndicator_Default;
+
             ConsoleManager.Content = dockPanel;
             InputListener = new IInputListener[]
             {
@@ -113,7 +121,7 @@ namespace Lanchat.Terminal.Ui
                 while (true)
                 {
                     Thread.Sleep(10);
-                    ConsoleManager.ReadInput(Prompt.InputListener);
+                    ConsoleManager.ReadInput(InputListener);
                     ConsoleManager.AdjustBufferSize();
                 }
             }).Start();
