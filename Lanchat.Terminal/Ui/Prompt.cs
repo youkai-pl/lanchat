@@ -11,13 +11,13 @@ using System.Threading;
 
 namespace Lanchat.Terminal.Ui
 {
-    internal class Prompt
+    public static class Prompt
     {
-        public static IInputListener[] InputListener;
-        public static LogPanel Log;
-        public static TextBlock Status = new TextBlock();
-        public static TextBlock Nodes = new TextBlock();
-        public static TextBlock PromptIndicator = new TextBlock();
+        internal static IInputListener[] InputListener;
+        internal static LogPanel Log;
+        internal static TextBlock Status = new TextBlock();
+        internal static TextBlock Nodes = new TextBlock();
+        internal static TextBlock PromptIndicator = new TextBlock();
 
         public enum OutputType
         {
@@ -95,7 +95,7 @@ namespace Lanchat.Terminal.Ui
             Nodes.Text = Properties.Resources.Status_Waiting;
             PromptIndicator.Text = Properties.Resources.PromptIndicator_Default;
             ConsoleManager.Content = dockPanel;
-            Prompt.InputListener = new IInputListener[]
+            InputListener = new IInputListener[]
             {
                 new InputController(input, Log, config, network),
                 input

@@ -5,14 +5,13 @@ using System.Globalization;
 
 namespace Lanchat.Terminal.Ui
 {
-    internal class LogPanel : SimpleControl
+    public class LogPanel : SimpleControl
     {
         private readonly VerticalStackPanel _stackPanel;
 
         public LogPanel()
         {
             _stackPanel = new VerticalStackPanel();
-
             Content = _stackPanel;
         }
 
@@ -51,7 +50,7 @@ namespace Lanchat.Terminal.Ui
                         Content = new HorizontalStackPanel
                         {
                             Children = new[]
-                        {
+                            {
                                 new TextBlock {Text = $"{DateTime.Now.ToString("HH:mm:ss", CultureInfo.CurrentCulture)} ", Color=ConsoleColor.DarkGray},
                                 new TextBlock {Text = $"{nickname} ", Color=ConsoleColor.DarkCyan},
                                 new TextBlock {Text = line}

@@ -5,7 +5,7 @@ using System;
 
 namespace Lanchat.Terminal.Ui
 {
-    class InputController : IInputListener
+    public class InputController : IInputListener
     {
         private readonly TextBox input;
         private readonly LogPanel log;

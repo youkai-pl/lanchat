@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using Lanchat.Terminal.Ui;
 using Lanchat.Common.NetworkLib;
+using System.IO;
+using System.Linq;
 
 namespace Lanchat.Terminal
 {
@@ -13,10 +15,6 @@ namespace Lanchat.Terminal
 
         static void Main(string[] args)
         {
-            if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
-            {
-                Trace.WriteLine(Properties.Resources.Alert_DebugMode);
-            }
 
             Config = Config.Load();
 
@@ -32,6 +30,22 @@ namespace Lanchat.Terminal
 
             Prompt.Start(Config, Network);
             Network.Start();
+
+            if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
+            {
+                Trace.WriteLine(Properties.Resources.Alert_DebugMode);
+                Trace.Listeners.Add(new TerminalTraceListener());
+            }
+
+            Trace.Listeners.Add(new FileTraceListener($"{Config.Path}{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log"));
+            Trace.IndentSize = 11;
+            Trace.AutoFlush = true;
+            Trace.WriteLine("[APP] Logging started");
+
+            foreach (var fi in new DirectoryInfo(Config.Path).GetFiles("*.log").OrderByDescending(x => x.LastWriteTime).Skip(5))
+            {
+                fi.Delete();
+            }
         }
     }
 }
