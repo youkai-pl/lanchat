@@ -1,10 +1,10 @@
 ﻿using ConsoleGUI;
+using ConsoleGUI.Api;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Input;
+using ConsoleGUI.Space;
 using Figgle;
-using Lanchat.Common.Types;
 using System;
-using System.Globalization;
 using System.Threading;
 
 namespace Lanchat.Terminal.Ui
@@ -12,7 +12,9 @@ namespace Lanchat.Terminal.Ui
     internal class Prompt
     {
         public static IInputListener[] input;
-        public static LogPanel mainConsole;
+        public static LogPanel log;
+        public static TextBlock status;
+        public static TextBlock nodes;
 
         public enum OutputType
         {
@@ -24,69 +26,87 @@ namespace Lanchat.Terminal.Ui
 
         public static void Start()
         {
-            var textBox = new TextBox();
-            mainConsole = new LogPanel();
+            // Layout
+            log = new LogPanel();
+            status = new TextBlock();
+            nodes = new TextBlock();
+            var input = new TextBox();
+
             var dockPanel = new DockPanel
             {
-                Placement = DockPanel.DockedControlPlacement.Top,
+                Placement = DockPanel.DockedControlPlacement.Bottom,
+
+                // Log and prompt
                 FillingControl = new DockPanel
                 {
-                    FillingControl = new Overlay
+                    Placement = DockPanel.DockedControlPlacement.Bottom,
+                    DockedControl = new Boundary
                     {
-                        BottomContent = new DockPanel
+                        MaxHeight = 1,
+
+                        Content = new HorizontalStackPanel
                         {
-                            Placement = DockPanel.DockedControlPlacement.Bottom,
-                            DockedControl = new Boundary
+                            Children = new IControl[]
                             {
-                                MaxHeight = 1,
-                                Content = new HorizontalStackPanel
+                                new Style
                                 {
-                                    Children = new IControl[]
-                                    {
-                                        new Style
-                                        {
-                                            Content = new TextBlock { Text = Properties.Resources.PromptIndicator }
-                                        },
-                                        textBox
-                                    }
-                                }
-                            },
-                            FillingControl = new Box
+                                    Content = new TextBlock { Text = Properties.Resources.PromptIndicator }
+                                },
+                                input
+                            }
+                        }
+                    },
+                    FillingControl = new Box
+                    {
+                        VerticalContentPlacement = Box.VerticalPlacement.Bottom,
+                        HorizontalContentPlacement = Box.HorizontalPlacement.Stretch,
+                        Content = log
+                    }
+                },
+
+                DockedControl = new Background
+                {
+                    Color = ConsoleColor.DarkBlue,
+                    Content = new Boundary
+                    {
+                        MinHeight = 1,
+                        MaxHeight = 1,
+                        Content = new Background
+                        {
+                            Color = ConsoleColor.DarkBlue,
+                            Content = new HorizontalStackPanel
                             {
-                                VerticalContentPlacement = Box.VerticalPlacement.Bottom,
-                                HorizontalContentPlacement = Box.HorizontalPlacement.Stretch,
-                                Content = mainConsole
+                                Children = new IControl[] {
+                                    status,
+                                    new VerticalSeparator(),
+                                    nodes
+                                }
                             }
                         }
                     }
                 }
             };
 
+            ConsoleManager.Console = new SimplifiedConsole();
             ConsoleManager.Setup();
+            ConsoleManager.Resize(new Size(100, 30));
+            status.Text = Properties.Resources.Status_Waiting;
+            nodes.Text = Properties.Resources.Status_Waiting;
             ConsoleManager.Content = dockPanel;
-            input = new IInputListener[]
+            Prompt.input = new IInputListener[]
             {
-                new InputController(textBox, mainConsole),
-                textBox
+                new InputController(input, log),
+                input
             };
 
             // Write hello screen
-            mainConsole.Add(FiggleFonts.Standard.Render(Properties.Resources.Title), OutputType.Clear);
-
-            // Test outputs
-            mainConsole.Add(Properties.Resources.Title, OutputType.Clear);
-            mainConsole.Add(Properties.Resources.Title, OutputType.Notify);
-            mainConsole.Add(Properties.Resources.Title, OutputType.Alert);
-            mainConsole.Add(Properties.Resources.Title, OutputType.Message, "test");
-
-            mainConsole.Add("", OutputType.Clear);
-
+            log.Add(FiggleFonts.Standard.Render(Properties.Resources.Title), OutputType.Clear);
 
             // Read input
             for (int i = 0; ; i++)
             {
                 Thread.Sleep(10);
-                ConsoleManager.ReadInput(input);
+                ConsoleManager.ReadInput(Prompt.input);
                 ConsoleManager.AdjustBufferSize();
             }
         }

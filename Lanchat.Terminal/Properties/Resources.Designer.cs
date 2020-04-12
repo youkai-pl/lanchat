@@ -79,6 +79,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Waiting.
+        /// </summary>
+        internal static string Status_Waiting {
+            get {
+                return ResourceManager.GetString("Status_Waiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lanchat 2.
         /// </summary>
         internal static string Title {
