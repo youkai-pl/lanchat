@@ -25,7 +25,7 @@ namespace Lanchat.Terminal
         {
             if (e.Target == MessageTarget.Private)
             {
-                Prompt.Log.Add(e.Content.Trim(), Prompt.OutputType.Message, $"{e.Node.Nickname} -> {config.Nickname}");
+                Prompt.Log.Add(e.Content.Trim(), Prompt.OutputType.PrivateMessage, $"{e.Node.Nickname}");
             }
             else
             {

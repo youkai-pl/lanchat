@@ -23,6 +23,7 @@ namespace Lanchat.Terminal.Ui
         {
             Clear,
             Message,
+            PrivateMessage,
             Alert,
             Notify
         }
