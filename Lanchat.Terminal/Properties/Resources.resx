@@ -121,7 +121,8 @@
     <value>   __                 __        __  ___ 
   / /  ___ ____  ____/ /  ___ _/ /_|_  |
  / /__/ _ `/ _ \/ __/ _ \/ _ `/ __/ __/ 
-/____/\_,_/_//_/\__/_//_/\_,_/\__/____/</value>
+/____/\_,_/_//_/\__/_//_/\_,_/\__/____/
+</value>
   </data>
   <data name="Manual_Connect" xml:space="preserve">
     <value>Syntax: /connect &lt;ip&gt; &lt;port&gt;</value>

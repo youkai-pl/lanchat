@@ -181,7 +181,8 @@ namespace Lanchat.Terminal.Properties {
         ///   Looks up a localized string similar to    __                 __        __  ___ 
         ///  / /  ___ ____  ____/ /  ___ _/ /_|_  |
         /// / /__/ _ `/ _ \/ __/ _ \/ _ `/ __/ __/ 
-        ////____/\_,_/_//_/\__/_//_/\_,_/\__/____/.
+        ////____/\_,_/_//_/\__/_//_/\_,_/\__/____/
+        ///.
         /// </summary>
         internal static string HelloAsci {
             get {
