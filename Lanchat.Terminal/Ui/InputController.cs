@@ -81,6 +81,10 @@ namespace Lanchat.Terminal.Ui
                     Unmute.Execute(args, config, network);
                     break;
 
+                case "m":
+                    Message.Execute(args, network);
+                    break;
+
                 default:
                     break;
             }

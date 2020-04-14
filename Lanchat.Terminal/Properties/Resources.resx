@@ -126,9 +126,13 @@ Commands list:
 connect
 help
 mute
+m
 nick
 unmute
 Try /help &lt;command&gt;</value>
+  </data>
+  <data name="Manual_Message" xml:space="preserve">
+    <value>Syntax: /m &lt;nickname&gt; &lt;message&gt;</value>
   </data>
   <data name="Manual_Mute" xml:space="preserve">
     <value>Syntax: /mute &lt;nickname&gt;</value>

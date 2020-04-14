@@ -183,6 +183,7 @@ namespace Lanchat.Terminal.Properties {
         ///connect
         ///help
         ///mute
+        ///m
         ///nick
         ///unmute
         ///Try /help &lt;command&gt;.
@@ -190,6 +191,15 @@ namespace Lanchat.Terminal.Properties {
         internal static string Manual_Help {
             get {
                 return ResourceManager.GetString("Manual_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax: /m &lt;nickname&gt; &lt;message&gt;.
+        /// </summary>
+        internal static string Manual_Message {
+            get {
+                return ResourceManager.GetString("Manual_Message", resourceCulture);
             }
         }
         
