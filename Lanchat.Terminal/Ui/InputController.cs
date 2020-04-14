@@ -65,6 +65,10 @@ namespace Lanchat.Terminal.Ui
                     Help.Execute(args);
                     break;
 
+                case "exit":
+                    ExitLanchat.Execute();
+                    break;
+
                 default:
                     break;
             }
