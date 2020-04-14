@@ -1,7 +1,9 @@
 ﻿using ConsoleGUI.Controls;
 using ConsoleGUI.Input;
 using Lanchat.Common.NetworkLib;
+using Lanchat.Terminal.Commands;
 using System;
+using System.Linq;
 
 namespace Lanchat.Terminal.Ui
 {
@@ -35,7 +37,7 @@ namespace Lanchat.Terminal.Ui
             {
                 if (input.Text.StartsWith("/", StringComparison.CurrentCulture))
                 {
-                    log.Add(input.Text, Prompt.OutputType.System);
+                    ExecuteCommand(input.Text.Split(' '));
                 }
                 else
                 {
@@ -46,6 +48,17 @@ namespace Lanchat.Terminal.Ui
 
             input.Text = string.Empty;
             inputEvent.Handled = true;
+        }
+
+        private void ExecuteCommand(string[] args)
+        {
+            var command = args[0].Substring(1);
+            args = args.Skip(1).ToArray();
+
+            if (command == "nick")
+            {
+                Nick.Execute(args, config, network);
+            }
         }
     }
 }

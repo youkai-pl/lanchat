@@ -61,11 +61,29 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nickname changed.
+        /// </summary>
+        internal static string _SelfNicknameChanged {
+            get {
+                return ResourceManager.GetString("_SelfNicknameChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debug mode enabled.
         /// </summary>
-        internal static string Alert_DebugMode {
+        internal static string _System_DebugMode {
             get {
-                return ResourceManager.GetString("Alert_DebugMode", resourceCulture);
+                return ResourceManager.GetString("_System_DebugMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nick must be shorter than 20 characters and cannot be blank.
+        /// </summary>
+        internal static string _System_WrongNickname {
+            get {
+                return ResourceManager.GetString("_System_WrongNickname", resourceCulture);
             }
         }
         
