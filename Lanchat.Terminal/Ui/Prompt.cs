@@ -157,7 +157,7 @@ namespace Lanchat.Terminal.Ui
                 input
             };
 
-            Log.Add(FiggleFonts.Standard.Render(Properties.Resources.Title), OutputType.System);
+            Log.Add(FiggleFonts.Standard.Render(Properties.Resources.Title));
 
             new Thread(() =>
             {

@@ -29,7 +29,7 @@ namespace Lanchat.Terminal.Commands
                 {
                     var parsedIP = IPAddress.Parse(args[0]);
                     var parsedPort = int.Parse(args[1], CultureInfo.CurrentCulture);
-                    Prompt.Log.Add($"{Properties.Resources._ConnectionAttempt} {args[0]} {Properties.Resources._OnPort} {args[1]}", Prompt.OutputType.System);
+                    Prompt.Log.Add($"{Properties.Resources._ConnectionAttempt} {args[0]} {Properties.Resources._OnPort} {args[1]}");
                     try
                     {
                         network.Methods.Connect(parsedIP, parsedPort);
@@ -38,11 +38,11 @@ namespace Lanchat.Terminal.Commands
                     {
                         if (e is ConnectionFailedException)
                         {
-                            Prompt.Log.Add(Properties.Resources._ManualConnectionFailed, Prompt.OutputType.System);
+                            Prompt.Log.Add(Properties.Resources._ManualConnectionFailed);
                         }
                         else if (e is NodeAlreadyExistException)
                         {
-                            Prompt.Log.Add(Properties.Resources._AlreadyConnected, Prompt.OutputType.System);
+                            Prompt.Log.Add(Properties.Resources._AlreadyConnected);
                         }
                         throw;
                     }
@@ -51,7 +51,7 @@ namespace Lanchat.Terminal.Commands
                 {
                     if (e is ArgumentNullException || e is FormatException)
                     {
-                        Prompt.Log.Add(Properties.Resources._IncorrectValues, Prompt.OutputType.System);
+                        Prompt.Log.Add(Properties.Resources._IncorrectValues);
                         return;
                     }
                     throw;

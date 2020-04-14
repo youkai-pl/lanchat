@@ -32,13 +32,13 @@ namespace Lanchat.Terminal.Commands
             var nickname = args[0].Trim();
             if (nickname.Length >= 20 || string.IsNullOrWhiteSpace(nickname))
             {
-                Prompt.Log.Add(Properties.Resources._WrongNickname, Prompt.OutputType.System);
+                Prompt.Log.Add(Properties.Resources._WrongNickname);
             }
             else
             {
                 config.Nickname = nickname;
                 network.Nickname = nickname;
-                Prompt.Log.Add(Properties.Resources._SelfNicknameChanged, Prompt.OutputType.System);
+                Prompt.Log.Add(Properties.Resources._SelfNicknameChanged);
                 Prompt.PromptIndicator.Text = $"[{config.Nickname}]> ";
             }
         }

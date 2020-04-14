@@ -15,7 +15,7 @@ namespace Lanchat.Terminal.Commands
 
             if (args.Length < 1)
             {
-                Prompt.Log.Add(Properties.Resources.Manual_Help, Prompt.OutputType.System);
+                Prompt.Log.Add(Properties.Resources.Manual_Help);
             }
             else
             {
@@ -23,11 +23,11 @@ namespace Lanchat.Terminal.Commands
                 var commandHelp = Properties.Resources.ResourceManager.GetObject(command, Properties.Resources.Culture);
                 if(commandHelp != null)
                 {
-                    Prompt.Log.Add(commandHelp.ToString(), Prompt.OutputType.System);
+                    Prompt.Log.Add(commandHelp.ToString());
                 }
                 else
                 {
-                    Prompt.Log.Add(Properties.Resources._ManualNotFound, Prompt.OutputType.System);
+                    Prompt.Log.Add(Properties.Resources._ManualNotFound);
                 }
             }
         }

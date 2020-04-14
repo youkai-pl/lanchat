@@ -13,7 +13,7 @@ namespace Lanchat.Terminal.Ui
 
         public override void WriteLine(string message)
         {
-            Prompt.Log.Add(message, Prompt.OutputType.System);
+            Prompt.Log.Add(message);
         }
     }
 
