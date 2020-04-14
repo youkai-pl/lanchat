@@ -23,6 +23,12 @@ namespace Lanchat.Terminal.Commands
                 throw new ArgumentNullException(nameof(network));
             }
 
+            if (args.Length < 1)
+            {
+                Prompt.Log.Add(Properties.Resources.Manual_Nick);
+                return;
+            }
+
             var nickname = args[0].Trim();
             if (nickname.Length >= 20 || string.IsNullOrWhiteSpace(nickname))
             {

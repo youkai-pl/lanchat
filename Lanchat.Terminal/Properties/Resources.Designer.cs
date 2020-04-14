@@ -70,6 +70,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User already muted.
+        /// </summary>
+        internal static string _AlreadyMuted {
+            get {
+                return ResourceManager.GetString("_AlreadyMuted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attempting connect to.
         /// </summary>
         internal static string _ConnectionAttempt {
@@ -115,6 +124,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User is not muted.
+        /// </summary>
+        internal static string _NotMuted {
+            get {
+                return ResourceManager.GetString("_NotMuted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to on port.
         /// </summary>
         internal static string _OnPort {
@@ -129,6 +147,15 @@ namespace Lanchat.Terminal.Properties {
         internal static string _SelfNicknameChanged {
             get {
                 return ResourceManager.GetString("_SelfNicknameChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User not found.
+        /// </summary>
+        internal static string _UserNotFound {
+            get {
+                return ResourceManager.GetString("_UserNotFound", resourceCulture);
             }
         }
         
@@ -155,7 +182,9 @@ namespace Lanchat.Terminal.Properties {
         ///Commands list:
         ///connect
         ///help
+        ///mute
         ///nick
+        ///unmute
         ///Try /help &lt;command&gt;.
         /// </summary>
         internal static string Manual_Help {
@@ -165,11 +194,29 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syntax: /mute &lt;nickname&gt;.
+        /// </summary>
+        internal static string Manual_Mute {
+            get {
+                return ResourceManager.GetString("Manual_Mute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Syntax: /nick &lt;new_nick&gt;.
         /// </summary>
         internal static string Manual_Nick {
             get {
                 return ResourceManager.GetString("Manual_Nick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax: /unmute &lt;nickname&gt;.
+        /// </summary>
+        internal static string Manual_Unmute {
+            get {
+                return ResourceManager.GetString("Manual_Unmute", resourceCulture);
             }
         }
         

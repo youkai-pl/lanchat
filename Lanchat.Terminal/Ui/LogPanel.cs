@@ -16,7 +16,7 @@ namespace Lanchat.Terminal.Ui
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
-        public void Add(string text, Prompt.OutputType outputType, string nickname = null)
+        public void Add(string text, Prompt.OutputType outputType = Prompt.OutputType.System, string nickname = null)
         {
             string[] lines;
 

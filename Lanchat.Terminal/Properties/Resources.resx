@@ -125,11 +125,19 @@
 Commands list:
 connect
 help
+mute
 nick
+unmute
 Try /help &lt;command&gt;</value>
+  </data>
+  <data name="Manual_Mute" xml:space="preserve">
+    <value>Syntax: /mute &lt;nickname&gt;</value>
   </data>
   <data name="Manual_Nick" xml:space="preserve">
     <value>Syntax: /nick &lt;new_nick&gt;</value>
+  </data>
+  <data name="Manual_Unmute" xml:space="preserve">
+    <value>Syntax: /unmute &lt;nickname&gt;</value>
   </data>
   <data name="PageLink" xml:space="preserve">
     <value>https://tofu.ovh</value>
@@ -146,6 +154,9 @@ Try /help &lt;command&gt;</value>
   <data name="_AlreadyConnected" xml:space="preserve">
     <value>Already connected</value>
   </data>
+  <data name="_AlreadyMuted" xml:space="preserve">
+    <value>User already muted</value>
+  </data>
   <data name="_ConnectionAttempt" xml:space="preserve">
     <value>Attempting connect to</value>
   </data>
@@ -161,11 +172,17 @@ Try /help &lt;command&gt;</value>
   <data name="_ManualNotFound" xml:space="preserve">
     <value>Manual not found</value>
   </data>
+  <data name="_NotMuted" xml:space="preserve">
+    <value>User is not muted</value>
+  </data>
   <data name="_OnPort" xml:space="preserve">
     <value>on port</value>
   </data>
   <data name="_SelfNicknameChanged" xml:space="preserve">
     <value>Nickname changed</value>
+  </data>
+  <data name="_UserNotFound" xml:space="preserve">
+    <value>User not found</value>
   </data>
   <data name="_WrongNickname" xml:space="preserve">
     <value>Nick must be shorter than 20 characters and cannot be blank</value>

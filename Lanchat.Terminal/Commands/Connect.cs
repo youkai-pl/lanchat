@@ -12,6 +12,17 @@ namespace Lanchat.Terminal.Commands
     {
         public static void Execute(string[] args, Network network)
         {
+            if (args == null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
+            if (args.Length < 2)
+            {
+                Prompt.Log.Add(Properties.Resources.Manual_Connect);
+                return;
+            }
+
             new Thread(() =>
             {
                 try
