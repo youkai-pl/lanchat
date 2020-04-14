@@ -1,6 +1,9 @@
 ﻿using System;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Xamarin.Forms.Xaml;
+using Application = Xamarin.Forms.Application;
 
 namespace Lanchat.Xamarin
 {
@@ -9,7 +12,7 @@ namespace Lanchat.Xamarin
         public App()
         {
             InitializeComponent();
-
+            Current.On<Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
             MainPage = new MainPage();
         }
 

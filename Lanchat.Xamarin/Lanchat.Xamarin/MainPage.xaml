@@ -6,11 +6,25 @@
              mc:Ignorable="d"
              x:Class="Lanchat.Xamarin.MainPage">
 
-    <StackLayout>
-        <!-- Place new controls here -->
-        <Label Text="Welcome to Xamarin.Forms!" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
-    </StackLayout>
+    <ScrollView Padding="10">
+        <StackLayout>
+
+            <!-- Log -->
+            <Label    
+                Text="Lanchat Xamarin" 
+                FontSize="Body"
+                VerticalOptions="StartAndExpand"
+            />
+            
+            <!-- Input -->
+            <Editor 
+                x:Name="Input"
+                Keyboard="Chat" 
+                Placeholder="Enter text here" 
+                FontSize="Body"
+                AutoSize="TextChanges" 
+            />
+        </StackLayout>
+    </ScrollView>
 
 </ContentPage>

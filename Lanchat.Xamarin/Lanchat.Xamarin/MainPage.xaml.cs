@@ -17,5 +17,15 @@ namespace Lanchat.Xamarin
         {
             InitializeComponent();
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await Task.Delay(250);
+                Input.Focus();
+            });
+        }
     }
 }
