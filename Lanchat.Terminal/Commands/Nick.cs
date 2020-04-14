@@ -26,7 +26,7 @@ namespace Lanchat.Terminal.Commands
             var nickname = args[0].Trim();
             if (nickname.Length >= 20 || string.IsNullOrWhiteSpace(nickname))
             {
-                Prompt.Log.Add(Properties.Resources._System_WrongNickname, Prompt.OutputType.System);
+                Prompt.Log.Add(Properties.Resources._WrongNickname, Prompt.OutputType.System);
             }
             else
             {
@@ -36,5 +36,7 @@ namespace Lanchat.Terminal.Commands
                 Prompt.PromptIndicator.Text = $"[{config.Nickname}]> ";
             }
         }
+
+        public static string Man { get; private set; } = Properties.Resources.Manual_Nick;
     }
 }

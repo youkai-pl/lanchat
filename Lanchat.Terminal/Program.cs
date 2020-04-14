@@ -33,7 +33,7 @@ namespace Lanchat.Terminal
 
             if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
             {
-                Trace.WriteLine(Properties.Resources._System_DebugMode);
+                Trace.WriteLine(Properties.Resources._DebugMode);
                 Trace.Listeners.Add(new TerminalTraceListener());
             }
 

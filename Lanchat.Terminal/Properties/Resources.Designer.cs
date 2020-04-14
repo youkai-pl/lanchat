@@ -61,6 +61,24 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Debug mode enabled.
+        /// </summary>
+        internal static string _DebugMode {
+            get {
+                return ResourceManager.GetString("_DebugMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual not found.
+        /// </summary>
+        internal static string _ManualNotFound {
+            get {
+                return ResourceManager.GetString("_ManualNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nickname changed.
         /// </summary>
         internal static string _SelfNicknameChanged {
@@ -70,20 +88,33 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Debug mode enabled.
+        ///   Looks up a localized string similar to Nick must be shorter than 20 characters and cannot be blank.
         /// </summary>
-        internal static string _System_DebugMode {
+        internal static string _WrongNickname {
             get {
-                return ResourceManager.GetString("_System_DebugMode", resourceCulture);
+                return ResourceManager.GetString("_WrongNickname", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nick must be shorter than 20 characters and cannot be blank.
+        ///   Looks up a localized string similar to 
+        ///Commands list:
+        ///help
+        ///nick
+        ///Try /help &lt;command&gt;.
         /// </summary>
-        internal static string _System_WrongNickname {
+        internal static string Manual_Help {
             get {
-                return ResourceManager.GetString("_System_WrongNickname", resourceCulture);
+                return ResourceManager.GetString("Manual_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax: /nick &lt;new_nick&gt;.
+        /// </summary>
+        internal static string Manual_Nick {
+            get {
+                return ResourceManager.GetString("Manual_Nick", resourceCulture);
             }
         }
         

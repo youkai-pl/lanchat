@@ -55,9 +55,18 @@ namespace Lanchat.Terminal.Ui
             var command = args[0].Substring(1);
             args = args.Skip(1).ToArray();
 
-            if (command == "nick")
+            switch (command)
             {
-                Nick.Execute(args, config, network);
+                case "nick":
+                    Nick.Execute(args, config, network);
+                    break;
+
+                case "help":
+                    Help.Execute(args);
+                    break;
+
+                default:
+                    break;
             }
         }
     }

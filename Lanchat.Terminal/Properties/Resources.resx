@@ -117,6 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Manual_Help" xml:space="preserve">
+    <value>
+Commands list:
+help
+nick
+Try /help &lt;command&gt;</value>
+  </data>
+  <data name="Manual_Nick" xml:space="preserve">
+    <value>Syntax: /nick &lt;new_nick&gt;</value>
+  </data>
   <data name="PageLink" xml:space="preserve">
     <value>https://tofu.ovh</value>
   </data>
@@ -129,13 +139,16 @@
   <data name="Title" xml:space="preserve">
     <value>Lanchat</value>
   </data>
+  <data name="_DebugMode" xml:space="preserve">
+    <value>Debug mode enabled</value>
+  </data>
+  <data name="_ManualNotFound" xml:space="preserve">
+    <value>Manual not found</value>
+  </data>
   <data name="_SelfNicknameChanged" xml:space="preserve">
     <value>Nickname changed</value>
   </data>
-  <data name="_System_DebugMode" xml:space="preserve">
-    <value>Debug mode enabled</value>
-  </data>
-  <data name="_System_WrongNickname" xml:space="preserve">
+  <data name="_WrongNickname" xml:space="preserve">
     <value>Nick must be shorter than 20 characters and cannot be blank</value>
   </data>
 </root>
