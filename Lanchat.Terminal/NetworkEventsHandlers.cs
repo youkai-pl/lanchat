@@ -53,7 +53,7 @@ namespace Lanchat.Terminal
         {
             if (e != null)
             {
-                Prompt.Log.Add($"{e.Node.Nickname} connected", Prompt.OutputType.Notify);
+                Prompt.Log.Add($"{e.Node.Nickname} connected", Prompt.OutputType.System);
                 Prompt.Nodes.Text = network.NodeList.Count.ToString(CultureInfo.CurrentCulture);
                 if (config.Muted.Exists(x => x == e.Node.Ip.ToString()))
                 {
@@ -71,7 +71,7 @@ namespace Lanchat.Terminal
         {
             if (e != null)
             {
-                Prompt.Log.Add($"{e.Node.Nickname} disconnected", Prompt.OutputType.Notify);
+                Prompt.Log.Add($"{e.Node.Nickname} disconnected", Prompt.OutputType.System);
                 Prompt.Nodes.Text = network.NodeList.Count.ToString(CultureInfo.CurrentCulture);
             }
             else
@@ -84,7 +84,7 @@ namespace Lanchat.Terminal
         {
             if (e != null)
             {
-                Prompt.Log.Add($"{e.Node.Nickname} suspended. Waiting for reconnect", Prompt.OutputType.Notify);
+                Prompt.Log.Add($"{e.Node.Nickname} suspended. Waiting for reconnect", Prompt.OutputType.System);
             }
             else
             {
@@ -96,7 +96,7 @@ namespace Lanchat.Terminal
         {
             if (e != null)
             {
-                Prompt.Log.Add($"{e.Node.Nickname} reconnected", Prompt.OutputType.Notify);
+                Prompt.Log.Add($"{e.Node.Nickname} reconnected", Prompt.OutputType.System);
             }
             else
             {
@@ -108,7 +108,7 @@ namespace Lanchat.Terminal
         {
             if (e != null)
             {
-                Prompt.Log.Add($"{e.OldNickname} changed nickname to {e.NewNickname}", Prompt.OutputType.Notify);
+                Prompt.Log.Add($"{e.OldNickname} changed nickname to {e.NewNickname}", Prompt.OutputType.System);
             }
             else
             {

@@ -23,11 +23,9 @@ namespace Lanchat.Terminal.Ui
 
         public enum OutputType
         {
-            Clear,
+            System,
             Message,
             PrivateMessage,
-            Alert,
-            Notify
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
@@ -161,7 +159,7 @@ namespace Lanchat.Terminal.Ui
                 input
             };
 
-            Log.Add(FiggleFonts.Standard.Render(Properties.Resources.Title), OutputType.Clear);
+            Log.Add(FiggleFonts.Standard.Render(Properties.Resources.Title), OutputType.System);
 
             new Thread(() =>
             {

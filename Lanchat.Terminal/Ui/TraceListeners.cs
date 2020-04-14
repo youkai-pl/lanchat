@@ -13,14 +13,7 @@ namespace Lanchat.Terminal.Ui
 
         public override void WriteLine(string message)
         {
-            if (IndentLevel > 0)
-            {
-                Prompt.Log.Add(message, Prompt.OutputType.Clear);
-            }
-            else
-            {
-                Prompt.Log.Add(DateTime.Now.ToString("[HH:mm:ss] ", CultureInfo.CurrentCulture) + message, Prompt.OutputType.Clear);
-            }
+            Prompt.Log.Add(message, Prompt.OutputType.System);
         }
     }
 

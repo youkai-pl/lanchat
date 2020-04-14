@@ -35,7 +35,7 @@ namespace Lanchat.Terminal.Ui
             {
                 if (input.Text.StartsWith("/", StringComparison.CurrentCulture))
                 {
-                    log.Add(input.Text, Prompt.OutputType.Clear);
+                    log.Add(input.Text, Prompt.OutputType.System);
                 }
                 else
                 {

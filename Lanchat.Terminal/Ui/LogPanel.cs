@@ -15,6 +15,7 @@ namespace Lanchat.Terminal.Ui
             Content = _stackPanel;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         public void Add(string text, Prompt.OutputType outputType, string nickname = null)
         {
             string[] lines;
@@ -30,9 +31,9 @@ namespace Lanchat.Terminal.Ui
             {
                 throw new ArgumentNullException(nameof(text));
             }
-
-            // Clear output
-            if (outputType == Prompt.OutputType.Clear)
+        
+            // System message
+            if (outputType == Prompt.OutputType.System)
             {
                 foreach (var line in lines)
                 {
@@ -42,6 +43,10 @@ namespace Lanchat.Terminal.Ui
                         {
                             Children = new[]
                             {
+                                new TextBlock {Text = $"{DateTime.Now.ToString("HH:mm", CultureInfo.CurrentCulture)} "},
+                                new TextBlock {Text = "-", Color=ConsoleColor.Blue},
+                                new TextBlock {Text = "!"},
+                                new TextBlock {Text = "- ", Color=ConsoleColor.Blue},
                                 new TextBlock {Text = line}
                             }
                         }
@@ -49,7 +54,7 @@ namespace Lanchat.Terminal.Ui
                 }
             }
 
-            // Message output
+            // Message
             else if (outputType == Prompt.OutputType.Message)
             {
                 foreach (var line in lines)
@@ -60,8 +65,10 @@ namespace Lanchat.Terminal.Ui
                         {
                             Children = new[]
                             {
-                                new TextBlock {Text = $"{DateTime.Now.ToString("HH:mm:ss", CultureInfo.CurrentCulture)} ", Color=ConsoleColor.DarkGray},
-                                new TextBlock {Text = $"{nickname} ", Color=ConsoleColor.DarkCyan},
+                                new TextBlock {Text = $"{DateTime.Now.ToString("HH:mm", CultureInfo.CurrentCulture)} "},
+                                new TextBlock {Text = "<", Color=ConsoleColor.DarkGray},
+                                new TextBlock {Text = $"{nickname}"},
+                                new TextBlock {Text = "> ", Color=ConsoleColor.DarkGray},
                                 new TextBlock {Text = line}
                             }
                         }
@@ -80,45 +87,11 @@ namespace Lanchat.Terminal.Ui
                         {
                             Children = new[]
                             {
-                                new TextBlock {Text = $"{DateTime.Now.ToString("HH:mm:ss", CultureInfo.CurrentCulture)} ", Color=ConsoleColor.DarkGray},
-                                new TextBlock {Text = $"!{nickname} ", Color=ConsoleColor.Cyan},
+                                new TextBlock {Text = $"{DateTime.Now.ToString("HH:mm", CultureInfo.CurrentCulture)} "},
+                                new TextBlock {Text = "<", Color=ConsoleColor.DarkGray},
+                                new TextBlock {Text = $"# {nickname}"},
+                                new TextBlock {Text = "> ", Color=ConsoleColor.DarkGray},
                                 new TextBlock {Text = line}
-                            }
-                        }
-                    });
-                }
-            }
-
-            // Alert
-            else if (outputType == Prompt.OutputType.Alert)
-            {
-                foreach (var line in lines)
-                {
-                    _stackPanel.Add(new WrapPanel
-                    {
-                        Content = new HorizontalStackPanel
-                        {
-                            Children = new[]
-                            {
-                                new TextBlock {Text = $"[!] {line}", Color = ConsoleColor.Red}
-                            }
-                        }
-                    });
-                }
-            }
-
-            // Notice
-            else if (outputType == Prompt.OutputType.Notify)
-            {
-                foreach (var line in lines)
-                {
-                    _stackPanel.Add(new WrapPanel
-                    {
-                        Content = new HorizontalStackPanel
-                        {
-                            Children = new[]
-                            {
-                                new TextBlock {Text = $"[#] {line}", Color = ConsoleColor.Green}
                             }
                         }
                     });
