@@ -178,6 +178,18 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to    __                 __        __  ___ 
+        ///  / /  ___ ____  ____/ /  ___ _/ /_|_  |
+        /// / /__/ _ `/ _ \/ __/ _ \/ _ `/ __/ __/ 
+        ////____/\_,_/_//_/\__/_//_/\_,_/\__/____/.
+        /// </summary>
+        internal static string HelloAsci {
+            get {
+                return ResourceManager.GetString("HelloAsci", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Syntax: /connect &lt;ip&gt; &lt;port&gt;.
         /// </summary>
         internal static string Manual_Connect {

@@ -3,7 +3,6 @@ using ConsoleGUI.Api;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Input;
 using ConsoleGUI.Space;
-using Figgle;
 using Lanchat.Common.NetworkLib;
 using System;
 using System.Globalization;
@@ -157,7 +156,7 @@ namespace Lanchat.Terminal.Ui
                 input
             };
 
-            Log.Add(FiggleFonts.Standard.Render(Properties.Resources.Title));
+            Log.Add(Properties.Resources.HelloAsci);
 
             new Thread(() =>
             {
