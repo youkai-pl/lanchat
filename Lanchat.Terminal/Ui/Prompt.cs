@@ -6,6 +6,7 @@ using ConsoleGUI.Space;
 using Figgle;
 using Lanchat.Common.NetworkLib;
 using System;
+using System.Globalization;
 using System.Reflection;
 using System.Threading;
 
@@ -15,10 +16,10 @@ namespace Lanchat.Terminal.Ui
     {
         internal static IInputListener[] InputListener;
         internal static LogPanel Log;
-        internal static TextBlock Status = new TextBlock();
-        internal static TextBlock Nodes = new TextBlock();
-        internal static TextBlock Port = new TextBlock();
-        internal static TextBlock PromptIndicator = new TextBlock();
+        internal static TextBlock Clock;
+        internal static TextBlock Port;
+        internal static TextBlock Nodes;
+        internal static TextBlock PromptIndicator;
 
         public enum OutputType
         {
@@ -29,36 +30,79 @@ namespace Lanchat.Terminal.Ui
             Notify
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         public static void Start(Config config, Network network)
         {
             // Layout
             Log = new LogPanel();
             var input = new TextBox();
 
+            Clock = new TextBlock()
+            {
+                Text = DateTime.Now.ToString("HH:mm", CultureInfo.CurrentCulture),
+                Color = ConsoleColor.Gray
+            };
+
+            Nodes = new TextBlock()
+            {
+                Text = Properties.Resources.Status_Waiting,
+                Color = ConsoleColor.Gray
+            };
+
+            Port = new TextBlock()
+            {
+                Text = Properties.Resources.Status_Waiting,
+                Color = ConsoleColor.Gray
+            };
+
+            if (config != null)
+            {
+                PromptIndicator = new TextBlock
+                {
+                    Text = $"[{config.Nickname}]> "
+                };
+            }
+            else
+            {
+                PromptIndicator = new TextBlock
+                {
+                    Text = Properties.Resources.PromptIndicator_Default
+                };
+            }
+
             var dockPanel = new DockPanel
             {
                 Placement = DockPanel.DockedControlPlacement.Bottom,
 
-                // Log and prompt
                 FillingControl = new DockPanel
                 {
                     Placement = DockPanel.DockedControlPlacement.Bottom,
+
+                    // Status bar
                     DockedControl = new Boundary
                     {
                         MaxHeight = 1,
-
-                        Content = new HorizontalStackPanel
+                        Content = new Background
                         {
-                            Children = new IControl[]
+                            Color = ConsoleColor.DarkBlue,
+                            Content = new HorizontalStackPanel
                             {
-                                new Style
-                                {
-                                    Content = PromptIndicator
-                                },
-                                input
+                                Children = new IControl[] {
+                                    new TextBlock(){Text= " [", Color = ConsoleColor.DarkCyan},
+                                    Clock,
+                                    new TextBlock(){Text= "]", Color = ConsoleColor.DarkCyan},
+                                    new TextBlock(){Text= " [", Color = ConsoleColor.DarkCyan},
+                                    Port,
+                                    new TextBlock(){Text= "]", Color = ConsoleColor.DarkCyan},
+                                    new TextBlock(){Text= " [", Color = ConsoleColor.DarkCyan},
+                                    Nodes,
+                                    new TextBlock(){Text= "] ", Color = ConsoleColor.DarkCyan},
+                                }
                             }
                         }
                     },
+
+                    // Log
                     FillingControl = new Box
                     {
                         VerticalContentPlacement = Box.VerticalPlacement.Bottom,
@@ -67,28 +111,20 @@ namespace Lanchat.Terminal.Ui
                     }
                 },
 
-                DockedControl = new Background
+                // Prompt
+                DockedControl = new Boundary
                 {
-                    Color = ConsoleColor.DarkBlue,
-                    Content = new Boundary
+                    MinHeight = 1,
+                    MaxHeight = 1,
+                    Content = new HorizontalStackPanel
                     {
-                        MinHeight = 1,
-                        MaxHeight = 1,
-                        Content = new Background
+                        Children = new IControl[]
                         {
-                            Color = ConsoleColor.DarkBlue,
-                            Content = new HorizontalStackPanel
+                            new Style
                             {
-                                Children = new IControl[] {
-                                    Status,
-                                    new VerticalSeparator(),
-                                    new TextBlock(){Text= "Port: "},
-                                    Port,
-                                    new VerticalSeparator(),
-                                    new TextBlock(){Text= "Nodes: "},
-                                    Nodes
-                                }
-                            }
+                                Content = PromptIndicator
+                            },
+                            input
                         }
                     }
                 }
@@ -99,11 +135,6 @@ namespace Lanchat.Terminal.Ui
             Console.Title = "Lanchat 2";
             ConsoleManager.Resize(new Size(100, 30));
 
-            Status.Text = Properties.Resources.Status_Waiting;
-            Port.Text = Properties.Resources.Status_Waiting;
-            Nodes.Text = Properties.Resources.Status_Waiting;
-            PromptIndicator.Text = Properties.Resources.PromptIndicator_Default;
-
             ConsoleManager.Content = dockPanel;
             InputListener = new IInputListener[]
             {
@@ -111,11 +142,9 @@ namespace Lanchat.Terminal.Ui
                 input
             };
 
-            // Write hello screen
             Log.Add(FiggleFonts.Standard.Render(Properties.Resources.Title), OutputType.Clear);
             Log.Add(Assembly.GetExecutingAssembly().GetName().Version.ToString(), OutputType.Clear);
 
-            // Read input
             new Thread(() =>
             {
                 while (true)
@@ -123,6 +152,7 @@ namespace Lanchat.Terminal.Ui
                     Thread.Sleep(10);
                     ConsoleManager.ReadInput(InputListener);
                     ConsoleManager.AdjustBufferSize();
+                    Clock.Text = DateTime.Now.ToString("HH:mm", CultureInfo.CurrentCulture);
                 }
             }).Start();
         }
