@@ -36,7 +36,5 @@ namespace Lanchat.Terminal.Commands
                 Prompt.PromptIndicator.Text = $"[{config.Nickname}]> ";
             }
         }
-
-        public static string Man { get; private set; } = Properties.Resources.Manual_Nick;
     }
 }

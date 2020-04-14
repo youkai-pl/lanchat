@@ -9,9 +9,9 @@ namespace Lanchat.Terminal.Ui
 {
     public class InputController : IInputListener
     {
+        private readonly Config config;
         private readonly TextBox input;
         private readonly LogPanel log;
-        private readonly Config config;
         private readonly Network network;
 
         public InputController(TextBox input, LogPanel log, Config config, Network network)
@@ -67,6 +67,10 @@ namespace Lanchat.Terminal.Ui
 
                 case "exit":
                     ExitLanchat.Execute();
+                    break;
+
+                case "connect":
+                    Connect.Execute(args, network);
                     break;
 
                 default:

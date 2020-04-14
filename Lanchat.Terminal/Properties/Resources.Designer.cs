@@ -61,6 +61,24 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Already connected.
+        /// </summary>
+        internal static string _AlreadyConnected {
+            get {
+                return ResourceManager.GetString("_AlreadyConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempting connect to.
+        /// </summary>
+        internal static string _ConnectionAttempt {
+            get {
+                return ResourceManager.GetString("_ConnectionAttempt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debug mode enabled.
         /// </summary>
         internal static string _DebugMode {
@@ -70,11 +88,38 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incorrect values.
+        /// </summary>
+        internal static string _IncorrectValues {
+            get {
+                return ResourceManager.GetString("_IncorrectValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual connection failed.
+        /// </summary>
+        internal static string _ManualConnectionFailed {
+            get {
+                return ResourceManager.GetString("_ManualConnectionFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manual not found.
         /// </summary>
         internal static string _ManualNotFound {
             get {
                 return ResourceManager.GetString("_ManualNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to on port.
+        /// </summary>
+        internal static string _OnPort {
+            get {
+                return ResourceManager.GetString("_OnPort", resourceCulture);
             }
         }
         
@@ -97,8 +142,18 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syntax: /connect &lt;ip&gt; &lt;port&gt;.
+        /// </summary>
+        internal static string Manual_Connect {
+            get {
+                return ResourceManager.GetString("Manual_Connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 
         ///Commands list:
+        ///connect
         ///help
         ///nick
         ///Try /help &lt;command&gt;.

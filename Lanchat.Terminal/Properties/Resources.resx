@@ -117,9 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Manual_Connect" xml:space="preserve">
+    <value>Syntax: /connect &lt;ip&gt; &lt;port&gt;</value>
+  </data>
   <data name="Manual_Help" xml:space="preserve">
     <value>
 Commands list:
+connect
 help
 nick
 Try /help &lt;command&gt;</value>
@@ -139,11 +143,26 @@ Try /help &lt;command&gt;</value>
   <data name="Title" xml:space="preserve">
     <value>Lanchat</value>
   </data>
+  <data name="_AlreadyConnected" xml:space="preserve">
+    <value>Already connected</value>
+  </data>
+  <data name="_ConnectionAttempt" xml:space="preserve">
+    <value>Attempting connect to</value>
+  </data>
   <data name="_DebugMode" xml:space="preserve">
     <value>Debug mode enabled</value>
   </data>
+  <data name="_IncorrectValues" xml:space="preserve">
+    <value>Incorrect values</value>
+  </data>
+  <data name="_ManualConnectionFailed" xml:space="preserve">
+    <value>Manual connection failed</value>
+  </data>
   <data name="_ManualNotFound" xml:space="preserve">
     <value>Manual not found</value>
+  </data>
+  <data name="_OnPort" xml:space="preserve">
+    <value>on port</value>
   </data>
   <data name="_SelfNicknameChanged" xml:space="preserve">
     <value>Nickname changed</value>
