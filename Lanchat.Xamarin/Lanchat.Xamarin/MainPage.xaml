@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Lanchat.Xamarin.MainPage">
-
+    
     <ScrollView Padding="10">
         <StackLayout>
 
