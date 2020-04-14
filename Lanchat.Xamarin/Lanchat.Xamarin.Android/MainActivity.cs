@@ -30,5 +30,28 @@ namespace Lanchat.Xamarin.Droid
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
+        private bool _lieAboutCurrentFocus;
+        public override bool DispatchTouchEvent(MotionEvent ev)
+        {
+            _lieAboutCurrentFocus = true;
+            var result = base.DispatchTouchEvent(ev);
+            _lieAboutCurrentFocus = false;
+
+            return result;
+        }
+
+        public override View CurrentFocus
+        {
+            get
+            {
+                if (_lieAboutCurrentFocus)
+                {
+                    return null;
+                }
+
+                return base.CurrentFocus;
+            }
+        }
     }
 }

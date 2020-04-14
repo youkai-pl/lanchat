@@ -27,5 +27,11 @@ namespace Lanchat.Xamarin
                 Input.Focus();
             });
         }
+
+        void OnSendClicked(object sender, EventArgs args)
+        {
+            Log.Text = Log.Text += $"{Environment.NewLine}[{DateTime.Now:HH:mm}] {Input.Text}";
+            Input.Text = string.Empty;
+        }
     }
 }
