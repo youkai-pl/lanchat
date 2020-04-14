@@ -17,11 +17,12 @@ namespace Lanchat.Terminal
         {
 
             Config = Config.Load();
-            Prompt.Start(Config, Network);
+            Prompt.Start(Config);
 
             try
             {
                 Network = new Network(Config.BroadcastPort, Config.Nickname, Config.HostPort, Config.HeartbeatTimeout, Config.ConnectionTimeout);
+                Prompt.InputController.SetNetwork(Network);
                 NetworkEventsHandlers = new NetworkEventsHandlers(Config, Network);
                 Network.Events.HostStarted += NetworkEventsHandlers.OnHostStarted;
                 Network.Events.ReceivedMessage += NetworkEventsHandlers.OnReceivedMessage;
