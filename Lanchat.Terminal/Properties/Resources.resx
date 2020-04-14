@@ -125,6 +125,7 @@
 Commands list:
 connect
 help
+list
 mute
 m
 nick
@@ -149,8 +150,14 @@ Try /help &lt;command&gt;</value>
   <data name="PromptIndicator_Default" xml:space="preserve">
     <value>&gt; </value>
   </data>
-  <data name="Status_Waiting" xml:space="preserve">
-    <value>Waiting</value>
+  <data name="StatusMuted" xml:space="preserve">
+    <value>muted</value>
+  </data>
+  <data name="StatusOffline" xml:space="preserve">
+    <value>offline</value>
+  </data>
+  <data name="StatusOnline" xml:space="preserve">
+    <value>online</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Lanchat</value>

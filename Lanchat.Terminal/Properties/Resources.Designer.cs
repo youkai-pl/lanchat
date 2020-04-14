@@ -182,6 +182,7 @@ namespace Lanchat.Terminal.Properties {
         ///Commands list:
         ///connect
         ///help
+        ///list
         ///mute
         ///m
         ///nick
@@ -249,11 +250,29 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Waiting.
+        ///   Looks up a localized string similar to muted.
         /// </summary>
-        internal static string Status_Waiting {
+        internal static string StatusMuted {
             get {
-                return ResourceManager.GetString("Status_Waiting", resourceCulture);
+                return ResourceManager.GetString("StatusMuted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to offline.
+        /// </summary>
+        internal static string StatusOffline {
+            get {
+                return ResourceManager.GetString("StatusOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to online.
+        /// </summary>
+        internal static string StatusOnline {
+            get {
+                return ResourceManager.GetString("StatusOnline", resourceCulture);
             }
         }
         

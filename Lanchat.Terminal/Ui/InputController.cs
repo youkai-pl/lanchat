@@ -85,6 +85,10 @@ namespace Lanchat.Terminal.Ui
                     Message.Execute(args, network);
                     break;
 
+                case "list":
+                    List.Execute(network);
+                    break;
+
                 default:
                     break;
             }

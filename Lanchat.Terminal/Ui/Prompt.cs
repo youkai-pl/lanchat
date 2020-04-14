@@ -46,13 +46,11 @@ namespace Lanchat.Terminal.Ui
 
             Nodes = new TextBlock()
             {
-                Text = Properties.Resources.Status_Waiting,
                 Color = ConsoleColor.Gray
             };
 
             Port = new TextBlock()
             {
-                Text = Properties.Resources.Status_Waiting,
                 Color = ConsoleColor.Gray
             };
 
