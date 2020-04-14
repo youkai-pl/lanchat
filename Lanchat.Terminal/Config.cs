@@ -1,5 +1,4 @@
-﻿using Lanchat.Console.Ui;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +7,7 @@ using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
 
-namespace Lanchat.Console.ProgramLib
+namespace Lanchat.Terminal
 {
     public class Config
     {
@@ -81,7 +80,7 @@ namespace Lanchat.Console.ProgramLib
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public List<string> Muted { get; private set; }
 
-        [DefaultValue("")]
+        [DefaultValue("user")]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string Nickname
         {
@@ -116,7 +115,7 @@ namespace Lanchat.Console.ProgramLib
             }
             catch (Exception e)
             {
-                if (e is FileNotFoundException || e is JsonSerializationException || e is JsonReaderException)
+                if (e is FileNotFoundException || e is DirectoryNotFoundException || e is JsonSerializationException || e is JsonReaderException)
                 {
                     Trace.WriteLine($"[APP] Config load error");
                     return JsonConvert.DeserializeObject<Config>("{}");
@@ -158,7 +157,7 @@ namespace Lanchat.Console.ProgramLib
             {
                 if (e is DirectoryNotFoundException || e is UnauthorizedAccessException)
                 {
-                    Prompt.CrashScreen(e);
+                    Trace.WriteLine(e.Message);
                     return;
                 }
                 throw;

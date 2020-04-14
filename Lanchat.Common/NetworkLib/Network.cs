@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace Lanchat.Common.NetworkLib
 {
@@ -98,10 +99,13 @@ namespace Lanchat.Common.NetworkLib
         /// </summary>
         public void Start()
         {
-            host.StartHost(HostPort);
-            Events.OnHostStarted(HostPort);
-            host.StartBroadcast(new Paperplane(HostPort, Id));
-            host.ListenBroadcast();
+            new Thread(() =>
+            {
+                host.StartHost(HostPort);
+                Events.OnHostStarted(HostPort);
+                host.StartBroadcast(new Paperplane(HostPort, Id));
+                host.ListenBroadcast();
+            }).Start();
         }
 
         internal void CheckNickcnameDuplicates(string nickname)

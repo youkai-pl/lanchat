@@ -1,29 +1,34 @@
-﻿using Lanchat.Common.NetworkLib.Node;
+﻿using Lanchat.Common.NetworkLib;
+using Lanchat.Common.NetworkLib.Node;
 using Lanchat.Common.Types;
-using Lanchat.Console.Ui;
+using Lanchat.Terminal.Ui;
+using System;
 using System.Collections.Generic;
 
-namespace Lanchat.Console.Commands
+namespace Lanchat.Terminal.Commands
 {
-    public partial class Command
+    public static class List
     {
-        public void List()
+        public static void Execute(Network network)
         {
+
+            if (network == null)
+            {
+                throw new ArgumentNullException(nameof(network));
+            }
+
             var list = new List<string>();
             var count = 0;
 
-            foreach (var item in program.Network.NodeList)
+            foreach (var item in network.NodeList)
             {
                 list.Add($"{item.Nickname} ({GetStatus(item)})");
                 count++;
             }
 
-            Prompt.Out("");
-            Prompt.Out($"Connected peers: {count}");
-
             foreach (var item in list)
             {
-                Prompt.Out(item);
+                Prompt.Log.Add(item);
             }
         }
 
@@ -33,16 +38,16 @@ namespace Lanchat.Console.Commands
             {
                 if (item.Mute)
                 {
-                    return "muted";
+                    return Properties.Resources.StatusMuted;
                 }
                 else
                 {
-                    return "online";
+                    return Properties.Resources.StatusOnline;
                 }
             }
             else
             {
-                return "offline";
+                return Properties.Resources.StatusOffline;
             }
         }
     }
