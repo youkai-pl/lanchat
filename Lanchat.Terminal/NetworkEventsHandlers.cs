@@ -21,7 +21,6 @@ namespace Lanchat.Terminal
         {
             if (e != null)
             {
-                Prompt.Log.Add($"Host started on port {e.Port}", Prompt.OutputType.Clear);
                 Prompt.Port.Text = e.Port.ToString(CultureInfo.CurrentCulture);
                 Prompt.Nodes.Text = network.NodeList.Count.ToString(CultureInfo.CurrentCulture);
             }

@@ -70,20 +70,20 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://tofu.ovh.
+        /// </summary>
+        internal static string PageLink {
+            get {
+                return ResourceManager.GetString("PageLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &gt; .
         /// </summary>
         internal static string PromptIndicator_Default {
             get {
                 return ResourceManager.GetString("PromptIndicator_Default", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string PromptIndicator_SetNickname {
-            get {
-                return ResourceManager.GetString("PromptIndicator_SetNickname", resourceCulture);
             }
         }
         
@@ -97,7 +97,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lanchat 2.
+        ///   Looks up a localized string similar to Lanchat.
         /// </summary>
         internal static string Title {
             get {

@@ -36,6 +36,9 @@ namespace Lanchat.Terminal.Ui
             // Layout
             Log = new LogPanel();
             var input = new TextBox();
+            var topBar = new TextBlock();
+
+            topBar.Text = $" {Properties.Resources.Title} {Assembly.GetExecutingAssembly().GetName().Version} - {Properties.Resources.PageLink}";
 
             Clock = new TextBlock()
             {
@@ -76,10 +79,52 @@ namespace Lanchat.Terminal.Ui
 
                 FillingControl = new DockPanel
                 {
+                    Placement = DockPanel.DockedControlPlacement.Top,
+
+                    // Top bar
+                    DockedControl = new Boundary
+                    {
+                        MaxHeight = 1,
+                        Content = new Background
+                        {
+                            Color = ConsoleColor.DarkBlue,
+                            Content = topBar
+                        }
+                    },
+
+                    // Log
+                    FillingControl = new Box
+                    {
+                        VerticalContentPlacement = Box.VerticalPlacement.Bottom,
+                        HorizontalContentPlacement = Box.HorizontalPlacement.Stretch,
+                        Content = Log
+                    }
+                },
+
+                DockedControl = new DockPanel
+                {
                     Placement = DockPanel.DockedControlPlacement.Bottom,
 
-                    // Status bar
+                    // Prompt
                     DockedControl = new Boundary
+                    {
+                        MinHeight = 1,
+                        MaxHeight = 1,
+                        Content = new HorizontalStackPanel
+                        {
+                            Children = new IControl[]
+                            {
+                                new Style
+                                {
+                                    Content = PromptIndicator
+                                },
+                                input
+                            }
+                        }
+                    },
+
+                    // Bottom bar
+                    FillingControl = new Boundary
                     {
                         MaxHeight = 1,
                         Content = new Background
@@ -100,32 +145,6 @@ namespace Lanchat.Terminal.Ui
                                 }
                             }
                         }
-                    },
-
-                    // Log
-                    FillingControl = new Box
-                    {
-                        VerticalContentPlacement = Box.VerticalPlacement.Bottom,
-                        HorizontalContentPlacement = Box.HorizontalPlacement.Stretch,
-                        Content = Log
-                    }
-                },
-
-                // Prompt
-                DockedControl = new Boundary
-                {
-                    MinHeight = 1,
-                    MaxHeight = 1,
-                    Content = new HorizontalStackPanel
-                    {
-                        Children = new IControl[]
-                        {
-                            new Style
-                            {
-                                Content = PromptIndicator
-                            },
-                            input
-                        }
                     }
                 }
             };
@@ -143,16 +162,15 @@ namespace Lanchat.Terminal.Ui
             };
 
             Log.Add(FiggleFonts.Standard.Render(Properties.Resources.Title), OutputType.Clear);
-            Log.Add(Assembly.GetExecutingAssembly().GetName().Version.ToString(), OutputType.Clear);
 
             new Thread(() =>
             {
                 while (true)
                 {
                     Thread.Sleep(10);
+                    Clock.Text = DateTime.Now.ToString("HH:mm", CultureInfo.CurrentCulture);
                     ConsoleManager.ReadInput(InputListener);
                     ConsoleManager.AdjustBufferSize();
-                    Clock.Text = DateTime.Now.ToString("HH:mm", CultureInfo.CurrentCulture);
                 }
             }).Start();
         }
