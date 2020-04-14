@@ -80,7 +80,7 @@ namespace Lanchat.Terminal
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public List<string> Muted { get; private set; }
 
-        [DefaultValue("")]
+        [DefaultValue("user")]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string Nickname
         {
@@ -115,7 +115,7 @@ namespace Lanchat.Terminal
             }
             catch (Exception e)
             {
-                if (e is FileNotFoundException || e is JsonSerializationException || e is JsonReaderException)
+                if (e is FileNotFoundException || e is DirectoryNotFoundException || e is JsonSerializationException || e is JsonReaderException)
                 {
                     Trace.WriteLine($"[APP] Config load error");
                     return JsonConvert.DeserializeObject<Config>("{}");
