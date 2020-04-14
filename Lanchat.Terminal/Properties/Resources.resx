@@ -183,6 +183,9 @@ Try /help &lt;command&gt;</value>
   <data name="_ManualNotFound" xml:space="preserve">
     <value>Manual not found</value>
   </data>
+  <data name="_MultipleInstancesError" xml:space="preserve">
+    <value>Only one instance can be run on single port</value>
+  </data>
   <data name="_NotMuted" xml:space="preserve">
     <value>User is not muted</value>
   </data>

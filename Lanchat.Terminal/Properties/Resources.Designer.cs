@@ -124,6 +124,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only one instance can be run on single port.
+        /// </summary>
+        internal static string _MultipleInstancesError {
+            get {
+                return ResourceManager.GetString("_MultipleInstancesError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User is not muted.
         /// </summary>
         internal static string _NotMuted {

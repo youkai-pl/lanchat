@@ -17,19 +17,25 @@ namespace Lanchat.Terminal
         {
 
             Config = Config.Load();
-
-            Network = new Network(Config.BroadcastPort, Config.Nickname, Config.HostPort, Config.HeartbeatTimeout, Config.ConnectionTimeout);
-            NetworkEventsHandlers = new NetworkEventsHandlers(Config, Network);
-            Network.Events.HostStarted += NetworkEventsHandlers.OnHostStarted;
-            Network.Events.ReceivedMessage += NetworkEventsHandlers.OnReceivedMessage;
-            Network.Events.NodeConnected += NetworkEventsHandlers.OnNodeConnected;
-            Network.Events.NodeDisconnected += NetworkEventsHandlers.OnNodeDisconnected;
-            Network.Events.NodeSuspended += NetworkEventsHandlers.OnNodeSuspended;
-            Network.Events.NodeResumed += NetworkEventsHandlers.OnNodeResumed;
-            Network.Events.ChangedNickname += NetworkEventsHandlers.OnChangedNickname;
-
             Prompt.Start(Config, Network);
-            Network.Start();
+
+            try
+            {
+                Network = new Network(Config.BroadcastPort, Config.Nickname, Config.HostPort, Config.HeartbeatTimeout, Config.ConnectionTimeout);
+                NetworkEventsHandlers = new NetworkEventsHandlers(Config, Network);
+                Network.Events.HostStarted += NetworkEventsHandlers.OnHostStarted;
+                Network.Events.ReceivedMessage += NetworkEventsHandlers.OnReceivedMessage;
+                Network.Events.NodeConnected += NetworkEventsHandlers.OnNodeConnected;
+                Network.Events.NodeDisconnected += NetworkEventsHandlers.OnNodeDisconnected;
+                Network.Events.NodeSuspended += NetworkEventsHandlers.OnNodeSuspended;
+                Network.Events.NodeResumed += NetworkEventsHandlers.OnNodeResumed;
+                Network.Events.ChangedNickname += NetworkEventsHandlers.OnChangedNickname;
+                Network.Start();
+            }
+            catch (System.Net.Sockets.SocketException)
+            {
+                Prompt.Log.Add(Properties.Resources._MultipleInstancesError);
+            }
 
             if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
             {
