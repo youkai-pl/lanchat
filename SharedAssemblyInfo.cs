@@ -2,5 +2,5 @@
 
 [assembly: AssemblyCopyright("Copyright tofudd (2020)")]
 [assembly: AssemblyCompany("tofudd")]
-[assembly: AssemblyVersion("2.0.0.2007")]
-[assembly: AssemblyInformationalVersion("2.0.0 Beta 7")]
+[assembly: AssemblyVersion("2.0.0.2008")]
+[assembly: AssemblyInformationalVersion("2.0.0 Beta 8")]

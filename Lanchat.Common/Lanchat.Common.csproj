@@ -24,6 +24,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NetworkLib\Handlers\**" />
+    <Compile Remove="NetworkLib\InternalEvents\**" />
+    <EmbeddedResource Remove="NetworkLib\Handlers\**" />
+    <EmbeddedResource Remove="NetworkLib\InternalEvents\**" />
+    <None Remove="NetworkLib\Handlers\**" />
+    <None Remove="NetworkLib\InternalEvents\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" Link="SharedAssemblyInfo.cs" />
   </ItemGroup>
 
