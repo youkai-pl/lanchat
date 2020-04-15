@@ -7,7 +7,7 @@
 Requirements:
 
 * For Windows: `.NET 4.7.2`
-* For Linux or macOS: `.NET Core 3.0`
+* For Linux or macOS: `.NET Core 3.1`
 
 * [Get Lanchat](https://github.com/tofudd/lanchat/releases)
 * [Get .NET Runtime for Linux and macOS](https://dotnet.microsoft.com/download/dotnet-core/3.1)
@@ -18,7 +18,7 @@ Requirements:
 
 Looks familiar? 
 
-Version 2.0.0.2008 introduce new terminal client based on [ConsoleGui](https://github.com/TomaszRewak/C-sharp-console-gui-framework) framework.
+Version 2.0.0.2008 introduces new terminal client based on [ConsoleGui](https://github.com/TomaszRewak/C-sharp-console-gui-framework) framework.
 I like the irssi look, so I tried to make something similar.
 
 ## Contribute
