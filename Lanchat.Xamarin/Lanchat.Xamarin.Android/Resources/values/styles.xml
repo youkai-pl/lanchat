@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
-
   <style name="MainTheme" parent="MainTheme.Base">
   </style>
   <!-- Base theme applied no matter what API -->
@@ -26,5 +25,13 @@
 
   <style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">
     <item name="colorAccent">#424242</item>
+  </style>
+
+  <style name="MainTheme.Splash" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:windowBackground">@drawable/splash_screen</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowFullscreen">true</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowActionBar">true</item>
   </style>
 </resources>

@@ -10,14 +10,14 @@ using Xamarin.Essentials;
 
 namespace Lanchat.Xamarin.Droid
 {
-    [Activity(Label = "Lanchat 2", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "Lanchat 2", Icon = "@mipmap/icon", Theme = "@style/MainTheme.Splash", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-
+            base.SetTheme(Resource.Style.MainTheme);
             base.OnCreate(savedInstanceState);
 
             Platform.Init(this, savedInstanceState);
