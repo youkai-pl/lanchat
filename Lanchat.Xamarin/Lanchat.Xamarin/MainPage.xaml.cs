@@ -32,7 +32,7 @@ namespace Lanchat.Xamarin
 
                 await Task.Run(() =>
                  {
-                     Network = new Network(4001, "Xamarin", 4002, 5000, 10000);
+                     Network = new Network(4001, "Xamarin", 4002, 3000);
                      var NetworkEventsHandlers = new NetworkEventsHandlers(this, Network);
                      Network.Events.HostStarted += NetworkEventsHandlers.OnHostStarted;
                      Network.Events.ReceivedMessage += NetworkEventsHandlers.OnReceivedMessage;
