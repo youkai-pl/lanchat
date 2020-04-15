@@ -31,8 +31,8 @@ namespace Lanchat.Common.NetworkLib.Node
         {
             Handlers = new NodeHandlers(network, this);
             ConnectionTimer = new Timer { Interval = network.ConnectionTimeout, Enabled = false };
-            HeartbeatSendTimer = new Timer { Interval = network.HeartbeatTimeout - 100, Enabled = false };
-            HeartbeatReceiveTimer = new Timer { Interval = network.HeartbeatTimeout, Enabled = false };
+            HeartbeatSendTimer = new Timer { Interval = network.HeartbeatSendTimeout, Enabled = false };
+            HeartbeatReceiveTimer = new Timer { Interval = network.HeartbeatReceiveTimeout, Enabled = false };
             ConnectionTimer.Elapsed += new ElapsedEventHandler(Handlers.OnConnectionTimerElapsed);
             HeartbeatSendTimer.Elapsed += new ElapsedEventHandler(Handlers.OnHeartbeatSendTimer);
             HeartbeatReceiveTimer.Elapsed += new ElapsedEventHandler(Handlers.OnHeartbeatReceiveTimer);

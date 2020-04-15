@@ -17,11 +17,18 @@ namespace Lanchat.Terminal
         {
 
             Config = Config.Load();
-            Prompt.Start(Config, Network);
+            Prompt.Start(Config);
 
             try
             {
-                Network = new Network(Config.BroadcastPort, Config.Nickname, Config.HostPort, Config.HeartbeatTimeout, Config.ConnectionTimeout);
+                Network = new Network(
+                    Config.BroadcastPort,
+                    Config.Nickname,
+                    Config.HostPort,
+                    Config.HeartbeatSendTimeout,
+                    Config.ConnectionTimeout
+                );
+                Prompt.InputController.SetNetwork(Network);
                 NetworkEventsHandlers = new NetworkEventsHandlers(Config, Network);
                 Network.Events.HostStarted += NetworkEventsHandlers.OnHostStarted;
                 Network.Events.ReceivedMessage += NetworkEventsHandlers.OnReceivedMessage;
@@ -32,9 +39,16 @@ namespace Lanchat.Terminal
                 Network.Events.ChangedNickname += NetworkEventsHandlers.OnChangedNickname;
                 Network.Start();
             }
-            catch (System.Net.Sockets.SocketException)
+            catch (Exception e)
             {
-                Prompt.Log.Add(Properties.Resources._MultipleInstancesError);
+                if (e is System.Net.Sockets.SocketException)
+                {
+                    Prompt.Log.Add(Properties.Resources._MultipleInstancesError);
+                }
+                else
+                {
+                    throw;
+                }
             }
 
             if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)

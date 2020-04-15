@@ -12,18 +12,20 @@ namespace Lanchat.Terminal
     public class Config
     {
         private static int _BroadcastPort;
-        private static int _HeartbeatTimeout;
+        private static int _HeartbeatSendTimeout;
+        private static int _HeartbeatReceiveTimeout;
         private static int _ConnectionTimeout;
         private static int _HostPort;
         private static string _Nickname;
 
         [JsonConstructor]
-        public Config(string nickname, int broadcast, int host, List<string> muted, int heartbeat, int connection)
+        public Config(string nickname, int broadcast, int host, List<string> muted, int heartbeatSend, int heartbeatReceive, int connection)
         {
             Nickname = nickname;
             BroadcastPort = broadcast;
             HostPort = host;
-            HeartbeatTimeout = heartbeat;
+            HeartbeatSendTimeout = heartbeatSend;
+            HeartbeatReceiveTimeout = heartbeatReceive;
             ConnectionTimeout = connection;
             Muted = muted ?? new List<string>();
         }
@@ -40,14 +42,26 @@ namespace Lanchat.Terminal
             }
         }
 
-        [DefaultValue(5000)]
+        [DefaultValue(3000)]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public int HeartbeatTimeout
+        public int HeartbeatSendTimeout
         {
-            get { return _HeartbeatTimeout; }
+            get { return _HeartbeatSendTimeout; }
             set
             {
-                _HeartbeatTimeout = value;
+                _HeartbeatSendTimeout = value;
+                Save();
+            }
+        }
+
+        [DefaultValue(5000)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int HeartbeatReceiveTimeout
+        {
+            get { return _HeartbeatReceiveTimeout; }
+            set
+            {
+                _HeartbeatReceiveTimeout = value;
                 Save();
             }
         }

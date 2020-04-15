@@ -32,7 +32,7 @@
   - [GetNode(nickname)](#M-Lanchat-Common-NetworkLib-Api-Methods-GetNode-System-String- 'Lanchat.Common.NetworkLib.Api.Methods.GetNode(System.String)')
   - [SendAll(message)](#M-Lanchat-Common-NetworkLib-Api-Methods-SendAll-System-String- 'Lanchat.Common.NetworkLib.Api.Methods.SendAll(System.String)')
 - [Network](#T-Lanchat-Common-NetworkLib-Network 'Lanchat.Common.NetworkLib.Network')
-  - [#ctor(broadcastPort,nickname,hostPort,heartbeatTimeout,connectionTimeout)](#M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32,System-Int32,System-Int32- 'Lanchat.Common.NetworkLib.Network.#ctor(System.Int32,System.String,System.Int32,System.Int32,System.Int32)')
+  - [#ctor(broadcastPort,nickname,hostPort,heartbeatTimeout,connectionTimeout)](#M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32,System-Int32,System-Int32,System-Int32- 'Lanchat.Common.NetworkLib.Network.#ctor(System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32)')
   - [Events](#P-Lanchat-Common-NetworkLib-Network-Events 'Lanchat.Common.NetworkLib.Network.Events')
   - [Methods](#P-Lanchat-Common-NetworkLib-Network-Methods 'Lanchat.Common.NetworkLib.Network.Methods')
   - [Nickname](#P-Lanchat-Common-NetworkLib-Network-Nickname 'Lanchat.Common.NetworkLib.Network.Nickname')
@@ -388,7 +388,7 @@ Lanchat.Common.NetworkLib
 
 Main class of network lib.
 
-<a name='M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32,System-Int32,System-Int32-'></a>
+<a name='M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32,System-Int32,System-Int32,System-Int32-'></a>
 ### #ctor(broadcastPort,nickname,hostPort,heartbeatTimeout,connectionTimeout) `constructor`
 
 ##### Summary
