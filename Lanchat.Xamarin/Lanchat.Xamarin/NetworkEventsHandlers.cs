@@ -1,26 +1,24 @@
-﻿using Lanchat.Common.NetworkLib;
-using Lanchat.Common.NetworkLib.EventsArgs;
+﻿using Lanchat.Common.NetworkLib.EventsArgs;
 using Lanchat.Common.Types;
+using Lanchat.Xamarin.ViewModels;
 using System;
 using System.Globalization;
 namespace Lanchat.Xamarin
 {
     public class NetworkEventsHandlers
     {
-        private readonly Network network;
-        private readonly MainPage mainPage;
+        private readonly MainViewModel mainPage;
 
-        public NetworkEventsHandlers(MainPage mainPage, Network network)
+        public NetworkEventsHandlers(MainViewModel mainPage)
         {
             this.mainPage = mainPage;
-            this.network = network;
         }
 
         public void OnHostStarted(object o, HostStartedEventArgs e)
         {
             if (e != null)
             {
-                mainPage.AddToLog($"Running on port {e.Port.ToString(CultureInfo.CurrentCulture)}");
+                mainPage.AddMessage($"Running on port {e.Port.ToString(CultureInfo.CurrentCulture)}");
             }
             else
             {
@@ -34,11 +32,11 @@ namespace Lanchat.Xamarin
             {
                 if (e.Target == MessageTarget.Private)
                 {
-                    mainPage.AddToLog($"-> {e.Node.Nickname}: {e.Content.Trim()}");
+                    mainPage.AddMessage($"-> {e.Node.Nickname}: {e.Content.Trim()}");
                 }
                 else
                 {
-                    mainPage.AddToLog($"{e.Node.Nickname}: {e.Content.Trim()}");
+                    mainPage.AddMessage($"{e.Node.Nickname}: {e.Content.Trim()}");
                 }
             }
             else
@@ -51,7 +49,7 @@ namespace Lanchat.Xamarin
         {
             if (e != null)
             {
-                mainPage.AddToLog($"{e.Node.Nickname} connected");
+                mainPage.AddMessage($"{e.Node.Nickname} connected");
             }
             else
             {
@@ -63,7 +61,7 @@ namespace Lanchat.Xamarin
         {
             if (e != null)
             {
-                mainPage.AddToLog($"{e.Node.Nickname} disconnected");
+                mainPage.AddMessage($"{e.Node.Nickname} disconnected");
             }
             else
             {
@@ -75,7 +73,7 @@ namespace Lanchat.Xamarin
         {
             if (e != null)
             {
-                mainPage.AddToLog($"{e.Node.Nickname} suspended. Waiting for reconnect");
+                mainPage.AddMessage($"{e.Node.Nickname} suspended. Waiting for reconnect");
             }
             else
             {
@@ -87,7 +85,7 @@ namespace Lanchat.Xamarin
         {
             if (e != null)
             {
-                mainPage.AddToLog($"{e.Node.Nickname} reconnected");
+                mainPage.AddMessage($"{e.Node.Nickname} reconnected");
             }
             else
             {
@@ -99,7 +97,7 @@ namespace Lanchat.Xamarin
         {
             if (e != null)
             {
-                mainPage.AddToLog($"{e.OldNickname} changed nickname to {e.NewNickname}");
+                mainPage.AddMessage($"{e.OldNickname} changed nickname to {e.NewNickname}");
             }
             else
             {
