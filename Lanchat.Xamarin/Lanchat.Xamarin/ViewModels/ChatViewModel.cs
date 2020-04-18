@@ -1,33 +1,26 @@
 ﻿using Lanchat.Common.NetworkLib;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Lanchat.Xamarin.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class ChatViewModel : INotifyPropertyChanged
     {
         private string input = string.Empty;
 
-        public MainViewModel()
+        public ChatViewModel(Network network)
         {
             Send = new Command(SendAction);
-
-            Task.Run(() =>
-             {
-                 Network = new Network(4001, "Xamarin", 4002, 3000);
-                 var NetworkEventsHandlers = new NetworkEventsHandlers(this);
-                 Network.Events.HostStarted += NetworkEventsHandlers.OnHostStarted;
-                 Network.Events.ReceivedMessage += NetworkEventsHandlers.OnReceivedMessage;
-                 Network.Events.NodeConnected += NetworkEventsHandlers.OnNodeConnected;
-                 Network.Events.NodeDisconnected += NetworkEventsHandlers.OnNodeDisconnected;
-                 Network.Events.NodeSuspended += NetworkEventsHandlers.OnNodeSuspended;
-                 Network.Events.NodeResumed += NetworkEventsHandlers.OnNodeResumed;
-                 Network.Events.ChangedNickname += NetworkEventsHandlers.OnChangedNickname;
-                 Network.Start();
-             });
+            Network = network;
+            var NetworkEventsHandlers = new NetworkEventsHandlers(this);
+            Network.Events.ReceivedMessage += NetworkEventsHandlers.OnReceivedMessage;
+            Network.Events.NodeConnected += NetworkEventsHandlers.OnNodeConnected;
+            Network.Events.NodeDisconnected += NetworkEventsHandlers.OnNodeDisconnected;
+            Network.Events.NodeSuspended += NetworkEventsHandlers.OnNodeSuspended;
+            Network.Events.NodeResumed += NetworkEventsHandlers.OnNodeResumed;
+            Network.Events.ChangedNickname += NetworkEventsHandlers.OnChangedNickname;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

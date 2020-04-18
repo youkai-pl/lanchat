@@ -1,8 +1,6 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Lanchat.Xamarin.Pages;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
-using Xamarin.Forms.Xaml;
 using Application = Xamarin.Forms.Application;
 
 namespace Lanchat.Xamarin
@@ -13,7 +11,7 @@ namespace Lanchat.Xamarin
         {
             InitializeComponent();
             Current.On<Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
-            MainPage = new MainPage();
+            MainPage = new LoadingPage();
         }
 
         protected override void OnStart()

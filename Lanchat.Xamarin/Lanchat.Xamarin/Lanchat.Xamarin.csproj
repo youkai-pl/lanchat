@@ -19,4 +19,16 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Lanchat.Common\Lanchat.Common.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Pages\ChatPage.xaml.cs">
+      <DependentUpon>ChatPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Pages\LoadingPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>
