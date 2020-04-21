@@ -57,7 +57,7 @@ namespace Lanchat.Xamarin.ViewModels
         private void SendAction()
         {
             Network.Methods.SendAll(Input);
-            Messages.Add(new Message() { Content = Input });
+            Messages.Add(new Message() { Content = Input, Nickname = Network.Nickname});
             Input = string.Empty;
         }
     }
@@ -65,5 +65,6 @@ namespace Lanchat.Xamarin.ViewModels
     public class Message
     {
         public string Content { get; set; }
+        public string Nickname { get; set; }
     }
 }

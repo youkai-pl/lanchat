@@ -25,14 +25,29 @@
             Grid.Row="0"
             Grid.Column="0"
             Grid.ColumnSpan="2"
+            HasUnevenRows="True"
             ItemsSource="{Binding Messages}"
+            SelectionMode="None"
+            SeparatorVisibility="None"
             VerticalOptions="StartAndExpand">
             <ListView.Behaviors>
                 <behaviors:ListBehavior />
             </ListView.Behaviors>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Content}" />
+                    <ViewCell>
+                        <Frame
+                            Margin="5,10,5,10"
+                            Padding="5"
+                            BackgroundColor="LightGray"
+                            CornerRadius="10"
+                            HasShadow="false">
+                            <StackLayout>
+                                <Label Text="{Binding Nickname}" TextColor="DarkGray" />
+                                <Label Text="{Binding Content}" TextColor="Black" />
+                            </StackLayout>
+                        </Frame>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

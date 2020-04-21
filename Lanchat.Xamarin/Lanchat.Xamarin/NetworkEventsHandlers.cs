@@ -42,11 +42,11 @@ namespace Lanchat.Xamarin
         {
             if (e.Target == MessageTarget.Private)
             {
-                chatViewModel.AddMessage($"-> {e.Node.Nickname}: {e.Content.Trim()}");
+                chatViewModel.Messages.Add(new Message() { Content = e.Content.Trim(), Nickname = $"[->] {e.Node.Nickname}" });
             }
             else
             {
-                chatViewModel.AddMessage($"{e.Node.Nickname}: {e.Content.Trim()}");
+                chatViewModel.Messages.Add(new Message() { Content = e.Content.Trim(), Nickname = e.Node.Nickname });
             }
         }
     }
