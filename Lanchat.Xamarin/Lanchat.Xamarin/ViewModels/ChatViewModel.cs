@@ -14,6 +14,12 @@ namespace Lanchat.Xamarin.ViewModels
         {
             Send = new Command(SendAction);
             Network = network;
+
+            Messages = new ObservableCollection<Message>();
+            Messages.CollectionChanged += (sender, e) =>
+            {
+            };
+
             var NetworkEventsHandlers = new NetworkEventsHandlers(this);
             Network.Events.ReceivedMessage += NetworkEventsHandlers.OnReceivedMessage;
             Network.Events.NodeConnected += NetworkEventsHandlers.OnNodeConnected;
@@ -39,14 +45,15 @@ namespace Lanchat.Xamarin.ViewModels
             }
         }
 
-        public ObservableCollection<Message> Messages { get; } = new ObservableCollection<Message>();
+        public ObservableCollection<Message> Messages { get; set; }
 
         public Network Network { get; private set; }
         public ICommand Send { get; private set; }
 
-        public void AddMessage(string content)
+        public void AddMessage(Message message)
         {
-            Messages.Add(new Message() { Content = content });
+            Messages.Add(message);
+            MessagingCenter.Send<object>(this, "LogUpdated");
         }
 
         private void OnPropertyChange(string name)
@@ -57,7 +64,7 @@ namespace Lanchat.Xamarin.ViewModels
         private void SendAction()
         {
             Network.Methods.SendAll(Input);
-            Messages.Add(new Message() { Content = Input, Nickname = Network.Nickname});
+            AddMessage(new Message() { Content = Input, Nickname = Network.Nickname });
             Input = string.Empty;
         }
     }

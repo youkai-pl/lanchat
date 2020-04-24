@@ -15,27 +15,27 @@ namespace Lanchat.Xamarin
 
         public void OnChangedNickname(object o, ChangedNicknameEventArgs e)
         {
-            chatViewModel.AddMessage($"{e.OldNickname} changed nickname to {e.NewNickname}");
+            chatViewModel.AddMessage(new Message() { Content = $"{e.OldNickname} changed nickname to {e.NewNickname}", Nickname = "SYSTEM" });
         }
 
         public void OnNodeConnected(object o, NodeConnectionStatusEventArgs e)
         {
-            chatViewModel.AddMessage($"{e.Node.Nickname} connected");
+            chatViewModel.AddMessage(new Message() { Content = $"{e.Node.Nickname} connected", Nickname = "SYSTEM" });
         }
 
         public void OnNodeDisconnected(object o, NodeConnectionStatusEventArgs e)
         {
-            chatViewModel.AddMessage($"{e.Node.Nickname} disconnected");
+            chatViewModel.AddMessage(new Message() { Content = $"{e.Node.Nickname} disconnected", Nickname = "SYSTEM" });
         }
 
         public void OnNodeResumed(object o, NodeConnectionStatusEventArgs e)
         {
-            chatViewModel.AddMessage($"{e.Node.Nickname} reconnected");
+            chatViewModel.AddMessage(new Message() { Content = $"{e.Node.Nickname} reconnected", Nickname = "SYSTEM" });
         }
 
         public void OnNodeSuspended(object o, NodeConnectionStatusEventArgs e)
         {
-            chatViewModel.AddMessage($"{e.Node.Nickname} suspended. Waiting for reconnect");
+            chatViewModel.AddMessage(new Message() { Content = $"{e.Node.Nickname} suspended. Waiting for reconnect", Nickname = "SYSTEM" });
         }
 
         public void OnReceivedMessage(object o, ReceivedMessageEventArgs e)

@@ -1,5 +1,6 @@
 ﻿using Lanchat.Common.NetworkLib;
 using Lanchat.Xamarin.ViewModels;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace Lanchat.Xamarin.Pages
@@ -16,6 +17,10 @@ namespace Lanchat.Xamarin.Pages
         {
             base.OnAppearing();
             Input.Focus();
+
+            MessagingCenter.Subscribe<object>(this, "LogUpdated", (sender) => {
+                Log.ScrollTo(Log.ItemsSource.OfType<object>().Last(), ScrollToPosition.MakeVisible, true);
+            });
         }
     }
 }
