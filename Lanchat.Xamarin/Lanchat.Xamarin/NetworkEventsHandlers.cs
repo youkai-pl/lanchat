@@ -15,38 +15,38 @@ namespace Lanchat.Xamarin
 
         public void OnChangedNickname(object o, ChangedNicknameEventArgs e)
         {
-            chatViewModel.AddMessage(new Message() { Content = $"{e.OldNickname} changed nickname to {e.NewNickname}", Nickname = "SYSTEM" });
+            chatViewModel.AddMessage(new Message() { Content = $"{e.OldNickname} changed nickname to {e.NewNickname}" });
         }
 
         public void OnNodeConnected(object o, NodeConnectionStatusEventArgs e)
         {
-            chatViewModel.AddMessage(new Message() { Content = $"{e.Node.Nickname} connected", Nickname = "SYSTEM" });
+            chatViewModel.AddMessage(new Message() { Content = $"{e.Node.Nickname} connected" });
         }
 
         public void OnNodeDisconnected(object o, NodeConnectionStatusEventArgs e)
         {
-            chatViewModel.AddMessage(new Message() { Content = $"{e.Node.Nickname} disconnected", Nickname = "SYSTEM" });
+            chatViewModel.AddMessage(new Message() { Content = $"{e.Node.Nickname} disconnected" });
         }
 
         public void OnNodeResumed(object o, NodeConnectionStatusEventArgs e)
         {
-            chatViewModel.AddMessage(new Message() { Content = $"{e.Node.Nickname} reconnected", Nickname = "SYSTEM" });
+            chatViewModel.AddMessage(new Message() { Content = $"{e.Node.Nickname} reconnected" });
         }
 
         public void OnNodeSuspended(object o, NodeConnectionStatusEventArgs e)
         {
-            chatViewModel.AddMessage(new Message() { Content = $"{e.Node.Nickname} suspended. Waiting for reconnect", Nickname = "SYSTEM" });
+            chatViewModel.AddMessage(new Message() { Content = $"{e.Node.Nickname} suspended. Waiting for reconnect" });
         }
 
         public void OnReceivedMessage(object o, ReceivedMessageEventArgs e)
         {
             if (e.Target == MessageTarget.Private)
             {
-                chatViewModel.Messages.Add(new Message() { Content = e.Content.Trim(), Nickname = $"[->] {e.Node.Nickname}" });
+                chatViewModel.AddMessage(new Message() { Content = e.Content.Trim(), Nickname = $"[->] {e.Node.Nickname}" });
             }
             else
             {
-                chatViewModel.Messages.Add(new Message() { Content = e.Content.Trim(), Nickname = e.Node.Nickname });
+                chatViewModel.AddMessage(new Message() { Content = e.Content.Trim(), Nickname = e.Node.Nickname });
             }
         }
     }

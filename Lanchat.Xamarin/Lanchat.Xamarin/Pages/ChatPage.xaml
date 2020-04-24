@@ -33,13 +33,17 @@
                 <DataTemplate>
                     <ViewCell>
                         <Frame
-                            Margin="10"
-                            Padding="5,10,5,10"
+                            Margin="5"
+                            Padding="10"
                             BackgroundColor="LightGray"
                             CornerRadius="10"
                             HasShadow="false">
                             <StackLayout>
                                 <Label Text="{Binding Nickname}" TextColor="DarkGray" />
+                                <BoxView
+                                    HeightRequest="1"
+                                    HorizontalOptions="FillAndExpand"
+                                    Color="DarkGray" />
                                 <Label Text="{Binding Content}" TextColor="Black" />
                             </StackLayout>
                         </Frame>
