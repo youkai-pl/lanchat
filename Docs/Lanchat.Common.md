@@ -12,8 +12,6 @@
   - [OnHostStarted(port)](#M-Lanchat-Common-NetworkLib-Api-Events-OnHostStarted-System-Int32- 'Lanchat.Common.NetworkLib.Api.Events.OnHostStarted(System.Int32)')
   - [OnNodeConnected(node)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeConnected-Lanchat-Common-NetworkLib-Node-NodeInstance- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeConnected(Lanchat.Common.NetworkLib.Node.NodeInstance)')
   - [OnNodeDisconnected(node)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeDisconnected-Lanchat-Common-NetworkLib-Node-NodeInstance- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeDisconnected(Lanchat.Common.NetworkLib.Node.NodeInstance)')
-  - [OnNodeResumed(node)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeResumed-Lanchat-Common-NetworkLib-Node-NodeInstance- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeResumed(Lanchat.Common.NetworkLib.Node.NodeInstance)')
-  - [OnNodeSuspended(node)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeSuspended-Lanchat-Common-NetworkLib-Node-NodeInstance- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeSuspended(Lanchat.Common.NetworkLib.Node.NodeInstance)')
   - [OnReceivedMessage(content,node,target)](#M-Lanchat-Common-NetworkLib-Api-Events-OnReceivedMessage-System-String,Lanchat-Common-NetworkLib-Node-NodeInstance,Lanchat-Common-Types-MessageTarget- 'Lanchat.Common.NetworkLib.Api.Events.OnReceivedMessage(System.String,Lanchat.Common.NetworkLib.Node.NodeInstance,Lanchat.Common.Types.MessageTarget)')
 - [Handshake](#T-Lanchat-Common-Types-Handshake 'Lanchat.Common.Types.Handshake')
   - [#ctor(nickname,publicKey,port)](#M-Lanchat-Common-Types-Handshake-#ctor-System-String,System-String,System-Int32- 'Lanchat.Common.Types.Handshake.#ctor(System.String,System.String,System.Int32)')
@@ -156,32 +154,6 @@ Node suspended event.
 
 <a name='M-Lanchat-Common-NetworkLib-Api-Events-OnNodeDisconnected-Lanchat-Common-NetworkLib-Node-NodeInstance-'></a>
 ### OnNodeDisconnected(node) `method`
-
-##### Summary
-
-Node suspended event.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| node | [Lanchat.Common.NetworkLib.Node.NodeInstance](#T-Lanchat-Common-NetworkLib-Node-NodeInstance 'Lanchat.Common.NetworkLib.Node.NodeInstance') | Node |
-
-<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnNodeResumed-Lanchat-Common-NetworkLib-Node-NodeInstance-'></a>
-### OnNodeResumed(node) `method`
-
-##### Summary
-
-Node suspended event.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| node | [Lanchat.Common.NetworkLib.Node.NodeInstance](#T-Lanchat-Common-NetworkLib-Node-NodeInstance 'Lanchat.Common.NetworkLib.Node.NodeInstance') | Node |
-
-<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnNodeSuspended-Lanchat-Common-NetworkLib-Node-NodeInstance-'></a>
-### OnNodeSuspended(node) `method`
 
 ##### Summary
 

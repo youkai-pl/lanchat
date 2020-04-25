@@ -80,30 +80,6 @@ namespace Lanchat.Terminal
             }
         }
 
-        public void OnNodeSuspended(object o, NodeConnectionStatusEventArgs e)
-        {
-            if (e != null)
-            {
-                Prompt.Log.Add($"{e.Node.Nickname} suspended. Waiting for reconnect");
-            }
-            else
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
-        }
-
-        public void OnNodeResumed(object o, NodeConnectionStatusEventArgs e)
-        {
-            if (e != null)
-            {
-                Prompt.Log.Add($"{e.Node.Nickname} reconnected");
-            }
-            else
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
-        }
-
         public void OnChangedNickname(object o, ChangedNicknameEventArgs e)
         {
             if (e != null)
