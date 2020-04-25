@@ -28,7 +28,8 @@ namespace Lanchat.Common.NetworkLib
         /// <param name="broadcastPort">UDP broadcast port</param>
         /// <param name="nickname">Self nickname</param>
         /// <param name="hostPort">TCP host port. Set to -1 to use free ephemeral port</param>
-        /// <param name="heartbeatTimeout">Heartbeat lifetime in ms</param>
+        /// <param name="heartbeatSendTimeout">Interval between heartbeat sends</param>
+        /// <param name="heartbeatReceiveTimeout">Interval between heartbeat check</param>
         /// <param name="connectionTimeout">Node connection timeout</param>
         public Network(int broadcastPort, string nickname, int hostPort = -1, int heartbeatSendTimeout = 5000, int heartbeatReceiveTimeout = 5000, int connectionTimeout = 10000)
         {

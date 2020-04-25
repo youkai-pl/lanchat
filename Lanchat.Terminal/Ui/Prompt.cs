@@ -19,7 +19,6 @@ namespace Lanchat.Terminal.Ui
         internal static TextBlock Port;
         internal static TextBlock Nodes;
         internal static TextBlock PromptIndicator;
-        internal static Network Network;
         internal static InputController InputController;
 
         public enum OutputType
@@ -30,13 +29,13 @@ namespace Lanchat.Terminal.Ui
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
-        public static void Start(Config config)
+        public static void Start(Config config, Network network)
         {
             // Layout
             Log = new LogPanel();
             var input = new TextBox();
             var topBar = new TextBlock();
-            InputController = new InputController(input, Log, config);
+            InputController = new InputController(input, Log, config, network);
 
             topBar.Text = $" {Properties.Resources.Title} {Assembly.GetExecutingAssembly().GetName().Version} - {Properties.Resources.PageLink}";
 
