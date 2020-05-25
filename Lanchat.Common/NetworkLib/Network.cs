@@ -131,12 +131,14 @@ namespace Lanchat.Common.NetworkLib
 
         internal void CloseNode(NodeInstance node)
         {
+            var nickname = node.ClearNickname;
+            var ip = node.Ip;
+            var port = node.Port;
+
             // If node is already under reconnecting close it
             if (node.Reconnect)
             {
-                var nickname = node.ClearNickname;
-                Trace.WriteLine($"[NETWORK] Node disconnected ({node.Ip})");
-                Events.OnNodeDisconnected(node);
+                Trace.WriteLine($"[NETWORK] Reconnection failed ({ip})");
                 NodeList.Remove(node);
                 node.Dispose();
                 CheckNickcnameDuplicates(nickname);
@@ -145,8 +147,8 @@ namespace Lanchat.Common.NetworkLib
             // Attempt reconnect
             else
             {
-                var ip = node.Ip;
-                var port = node.Port;
+                Trace.WriteLine($"[NETWORK] Node disconnected. Reconnecting ({ip})");
+                Events.OnNodeDisconnected(node);              
                 NodeList.Remove(node);
                 node.Dispose();
                 CreateNode(ip, port, reconnect: true);
