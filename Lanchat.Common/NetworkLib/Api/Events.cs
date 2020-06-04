@@ -31,16 +31,6 @@ namespace Lanchat.Common.NetworkLib.Api
         public event EventHandler<NodeConnectionStatusEventArgs> NodeDisconnected;
 
         /// <summary>
-        /// Check <see cref="NodeConnectionStatusEventArgs"/>
-        /// </summary>
-        public event EventHandler<NodeConnectionStatusEventArgs> NodeResumed;
-
-        /// <summary>
-        /// Check <see cref="NodeConnectionStatusEventArgs"/>
-        /// </summary>
-        public event EventHandler<NodeConnectionStatusEventArgs> NodeSuspended;
-
-        /// <summary>
         /// Check <see cref="ReceivedMessageEventArgs"/>
         /// </summary>
         public event EventHandler<ReceivedMessageEventArgs> ReceivedMessage;
@@ -92,30 +82,6 @@ namespace Lanchat.Common.NetworkLib.Api
             NodeDisconnected(this, new NodeConnectionStatusEventArgs()
             {
                 Node = node
-            });
-        }
-
-        /// <summary>
-        /// Node suspended event.
-        /// </summary>
-        /// <param name="node">Node</param>
-        public virtual void OnNodeResumed(NodeInstance node)
-        {
-            NodeResumed(this, new NodeConnectionStatusEventArgs()
-            {
-                Node = node
-            });
-        }
-
-        /// <summary>
-        /// Node suspended event.
-        /// </summary>
-        /// <param name="node">Node</param>
-        public virtual void OnNodeSuspended(NodeInstance node)
-        {
-            NodeSuspended(this, new NodeConnectionStatusEventArgs()
-            {
-                Node = node,
             });
         }
 

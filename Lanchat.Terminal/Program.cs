@@ -1,24 +1,21 @@
-﻿using System;
-using System.Diagnostics;
+﻿using Lanchat.Common.NetworkLib;
 using Lanchat.Terminal.Ui;
-using Lanchat.Common.NetworkLib;
+using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
 namespace Lanchat.Terminal
 {
-    class Program
+    internal class Program
     {
         internal static Config Config { get; set; }
         internal static Network Network { get; set; }
         internal static NetworkEventsHandlers NetworkEventsHandlers { get; set; }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-
             Config = Config.Load();
-            Prompt.Start(Config);
-
             try
             {
                 Network = new Network(
@@ -28,14 +25,12 @@ namespace Lanchat.Terminal
                     Config.HeartbeatSendTimeout,
                     Config.ConnectionTimeout
                 );
-                Prompt.InputController.SetNetwork(Network);
+                Prompt.Start(Config, Network);
                 NetworkEventsHandlers = new NetworkEventsHandlers(Config, Network);
                 Network.Events.HostStarted += NetworkEventsHandlers.OnHostStarted;
                 Network.Events.ReceivedMessage += NetworkEventsHandlers.OnReceivedMessage;
                 Network.Events.NodeConnected += NetworkEventsHandlers.OnNodeConnected;
                 Network.Events.NodeDisconnected += NetworkEventsHandlers.OnNodeDisconnected;
-                Network.Events.NodeSuspended += NetworkEventsHandlers.OnNodeSuspended;
-                Network.Events.NodeResumed += NetworkEventsHandlers.OnNodeResumed;
                 Network.Events.ChangedNickname += NetworkEventsHandlers.OnChangedNickname;
                 Network.Start();
             }

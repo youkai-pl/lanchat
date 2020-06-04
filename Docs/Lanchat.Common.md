@@ -12,8 +12,6 @@
   - [OnHostStarted(port)](#M-Lanchat-Common-NetworkLib-Api-Events-OnHostStarted-System-Int32- 'Lanchat.Common.NetworkLib.Api.Events.OnHostStarted(System.Int32)')
   - [OnNodeConnected(node)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeConnected-Lanchat-Common-NetworkLib-Node-NodeInstance- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeConnected(Lanchat.Common.NetworkLib.Node.NodeInstance)')
   - [OnNodeDisconnected(node)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeDisconnected-Lanchat-Common-NetworkLib-Node-NodeInstance- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeDisconnected(Lanchat.Common.NetworkLib.Node.NodeInstance)')
-  - [OnNodeResumed(node)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeResumed-Lanchat-Common-NetworkLib-Node-NodeInstance- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeResumed(Lanchat.Common.NetworkLib.Node.NodeInstance)')
-  - [OnNodeSuspended(node)](#M-Lanchat-Common-NetworkLib-Api-Events-OnNodeSuspended-Lanchat-Common-NetworkLib-Node-NodeInstance- 'Lanchat.Common.NetworkLib.Api.Events.OnNodeSuspended(Lanchat.Common.NetworkLib.Node.NodeInstance)')
   - [OnReceivedMessage(content,node,target)](#M-Lanchat-Common-NetworkLib-Api-Events-OnReceivedMessage-System-String,Lanchat-Common-NetworkLib-Node-NodeInstance,Lanchat-Common-Types-MessageTarget- 'Lanchat.Common.NetworkLib.Api.Events.OnReceivedMessage(System.String,Lanchat.Common.NetworkLib.Node.NodeInstance,Lanchat.Common.Types.MessageTarget)')
 - [Handshake](#T-Lanchat-Common-Types-Handshake 'Lanchat.Common.Types.Handshake')
   - [#ctor(nickname,publicKey,port)](#M-Lanchat-Common-Types-Handshake-#ctor-System-String,System-String,System-Int32- 'Lanchat.Common.Types.Handshake.#ctor(System.String,System.String,System.Int32)')
@@ -32,7 +30,7 @@
   - [GetNode(nickname)](#M-Lanchat-Common-NetworkLib-Api-Methods-GetNode-System-String- 'Lanchat.Common.NetworkLib.Api.Methods.GetNode(System.String)')
   - [SendAll(message)](#M-Lanchat-Common-NetworkLib-Api-Methods-SendAll-System-String- 'Lanchat.Common.NetworkLib.Api.Methods.SendAll(System.String)')
 - [Network](#T-Lanchat-Common-NetworkLib-Network 'Lanchat.Common.NetworkLib.Network')
-  - [#ctor(broadcastPort,nickname,hostPort,heartbeatTimeout,connectionTimeout)](#M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32,System-Int32,System-Int32,System-Int32- 'Lanchat.Common.NetworkLib.Network.#ctor(System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32)')
+  - [#ctor(broadcastPort,nickname,hostPort,heartbeatSendTimeout,heartbeatReceiveTimeout,connectionTimeout)](#M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32,System-Int32,System-Int32,System-Int32- 'Lanchat.Common.NetworkLib.Network.#ctor(System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32)')
   - [Events](#P-Lanchat-Common-NetworkLib-Network-Events 'Lanchat.Common.NetworkLib.Network.Events')
   - [Methods](#P-Lanchat-Common-NetworkLib-Network-Methods 'Lanchat.Common.NetworkLib.Network.Methods')
   - [Nickname](#P-Lanchat-Common-NetworkLib-Network-Nickname 'Lanchat.Common.NetworkLib.Network.Nickname')
@@ -156,32 +154,6 @@ Node suspended event.
 
 <a name='M-Lanchat-Common-NetworkLib-Api-Events-OnNodeDisconnected-Lanchat-Common-NetworkLib-Node-NodeInstance-'></a>
 ### OnNodeDisconnected(node) `method`
-
-##### Summary
-
-Node suspended event.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| node | [Lanchat.Common.NetworkLib.Node.NodeInstance](#T-Lanchat-Common-NetworkLib-Node-NodeInstance 'Lanchat.Common.NetworkLib.Node.NodeInstance') | Node |
-
-<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnNodeResumed-Lanchat-Common-NetworkLib-Node-NodeInstance-'></a>
-### OnNodeResumed(node) `method`
-
-##### Summary
-
-Node suspended event.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| node | [Lanchat.Common.NetworkLib.Node.NodeInstance](#T-Lanchat-Common-NetworkLib-Node-NodeInstance 'Lanchat.Common.NetworkLib.Node.NodeInstance') | Node |
-
-<a name='M-Lanchat-Common-NetworkLib-Api-Events-OnNodeSuspended-Lanchat-Common-NetworkLib-Node-NodeInstance-'></a>
-### OnNodeSuspended(node) `method`
 
 ##### Summary
 
@@ -389,7 +361,7 @@ Lanchat.Common.NetworkLib
 Main class of network lib.
 
 <a name='M-Lanchat-Common-NetworkLib-Network-#ctor-System-Int32,System-String,System-Int32,System-Int32,System-Int32,System-Int32-'></a>
-### #ctor(broadcastPort,nickname,hostPort,heartbeatTimeout,connectionTimeout) `constructor`
+### #ctor(broadcastPort,nickname,hostPort,heartbeatSendTimeout,heartbeatReceiveTimeout,connectionTimeout) `constructor`
 
 ##### Summary
 
@@ -402,7 +374,8 @@ Network constructor.
 | broadcastPort | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | UDP broadcast port |
 | nickname | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Self nickname |
 | hostPort | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | TCP host port. Set to -1 to use free ephemeral port |
-| heartbeatTimeout | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Heartbeat lifetime in ms |
+| heartbeatSendTimeout | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Interval between heartbeat sends |
+| heartbeatReceiveTimeout | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Interval between heartbeat check |
 | connectionTimeout | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Node connection timeout |
 
 <a name='P-Lanchat-Common-NetworkLib-Network-Events'></a>

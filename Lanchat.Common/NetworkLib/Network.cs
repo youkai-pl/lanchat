@@ -28,7 +28,8 @@ namespace Lanchat.Common.NetworkLib
         /// <param name="broadcastPort">UDP broadcast port</param>
         /// <param name="nickname">Self nickname</param>
         /// <param name="hostPort">TCP host port. Set to -1 to use free ephemeral port</param>
-        /// <param name="heartbeatTimeout">Heartbeat lifetime in ms</param>
+        /// <param name="heartbeatSendTimeout">Interval between heartbeat sends</param>
+        /// <param name="heartbeatReceiveTimeout">Interval between heartbeat check</param>
         /// <param name="connectionTimeout">Node connection timeout</param>
         public Network(int broadcastPort, string nickname, int hostPort = -1, int heartbeatSendTimeout = 5000, int heartbeatReceiveTimeout = 5000, int connectionTimeout = 10000)
         {
@@ -89,8 +90,8 @@ namespace Lanchat.Common.NetworkLib
 
         internal int BroadcastPort { get; set; }
         internal int ConnectionTimeout { get; set; }
-        internal int HeartbeatSendTimeout { get; set; }
         internal int HeartbeatReceiveTimeout { get; set; }
+        internal int HeartbeatSendTimeout { get; set; }
         internal int HostPort { get; set; }
         internal Guid Id { get; set; }
         internal string PublicKey { get; set; }
@@ -130,12 +131,14 @@ namespace Lanchat.Common.NetworkLib
 
         internal void CloseNode(NodeInstance node)
         {
+            var nickname = node.ClearNickname;
+            var ip = node.Ip;
+            var port = node.Port;
+
             // If node is already under reconnecting close it
             if (node.Reconnect)
             {
-                var nickname = node.ClearNickname;
-                Trace.WriteLine($"[NETWORK] Node disconnected ({node.Ip})");
-                Events.OnNodeDisconnected(node);
+                Trace.WriteLine($"[NETWORK] Reconnection failed ({ip})");
                 NodeList.Remove(node);
                 node.Dispose();
                 CheckNickcnameDuplicates(nickname);
@@ -144,8 +147,8 @@ namespace Lanchat.Common.NetworkLib
             // Attempt reconnect
             else
             {
-                var ip = node.Ip;
-                var port = node.Port;
+                Trace.WriteLine($"[NETWORK] Node disconnected. Reconnecting ({ip})");
+                Events.OnNodeDisconnected(node);
                 NodeList.Remove(node);
                 node.Dispose();
                 CreateNode(ip, port, reconnect: true);
@@ -161,53 +164,47 @@ namespace Lanchat.Common.NetworkLib
             }
 
             // Check is node with same ip alredy exist
-            if (Methods.GetNode(ip) == null)
-            {
-                var node = new NodeInstance(ip, this, reconnect);
-                NodeList.Add(node);
-                if (socket != null)
-                {
-                    node.Socket = socket;
-                    node.StartProcess();
-                }
-
-                // Create a connection if the port is known
-                if (port != 0)
-                {
-                    node.Port = port;
-                    try
-                    {
-                        node.CreateConnection();
-                        node.Client.SendHandshake(new Handshake(Nickname, PublicKey, HostPort));
-                        node.Client.SendList(NodeList);
-                    }
-                    catch (ConnectionFailedException)
-                    {
-                        Trace.WriteLine($"[NETWORK] Connection failed ({node.Ip})");
-                        CloseNode(node);
-                    }
-                }
-                else
-                {
-                    Trace.WriteLine($"[NETWORK] One way connection. Waiting for handshake ({node.Ip})");
-                }
-
-                if (reconnect)
-                {
-                    Trace.WriteLine($"[NETWORK] Reconnecting ({node.Ip}:{node.Port.ToString(CultureInfo.CurrentCulture)})");
-                }
-                else
-                {
-                    Trace.WriteLine($"[NETWORK] Node created ({node.Ip}:{node.Port.ToString(CultureInfo.CurrentCulture)})");
-                }
-            }
-            else
+            if (Methods.GetNode(ip) != null)
             {
                 Trace.WriteLine($"[NETWORK] Node already exist ({ip})");
                 if (manual)
                 {
                     throw new NodeAlreadyExistException();
                 }
+            }
+
+            var node = new NodeInstance(ip, this, reconnect);
+            NodeList.Add(node);
+            if (socket != null)
+            {
+                node.Socket = socket;
+                node.StartProcess();
+            }
+
+            // Create a connection if the port is known
+            if (port != 0)
+            {
+                node.Port = port;
+                try
+                {
+                    node.CreateConnection();
+                    node.Client.SendHandshake(new Handshake(Nickname, PublicKey, HostPort));
+                    node.Client.SendList(NodeList);
+                }
+                catch (ConnectionFailedException)
+                {
+                    Trace.WriteLine($"[NETWORK] Connection failed ({node.Ip})");
+                    CloseNode(node);
+                }
+            }
+            else
+            {
+                Trace.WriteLine($"[NETWORK] One way connection. Waiting for handshake ({node.Ip})");
+            }
+
+            if (!reconnect)
+            {
+                Trace.WriteLine($"[NETWORK] Node created ({node.Ip}:{node.Port.ToString(CultureInfo.CurrentCulture)})");
             }
         }
 
