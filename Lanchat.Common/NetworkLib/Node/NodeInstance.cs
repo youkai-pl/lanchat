@@ -183,7 +183,11 @@ namespace Lanchat.Common.NetworkLib.Node
                 {
                     // Read stream
                     streamBuffer = new byte[Socket.ReceiveBufferSize];
-                    _ = Socket.Receive(streamBuffer);
+                    if (Socket.Receive(streamBuffer) == 0)
+                    {
+                        State = Status.Closed;
+                    }
+
                     var respBytesList = new List<byte>(streamBuffer);
                     var data = Encoding.UTF8.GetString(respBytesList.ToArray());
 
@@ -201,18 +205,26 @@ namespace Lanchat.Common.NetworkLib.Node
                         }
                     }
                 }
-                catch (ObjectDisposedException)
+
+                catch (Exception e)
                 {
-                    Trace.WriteLine($"[NODE] Socket already closed ({Ip})");
-                    break;
-                }
-                catch (DecoderFallbackException)
-                {
-                    Trace.WriteLine($"[NODE] Data processing error: utf8 decode gone wrong ({Ip})");
-                }
-                catch (JsonReaderException)
-                {
-                    Trace.WriteLine($"([NODE] Data processing error: not vaild json ({Ip})");
+                    if (e is ObjectDisposedException)
+                    {
+                        Trace.WriteLine($"[NODE] Socket already closed ({Ip})");
+                        break;
+                    }
+                    else if (e is DecoderFallbackException)
+                    {
+                        Trace.WriteLine($"[NODE] Data processing error: utf8 decode gone wrong ({Ip})");
+                    }
+                    else if (e is JsonReaderException)
+                    {
+                        Trace.WriteLine($"([NODE] Data processing error: not vaild json ({Ip})");
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
         }

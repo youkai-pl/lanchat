@@ -12,18 +12,14 @@ namespace Lanchat.Terminal.Ui
         private readonly Config config;
         private readonly TextBox input;
         private readonly LogPanel log;
-        internal static Network Network;
+        private readonly Network network;
 
-        public InputController(TextBox input, LogPanel log, Config config)
+        public InputController(TextBox input, LogPanel log, Config config, Network network)
         {
             this.input = input;
             this.log = log;
             this.config = config;
-        }
-
-        public void SetNetwork(Network network)
-        {
-            Network = network;
+            this.network = network;
         }
 
         public void OnInput(InputEvent inputEvent)
@@ -46,7 +42,7 @@ namespace Lanchat.Terminal.Ui
                 else
                 {
                     log.Add(input.Text, Prompt.OutputType.Message, config.Nickname);
-                    Network.Methods.SendAll(input.Text);
+                    network.Methods.SendAll(input.Text);
                 }
             }
 
@@ -62,7 +58,7 @@ namespace Lanchat.Terminal.Ui
             switch (command)
             {
                 case "nick":
-                    Nick.Execute(args, config, Network);
+                    Nick.Execute(args, config, network);
                     break;
 
                 case "help":
@@ -74,23 +70,23 @@ namespace Lanchat.Terminal.Ui
                     break;
 
                 case "connect":
-                    Connect.Execute(args, Network);
+                    Connect.Execute(args, network);
                     break;
 
                 case "mute":
-                    Mute.Execute(args, config, Network);
+                    Mute.Execute(args, config, network);
                     break;
 
                 case "unmute":
-                    Unmute.Execute(args, config, Network);
+                    Unmute.Execute(args, config, network);
                     break;
 
                 case "m":
-                    Message.Execute(args, Network);
+                    Message.Execute(args, network);
                     break;
 
                 case "list":
-                    List.Execute(Network);
+                    List.Execute(network);
                     break;
 
                 default:
