@@ -24,8 +24,6 @@ namespace Lanchat.Xamarin.ViewModels
             Network.Events.ReceivedMessage += NetworkEventsHandlers.OnReceivedMessage;
             Network.Events.NodeConnected += NetworkEventsHandlers.OnNodeConnected;
             Network.Events.NodeDisconnected += NetworkEventsHandlers.OnNodeDisconnected;
-            Network.Events.NodeSuspended += NetworkEventsHandlers.OnNodeSuspended;
-            Network.Events.NodeResumed += NetworkEventsHandlers.OnNodeResumed;
             Network.Events.ChangedNickname += NetworkEventsHandlers.OnChangedNickname;
         }
 
