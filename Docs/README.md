@@ -1,7 +1,3 @@
-<p align="center">
-<img src="https://www.tofu.ovh/files/lanchat2_logo.png" width="500">
-</p>
-
 ## Get started
 
 Requirements:
