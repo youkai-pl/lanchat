@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -82,7 +83,7 @@ namespace Lanchat.Common.NetworkLib.Node
         {
             var list = new List<JToken>();
 
-            foreach (var item in nodes)
+            foreach (var item in nodes.ToList())
             {
                 list.Add(JToken.FromObject(new ListItem(item.Ip.ToString(), item.Port)));
             }
