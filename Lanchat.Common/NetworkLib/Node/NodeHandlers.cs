@@ -45,7 +45,6 @@ namespace Lanchat.Common.NetworkLib.Node
         internal void OnHandshakeAccepted()
         {
             node.Client.SendHandshake(new Handshake(network.Nickname, network.PublicKey, network.HostPort));
-            node.Client.SendList(network.NodeList);
         }
 
         internal void OnHeartbeatReceiveTimer(object o, ElapsedEventArgs e)
@@ -71,7 +70,8 @@ namespace Lanchat.Common.NetworkLib.Node
             Trace.WriteLine($"[NETOWRK] Received handshake ({node.Ip} / {handshake.Nickname})");
             node.AcceptHandshake(handshake);
             Trace.WriteLine($"[NETOWRK] Handshake accepted ({node.Ip})");
-
+            node.Client.SendList(network.NodeList);
+            Trace.WriteLine($"[NETOWRK] List sent ({node.Ip})");
             network.CheckNickcnameDuplicates(handshake.Nickname);
         }
 

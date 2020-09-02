@@ -189,7 +189,6 @@ namespace Lanchat.Common.NetworkLib
                 {
                     node.CreateConnection();
                     node.Client.SendHandshake(new Handshake(Nickname, PublicKey, HostPort));
-                    node.Client.SendList(NodeList);
                 }
                 catch (ConnectionFailedException)
                 {
