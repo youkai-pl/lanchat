@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using NetCoreServer;
@@ -15,7 +16,7 @@ namespace Lanchat.Core
 
         protected override void OnError(SocketError error)
         {
-            Trace.WriteLine($"Chat TCP server caught an error with code {error}");
+            Console.WriteLine($"Chat TCP server caught an error with code {error}");
         }
     }
 }
