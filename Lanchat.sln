@@ -14,12 +14,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{4A81DEED-9
 		Docs\README.md = Docs\README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lanchat.Core", "Lanchat.Core\Lanchat.Core.csproj", "{AA294C4F-B22C-4203-A706-F07CB153BD5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lanchat.Probe", "Lanchat.Probe\Lanchat.Probe.csproj", "{775E7266-331C-4661-89A9-C0675DD5F22E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA294C4F-B22C-4203-A706-F07CB153BD5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA294C4F-B22C-4203-A706-F07CB153BD5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA294C4F-B22C-4203-A706-F07CB153BD5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA294C4F-B22C-4203-A706-F07CB153BD5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{775E7266-331C-4661-89A9-C0675DD5F22E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{775E7266-331C-4661-89A9-C0675DD5F22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{775E7266-331C-4661-89A9-C0675DD5F22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{775E7266-331C-4661-89A9-C0675DD5F22E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
