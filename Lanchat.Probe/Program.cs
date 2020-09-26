@@ -17,7 +17,6 @@ namespace Lanchat.Probe
             _port = 3645;
             _ipAddress = "127.0.0.1";
             _network = new Network(_port);
-            _ = new EventsHandlers(_network.Events);
 
             var option = Console.ReadKey();
             Console.Write("\r" + new string(' ', Console.WindowWidth) + "\r");
@@ -34,6 +33,7 @@ namespace Lanchat.Probe
 
         private static void Server()
         {
+            _ = new ServerEventsHandlers(_network.Server);
             _network.Server.Start();
             Console.WriteLine($"Server started on port {_port}");
 
@@ -55,10 +55,12 @@ namespace Lanchat.Probe
         private static void Client()
         {
             Console.WriteLine($"Starting client on port {_port}");
-            var client = _network.CreateClient(_ipAddress, _port);
+            var client = new Client(_ipAddress, _port);
+            _ = new ClientEventsHandlers(client);
+
             Console.WriteLine($"Client connecting to {_ipAddress}");
             client.ConnectAsync();
-            
+
             while (true)
             {
                 var input = Console.ReadLine();
@@ -69,7 +71,6 @@ namespace Lanchat.Probe
 
                 client.SendAsync(input);
             }
-
 
             Console.WriteLine("Stopping");
             client.DisconnectAndStop();

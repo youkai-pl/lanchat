@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using NetCoreServer;
 
@@ -6,21 +7,23 @@ namespace Lanchat.Core
 {
     public class Server : TcpServer
     {
-        private readonly Events events;
+        public event EventHandler<SocketError> ServerErrored;
+        public event EventHandler<Session> SessionCreated;
         
-        public Server(IPAddress address, int port, Events events) : base(address, port)
+        public Server(IPAddress address, int port) : base(address, port)
         {
-            this.events = events;
         }
 
         protected override TcpSession CreateSession()
         {
-            return new Session(this, events);
+            var session = new Session(this);
+            SessionCreated?.Invoke(this, session);
+            return session;
         }
 
         protected override void OnError(SocketError error)
         {
-           events.OnServerError(this, error);
+            ServerErrored?.Invoke(this, error);
         }
     }
 }

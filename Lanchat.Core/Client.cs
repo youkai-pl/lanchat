@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using TcpClient = NetCoreServer.TcpClient;
@@ -7,13 +8,17 @@ namespace Lanchat.Core
 {
     public class Client : TcpClient
     {
-        private readonly Events events;
+        private bool stop;
 
-        public Client(string address, int port, Events events) : base(address, port)
+        public event EventHandler ClientConnected;
+        public event EventHandler ClientDisconnected;
+        public event EventHandler<string> MessageReceived;
+        public event EventHandler<SocketError> ClientErrored; 
+
+        public Client(string address, int port) : base(address, port)
         {
-            this.events = events;
         }
-        
+
         public void DisconnectAndStop()
         {
             stop = true;
@@ -26,12 +31,12 @@ namespace Lanchat.Core
 
         protected override void OnConnected()
         {
-            events.OnClientConnected(this);
+            ClientConnected?.Invoke(this, EventArgs.Empty);
         }
 
         protected override void OnDisconnected()
         {
-            events.OnClientDisconnected(this);
+            ClientDisconnected?.Invoke(this, EventArgs.Empty);
             
             // Try reconnect after while
             Thread.Sleep(1000);
@@ -43,14 +48,13 @@ namespace Lanchat.Core
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            events.OnMessageReceived(this,Encoding.UTF8.GetString(buffer, (int)offset, (int)size));
+            var message = Encoding.UTF8.GetString(buffer, (int) offset, (int) size);
+            MessageReceived?.Invoke(this, message);
         }
 
         protected override void OnError(SocketError error)
         {
-            events.OnClientError(this, error);
+            ClientErrored?.Invoke(this, error);
         }
-
-        private bool stop;
     }
 }
