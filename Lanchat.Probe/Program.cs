@@ -9,7 +9,7 @@ namespace Lanchat.Probe
         private static string _ipAddress;
         private static Network _network;
         private static EventsHandlers _eventsHandlers;
-        
+
         public static void Main(string[] args)
         {
             Console.WriteLine("Lanchat Probe");
@@ -19,13 +19,13 @@ namespace Lanchat.Probe
             _ipAddress = "127.0.0.1";
             _network = new Network(_port);
             _eventsHandlers = new EventsHandlers(_network.Events);
-            
+
             var option = Console.ReadKey();
             Console.Write("\r" + new string(' ', Console.WindowWidth) + "\r");
 
             if (option.Key == ConsoleKey.S)
             {
-                Server();      
+                Server();
             }
             else
             {
@@ -48,7 +48,7 @@ namespace Lanchat.Probe
 
                 _network.Server.Multicast(input);
             }
-            
+
             Console.WriteLine("Stopping");
             _network.Server.Stop();
         }
@@ -56,30 +56,21 @@ namespace Lanchat.Probe
         private static void Client()
         {
             Console.WriteLine($"Starting client on port {_port}");
-
             var client = _network.CreateClient(_ipAddress, _port);
-            
             Console.WriteLine($"Client connecting to {_ipAddress}");
             client.Connect();
-
-            if (client.IsConnected)
+            
+            while (true)
             {
-                Console.WriteLine("Connected");
-                while (true)
+                var input = Console.ReadLine();
+                if (string.IsNullOrEmpty(input))
                 {
-                    var input = Console.ReadLine();
-                    if (string.IsNullOrEmpty(input))
-                    {
-                        break;
-                    }
-
-                    client.SendAsync(input);
+                    break;
                 }
+
+                client.SendAsync(input);
             }
-            else
-            {
-                Console.WriteLine("Cannot connect");
-            }
+
 
             Console.WriteLine("Stopping");
             client.DisconnectAndStop();

@@ -13,7 +13,10 @@ namespace Lanchat.Core
             this.events = events;
         }
 
-        protected override TcpSession CreateSession() { return new Session(this); }
+        protected override TcpSession CreateSession()
+        {
+            return new Session(this, events);
+        }
 
         protected override void OnError(SocketError error)
         {
