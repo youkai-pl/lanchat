@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 using System.Text;
 using NetCoreServer;
 
@@ -26,7 +25,8 @@ namespace Lanchat.Core
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            events.OnMessageReceived(this, Encoding.UTF8.GetString(buffer, (int) offset, (int) size));
+            var message = Encoding.UTF8.GetString(buffer, (int) offset, (int) size);
+            events.OnMessageReceived(this, message);
         }
 
         protected override void OnError(SocketError error)

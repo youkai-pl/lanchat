@@ -4,13 +4,11 @@ namespace Lanchat.Core
 {
     public class Network
     {
-        private readonly int port;
         public Server Server { get;}
         public Events Events { get; }
         
         public Network(int port)
         {
-            this.port = port;
             Events = new Events();
             Server = new Server(IPAddress.Any, port, Events);
         }

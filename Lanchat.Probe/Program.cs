@@ -8,7 +8,6 @@ namespace Lanchat.Probe
         private static int _port;
         private static string _ipAddress;
         private static Network _network;
-        private static EventsHandlers _eventsHandlers;
 
         public static void Main(string[] args)
         {
@@ -18,7 +17,7 @@ namespace Lanchat.Probe
             _port = 3645;
             _ipAddress = "127.0.0.1";
             _network = new Network(_port);
-            _eventsHandlers = new EventsHandlers(_network.Events);
+            _ = new EventsHandlers(_network.Events);
 
             var option = Console.ReadKey();
             Console.Write("\r" + new string(' ', Console.WindowWidth) + "\r");
@@ -58,7 +57,7 @@ namespace Lanchat.Probe
             Console.WriteLine($"Starting client on port {_port}");
             var client = _network.CreateClient(_ipAddress, _port);
             Console.WriteLine($"Client connecting to {_ipAddress}");
-            client.Connect();
+            client.ConnectAsync();
             
             while (true)
             {
