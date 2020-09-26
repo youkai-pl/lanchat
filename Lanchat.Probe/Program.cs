@@ -1,5 +1,6 @@
 ﻿using System;
 using Lanchat.Core;
+using Lanchat.Probe.Handlers;
 
 namespace Lanchat.Probe
 {

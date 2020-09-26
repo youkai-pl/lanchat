@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using Lanchat.Core;
 
-namespace Lanchat.Probe
+namespace Lanchat.Probe.Handlers
 {
     public class SessionEventsHandlers
     {
