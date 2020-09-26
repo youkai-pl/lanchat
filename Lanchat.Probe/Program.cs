@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using Lanchat.Core;
 
 namespace Lanchat.Probe
@@ -9,7 +8,8 @@ namespace Lanchat.Probe
         private static int _port;
         private static string _ipAddress;
         private static Network _network;
-
+        private static EventsHandlers _eventsHandlers;
+        
         public static void Main(string[] args)
         {
             Console.WriteLine("Lanchat Probe");
@@ -18,11 +18,7 @@ namespace Lanchat.Probe
             _port = 3645;
             _ipAddress = "127.0.0.1";
             _network = new Network(_port);
-
-            _network.Events.TestEvent += (sender, s) =>
-            {
-                Console.WriteLine(s);
-            };
+            _eventsHandlers = new EventsHandlers(_network.Events);
             
             var option = Console.ReadKey();
             Console.Write("\r" + new string(' ', Console.WindowWidth) + "\r");

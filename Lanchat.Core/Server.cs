@@ -17,7 +17,7 @@ namespace Lanchat.Core
 
         protected override void OnError(SocketError error)
         {
-           events.OnServerError(error);
+           events.OnServerError(this, error);
         }
     }
 }
