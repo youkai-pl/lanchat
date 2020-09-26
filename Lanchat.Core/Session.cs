@@ -12,6 +12,8 @@ namespace Lanchat.Core
 
         protected override void OnConnected()
         {
+            //Connected?.Invoke(this, null);
+            
             Console.WriteLine($"Chat TCP session with Id {Id} connected!");
         }
 

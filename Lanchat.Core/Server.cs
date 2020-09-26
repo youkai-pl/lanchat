@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using NetCoreServer;
 
@@ -8,15 +6,18 @@ namespace Lanchat.Core
 {
     public class Server : TcpServer
     {
-        public Server(IPAddress address, int port) : base(address, port)
+        private readonly Events events;
+        
+        public Server(IPAddress address, int port, Events events) : base(address, port)
         {
+            this.events = events;
         }
 
         protected override TcpSession CreateSession() { return new Session(this); }
 
         protected override void OnError(SocketError error)
         {
-            Console.WriteLine($"Chat TCP server caught an error with code {error}");
+           events.OnServerError(error);
         }
     }
 }

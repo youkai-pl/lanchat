@@ -10,7 +10,12 @@ namespace Lanchat.Core
 {
     public class Client : TcpClient
     {
-        public Client(string address, int port) : base(address, port) {}
+        private readonly Events events;
+
+        public Client(string address, int port, Events events) : base(address, port)
+        {
+            this.events = events;
+        }
         
         public void DisconnectAndStop()
         {
