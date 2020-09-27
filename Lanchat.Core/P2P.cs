@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
 namespace Lanchat.Core
@@ -14,7 +16,22 @@ namespace Lanchat.Core
         {
             this.port = port;
             Nodes = new List<Node>();
-            Server = new Server(IPAddress.Any, port, Nodes);
+            Server = new Server(IPAddress.Any, port);
+            
+            Server.SessionCreated += OnSessionCreated;
+        }
+
+        private void OnSessionCreated(object sender, Session session)
+        {
+            session.SessionDisconnected += OnSessionDisconnected;
+            Nodes.Add(new Node(session));
+        }
+
+        private void OnSessionDisconnected(object sender, EventArgs e)
+        {
+            var session = (Session) sender;
+            var node = Nodes.First(x => x.Id == session.Id);
+            Nodes.Remove(node);
         }
 
         public Client Connect(string ipAddress)
@@ -23,6 +40,15 @@ namespace Lanchat.Core
             Nodes.Add(new Node(client));
             client.ConnectAsync();
             return client;
+        }
+
+        public void SendEverywhere(string message)
+        {
+            Server.Multicast(message);
+            foreach (var node in Nodes.Where(node => node.Client != null))
+            {
+                node.Client.SendAsync(message);
+            }
         }
     }
 }

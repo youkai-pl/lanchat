@@ -24,15 +24,15 @@ namespace Lanchat.Probe
                     var client = p2p.Connect(input);
                     _ = new ClientEventsHandlers(client);
                 }
+                else if(string.IsNullOrEmpty(input))
+                {
+                    break;
+                }
                 else
                 {
-                    p2p.Server.Multicast(input);
-                    foreach (var node in p2p.Nodes.Where(node => node.Client != null))
-                    {
-                        node.Client.SendAsync(input);
-                    }
+                    p2p.SendEverywhere(input);
                 }
-
+                
                 Console.WriteLine(p2p.Nodes.Count);
             }
         }

@@ -10,12 +10,13 @@ namespace Lanchat.Probe
         {
             _port = 3645;
             
-            Console.WriteLine("Lanchat debug probe");
+            Console.WriteLine("Lanchat debug tool");
             Console.WriteLine("");
             Console.WriteLine("Select mode by pressing key: ");
             Console.WriteLine("S - Only server");
             Console.WriteLine("C - Only client");
             Console.WriteLine("P - P2P");
+            Console.WriteLine("Q - Quit");
 
             // Select option
             do
@@ -39,13 +40,15 @@ namespace Lanchat.Probe
                     case ConsoleKey.P:
                         _ = new P2PMode();
                         break;
+                    
+                    case ConsoleKey.Q:
+                        return;
 
                     default:
                         Console.CursorTop--;
                         break;
                 }
             } while (true);
-            // ReSharper disable once FunctionNeverReturns
         }
     }
 }
