@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Lanchat.Core;
 using Lanchat.Probe.Handlers;
 
@@ -6,8 +7,16 @@ namespace Lanchat.Probe
 {
     public class ClientMode
     {
-        public ClientMode(string ipAddress, int port)
+        public ClientMode(int port)
         {
+            Console.Write("IP Address (leave blank to localhost): ");
+            var ipAddress = Console.ReadLine();
+
+            if (!IPAddress.TryParse(ipAddress!, out _))
+            {
+                ipAddress = "127.0.0.1";
+            }
+            
             var client = new Client(ipAddress, port);
             _ = new ClientEventsHandlers(client);
             

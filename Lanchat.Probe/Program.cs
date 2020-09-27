@@ -5,27 +5,44 @@ namespace Lanchat.Probe
     public static class Program
     {
         private static int _port;
-        private static string _ipAddress;
 
         public static void Main(string[] args)
         {
-            Console.WriteLine("Lanchat Probe");
-            Console.WriteLine("Press S for server or press other key for client");
-
             _port = 3645;
-            _ipAddress = "127.0.0.1";
+            
+            Console.WriteLine("Lanchat Probe");
+            Console.WriteLine("Press key: ");
+            Console.WriteLine("S - Only server");
+            Console.WriteLine("C - Only client");
+            Console.WriteLine("P - P2P");
 
-            var option = Console.ReadKey();
-            Console.Write("\r" + new string(' ', Console.WindowWidth) + "\r");
+            // Select option
+            do
+            {
+                Console.Write(">");
+                
+                var option = Console.ReadKey();
+                Console.Write("\r" + new string(' ', Console.WindowWidth) + "\r");
 
-            if (option.Key == ConsoleKey.S)
-            {
-                _ = new ServerMode(_port);
-            }
-            else
-            {
-                _ = new ClientMode(_ipAddress, _port);
-            }
+                // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+                switch (option.Key)
+                {
+                    case ConsoleKey.S:
+                        _ = new ServerMode(_port);
+                        break;
+
+                    case ConsoleKey.C:
+                        _ = new ClientMode(_port);
+                        break;
+
+                    case ConsoleKey.P:
+                        throw new NotImplementedException();
+
+                    default:
+                        Console.CursorTop--;
+                        break;
+                }
+            } while (true);
         }
     }
 }
