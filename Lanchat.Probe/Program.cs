@@ -36,7 +36,8 @@ namespace Lanchat.Probe
                         break;
 
                     case ConsoleKey.P:
-                        throw new NotImplementedException();
+                        _ = new P2PMode();
+                        break;
 
                     default:
                         Console.CursorTop--;
