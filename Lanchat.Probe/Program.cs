@@ -1,4 +1,5 @@
 ﻿using System;
+using Lanchat.Probe.Modes;
 
 namespace Lanchat.Probe
 {

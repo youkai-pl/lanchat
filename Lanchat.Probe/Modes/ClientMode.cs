@@ -3,7 +3,7 @@ using System.Net;
 using Lanchat.Core.Network;
 using Lanchat.Probe.Handlers;
 
-namespace Lanchat.Probe
+namespace Lanchat.Probe.Modes
 {
     public class ClientMode
     {
