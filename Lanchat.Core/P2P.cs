@@ -18,6 +18,17 @@ namespace Lanchat.Core
         public Server Server { get; }
         public List<Node> OutgoingConnections { get; }
 
+        public List<Node> Nodes
+        {
+            get
+            {
+                var nodes = new List<Node>();
+                nodes.AddRange(OutgoingConnections);
+                nodes.AddRange(Server.IncomingConnections);
+                return nodes;
+            }
+        }
+
         public Client Connect(string ipAddress)
         {
             var client = new Client(ipAddress, port);
@@ -28,8 +39,7 @@ namespace Lanchat.Core
 
         public void BroadcastMessage(string message)
         {
-            Server.IncomingConnections.ForEach(x => x.SendMessage(message));
-            OutgoingConnections.ForEach(x => x.SendMessage(message));
+            Nodes.ForEach(x => x.SendMessage(message));
         }
     }
 }
