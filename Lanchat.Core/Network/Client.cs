@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -21,6 +22,16 @@ namespace Lanchat.Core.Network
         public event EventHandler Disconnected;
         public event EventHandler<string> MessageReceived;
         public event EventHandler<SocketError> SocketErrored;
+
+        public Guid GetId()
+        {
+            return Id;
+        }
+
+        public EndPoint GetEndPoint()
+        {
+            return Endpoint;
+        }
 
         public void DisconnectAndStop()
         {

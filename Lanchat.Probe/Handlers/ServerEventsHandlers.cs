@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Net.Sockets;
 using Lanchat.Core;
 using Lanchat.Core.Network;
@@ -19,7 +19,7 @@ namespace Lanchat.Probe.Handlers
         private void ServerOnSessionCreated(object sender, Session e)
         {
             Console.WriteLine($"Session created {e.Id}");
-            _ = new SessionEventsHandlers(e);
+            _ = new EventsHandlers(e);
         }
 
         private void ServerOnServerErrored(object sender, SocketError e)

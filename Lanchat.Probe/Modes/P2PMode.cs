@@ -21,7 +21,7 @@ namespace Lanchat.Probe.Modes
                 if (IPAddress.TryParse(input!, out _))
                 {
                     var client = p2p.Connect(input);
-                    _ = new ClientEventsHandlers(client);
+                    _ = new EventsHandlers(client);
                 }
                 else if (string.IsNullOrEmpty(input))
                 {
