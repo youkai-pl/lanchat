@@ -33,7 +33,7 @@ namespace Lanchat.Probe
                     p2p.SendEverywhere(input);
                 }
                 
-                Console.WriteLine(p2p.Nodes.Count);
+                Console.WriteLine(p2p.ConnectedClients.Count);
             }
         }
     }
