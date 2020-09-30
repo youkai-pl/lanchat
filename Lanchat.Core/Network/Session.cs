@@ -13,19 +13,19 @@ namespace Lanchat.Core.Network
         }
 
         public Node Node { get; }
-        public event EventHandler SessionConnected;
-        public event EventHandler SessionDisconnected;
+        public event EventHandler Connected;
+        public event EventHandler Disconnected;
         public event EventHandler<string> MessageReceived;
-        public event EventHandler<SocketError> SessionErrored;
+        public event EventHandler<SocketError> SocketErrored;
 
         protected override void OnConnected()
         {
-            SessionConnected?.Invoke(this, EventArgs.Empty);
+            Connected?.Invoke(this, EventArgs.Empty);
         }
 
         protected override void OnDisconnected()
         {
-            SessionDisconnected?.Invoke(this, EventArgs.Empty);
+            Disconnected?.Invoke(this, EventArgs.Empty);
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
@@ -36,7 +36,7 @@ namespace Lanchat.Core.Network
 
         protected override void OnError(SocketError error)
         {
-            SessionErrored?.Invoke(this, error);
+            SocketErrored?.Invoke(this, error);
         }
     }
 }

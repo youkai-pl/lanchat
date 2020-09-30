@@ -17,10 +17,10 @@ namespace Lanchat.Core.Network
 
         public Node Node { get; }
 
-        public event EventHandler ClientConnected;
-        public event EventHandler ClientDisconnected;
+        public event EventHandler Connected;
+        public event EventHandler Disconnected;
         public event EventHandler<string> MessageReceived;
-        public event EventHandler<SocketError> ClientErrored;
+        public event EventHandler<SocketError> SocketErrored;
 
         public void DisconnectAndStop()
         {
@@ -34,12 +34,12 @@ namespace Lanchat.Core.Network
 
         protected override void OnConnected()
         {
-            ClientConnected?.Invoke(this, EventArgs.Empty);
+            Connected?.Invoke(this, EventArgs.Empty);
         }
 
         protected override void OnDisconnected()
         {
-            ClientDisconnected?.Invoke(this, EventArgs.Empty);
+            Disconnected?.Invoke(this, EventArgs.Empty);
 
             // Try reconnect after while
             Thread.Sleep(1000);
@@ -57,7 +57,7 @@ namespace Lanchat.Core.Network
 
         protected override void OnError(SocketError error)
         {
-            ClientErrored?.Invoke(this, error);
+            SocketErrored?.Invoke(this, error);
         }
     }
 }

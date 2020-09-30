@@ -11,13 +11,13 @@ namespace Lanchat.Probe.Handlers
         public ClientEventsHandlers(Client client)
         {
             this.client = client;
-            client.ClientConnected += ClientOnClientConnected;
-            client.ClientDisconnected += ClientOnClientDisconnected;
+            client.Connected += ClientOnClientConnected;
+            client.Disconnected += ClientOnClientDisconnected;
             client.MessageReceived += ClientOnMessageReceived;
-            client.ClientErrored += ClientOnClientErrored;
+            client.SocketErrored += ClientOnSocketErrored;
         }
 
-        private void ClientOnClientErrored(object sender, SocketError e)
+        private void ClientOnSocketErrored(object sender, SocketError e)
         {
             Console.WriteLine("Client error");
             Console.WriteLine($"{client.Id} / {e}");

@@ -21,7 +21,7 @@ namespace Lanchat.Core
         protected override TcpSession CreateSession()
         {
             var session = new Session(this);
-            session.SessionDisconnected += SessionOnSessionDisconnected;
+            session.Disconnected += SessionOnSessionDisconnected;
             IncomingConnections.Add(session.Node);
             SessionCreated?.Invoke(this, session);
             return session;

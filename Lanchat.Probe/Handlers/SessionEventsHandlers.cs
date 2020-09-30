@@ -12,12 +12,12 @@ namespace Lanchat.Probe.Handlers
         {
             this.session = session;
             session.MessageReceived += SessionOnMessageReceived;
-            session.SessionConnected += SessionOnSessionConnected;
-            session.SessionDisconnected += SessionOnSessionDisconnected;
-            session.SessionErrored += SessionOnSessionErrored;
+            session.Connected += SessionOnSessionConnected;
+            session.Disconnected += SessionOnSessionDisconnected;
+            session.SocketErrored += SocketOnSocketErrored;
         }
 
-        private void SessionOnSessionErrored(object sender, SocketError e)
+        private void SocketOnSocketErrored(object sender, SocketError e)
         {
             Console.WriteLine("Session error");
             Console.WriteLine($"{session.Id} / {e}");
