@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text;
+using Lanchat.Core.Models;
 using NetCoreServer;
 
 namespace Lanchat.Core
 {
-    public class Session : TcpSession
+    public class Session : TcpSession, INetworkElement
     {
+        public NetworkOutput NetworkOutput { get; }
         public event EventHandler SessionConnected;
         public event EventHandler SessionDisconnected;
         public event EventHandler<string> MessageReceived;
@@ -14,6 +16,7 @@ namespace Lanchat.Core
         
         public Session(TcpServer server) : base(server)
         {
+            NetworkOutput = new NetworkOutput(this);
         }
 
         protected override void OnConnected()

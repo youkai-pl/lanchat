@@ -2,14 +2,17 @@
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Lanchat.Core.Models;
 using TcpClient = NetCoreServer.TcpClient;
 
 namespace Lanchat.Core
 {
-    public class Client : TcpClient
+    public class Client : TcpClient, INetworkElement
     {
         private bool stop;
-
+        
+        public NetworkOutput NetworkOutput { get; }
+        
         public event EventHandler ClientConnected;
         public event EventHandler ClientDisconnected;
         public event EventHandler<string> MessageReceived;
@@ -17,6 +20,7 @@ namespace Lanchat.Core
 
         public Client(string address, int port) : base(address, port)
         {
+            NetworkOutput = new NetworkOutput(this);
         }
 
         public void DisconnectAndStop()
