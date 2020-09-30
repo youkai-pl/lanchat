@@ -23,7 +23,7 @@ namespace Lanchat.Probe
                     break;
                 }
 
-                server.Multicast(input);
+                server.IncomingConnections.ForEach(x => x.SendMessage(input));
             }
 
             Console.WriteLine("Stopping");

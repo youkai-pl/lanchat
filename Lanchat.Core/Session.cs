@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text;
-using Lanchat.Core.Models;
 using NetCoreServer;
 
 namespace Lanchat.Core
