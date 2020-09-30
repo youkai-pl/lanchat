@@ -9,7 +9,7 @@ namespace Lanchat.Core.Network
         bool SendAsync(string text);
         Guid GetId();
         EndPoint GetEndPoint();
-        
+
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler<SocketError> SocketErrored;

@@ -9,6 +9,7 @@ namespace Lanchat.Probe.Modes
     {
         public P2PMode()
         {
+            // ReSharper disable once InconsistentNaming
             var p2p = new P2P(3645);
             _ = new ServerEventsHandlers(p2p.Server);
             p2p.Server.Start();

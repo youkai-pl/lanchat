@@ -15,6 +15,12 @@ namespace Lanchat.Core
         }
 
         public List<Node> IncomingConnections { get; }
+
+        public void BroadcastMessage(string message)
+        {
+            IncomingConnections.ForEach(x => x.SendMessage(message));
+        }
+
         public event EventHandler<SocketError> ServerErrored;
         public event EventHandler<Session> SessionCreated;
 
@@ -36,11 +42,6 @@ namespace Lanchat.Core
         protected override void OnError(SocketError error)
         {
             ServerErrored?.Invoke(this, error);
-        }
-
-        public void BroadcastMessage(string message)
-        {
-            IncomingConnections.ForEach(x => x.SendMessage(message));
         }
     }
 }

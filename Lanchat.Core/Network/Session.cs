@@ -14,6 +14,7 @@ namespace Lanchat.Core.Network
         }
 
         public Node Node { get; }
+
         public Guid GetId()
         {
             return Id;

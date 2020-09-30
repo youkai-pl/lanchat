@@ -29,17 +29,17 @@ namespace Lanchat.Core
             }
         }
 
+        public void BroadcastMessage(string message)
+        {
+            Nodes.ForEach(x => x.SendMessage(message));
+        }
+
         public Client Connect(string ipAddress)
         {
             var client = new Client(ipAddress, port);
             OutgoingConnections.Add(client.Node);
             client.ConnectAsync();
             return client;
-        }
-
-        public void BroadcastMessage(string message)
-        {
-            Nodes.ForEach(x => x.SendMessage(message));
         }
     }
 }

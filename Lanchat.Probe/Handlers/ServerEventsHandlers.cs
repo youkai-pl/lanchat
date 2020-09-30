@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Net.Sockets;
 using Lanchat.Core;
 using Lanchat.Core.Network;
@@ -7,11 +7,8 @@ namespace Lanchat.Probe.Handlers
 {
     public class ServerEventsHandlers
     {
-        private readonly Server server;
-
         public ServerEventsHandlers(Server server)
         {
-            this.server = server;
             server.ServerErrored += ServerOnServerErrored;
             server.SessionCreated += ServerOnSessionCreated;
         }
