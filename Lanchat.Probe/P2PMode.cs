@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using Lanchat.Core;
 using Lanchat.Probe.Handlers;
@@ -24,7 +23,7 @@ namespace Lanchat.Probe
                     var client = p2p.Connect(input);
                     _ = new ClientEventsHandlers(client);
                 }
-                else if(string.IsNullOrEmpty(input))
+                else if (string.IsNullOrEmpty(input))
                 {
                     break;
                 }
@@ -32,7 +31,7 @@ namespace Lanchat.Probe
                 {
                     p2p.SendEverywhere(input);
                 }
-                
+
                 Console.WriteLine(p2p.OutgoingConnections.Count);
             }
         }

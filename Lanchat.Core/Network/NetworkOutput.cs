@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Network
 {
     public class NetworkOutput
     {

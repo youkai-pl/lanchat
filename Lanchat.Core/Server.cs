@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using Lanchat.Core.Network;
 using NetCoreServer;
 
 namespace Lanchat.Core
 {
     public class Server : TcpServer
     {
-        public List<NetworkOutput> IncomingConnections { get; }
-        public event EventHandler<SocketError> ServerErrored;
-        public event EventHandler<Session> SessionCreated;
-
         public Server(IPAddress address, int port) : base(address, port)
         {
             IncomingConnections = new List<NetworkOutput>();
         }
+
+        public List<NetworkOutput> IncomingConnections { get; }
+        public event EventHandler<SocketError> ServerErrored;
+        public event EventHandler<Session> SessionCreated;
 
         protected override TcpSession CreateSession()
         {

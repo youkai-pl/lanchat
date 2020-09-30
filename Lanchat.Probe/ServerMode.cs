@@ -11,7 +11,7 @@ namespace Lanchat.Probe
         {
             var server = new Server(IPAddress.Any, port);
             _ = new ServerEventsHandlers(server);
-            
+
             server.Start();
             Console.WriteLine($"Server started on port {server.Endpoint.Port}");
 

@@ -9,7 +9,7 @@ namespace Lanchat.Probe
         public static void Main(string[] args)
         {
             _port = 3645;
-            
+
             Console.WriteLine("Lanchat debug tool");
             Console.WriteLine("");
             Console.WriteLine("Select mode by pressing key: ");
@@ -22,7 +22,7 @@ namespace Lanchat.Probe
             do
             {
                 Console.Write(">");
-                
+
                 var option = Console.ReadKey();
                 Console.Write("\r" + new string(' ', Console.WindowWidth) + "\r");
 
@@ -40,7 +40,7 @@ namespace Lanchat.Probe
                     case ConsoleKey.P:
                         _ = new P2PMode();
                         break;
-                    
+
                     case ConsoleKey.Q:
                         return;
 

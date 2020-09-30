@@ -2,26 +2,25 @@
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using Lanchat.Core.Models;
 using TcpClient = NetCoreServer.TcpClient;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Network
 {
     public class Client : TcpClient, INetworkElement
     {
         private bool stop;
-        
-        public NetworkOutput NetworkOutput { get; }
-        
-        public event EventHandler ClientConnected;
-        public event EventHandler ClientDisconnected;
-        public event EventHandler<string> MessageReceived;
-        public event EventHandler<SocketError> ClientErrored; 
 
         public Client(string address, int port) : base(address, port)
         {
             NetworkOutput = new NetworkOutput(this);
         }
+
+        public NetworkOutput NetworkOutput { get; }
+
+        public event EventHandler ClientConnected;
+        public event EventHandler ClientDisconnected;
+        public event EventHandler<string> MessageReceived;
+        public event EventHandler<SocketError> ClientErrored;
 
         public void DisconnectAndStop()
         {
@@ -41,7 +40,7 @@ namespace Lanchat.Core
         protected override void OnDisconnected()
         {
             ClientDisconnected?.Invoke(this, EventArgs.Empty);
-            
+
             // Try reconnect after while
             Thread.Sleep(1000);
             if (!stop)

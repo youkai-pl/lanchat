@@ -3,20 +3,20 @@ using System.Net.Sockets;
 using System.Text;
 using NetCoreServer;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Network
 {
     public class Session : TcpSession, INetworkElement
     {
+        public Session(TcpServer server) : base(server)
+        {
+            NetworkOutput = new NetworkOutput(this);
+        }
+
         public NetworkOutput NetworkOutput { get; }
         public event EventHandler SessionConnected;
         public event EventHandler SessionDisconnected;
         public event EventHandler<string> MessageReceived;
         public event EventHandler<SocketError> SessionErrored;
-        
-        public Session(TcpServer server) : base(server)
-        {
-            NetworkOutput = new NetworkOutput(this);
-        }
 
         protected override void OnConnected()
         {

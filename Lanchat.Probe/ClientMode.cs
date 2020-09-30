@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using Lanchat.Core;
+using Lanchat.Core.Network;
 using Lanchat.Probe.Handlers;
 
 namespace Lanchat.Probe
@@ -16,10 +16,10 @@ namespace Lanchat.Probe
             {
                 ipAddress = "127.0.0.1";
             }
-            
+
             var client = new Client(ipAddress, port);
             _ = new ClientEventsHandlers(client);
-            
+
             Console.WriteLine($"Client connecting to {ipAddress}");
             client.ConnectAsync();
 

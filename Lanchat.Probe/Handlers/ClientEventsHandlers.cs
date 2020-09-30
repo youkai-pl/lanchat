@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
-using Lanchat.Core;
+using Lanchat.Core.Network;
 
 namespace Lanchat.Probe.Handlers
 {
