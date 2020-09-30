@@ -7,14 +7,14 @@ using NetCoreServer;
 
 namespace Lanchat.Core
 {
-    public class Server : TcpServer
+    public class Server : TcpServer, INetwork
     {
         public Server(IPAddress address, int port) : base(address, port)
         {
-            IncomingConnections = new List<NetworkOutput>();
+            IncomingConnections = new List<Node>();
         }
 
-        public List<NetworkOutput> IncomingConnections { get; }
+        public List<Node> IncomingConnections { get; }
         public event EventHandler<SocketError> ServerErrored;
         public event EventHandler<Session> SessionCreated;
 
@@ -22,7 +22,7 @@ namespace Lanchat.Core
         {
             var session = new Session(this);
             session.SessionDisconnected += SessionOnSessionDisconnected;
-            IncomingConnections.Add(session.NetworkOutput);
+            IncomingConnections.Add(session.Node);
             SessionCreated?.Invoke(this, session);
             return session;
         }
@@ -30,12 +30,17 @@ namespace Lanchat.Core
         private void SessionOnSessionDisconnected(object sender, EventArgs e)
         {
             var session = (Session) sender;
-            IncomingConnections.Remove(session.NetworkOutput);
+            IncomingConnections.Remove(session.Node);
         }
 
         protected override void OnError(SocketError error)
         {
             ServerErrored?.Invoke(this, error);
+        }
+
+        public void BroadcastMessage(string message)
+        {
+            IncomingConnections.ForEach(x => x.SendMessage(message));
         }
     }
 }

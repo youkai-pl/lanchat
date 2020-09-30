@@ -29,7 +29,7 @@ namespace Lanchat.Probe.Modes
                 }
                 else
                 {
-                    p2p.SendEverywhere(input);
+                    p2p.BroadcastMessage(input);
                 }
 
                 Console.WriteLine(p2p.OutgoingConnections.Count);

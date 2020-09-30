@@ -4,29 +4,29 @@ using Lanchat.Core.Network;
 
 namespace Lanchat.Core
 {
-    public class P2P
+    public class P2P : INetwork
     {
         private readonly int port;
 
         public P2P(int port)
         {
             this.port = port;
-            OutgoingConnections = new List<NetworkOutput>();
+            OutgoingConnections = new List<Node>();
             Server = new Server(IPAddress.Any, port);
         }
 
         public Server Server { get; }
-        public List<NetworkOutput> OutgoingConnections { get; }
+        public List<Node> OutgoingConnections { get; }
 
         public Client Connect(string ipAddress)
         {
             var client = new Client(ipAddress, port);
-            OutgoingConnections.Add(client.NetworkOutput);
+            OutgoingConnections.Add(client.Node);
             client.ConnectAsync();
             return client;
         }
 
-        public void SendEverywhere(string message)
+        public void BroadcastMessage(string message)
         {
             Server.IncomingConnections.ForEach(x => x.SendMessage(message));
             OutgoingConnections.ForEach(x => x.SendMessage(message));

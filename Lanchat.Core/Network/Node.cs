@@ -3,11 +3,11 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network
 {
-    public class NetworkOutput
+    public class Node
     {
         private readonly INetworkElement networkElement;
 
-        public NetworkOutput(INetworkElement networkElement)
+        public Node(INetworkElement networkElement)
         {
             this.networkElement = networkElement;
         }

@@ -24,7 +24,7 @@ namespace Lanchat.Probe.Modes
                 }
 
                 Console.WriteLine(server.IncomingConnections.Count);
-                server.IncomingConnections.ForEach(x => x.SendMessage(input));
+                server.BroadcastMessage(input);
             }
 
             Console.WriteLine("Stopping");

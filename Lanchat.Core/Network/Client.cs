@@ -12,10 +12,10 @@ namespace Lanchat.Core.Network
 
         public Client(string address, int port) : base(address, port)
         {
-            NetworkOutput = new NetworkOutput(this);
+            Node = new Node(this);
         }
 
-        public NetworkOutput NetworkOutput { get; }
+        public Node Node { get; }
 
         public event EventHandler ClientConnected;
         public event EventHandler ClientDisconnected;

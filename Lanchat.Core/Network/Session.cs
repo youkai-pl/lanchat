@@ -9,10 +9,10 @@ namespace Lanchat.Core.Network
     {
         public Session(TcpServer server) : base(server)
         {
-            NetworkOutput = new NetworkOutput(this);
+            Node = new Node(this);
         }
 
-        public NetworkOutput NetworkOutput { get; }
+        public Node Node { get; }
         public event EventHandler SessionConnected;
         public event EventHandler SessionDisconnected;
         public event EventHandler<string> MessageReceived;
