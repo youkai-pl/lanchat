@@ -20,9 +20,16 @@ namespace Lanchat.Core
         protected override TcpSession CreateSession()
         {
             var session = new Session(this);
+            session.SessionDisconnected += SessionOnSessionDisconnected;
             IncomingConnections.Add(session.NetworkOutput);
             SessionCreated?.Invoke(this, session);
             return session;
+        }
+
+        private void SessionOnSessionDisconnected(object sender, EventArgs e)
+        {
+            var session = (Session) sender;
+            IncomingConnections.Remove(session.NetworkOutput);
         }
 
         protected override void OnError(SocketError error)

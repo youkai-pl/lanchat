@@ -23,6 +23,7 @@ namespace Lanchat.Probe
                     break;
                 }
 
+                Console.WriteLine(server.IncomingConnections.Count);
                 server.IncomingConnections.ForEach(x => x.SendMessage(input));
             }
 
