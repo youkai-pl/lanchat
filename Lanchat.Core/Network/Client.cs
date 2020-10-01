@@ -6,19 +6,17 @@ using TcpClient = NetCoreServer.TcpClient;
 
 namespace Lanchat.Core.Network
 {
-    public class Client : TcpClient, INode
+    public class Client : TcpClient, INetworkElement
     {
         private bool stop;
 
         public Client(string address, int port) : base(address, port)
         {
-            Output = new Output(this);
         }
 
-        public Output Output { get; }
         public event EventHandler Connected;
         public event EventHandler Disconnected;
-        public event EventHandler<string> MessageReceived;
+        public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
 
         public void DisconnectAndStop()
@@ -51,7 +49,7 @@ namespace Lanchat.Core.Network
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
             var message = Encoding.UTF8.GetString(buffer, (int) offset, (int) size);
-            MessageReceived?.Invoke(this, message);
+            DataReceived?.Invoke(this, message);
         }
 
         protected override void OnError(SocketError error)

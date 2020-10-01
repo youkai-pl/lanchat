@@ -10,32 +10,33 @@ namespace Lanchat.Core.Network
     {
         public Server(IPAddress address, int port) : base(address, port)
         {
-            IncomingConnections = new List<INode>();
+            IncomingConnections = new List<Node>();
         }
 
-        public List<INode> IncomingConnections { get; }
+        public List<Node> IncomingConnections { get; }
 
         public void BroadcastMessage(string message)
         {
-            IncomingConnections.ForEach(x => x.Output.SendMessage(message));
+            IncomingConnections.ForEach(x => x.SendMessage(message));
         }
 
         public event EventHandler<SocketError> ServerErrored;
-        public event EventHandler<Session> SessionCreated;
+        public event EventHandler<Node> SessionCreated;
 
         protected override TcpSession CreateSession()
         {
             var session = new Session(this);
+            var node = new Node(session);
             session.Disconnected += SessionOnSessionDisconnected;
-            IncomingConnections.Add(session);
-            SessionCreated?.Invoke(this, session);
+            IncomingConnections.Add(new Node(session));
+            SessionCreated?.Invoke(this, node);
             return session;
         }
 
         private void SessionOnSessionDisconnected(object sender, EventArgs e)
         {
             var session = (Session) sender;
-            IncomingConnections.Remove(session);
+            IncomingConnections.Remove(IncomingConnections.Find(x => x.Id == session.Id));
         }
 
         protected override void OnError(SocketError error)

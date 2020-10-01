@@ -13,7 +13,7 @@ namespace Lanchat.Probe.Handlers
             server.SessionCreated += ServerOnSessionCreated;
         }
 
-        private void ServerOnSessionCreated(object sender, Session e)
+        private void ServerOnSessionCreated(object sender, Node e)
         {
             Console.WriteLine($"Session created {e.Id}");
             _ = new EventsHandlers(e);

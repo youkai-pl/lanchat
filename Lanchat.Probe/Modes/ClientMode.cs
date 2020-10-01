@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Lanchat.Core;
 using Lanchat.Core.Network;
 using Lanchat.Probe.Handlers;
 
@@ -18,7 +19,8 @@ namespace Lanchat.Probe.Modes
             }
 
             var client = new Client(ipAddress, port);
-            _ = new EventsHandlers(client);
+            var node = new Node(client);
+            _ = new EventsHandlers(node);
 
             Console.WriteLine($"Client connecting to {ipAddress}");
             client.ConnectAsync();
@@ -31,7 +33,7 @@ namespace Lanchat.Probe.Modes
                     break;
                 }
 
-                client.Output.SendMessage(input);
+                node.SendMessage(input);
             }
 
             Console.WriteLine("Stopping");

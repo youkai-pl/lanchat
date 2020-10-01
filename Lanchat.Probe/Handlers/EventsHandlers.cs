@@ -7,12 +7,12 @@ namespace Lanchat.Probe.Handlers
 {
     public class EventsHandlers
     {
-        private readonly INode node;
+        private readonly Node node;
 
-        public EventsHandlers(INode node)
+        public EventsHandlers(Node node)
         {
             this.node = node;
-            node.MessageReceived += OnMessageReceived;
+            node.DataReceived += OnDataReceived;
             node.Connected += OnSessionConnected;
             node.Disconnected += OnSessionDisconnected;
             node.SocketErrored += OnSocketErrored;
@@ -39,7 +39,7 @@ namespace Lanchat.Probe.Handlers
             Console.WriteLine("");
         }
 
-        private void OnMessageReceived(object sender, string e)
+        private void OnDataReceived(object sender, string e)
         {
             Console.WriteLine("Received");
             Console.WriteLine($"{node.Id} / {node.Endpoint}");
