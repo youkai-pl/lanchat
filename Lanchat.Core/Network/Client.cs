@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -13,10 +12,15 @@ namespace Lanchat.Core.Network
 
         public Client(string address, int port) : base(address, port)
         {
-            Node = new Node(this);
+            Io = new Io(this);
         }
 
-        public Node Node { get; }
+        public void SendMessage(string text)
+        {
+            Io.SendMessage(text);
+        }
+
+        public Io Io { get; }
 
         public event EventHandler Connected;
         public event EventHandler Disconnected;

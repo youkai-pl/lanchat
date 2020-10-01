@@ -31,7 +31,7 @@ namespace Lanchat.Probe.Modes
                     break;
                 }
 
-                client.Node.SendMessage(input);
+                client.SendMessage(input);
             }
 
             Console.WriteLine("Stopping");

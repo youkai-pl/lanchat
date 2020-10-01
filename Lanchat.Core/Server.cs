@@ -11,14 +11,14 @@ namespace Lanchat.Core
     {
         public Server(IPAddress address, int port) : base(address, port)
         {
-            IncomingConnections = new List<Node>();
+            IncomingConnections = new List<INetworkElement>();
         }
 
-        public List<Node> IncomingConnections { get; }
+        public List<INetworkElement> IncomingConnections { get; }
 
         public void BroadcastMessage(string message)
         {
-            IncomingConnections.ForEach(x => x.SendMessage(message));
+            IncomingConnections.ForEach(x => x.Io.SendMessage(message));
         }
 
         public event EventHandler<SocketError> ServerErrored;
@@ -28,7 +28,7 @@ namespace Lanchat.Core
         {
             var session = new Session(this);
             session.Disconnected += SessionOnSessionDisconnected;
-            IncomingConnections.Add(session.Node);
+            IncomingConnections.Add(session);
             SessionCreated?.Invoke(this, session);
             return session;
         }
@@ -36,7 +36,7 @@ namespace Lanchat.Core
         private void SessionOnSessionDisconnected(object sender, EventArgs e)
         {
             var session = (Session) sender;
-            IncomingConnections.Remove(session.Node);
+            IncomingConnections.Remove(session);
         }
 
         protected override void OnError(SocketError error)

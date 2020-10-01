@@ -6,10 +6,12 @@ namespace Lanchat.Core.Network
 {
     public interface INetworkElement
     {
-        bool SendAsync(string text);
         IPEndPoint Endpoint { get; }
         Guid Id { get; }
 
+        public Io Io { get; }
+        void SendMessage(string text);
+        bool SendAsync(string text);
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler<SocketError> SocketErrored;

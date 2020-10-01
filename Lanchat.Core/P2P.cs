@@ -11,18 +11,18 @@ namespace Lanchat.Core
         public P2P(int port)
         {
             this.port = port;
-            OutgoingConnections = new List<Node>();
+            OutgoingConnections = new List<INetworkElement>();
             Server = new Server(IPAddress.Any, port);
         }
 
         public Server Server { get; }
-        public List<Node> OutgoingConnections { get; }
+        public List<INetworkElement> OutgoingConnections { get; }
 
-        public List<Node> Nodes
+        public List<INetworkElement> Nodes
         {
             get
             {
-                var nodes = new List<Node>();
+                var nodes = new List<INetworkElement>();
                 nodes.AddRange(OutgoingConnections);
                 nodes.AddRange(Server.IncomingConnections);
                 return nodes;
@@ -37,7 +37,7 @@ namespace Lanchat.Core
         public Client Connect(string ipAddress)
         {
             var client = new Client(ipAddress, port);
-            OutgoingConnections.Add(client.Node);
+            OutgoingConnections.Add(client);
             client.ConnectAsync();
             return client;
         }
