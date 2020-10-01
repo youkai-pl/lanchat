@@ -23,16 +23,6 @@ namespace Lanchat.Core.Network
         public event EventHandler<string> MessageReceived;
         public event EventHandler<SocketError> SocketErrored;
 
-        public Guid GetId()
-        {
-            return Id;
-        }
-
-        public EndPoint GetEndPoint()
-        {
-            return Endpoint;
-        }
-
         public void DisconnectAndStop()
         {
             stop = true;

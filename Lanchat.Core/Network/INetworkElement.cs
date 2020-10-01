@@ -7,8 +7,8 @@ namespace Lanchat.Core.Network
     public interface INetworkElement
     {
         bool SendAsync(string text);
-        Guid GetId();
-        EndPoint GetEndPoint();
+        IPEndPoint Endpoint { get; }
+        Guid Id { get; }
 
         public event EventHandler Connected;
         public event EventHandler Disconnected;

@@ -11,37 +11,37 @@ namespace Lanchat.Probe.Handlers
         public EventsHandlers(INetworkElement networkElement)
         {
             this.networkElement = networkElement;
-            networkElement.MessageReceived += SessionOnMessageReceived;
-            networkElement.Connected += SessionOnSessionConnected;
-            networkElement.Disconnected += SessionOnSessionDisconnected;
-            networkElement.SocketErrored += SocketOnSocketErrored;
+            networkElement.MessageReceived += OnMessageReceived;
+            networkElement.Connected += OnSessionConnected;
+            networkElement.Disconnected += OnSessionDisconnected;
+            networkElement.SocketErrored += OnSocketErrored;
         }
 
-        private void SocketOnSocketErrored(object sender, SocketError e)
+        private void OnSocketErrored(object sender, SocketError e)
         {
             Console.WriteLine("Connection error");
-            Console.WriteLine($"{networkElement.GetId()} / {e}");
+            Console.WriteLine($"{networkElement.Id} / {e}");
             Console.WriteLine("");
         }
 
-        private void SessionOnSessionDisconnected(object sender, EventArgs e)
+        private void OnSessionDisconnected(object sender, EventArgs e)
         {
             Console.WriteLine("Disconnected");
-            Console.WriteLine($"{networkElement.GetId()}");
+            Console.WriteLine($"{networkElement.Id}");
             Console.WriteLine("");
         }
 
-        private void SessionOnSessionConnected(object sender, EventArgs e)
+        private void OnSessionConnected(object sender, EventArgs e)
         {
             Console.WriteLine("Connected");
-            Console.WriteLine($"{networkElement.GetId()} / {networkElement.GetEndPoint()}");
+            Console.WriteLine($"{networkElement.Id} / {networkElement.Endpoint}");
             Console.WriteLine("");
         }
 
-        private void SessionOnMessageReceived(object sender, string e)
+        private void OnMessageReceived(object sender, string e)
         {
             Console.WriteLine("Received");
-            Console.WriteLine($"{networkElement.GetId()} / {networkElement.GetEndPoint()}");
+            Console.WriteLine($"{networkElement.Id} / {networkElement.Endpoint}");
             Console.WriteLine(e);
             Console.WriteLine("");
         }

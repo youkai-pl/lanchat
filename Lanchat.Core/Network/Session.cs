@@ -14,17 +14,7 @@ namespace Lanchat.Core.Network
         }
 
         public Node Node { get; }
-
-        public Guid GetId()
-        {
-            return Id;
-        }
-
-        public EndPoint GetEndPoint()
-        {
-            return Socket.RemoteEndPoint;
-        }
-
+        public IPEndPoint Endpoint => (IPEndPoint) Socket.RemoteEndPoint;
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler<string> MessageReceived;
