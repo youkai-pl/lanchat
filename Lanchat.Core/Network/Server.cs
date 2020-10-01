@@ -6,7 +6,7 @@ using NetCoreServer;
 
 namespace Lanchat.Core.Network
 {
-    public class Server : TcpServer, INetwork
+    public class Server : TcpServer
     {
         public Server(IPAddress address, int port) : base(address, port)
         {

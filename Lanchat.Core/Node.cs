@@ -6,7 +6,7 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core
 {
-    public class Node
+    public class Node : INetworkElement
     {
         private readonly INetworkElement networkElement;
 
@@ -21,7 +21,6 @@ namespace Lanchat.Core
 
         public Guid Id => networkElement.Id;
         public IPEndPoint Endpoint => networkElement.Endpoint;
-
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler<SocketError> SocketErrored;
@@ -53,7 +52,9 @@ namespace Lanchat.Core
         {
             var data = new DataWrapper<Message>(new Message {Content = content});
             var json = JsonSerializer.Serialize(data);
-            networkElement.SendAsync(json);
+            SendAsync(json);
         }
+        
+        public bool SendAsync(string text) => networkElement.SendAsync(text);
     }
 }

@@ -3,7 +3,7 @@ using System.Net;
 
 namespace Lanchat.Core.Network
 {
-    public class P2P : INetwork
+    public class P2P
     {
         private readonly int port;
 
