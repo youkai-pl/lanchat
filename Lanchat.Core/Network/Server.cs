@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using Lanchat.Core.Network;
 using NetCoreServer;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Network
 {
     public class Server : TcpServer, INetwork
     {

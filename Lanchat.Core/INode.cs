@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using Lanchat.Core.Network;
 
-namespace Lanchat.Core.Network
+namespace Lanchat.Core
 {
     public interface INode
     {
