@@ -6,25 +6,20 @@ using NetCoreServer;
 
 namespace Lanchat.Core.Network
 {
-    public class Session : TcpSession, INetworkElement
+    public class Session : TcpSession, INode
     {
         public Session(TcpServer server) : base(server)
         {
-            Io = new Io(this);
+            Output = new Output(this);
         }
 
-        public Io Io { get; }
+        public Output Output { get; }
         public IPEndPoint Endpoint => (IPEndPoint) Socket.RemoteEndPoint;
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler<string> MessageReceived;
         public event EventHandler<SocketError> SocketErrored;
 
-        public void SendMessage(string text)
-        {
-            Io.SendMessage(text);
-        }
-        
         protected override void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);

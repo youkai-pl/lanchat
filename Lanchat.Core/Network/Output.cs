@@ -3,20 +3,20 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network
 {
-    public class Io
+    public class Output
     {
-        private readonly INetworkElement networkElement;
+        private readonly INode node;
 
-        public Io(INetworkElement networkElement)
+        public Output(INode node)
         {
-            this.networkElement = networkElement;
+            this.node = node;
         }
 
         public void SendMessage(string content)
         {
             var data = new DataWrapper<Message>(new Message {Content = content});
             var json = JsonSerializer.Serialize(data);
-            networkElement.SendAsync(json);
+            node.SendAsync(json);
         }
     }
 }

@@ -6,22 +6,16 @@ using TcpClient = NetCoreServer.TcpClient;
 
 namespace Lanchat.Core.Network
 {
-    public class Client : TcpClient, INetworkElement
+    public class Client : TcpClient, INode
     {
         private bool stop;
 
         public Client(string address, int port) : base(address, port)
         {
-            Io = new Io(this);
+            Output = new Output(this);
         }
 
-        public void SendMessage(string text)
-        {
-            Io.SendMessage(text);
-        }
-
-        public Io Io { get; }
-
+        public Output Output { get; }
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler<string> MessageReceived;

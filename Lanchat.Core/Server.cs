@@ -11,14 +11,14 @@ namespace Lanchat.Core
     {
         public Server(IPAddress address, int port) : base(address, port)
         {
-            IncomingConnections = new List<INetworkElement>();
+            IncomingConnections = new List<INode>();
         }
 
-        public List<INetworkElement> IncomingConnections { get; }
+        public List<INode> IncomingConnections { get; }
 
         public void BroadcastMessage(string message)
         {
-            IncomingConnections.ForEach(x => x.Io.SendMessage(message));
+            IncomingConnections.ForEach(x => x.Output.SendMessage(message));
         }
 
         public event EventHandler<SocketError> ServerErrored;

@@ -4,13 +4,11 @@ using System.Net.Sockets;
 
 namespace Lanchat.Core.Network
 {
-    public interface INetworkElement
+    public interface INode
     {
+        public Output Output { get; }
         IPEndPoint Endpoint { get; }
         Guid Id { get; }
-
-        public Io Io { get; }
-        void SendMessage(string text);
         bool SendAsync(string text);
         public event EventHandler Connected;
         public event EventHandler Disconnected;
