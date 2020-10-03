@@ -11,7 +11,8 @@ namespace Lanchat.Probe.Handlers
         public NodeEventsHandlers(Node node)
         {
             this.node = node;
-            node.DataReceived += OnDataReceived;
+            node.MessageReceived += OnMessageReceived;
+            node.PingReceived += OnPingReceived;
             node.Connected += OnSessionConnected;
             node.Disconnected += OnSessionDisconnected;
             node.SocketErrored += OnSocketErrored;
@@ -38,11 +39,18 @@ namespace Lanchat.Probe.Handlers
             Console.WriteLine("");
         }
 
-        private void OnDataReceived(object sender, string e)
+        private void OnMessageReceived(object sender, string e)
         {
-            Console.WriteLine("Received");
+            Console.WriteLine("Message received");
             Console.WriteLine($"{node.Id} / {node.Endpoint}");
             Console.WriteLine(e);
+            Console.WriteLine("");
+        }
+        
+        private void OnPingReceived(object sender, EventArgs e)
+        {
+            Console.WriteLine("Ping received");
+            Console.WriteLine($"{node.Id} / {node.Endpoint}");
             Console.WriteLine("");
         }
     }

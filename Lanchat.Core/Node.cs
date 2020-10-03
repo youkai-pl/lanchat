@@ -22,12 +22,18 @@ namespace Lanchat.Core
             networkElement.SocketErrored += OnSocketErrored;
         }
 
+        // Network element properties
         public Guid Id => networkElement.Id;
         public IPEndPoint Endpoint => networkElement.Endpoint;
+        
+        // Network element events
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler<SocketError> SocketErrored;
-        public event EventHandler<string> DataReceived;
+        
+        // Node events
+        public event EventHandler<string> MessageReceived;
+        public event EventHandler PingReceived;
 
         // Events forwarding
         private void OnConnected(object sender, EventArgs e)
@@ -53,11 +59,11 @@ namespace Lanchat.Core
             {
                 case DataTypes.Message:
                     var message = JsonSerializer.Deserialize<Message>(data.Data.ToString());
-                    DataReceived?.Invoke(this, message.Content);
+                    MessageReceived?.Invoke(this, message.Content);
                     break;
                 
                 case DataTypes.Ping:
-                    DataReceived?.Invoke(this, "Ping");
+                    PingReceived?.Invoke(this, EventArgs.Empty);
                     break;
                 
                 default:
@@ -65,11 +71,11 @@ namespace Lanchat.Core
             }
         }
         
-        // Network output
+        // Node output
         public void SendMessage(string content) => networkOutput.SendMessage(content);
         public void SendPing() => networkOutput.SendPing();
         
-        // Client / Session methods
+        // Network element methods
         internal bool SendAsync(string text) => networkElement.SendAsync(text);
     }
 }
