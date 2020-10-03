@@ -24,5 +24,12 @@ namespace Lanchat.Core.Network
             var data = new Wrapper {Type = DataTypes.Ping};
             node.SendAsync(JsonSerializer.Serialize(data));
         }
+
+        internal void SendHandshake()
+        {
+            var handshake = new Handshake {Nickname = "test"};
+            var data = new Wrapper {Type = DataTypes.Handshake, Data = handshake};
+            node.SendAsync(JsonSerializer.Serialize(data));
+        }
     }
 }

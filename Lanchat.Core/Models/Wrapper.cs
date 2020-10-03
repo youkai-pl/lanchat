@@ -9,6 +9,7 @@
     public enum DataTypes
     {
         Message,
-        Ping
+        Ping,
+        Handshake
     }
 }

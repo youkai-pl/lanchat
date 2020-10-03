@@ -22,23 +22,27 @@ namespace Lanchat.Core
             networkElement.DataReceived += OnDataReceived;
             networkElement.SocketErrored += OnSocketErrored;
         }
+        
+        // Node properties
+        public string Nickname { get; set; }
 
         // Network element properties
         public Guid Id => networkElement.Id;
         public IPEndPoint Endpoint => networkElement.Endpoint;
 
+        // Node events
+        public event EventHandler<string> MessageReceived;
+        public event EventHandler PingReceived;
+        
         // Network element events
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler<SocketError> SocketErrored;
 
-        // Node events
-        public event EventHandler<string> MessageReceived;
-        public event EventHandler PingReceived;
-
         // Events forwarding
         private void OnConnected(object sender, EventArgs e)
         {
+            networkOutput.SendHandshake();
             Connected?.Invoke(this, EventArgs.Empty);
         }
 
@@ -69,6 +73,11 @@ namespace Lanchat.Core
                         PingReceived?.Invoke(this, EventArgs.Empty);
                         break;
 
+                    case DataTypes.Handshake:
+                        var handshake = JsonSerializer.Deserialize<Handshake>(data.Data.ToString());
+                        Nickname = handshake.Nickname;
+                        break;
+                    
                     default:
                         Debug.WriteLine("Unknown type received");
                         break;

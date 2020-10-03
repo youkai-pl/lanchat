@@ -42,7 +42,7 @@ namespace Lanchat.Probe.Handlers
         private void OnMessageReceived(object sender, string e)
         {
             Console.WriteLine("Message received");
-            Console.WriteLine($"{node.Id} / {node.Endpoint}");
+            Console.WriteLine($"{node.Nickname} / {node.Id} / {node.Endpoint}");
             Console.WriteLine(e);
             Console.WriteLine("");
         }
@@ -50,7 +50,7 @@ namespace Lanchat.Probe.Handlers
         private void OnPingReceived(object sender, EventArgs e)
         {
             Console.WriteLine("Ping received");
-            Console.WriteLine($"{node.Id} / {node.Endpoint}");
+            Console.WriteLine($"{node.Nickname} / {node.Id} / {node.Endpoint}");
             Console.WriteLine("");
         }
     }
