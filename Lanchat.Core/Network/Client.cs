@@ -44,13 +44,18 @@ namespace Lanchat.Core.Network
 
         protected override void OnDisconnected()
         {
+            // If client isn't reconnecting raise event
+            if (reconnectCounter == 0)
+            {
+                Disconnected?.Invoke(this, EventArgs.Empty);
+            }
+            
             // Try reconnect after while
             Thread.Sleep(1000);
             
             // Stop if reconnect counter is greater than 3 or client disconnected safely
             if (safeDisconnect || reconnectCounter > 3)
             {
-                Disconnected?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
