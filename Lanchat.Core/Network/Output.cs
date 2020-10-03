@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network

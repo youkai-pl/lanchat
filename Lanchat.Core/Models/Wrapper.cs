@@ -2,11 +2,11 @@
 {
     internal class Wrapper
     {
-        internal DataTypes Type { get; set; }
-        internal object Data { get; set; }
+        public DataTypes Type { get; set; }
+        public object Data { get; set; }
     }
 
-    internal enum DataTypes
+    public enum DataTypes
     {
         Message,
         Ping
