@@ -24,7 +24,8 @@ namespace Lanchat.Core
         }
         
         // Node properties
-        public string Nickname { get; set; }
+        public string Nickname { get; private set; }
+        public bool Ready { get; private set; }
 
         // Network element properties
         public Guid Id => networkElement.Id;
@@ -43,7 +44,6 @@ namespace Lanchat.Core
         private void OnConnected(object sender, EventArgs e)
         {
             networkOutput.SendHandshake();
-            Connected?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnDisconnected(object sender, EventArgs e)
@@ -62,6 +62,13 @@ namespace Lanchat.Core
             try
             {
                 var data = JsonSerializer.Deserialize<Wrapper>(e);
+                
+                // If node isn't ready ignore every messages except handshake
+                if (!Ready && data.Type != DataTypes.Handshake)
+                {
+                    return;
+                }
+                
                 switch (data.Type)
                 {
                     case DataTypes.Message:
@@ -76,6 +83,8 @@ namespace Lanchat.Core
                     case DataTypes.Handshake:
                         var handshake = JsonSerializer.Deserialize<Handshake>(data.Data.ToString());
                         Nickname = handshake.Nickname;
+                        Ready = true;
+                        Connected?.Invoke(this, EventArgs.Empty);
                         break;
                     
                     default:

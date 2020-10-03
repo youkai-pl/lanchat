@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network
@@ -15,6 +14,11 @@ namespace Lanchat.Core.Network
 
         internal void SendMessage(string content)
         {
+            if (!node.Ready)
+            {
+                return;
+            }
+            
             var message = new Message {Content = content};
             var data = new Wrapper {Type = DataTypes.Message, Data = message};
             node.SendAsync(JsonSerializer.Serialize(data));
@@ -22,6 +26,11 @@ namespace Lanchat.Core.Network
 
         internal void SendPing()
         {
+            if (!node.Ready)
+            {
+                return;
+            }
+            
             var data = new Wrapper {Type = DataTypes.Ping};
             node.SendAsync(JsonSerializer.Serialize(data));
         }
