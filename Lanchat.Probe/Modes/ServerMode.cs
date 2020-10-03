@@ -23,7 +23,6 @@ namespace Lanchat.Probe.Modes
                     break;
                 }
 
-                Console.WriteLine(server.IncomingConnections.Count);
                 server.BroadcastMessage(input);
             }
 

@@ -8,7 +8,8 @@ namespace Lanchat.Core.Network
 {
     public class Client : TcpClient, INetworkElement
     {
-        private bool stop;
+        private bool safeDisconnect;
+        private int reconnectCounter;
 
         public Client(string address, int port) : base(address, port)
         {
@@ -21,7 +22,7 @@ namespace Lanchat.Core.Network
 
         public void DisconnectAndStop()
         {
-            stop = true;
+            safeDisconnect = true;
             DisconnectAsync();
             while (IsConnected)
             {
@@ -29,21 +30,32 @@ namespace Lanchat.Core.Network
             }
         }
 
+        public override bool Connect()
+        {
+            reconnectCounter = 0;
+            return base.Connect();
+        }
+
         protected override void OnConnected()
         {
+            reconnectCounter = 0;
             Connected?.Invoke(this, EventArgs.Empty);
         }
 
         protected override void OnDisconnected()
         {
-            Disconnected?.Invoke(this, EventArgs.Empty);
-
             // Try reconnect after while
             Thread.Sleep(1000);
-            if (!stop)
+            
+            // Stop if reconnect counter is greater than 3 or client disconnected safely
+            if (safeDisconnect || reconnectCounter > 3)
             {
-                ConnectAsync();
+                Disconnected?.Invoke(this, EventArgs.Empty);
+                return;
             }
+
+            reconnectCounter++;
+            ConnectAsync();
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
