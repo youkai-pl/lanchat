@@ -42,7 +42,7 @@ namespace Lanchat.Core
         // Events forwarding
         private void OnConnected(object sender, EventArgs e)
         {
-            networkOutput.SendHandshake();
+            networkOutput.SendHandshake("test");
             Connected?.Invoke(this, EventArgs.Empty);
         }
 

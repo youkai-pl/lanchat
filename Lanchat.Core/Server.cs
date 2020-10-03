@@ -29,7 +29,7 @@ namespace Lanchat.Core
             var session = new Session(this);
             var node = new Node(session);
             session.Disconnected += SessionOnSessionDisconnected;
-            IncomingConnections.Add(new Node(session));
+            IncomingConnections.Add(node);
             SessionCreated?.Invoke(this, node);
             return session;
         }

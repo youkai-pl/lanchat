@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network
@@ -25,9 +26,9 @@ namespace Lanchat.Core.Network
             node.SendAsync(JsonSerializer.Serialize(data));
         }
 
-        internal void SendHandshake()
+        internal void SendHandshake(string nickname)
         {
-            var handshake = new Handshake {Nickname = "test"};
+            var handshake = new Handshake {Nickname = nickname};
             var data = new Wrapper {Type = DataTypes.Handshake, Data = handshake};
             node.SendAsync(JsonSerializer.Serialize(data));
         }
