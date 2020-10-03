@@ -10,10 +10,12 @@ namespace Lanchat.Core
     public class Node
     {
         private readonly INetworkElement networkElement;
+        private readonly Output networkOutput;
 
         public Node(INetworkElement networkElement)
         {
             this.networkElement = networkElement;
+            networkOutput = new Output(this);
             networkElement.Connected += OnConnected;
             networkElement.Disconnected += OnDisconnected;
             networkElement.DataReceived += OnDataReceived;
@@ -38,24 +40,36 @@ namespace Lanchat.Core
             Disconnected?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnDataReceived(object sender, string e)
-        {
-            DataReceived?.Invoke(this, e);
-        }
-
         private void OnSocketErrored(object sender, SocketError e)
         {
             SocketErrored?.Invoke(this, e);
         }
         
-        // Network IO
-        public void SendMessage(string content)
+        // Network input
+        private void OnDataReceived(object sender, string e)
         {
-            var data = new DataWrapper<Message>(new Message {Content = content});
-            var json = JsonSerializer.Serialize(data);
-            SendAsync(json);
+            var data = JsonSerializer.Deserialize<Wrapper>(e);
+            switch (data.Type)
+            {
+                case DataTypes.Message:
+                    var message = JsonSerializer.Deserialize<Message>(data.Data.ToString());
+                    DataReceived?.Invoke(this, message.Content);
+                    break;
+                
+                case DataTypes.Ping:
+                    DataReceived?.Invoke(this, "Ping");
+                    break;
+                
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
         
-        private bool SendAsync(string text) => networkElement.SendAsync(text);
+        // Network output
+        public void SendMessage(string content) => networkOutput.SendMessage(content);
+        public void SendPing() => networkOutput.SendPing();
+        
+        // Client / Session methods
+        internal bool SendAsync(string text) => networkElement.SendAsync(text);
     }
 }

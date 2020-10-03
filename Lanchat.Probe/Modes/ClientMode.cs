@@ -25,15 +25,25 @@ namespace Lanchat.Probe.Modes
             Console.WriteLine($"Client connecting to {ipAddress}");
             client.ConnectAsync();
 
-            while (true)
+            var loop = true;
+            while (loop)
             {
                 var input = Console.ReadLine();
-                if (string.IsNullOrEmpty(input))
-                {
-                    break;
-                }
 
-                node.SendMessage(input);
+                switch (input)
+                {
+                    case "/q":
+                        loop = false;
+                        break;
+
+                    case "/p":
+                        node.SendPing();
+                        break;
+
+                    default:
+                        node.SendMessage(input);
+                        break;
+                }
             }
 
             Console.WriteLine("Stopping");
