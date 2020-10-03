@@ -10,6 +10,7 @@ namespace Lanchat.Probe.Modes
     {
         public ClientMode(int port)
         {
+            Config.Nickname = "Client";
             Console.Write("IP Address (leave blank to localhost): ");
             var ipAddress = Console.ReadLine();
 

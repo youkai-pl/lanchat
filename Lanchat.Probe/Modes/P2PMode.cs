@@ -9,10 +9,10 @@ namespace Lanchat.Probe.Modes
     {
         public P2PMode()
         {
-            // ReSharper disable once InconsistentNaming
-            var p2p = new P2P(3645);
-            _ = new ServerEventsHandlers(p2p.Server);
-            p2p.Server.Start();
+            Config.Nickname = "P2P";
+            var network = new P2P(3645);
+            _ = new ServerEventsHandlers(network.Server);
+            network.Server.Start();
 
             while (true)
             {
@@ -21,7 +21,7 @@ namespace Lanchat.Probe.Modes
 
                 if (IPAddress.TryParse(input!, out _))
                 {
-                    var client = p2p.Connect(input);
+                    var client = network.Connect(input);
                     _ = new NodeEventsHandlers(client);
                 }
                 else if (string.IsNullOrEmpty(input))
@@ -30,10 +30,10 @@ namespace Lanchat.Probe.Modes
                 }
                 else
                 {
-                    p2p.BroadcastMessage(input);
+                    network.BroadcastMessage(input);
                 }
 
-                Console.WriteLine(p2p.OutgoingConnections.Count);
+                Console.WriteLine(network.OutgoingConnections.Count);
             }
         }
     }

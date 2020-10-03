@@ -26,9 +26,9 @@ namespace Lanchat.Core.Network
             node.SendAsync(JsonSerializer.Serialize(data));
         }
 
-        internal void SendHandshake(string nickname)
+        internal void SendHandshake()
         {
-            var handshake = new Handshake {Nickname = nickname};
+            var handshake = new Handshake {Nickname = Config.Nickname};
             var data = new Wrapper {Type = DataTypes.Handshake, Data = handshake};
             node.SendAsync(JsonSerializer.Serialize(data));
         }

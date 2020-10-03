@@ -9,6 +9,7 @@ namespace Lanchat.Probe.Modes
     {
         public ServerMode(int port)
         {
+            Config.Nickname = "Server";
             var server = new Server(IPAddress.Any, port);
             _ = new ServerEventsHandlers(server);
 
