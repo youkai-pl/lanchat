@@ -4,44 +4,44 @@ using Lanchat.Core;
 
 namespace Lanchat.Probe.Handlers
 {
-    public class EventsHandlers
+    public class NodeEventsHandlers
     {
-        private readonly INetworkElement networkElement;
+        private readonly Node node;
 
-        public EventsHandlers(INetworkElement networkElement)
+        public NodeEventsHandlers(Node node)
         {
-            this.networkElement = networkElement;
-            networkElement.DataReceived += OnDataReceived;
-            networkElement.Connected += OnSessionConnected;
-            networkElement.Disconnected += OnSessionDisconnected;
-            networkElement.SocketErrored += OnSocketErrored;
+            this.node = node;
+            node.DataReceived += OnDataReceived;
+            node.Connected += OnSessionConnected;
+            node.Disconnected += OnSessionDisconnected;
+            node.SocketErrored += OnSocketErrored;
         }
 
         private void OnSocketErrored(object sender, SocketError e)
         {
             Console.WriteLine("Connection error");
-            Console.WriteLine($"{networkElement.Id} / {e}");
+            Console.WriteLine($"{node.Id} / {e}");
             Console.WriteLine("");
         }
 
         private void OnSessionDisconnected(object sender, EventArgs e)
         {
             Console.WriteLine("Disconnected");
-            Console.WriteLine($"{networkElement.Id}");
+            Console.WriteLine($"{node.Id}");
             Console.WriteLine("");
         }
 
         private void OnSessionConnected(object sender, EventArgs e)
         {
             Console.WriteLine("Connected");
-            Console.WriteLine($"{networkElement.Id} / {networkElement.Endpoint}");
+            Console.WriteLine($"{node.Id} / {node.Endpoint}");
             Console.WriteLine("");
         }
 
         private void OnDataReceived(object sender, string e)
         {
             Console.WriteLine("Received");
-            Console.WriteLine($"{networkElement.Id} / {networkElement.Endpoint}");
+            Console.WriteLine($"{node.Id} / {node.Endpoint}");
             Console.WriteLine(e);
             Console.WriteLine("");
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using Lanchat.Core;
-using Lanchat.Core.Network;
 using Lanchat.Probe.Handlers;
 
 namespace Lanchat.Probe.Modes
@@ -23,7 +22,7 @@ namespace Lanchat.Probe.Modes
                 if (IPAddress.TryParse(input!, out _))
                 {
                     var client = p2p.Connect(input);
-                    _ = new EventsHandlers(client);
+                    _ = new NodeEventsHandlers(client);
                 }
                 else if (string.IsNullOrEmpty(input))
                 {

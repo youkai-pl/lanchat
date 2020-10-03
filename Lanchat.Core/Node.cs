@@ -3,10 +3,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
 using Lanchat.Core.Models;
+using Lanchat.Core.Network;
 
 namespace Lanchat.Core
 {
-    public class Node : INetworkElement
+    public class Node
     {
         private readonly INetworkElement networkElement;
 
@@ -55,6 +56,6 @@ namespace Lanchat.Core
             SendAsync(json);
         }
         
-        public bool SendAsync(string text) => networkElement.SendAsync(text);
+        private bool SendAsync(string text) => networkElement.SendAsync(text);
     }
 }

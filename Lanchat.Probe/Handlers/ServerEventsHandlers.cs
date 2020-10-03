@@ -16,7 +16,7 @@ namespace Lanchat.Probe.Handlers
         private void ServerOnSessionCreated(object sender, Node e)
         {
             Console.WriteLine($"Session created {e.Id}");
-            _ = new EventsHandlers(e);
+            _ = new NodeEventsHandlers(e);
         }
 
         private void ServerOnServerErrored(object sender, SocketError e)

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using Lanchat.Core;
-using Lanchat.Core.Network;
 using Lanchat.Probe.Handlers;
 
 namespace Lanchat.Probe.Modes

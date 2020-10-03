@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using Lanchat.Core.Network;
 
-namespace Lanchat.Core.Network
+namespace Lanchat.Core
 {
     public class P2P
     {

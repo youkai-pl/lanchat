@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Network
 {
     public interface INetworkElement
     {
