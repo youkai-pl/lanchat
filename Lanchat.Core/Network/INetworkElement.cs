@@ -9,6 +9,7 @@ namespace Lanchat.Core.Network
         IPEndPoint Endpoint { get; }
         Guid Id { get; }
         bool SendAsync(string text);
+        void Close();
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler<SocketError> SocketErrored;

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 
@@ -22,7 +23,7 @@ namespace Lanchat.Core
             networkElement.DataReceived += OnDataReceived;
             networkElement.SocketErrored += OnSocketErrored;
         }
-        
+
         // Node properties
         public string Nickname { get; private set; }
         public bool Ready { get; private set; }
@@ -34,21 +35,32 @@ namespace Lanchat.Core
         // Node events
         public event EventHandler<string> MessageReceived;
         public event EventHandler PingReceived;
-        
+
         // Network element events
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler<SocketError> SocketErrored;
 
-        // Events forwarding
         private void OnConnected(object sender, EventArgs e)
         {
             networkIO.SendHandshake();
-        }
 
+            // Check is connection established successful after timeout
+            Task.Delay(5000).ContinueWith(t =>
+            {
+                if (!Ready)
+                {
+                    networkElement.Close();
+                }
+            });
+        }
+        
         private void OnDisconnected(object sender, EventArgs e)
         {
-            Disconnected?.Invoke(this, EventArgs.Empty);
+            if (Ready)
+            {
+                Disconnected?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         private void OnSocketErrored(object sender, SocketError e)
@@ -56,19 +68,18 @@ namespace Lanchat.Core
             SocketErrored?.Invoke(this, e);
         }
 
-        // Network input
         private void OnDataReceived(object sender, string e)
         {
             try
             {
                 var data = networkIO.DeserializeInput(e);
-                
+
                 // If node isn't ready ignore every messages except handshake
                 if (!Ready && data.Type != DataTypes.Handshake)
                 {
                     return;
                 }
-                
+
                 switch (data.Type)
                 {
                     case DataTypes.Message:
@@ -86,13 +97,13 @@ namespace Lanchat.Core
                         Ready = true;
                         Connected?.Invoke(this, EventArgs.Empty);
                         break;
-                    
+
                     default:
                         Debug.WriteLine("Unknown type received");
                         break;
                 }
             }
-            
+
             // Input errors catching
             catch (Exception ex)
             {
@@ -108,10 +119,20 @@ namespace Lanchat.Core
         }
 
         // Node output
-        public void SendMessage(string content) => networkIO.SendMessage(content);
-        public void SendPing() => networkIO.SendPing();
+        public void SendMessage(string content)
+        {
+            networkIO.SendMessage(content);
+        }
+
+        public void SendPing()
+        {
+            networkIO.SendPing();
+        }
 
         // Network element methods
-        internal bool SendAsync(string text) => networkElement.SendAsync(text);
+        internal bool SendAsync(string text)
+        {
+            return networkElement.SendAsync(text);
+        }
     }
 }

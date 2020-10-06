@@ -36,6 +36,8 @@ namespace Lanchat.Core.Network
             return base.Connect();
         }
 
+        public void Close() => DisconnectAndStop();
+
         protected override void OnConnected()
         {
             reconnectCounter = 0;

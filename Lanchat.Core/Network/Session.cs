@@ -18,7 +18,9 @@ namespace Lanchat.Core.Network
         public event EventHandler Disconnected;
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
-        
+
+        public void Close() => Disconnect();
+
         protected override void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);
