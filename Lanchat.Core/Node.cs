@@ -61,7 +61,7 @@ namespace Lanchat.Core
         {
             try
             {
-                var data = JsonSerializer.Deserialize<Wrapper>(e);
+                var data = JsonSerializer.Deserialize<Wrapper>(e, networkOutput.SerializerOptions);
                 
                 // If node isn't ready ignore every messages except handshake
                 if (!Ready && data.Type != DataTypes.Handshake)
