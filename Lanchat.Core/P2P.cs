@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using Lanchat.Core.Network;
 
@@ -39,8 +40,15 @@ namespace Lanchat.Core
             var client = new Client(ipAddress, port);
             var node = new Node(client);
             OutgoingConnections.Add(node);
+            node.Disconnected += OnDisconnected;
             client.ConnectAsync();
             return node;
+        }
+
+        private void OnDisconnected(object sender, EventArgs e)
+        {
+            var node = (Node) sender;
+            OutgoingConnections.Remove(node);
         }
     }
 }

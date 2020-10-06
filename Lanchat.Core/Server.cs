@@ -28,16 +28,16 @@ namespace Lanchat.Core
         {
             var session = new Session(this);
             var node = new Node(session);
-            session.Disconnected += SessionOnSessionDisconnected;
             IncomingConnections.Add(node);
+            node.Disconnected += OnDisconnected;
             SessionCreated?.Invoke(this, node);
             return session;
         }
 
-        private void SessionOnSessionDisconnected(object sender, EventArgs e)
+        private void OnDisconnected(object sender, EventArgs e)
         {
-            var session = (Session) sender;
-            IncomingConnections.Remove(IncomingConnections.Find(x => x.Id == session.Id));
+            var node = (Node) sender;
+            IncomingConnections.Remove(node);
         }
 
         protected override void OnError(SocketError error)
