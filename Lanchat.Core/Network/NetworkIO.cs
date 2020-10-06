@@ -4,23 +4,30 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network
 {
-    public class Output
+    public class NetworkIO
     {
         private readonly Node node;
-        public readonly JsonSerializerOptions SerializerOptions;
+        private readonly JsonSerializerOptions serializerOptions;
 
-        internal Output(Node node)
+        internal NetworkIO(Node node)
         {
             this.node = node;
             
             // Treat enums like a string
-            SerializerOptions = new JsonSerializerOptions{
+            serializerOptions = new JsonSerializerOptions{
                 Converters ={
                     new JsonStringEnumConverter()
                 }
             };
         }
 
+        // Input
+        internal Wrapper DeserializeInput(string json)
+        {
+            return JsonSerializer.Deserialize<Wrapper>(json, serializerOptions);
+        }
+        
+        // Output
         internal void SendMessage(string content)
         {
             if (!node.Ready)
@@ -30,7 +37,7 @@ namespace Lanchat.Core.Network
             
             var message = new Message {Content = content};
             var data = new Wrapper {Type = DataTypes.Message, Data = message};
-            node.SendAsync(JsonSerializer.Serialize(data, SerializerOptions));
+            node.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
 
         internal void SendPing()
@@ -41,14 +48,14 @@ namespace Lanchat.Core.Network
             }
             
             var data = new Wrapper {Type = DataTypes.Ping};
-            node.SendAsync(JsonSerializer.Serialize(data, SerializerOptions));
+            node.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
 
         internal void SendHandshake()
         {
             var handshake = new Handshake {Nickname = Config.Nickname};
             var data = new Wrapper {Type = DataTypes.Handshake, Data = handshake};
-            node.SendAsync(JsonSerializer.Serialize(data, SerializerOptions));
+            node.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
     }
 }

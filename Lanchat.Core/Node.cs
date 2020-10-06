@@ -11,12 +11,12 @@ namespace Lanchat.Core
     public class Node
     {
         private readonly INetworkElement networkElement;
-        private readonly Output networkOutput;
+        private readonly NetworkIO networkIO;
 
         public Node(INetworkElement networkElement)
         {
             this.networkElement = networkElement;
-            networkOutput = new Output(this);
+            networkIO = new NetworkIO(this);
             networkElement.Connected += OnConnected;
             networkElement.Disconnected += OnDisconnected;
             networkElement.DataReceived += OnDataReceived;
@@ -43,7 +43,7 @@ namespace Lanchat.Core
         // Events forwarding
         private void OnConnected(object sender, EventArgs e)
         {
-            networkOutput.SendHandshake();
+            networkIO.SendHandshake();
         }
 
         private void OnDisconnected(object sender, EventArgs e)
@@ -61,7 +61,7 @@ namespace Lanchat.Core
         {
             try
             {
-                var data = JsonSerializer.Deserialize<Wrapper>(e, networkOutput.SerializerOptions);
+                var data = networkIO.DeserializeInput(e);
                 
                 // If node isn't ready ignore every messages except handshake
                 if (!Ready && data.Type != DataTypes.Handshake)
@@ -108,8 +108,8 @@ namespace Lanchat.Core
         }
 
         // Node output
-        public void SendMessage(string content) => networkOutput.SendMessage(content);
-        public void SendPing() => networkOutput.SendPing();
+        public void SendMessage(string content) => networkIO.SendMessage(content);
+        public void SendPing() => networkIO.SendPing();
 
         // Network element methods
         internal bool SendAsync(string text) => networkElement.SendAsync(text);
