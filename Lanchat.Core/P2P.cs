@@ -44,9 +44,9 @@ namespace Lanchat.Core
             Nodes.ForEach(x => x.SendMessage(message));
         }
 
-        public void Connect(string ipAddress)
+        public void Connect(IPAddress ipAddress)
         {
-            if (Nodes.Any(x => x.Endpoint.Address.ToString().Equals(ipAddress)))
+            if (Nodes.Any(x => x.Endpoint.Address.Equals(ipAddress)))
             {
                 return;
             }
@@ -69,7 +69,7 @@ namespace Lanchat.Core
 
         private void OnNodesListReceived(object sender, List<IPAddress> list)
         {
-            list.ForEach(x => { Connect(x.ToString()); });
+            list.ForEach(Connect);
         }
 
         private void OnDisconnected(object sender, EventArgs e)

@@ -23,9 +23,9 @@ namespace Lanchat.Probe.Modes
                 Console.Write("IP Address or message: ");
                 var input = Console.ReadLine();
 
-                if (IPAddress.TryParse(input!, out _))
+                if (IPAddress.TryParse(input!, out var parsedIp))
                 {
-                    network.Connect(input);
+                    network.Connect(parsedIp);
                 }
                 else if (string.IsNullOrEmpty(input))
                 {

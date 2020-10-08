@@ -14,12 +14,12 @@ namespace Lanchat.Probe.Modes
             Console.Write("IP Address (leave blank to localhost): ");
             var ipAddress = Console.ReadLine();
 
-            if (!IPAddress.TryParse(ipAddress!, out _))
+            if (!IPAddress.TryParse(ipAddress!, out var parsedIp))
             {
-                ipAddress = "127.0.0.1";
+                parsedIp = IPAddress.Loopback;
             }
 
-            var client = new Client(ipAddress, port);
+            var client = new Client(parsedIp, port);
             var node = new Node(client);
             _ = new NodeEventsHandlers(node);
 

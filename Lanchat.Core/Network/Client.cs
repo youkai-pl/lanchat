@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -11,7 +12,7 @@ namespace Lanchat.Core.Network
         private bool safeDisconnect;
         private int reconnectCounter;
 
-        public Client(string address, int port) : base(address, port)
+        public Client(IPAddress address, int port) : base(address, port)
         {
         }
 
