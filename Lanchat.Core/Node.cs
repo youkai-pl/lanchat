@@ -37,7 +37,7 @@ namespace Lanchat.Core
         // Node events
         public event EventHandler<string> MessageReceived;
         public event EventHandler PingReceived;
-        public event EventHandler<List<IPAddress>> NodesListReceived; 
+        internal event EventHandler<List<IPAddress>> NodesListReceived; 
 
         // Network element events
         public event EventHandler Connected;

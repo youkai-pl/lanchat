@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Lanchat.Core.Network;
 
 namespace Lanchat.Core
@@ -46,25 +47,33 @@ namespace Lanchat.Core
 
         public void Connect(IPAddress ipAddress)
         {
+            // Return if node already connected
             if (Nodes.Any(x => x.Endpoint.Address.Equals(ipAddress)))
             {
                 return;
             }
-            
+
             var client = new Client(ipAddress, port);
             var node = new Node(client);
             OutgoingConnections.Add(node);
             node.Disconnected += OnDisconnected;
             node.NodesListReceived += OnNodesListReceived;
-            client.ConnectAsync();
-
             ConnectionCreated?.Invoke(this, node);
+
+            client.ConnectAsync();
         }
 
         private void OnSessionCreated(object sender, Node node)
         {
             ConnectionCreated?.Invoke(this, node);
-            node.Connected += (o, args) => { node.SendNodesList(Nodes); };
+            node.Connected += (o, args) =>
+            {
+                // TODO: Isn't works without this weird timeout. Fix it
+                Task.Delay(1000).ContinueWith(t =>
+                {
+                    node.SendNodesList(Nodes);
+                });
+            };
         }
 
         private void OnNodesListReceived(object sender, List<IPAddress> list)
