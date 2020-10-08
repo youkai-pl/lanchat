@@ -57,9 +57,7 @@ namespace Lanchat.Core
             var node = new Node(client);
             OutgoingConnections.Add(node);
             node.Disconnected += OnDisconnected;
-            node.NodesListReceived += OnNodesListReceived;
             ConnectionCreated?.Invoke(this, node);
-
             client.ConnectAsync();
         }
 
@@ -68,17 +66,15 @@ namespace Lanchat.Core
             ConnectionCreated?.Invoke(this, node);
             node.Connected += (o, args) =>
             {
-                // TODO: Isn't works without this weird timeout. Fix it
-                Task.Delay(1000).ContinueWith(t =>
-                {
-                    node.SendNodesList(Nodes);
-                });
+                Nodes.Where(x => !x.Endpoint.Equals(node.Endpoint)).ToList()
+                    .ForEach(x => x.SendNodeInfo(node.Endpoint.Address));
             };
-        }
 
-        private void OnNodesListReceived(object sender, List<IPAddress> list)
-        {
-            list.ForEach(Connect);
+            node.NodeInfoReceived += (o, address) =>
+            {
+                // TODO: Address validation
+                Connect(address);
+            };
         }
 
         private void OnDisconnected(object sender, EventArgs e)

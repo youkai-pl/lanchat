@@ -37,8 +37,9 @@ namespace Lanchat.Core
         // Node events
         public event EventHandler<string> MessageReceived;
         public event EventHandler PingReceived;
-        internal event EventHandler<List<IPAddress>> NodesListReceived; 
 
+        internal event EventHandler<IPAddress> NodeInfoReceived; 
+        
         // Network element events
         public event EventHandler Connected;
         public event EventHandler Disconnected;
@@ -101,19 +102,11 @@ namespace Lanchat.Core
                         Connected?.Invoke(this, EventArgs.Empty);
                         break;
 
-                    case DataTypes.NodesList:
-                        var nodesList = new List<IPAddress>();
-                        var strings = JsonSerializer.Deserialize<List<string>>(data.Data.ToString());
-
-                        strings.ForEach(x =>
+                    case DataTypes.NewNode:
+                        if (IPAddress.TryParse(data.Data.ToString(), out var ipAddress))
                         {
-                            if (IPAddress.TryParse(x, out var ip))
-                            {
-                                nodesList.Add(ip);
-                            }
-                        });
-
-                        NodesListReceived?.Invoke(this, nodesList);
+                            NodeInfoReceived?.Invoke(this, ipAddress);
+                        }
                         break;
 
                     default:
@@ -141,7 +134,7 @@ namespace Lanchat.Core
 
         public void SendPing() => networkIO.SendPing();
 
-        internal void SendNodesList(List<Node> list) => networkIO.SendNodesList(list);
+        internal void SendNodeInfo(IPAddress ipAddress) => networkIO.SendNewNodeInfo(ipAddress);
         
         // Network element methods
         internal bool SendAsync(string text)

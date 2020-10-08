@@ -64,14 +64,10 @@ namespace Lanchat.Core.Network
             node.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
 
-        internal void SendNodesList(IEnumerable<Node> list)
+        internal void SendNewNodeInfo(IPAddress ipAddress)
         {
-            var nodesList = new List<string>();
-            list.Where(x=> !x.Endpoint.Equals(node.Endpoint))
-                .ToList()
-                .ForEach(x => nodesList.Add(x.Endpoint.Address.ToString()));
-            
-            var data = new Wrapper {Type = DataTypes.NodesList, Data = nodesList};
+            var ip = ipAddress.ToString();
+            var data = new Wrapper{Type = DataTypes.NewNode, Data = ip};
             node.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
     }
