@@ -38,6 +38,7 @@ namespace Lanchat.Core
         public event EventHandler<string> MessageReceived;
         public event EventHandler PingReceived;
 
+        // Internal node events
         internal event EventHandler<IPAddress> NodeInfoReceived; 
         
         // Network element events
@@ -45,6 +46,7 @@ namespace Lanchat.Core
         public event EventHandler Disconnected;
         public event EventHandler<SocketError> SocketErrored;
 
+        // Events handlers
         private void OnConnected(object sender, EventArgs e)
         {
             networkIO.SendHandshake();

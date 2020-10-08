@@ -64,16 +64,15 @@ namespace Lanchat.Core
         private void OnSessionCreated(object sender, Node node)
         {
             ConnectionCreated?.Invoke(this, node);
-            node.Connected += (o, args) =>
-            {
-                Nodes.Where(x => !x.Endpoint.Equals(node.Endpoint)).ToList()
-                    .ForEach(x => x.SendNodeInfo(node.Endpoint.Address));
-            };
+            node.Connected += (o, args) => { Nodes.ForEach(x => x.SendNodeInfo(node.Endpoint.Address)); };
 
             node.NodeInfoReceived += (o, address) =>
             {
-                // TODO: Address validation
-                Connect(address);
+                // Prevent connecting to self
+                if (!address.Equals(node.Endpoint.Address))
+                {
+                    Connect(address);
+                }
             };
         }
 
