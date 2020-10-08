@@ -30,7 +30,6 @@ namespace Lanchat.Core.Network
         // Input
         internal Wrapper DeserializeInput(string json)
         {
-            Console.WriteLine(json);
             return JsonSerializer.Deserialize<Wrapper>(json, serializerOptions);
         }
 

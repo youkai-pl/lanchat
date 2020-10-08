@@ -11,8 +11,12 @@ namespace Lanchat.Probe.Modes
         {
             Config.Nickname = "P2P";
             var network = new P2P(3645);
-            _ = new ServerEventsHandlers(network.Server);
-            network.Server.Start();
+            network.ConnectionCreated += (sender, node) =>
+            {
+                _ = new NodeEventsHandlers(node);
+            };
+            
+            network.Start();
 
             while (true)
             {
@@ -21,8 +25,7 @@ namespace Lanchat.Probe.Modes
 
                 if (IPAddress.TryParse(input!, out _))
                 {
-                    var client = network.Connect(input);
-                    _ = new NodeEventsHandlers(client);
+                    network.Connect(input);
                 }
                 else if (string.IsNullOrEmpty(input))
                 {
@@ -32,8 +35,6 @@ namespace Lanchat.Probe.Modes
                 {
                     network.BroadcastMessage(input);
                 }
-
-                Console.WriteLine(network.OutgoingConnections.Count);
             }
         }
     }

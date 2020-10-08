@@ -37,6 +37,7 @@ namespace Lanchat.Core
         // Node events
         public event EventHandler<string> MessageReceived;
         public event EventHandler PingReceived;
+        public event EventHandler<List<IPAddress>> NodesListReceived; 
 
         // Network element events
         public event EventHandler Connected;
@@ -98,6 +99,21 @@ namespace Lanchat.Core
                         Nickname = handshake.Nickname;
                         Ready = true;
                         Connected?.Invoke(this, EventArgs.Empty);
+                        break;
+
+                    case DataTypes.NodesList:
+                        var nodesList = new List<IPAddress>();
+                        var strings = JsonSerializer.Deserialize<List<string>>(data.Data.ToString());
+
+                        strings.ForEach(x =>
+                        {
+                            if (IPAddress.TryParse(x, out var ip))
+                            {
+                                nodesList.Add(ip);
+                            }
+                        });
+
+                        NodesListReceived?.Invoke(this, nodesList);
                         break;
 
                     default:

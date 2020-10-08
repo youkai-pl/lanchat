@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Lanchat.Core.Network;
 
@@ -31,30 +32,45 @@ namespace Lanchat.Core
             }
         }
 
+        public event EventHandler<Node> ConnectionCreated;
+
+        public void Start()
+        {
+            Server.Start();
+        }
+
         public void BroadcastMessage(string message)
         {
             Nodes.ForEach(x => x.SendMessage(message));
         }
 
-        public Node Connect(string ipAddress)
+        public void Connect(string ipAddress)
         {
+            if (Nodes.Any(x => x.Endpoint.Address.ToString().Equals(ipAddress)))
+            {
+                return;
+            }
+            
             var client = new Client(ipAddress, port);
             var node = new Node(client);
             OutgoingConnections.Add(node);
             node.Disconnected += OnDisconnected;
+            node.NodesListReceived += OnNodesListReceived;
             client.ConnectAsync();
-            return node;
+
+            ConnectionCreated?.Invoke(this, node);
         }
 
         private void OnSessionCreated(object sender, Node node)
         {
-            // Send nodes list after successful connection
-            node.Connected += (o, args) =>
-            {
-                node.SendNodesList(Nodes);
-            };
+            ConnectionCreated?.Invoke(this, node);
+            node.Connected += (o, args) => { node.SendNodesList(Nodes); };
         }
-        
+
+        private void OnNodesListReceived(object sender, List<IPAddress> list)
+        {
+            list.ForEach(x => { Connect(x.ToString()); });
+        }
 
         private void OnDisconnected(object sender, EventArgs e)
         {
