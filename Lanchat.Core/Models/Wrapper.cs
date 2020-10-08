@@ -10,6 +10,7 @@
     {
         Message,
         Ping,
-        Handshake
+        Handshake,
+        NodesList
     }
 }

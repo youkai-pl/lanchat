@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
@@ -54,7 +56,7 @@ namespace Lanchat.Core
                 }
             });
         }
-        
+
         private void OnDisconnected(object sender, EventArgs e)
         {
             if (Ready)
@@ -119,16 +121,12 @@ namespace Lanchat.Core
         }
 
         // Node output
-        public void SendMessage(string content)
-        {
-            networkIO.SendMessage(content);
-        }
+        public void SendMessage(string content) => networkIO.SendMessage(content);
 
-        public void SendPing()
-        {
-            networkIO.SendPing();
-        }
+        public void SendPing() => networkIO.SendPing();
 
+        internal void SendNodesList(List<Node> list) => networkIO.SendNodesList(list);
+        
         // Network element methods
         internal bool SendAsync(string text)
         {

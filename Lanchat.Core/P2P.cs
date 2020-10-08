@@ -14,6 +14,7 @@ namespace Lanchat.Core
             this.port = port;
             OutgoingConnections = new List<Node>();
             Server = new Server(IPAddress.Any, port);
+            Server.SessionCreated += OnSessionCreated;
         }
 
         public Server Server { get; }
@@ -44,6 +45,16 @@ namespace Lanchat.Core
             client.ConnectAsync();
             return node;
         }
+
+        private void OnSessionCreated(object sender, Node node)
+        {
+            // Send nodes list after successful connection
+            node.Connected += (o, args) =>
+            {
+                node.SendNodesList(Nodes);
+            };
+        }
+        
 
         private void OnDisconnected(object sender, EventArgs e)
         {
