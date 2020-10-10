@@ -4,15 +4,50 @@ using System.Net.Sockets;
 
 namespace Lanchat.Core.Network
 {
+    /// <summary>
+    /// Common TCP client and session stuff.
+    /// </summary>
     public interface INetworkElement
     {
+        /// <summary>
+        /// IP endpoint (address + port).
+        /// </summary>
         IPEndPoint Endpoint { get; }
+        
+        /// <summary>
+        /// Session or client ID.
+        /// </summary>
         Guid Id { get; }
-        bool SendAsync(string text);
+        
+        /// <summary>
+        /// Send data.
+        /// </summary>
+        /// <param name="text">Content.</param>
+        void SendAsync(string text);
+        
+        /// <summary>
+        /// Close client or session.
+        /// </summary>
         void Close();
-        public event EventHandler Connected;
-        public event EventHandler Disconnected;
-        public event EventHandler<SocketError> SocketErrored;
-        public event EventHandler<string> DataReceived;
+        
+        /// <summary>
+        /// Network element connected.
+        /// </summary>
+        event EventHandler Connected;
+        
+        /// <summary>
+        /// Network element disconnected.
+        /// </summary>
+        event EventHandler Disconnected;
+        
+        /// <summary>
+        /// Network element socket errored.
+        /// </summary>
+        event EventHandler<SocketError> SocketErrored;
+        
+        /// <summary>
+        /// Network element received data.
+        /// </summary>
+        event EventHandler<string> DataReceived;
     }
 }

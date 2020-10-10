@@ -48,7 +48,7 @@ namespace Lanchat.Probe.Modes
             }
 
             Console.WriteLine("Stopping");
-            client.DisconnectAndStop();
+            client.Close();
         }
     }
 }

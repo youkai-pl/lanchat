@@ -6,10 +6,11 @@ using NetCoreServer;
 
 namespace Lanchat.Core.Network
 {
-    public class Session : TcpSession, INetworkElement
+    internal class Session : TcpSession, INetworkElement
     {
-        public Session(TcpServer server) : base(server)
+        internal Session(TcpServer server) : base(server)
         { }
+
 
         public IPEndPoint Endpoint => (IPEndPoint) Socket.RemoteEndPoint;
         public event EventHandler Connected;
@@ -17,11 +18,16 @@ namespace Lanchat.Core.Network
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
 
+        public new void SendAsync(string text)
+        {
+            base.SendAsync(text);
+        }
+
         public void Close()
         {
             Disconnect();
         }
-
+        
         protected override void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);

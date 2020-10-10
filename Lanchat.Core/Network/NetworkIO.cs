@@ -5,6 +5,9 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network
 {
+    /// <summary>
+    /// Sending and receiving data using this class.
+    /// </summary>
     public class NetworkIO
     {
         private readonly Node node;
@@ -30,7 +33,10 @@ namespace Lanchat.Core.Network
             return JsonSerializer.Deserialize<Wrapper>(json, serializerOptions);
         }
 
-        // Output
+        /// <summary>
+        /// Send message.
+        /// </summary>
+        /// <param name="content">Message content.</param>
         public void SendMessage(string content)
         {
             if (!node.Ready)
@@ -43,6 +49,9 @@ namespace Lanchat.Core.Network
             node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
 
+        /// <summary>
+        /// Send ping.
+        /// </summary>
         public void SendPing()
         {
             if (!node.Ready)

@@ -14,18 +14,29 @@ namespace Lanchat.Core.Network
 
         public Client(IPAddress address, int port) : base(address, port)
         { }
-
+        
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
+
+        public override bool Connect()
+        {
+            reconnectCounter = 0;
+            return base.Connect();
+        }
 
         public void Close()
         {
             DisconnectAndStop();
         }
 
-        public void DisconnectAndStop()
+        public new void SendAsync(string text)
+        {
+            base.SendAsync(text);
+        }
+        
+        private void DisconnectAndStop()
         {
             safeDisconnect = true;
             DisconnectAsync();
@@ -33,12 +44,6 @@ namespace Lanchat.Core.Network
             {
                 Thread.Yield();
             }
-        }
-
-        public override bool Connect()
-        {
-            reconnectCounter = 0;
-            return base.Connect();
         }
 
         protected override void OnConnected()
