@@ -72,10 +72,12 @@ namespace Lanchat.Core
                 return;
             }
 
+            // TODO: Make some security stuff here
+            
             var client = new Client(ipAddress, port);
             var node = new Node(client);
             outgoingConnections.Add(node);
-            
+
             node.Disconnected += OnDisconnected;
             ConnectionCreated?.Invoke(this, node);
             client.ConnectAsync();
@@ -86,7 +88,7 @@ namespace Lanchat.Core
         {
             node.Connected += OnConnected;
             node.NetworkIO.NodeInfoReceived += OnNodeInfoReceived;
-            
+
             ConnectionCreated?.Invoke(this, node);
         }
 
@@ -103,17 +105,11 @@ namespace Lanchat.Core
             var node = (Node) sender;
             outgoingConnections.Remove(node);
         }
-        
+
         // Connect to new node after receiving node info.
         private void OnNodeInfoReceived(object sender, IPAddress address)
         {
-            var node = (Node) sender;
-            
-            // Prevent from connecting to self.
-            if (!address.Equals(node.Endpoint.Address))
-            {
-                Connect(address);
-            }
+            Connect(address);
         }
     }
 }
