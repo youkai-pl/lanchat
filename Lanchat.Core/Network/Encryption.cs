@@ -1,27 +1,39 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Lanchat.Core.Network
 {
     public class Encryption
     {
-        private RSA rsa;
-
-        public Encryption()
-        {
-        }
+        private RSA localRsa;
+        private RSA remoteRsa;
 
         internal string GetPublicKey()
         {
-            rsa = RSA.Create(2048);
-            var privateKeyBytes = rsa.ExportRSAPublicKey();
+            localRsa = RSA.Create(2048);
+            var privateKeyBytes = localRsa.ExportRSAPublicKey();
             return Convert.ToBase64String(privateKeyBytes);
         }
 
         internal void ImportPublicKey(string key)
         {
-            rsa = RSA.Create();
-            rsa.ImportRSAPublicKey(Convert.FromBase64String(key), out _);
+            remoteRsa = RSA.Create();
+            remoteRsa.ImportRSAPublicKey(Convert.FromBase64String(key), out _);
+        }
+
+        internal string Encrypt(string text)
+        {
+            var bytes = Encoding.UTF8.GetBytes(text);
+            var encryptedBytes =  remoteRsa.Encrypt(bytes, RSAEncryptionPadding.Pkcs1);
+            return Convert.ToBase64String(encryptedBytes);
+        }
+
+        internal string Decrypt(string text)
+        {
+            var encryptedBytes = Convert.FromBase64String(text);
+            var bytes = localRsa.Decrypt(encryptedBytes, RSAEncryptionPadding.Pkcs1);
+            return Encoding.UTF8.GetString(bytes);
         }
     }
 }
