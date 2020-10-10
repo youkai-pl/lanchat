@@ -47,7 +47,7 @@ namespace Lanchat.Core.Network
                 {
                     case DataTypes.Message:
                         var message = JsonSerializer.Deserialize<Message>(data.Data.ToString());
-                        MessageReceived?.Invoke(this, message.Content);
+                        MessageReceived?.Invoke(this, node.Encryption.Decrypt(message.Content));
                         break;
 
                     case DataTypes.Ping:

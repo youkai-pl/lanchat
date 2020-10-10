@@ -29,7 +29,7 @@ namespace Lanchat.Core.Network
                 return;
             }
 
-            var message = new Message {Content = content};
+            var message = new Message {Content = node.Encryption.Encrypt(content)};
             var data = new Wrapper {Type = DataTypes.Message, Data = message};
             node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
