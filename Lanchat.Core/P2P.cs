@@ -87,7 +87,7 @@ namespace Lanchat.Core
         private void OnSessionCreated(object sender, Node node)
         {
             node.Connected += OnConnectedFromSession;
-            node.NetworkInput.NodeInfoReceived += OnNodeInfoReceived;
+            node.NetworkInput.NewNodeInfoReceived += OnNewNodeInfoReceived;
 
             ConnectionCreated?.Invoke(this, node);
         }
@@ -107,7 +107,7 @@ namespace Lanchat.Core
         }
 
         // Connect to new node after receiving node info.
-        private void OnNodeInfoReceived(object sender, IPAddress address)
+        private void OnNewNodeInfoReceived(object sender, IPAddress address)
         {
             Connect(address);
         }

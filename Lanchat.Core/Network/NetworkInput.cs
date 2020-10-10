@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
-using System.Security.Cryptography;
 using System.Text.Json;
 using Lanchat.Core.Models;
 
@@ -29,7 +28,8 @@ namespace Lanchat.Core.Network
         public event EventHandler PingReceived;
 
         internal event EventHandler<Handshake> HandshakeReceived;
-        internal event EventHandler<IPAddress> NodeInfoReceived;
+        internal event EventHandler<KeyInfo> KeyInfoReceived; 
+        internal event EventHandler<IPAddress> NewNodeInfoReceived;
         
         internal void ProcessReceivedData(object sender, string json)
         {
@@ -38,7 +38,7 @@ namespace Lanchat.Core.Network
                 var data = JsonSerializer.Deserialize<Wrapper>(json, serializerOptions);
 
                 // If node isn't ready ignore every messages except handshake
-                if (!node.Ready && data.Type != DataTypes.Handshake)
+                if (!node.Ready && data.Type != DataTypes.Handshake && data.Type != DataTypes.KeyInfo)
                 {
                     return;
                 }
@@ -59,10 +59,15 @@ namespace Lanchat.Core.Network
                         HandshakeReceived?.Invoke(this, handshake);
                         break;
 
+                    case DataTypes.KeyInfo:
+                        var keyInfo = JsonSerializer.Deserialize<KeyInfo>(data.Data.ToString());
+                        KeyInfoReceived?.Invoke(this, keyInfo);
+                        break;
+                    
                     case DataTypes.NewNodeInfo:
                         if (IPAddress.TryParse(data.Data.ToString(), out var ipAddress))
                         {
-                            NodeInfoReceived?.Invoke(this, ipAddress);
+                            NewNodeInfoReceived?.Invoke(this, ipAddress);
                         }
                         break;
 

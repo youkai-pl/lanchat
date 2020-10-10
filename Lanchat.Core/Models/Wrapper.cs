@@ -11,7 +11,7 @@
         Message,
         Ping,
         Handshake,
-        NewNodeInfo
-        
+        NewNodeInfo,
+        KeyInfo
     }
 }

@@ -26,6 +26,8 @@ namespace Lanchat.Core
             Encryption = new Encryption();
 
             NetworkInput.HandshakeReceived += OnHandshakeReceived;
+            NetworkInput.KeyInfoReceived += OnKeyInfoReceived;
+            
             networkElement.Connected += OnConnected;
             networkElement.Disconnected += OnDisconnected;
             networkElement.SocketErrored += OnSocketErrored;
@@ -98,8 +100,13 @@ namespace Lanchat.Core
         {
             Nickname = handshake.Nickname;
             Encryption.ImportPublicKey(handshake.PublicKey);
+            NetworkOutput.SendKey();
+        }
+        
+        private void OnKeyInfoReceived(object sender, KeyInfo e)
+        {
+            Encryption.ImportAesKey(e);
             Ready = true;
-            
             Connected?.Invoke(this, EventArgs.Empty);
         }
     }
