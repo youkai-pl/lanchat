@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
@@ -13,50 +11,81 @@ namespace Lanchat.Core
 {
     public class Node
     {
-        private readonly INetworkElement networkElement;
-        private readonly NetworkIO networkIO;
+        public readonly NetworkIO NetworkIO;
+        internal readonly INetworkElement NetworkElement;
 
+        /// <summary>
+        ///     Initialize node.
+        /// </summary>
+        /// <param name="networkElement">TCP client or session.</param>
         public Node(INetworkElement networkElement)
         {
-            this.networkElement = networkElement;
-            networkIO = new NetworkIO(this);
+            NetworkElement = networkElement;
+            NetworkIO = new NetworkIO(this);
             networkElement.Connected += OnConnected;
             networkElement.Disconnected += OnDisconnected;
             networkElement.DataReceived += OnDataReceived;
             networkElement.SocketErrored += OnSocketErrored;
         }
 
-        // Node properties
+        /// <summary>
+        ///     Node nickname.
+        /// </summary>
         public string Nickname { get; private set; }
+
+        /// <summary>
+        ///     Node ready. If set to false node won't send or receive messages.
+        /// </summary>
         public bool Ready { get; private set; }
 
-        // Network element properties
-        public Guid Id => networkElement.Id;
-        public IPEndPoint Endpoint => networkElement.Endpoint;
+        /// <summary>
+        ///     ID of TCP client or session.
+        /// </summary>
+        public Guid Id => NetworkElement.Id;
 
-        // Node events
+        /// <summary>
+        ///     IP address of node.
+        /// </summary>
+        public IPEndPoint Endpoint => NetworkElement.Endpoint;
+
+        /// <summary>
+        ///     Node successful connected and ready.
+        /// </summary>
+        public event EventHandler Connected;
+
+        /// <summary>
+        ///     Node disconnected.
+        /// </summary>
+        public event EventHandler Disconnected;
+
+        /// <summary>
+        ///     TCP session or client for this node returned error.
+        /// </summary>
+        public event EventHandler<SocketError> SocketErrored;
+
+        /// <summary>
+        ///     Message received.
+        /// </summary>
         public event EventHandler<string> MessageReceived;
+
+        /// <summary>
+        ///     Ping received.
+        /// </summary>
         public event EventHandler PingReceived;
 
-        // Internal node events
-        internal event EventHandler<IPAddress> NodeInfoReceived; 
-        
-        // Network element events
-        public event EventHandler Connected;
-        public event EventHandler Disconnected;
-        public event EventHandler<SocketError> SocketErrored;
+        internal event EventHandler<IPAddress> NodeInfoReceived;
 
         // Events handlers
         private void OnConnected(object sender, EventArgs e)
         {
-            networkIO.SendHandshake();
+            NetworkIO.SendHandshake();
 
             // Check is connection established successful after timeout
             Task.Delay(5000).ContinueWith(t =>
             {
                 if (!Ready)
                 {
-                    networkElement.Close();
+                    NetworkElement.Close();
                 }
             });
         }
@@ -78,7 +107,7 @@ namespace Lanchat.Core
         {
             try
             {
-                var data = networkIO.DeserializeInput(e);
+                var data = NetworkIO.DeserializeInput(e);
 
                 // If node isn't ready ignore every messages except handshake
                 if (!Ready && data.Type != DataTypes.Handshake)
@@ -109,6 +138,7 @@ namespace Lanchat.Core
                         {
                             NodeInfoReceived?.Invoke(this, ipAddress);
                         }
+
                         break;
 
                     default:
@@ -129,19 +159,6 @@ namespace Lanchat.Core
                     throw;
                 }
             }
-        }
-
-        // Node output
-        public void SendMessage(string content) => networkIO.SendMessage(content);
-
-        public void SendPing() => networkIO.SendPing();
-
-        internal void SendNodeInfo(IPAddress ipAddress) => networkIO.SendNewNodeInfo(ipAddress);
-        
-        // Network element methods
-        internal bool SendAsync(string text)
-        {
-            return networkElement.SendAsync(text);
         }
     }
 }

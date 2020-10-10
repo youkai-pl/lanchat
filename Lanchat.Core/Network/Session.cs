@@ -8,10 +8,8 @@ namespace Lanchat.Core.Network
 {
     public class Session : TcpSession, INetworkElement
     {
-
         public Session(TcpServer server) : base(server)
-        {
-        }
+        { }
 
         public IPEndPoint Endpoint => (IPEndPoint) Socket.RemoteEndPoint;
         public event EventHandler Connected;
@@ -19,7 +17,10 @@ namespace Lanchat.Core.Network
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
 
-        public void Close() => Disconnect();
+        public void Close()
+        {
+            Disconnect();
+        }
 
         protected override void OnConnected()
         {

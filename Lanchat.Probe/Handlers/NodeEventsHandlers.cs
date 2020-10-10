@@ -46,7 +46,7 @@ namespace Lanchat.Probe.Handlers
             Console.WriteLine(e);
             Console.WriteLine("");
         }
-        
+
         private void OnPingReceived(object sender, EventArgs e)
         {
             Console.WriteLine("Ping received");

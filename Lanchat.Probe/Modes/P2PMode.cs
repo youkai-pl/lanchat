@@ -11,11 +11,8 @@ namespace Lanchat.Probe.Modes
         {
             Config.Nickname = "P2P";
             var network = new P2P(3645);
-            network.ConnectionCreated += (sender, node) =>
-            {
-                _ = new NodeEventsHandlers(node);
-            };
-            
+            network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
+
             network.Start();
 
             while (true)

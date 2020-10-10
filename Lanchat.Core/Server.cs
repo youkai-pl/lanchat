@@ -18,7 +18,7 @@ namespace Lanchat.Core
 
         public void BroadcastMessage(string message)
         {
-            IncomingConnections.ForEach(x => x.SendMessage(message));
+            IncomingConnections.ForEach(x => x.NetworkIO.SendMessage(message));
         }
 
         public event EventHandler<SocketError> ServerErrored;
