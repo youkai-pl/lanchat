@@ -9,7 +9,8 @@ namespace Lanchat.Core
 {
     public class Node
     {
-        public readonly NetworkIO NetworkIO;
+        public readonly NetworkOutput NetworkOutput;
+        public readonly NetworkInput NetworkInput;
         internal readonly INetworkElement NetworkElement;
 
         /// <summary>
@@ -19,13 +20,14 @@ namespace Lanchat.Core
         public Node(INetworkElement networkElement)
         {
             NetworkElement = networkElement;
-            NetworkIO = new NetworkIO(this);
+            NetworkOutput = new NetworkOutput(this);
+            NetworkInput = new NetworkInput(this);
 
-            NetworkIO.HandshakeReceived += OnHandshakeReceived;
+            NetworkInput.HandshakeReceived += OnHandshakeReceived;
             networkElement.Connected += OnConnected;
             networkElement.Disconnected += OnDisconnected;
             networkElement.SocketErrored += OnSocketErrored;
-            networkElement.DataReceived += NetworkIO.ProcessReceivedData;
+            networkElement.DataReceived += NetworkInput.ProcessReceivedData;
         }
 
         /// <summary>
@@ -63,10 +65,9 @@ namespace Lanchat.Core
         /// </summary>
         public event EventHandler<SocketError> SocketErrored;
 
-        // Events handlers
         private void OnConnected(object sender, EventArgs e)
         {
-            NetworkIO.SendHandshake();
+            NetworkOutput.SendHandshake();
 
             // Check is connection established successful after timeout
             Task.Delay(5000).ContinueWith(t =>

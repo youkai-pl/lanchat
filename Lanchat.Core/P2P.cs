@@ -57,7 +57,7 @@ namespace Lanchat.Core
         /// <param name="message">Message content.</param>
         public void BroadcastMessage(string message)
         {
-            Nodes.ForEach(x => x.NetworkIO.SendMessage(message));
+            Nodes.ForEach(x => x.NetworkOutput.SendMessage(message));
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Lanchat.Core
         private void OnSessionCreated(object sender, Node node)
         {
             node.Connected += OnConnected;
-            node.NetworkIO.NodeInfoReceived += OnNodeInfoReceived;
+            node.NetworkInput.NodeInfoReceived += OnNodeInfoReceived;
 
             ConnectionCreated?.Invoke(this, node);
         }
@@ -96,7 +96,7 @@ namespace Lanchat.Core
         private void OnConnected(object sender, EventArgs e)
         {
             var node = (Node) sender;
-            Nodes.ForEach(x => x.NetworkIO.SendNewNodeInfo(node.Endpoint.Address));
+            Nodes.ForEach(x => x.NetworkOutput.SendNewNodeInfo(node.Endpoint.Address));
         }
 
         // Remove node from list after disconnection event.

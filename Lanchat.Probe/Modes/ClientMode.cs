@@ -38,11 +38,11 @@ namespace Lanchat.Probe.Modes
                         break;
 
                     case "/p":
-                        node.NetworkIO.SendPing();
+                        node.NetworkOutput.SendPing();
                         break;
 
                     default:
-                        node.NetworkIO.SendMessage(input);
+                        node.NetworkOutput.SendMessage(input);
                         break;
                 }
             }
