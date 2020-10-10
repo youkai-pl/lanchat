@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network
@@ -15,15 +14,7 @@ namespace Lanchat.Core.Network
         internal NetworkInput(Node node)
         {
             this.node = node;
-
-            // Treat enums like a string
-            serializerOptions = new JsonSerializerOptions
-            {
-                Converters =
-                {
-                    new JsonStringEnumConverter()
-                }
-            };
+            serializerOptions = Config.JsonSerializerOptions;
         }
         
         /// <summary>
