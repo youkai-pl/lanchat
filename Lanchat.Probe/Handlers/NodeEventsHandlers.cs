@@ -11,8 +11,8 @@ namespace Lanchat.Probe.Handlers
         public NodeEventsHandlers(Node node)
         {
             this.node = node;
-            node.MessageReceived += OnMessageReceived;
-            node.PingReceived += OnPingReceived;
+            node.NetworkIO.MessageReceived += OnMessageReceived;
+            node.NetworkIO.PingReceived += OnPingReceived;
             node.Connected += OnSessionConnected;
             node.Disconnected += OnSessionDisconnected;
             node.SocketErrored += OnSocketErrored;

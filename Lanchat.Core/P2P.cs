@@ -85,7 +85,7 @@ namespace Lanchat.Core
         private void OnSessionCreated(object sender, Node node)
         {
             node.Connected += OnConnected;
-            node.NodeInfoReceived += OnNodeInfoReceived;
+            node.NetworkIO.NodeInfoReceived += OnNodeInfoReceived;
             
             ConnectionCreated?.Invoke(this, node);
         }

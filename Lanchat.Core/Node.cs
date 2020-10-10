@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
@@ -22,10 +20,12 @@ namespace Lanchat.Core
         {
             NetworkElement = networkElement;
             NetworkIO = new NetworkIO(this);
+
+            NetworkIO.HandshakeReceived += OnHandshakeReceived;
             networkElement.Connected += OnConnected;
             networkElement.Disconnected += OnDisconnected;
-            networkElement.DataReceived += OnDataReceived;
             networkElement.SocketErrored += OnSocketErrored;
+            networkElement.DataReceived += NetworkIO.ProcessReceivedData;
         }
 
         /// <summary>
@@ -63,18 +63,6 @@ namespace Lanchat.Core
         /// </summary>
         public event EventHandler<SocketError> SocketErrored;
 
-        /// <summary>
-        ///     Message received.
-        /// </summary>
-        public event EventHandler<string> MessageReceived;
-
-        /// <summary>
-        ///     Ping received.
-        /// </summary>
-        public event EventHandler PingReceived;
-
-        internal event EventHandler<IPAddress> NodeInfoReceived;
-
         // Events handlers
         private void OnConnected(object sender, EventArgs e)
         {
@@ -103,62 +91,11 @@ namespace Lanchat.Core
             SocketErrored?.Invoke(this, e);
         }
 
-        private void OnDataReceived(object sender, string e)
+        private void OnHandshakeReceived(object sender, Handshake handshake)
         {
-            try
-            {
-                var data = NetworkIO.DeserializeInput(e);
-
-                // If node isn't ready ignore every messages except handshake
-                if (!Ready && data.Type != DataTypes.Handshake)
-                {
-                    return;
-                }
-
-                switch (data.Type)
-                {
-                    case DataTypes.Message:
-                        var message = JsonSerializer.Deserialize<Message>(data.Data.ToString());
-                        MessageReceived?.Invoke(this, message.Content);
-                        break;
-
-                    case DataTypes.Ping:
-                        PingReceived?.Invoke(this, EventArgs.Empty);
-                        break;
-
-                    case DataTypes.Handshake:
-                        var handshake = JsonSerializer.Deserialize<Handshake>(data.Data.ToString());
-                        Nickname = handshake.Nickname;
-                        Ready = true;
-                        Connected?.Invoke(this, EventArgs.Empty);
-                        break;
-
-                    case DataTypes.NewNode:
-                        if (IPAddress.TryParse(data.Data.ToString(), out var ipAddress))
-                        {
-                            NodeInfoReceived?.Invoke(this, ipAddress);
-                        }
-
-                        break;
-
-                    default:
-                        Debug.WriteLine("Unknown type received");
-                        break;
-                }
-            }
-
-            // Input errors catching
-            catch (Exception ex)
-            {
-                if (ex is JsonException || ex is ArgumentNullException)
-                {
-                    Debug.WriteLine("Invalid json received");
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            Nickname = handshake.Nickname;
+            Ready = true;
+            Connected?.Invoke(this, EventArgs.Empty);
         }
     }
 }
