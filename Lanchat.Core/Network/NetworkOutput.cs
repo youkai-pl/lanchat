@@ -50,7 +50,12 @@ namespace Lanchat.Core.Network
 
         internal void SendHandshake()
         {
-            var handshake = new Handshake {Nickname = Config.Nickname};
+            var handshake = new Handshake
+            {
+                Nickname = Config.Nickname, 
+                PublicKey = node.Encryption.GetPublicKey()
+            };
+            
             var data = new Wrapper {Type = DataTypes.Handshake, Data = handshake};
             node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }

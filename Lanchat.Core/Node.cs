@@ -12,6 +12,7 @@ namespace Lanchat.Core
         public readonly NetworkOutput NetworkOutput;
         public readonly NetworkInput NetworkInput;
         internal readonly INetworkElement NetworkElement;
+        internal readonly Encryption Encryption;
 
         /// <summary>
         ///     Initialize node.
@@ -22,6 +23,7 @@ namespace Lanchat.Core
             NetworkElement = networkElement;
             NetworkOutput = new NetworkOutput(this);
             NetworkInput = new NetworkInput(this);
+            Encryption = new Encryption();
 
             NetworkInput.HandshakeReceived += OnHandshakeReceived;
             networkElement.Connected += OnConnected;
@@ -95,7 +97,9 @@ namespace Lanchat.Core
         private void OnHandshakeReceived(object sender, Handshake handshake)
         {
             Nickname = handshake.Nickname;
+            Encryption.ImportPublicKey(handshake.PublicKey);
             Ready = true;
+            
             Connected?.Invoke(this, EventArgs.Empty);
         }
     }

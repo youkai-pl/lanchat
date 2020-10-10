@@ -78,7 +78,7 @@ namespace Lanchat.Core
             var node = new Node(client);
             outgoingConnections.Add(node);
 
-            node.Disconnected += OnDisconnected;
+            node.Disconnected += OnDisconnectedFromLocal;
             ConnectionCreated?.Invoke(this, node);
             client.ConnectAsync();
         }
@@ -86,21 +86,21 @@ namespace Lanchat.Core
         // Create node after new session event.
         private void OnSessionCreated(object sender, Node node)
         {
-            node.Connected += OnConnected;
+            node.Connected += OnConnectedFromSession;
             node.NetworkInput.NodeInfoReceived += OnNodeInfoReceived;
 
             ConnectionCreated?.Invoke(this, node);
         }
 
         // Broadcast new node info after successful connection.
-        private void OnConnected(object sender, EventArgs e)
+        private void OnConnectedFromSession(object sender, EventArgs e)
         {
             var node = (Node) sender;
             Nodes.ForEach(x => x.NetworkOutput.SendNewNodeInfo(node.Endpoint.Address));
         }
 
         // Remove node from list after disconnection event.
-        private void OnDisconnected(object sender, EventArgs e)
+        private void OnDisconnectedFromLocal(object sender, EventArgs e)
         {
             var node = (Node) sender;
             outgoingConnections.Remove(node);
