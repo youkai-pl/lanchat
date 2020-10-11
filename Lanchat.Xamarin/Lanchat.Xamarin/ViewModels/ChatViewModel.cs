@@ -13,7 +13,7 @@ namespace Lanchat.Xamarin.ViewModels
         public ChatViewModel(P2P network)
         {
             Network = network;
-
+            Send = new Command(SendAction);
             Messages = new ObservableCollection<Message>();
             Messages.CollectionChanged += (sender, e) =>
             {

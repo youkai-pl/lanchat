@@ -32,7 +32,6 @@ namespace Lanchat.Xamarin
         private void OnMessageReceived(object sender, string e)
         {
             chatViewModel.AddMessage(new Message() { Content = e, Nickname = node.Nickname });
-
         }
     }
 }
