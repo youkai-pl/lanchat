@@ -20,17 +20,26 @@ namespace Lanchat.Core.Network
             remoteAes = Aes.Create();
         }
         
-        internal string ExportPublicKey()
+        internal PublicKey ExportPublicKey()
         {
-            var privateKeyBytes = localRsa.ExportRSAPublicKey();
-            return Convert.ToBase64String(privateKeyBytes);
+            var parameters = localRsa.ExportParameters(false);
+            return new PublicKey
+            {
+                RsaModulus = Convert.ToBase64String(parameters.Modulus),
+                RsaExponent = Convert.ToBase64String(parameters.Exponent)
+            };
         }
 
-        internal void ImportPublicKey(string key)
+        internal void ImportPublicKey(PublicKey publicKey)
         {
-            remoteRsa.ImportRSAPublicKey(Convert.FromBase64String(key), out _);
+            var parameters = new RSAParameters
+            {
+                Modulus = Convert.FromBase64String(publicKey.RsaModulus),
+                Exponent = Convert.FromBase64String(publicKey.RsaExponent)
+            };
+            remoteRsa.ImportParameters(parameters);
         }
-
+        
         internal KeyInfo ExportAesKey()
         {
             return new KeyInfo
