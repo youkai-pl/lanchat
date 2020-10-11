@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Lanchat.Core;
+﻿using Lanchat.Core;
 using Lanchat.Terminal.Ui;
 
 namespace Lanchat.Terminal.Commands
@@ -8,13 +7,7 @@ namespace Lanchat.Terminal.Commands
     {
         public static void Execute(P2P network)
         {
-            var list = new List<string>();
-            network.Nodes.ForEach(x => list.Add($"{x.Nickname}"));
-
-            foreach (var item in list)
-            {
-                Prompt.Log.Add(item);
-            }
+            network.Nodes.ForEach(x => Prompt.Log.Add($"{x.Nickname} ({x.Endpoint})"));
         }
     }
 }

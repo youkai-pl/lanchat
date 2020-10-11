@@ -110,7 +110,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax: /connect &lt;ip&gt; &lt;port&gt;.
+        ///   Looks up a localized string similar to Syntax: /connect &lt;ip&gt;.
         /// </summary>
         internal static string Manual_Connect {
             get {

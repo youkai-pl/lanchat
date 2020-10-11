@@ -21,7 +21,7 @@ namespace Lanchat.Terminal.Commands
             else
             {
                 var command = $"Manual_{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(args[0].ToLower())}";
-                var commandHelp = Resources.ResourceManager.GetObject(command, Resources.Culture);
+                var commandHelp = Resources.ResourceManager.GetObject(command);
                 Prompt.Log.Add(commandHelp != null ? commandHelp.ToString() : Resources._ManualNotFound);
             }
         }
