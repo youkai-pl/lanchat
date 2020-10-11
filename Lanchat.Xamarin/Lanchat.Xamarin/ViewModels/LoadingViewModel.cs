@@ -1,4 +1,4 @@
-﻿using Lanchat.Common.NetworkLib;
+﻿using Lanchat.Core;
 using Lanchat.Xamarin.Pages;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -17,16 +17,14 @@ namespace Lanchat.Xamarin.ViewModels
             Task.Run(() =>
             {
                 Status = "Starting network";
-                Network = new Network(4001, "Xamarin", 4002, 3000);
-                Network.Events.HostStarted += (sender, e) =>
-                {
-                    loadingIndicator = false;
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        Application.Current.MainPage = new ChatPage(Network);
-                    });
-                };
+                Network = new P2P(3645);
                 Network.Start();
+
+                loadingIndicator = false;
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Application.Current.MainPage = new ChatPage(Network);
+                });
             });
         }
 
@@ -42,7 +40,7 @@ namespace Lanchat.Xamarin.ViewModels
             }
         }
 
-        public Network Network { get; private set; }
+        public P2P Network { get; private set; }
 
         public string Status
         {

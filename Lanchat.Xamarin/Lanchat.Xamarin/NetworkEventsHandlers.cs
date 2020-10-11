@@ -1,43 +1,38 @@
-﻿using Lanchat.Common.NetworkLib.EventsArgs;
-using Lanchat.Common.Types;
+﻿using Lanchat.Core;
 using Lanchat.Xamarin.ViewModels;
+using System;
 
 namespace Lanchat.Xamarin
 {
     public class NetworkEventsHandlers
     {
         private readonly ChatViewModel chatViewModel;
+        private readonly Node node;
 
-        public NetworkEventsHandlers(ChatViewModel chatViewModel)
+        public NetworkEventsHandlers(ChatViewModel chatViewModel, Node node)
         {
             this.chatViewModel = chatViewModel;
+            this.node = node;
+            node.NetworkInput.MessageReceived += OnMessageReceived;
+            node.Connected += OnSessionConnected;
+            node.Disconnected += OnSessionDisconnected;
         }
 
-        public void OnChangedNickname(object o, ChangedNicknameEventArgs e)
+
+        private void OnSessionDisconnected(object sender, EventArgs e)
         {
-            chatViewModel.AddMessage(new Message() { Content = $"{e.OldNickname} changed nickname to {e.NewNickname}" });
+            chatViewModel.AddMessage(new Message() { Content = $"{node.Nickname} disconnected" });
         }
 
-        public void OnNodeConnected(object o, NodeConnectionStatusEventArgs e)
+        private void OnSessionConnected(object sender, EventArgs e)
         {
-            chatViewModel.AddMessage(new Message() { Content = $"{e.Node.Nickname} connected" });
+            chatViewModel.AddMessage(new Message() { Content = $"{node.Nickname} connected" });
         }
 
-        public void OnNodeDisconnected(object o, NodeConnectionStatusEventArgs e)
+        private void OnMessageReceived(object sender, string e)
         {
-            chatViewModel.AddMessage(new Message() { Content = $"{e.Node.Nickname} disconnected" });
-        }
+            chatViewModel.AddMessage(new Message() { Content = e, Nickname = node.Nickname });
 
-        public void OnReceivedMessage(object o, ReceivedMessageEventArgs e)
-        {
-            if (e.Target == MessageTarget.Private)
-            {
-                chatViewModel.AddMessage(new Message() { Content = e.Content.Trim(), Nickname = $"[->] {e.Node.Nickname}" });
-            }
-            else
-            {
-                chatViewModel.AddMessage(new Message() { Content = e.Content.Trim(), Nickname = e.Node.Nickname });
-            }
         }
     }
 }

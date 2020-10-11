@@ -1,4 +1,4 @@
-﻿using Lanchat.Common.NetworkLib;
+﻿using Lanchat.Core;
 using Lanchat.Xamarin.ViewModels;
 using System.Linq;
 using Xamarin.Forms;
@@ -7,7 +7,7 @@ namespace Lanchat.Xamarin.Pages
 {
     public partial class ChatPage : ContentPage
     {
-        public ChatPage(Network network)
+        public ChatPage(P2P network)
         {
             InitializeComponent();
             BindingContext = new ChatViewModel(network);

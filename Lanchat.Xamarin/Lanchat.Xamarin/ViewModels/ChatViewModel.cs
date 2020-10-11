@@ -1,4 +1,4 @@
-﻿using Lanchat.Common.NetworkLib;
+﻿using Lanchat.Core;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -10,9 +10,8 @@ namespace Lanchat.Xamarin.ViewModels
     {
         private string input = string.Empty;
 
-        public ChatViewModel(Network network)
+        public ChatViewModel(P2P network)
         {
-            Send = new Command(SendAction);
             Network = network;
 
             Messages = new ObservableCollection<Message>();
@@ -20,11 +19,10 @@ namespace Lanchat.Xamarin.ViewModels
             {
             };
 
-            var NetworkEventsHandlers = new NetworkEventsHandlers(this);
-            Network.Events.ReceivedMessage += NetworkEventsHandlers.OnReceivedMessage;
-            Network.Events.NodeConnected += NetworkEventsHandlers.OnNodeConnected;
-            Network.Events.NodeDisconnected += NetworkEventsHandlers.OnNodeDisconnected;
-            Network.Events.ChangedNickname += NetworkEventsHandlers.OnChangedNickname;
+            Network.ConnectionCreated += (object sender, Node e) =>
+            {
+                _ = new NetworkEventsHandlers(this, e);
+            };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -45,7 +43,7 @@ namespace Lanchat.Xamarin.ViewModels
 
         public ObservableCollection<Message> Messages { get; set; }
 
-        public Network Network { get; private set; }
+        public P2P Network { get; private set; }
         public ICommand Send { get; private set; }
 
         public void AddMessage(Message message)
@@ -61,8 +59,8 @@ namespace Lanchat.Xamarin.ViewModels
 
         private void SendAction()
         {
-            Network.Methods.SendAll(Input);
-            AddMessage(new Message() { Content = Input, Nickname = Network.Nickname });
+            Network.BroadcastMessage(Input);
+            AddMessage(new Message() { Content = Input, Nickname = Config.Nickname });
             Input = string.Empty;
         }
     }
