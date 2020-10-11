@@ -24,18 +24,11 @@ namespace Lanchat.Terminal.Ui
 
         public void OnInput(InputEvent inputEvent)
         {
-            if (inputEvent != null)
+            if (inputEvent.Key.Key != ConsoleKey.Enter)
             {
-                if (inputEvent.Key.Key != ConsoleKey.Enter)
-                {
-                    return;
-                }
+                return;
             }
-            else
-            {
-                throw new ArgumentNullException(nameof(inputEvent));
-            }
-
+            
             if (!string.IsNullOrWhiteSpace(input.Text))
             {
                 if (input.Text.StartsWith("/", StringComparison.CurrentCulture))

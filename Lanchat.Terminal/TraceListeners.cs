@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using Lanchat.Terminal.Ui;
 
-namespace Lanchat.Terminal.Ui
+namespace Lanchat.Terminal
 {
     public class TerminalTraceListener : TextWriterTraceListener
     {
