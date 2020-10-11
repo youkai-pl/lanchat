@@ -20,30 +20,32 @@ namespace Lanchat.Terminal.Handlers
             node.SocketErrored += OnSocketErrored;
         }
 
-        private void OnSocketErrored(object sender, SocketError e)
+        private void OnNodeConnected(object sender, EventArgs e)
         {
-            Trace.WriteLine($"[NODE] Socket error {node.Id} / {e}");
-            Prompt.Log.Add($"Connection error {e}");
+            Prompt.Log.Add($"{node.Nickname} connected");
+            Prompt.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
         private void OnNodeDisconnected(object sender, EventArgs e)
         {
             Prompt.Log.Add($"{node.Nickname} disconnected");
+            Prompt.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
-
-        private void OnNodeConnected(object sender, EventArgs e)
+        
+        private void OnMessageReceived(object sender, string e)
         {
-            Prompt.Log.Add($"{node.Nickname} connected");
+            Prompt.Log.AddMessage(e, node.Nickname);
         }
-
+        
         private void OnPingReceived(object sender, EventArgs e)
         {
             Prompt.Log.Add($"{node.Nickname} sent ping");
         }
-
-        private void OnMessageReceived(object sender, string e)
+        
+        private void OnSocketErrored(object sender, SocketError e)
         {
-            Prompt.Log.AddMessage(e, node.Nickname);
+            Trace.WriteLine($"[NODE] Socket error {node.Id} / {e}");
+            Prompt.Log.Add($"Connection error {e}");
         }
     }
 }

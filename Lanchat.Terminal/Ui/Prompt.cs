@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Threading;
 using ConsoleGUI;
 using ConsoleGUI.Api;
@@ -13,59 +12,29 @@ namespace Lanchat.Terminal.Ui
 {
     public static class Prompt
     {
-        private static IInputListener[] _inputListener;
-        internal static LogPanel Log;
         private static TextBlock _clock;
-        private static TextBlock _port;
-        private static TextBlock _nodes;
-        private static TextBlock _promptIndicator;
-        private static InputController _inputController;
+        private static TextBox _input;
+        internal static LogPanel Log { get; private set; }
+        internal static TextBlock NodesCount  { get; private set; }
+
 
         public static void Start(Config config, P2P network)
         {
-            // Layout
             Log = new LogPanel();
-            var input = new TextBox();
-            var topBar = new TextBlock();
-            _inputController = new InputController(input, Log, config, network);
-
-            topBar.Text = $" {Resources.Title} - {Resources.PageLink}";
-
+            _input = new TextBox();
             _clock = new TextBlock
             {
-                Text = DateTime.Now.ToString("HH:mm"),
                 Color = ConsoleColor.Gray
             };
-
-            _nodes = new TextBlock
+            NodesCount = new TextBlock
             {
+                Text = "0",
                 Color = ConsoleColor.Gray
             };
-
-            _port = new TextBlock
-            {
-                Color = ConsoleColor.Gray
-            };
-
-            if (config != null)
-            {
-                _promptIndicator = new TextBlock
-                {
-                    Text = $"[{config.Nickname}]> "
-                };
-            }
-            else
-            {
-                _promptIndicator = new TextBlock
-                {
-                    Text = Resources.PromptIndicator_Default
-                };
-            }
 
             var dockPanel = new DockPanel
             {
                 Placement = DockPanel.DockedControlPlacement.Bottom,
-
                 FillingControl = new DockPanel
                 {
                     Placement = DockPanel.DockedControlPlacement.Top,
@@ -77,7 +46,10 @@ namespace Lanchat.Terminal.Ui
                         Content = new Background
                         {
                             Color = ConsoleColor.DarkBlue,
-                            Content = topBar
+                            Content = new TextBlock
+                            {
+                                Text = $" {Resources.Title} - {Resources.PageLink}"
+                            }
                         }
                     },
 
@@ -105,9 +77,12 @@ namespace Lanchat.Terminal.Ui
                             {
                                 new Style
                                 {
-                                    Content = _promptIndicator
+                                    Content = new TextBlock
+                                    {
+                                        Text = $"[{config.Nickname}]> "
+                                    }
                                 },
-                                input
+                                _input
                             }
                         }
                     },
@@ -123,14 +98,11 @@ namespace Lanchat.Terminal.Ui
                             {
                                 Children = new IControl[]
                                 {
-                                    new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
+                                    new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
                                     _clock,
                                     new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
                                     new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
-                                    _port,
-                                    new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
-                                    new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
-                                    _nodes,
+                                    NodesCount,
                                     new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan}
                                 }
                             }
@@ -138,30 +110,31 @@ namespace Lanchat.Terminal.Ui
                     }
                 }
             };
-
+            
+            // Start console UI 
             ConsoleManager.Console = new SimplifiedConsole();
             ConsoleManager.Setup();
-            Console.Title = Resources.Title;
             ConsoleManager.Resize(new Size(100, 30));
-
             ConsoleManager.Content = dockPanel;
-            _inputListener = new IInputListener[]
-            {
-                _inputController,
-                input
-            };
-
+            Console.Title = Resources.Title;
             Log.Add(Resources.HelloAsci);
 
+            // Clock updates
             new Thread(() =>
             {
                 while (true)
                 {
                     Thread.Sleep(10);
-                    _clock.Text = DateTime.Now.ToString("HH:mm", CultureInfo.CurrentCulture);
-                    ConsoleManager.ReadInput(_inputListener);
+                    _clock.Text = DateTime.Now.ToString("HH:mm");
+                    ConsoleManager.ReadInput(new IInputListener[]
+                    {
+                        new InputController(_input, Log, config, network),
+                        _input
+                    });
                     ConsoleManager.AdjustBufferSize();
                 }
+
+                // ReSharper disable once FunctionNeverReturns
             }).Start();
         }
     }

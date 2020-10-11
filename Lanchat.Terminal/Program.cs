@@ -12,18 +12,18 @@ namespace Lanchat.Terminal
     public static class Program
     {
         private static Config _config;
-        private static P2P _network;
+        public static P2P Network { get; private set; }
 
         private static void Main(string[] args)
         {
             _config = Config.Load();
             
             Core.Config.Nickname = _config.Nickname;
-            _network = new P2P(_config.Port);
+            Network = new P2P(_config.Port);
             
-            _network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
-            Prompt.Start(_config, _network);
-            _network.Start();
+            Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
+            Prompt.Start(_config, Network);
+            Network.Start();
 
             if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
             {
