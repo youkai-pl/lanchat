@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
@@ -16,7 +17,7 @@ namespace Lanchat.Core.Network
             this.node = node;
             serializerOptions = Config.JsonSerializerOptions;
         }
-        
+
         /// <summary>
         ///     Message received.
         /// </summary>
@@ -28,9 +29,9 @@ namespace Lanchat.Core.Network
         public event EventHandler PingReceived;
 
         internal event EventHandler<Handshake> HandshakeReceived;
-        internal event EventHandler<KeyInfo> KeyInfoReceived; 
-        internal event EventHandler<IPAddress> NewNodeInfoReceived;
-        
+        internal event EventHandler<KeyInfo> KeyInfoReceived;
+        internal event EventHandler<List<IPAddress>> NodesListReceived;
+
         internal void ProcessReceivedData(object sender, string json)
         {
             try
@@ -63,12 +64,21 @@ namespace Lanchat.Core.Network
                         var keyInfo = JsonSerializer.Deserialize<KeyInfo>(data.Data.ToString());
                         KeyInfoReceived?.Invoke(this, keyInfo);
                         break;
-                    
-                    case DataTypes.NewNodeInfo:
-                        if (IPAddress.TryParse(data.Data.ToString(), out var ipAddress))
+
+                    case DataTypes.NodesList:
+                        var stringList = JsonSerializer.Deserialize<List<string>>(data.Data.ToString());
+                        var list = new List<IPAddress>();
+
+                        // Convert strings to ip addresses
+                        stringList.ForEach(x =>
                         {
-                            NewNodeInfoReceived?.Invoke(this, ipAddress);
-                        }
+                            if (IPAddress.TryParse(x, out var ipAddress))
+                            {
+                                list.Add(ipAddress);
+                            }
+                        });
+
+                        NodesListReceived?.Invoke(this, list);
                         break;
 
                     default:

@@ -10,7 +10,7 @@ namespace Lanchat.Core
     public class Server : TcpServer
     {
         /// <summary>
-        /// Create server.
+        ///     Create server.
         /// </summary>
         /// <param name="address">Listening IP</param>
         /// <param name="port">Listening port</param>
@@ -20,12 +20,12 @@ namespace Lanchat.Core
         }
 
         /// <summary>
-        /// List of incoming connections.
+        ///     List of incoming connections.
         /// </summary>
         public List<Node> IncomingConnections { get; }
 
         /// <summary>
-        /// Send message for all clients.
+        ///     Send message for all clients.
         /// </summary>
         /// <param name="message"></param>
         public void BroadcastMessage(string message)
@@ -34,12 +34,12 @@ namespace Lanchat.Core
         }
 
         /// <summary>
-        /// Server returned error.
+        ///     Server returned error.
         /// </summary>
         public event EventHandler<SocketError> ServerErrored;
-        
+
         /// <summary>
-        /// New client connected. After receiving this handlers for client events can be created.
+        ///     New client connected. After receiving this handlers for client events can be created.
         /// </summary>
         public event EventHandler<Node> SessionCreated;
 
@@ -57,7 +57,7 @@ namespace Lanchat.Core
         {
             ServerErrored?.Invoke(this, error);
         }
-        
+
         private void OnDisconnected(object sender, EventArgs e)
         {
             var node = (Node) sender;

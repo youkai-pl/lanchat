@@ -27,7 +27,7 @@ namespace Lanchat.Core.Network
         {
             Disconnect();
         }
-        
+
         protected override void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);

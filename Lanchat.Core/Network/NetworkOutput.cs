@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Text.Json;
 using Lanchat.Core.Models;
 
@@ -52,10 +54,10 @@ namespace Lanchat.Core.Network
         {
             var handshake = new Handshake
             {
-                Nickname = Config.Nickname, 
+                Nickname = Config.Nickname,
                 PublicKey = node.Encryption.ExportPublicKey()
             };
-            
+
             var data = new Wrapper {Type = DataTypes.Handshake, Data = handshake};
             node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
@@ -67,15 +69,10 @@ namespace Lanchat.Core.Network
             node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
 
-        internal void SendNewNodeInfo(IPAddress ipAddress)
+        internal void SendNodesList(IEnumerable<IPAddress> list)
         {
-            if (!node.Ready)
-            {
-                return;
-            }
-            
-            var ip = ipAddress.ToString();
-            var data = new Wrapper {Type = DataTypes.NewNodeInfo, Data = ip};
+            var stringList = list.Select(x => x.ToString());
+            var data = new Wrapper {Type = DataTypes.NodesList, Data = stringList};
             node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
     }

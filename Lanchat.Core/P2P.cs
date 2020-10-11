@@ -14,7 +14,7 @@ namespace Lanchat.Core
         private readonly Server server;
 
         /// <summary>
-        /// Initialize p2p mode.
+        ///     Initialize p2p mode.
         /// </summary>
         /// <param name="port">Server port.</param>
         public P2P(int port)
@@ -26,7 +26,7 @@ namespace Lanchat.Core
         }
 
         /// <summary>
-        /// List of connected nodes.
+        ///     List of connected nodes.
         /// </summary>
         public List<Node> Nodes
         {
@@ -40,12 +40,12 @@ namespace Lanchat.Core
         }
 
         /// <summary>
-        /// New node connected. After receiving this handlers for node events can be created.
+        ///     New node connected. After receiving this handlers for node events can be created.
         /// </summary>
         public event EventHandler<Node> ConnectionCreated;
 
         /// <summary>
-        /// Start server.
+        ///     Start server.
         /// </summary>
         public void Start()
         {
@@ -53,7 +53,7 @@ namespace Lanchat.Core
         }
 
         /// <summary>
-        /// Send message to all nodes.
+        ///     Send message to all nodes.
         /// </summary>
         /// <param name="message">Message content.</param>
         public void BroadcastMessage(string message)
@@ -62,7 +62,7 @@ namespace Lanchat.Core
         }
 
         /// <summary>
-        /// Connect to node.
+        ///     Connect to node.
         /// </summary>
         /// <param name="ipAddress">Node IP address.</param>
         public void Connect(IPAddress ipAddress)
@@ -79,28 +79,30 @@ namespace Lanchat.Core
             {
                 return;
             }
-            
+
             var client = new Client(ipAddress, port);
             var node = new Node(client);
             outgoingConnections.Add(node);
+            node.Connected += OnConnected;
             node.Disconnected += OnDisconnectedFromLocal;
+            node.NetworkInput.NodesListReceived += OnNodesListReceived;
             ConnectionCreated?.Invoke(this, node);
             client.ConnectAsync();
+        }
+
+        private void OnConnected(object sender, EventArgs e)
+        {
+            var node = (Node) sender;
+            var nodesList = Nodes.Where(x => x.Id != node.Id).Select(x => x.Endpoint.Address).ToList();
+            node.NetworkOutput.SendNodesList(nodesList);
         }
 
         // Create node after new session event.
         private void OnSessionCreated(object sender, Node node)
         {
-            node.Connected += OnConnectedFromSession;
-            node.NetworkInput.NewNodeInfoReceived += OnNewNodeInfoReceived;
             ConnectionCreated?.Invoke(this, node);
-        }
-
-        // Broadcast new node info after successful connection.
-        private void OnConnectedFromSession(object sender, EventArgs e)
-        {
-            var node = (Node) sender;
-            Nodes.ForEach(x => x.NetworkOutput.SendNewNodeInfo(node.Endpoint.Address));
+            node.NetworkInput.NodesListReceived += OnNodesListReceived;
+            node.Connected += OnConnected;
         }
 
         // Remove node from list after disconnection event.
@@ -109,11 +111,11 @@ namespace Lanchat.Core
             var node = (Node) sender;
             outgoingConnections.Remove(node);
         }
-        
-        // Connect to new node after receiving node info.
-        private void OnNewNodeInfoReceived(object sender, IPAddress address)
+
+        // Try connect to every node from list
+        private void OnNodesListReceived(object sender, List<IPAddress> list)
         {
-            Connect(address);
+            list.ForEach(Connect);
         }
     }
 }

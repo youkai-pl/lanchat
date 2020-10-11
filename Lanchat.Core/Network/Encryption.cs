@@ -7,10 +7,10 @@ namespace Lanchat.Core.Network
 {
     public class Encryption
     {
-        private readonly RSA localRsa;
-        private readonly RSA remoteRsa;
         private readonly Aes localAes;
+        private readonly RSA localRsa;
         private readonly Aes remoteAes;
+        private readonly RSA remoteRsa;
 
         public Encryption()
         {
@@ -19,7 +19,7 @@ namespace Lanchat.Core.Network
             localAes = Aes.Create();
             remoteAes = Aes.Create();
         }
-        
+
         internal PublicKey ExportPublicKey()
         {
             var parameters = localRsa.ExportParameters(false);
@@ -39,13 +39,13 @@ namespace Lanchat.Core.Network
             };
             remoteRsa.ImportParameters(parameters);
         }
-        
+
         internal KeyInfo ExportAesKey()
         {
             return new KeyInfo
             {
                 AesKey = RsaEncrypt(localAes.Key),
-                AesIv = RsaEncrypt(localAes.IV),
+                AesIv = RsaEncrypt(localAes.IV)
             };
         }
 
@@ -64,6 +64,7 @@ namespace Lanchat.Core.Network
             {
                 swEncrypt.Write(text);
             }
+
             var encrypted = msEncrypt.ToArray();
             return Convert.ToBase64String(encrypted);
         }
@@ -78,10 +79,10 @@ namespace Lanchat.Core.Network
             var plaintext = srDecrypt.ReadToEnd();
             return plaintext;
         }
-        
+
         private string RsaEncrypt(byte[] bytes)
         {
-            var encryptedBytes =  remoteRsa.Encrypt(bytes, RSAEncryptionPadding.Pkcs1);
+            var encryptedBytes = remoteRsa.Encrypt(bytes, RSAEncryptionPadding.Pkcs1);
             return Convert.ToBase64String(encryptedBytes);
         }
 

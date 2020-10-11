@@ -4,12 +4,12 @@ using System.Text.Json.Serialization;
 namespace Lanchat.Core
 {
     /// <summary>
-    /// Lanchat configuration.
+    ///     Lanchat configuration.
     /// </summary>
     public static class Config
     {
         /// <summary>
-        /// User nickname.
+        ///     User nickname.
         /// </summary>
         public static string Nickname { get; set; }
 
