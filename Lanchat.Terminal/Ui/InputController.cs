@@ -1,9 +1,9 @@
-﻿using ConsoleGUI.Controls;
-using ConsoleGUI.Input;
-using Lanchat.Common.NetworkLib;
-using Lanchat.Terminal.Commands;
-using System;
+﻿using System;
 using System.Linq;
+using ConsoleGUI.Controls;
+using ConsoleGUI.Input;
+using Lanchat.Core;
+using Lanchat.Terminal.Commands;
 
 namespace Lanchat.Terminal.Ui
 {
@@ -12,9 +12,9 @@ namespace Lanchat.Terminal.Ui
         private readonly Config config;
         private readonly TextBox input;
         private readonly LogPanel log;
-        private readonly Network network;
+        private readonly P2P network;
 
-        public InputController(TextBox input, LogPanel log, Config config, Network network)
+        public InputController(TextBox input, LogPanel log, Config config, P2P network)
         {
             this.input = input;
             this.log = log;
@@ -24,15 +24,11 @@ namespace Lanchat.Terminal.Ui
 
         public void OnInput(InputEvent inputEvent)
         {
-            if (inputEvent != null)
+            if (inputEvent.Key.Key != ConsoleKey.Enter)
             {
-                if (inputEvent.Key.Key != ConsoleKey.Enter) return;
+                return;
             }
-            else
-            {
-                throw new ArgumentNullException(nameof(inputEvent));
-            }
-
+            
             if (!string.IsNullOrWhiteSpace(input.Text))
             {
                 if (input.Text.StartsWith("/", StringComparison.CurrentCulture))
@@ -41,8 +37,8 @@ namespace Lanchat.Terminal.Ui
                 }
                 else
                 {
-                    log.Add(input.Text, Prompt.OutputType.Message, config.Nickname);
-                    network.Methods.SendAll(input.Text);
+                    log.AddMessage(input.Text, config.Nickname);
+                    network.BroadcastMessage(input.Text);
                 }
             }
 
@@ -57,10 +53,6 @@ namespace Lanchat.Terminal.Ui
 
             switch (command)
             {
-                case "nick":
-                    Nick.Execute(args, config, network);
-                    break;
-
                 case "help":
                     Help.Execute(args);
                     break;
@@ -73,23 +65,8 @@ namespace Lanchat.Terminal.Ui
                     Connect.Execute(args, network);
                     break;
 
-                case "mute":
-                    Mute.Execute(args, config, network);
-                    break;
-
-                case "unmute":
-                    Unmute.Execute(args, config, network);
-                    break;
-
-                case "m":
-                    Message.Execute(args, network);
-                    break;
-
                 case "list":
                     List.Execute(network);
-                    break;
-
-                default:
                     break;
             }
         }

@@ -125,7 +125,7 @@
 </value>
   </data>
   <data name="Manual_Connect" xml:space="preserve">
-    <value>Syntax: /connect &lt;ip&gt; &lt;port&gt;</value>
+    <value>Syntax: /connect &lt;ip&gt;</value>
   </data>
   <data name="Manual_Help" xml:space="preserve">
     <value>
@@ -133,23 +133,7 @@ Commands list:
 connect
 help
 list
-mute
-m
-nick
-unmute
 Try /help &lt;command&gt;</value>
-  </data>
-  <data name="Manual_Message" xml:space="preserve">
-    <value>Syntax: /m &lt;nickname&gt; &lt;message&gt;</value>
-  </data>
-  <data name="Manual_Mute" xml:space="preserve">
-    <value>Syntax: /mute &lt;nickname&gt;</value>
-  </data>
-  <data name="Manual_Nick" xml:space="preserve">
-    <value>Syntax: /nick &lt;new_nick&gt;</value>
-  </data>
-  <data name="Manual_Unmute" xml:space="preserve">
-    <value>Syntax: /unmute &lt;nickname&gt;</value>
   </data>
   <data name="PageLink" xml:space="preserve">
     <value>https://tofu.ovh</value>
@@ -157,23 +141,8 @@ Try /help &lt;command&gt;</value>
   <data name="PromptIndicator_Default" xml:space="preserve">
     <value>&gt; </value>
   </data>
-  <data name="StatusMuted" xml:space="preserve">
-    <value>muted</value>
-  </data>
-  <data name="StatusOffline" xml:space="preserve">
-    <value>offline</value>
-  </data>
-  <data name="StatusOnline" xml:space="preserve">
-    <value>online</value>
-  </data>
   <data name="Title" xml:space="preserve">
     <value>Lanchat</value>
-  </data>
-  <data name="_AlreadyConnected" xml:space="preserve">
-    <value>Already connected</value>
-  </data>
-  <data name="_AlreadyMuted" xml:space="preserve">
-    <value>User already muted</value>
   </data>
   <data name="_ConnectionAttempt" xml:space="preserve">
     <value>Attempting connect to</value>
@@ -184,28 +153,7 @@ Try /help &lt;command&gt;</value>
   <data name="_IncorrectValues" xml:space="preserve">
     <value>Incorrect values</value>
   </data>
-  <data name="_ManualConnectionFailed" xml:space="preserve">
-    <value>Manual connection failed</value>
-  </data>
   <data name="_ManualNotFound" xml:space="preserve">
     <value>Manual not found</value>
-  </data>
-  <data name="_MultipleInstancesError" xml:space="preserve">
-    <value>Only one instance can be run on single port</value>
-  </data>
-  <data name="_NotMuted" xml:space="preserve">
-    <value>User is not muted</value>
-  </data>
-  <data name="_OnPort" xml:space="preserve">
-    <value>on port</value>
-  </data>
-  <data name="_SelfNicknameChanged" xml:space="preserve">
-    <value>Nickname changed</value>
-  </data>
-  <data name="_UserNotFound" xml:space="preserve">
-    <value>User not found</value>
-  </data>
-  <data name="_WrongNickname" xml:space="preserve">
-    <value>Nick must be shorter than 20 characters and cannot be blank</value>
   </data>
 </root>
