@@ -1,72 +1,71 @@
-﻿using ConsoleGUI;
+﻿using System;
+using System.Globalization;
+using System.Threading;
+using ConsoleGUI;
 using ConsoleGUI.Api;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Input;
 using ConsoleGUI.Space;
 using Lanchat.Core;
-using System;
-using System.Globalization;
-using System.Reflection;
-using System.Threading;
+using Lanchat.Terminal.Properties;
 
 namespace Lanchat.Terminal.Ui
 {
     public static class Prompt
     {
-        internal static IInputListener[] InputListener;
-        internal static LogPanel Log;
-        internal static TextBlock Clock;
-        internal static TextBlock Port;
-        internal static TextBlock Nodes;
-        internal static TextBlock PromptIndicator;
-        internal static InputController InputController;
-
         public enum OutputType
         {
             System,
             Message,
-            PrivateMessage,
+            PrivateMessage
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
+        private static IInputListener[] _inputListener;
+        internal static LogPanel Log;
+        private static TextBlock _clock;
+        private static TextBlock _port;
+        private static TextBlock _nodes;
+        private static TextBlock _promptIndicator;
+        private static InputController _inputController;
+
         public static void Start(Config config, P2P network)
         {
             // Layout
             Log = new LogPanel();
             var input = new TextBox();
             var topBar = new TextBlock();
-            InputController = new InputController(input, Log, config, network);
+            _inputController = new InputController(input, Log, config, network);
 
-            topBar.Text = $" {Properties.Resources.Title} {Assembly.GetExecutingAssembly().GetName().Version} - {Properties.Resources.PageLink}";
+            topBar.Text = $" {Resources.Title} - {Resources.PageLink}";
 
-            Clock = new TextBlock()
+            _clock = new TextBlock
             {
-                Text = DateTime.Now.ToString("HH:mm", CultureInfo.CurrentCulture),
+                Text = DateTime.Now.ToString("HH:mm"),
                 Color = ConsoleColor.Gray
             };
 
-            Nodes = new TextBlock()
+            _nodes = new TextBlock
             {
                 Color = ConsoleColor.Gray
             };
 
-            Port = new TextBlock()
+            _port = new TextBlock
             {
                 Color = ConsoleColor.Gray
             };
 
             if (config != null)
             {
-                PromptIndicator = new TextBlock
+                _promptIndicator = new TextBlock
                 {
                     Text = $"[{config.Nickname}]> "
                 };
             }
             else
             {
-                PromptIndicator = new TextBlock
+                _promptIndicator = new TextBlock
                 {
-                    Text = Properties.Resources.PromptIndicator_Default
+                    Text = Resources.PromptIndicator_Default
                 };
             }
 
@@ -113,7 +112,7 @@ namespace Lanchat.Terminal.Ui
                             {
                                 new Style
                                 {
-                                    Content = PromptIndicator
+                                    Content = _promptIndicator
                                 },
                                 input
                             }
@@ -129,16 +128,17 @@ namespace Lanchat.Terminal.Ui
                             Color = ConsoleColor.DarkBlue,
                             Content = new HorizontalStackPanel
                             {
-                                Children = new IControl[] {
-                                    new TextBlock(){Text= " [", Color = ConsoleColor.DarkCyan},
-                                    Clock,
-                                    new TextBlock(){Text= "]", Color = ConsoleColor.DarkCyan},
-                                    new TextBlock(){Text= " [", Color = ConsoleColor.DarkCyan},
-                                    Port,
-                                    new TextBlock(){Text= "]", Color = ConsoleColor.DarkCyan},
-                                    new TextBlock(){Text= " [", Color = ConsoleColor.DarkCyan},
-                                    Nodes,
-                                    new TextBlock(){Text= "] ", Color = ConsoleColor.DarkCyan},
+                                Children = new IControl[]
+                                {
+                                    new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
+                                    _clock,
+                                    new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
+                                    new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
+                                    _port,
+                                    new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
+                                    new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
+                                    _nodes,
+                                    new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan}
                                 }
                             }
                         }
@@ -148,25 +148,25 @@ namespace Lanchat.Terminal.Ui
 
             ConsoleManager.Console = new SimplifiedConsole();
             ConsoleManager.Setup();
-            Console.Title = "Lanchat 2";
+            Console.Title = Resources.Title;
             ConsoleManager.Resize(new Size(100, 30));
 
             ConsoleManager.Content = dockPanel;
-            InputListener = new IInputListener[]
+            _inputListener = new IInputListener[]
             {
-                InputController,
+                _inputController,
                 input
             };
 
-            Log.Add(Properties.Resources.HelloAsci);
+            Log.Add(Resources.HelloAsci);
 
             new Thread(() =>
             {
                 while (true)
                 {
                     Thread.Sleep(10);
-                    Clock.Text = DateTime.Now.ToString("HH:mm", CultureInfo.CurrentCulture);
-                    ConsoleManager.ReadInput(InputListener);
+                    _clock.Text = DateTime.Now.ToString("HH:mm", CultureInfo.CurrentCulture);
+                    ConsoleManager.ReadInput(_inputListener);
                     ConsoleManager.AdjustBufferSize();
                 }
             }).Start();

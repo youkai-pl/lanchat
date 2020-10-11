@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 
 namespace Lanchat.Terminal.Ui
 {
     public class TerminalTraceListener : TextWriterTraceListener
     {
-        public TerminalTraceListener()
-        {
-        }
-
         public override void WriteLine(string message)
         {
             Prompt.Log.Add(message);
@@ -20,12 +14,7 @@ namespace Lanchat.Terminal.Ui
     public class FileTraceListener : TextWriterTraceListener
     {
         public FileTraceListener(string fileName) : base(fileName)
-        {
-        }
-
-        public FileTraceListener(TextWriter writer) : base(writer)
-        {
-        }
+        { }
 
         public override void WriteLine(string message)
         {
@@ -35,7 +24,7 @@ namespace Lanchat.Terminal.Ui
             }
             else
             {
-                base.WriteLine(DateTime.Now.ToString("[HH:mm:ss] ", CultureInfo.CurrentCulture) + message);
+                base.WriteLine(DateTime.Now.ToString("[HH:mm:ss] ") + message);
             }
         }
     }

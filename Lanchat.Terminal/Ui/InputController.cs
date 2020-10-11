@@ -1,9 +1,9 @@
-﻿using ConsoleGUI.Controls;
-using ConsoleGUI.Input;
-using Lanchat.Terminal.Commands;
-using System;
+﻿using System;
 using System.Linq;
+using ConsoleGUI.Controls;
+using ConsoleGUI.Input;
 using Lanchat.Core;
+using Lanchat.Terminal.Commands;
 
 namespace Lanchat.Terminal.Ui
 {
@@ -26,7 +26,10 @@ namespace Lanchat.Terminal.Ui
         {
             if (inputEvent != null)
             {
-                if (inputEvent.Key.Key != ConsoleKey.Enter) return;
+                if (inputEvent.Key.Key != ConsoleKey.Enter)
+                {
+                    return;
+                }
             }
             else
             {
@@ -57,7 +60,6 @@ namespace Lanchat.Terminal.Ui
 
             switch (command)
             {
-
                 case "help":
                     Help.Execute(args);
                     break;

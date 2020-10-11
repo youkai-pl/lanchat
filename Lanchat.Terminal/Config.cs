@@ -1,25 +1,26 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json;
 
 namespace Lanchat.Terminal
 {
     public class Config
     {
-        private static int _BroadcastPort;
-        private static int _HeartbeatSendTimeout;
-        private static int _HeartbeatReceiveTimeout;
-        private static int _ConnectionTimeout;
-        private static int _HostPort;
-        private static string _Nickname;
+        private static int _broadcastPort;
+        private static int _heartbeatSendTimeout;
+        private static int _heartbeatReceiveTimeout;
+        private static int _connectionTimeout;
+        private static int _hostPort;
+        private static string _nickname;
 
         [JsonConstructor]
-        public Config(string nickname, int broadcast, int host, List<string> muted, int heartbeatSend, int heartbeatReceive, int connection)
+        public Config(string nickname, int broadcast, int host, List<string> muted, int heartbeatSend,
+            int heartbeatReceive, int connection)
         {
             Nickname = nickname;
             BroadcastPort = broadcast;
@@ -34,10 +35,10 @@ namespace Lanchat.Terminal
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int BroadcastPort
         {
-            get => _BroadcastPort;
+            get => _broadcastPort;
             set
             {
-                _BroadcastPort = value;
+                _broadcastPort = value;
                 Save();
             }
         }
@@ -46,10 +47,10 @@ namespace Lanchat.Terminal
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int HeartbeatSendTimeout
         {
-            get { return _HeartbeatSendTimeout; }
+            get => _heartbeatSendTimeout;
             set
             {
-                _HeartbeatSendTimeout = value;
+                _heartbeatSendTimeout = value;
                 Save();
             }
         }
@@ -58,10 +59,10 @@ namespace Lanchat.Terminal
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int HeartbeatReceiveTimeout
         {
-            get { return _HeartbeatReceiveTimeout; }
+            get => _heartbeatReceiveTimeout;
             set
             {
-                _HeartbeatReceiveTimeout = value;
+                _heartbeatReceiveTimeout = value;
                 Save();
             }
         }
@@ -70,10 +71,10 @@ namespace Lanchat.Terminal
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int ConnectionTimeout
         {
-            get { return _ConnectionTimeout; }
+            get => _connectionTimeout;
             set
             {
-                _ConnectionTimeout = value;
+                _connectionTimeout = value;
                 Save();
             }
         }
@@ -82,10 +83,10 @@ namespace Lanchat.Terminal
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int HostPort
         {
-            get => _HostPort;
+            get => _hostPort;
             set
             {
-                _HostPort = value;
+                _hostPort = value;
                 Save();
             }
         }
@@ -98,10 +99,10 @@ namespace Lanchat.Terminal
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string Nickname
         {
-            get => _Nickname;
+            get => _nickname;
             set
             {
-                _Nickname = value;
+                _nickname = value;
                 Save();
             }
         }
@@ -129,31 +130,38 @@ namespace Lanchat.Terminal
             }
             catch (Exception e)
             {
-                if (e is FileNotFoundException || e is DirectoryNotFoundException || e is JsonSerializationException || e is JsonReaderException)
+                if (!(e is FileNotFoundException) && !(e is DirectoryNotFoundException) &&
+                    !(e is JsonSerializationException) && !(e is JsonReaderException))
                 {
-                    Trace.WriteLine($"[APP] Config load error");
-                    return JsonConvert.DeserializeObject<Config>("{}");
+                    throw;
                 }
-                throw;
+
+                Trace.WriteLine("[APP] Config load error");
+                return JsonConvert.DeserializeObject<Config>("{}");
+
             }
         }
 
         public void AddMute(IPAddress ip)
         {
-            if (ip != null)
+            if (ip == null)
             {
-                Muted.Add(ip.ToString());
-                Save();
+                return;
             }
+
+            Muted.Add(ip.ToString());
+            Save();
         }
 
         public void RemoveMute(IPAddress ip)
         {
-            if (ip != null)
+            if (ip == null)
             {
-                Muted.Remove(ip.ToString());
-                Save();
+                return;
             }
+
+            Muted.Remove(ip.ToString());
+            Save();
         }
 
         private void Save()
@@ -169,12 +177,12 @@ namespace Lanchat.Terminal
             }
             catch (Exception e)
             {
-                if (e is DirectoryNotFoundException || e is UnauthorizedAccessException)
+                if (!(e is DirectoryNotFoundException) && !(e is UnauthorizedAccessException))
                 {
-                    Trace.WriteLine(e.Message);
-                    return;
+                    throw;
                 }
-                throw;
+
+                Trace.WriteLine(e.Message);
             }
         }
     }

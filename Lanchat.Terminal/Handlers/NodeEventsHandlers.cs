@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Sockets;
 using Lanchat.Core;
 using Lanchat.Terminal.Ui;
@@ -8,6 +9,7 @@ namespace Lanchat.Terminal.Handlers
     public class NodeEventsHandlers
     {
         private readonly Node node;
+
         public NodeEventsHandlers(Node node)
         {
             this.node = node;
@@ -20,7 +22,7 @@ namespace Lanchat.Terminal.Handlers
 
         private void OnSocketErrored(object sender, SocketError e)
         {
-            throw new NotImplementedException();
+            Trace.WriteLine($"[NODE] Socket error {node.Id} / {e}");
         }
 
         private void OnNodeDisconnected(object sender, EventArgs e)
@@ -35,7 +37,7 @@ namespace Lanchat.Terminal.Handlers
 
         private void OnPingReceived(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Prompt.Log.Add($"{node.Nickname} sent ping");
         }
 
         private void OnMessageReceived(object sender, string e)

@@ -1,7 +1,8 @@
-﻿using Lanchat.Terminal.Ui;
-using System;
+﻿using System;
 using System.Net;
 using Lanchat.Core;
+using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.Ui;
 
 namespace Lanchat.Terminal.Commands
 {
@@ -9,23 +10,16 @@ namespace Lanchat.Terminal.Commands
     {
         public static void Execute(string[] args, P2P network)
         {
-            if (args == null)
+            if (args == null || args.Length < 2)
             {
-                throw new ArgumentNullException(nameof(args));
-            }
-
-            if (args.Length < 2)
-            {
-                Prompt.Log.Add(Properties.Resources.Manual_Connect);
+                Prompt.Log.Add(Resources.Manual_Connect);
                 return;
             }
-
 
             try
             {
                 var parsedIp = IPAddress.Parse(args[0]);
-                Prompt.Log.Add(
-                    $"{Properties.Resources._ConnectionAttempt} {args[0]} {Properties.Resources._OnPort} {args[1]}");
+                Prompt.Log.Add($"{Resources._ConnectionAttempt} {args[0]}");
                 network.Connect(parsedIp);
             }
             catch (Exception e)
@@ -35,7 +29,7 @@ namespace Lanchat.Terminal.Commands
                     throw;
                 }
 
-                Prompt.Log.Add(Properties.Resources._IncorrectValues);
+                Prompt.Log.Add(Resources._IncorrectValues);
             }
         }
     }

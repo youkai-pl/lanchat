@@ -1,30 +1,31 @@
-﻿using Lanchat.Core;
-using Lanchat.Terminal.Ui;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Lanchat.Core;
 using Lanchat.Terminal.Handlers;
+using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.Ui;
 
 namespace Lanchat.Terminal
 {
     public static class Program
     {
-        public static Config Config { get; set; }
-        public static P2P Network { get; private set; }
+        private static Config _config;
+        private static P2P _network;
 
         private static void Main(string[] args)
         {
-            Config = Config.Load();
-            Core.Config.Nickname = Config.Nickname;
-            Network = new P2P(3645);
-            Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
-            Prompt.Start(Config, Network);
-            Network.Start();
-            
+            _config = Config.Load();
+            Core.Config.Nickname = _config.Nickname;
+            _network = new P2P(3645);
+            _network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
+            Prompt.Start(_config, _network);
+            _network.Start();
+
             if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
             {
-                Trace.WriteLine(Properties.Resources._DebugMode);
+                Trace.WriteLine(Resources._DebugMode);
                 Trace.Listeners.Add(new TerminalTraceListener());
             }
 
@@ -33,7 +34,11 @@ namespace Lanchat.Terminal
             Trace.AutoFlush = true;
             Trace.WriteLine("[APP] Logging started");
 
-            foreach (var fi in new DirectoryInfo(Config.Path).GetFiles("*.log").OrderByDescending(x => x.LastWriteTime).Skip(5))
+            // Remove old logs
+            foreach (var fi in new DirectoryInfo(Config.Path)
+                .GetFiles("*.log")
+                .OrderByDescending(x => x.LastWriteTime)
+                .Skip(5))
             {
                 fi.Delete();
             }
