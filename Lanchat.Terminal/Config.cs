@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 
@@ -11,89 +9,27 @@ namespace Lanchat.Terminal
 {
     public class Config
     {
-        private static int _broadcastPort;
-        private static int _heartbeatSendTimeout;
-        private static int _heartbeatReceiveTimeout;
-        private static int _connectionTimeout;
-        private static int _hostPort;
+        private static int _port;
         private static string _nickname;
 
         [JsonConstructor]
-        public Config(string nickname, int broadcast, int host, List<string> muted, int heartbeatSend,
-            int heartbeatReceive, int connection)
+        public Config(string nickname, int port)
         {
             Nickname = nickname;
-            BroadcastPort = broadcast;
-            HostPort = host;
-            HeartbeatSendTimeout = heartbeatSend;
-            HeartbeatReceiveTimeout = heartbeatReceive;
-            ConnectionTimeout = connection;
-            Muted = muted ?? new List<string>();
+            Port = port;
         }
-
-        [DefaultValue(4001)]
+        
+        [DefaultValue("3645")]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public int BroadcastPort
+        public int Port
         {
-            get => _broadcastPort;
+            get => _port;
             set
             {
-                _broadcastPort = value;
+                _port = value;
                 Save();
             }
         }
-
-        [DefaultValue(3000)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public int HeartbeatSendTimeout
-        {
-            get => _heartbeatSendTimeout;
-            set
-            {
-                _heartbeatSendTimeout = value;
-                Save();
-            }
-        }
-
-        [DefaultValue(5000)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public int HeartbeatReceiveTimeout
-        {
-            get => _heartbeatReceiveTimeout;
-            set
-            {
-                _heartbeatReceiveTimeout = value;
-                Save();
-            }
-        }
-
-        [DefaultValue(5000)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public int ConnectionTimeout
-        {
-            get => _connectionTimeout;
-            set
-            {
-                _connectionTimeout = value;
-                Save();
-            }
-        }
-
-        [DefaultValue(-1)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public int HostPort
-        {
-            get => _hostPort;
-            set
-            {
-                _hostPort = value;
-                Save();
-            }
-        }
-
-        [DefaultValue(null)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public List<string> Muted { get; private set; }
 
         [DefaultValue("user")]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
@@ -138,30 +74,7 @@ namespace Lanchat.Terminal
 
                 Trace.WriteLine("[APP] Config load error");
                 return JsonConvert.DeserializeObject<Config>("{}");
-
             }
-        }
-
-        public void AddMute(IPAddress ip)
-        {
-            if (ip == null)
-            {
-                return;
-            }
-
-            Muted.Add(ip.ToString());
-            Save();
-        }
-
-        public void RemoveMute(IPAddress ip)
-        {
-            if (ip == null)
-            {
-                return;
-            }
-
-            Muted.Remove(ip.ToString());
-            Save();
         }
 
         private void Save()
