@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using Lanchat.Core.Network;
 
 namespace Lanchat.Core
@@ -72,12 +73,16 @@ namespace Lanchat.Core
                 return;
             }
 
-            // TODO: Make some security stuff here
+            // Return if local address
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            if (host.AddressList.Where(ip => ip.AddressFamily == AddressFamily.InterNetwork).Contains(ipAddress))
+            {
+                return;
+            }
             
             var client = new Client(ipAddress, port);
             var node = new Node(client);
             outgoingConnections.Add(node);
-
             node.Disconnected += OnDisconnectedFromLocal;
             ConnectionCreated?.Invoke(this, node);
             client.ConnectAsync();
@@ -88,7 +93,6 @@ namespace Lanchat.Core
         {
             node.Connected += OnConnectedFromSession;
             node.NetworkInput.NewNodeInfoReceived += OnNewNodeInfoReceived;
-
             ConnectionCreated?.Invoke(this, node);
         }
 
@@ -105,7 +109,7 @@ namespace Lanchat.Core
             var node = (Node) sender;
             outgoingConnections.Remove(node);
         }
-
+        
         // Connect to new node after receiving node info.
         private void OnNewNodeInfoReceived(object sender, IPAddress address)
         {
