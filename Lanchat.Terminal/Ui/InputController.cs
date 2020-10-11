@@ -44,7 +44,7 @@ namespace Lanchat.Terminal.Ui
                 }
                 else
                 {
-                    log.Add(input.Text, Prompt.OutputType.Message, config.Nickname);
+                    log.AddMessage(input.Text, config.Nickname);
                     network.BroadcastMessage(input.Text);
                 }
             }

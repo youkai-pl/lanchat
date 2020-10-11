@@ -23,6 +23,7 @@ namespace Lanchat.Terminal.Handlers
         private void OnSocketErrored(object sender, SocketError e)
         {
             Trace.WriteLine($"[NODE] Socket error {node.Id} / {e}");
+            Prompt.Log.Add($"Connection error {e}");
         }
 
         private void OnNodeDisconnected(object sender, EventArgs e)
@@ -42,7 +43,7 @@ namespace Lanchat.Terminal.Handlers
 
         private void OnMessageReceived(object sender, string e)
         {
-            Prompt.Log.Add(e, Prompt.OutputType.Message, node.Nickname);
+            Prompt.Log.AddMessage(e, node.Nickname);
         }
     }
 }

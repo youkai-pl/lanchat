@@ -13,13 +13,6 @@ namespace Lanchat.Terminal.Ui
 {
     public static class Prompt
     {
-        public enum OutputType
-        {
-            System,
-            Message,
-            PrivateMessage
-        }
-
         private static IInputListener[] _inputListener;
         internal static LogPanel Log;
         private static TextBlock _clock;
