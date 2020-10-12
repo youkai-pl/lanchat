@@ -48,7 +48,7 @@ namespace Lanchat.Core
             var session = new Session(this);
             var node = new Node(session);
             IncomingConnections.Add(node);
-            node.Disconnected += OnDisconnected;
+            node.HardDisconnect += OnHardDisconnected;
             SessionCreated?.Invoke(this, node);
             return session;
         }
@@ -58,7 +58,7 @@ namespace Lanchat.Core
             ServerErrored?.Invoke(this, error);
         }
 
-        private void OnDisconnected(object sender, EventArgs e)
+        private void OnHardDisconnected(object sender, EventArgs e)
         {
             var node = (Node) sender;
             IncomingConnections.Remove(node);

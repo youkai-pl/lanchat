@@ -73,6 +73,8 @@ namespace Lanchat.Core
         ///     TCP session or client for this node returned error.
         /// </summary>
         public event EventHandler<SocketError> SocketErrored;
+
+        internal event EventHandler HardDisconnect;
         
         private void OnConnected(object sender, EventArgs e)
         {
@@ -90,16 +92,18 @@ namespace Lanchat.Core
 
         private void OnDisconnected(object sender, bool hardDisconnect)
         {
+            Ready = false;
+
             if (hardDisconnect)
             {
                 Reconnecting = false;
-                Ready = false;
-                return;
+                HardDisconnect?.Invoke(this,EventArgs.Empty);
             }
-
-            Reconnecting = true;
-            Ready = false;
-            Disconnected?.Invoke(this, EventArgs.Empty);
+            else
+            {
+                Reconnecting = true;
+                Disconnected?.Invoke(this, EventArgs.Empty);  
+            }
         }
 
         private void OnSocketErrored(object sender, SocketError e)

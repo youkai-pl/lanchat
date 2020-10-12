@@ -84,7 +84,8 @@ namespace Lanchat.Core
             var node = new Node(client);
             outgoingConnections.Add(node);
             node.Connected += OnConnected;
-            node.Disconnected += OnDisconnectedFromLocal;
+            node.Disconnected += OnDisconnected;
+            node.HardDisconnect += OnHardDisconnect;
             node.NetworkInput.NodesListReceived += OnNodesListReceived;
             ConnectionCreated?.Invoke(this, node);
             client.ConnectAsync();
@@ -105,11 +106,18 @@ namespace Lanchat.Core
             node.Connected += OnConnected;
         }
 
-        // Remove node from list after disconnection event.
-        private void OnDisconnectedFromLocal(object sender, EventArgs e)
+        // Remove node from list after disconnection.
+        private void OnDisconnected(object sender, EventArgs e)
         {
             var node = (Node) sender;
             outgoingConnections.Remove(node);
+        }
+        
+        // Dispose node after hard disconnection.
+        private void OnHardDisconnect(object sender, EventArgs e)
+        {
+            var node = (Node) sender;
+            node.Dispose();
         }
 
         // Try connect to every node from list
