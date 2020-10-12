@@ -13,8 +13,9 @@ namespace Lanchat.Probe.Handlers
             this.node = node;
             node.NetworkInput.MessageReceived += OnMessageReceived;
             node.NetworkInput.PingReceived += OnPingReceived;
-            node.Connected += OnSessionConnected;
-            node.Disconnected += OnSessionDisconnected;
+            node.Connected += OnConnected;
+            node.Disconnected += OnDisconnected;
+            node.HardDisconnect += OnHardDisconnect;
             node.SocketErrored += OnSocketErrored;
         }
 
@@ -25,14 +26,21 @@ namespace Lanchat.Probe.Handlers
             Console.WriteLine("");
         }
 
-        private void OnSessionDisconnected(object sender, EventArgs e)
+        private void OnDisconnected(object sender, EventArgs e)
+        {
+            Console.WriteLine("Disconnected. Trying reconnect.");
+            Console.WriteLine($"{node.Id}");
+            Console.WriteLine("");
+        }
+        
+        private void OnHardDisconnect(object sender, EventArgs e)
         {
             Console.WriteLine("Disconnected");
             Console.WriteLine($"{node.Id}");
             Console.WriteLine("");
         }
 
-        private void OnSessionConnected(object sender, EventArgs e)
+        private void OnConnected(object sender, EventArgs e)
         {
             Console.WriteLine("Connected");
             Console.WriteLine($"{node.Id} / {node.Endpoint}");

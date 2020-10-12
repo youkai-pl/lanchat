@@ -65,17 +65,20 @@ namespace Lanchat.Core
         public event EventHandler Connected;
 
         /// <summary>
-        ///     Node disconnected.
+        ///     Node disconnected. Trying reconnect.
         /// </summary>
         public event EventHandler Disconnected;
-
+        
+        /// <summary>
+        ///     Node disconnected. Cannot reconnect.
+        /// </summary>
+        public event EventHandler HardDisconnect;
+        
         /// <summary>
         ///     TCP session or client for this node returned error.
         /// </summary>
         public event EventHandler<SocketError> SocketErrored;
 
-        internal event EventHandler HardDisconnect;
-        
         private void OnConnected(object sender, EventArgs e)
         {
             NetworkOutput.SendHandshake();
@@ -85,7 +88,7 @@ namespace Lanchat.Core
             {
                 if (!Ready && !Reconnecting)
                 {
-                    NetworkElement.Close();
+                    HardDisconnect?.Invoke(this,EventArgs.Empty);
                 }
             });
         }
