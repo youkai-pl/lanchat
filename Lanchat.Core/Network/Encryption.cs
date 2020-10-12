@@ -5,7 +5,7 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network
 {
-    public class Encryption
+    public class Encryption : IDisposable
     {
         private readonly Aes localAes;
         private readonly RSA localRsa;
@@ -90,6 +90,14 @@ namespace Lanchat.Core.Network
         {
             var encryptedBytes = Convert.FromBase64String(text);
             return localRsa.Decrypt(encryptedBytes, RSAEncryptionPadding.Pkcs1);
+        }
+
+        public void Dispose()
+        {
+            localAes?.Dispose();
+            localRsa?.Dispose();
+            remoteAes?.Dispose();
+            remoteRsa?.Dispose();
         }
     }
 }

@@ -26,6 +26,7 @@ namespace Lanchat.Core.Network
         public void Close()
         {
             Disconnect();
+            Dispose();
         }
 
         protected override void OnConnected()

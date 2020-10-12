@@ -112,5 +112,11 @@ namespace Lanchat.Core
             Ready = true;
             Connected?.Invoke(this, EventArgs.Empty);
         }
+
+        internal void Dispose()
+        {
+            NetworkElement.Close();
+            Encryption.Dispose();
+        }
     }
 }

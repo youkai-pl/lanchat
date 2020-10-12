@@ -62,6 +62,7 @@ namespace Lanchat.Core
         {
             var node = (Node) sender;
             IncomingConnections.Remove(node);
+            node.Dispose();
         }
     }
 }
