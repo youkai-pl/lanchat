@@ -19,7 +19,7 @@ namespace Lanchat.Xamarin.ViewModels
             {
             };
 
-            Network.ConnectionCreated += (object sender, Node e) =>
+            Network.ConnectionCreated += (sender, e) =>
             {
                 _ = new NetworkEventsHandlers(this, e);
             };

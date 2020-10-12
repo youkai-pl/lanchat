@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Lanchat.Xamarin.Pages
 {
-    public partial class ChatPage : ContentPage
+    public partial class ChatPage
     {
         public ChatPage(P2P network)
         {

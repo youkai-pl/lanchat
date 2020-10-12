@@ -1,10 +1,7 @@
-﻿using System;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using Android.OS;
 using Xamarin.Essentials;
 
@@ -31,12 +28,12 @@ namespace Lanchat.Xamarin.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        private bool _lieAboutCurrentFocus;
+        private bool lieAboutCurrentFocus;
         public override bool DispatchTouchEvent(MotionEvent ev)
         {
-            _lieAboutCurrentFocus = true;
+            lieAboutCurrentFocus = true;
             var result = base.DispatchTouchEvent(ev);
-            _lieAboutCurrentFocus = false;
+            lieAboutCurrentFocus = false;
 
             return result;
         }
@@ -45,7 +42,7 @@ namespace Lanchat.Xamarin.Droid
         {
             get
             {
-                if (_lieAboutCurrentFocus)
+                if (lieAboutCurrentFocus)
                 {
                     return null;
                 }

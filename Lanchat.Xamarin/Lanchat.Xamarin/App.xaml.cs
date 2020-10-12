@@ -1,11 +1,10 @@
 ﻿using Lanchat.Xamarin.Pages;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
-using Application = Xamarin.Forms.Application;
 
 namespace Lanchat.Xamarin
 {
-    public partial class App : Application
+    public partial class App
     {
         public App()
         {
