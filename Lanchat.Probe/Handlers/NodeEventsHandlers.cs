@@ -32,7 +32,7 @@ namespace Lanchat.Probe.Handlers
             Console.WriteLine($"{node.Id}");
             Console.WriteLine("");
         }
-        
+
         private void OnHardDisconnect(object sender, EventArgs e)
         {
             Console.WriteLine("Disconnected");

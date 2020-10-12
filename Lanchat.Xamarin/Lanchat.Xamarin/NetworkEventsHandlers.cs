@@ -14,24 +14,30 @@ namespace Lanchat.Xamarin
             this.chatViewModel = chatViewModel;
             this.node = node;
             node.NetworkInput.MessageReceived += OnMessageReceived;
-            node.Connected += OnSessionConnected;
-            node.Disconnected += OnSessionDisconnected;
+            node.Connected += OnConnected;
+            node.Disconnected += OnDisconnected;
+            node.HardDisconnect += OnHardDisconnected;
         }
 
 
-        private void OnSessionDisconnected(object sender, EventArgs e)
+        private void OnDisconnected(object sender, EventArgs e)
         {
-            chatViewModel.AddMessage(new Message() { Content = $"{node.Nickname} disconnected" });
+            chatViewModel.AddMessage(new Message { Content = $"{node.Nickname} disconnected. Trying reconnect." });
+        }
+        
+        private void OnHardDisconnected(object sender, EventArgs e)
+        {
+            chatViewModel.AddMessage(new Message { Content = $"{node.Nickname} disconnected. Cannot reconnect." });
         }
 
-        private void OnSessionConnected(object sender, EventArgs e)
+        private void OnConnected(object sender, EventArgs e)
         {
-            chatViewModel.AddMessage(new Message() { Content = $"{node.Nickname} connected" });
+            chatViewModel.AddMessage(new Message { Content = $"{node.Nickname} connected" });
         }
 
         private void OnMessageReceived(object sender, string e)
         {
-            chatViewModel.AddMessage(new Message() { Content = e, Nickname = node.Nickname });
+            chatViewModel.AddMessage(new Message { Content = e, Nickname = node.Nickname });
         }
     }
 }

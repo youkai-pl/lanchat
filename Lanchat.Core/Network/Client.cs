@@ -9,18 +9,18 @@ namespace Lanchat.Core.Network
 {
     public class Client : TcpClient, INetworkElement
     {
+        private bool hardDisconnect;
         private bool isReconnecting;
         private int reconnectingCount;
-        private bool hardDisconnect;
 
         public Client(IPAddress address, int port) : base(address, port)
         { }
-        
+
         public event EventHandler Connected;
         public event EventHandler<bool> Disconnected;
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
-        
+
 
         public new void SendAsync(string text)
         {
@@ -35,6 +35,7 @@ namespace Lanchat.Core.Network
             {
                 Thread.Yield();
             }
+
             Dispose();
         }
 
@@ -52,7 +53,7 @@ namespace Lanchat.Core.Network
             {
                 Disconnected?.Invoke(this, false);
             }
-            
+
             // Stop if reconnect counter is equal 3 or client disconnected safely
             if (hardDisconnect || reconnectingCount == 3)
             {

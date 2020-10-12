@@ -112,7 +112,7 @@ namespace Lanchat.Core
             var node = (Node) sender;
             outgoingConnections.Remove(node);
         }
-        
+
         // Dispose node after hard disconnection.
         private void OnHardDisconnect(object sender, EventArgs e)
         {

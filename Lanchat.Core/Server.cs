@@ -53,16 +53,16 @@ namespace Lanchat.Core
             return session;
         }
 
-        protected override void OnError(SocketError error)
-        {
-            ServerErrored?.Invoke(this, error);
-        }
-
         private void OnHardDisconnected(object sender, EventArgs e)
         {
             var node = (Node) sender;
             IncomingConnections.Remove(node);
             node.Dispose();
+        }
+
+        protected override void OnError(SocketError error)
+        {
+            ServerErrored?.Invoke(this, error);
         }
     }
 }

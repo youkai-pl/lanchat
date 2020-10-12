@@ -68,12 +68,12 @@ namespace Lanchat.Core
         ///     Node disconnected. Trying reconnect.
         /// </summary>
         public event EventHandler Disconnected;
-        
+
         /// <summary>
         ///     Node disconnected. Cannot reconnect.
         /// </summary>
         public event EventHandler HardDisconnect;
-        
+
         /// <summary>
         ///     TCP session or client for this node returned error.
         /// </summary>
@@ -88,7 +88,7 @@ namespace Lanchat.Core
             {
                 if (!Ready && !Reconnecting)
                 {
-                    HardDisconnect?.Invoke(this,EventArgs.Empty);
+                    NetworkElement.Close();
                 }
             });
         }
@@ -100,12 +100,12 @@ namespace Lanchat.Core
             if (hardDisconnect)
             {
                 Reconnecting = false;
-                HardDisconnect?.Invoke(this,EventArgs.Empty);
+                HardDisconnect?.Invoke(this, EventArgs.Empty);
             }
             else
             {
                 Reconnecting = true;
-                Disconnected?.Invoke(this, EventArgs.Empty);  
+                Disconnected?.Invoke(this, EventArgs.Empty);
             }
         }
 

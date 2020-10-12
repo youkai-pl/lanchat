@@ -15,20 +15,27 @@ namespace Lanchat.Terminal.Handlers
             this.node = node;
             node.NetworkInput.MessageReceived += OnMessageReceived;
             node.NetworkInput.PingReceived += OnPingReceived;
-            node.Connected += OnNodeConnected;
-            node.Disconnected += OnNodeDisconnected;
+            node.Connected += OnConnected;
+            node.Disconnected += OnDisconnected;
+            node.HardDisconnect += OnHardDisconnected;
             node.SocketErrored += OnSocketErrored;
         }
 
-        private void OnNodeConnected(object sender, EventArgs e)
+        private void OnConnected(object sender, EventArgs e)
         {
             Prompt.Log.Add($"{node.Nickname} connected");
             Prompt.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
-        private void OnNodeDisconnected(object sender, EventArgs e)
+        private void OnDisconnected(object sender, EventArgs e)
         {
-            Prompt.Log.Add($"{node.Nickname} disconnected");
+            Prompt.Log.Add($"{node.Nickname} disconnected. Trying reconnect.");
+            Prompt.NodesCount.Text = Program.Network.Nodes.Count.ToString();
+        }
+        
+        private void OnHardDisconnected(object sender, EventArgs e)
+        {
+            Prompt.Log.Add($"{node.Nickname} disconnected. Cannot reconnect.");
             Prompt.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
         

@@ -20,6 +20,14 @@ namespace Lanchat.Core.Network
             remoteAes = Aes.Create();
         }
 
+        public void Dispose()
+        {
+            localAes?.Dispose();
+            localRsa?.Dispose();
+            remoteAes?.Dispose();
+            remoteRsa?.Dispose();
+        }
+
         internal PublicKey ExportPublicKey()
         {
             var parameters = localRsa.ExportParameters(false);
@@ -90,14 +98,6 @@ namespace Lanchat.Core.Network
         {
             var encryptedBytes = Convert.FromBase64String(text);
             return localRsa.Decrypt(encryptedBytes, RSAEncryptionPadding.Pkcs1);
-        }
-
-        public void Dispose()
-        {
-            localAes?.Dispose();
-            localRsa?.Dispose();
-            remoteAes?.Dispose();
-            remoteRsa?.Dispose();
         }
     }
 }
