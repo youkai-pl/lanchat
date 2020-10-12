@@ -85,10 +85,13 @@ namespace Lanchat.Core
 
         private void OnDisconnected(object sender, EventArgs e)
         {
-            if (Ready)
+            if (!Ready)
             {
-                Disconnected?.Invoke(this, EventArgs.Empty);
+                return;
             }
+
+            Disconnected?.Invoke(this, EventArgs.Empty);
+            Ready = false;
         }
 
         private void OnSocketErrored(object sender, SocketError e)

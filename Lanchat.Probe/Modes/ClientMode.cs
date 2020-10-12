@@ -23,7 +23,7 @@ namespace Lanchat.Probe.Modes
             var node = new Node(client);
             _ = new NodeEventsHandlers(node);
 
-            Console.WriteLine($"Client connecting to {ipAddress}");
+            Console.WriteLine($"Client connecting to {parsedIp}");
             client.ConnectAsync();
 
             var loop = true;

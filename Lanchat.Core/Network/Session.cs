@@ -11,8 +11,8 @@ namespace Lanchat.Core.Network
         internal Session(TcpServer server) : base(server)
         { }
 
-
         public IPEndPoint Endpoint => (IPEndPoint) Socket.RemoteEndPoint;
+
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler<string> DataReceived;

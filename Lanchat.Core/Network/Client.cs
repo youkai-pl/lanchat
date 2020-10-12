@@ -14,7 +14,7 @@ namespace Lanchat.Core.Network
 
         public Client(IPAddress address, int port) : base(address, port)
         { }
-
+        
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler<string> DataReceived;
@@ -30,12 +30,6 @@ namespace Lanchat.Core.Network
             base.SendAsync(text);
         }
 
-        public override bool Connect()
-        {
-            reconnectCounter = 0;
-            return base.Connect();
-        }
-
         private void DisconnectAndStop()
         {
             safeDisconnect = true;
@@ -44,6 +38,7 @@ namespace Lanchat.Core.Network
             {
                 Thread.Yield();
             }
+            Dispose();
         }
 
         protected override void OnConnected()
@@ -59,16 +54,15 @@ namespace Lanchat.Core.Network
             {
                 Disconnected?.Invoke(this, EventArgs.Empty);
             }
-
-            // Try reconnect after while
-            Thread.Sleep(1000);
-
-            // Stop if reconnect counter is greater than 3 or client disconnected safely
-            if (safeDisconnect || reconnectCounter > 3)
+            
+            // Stop if reconnect counter is equal 3 or client disconnected safely
+            if (safeDisconnect || reconnectCounter == 3)
             {
+                Dispose();
                 return;
             }
 
+            // Try reconnect
             reconnectCounter++;
             ConnectAsync();
         }
