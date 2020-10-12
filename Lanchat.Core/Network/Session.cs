@@ -14,7 +14,7 @@ namespace Lanchat.Core.Network
         public IPEndPoint Endpoint => (IPEndPoint) Socket.RemoteEndPoint;
 
         public event EventHandler Connected;
-        public event EventHandler Disconnected;
+        public event EventHandler<bool> Disconnected;
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
 
@@ -36,7 +36,7 @@ namespace Lanchat.Core.Network
 
         protected override void OnDisconnected()
         {
-            Disconnected?.Invoke(this, EventArgs.Empty);
+            Disconnected?.Invoke(this, true);
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)

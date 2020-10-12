@@ -55,6 +55,11 @@ namespace Lanchat.Core
         public IPEndPoint Endpoint => NetworkElement.Endpoint;
 
         /// <summary>
+        ///     Is node reconnecting.
+        /// </summary>
+        public bool Reconnecting { get; private set; }
+
+        /// <summary>
         ///     Node successful connected and ready.
         /// </summary>
         public event EventHandler Connected;
@@ -68,7 +73,7 @@ namespace Lanchat.Core
         ///     TCP session or client for this node returned error.
         /// </summary>
         public event EventHandler<SocketError> SocketErrored;
-
+        
         private void OnConnected(object sender, EventArgs e)
         {
             NetworkOutput.SendHandshake();
@@ -76,22 +81,25 @@ namespace Lanchat.Core
             // Check is connection established successful after timeout
             Task.Delay(5000).ContinueWith(t =>
             {
-                if (!Ready)
+                if (!Ready && !Reconnecting)
                 {
                     NetworkElement.Close();
                 }
             });
         }
 
-        private void OnDisconnected(object sender, EventArgs e)
+        private void OnDisconnected(object sender, bool hardDisconnect)
         {
-            if (!Ready)
+            if (hardDisconnect)
             {
+                Reconnecting = false;
+                Ready = false;
                 return;
             }
 
-            Disconnected?.Invoke(this, EventArgs.Empty);
+            Reconnecting = true;
             Ready = false;
+            Disconnected?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSocketErrored(object sender, SocketError e)

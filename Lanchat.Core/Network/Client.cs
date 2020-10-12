@@ -9,30 +9,27 @@ namespace Lanchat.Core.Network
 {
     public class Client : TcpClient, INetworkElement
     {
-        private int reconnectCounter;
-        private bool safeDisconnect;
+        private bool isReconnecting;
+        private int reconnectingCount;
+        private bool hardDisconnect;
 
         public Client(IPAddress address, int port) : base(address, port)
         { }
         
         public event EventHandler Connected;
-        public event EventHandler Disconnected;
+        public event EventHandler<bool> Disconnected;
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
-
-        public void Close()
-        {
-            DisconnectAndStop();
-        }
+        
 
         public new void SendAsync(string text)
         {
             base.SendAsync(text);
         }
 
-        private void DisconnectAndStop()
+        public void Close()
         {
-            safeDisconnect = true;
+            hardDisconnect = true;
             DisconnectAsync();
             while (IsConnected)
             {
@@ -43,27 +40,30 @@ namespace Lanchat.Core.Network
 
         protected override void OnConnected()
         {
-            reconnectCounter = 0;
+            isReconnecting = false;
+            reconnectingCount = 0;
             Connected?.Invoke(this, EventArgs.Empty);
         }
 
         protected override void OnDisconnected()
         {
             // If client isn't reconnecting raise event
-            if (reconnectCounter == 0)
+            if (!isReconnecting)
             {
-                Disconnected?.Invoke(this, EventArgs.Empty);
+                Disconnected?.Invoke(this, false);
             }
             
             // Stop if reconnect counter is equal 3 or client disconnected safely
-            if (safeDisconnect || reconnectCounter == 3)
+            if (hardDisconnect || reconnectingCount == 3)
             {
-                Dispose();
+                Disconnected?.Invoke(this, true);
                 return;
             }
 
             // Try reconnect
-            reconnectCounter++;
+            Thread.Sleep(1000);
+            isReconnecting = true;
+            reconnectingCount++;
             ConnectAsync();
         }
 

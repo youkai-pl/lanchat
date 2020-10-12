@@ -38,7 +38,7 @@ namespace Lanchat.Core.Network
         /// <summary>
         ///     Network element disconnected.
         /// </summary>
-        event EventHandler Disconnected;
+        event EventHandler<bool> Disconnected;
 
         /// <summary>
         ///     Network element socket errored.
