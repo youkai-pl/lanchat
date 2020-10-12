@@ -35,7 +35,7 @@ namespace Lanchat.Core
                 var nodes = new List<Node>();
                 nodes.AddRange(outgoingConnections);
                 nodes.AddRange(server.IncomingConnections);
-                return nodes;
+                return nodes.Where(x => x.Ready).ToList();
             }
         }
 
