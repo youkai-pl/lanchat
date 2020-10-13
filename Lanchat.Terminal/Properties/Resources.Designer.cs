@@ -97,6 +97,24 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nickname changed.
+        /// </summary>
+        internal static string _SelfNicknameChanged {
+            get {
+                return ResourceManager.GetString("_SelfNicknameChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nick must be shorter than 20 characters and cannot be blank.
+        /// </summary>
+        internal static string _WrongNickname {
+            get {
+                return ResourceManager.GetString("_WrongNickname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to    __                 __        __  ___ 
         ///  / /  ___ ____  ____/ /  ___ _/ /_|_  |
         /// / /__/ _ `/ _ \/ __/ _ \/ _ `/ __/ __/ 
@@ -129,6 +147,15 @@ namespace Lanchat.Terminal.Properties {
         internal static string Manual_Help {
             get {
                 return ResourceManager.GetString("Manual_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax: /nick &lt;new_nick&gt;.
+        /// </summary>
+        internal static string Manual_Nick {
+            get {
+                return ResourceManager.GetString("Manual_Nick", resourceCulture);
             }
         }
         

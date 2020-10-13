@@ -16,20 +16,29 @@ namespace Lanchat.Terminal.Ui
         private static TextBox _input;
         internal static LogPanel Log { get; private set; }
         internal static TextBlock NodesCount  { get; private set; }
+        internal static TextBlock PromptIndicator { get; private set; }
 
 
         public static void Start(Config config, P2P network)
         {
             Log = new LogPanel();
+            
             _input = new TextBox();
+            
             _clock = new TextBlock
             {
                 Color = ConsoleColor.Gray
             };
+            
             NodesCount = new TextBlock
             {
                 Text = "0",
                 Color = ConsoleColor.Gray
+            };
+            
+            PromptIndicator = new TextBlock
+            {
+                Text = $"[{config.Nickname}]> "
             };
 
             var dockPanel = new DockPanel
@@ -77,10 +86,7 @@ namespace Lanchat.Terminal.Ui
                             {
                                 new Style
                                 {
-                                    Content = new TextBlock
-                                    {
-                                        Text = $"[{config.Nickname}]> "
-                                    }
+                                    Content = PromptIndicator
                                 },
                                 _input
                             }

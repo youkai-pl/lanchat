@@ -156,4 +156,13 @@ Try /help &lt;command&gt;</value>
   <data name="_ManualNotFound" xml:space="preserve">
     <value>Manual not found</value>
   </data>
+  <data name="Manual_Nick" xml:space="preserve">
+    <value>Syntax: /nick &lt;new_nick&gt;</value>
+  </data>
+  <data name="_WrongNickname" xml:space="preserve">
+    <value>Nick must be shorter than 20 characters and cannot be blank</value>
+  </data>
+  <data name="_SelfNicknameChanged" xml:space="preserve">
+    <value>Nickname changed</value>
+  </data>
 </root>

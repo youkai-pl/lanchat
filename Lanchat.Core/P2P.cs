@@ -20,6 +20,7 @@ namespace Lanchat.Core
             outgoingConnections = new List<Node>();
             server = new Server(IPAddress.Any, CoreConfig.ServerPort);
             server.SessionCreated += OnSessionCreated;
+            CoreConfig.NicknameChanged += OnNicknameChanged;
         }
 
         /// <summary>
@@ -114,6 +115,12 @@ namespace Lanchat.Core
         private void OnNodesListReceived(object sender, List<IPAddress> list)
         {
             list.ForEach(Connect);
+        }
+
+        // Broadcast new nickname
+        private void OnNicknameChanged(object sender, EventArgs e)
+        {
+            Nodes.ForEach(x => x.NetworkOutput.SendNicknameUpdate(CoreConfig.Nickname));
         }
     }
 }

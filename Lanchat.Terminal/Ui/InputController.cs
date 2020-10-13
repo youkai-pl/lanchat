@@ -68,6 +68,10 @@ namespace Lanchat.Terminal.Ui
                 case "list":
                     List.Execute(network);
                     break;
+                
+                case "nick":
+                    Nick.Execute(args, config);
+                    break;
             }
         }
     }
