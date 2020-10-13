@@ -17,8 +17,10 @@ namespace Lanchat.Xamarin.ViewModels
             Task.Run(() =>
             {
                 Status = "Starting network";
-                Config.Nickname = "Android";
-                Network = new P2P(3645);
+                CoreConfig.Nickname = "Android";
+                CoreConfig.ServerPort = 3645;
+                
+                Network = new P2P();
                 Network.Start();
 
                 loadingIndicator = false;

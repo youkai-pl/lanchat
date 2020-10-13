@@ -17,8 +17,10 @@ namespace Lanchat.Terminal
         private static void Main(string[] args)
         {
             _config = Config.Load();
-            Core.Config.Nickname = _config.Nickname;
-            Network = new P2P(_config.Port);
+            CoreConfig.Nickname = _config.Nickname;
+            CoreConfig.ServerPort = _config.Port;
+            
+            Network = new P2P();
             Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
             Network.Start();
 

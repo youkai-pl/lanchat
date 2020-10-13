@@ -17,7 +17,7 @@ namespace Lanchat.Core.Network
         internal NetworkOutput(Node node)
         {
             this.node = node;
-            serializerOptions = Config.JsonSerializerOptions;
+            serializerOptions = CoreConfig.JsonSerializerOptions;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Lanchat.Core.Network
         {
             var handshake = new Handshake
             {
-                Nickname = Config.Nickname,
+                Nickname = CoreConfig.Nickname,
                 PublicKey = node.Encryption.ExportPublicKey()
             };
 

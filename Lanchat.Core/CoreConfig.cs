@@ -6,12 +6,17 @@ namespace Lanchat.Core
     /// <summary>
     ///     Lanchat configuration.
     /// </summary>
-    public static class Config
+    public static class CoreConfig
     {
         /// <summary>
         ///     User nickname.
         /// </summary>
         public static string Nickname { get; set; }
+
+        /// <summary>
+        ///    Server port. 
+        /// </summary>
+        public static int ServerPort { get; set; }
 
         // Internal configurations
         internal static JsonSerializerOptions JsonSerializerOptions =>

@@ -60,7 +60,7 @@ namespace Lanchat.Xamarin.ViewModels
         private void SendAction()
         {
             Network.BroadcastMessage(Input);
-            AddMessage(new Message() { Content = Input, Nickname = Config.Nickname });
+            AddMessage(new Message() { Content = Input, Nickname = CoreConfig.Nickname });
             Input = string.Empty;
         }
     }

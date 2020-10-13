@@ -24,10 +24,14 @@
             Grid.Column="0"
             Grid.ColumnSpan="2"
             HasUnevenRows="True"
-            ItemsSource="{Binding Messages}"
             SelectionMode="None"
             SeparatorVisibility="None"
             VerticalOptions="StartAndExpand">
+            <ListView.ItemsSource>
+                <Binding>
+                    <Binding.Path>Messages</Binding.Path>
+                </Binding>
+            </ListView.ItemsSource>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

@@ -10,18 +10,15 @@ namespace Lanchat.Core
     public class P2P
     {
         private readonly List<Node> outgoingConnections;
-        private readonly int port;
         private readonly Server server;
 
         /// <summary>
         ///     Initialize p2p mode.
         /// </summary>
-        /// <param name="port">Server port.</param>
-        public P2P(int port)
+        public P2P()
         {
-            this.port = port;
             outgoingConnections = new List<Node>();
-            server = new Server(IPAddress.Any, port);
+            server = new Server(IPAddress.Any, CoreConfig.ServerPort);
             server.SessionCreated += OnSessionCreated;
         }
 
@@ -80,7 +77,7 @@ namespace Lanchat.Core
                 return;
             }
 
-            var client = new Client(ipAddress, port);
+            var client = new Client(ipAddress, CoreConfig.ServerPort);
             var node = new Node(client);
             outgoingConnections.Add(node);
             node.Connected += OnConnected;

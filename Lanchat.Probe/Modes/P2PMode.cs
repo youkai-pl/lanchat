@@ -9,8 +9,10 @@ namespace Lanchat.Probe.Modes
     {
         public P2PMode()
         {
-            Config.Nickname = "P2P";
-            var network = new P2P(3645);
+            CoreConfig.Nickname = "P2P";
+            CoreConfig.ServerPort = 3645;
+            
+            var network = new P2P();
             network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
 
             network.Start();

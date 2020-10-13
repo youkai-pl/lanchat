@@ -15,7 +15,7 @@ namespace Lanchat.Core.Network
         internal NetworkInput(Node node)
         {
             this.node = node;
-            serializerOptions = Config.JsonSerializerOptions;
+            serializerOptions = CoreConfig.JsonSerializerOptions;
         }
 
         /// <summary>
