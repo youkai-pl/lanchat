@@ -4,6 +4,10 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <Authors>tofudd</Authors>
+    <IsPackable>false</IsPackable>
+    <PackageVersion />
+    <AssemblyVersion>0.1.0</AssemblyVersion>
+    <AssemblyInformationalVersion>0.1.0-alpha1</AssemblyInformationalVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

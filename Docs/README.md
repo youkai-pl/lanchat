@@ -2,9 +2,11 @@
 
 Encrypted, P2P, local network chat. 
 
-## Clients
-* Lanchat Terminal: console app for Windows and Linux
-* Lancaht Xamarin: for Android
+## Projects
+* Lanchat.Terminal (2.1.0-alpha1) - console app for Windows and Linux
+* Lancaht.Xamarin (0.1.0-alpha1) - for Android
+* Lancaht.Core (2.1.0-alpha1) - library
+* Lanchat.Probe - tool for debugging 
 
 Check [release](https://github.com/tofudd/lanchat/releases) section for binaries.
 
