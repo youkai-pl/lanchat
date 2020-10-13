@@ -31,9 +31,7 @@ namespace Lanchat.Core.Network
                 return;
             }
 
-            var message = new Message {Content = node.Encryption.Encrypt(content)};
-            var data = new Wrapper {Type = DataTypes.Message, Data = message};
-            node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
+            SendData(DataTypes.Message, node.Encryption.Encrypt(content));
         }
 
         /// <summary>
@@ -46,8 +44,7 @@ namespace Lanchat.Core.Network
                 return;
             }
 
-            var data = new Wrapper {Type = DataTypes.Ping};
-            node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
+            SendData(DataTypes.Ping);
         }
 
         internal void SendHandshake()
@@ -58,21 +55,24 @@ namespace Lanchat.Core.Network
                 PublicKey = node.Encryption.ExportPublicKey()
             };
 
-            var data = new Wrapper {Type = DataTypes.Handshake, Data = handshake};
-            node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
+            SendData(DataTypes.Handshake, handshake);
         }
 
         internal void SendKey()
         {
             var keyInfo = node.Encryption.ExportAesKey();
-            var data = new Wrapper {Type = DataTypes.KeyInfo, Data = keyInfo};
-            node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
+            SendData(DataTypes.KeyInfo, keyInfo);
         }
 
         internal void SendNodesList(IEnumerable<IPAddress> list)
         {
             var stringList = list.Select(x => x.ToString());
-            var data = new Wrapper {Type = DataTypes.NodesList, Data = stringList};
+            SendData(DataTypes.NodesList, stringList);
+        }
+
+        private void SendData(DataTypes dataType, object content = null)
+        {
+            var data = new Wrapper {Type = dataType, Data = content};
             node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
     }

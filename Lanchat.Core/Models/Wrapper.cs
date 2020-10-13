@@ -12,6 +12,7 @@
         Ping,
         Handshake,
         NodesList,
-        KeyInfo
+        KeyInfo,
+        NicknameUpdate
     }
 }

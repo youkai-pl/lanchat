@@ -47,8 +47,7 @@ namespace Lanchat.Core.Network
                 switch (data.Type)
                 {
                     case DataTypes.Message:
-                        var message = JsonSerializer.Deserialize<Message>(data.Data.ToString());
-                        MessageReceived?.Invoke(this, node.Encryption.Decrypt(message.Content));
+                        MessageReceived?.Invoke(this, node.Encryption.Decrypt(data.Data.ToString()));
                         break;
 
                     case DataTypes.Ping:
