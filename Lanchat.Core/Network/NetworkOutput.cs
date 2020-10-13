@@ -70,6 +70,11 @@ namespace Lanchat.Core.Network
             SendData(DataTypes.NodesList, stringList);
         }
 
+        internal void SendNicknameUpdate(string nickname)
+        {
+            SendData(DataTypes.NicknameUpdate, nickname);
+        }
+
         private void SendData(DataTypes dataType, object content = null)
         {
             var data = new Wrapper {Type = dataType, Data = content};

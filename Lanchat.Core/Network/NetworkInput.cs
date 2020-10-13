@@ -37,8 +37,9 @@ namespace Lanchat.Core.Network
             try
             {
                 var data = JsonSerializer.Deserialize<Wrapper>(json, serializerOptions);
+                var content = data.Data.ToString();
 
-                // If node isn't ready ignore every messages except handshake
+                // If node isn't ready ignore every messages except handshake and key info
                 if (!node.Ready && data.Type != DataTypes.Handshake && data.Type != DataTypes.KeyInfo)
                 {
                     return;
@@ -47,7 +48,7 @@ namespace Lanchat.Core.Network
                 switch (data.Type)
                 {
                     case DataTypes.Message:
-                        MessageReceived?.Invoke(this, node.Encryption.Decrypt(data.Data.ToString()));
+                        MessageReceived?.Invoke(this, node.Encryption.Decrypt(content));
                         break;
 
                     case DataTypes.Ping:
@@ -55,17 +56,17 @@ namespace Lanchat.Core.Network
                         break;
 
                     case DataTypes.Handshake:
-                        var handshake = JsonSerializer.Deserialize<Handshake>(data.Data.ToString());
+                        var handshake = JsonSerializer.Deserialize<Handshake>(content);
                         HandshakeReceived?.Invoke(this, handshake);
                         break;
 
                     case DataTypes.KeyInfo:
-                        var keyInfo = JsonSerializer.Deserialize<KeyInfo>(data.Data.ToString());
+                        var keyInfo = JsonSerializer.Deserialize<KeyInfo>(content);
                         KeyInfoReceived?.Invoke(this, keyInfo);
                         break;
 
                     case DataTypes.NodesList:
-                        var stringList = JsonSerializer.Deserialize<List<string>>(data.Data.ToString());
+                        var stringList = JsonSerializer.Deserialize<List<string>>(content);
                         var list = new List<IPAddress>();
 
                         // Convert strings to ip addresses
@@ -78,6 +79,10 @@ namespace Lanchat.Core.Network
                         });
 
                         NodesListReceived?.Invoke(this, list);
+                        break;
+                    
+                    case DataTypes.NicknameUpdate:
+                        throw new NotImplementedException();
                         break;
 
                     default:
