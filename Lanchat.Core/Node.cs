@@ -13,6 +13,7 @@ namespace Lanchat.Core
         internal readonly INetworkElement NetworkElement;
         public readonly NetworkInput NetworkInput;
         public readonly NetworkOutput NetworkOutput;
+        private string nickname;
 
         /// <summary>
         ///     Initialize node.
@@ -37,7 +38,16 @@ namespace Lanchat.Core
         /// <summary>
         ///     Node nickname.
         /// </summary>
-        public string Nickname { get; private set; }
+        public string Nickname
+        {
+            get => nickname;
+            internal set
+            {
+                var previousNickname = nickname;
+                nickname = value;
+                NicknameChanged?.Invoke(this, previousNickname);
+            }
+        }
 
         /// <summary>
         ///     Node ready. If set to false node won't send or receive messages.
@@ -73,6 +83,11 @@ namespace Lanchat.Core
         ///     Node disconnected. Cannot reconnect.
         /// </summary>
         public event EventHandler HardDisconnect;
+
+        /// <summary>
+        ///     User changed nickname of node. Returns previous nickname in parameter.
+        /// </summary>
+        public event EventHandler<string> NicknameChanged;
 
         /// <summary>
         ///     TCP session or client for this node returned error.

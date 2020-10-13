@@ -82,7 +82,7 @@ namespace Lanchat.Core.Network
                         break;
                     
                     case DataTypes.NicknameUpdate:
-                        throw new NotImplementedException();
+                        node.Nickname = content;
                         break;
 
                     default:
