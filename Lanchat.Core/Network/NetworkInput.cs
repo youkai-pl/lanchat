@@ -31,6 +31,7 @@ namespace Lanchat.Core.Network
         internal event EventHandler<Handshake> HandshakeReceived;
         internal event EventHandler<KeyInfo> KeyInfoReceived;
         internal event EventHandler<List<IPAddress>> NodesListReceived;
+        internal event EventHandler<string> NicknameChanged;
 
         internal void ProcessReceivedData(object sender, string json)
         {
@@ -82,7 +83,7 @@ namespace Lanchat.Core.Network
                         break;
                     
                     case DataTypes.NicknameUpdate:
-                        node.Nickname = content;
+                        NicknameChanged?.Invoke(this, content);
                         break;
 
                     default:

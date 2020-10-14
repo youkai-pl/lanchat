@@ -19,6 +19,11 @@ namespace Lanchat.Core
             get => _nickname;
             set
             {
+                if (_nickname == value)
+                {
+                    return;
+                }
+
                 _nickname = value;
                 NicknameChanged?.Invoke(null, EventArgs.Empty);
             }
