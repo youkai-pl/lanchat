@@ -5,12 +5,8 @@ namespace Lanchat.Probe
 {
     public static class Program
     {
-        private static int _port;
-
         public static void Main(string[] args)
         {
-            _port = 3645;
-
             Console.WriteLine("Lanchat debug tool");
             Console.WriteLine("");
             Console.WriteLine("Select mode by pressing key: ");
@@ -31,11 +27,11 @@ namespace Lanchat.Probe
                 switch (option.Key)
                 {
                     case ConsoleKey.S:
-                        _ = new ServerMode(_port);
+                        _ = new ServerMode();
                         break;
 
                     case ConsoleKey.C:
-                        _ = new ClientMode(_port);
+                        _ = new ClientMode();
                         break;
 
                     case ConsoleKey.P:

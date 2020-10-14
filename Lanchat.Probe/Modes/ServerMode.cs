@@ -7,10 +7,10 @@ namespace Lanchat.Probe.Modes
 {
     public class ServerMode
     {
-        public ServerMode(int port)
+        public ServerMode()
         {
             CoreConfig.Nickname = "Server";
-            var server = new Server(IPAddress.Any, port);
+            var server = new Server(IPAddress.Any, CoreConfig.ServerPort);
             _ = new ServerEventsHandlers(server);
 
             server.Start();

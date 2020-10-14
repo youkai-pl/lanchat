@@ -8,7 +8,7 @@ namespace Lanchat.Probe.Modes
 {
     public class ClientMode
     {
-        public ClientMode(int port)
+        public ClientMode()
         {
             CoreConfig.Nickname = "Client";
             Console.Write("IP Address (leave blank to localhost): ");
@@ -19,7 +19,7 @@ namespace Lanchat.Probe.Modes
                 parsedIp = IPAddress.Loopback;
             }
 
-            var client = new Client(parsedIp, port);
+            var client = new Client(parsedIp, CoreConfig.ServerPort);
             var node = new Node(client);
             _ = new NodeEventsHandlers(node);
 
