@@ -2,7 +2,7 @@
 
 namespace Lanchat.Terminal.Commands
 {
-    public static class ExitLanchat
+    public static class Exit
     {
         public static void Execute()
         {

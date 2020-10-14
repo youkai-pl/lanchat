@@ -58,7 +58,7 @@ namespace Lanchat.Terminal.Ui
                     break;
 
                 case "exit":
-                    ExitLanchat.Execute();
+                    Exit.Execute();
                     break;
 
                 case "connect":

@@ -142,6 +142,9 @@ namespace Lanchat.Terminal.Properties {
         ///connect
         ///help
         ///list
+        ///nickname
+        ///exit
+        ///      
         ///Try /help &lt;command&gt;.
         /// </summary>
         internal static string Manual_Help {
