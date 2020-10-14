@@ -85,6 +85,8 @@ namespace Lanchat.Core
         /// </summary>
         public event EventHandler<SocketError> SocketErrored;
 
+        // Network elements events
+        
         private void OnConnected(object sender, EventArgs e)
         {
             NetworkOutput.SendHandshake();
@@ -120,6 +122,8 @@ namespace Lanchat.Core
             SocketErrored?.Invoke(this, e);
         }
 
+        // Network Input events
+        
         private void OnHandshakeReceived(object sender, Handshake handshake)
         {
             Nickname = handshake.Nickname;

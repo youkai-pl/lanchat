@@ -49,7 +49,7 @@ namespace Lanchat.Core.Network
                 switch (data.Type)
                 {
                     case DataTypes.Message:
-                        MessageReceived?.Invoke(this, node.Encryption.Decrypt(content));
+                        MessageReceived?.Invoke(this, TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
                         break;
 
                     case DataTypes.Ping:
@@ -58,6 +58,7 @@ namespace Lanchat.Core.Network
 
                     case DataTypes.Handshake:
                         var handshake = JsonSerializer.Deserialize<Handshake>(content);
+                        handshake.Nickname = TruncateAndValidate(handshake.Nickname, CoreConfig.MaxNicknameLenght);
                         HandshakeReceived?.Invoke(this, handshake);
                         break;
 
@@ -83,7 +84,7 @@ namespace Lanchat.Core.Network
                         break;
                     
                     case DataTypes.NicknameUpdate:
-                        NicknameChanged?.Invoke(this, content);
+                        NicknameChanged?.Invoke(this, TruncateAndValidate(content, CoreConfig.MaxNicknameLenght));
                         break;
 
                     default:
@@ -97,13 +98,24 @@ namespace Lanchat.Core.Network
             {
                 if (ex is JsonException || ex is ArgumentNullException)
                 {
-                    Debug.WriteLine("Invalid json received");
+                    Debug.WriteLine("Invalid data received");
                 }
                 else
                 {
                     throw;
                 }
             }
+        }
+        
+        private static string TruncateAndValidate(string value, int maxLength)
+        {
+            value = value.Trim();
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentNullException();
+            }
+
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength) + "..."; 
         }
     }
 }
