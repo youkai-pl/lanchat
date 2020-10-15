@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ConsoleGUI.Controls;
+using ConsoleGUI.Space;
 using ConsoleGUI.UserDefined;
 
 namespace Lanchat.Terminal.Ui
@@ -33,6 +34,7 @@ namespace Lanchat.Terminal.Ui
                         }
                     }
                 });
+                Prompt.ScrollPanel.Top = int.MaxValue;
             }
         }
 
@@ -54,6 +56,7 @@ namespace Lanchat.Terminal.Ui
                         }
                     }
                 });
+                Prompt.ScrollPanel.Top = int.MaxValue;
             }
         }
 

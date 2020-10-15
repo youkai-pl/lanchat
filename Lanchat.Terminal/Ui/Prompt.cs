@@ -18,7 +18,7 @@ namespace Lanchat.Terminal.Ui
         internal static LogPanel Log { get; private set; }
         internal static TextBlock NodesCount  { get; private set; }
         internal static TextBlock PromptIndicator { get; private set; }
-
+        internal static VerticalScrollPanel ScrollPanel { get; private set; }
 
         public static void Start(Config config, P2P network)
         {
@@ -42,14 +42,9 @@ namespace Lanchat.Terminal.Ui
                 Text = $"[{config.Nickname}]> "
             };
 
-            var scrollPanel = new VerticalScrollPanel
+            ScrollPanel = new VerticalScrollPanel
             {
-                Content = new Box
-                {
-                    VerticalContentPlacement = Box.VerticalPlacement.Bottom,
-                    HorizontalContentPlacement = Box.HorizontalPlacement.Stretch,
-                    Content = Log
-                },
+                Content = Log,
                 ScrollBarBackground = new Character(),
                 ScrollBarForeground = new Character()
             };
@@ -76,7 +71,7 @@ namespace Lanchat.Terminal.Ui
                     },
 
                     // Log
-                    FillingControl = scrollPanel
+                    FillingControl = ScrollPanel
                 },
 
                 DockedControl = new DockPanel
@@ -143,7 +138,7 @@ namespace Lanchat.Terminal.Ui
                     ConsoleManager.ReadInput(new IInputListener[]
                     {
                         new InputController(_input, Log, config, network),
-                        scrollPanel,
+                        ScrollPanel,
                         _input
                     });
                     ConsoleManager.AdjustBufferSize();
