@@ -3,6 +3,7 @@ using System.Threading;
 using ConsoleGUI;
 using ConsoleGUI.Api;
 using ConsoleGUI.Controls;
+using ConsoleGUI.Data;
 using ConsoleGUI.Input;
 using ConsoleGUI.Space;
 using Lanchat.Core;
@@ -41,6 +42,18 @@ namespace Lanchat.Terminal.Ui
                 Text = $"[{config.Nickname}]> "
             };
 
+            var scrollPanel = new VerticalScrollPanel
+            {
+                Content = new Box
+                {
+                    VerticalContentPlacement = Box.VerticalPlacement.Bottom,
+                    HorizontalContentPlacement = Box.HorizontalPlacement.Stretch,
+                    Content = Log
+                },
+                ScrollBarBackground = new Character(),
+                ScrollBarForeground = new Character()
+            };
+            
             var dockPanel = new DockPanel
             {
                 Placement = DockPanel.DockedControlPlacement.Bottom,
@@ -63,12 +76,7 @@ namespace Lanchat.Terminal.Ui
                     },
 
                     // Log
-                    FillingControl = new Box
-                    {
-                        VerticalContentPlacement = Box.VerticalPlacement.Bottom,
-                        HorizontalContentPlacement = Box.HorizontalPlacement.Stretch,
-                        Content = Log
-                    }
+                    FillingControl = scrollPanel
                 },
 
                 DockedControl = new DockPanel
@@ -135,6 +143,7 @@ namespace Lanchat.Terminal.Ui
                     ConsoleManager.ReadInput(new IInputListener[]
                     {
                         new InputController(_input, Log, config, network),
+                        scrollPanel,
                         _input
                     });
                     ConsoleManager.AdjustBufferSize();
