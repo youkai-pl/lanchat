@@ -9,6 +9,8 @@ namespace Lanchat.Core
 {
     public class Node
     {
+        private string nickname;
+
         internal readonly Encryption Encryption;
         internal readonly INetworkElement NetworkElement;
         public readonly NetworkInput NetworkInput;
@@ -24,12 +26,12 @@ namespace Lanchat.Core
             NetworkOutput = new NetworkOutput(this);
             NetworkInput = new NetworkInput(this);
             Encryption = new Encryption();
-            
+
             networkElement.Connected += OnConnected;
             networkElement.Disconnected += OnDisconnected;
             networkElement.SocketErrored += OnSocketErrored;
             networkElement.DataReceived += NetworkInput.ProcessReceivedData;
-            
+
             NetworkInput.HandshakeReceived += OnHandshakeReceived;
             NetworkInput.KeyInfoReceived += OnKeyInfoReceived;
             NetworkInput.NicknameChanged += OnNicknameChanged;
@@ -38,7 +40,11 @@ namespace Lanchat.Core
         /// <summary>
         ///     Node nickname.
         /// </summary>
-        public string Nickname { get; private set; }
+        public string Nickname
+        {
+            get => $"{nickname}#{Id.GetHashCode().ToString().Substring(1,4)}";
+            private set => nickname = value;
+        }
 
         /// <summary>
         ///     Node ready. If set to false node won't send or receive messages.
@@ -86,7 +92,7 @@ namespace Lanchat.Core
         public event EventHandler<SocketError> SocketErrored;
 
         // Network elements events
-        
+
         private void OnConnected(object sender, EventArgs e)
         {
             NetworkOutput.SendHandshake();
@@ -123,7 +129,7 @@ namespace Lanchat.Core
         }
 
         // Network Input events
-        
+
         private void OnHandshakeReceived(object sender, Handshake handshake)
         {
             Nickname = handshake.Nickname;
@@ -149,7 +155,7 @@ namespace Lanchat.Core
             Nickname = e;
             NicknameChanged?.Invoke(this, previousNickname);
         }
-        
+
         internal void Dispose()
         {
             NetworkElement.Close();
