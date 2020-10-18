@@ -17,10 +17,6 @@ namespace Lanchat.Terminal
         private static void Main(string[] args)
         {
             _config = Config.Load();
-            
-            Console.WriteLine(_config.Port);
-            Console.WriteLine(_config.Nickname);
-            
             CoreConfig.Nickname = _config.Nickname;
             CoreConfig.ServerPort = _config.Port;
             

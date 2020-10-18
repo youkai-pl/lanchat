@@ -136,6 +136,7 @@
     <value>
 Commands list:
 connect
+disconnect
 help
 list
 nickname
@@ -173,4 +174,7 @@ Try /help &lt;command&gt;</value>
     <data name="_SelfNicknameChanged" xml:space="preserve">
     <value>Nickname changed</value>
   </data>
+    <data name="Manual_Disconnect" xml:space="preserve">
+        <value />
+    </data>
 </root>

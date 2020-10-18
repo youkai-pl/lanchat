@@ -137,9 +137,19 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Manual_Disconnect {
+            get {
+                return ResourceManager.GetString("Manual_Disconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 
         ///Commands list:
         ///connect
+        ///disconnect
         ///help
         ///list
         ///nickname

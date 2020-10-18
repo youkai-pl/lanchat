@@ -64,6 +64,10 @@ namespace Lanchat.Terminal.Ui
                 case "connect":
                     Connect.Execute(args, network);
                     break;
+                
+                case "disconnect":
+                    Disconnect.Execute(args, network);
+                    break;
 
                 case "list":
                     List.Execute(network);

@@ -90,7 +90,15 @@ namespace Lanchat.Core
         ///     TCP session or client for this node returned error.
         /// </summary>
         public event EventHandler<SocketError> SocketErrored;
-
+        
+        /// <summary>
+        /// Disconnect from node.
+        /// </summary>
+        public void Disconnect()
+        {
+            NetworkElement.Close();
+        }
+        
         // Network elements events
 
         private void OnConnected(object sender, EventArgs e)
