@@ -1,26 +1,16 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Lanchat.Terminal
 {
     public class Config
     {
-        private static int _port;
-        private static string _nickname;
+        private static int _port = 3645;
+        private static string _nickname = "user";
 
-        [JsonConstructor]
-        public Config(string nickname, int port)
-        {
-            Nickname = nickname;
-            Port = port;
-        }
-        
-        [DefaultValue("3645")]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int Port
         {
             get => _port;
@@ -31,8 +21,6 @@ namespace Lanchat.Terminal
             }
         }
 
-        [DefaultValue("user")]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string Nickname
         {
             get => _nickname;
@@ -62,18 +50,17 @@ namespace Lanchat.Terminal
                     Path = Environment.GetEnvironmentVariable("HOME") + "/Library/Preferences/.Lancaht2/";
                 }
 
-                return JsonConvert.DeserializeObject<Config>(File.ReadAllText(Path + "config.json"));
+                return JsonSerializer.Deserialize<Config>(File.ReadAllText(Path + "config.json"));
             }
             catch (Exception e)
             {
-                if (!(e is FileNotFoundException) && !(e is DirectoryNotFoundException) &&
-                    !(e is JsonSerializationException) && !(e is JsonReaderException))
+                if (!(e is FileNotFoundException) && !(e is DirectoryNotFoundException) && !(e is JsonException))
                 {
                     throw;
                 }
 
                 Trace.WriteLine("[APP] Config load error");
-                return JsonConvert.DeserializeObject<Config>("{}");
+                return new Config();
             }
         }
 
@@ -86,7 +73,7 @@ namespace Lanchat.Terminal
                     Directory.CreateDirectory(Path);
                 }
 
-                File.WriteAllText(Path + "config.json", JsonConvert.SerializeObject(this, Formatting.Indented));
+                File.WriteAllText(Path + "config.json", JsonSerializer.Serialize(this));
             }
             catch (Exception e)
             {
