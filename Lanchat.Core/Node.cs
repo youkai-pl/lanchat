@@ -42,7 +42,7 @@ namespace Lanchat.Core
         /// </summary>
         public string Nickname
         {
-            get => $"{nickname}#{Id.GetHashCode().ToString().Substring(1,4)}";
+            get => $"{nickname}#{Id.GetHashCode().ToString().Substring(1, 4)}";
             private set => nickname = value;
         }
 
@@ -90,7 +90,7 @@ namespace Lanchat.Core
         ///     TCP session or client for this node returned error.
         /// </summary>
         public event EventHandler<SocketError> SocketErrored;
-        
+
         /// <summary>
         /// Disconnect from node.
         /// </summary>
@@ -98,7 +98,7 @@ namespace Lanchat.Core
         {
             NetworkElement.Close();
         }
-        
+
         // Network elements events
 
         private void OnConnected(object sender, EventArgs e)
@@ -117,18 +117,19 @@ namespace Lanchat.Core
 
         private void OnDisconnected(object sender, bool hardDisconnect)
         {
-            Ready = false;
+            Reconnecting = !hardDisconnect;
 
-            if (hardDisconnect)
+            // Raise event only if node was ready before
+            if (hardDisconnect && Ready)
             {
-                Reconnecting = false;
                 HardDisconnect?.Invoke(this, EventArgs.Empty);
             }
-            else
+            else if (Ready)
             {
-                Reconnecting = true;
                 Disconnected?.Invoke(this, EventArgs.Empty);
             }
+
+            Ready = false;
         }
 
         private void OnSocketErrored(object sender, SocketError e)
