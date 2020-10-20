@@ -19,6 +19,7 @@ namespace Lanchat.Terminal.Handlers
             node.Disconnected += OnDisconnected;
             node.HardDisconnect += OnHardDisconnected;
             node.SocketErrored += OnSocketErrored;
+            node.NicknameChanged += OnNicknameChanged;
         }
 
         private void OnConnected(object sender, EventArgs e)
@@ -53,6 +54,11 @@ namespace Lanchat.Terminal.Handlers
         {
             Trace.WriteLine($"[NODE] Socket error {node.Id} / {e}");
             Prompt.Log.Add($"Connection error {e}");
+        }
+        
+        private void OnNicknameChanged(object sender, string e)
+        {
+            Prompt.Log.Add($"{e} changed nickname to {node.Nickname}");
         }
     }
 }
