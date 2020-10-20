@@ -175,6 +175,6 @@ Try /help &lt;command&gt;</value>
     <value>Nickname changed</value>
   </data>
     <data name="Manual_Disconnect" xml:space="preserve">
-        <value />
+        <value>Syntax: /disconnect &lt;nickname&gt;</value>
     </data>
 </root>

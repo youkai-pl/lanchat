@@ -137,7 +137,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Syntax: /disconnect &lt;nickname&gt;.
         /// </summary>
         internal static string Manual_Disconnect {
             get {
