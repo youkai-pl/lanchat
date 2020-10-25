@@ -116,7 +116,13 @@ namespace Lanchat.Core
         // Try connect to every node from list
         private void OnNodesListReceived(object sender, List<IPAddress> list)
         {
-            list.ForEach(Connect);
+            list.ForEach(x =>
+            {
+                if (!CoreConfig.BlockedAddresses.Contains(x))
+                {
+                    Connect(x);
+                }
+            });
         }
 
         // Broadcast new nickname
