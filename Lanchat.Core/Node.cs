@@ -20,14 +20,14 @@ namespace Lanchat.Core
         ///     Initialize node.
         /// </summary>
         /// <param name="networkElement">TCP client or session.</param>
-        public Node(INetworkElement networkElement)
+        /// <param name="sendHandshake">Send handshake imminently</param>
+        public Node(INetworkElement networkElement, bool sendHandshake)
         {
             NetworkElement = networkElement;
             NetworkOutput = new NetworkOutput(this);
             NetworkInput = new NetworkInput(this);
             Encryption = new Encryption();
 
-            networkElement.Connected += OnConnected;
             networkElement.Disconnected += OnDisconnected;
             networkElement.SocketErrored += OnSocketErrored;
             networkElement.DataReceived += NetworkInput.ProcessReceivedData;
@@ -35,6 +35,15 @@ namespace Lanchat.Core
             NetworkInput.HandshakeReceived += OnHandshakeReceived;
             NetworkInput.KeyInfoReceived += OnKeyInfoReceived;
             NetworkInput.NicknameChanged += OnNicknameChanged;
+
+            if (sendHandshake)
+            {
+                SendHandshakeAndWait();
+            }
+            else
+            {
+                networkElement.Connected += OnConnected;
+            }
         }
 
         /// <summary>
@@ -103,16 +112,7 @@ namespace Lanchat.Core
 
         private void OnConnected(object sender, EventArgs e)
         {
-            NetworkOutput.SendHandshake();
-
-            // Check is connection established successful after timeout
-            Task.Delay(5000).ContinueWith(t =>
-            {
-                if (!Ready && !Reconnecting)
-                {
-                    NetworkElement.Close();
-                }
-            });
+            SendHandshakeAndWait();
         }
 
         private void OnDisconnected(object sender, bool hardDisconnect)
@@ -165,6 +165,20 @@ namespace Lanchat.Core
             NicknameChanged?.Invoke(this, previousNickname);
         }
 
+        private void SendHandshakeAndWait()
+        {
+            NetworkOutput.SendHandshake();
+
+            // Check is connection established successful after timeout
+            Task.Delay(5000).ContinueWith(t =>
+            {
+                if (!Ready && !Reconnecting)
+                {
+                    NetworkElement.Close();
+                }
+            });
+        }
+        
         internal void Dispose()
         {
             NetworkElement.Close();

@@ -46,10 +46,15 @@ namespace Lanchat.Core
         protected override TcpSession CreateSession()
         {
             var session = new Session(this);
-            var node = new Node(session);
-            IncomingConnections.Add(node);
-            node.HardDisconnect += OnHardDisconnected;
-            SessionCreated?.Invoke(this, node);
+            
+            session.Connected += (sender, args) =>
+            {
+                var node = new Node(session, true);
+                IncomingConnections.Add(node);
+                node.HardDisconnect += OnHardDisconnected;
+                SessionCreated?.Invoke(this, node);
+            };
+
             return session;
         }
 

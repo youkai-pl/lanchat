@@ -79,7 +79,7 @@ namespace Lanchat.Core
             }
 
             var client = new Client(ipAddress, CoreConfig.ServerPort);
-            var node = new Node(client);
+            var node = new Node(client, false);
             outgoingConnections.Add(node);
             node.Connected += OnConnected;
             node.HardDisconnect += OnHardDisconnect;

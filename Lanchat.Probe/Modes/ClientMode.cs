@@ -20,7 +20,7 @@ namespace Lanchat.Probe.Modes
             }
 
             var client = new Client(parsedIp, CoreConfig.ServerPort);
-            var node = new Node(client);
+            var node = new Node(client, false);
             _ = new NodeEventsHandlers(node);
 
             Console.WriteLine($"Client connecting to {parsedIp}");
