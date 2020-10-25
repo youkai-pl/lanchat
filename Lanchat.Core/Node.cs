@@ -7,7 +7,7 @@ using Lanchat.Core.Network;
 
 namespace Lanchat.Core
 {
-    public class Node
+    public class Node : IDisposable
     {
         private string nickname;
 
@@ -179,7 +179,7 @@ namespace Lanchat.Core
             });
         }
         
-        internal void Dispose()
+        public void Dispose()
         {
             NetworkElement.Close();
             Encryption.Dispose();
