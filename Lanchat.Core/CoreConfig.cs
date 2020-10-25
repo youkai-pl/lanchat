@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -43,6 +45,11 @@ namespace Lanchat.Core
         ///     Max nickname lenght. Longer nicknames will be trimmed.
         /// </summary>
         public static int MaxNicknameLenght { get; set; } = 20;
+        
+        /// <summary>
+        ///     Blocked IP addresses.
+        /// </summary>
+        public static List<IPAddress> BlockedAddresses { get; set; } = new List<IPAddress>();
         
         // Internal configurations
         internal static JsonSerializerOptions JsonSerializerOptions =>

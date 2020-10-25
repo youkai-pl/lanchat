@@ -80,6 +80,7 @@ namespace Lanchat.Core
 
             var client = new Client(ipAddress, CoreConfig.ServerPort);
             var node = new Node(client, false);
+            
             outgoingConnections.Add(node);
             node.Connected += OnConnected;
             node.HardDisconnect += OnHardDisconnect;
@@ -88,6 +89,7 @@ namespace Lanchat.Core
             client.ConnectAsync();
         }
 
+        // Exchange nodes list
         private void OnConnected(object sender, EventArgs e)
         {
             var node = (Node) sender;
@@ -95,7 +97,7 @@ namespace Lanchat.Core
             node.NetworkOutput.SendNodesList(nodesList);
         }
 
-        // Create node after new session event.
+        // Send new node event after new session and wait for nodes list
         private void OnSessionCreated(object sender, Node node)
         {
             ConnectionCreated?.Invoke(this, node);
@@ -103,7 +105,7 @@ namespace Lanchat.Core
             node.Connected += OnConnected;
         }
 
-        // Dispose node after hard disconnection.
+        // Dispose node after hard disconnection
         private void OnHardDisconnect(object sender, EventArgs e)
         {
             var node = (Node) sender;

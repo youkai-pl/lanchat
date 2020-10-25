@@ -20,7 +20,7 @@ namespace Lanchat.Core
         ///     Initialize node.
         /// </summary>
         /// <param name="networkElement">TCP client or session.</param>
-        /// <param name="sendHandshake">Send handshake imminently</param>
+        /// <param name="sendHandshake">Send handshake immediately</param>
         public Node(INetworkElement networkElement, bool sendHandshake)
         {
             NetworkElement = networkElement;

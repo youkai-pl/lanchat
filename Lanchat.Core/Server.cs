@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using Lanchat.Core.Network;
@@ -49,10 +50,18 @@ namespace Lanchat.Core
             
             session.Connected += (sender, args) =>
             {
-                var node = new Node(session, true);
-                IncomingConnections.Add(node);
-                node.HardDisconnect += OnHardDisconnected;
-                SessionCreated?.Invoke(this, node);
+                if (CoreConfig.BlockedAddresses.Contains(session.Endpoint.Address))
+                {
+                    Trace.WriteLine($"[SERVER] Connection from {session.Endpoint.Address} blocked");
+                    session.Close();
+                }
+                else
+                {
+                    var node = new Node(session, true);
+                    IncomingConnections.Add(node);
+                    node.HardDisconnect += OnHardDisconnected;
+                    SessionCreated?.Invoke(this, node); 
+                }
             };
 
             return session;
