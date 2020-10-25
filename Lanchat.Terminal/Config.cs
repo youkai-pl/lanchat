@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text.Json;
+using Lanchat.Core;
 
 namespace Lanchat.Terminal
 {
@@ -10,6 +13,8 @@ namespace Lanchat.Terminal
     {
         private static int _port = 3645;
         private static string _nickname = "user";
+
+        public List<string> BlockedAddresses { get; set; } = new List<string>();
 
         public int Port
         {
@@ -26,9 +31,32 @@ namespace Lanchat.Terminal
             get => _nickname;
             set
             {
+                
                 _nickname = value;
+                CoreConfig.Nickname = value;
                 Save();
             }
+        }
+
+        public void AddBlocked(IPAddress ipAddress)
+        {
+            var ipString = ipAddress.ToString();
+
+            if (BlockedAddresses.Contains(ipString))
+            {
+                return;
+            }
+            
+            BlockedAddresses.Add(ipString);
+            CoreConfig.BlockedAddresses.Add(ipAddress);
+            Save();
+        }
+        
+        public void RemoveBlocked(IPAddress ipAddress)
+        {
+            BlockedAddresses.Remove(ipAddress.ToString());
+            CoreConfig.BlockedAddresses.Add(ipAddress);
+            Save();
         }
 
         public static string Path { get; private set; }
@@ -73,7 +101,8 @@ namespace Lanchat.Terminal
                     Directory.CreateDirectory(Path);
                 }
 
-                File.WriteAllText(Path + "config.json", JsonSerializer.Serialize(this));
+                File.WriteAllText(Path + "config.json",
+                    JsonSerializer.Serialize(this, new JsonSerializerOptions {WriteIndented = true}));
             }
             catch (Exception e)
             {

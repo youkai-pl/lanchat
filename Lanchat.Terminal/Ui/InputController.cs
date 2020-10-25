@@ -76,6 +76,14 @@ namespace Lanchat.Terminal.Ui
                 case "nick":
                     Nick.Execute(args, config);
                     break;
+                
+                case "block":
+                    Block.Execute(args, config);
+                    break;
+                
+                case "unblock":
+                    Unblock.Execute(args, config);
+                    break;
             }
         }
     }

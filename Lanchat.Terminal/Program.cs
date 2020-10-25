@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using Lanchat.Core;
 using Lanchat.Terminal.Handlers;
 using Lanchat.Terminal.Properties;
@@ -19,6 +20,7 @@ namespace Lanchat.Terminal
             _config = Config.Load();
             CoreConfig.Nickname = _config.Nickname;
             CoreConfig.ServerPort = _config.Port;
+            CoreConfig.BlockedAddresses = _config.BlockedAddresses.Select(IPAddress.Parse).ToList();
             
             Network = new P2P();
             Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };

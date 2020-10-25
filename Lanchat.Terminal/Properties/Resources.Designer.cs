@@ -128,6 +128,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syntax: /block &lt;ip&gt;.
+        /// </summary>
+        internal static string Manual_Block {
+            get {
+                return ResourceManager.GetString("Manual_Block", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Syntax: /connect &lt;ip&gt;.
         /// </summary>
         internal static string Manual_Connect {
@@ -169,6 +178,15 @@ namespace Lanchat.Terminal.Properties {
         internal static string Manual_Nick {
             get {
                 return ResourceManager.GetString("Manual_Nick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax: /unblock &lt;ip&gt;.
+        /// </summary>
+        internal static string Manual_Unblock {
+            get {
+                return ResourceManager.GetString("Manual_Unblock", resourceCulture);
             }
         }
         

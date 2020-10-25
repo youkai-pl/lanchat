@@ -1,5 +1,4 @@
-﻿using Lanchat.Core;
-using Lanchat.Terminal.Properties;
+﻿using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.Ui;
 
 namespace Lanchat.Terminal.Commands
@@ -28,7 +27,6 @@ namespace Lanchat.Terminal.Commands
             else
             {
                 config.Nickname = nickname;
-                CoreConfig.Nickname = nickname;
                 Prompt.Log.Add(Resources._SelfNicknameChanged);
                 Prompt.PromptIndicator.Text = $"[{config.Nickname}]> ";
             }
