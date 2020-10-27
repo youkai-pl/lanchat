@@ -75,6 +75,11 @@ namespace Lanchat.Core.Network
             SendData(DataTypes.NicknameUpdate, nickname);
         }
 
+        internal void SendGoodbye()
+        {
+            SendData(DataTypes.Goodbye);
+        }
+        
         private void SendData(DataTypes dataType, object content = null)
         {
             var data = new Wrapper {Type = dataType, Data = content};

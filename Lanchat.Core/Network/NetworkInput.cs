@@ -38,7 +38,7 @@ namespace Lanchat.Core.Network
             try
             {
                 var data = JsonSerializer.Deserialize<Wrapper>(json, serializerOptions);
-                var content = data.Data.ToString();
+                var content = data.Data?.ToString();
 
                 // If node isn't ready ignore every messages except handshake and key info
                 if (!node.Ready && data.Type != DataTypes.Handshake && data.Type != DataTypes.KeyInfo)
@@ -87,8 +87,12 @@ namespace Lanchat.Core.Network
                         NicknameChanged?.Invoke(this, TruncateAndValidate(content, CoreConfig.MaxNicknameLenght));
                         break;
 
+                    case DataTypes.Goodbye:
+                        node.NetworkElement.EnableReconnecting = false;
+                        break;
+                    
                     default:
-                        Debug.WriteLine("Unknown type received");
+                        Trace.WriteLine("Unknown type received");
                         break;
                 }
             }
@@ -98,7 +102,7 @@ namespace Lanchat.Core.Network
             {
                 if (ex is JsonException || ex is ArgumentNullException)
                 {
-                    Debug.WriteLine("Invalid data received");
+                    Trace.WriteLine("Invalid data received");
                 }
                 else
                 {

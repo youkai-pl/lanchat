@@ -73,7 +73,7 @@ namespace Lanchat.Core
         /// <summary>
         ///     Is node reconnecting.
         /// </summary>
-        public bool Reconnecting { get; private set; }
+        public bool UnderReconnecting { get; private set; }
 
         /// <summary>
         ///     Node successful connected and ready.
@@ -105,6 +105,7 @@ namespace Lanchat.Core
         /// </summary>
         public void Disconnect()
         {
+            NetworkOutput.SendGoodbye();
             NetworkElement.Close();
         }
 
@@ -117,7 +118,7 @@ namespace Lanchat.Core
 
         private void OnDisconnected(object sender, bool hardDisconnect)
         {
-            Reconnecting = !hardDisconnect;
+            UnderReconnecting = !hardDisconnect;
 
             // Raise event only if node was ready before
             if (hardDisconnect && Ready)
@@ -172,7 +173,7 @@ namespace Lanchat.Core
             // Check is connection established successful after timeout
             Task.Delay(5000).ContinueWith(t =>
             {
-                if (!Ready && !Reconnecting)
+                if (!Ready && !UnderReconnecting)
                 {
                     NetworkElement.Close();
                 }

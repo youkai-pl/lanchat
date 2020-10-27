@@ -18,6 +18,11 @@ namespace Lanchat.Core.Network
         ///     Session or client ID.
         /// </summary>
         Guid Id { get; }
+        
+        /// <summary>
+        ///     Enable automatic reconnecting (only for client side).
+        /// </summary>
+        bool EnableReconnecting { get; set; }
 
         /// <summary>
         ///     Send data.

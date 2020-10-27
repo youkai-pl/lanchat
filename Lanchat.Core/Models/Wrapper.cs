@@ -13,6 +13,7 @@
         Handshake,
         NodesList,
         KeyInfo,
-        NicknameUpdate
+        NicknameUpdate,
+        Goodbye
     }
 }

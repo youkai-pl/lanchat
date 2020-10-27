@@ -14,8 +14,11 @@ namespace Lanchat.Core.Network
         private int reconnectingCount;
 
         public Client(IPAddress address, int port) : base(address, port)
-        { }
+        {
+            EnableReconnecting = true;
+        }
 
+        public bool EnableReconnecting { get; set; }
         public event EventHandler Connected;
         public event EventHandler<bool> Disconnected;
         public event EventHandler<string> DataReceived;
@@ -48,20 +51,27 @@ namespace Lanchat.Core.Network
 
         protected override void OnDisconnected()
         {
-            // If client isn't reconnecting raise event
+            // If reconnecting disabled.
+            if (!EnableReconnecting)
+            {
+                Disconnected?.Invoke(this, true);
+                return;
+            }
+            
+            // Don't invoke event during reconnecting.
             if (!isReconnecting)
             {
                 Disconnected?.Invoke(this, false);
             }
 
-            // Stop if reconnect counter is equal 3 or client disconnected safely
-            if (hardDisconnect || reconnectingCount == 3)
+            // Stop if reconnect counter is equal 3 or client disconnected caused by local. 
+            if (hardDisconnect || reconnectingCount == 3 || !EnableReconnecting)
             {
                 Disconnected?.Invoke(this, true);
                 return;
             }
 
-            // Try reconnect
+            // Try reconnect.
             Thread.Sleep(1000);
             isReconnecting = true;
             reconnectingCount++;
