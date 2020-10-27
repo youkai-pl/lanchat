@@ -78,7 +78,7 @@ namespace Lanchat.Terminal.Ui
                     break;
                 
                 case "block":
-                    Block.Execute(args, config);
+                    Block.Execute(args, config, network);
                     break;
                 
                 case "unblock":
