@@ -45,7 +45,6 @@ namespace Lanchat.Core.Network
         protected override void OnConnected()
         {
             isReconnecting = false;
-            reconnectingCount = 0;
             Connected?.Invoke(this, EventArgs.Empty);
         }
 
@@ -80,6 +79,7 @@ namespace Lanchat.Core.Network
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
+            reconnectingCount = 0;
             var message = Encoding.UTF8.GetString(buffer, (int) offset, (int) size);
             DataReceived?.Invoke(this, message);
         }
