@@ -55,7 +55,7 @@ namespace Lanchat.Terminal
         public void RemoveBlocked(IPAddress ipAddress)
         {
             BlockedAddresses.Remove(ipAddress.ToString());
-            CoreConfig.BlockedAddresses.Add(ipAddress);
+            CoreConfig.BlockedAddresses.Remove(ipAddress);
             Save();
         }
 
