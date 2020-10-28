@@ -37,10 +37,6 @@ namespace Lanchat.Probe.Modes
                         loop = false;
                         break;
 
-                    case "/p":
-                        node.NetworkOutput.SendPing();
-                        break;
-
                     default:
                         node.NetworkOutput.SendMessage(input);
                         break;

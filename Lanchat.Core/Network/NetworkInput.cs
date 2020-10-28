@@ -52,10 +52,6 @@ namespace Lanchat.Core.Network
                         MessageReceived?.Invoke(this, TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
                         break;
 
-                    case DataTypes.Ping:
-                        PingReceived?.Invoke(this, EventArgs.Empty);
-                        break;
-
                     case DataTypes.Handshake:
                         Trace.WriteLine($"Node {node.Id} received handshake");
                         var handshake = JsonSerializer.Deserialize<Handshake>(content);

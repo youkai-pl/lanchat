@@ -34,19 +34,6 @@ namespace Lanchat.Core.Network
             SendData(DataTypes.Message, node.Encryption.Encrypt(content));
         }
 
-        /// <summary>
-        ///     Send ping.
-        /// </summary>
-        public void SendPing()
-        {
-            if (!node.Ready)
-            {
-                return;
-            }
-
-            SendData(DataTypes.Ping);
-        }
-
         internal void SendHandshake()
         {
             var handshake = new Handshake
