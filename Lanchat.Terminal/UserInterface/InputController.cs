@@ -46,7 +46,7 @@ namespace Lanchat.Terminal.UserInterface
             inputEvent.Handled = true;
         }
 
-        private void ExecuteCommand(string[] args)
+        private static void ExecuteCommand(string[] args)
         {
             var command = args[0].Substring(1);
             args = args.Skip(1).ToArray();
@@ -62,27 +62,27 @@ namespace Lanchat.Terminal.UserInterface
                     break;
 
                 case "connect":
-                    Connect.Execute(args, network);
+                    Connect.Execute(args);
                     break;
                 
                 case "disconnect":
-                    Disconnect.Execute(args, network);
+                    Disconnect.Execute(args);
                     break;
 
                 case "list":
-                    List.Execute(network);
+                    List.Execute();
                     break;
                 
                 case "nick":
-                    Nick.Execute(args, config);
+                    Nick.Execute(args);
                     break;
                 
                 case "block":
-                    Block.Execute(args, config, network);
+                    Block.Execute(args);
                     break;
                 
                 case "unblock":
-                    Unblock.Execute(args, config);
+                    Unblock.Execute(args);
                     break;
             }
         }

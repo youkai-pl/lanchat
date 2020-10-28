@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using Lanchat.Core;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -7,7 +6,7 @@ namespace Lanchat.Terminal.Commands
 {
     public static class Block
     {
-        public static void Execute(string[] args, Config config, P2P network)
+        public static void Execute(string[] args)
         {
             if (args == null || args.Length < 1)
             {
@@ -18,8 +17,8 @@ namespace Lanchat.Terminal.Commands
             var correct = IPAddress.TryParse(args[0], out var parsedIp);
             if (correct)
             {
-                config.AddBlocked(parsedIp);
-                network.Nodes.Find(x => Equals(x.Endpoint.Address, parsedIp))?.Disconnect();
+                Program.Config.AddBlocked(parsedIp);
+                Program.Network.Nodes.Find(x => Equals(x.Endpoint.Address, parsedIp))?.Disconnect();
                 Ui.Log.Add($"{parsedIp} blocked");
             }
             else

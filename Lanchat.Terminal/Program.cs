@@ -12,21 +12,21 @@ namespace Lanchat.Terminal
 {
     public static class Program
     {
-        private static Config _config;
         public static P2P Network { get; private set; }
+        public static Config Config { get; private set; }
 
         private static void Main(string[] args)
         {
-            _config = Config.Load();
-            CoreConfig.Nickname = _config.Nickname;
-            CoreConfig.ServerPort = _config.Port;
-            CoreConfig.BlockedAddresses = _config.BlockedAddresses.Select(IPAddress.Parse).ToList();
+            Config = Config.Load();
+            CoreConfig.Nickname = Config.Nickname;
+            CoreConfig.ServerPort = Config.Port;
+            CoreConfig.BlockedAddresses = Config.BlockedAddresses.Select(IPAddress.Parse).ToList();
             
             Network = new P2P();
             Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
             Network.Start();
 
-            Ui.Start(_config, Network);
+            Ui.Start(Config, Network);
 
             if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
             {

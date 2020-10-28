@@ -6,7 +6,7 @@ namespace Lanchat.Terminal.Commands
 {
     public static class Unblock
     {
-        public static void Execute(string[] args, Config config)
+        public static void Execute(string[] args)
         {
             if (args == null || args.Length < 1)
             {
@@ -17,7 +17,7 @@ namespace Lanchat.Terminal.Commands
             var correct = IPAddress.TryParse(args[0], out var parsedIp);
             if (correct)
             {
-                config.RemoveBlocked(parsedIp);
+                Program.Config.RemoveBlocked(parsedIp);
                 Ui.Log.Add($"{parsedIp} unblocked");
             }
             else

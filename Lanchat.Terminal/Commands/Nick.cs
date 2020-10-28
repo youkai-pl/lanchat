@@ -5,7 +5,7 @@ namespace Lanchat.Terminal.Commands
 {
     public static class Nick
     {
-        public static void Execute(string[] args, Config config)
+        public static void Execute(string[] args)
         {
             if (args == null || args.Length < 1)
             {
@@ -26,9 +26,9 @@ namespace Lanchat.Terminal.Commands
             }
             else
             {
-                config.Nickname = nickname;
+                Program.Config.Nickname = nickname;
                 Ui.Log.Add(Resources._SelfNicknameChanged);
-                Ui.PromptIndicator.Text = $"[{config.Nickname}]> ";
+                Ui.PromptIndicator.Text = $"[{Program.Config.Nickname}]> ";
             }
         }
     }

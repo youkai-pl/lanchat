@@ -8,7 +8,7 @@ namespace Lanchat.Terminal.Commands
 {
     public static class Connect
     {
-        public static void Execute(string[] args, P2P network)
+        public static void Execute(string[] args)
         {
             if (args == null || args.Length < 1)
             {
@@ -20,7 +20,7 @@ namespace Lanchat.Terminal.Commands
             {
                 var parsedIp = IPAddress.Parse(args[0]);
                 Ui.Log.Add($"{Resources._ConnectionAttempt} {args[0]}");
-                network.Connect(parsedIp);
+                Program.Network.Connect(parsedIp);
             }
             catch (FormatException)
             {

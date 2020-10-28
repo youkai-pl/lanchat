@@ -5,9 +5,9 @@ namespace Lanchat.Terminal.Commands
 {
     public static class List
     {
-        public static void Execute(P2P network)
+        public static void Execute()
         {
-            network.Nodes.ForEach(x => Ui.Log.Add($"{x.Nickname} ({x.Endpoint})"));
+            Program.Network.Nodes.ForEach(x => Ui.Log.Add($"{x.Nickname} ({x.Endpoint})"));
         }
     }
 }

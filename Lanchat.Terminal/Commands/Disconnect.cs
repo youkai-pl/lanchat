@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Lanchat.Core;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -7,7 +6,7 @@ namespace Lanchat.Terminal.Commands
 {
     public static class Disconnect
     {
-        public static void Execute(string[] args, P2P network)
+        public static void Execute(string[] args)
         {
             if (args == null || args.Length < 1)
             {
@@ -16,7 +15,7 @@ namespace Lanchat.Terminal.Commands
             }
 
             var nickname = string.Join(" ", args).Trim();
-            var node = network.Nodes.FirstOrDefault(x => x.Nickname.Equals(nickname));
+            var node = Program.Network.Nodes.FirstOrDefault(x => x.Nickname.Equals(nickname));
             if (node != null)
             {
                 node.Disconnect();
