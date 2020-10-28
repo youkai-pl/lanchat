@@ -3,9 +3,9 @@
 Encrypted, P2P, local network chat. 
 
 ## Projects
-* Lanchat.Terminal (2.1.0-alpha1) - console app for Windows and Linux
-* Lancaht.Xamarin (0.1.0-alpha1) - for Android
-* Lancaht.Core (2.1.0-alpha1) - library
+* Lancaht.Core (2.1.0-beta1) - library
+* Lanchat.Terminal (2.1.0-beta1) - console app for Windows and Linux
+* Lancaht.Xamarin (0.1.0-alpha1) - experimental client for Android
 * Lanchat.Probe - tool for debugging 
 
 Check [release](https://github.com/tofudd/lanchat/releases) section for binaries.
@@ -23,4 +23,4 @@ It looks something like that.
 5. Both nodes trying to connect with nodes from list (if they didn't connected already).
 6. All done.
 
-TODO: Place some fancy scheme here.
+TODO: Put some fancy scheme here.
