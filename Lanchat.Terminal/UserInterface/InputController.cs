@@ -77,6 +77,10 @@ namespace Lanchat.Terminal.UserInterface
                 case "unblock":
                     Unblock.Execute(args);
                     break;
+                
+                case "blocked":
+                    Blocked.Execute();
+                    break;
             }
         }
     }

@@ -163,6 +163,9 @@ namespace Lanchat.Terminal.Properties {
         ///list
         ///nickname
         ///exit
+        ///block
+        ///unblock 
+        ///blocked
         ///      
         ///Try /help &lt;command&gt;.
         /// </summary>

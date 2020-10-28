@@ -15,7 +15,7 @@ namespace Lanchat.Terminal
         private static int _port = 3645;
         private static string _nickname = "user";
 
-        public List<string> BlockedAddresses { get; set; } = new List<string>();
+        public List<string> BlockedAddresses { get; } = new List<string>();
 
         public int Port
         {
