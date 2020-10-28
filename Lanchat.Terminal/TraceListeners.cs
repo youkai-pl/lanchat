@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using Lanchat.Terminal.Ui;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal
 {
@@ -8,7 +8,7 @@ namespace Lanchat.Terminal
     {
         public override void WriteLine(string message)
         {
-            Prompt.Log.Add(message);
+            Ui.Log.Add(message);
         }
     }
 

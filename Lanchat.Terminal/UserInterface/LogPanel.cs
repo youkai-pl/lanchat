@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ConsoleGUI.Controls;
 using ConsoleGUI.UserDefined;
 
-namespace Lanchat.Terminal.Ui
+namespace Lanchat.Terminal.UserInterface
 {
     public class LogPanel : SimpleControl
     {
@@ -33,7 +33,7 @@ namespace Lanchat.Terminal.Ui
                         }
                     }
                 });
-                Prompt.ScrollPanel.Top = int.MaxValue;
+                Ui.ScrollPanel.Top = int.MaxValue;
             }
         }
 
@@ -55,7 +55,7 @@ namespace Lanchat.Terminal.Ui
                         }
                     }
                 });
-                Prompt.ScrollPanel.Top = int.MaxValue;
+                Ui.ScrollPanel.Top = int.MaxValue;
             }
         }
 

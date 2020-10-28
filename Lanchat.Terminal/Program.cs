@@ -6,7 +6,7 @@ using System.Net;
 using Lanchat.Core;
 using Lanchat.Terminal.Handlers;
 using Lanchat.Terminal.Properties;
-using Lanchat.Terminal.Ui;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal
 {
@@ -26,7 +26,7 @@ namespace Lanchat.Terminal
             Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
             Network.Start();
 
-            Prompt.Start(_config, Network);
+            Ui.Start(_config, Network);
 
             if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
             {

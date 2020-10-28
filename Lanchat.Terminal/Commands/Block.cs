@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Lanchat.Core;
 using Lanchat.Terminal.Properties;
-using Lanchat.Terminal.Ui;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
@@ -11,7 +11,7 @@ namespace Lanchat.Terminal.Commands
         {
             if (args == null || args.Length < 1)
             {
-                Prompt.Log.Add(Resources.Manual_Block);
+                Ui.Log.Add(Resources.Manual_Block);
                 return;
             }
 
@@ -20,11 +20,11 @@ namespace Lanchat.Terminal.Commands
             {
                 config.AddBlocked(parsedIp);
                 network.Nodes.Find(x => Equals(x.Endpoint.Address, parsedIp))?.Disconnect();
-                Prompt.Log.Add($"{parsedIp} blocked");
+                Ui.Log.Add($"{parsedIp} blocked");
             }
             else
             {
-                Prompt.Log.Add(Resources._IncorrectValues);
+                Ui.Log.Add(Resources._IncorrectValues);
             }
         }
     }

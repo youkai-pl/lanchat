@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using Lanchat.Terminal.Properties;
-using Lanchat.Terminal.Ui;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
@@ -16,13 +16,13 @@ namespace Lanchat.Terminal.Commands
 
             if (args.Length < 1)
             {
-                Prompt.Log.Add(Resources.Manual_Help);
+                Ui.Log.Add(Resources.Manual_Help);
             }
             else
             {
                 var command = $"Manual_{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(args[0].ToLower())}";
                 var commandHelp = Resources.ResourceManager.GetObject(command);
-                Prompt.Log.Add(commandHelp != null ? commandHelp.ToString() : Resources._ManualNotFound);
+                Ui.Log.Add(commandHelp != null ? commandHelp.ToString() : Resources._ManualNotFound);
             }
         }
     }

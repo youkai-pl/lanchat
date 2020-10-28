@@ -5,7 +5,7 @@ using ConsoleGUI.Input;
 using Lanchat.Core;
 using Lanchat.Terminal.Commands;
 
-namespace Lanchat.Terminal.Ui
+namespace Lanchat.Terminal.UserInterface
 {
     public class InputController : IInputListener
     {

@@ -9,9 +9,9 @@ using ConsoleGUI.Space;
 using Lanchat.Core;
 using Lanchat.Terminal.Properties;
 
-namespace Lanchat.Terminal.Ui
+namespace Lanchat.Terminal.UserInterface
 {
-    public static class Prompt
+    public static class Ui
     {
         private static TextBlock _clock;
         private static TextBox _input;

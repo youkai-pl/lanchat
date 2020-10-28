@@ -1,5 +1,5 @@
 ﻿using Lanchat.Terminal.Properties;
-using Lanchat.Terminal.Ui;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
@@ -9,26 +9,26 @@ namespace Lanchat.Terminal.Commands
         {
             if (args == null || args.Length < 1)
             {
-                Prompt.Log.Add(Resources.Manual_Connect);
+                Ui.Log.Add(Resources.Manual_Connect);
                 return;
             }
 
             if (args.Length < 1)
             {
-                Prompt.Log.Add(Resources.Manual_Nick);
+                Ui.Log.Add(Resources.Manual_Nick);
                 return;
             }
 
             var nickname = args[0].Trim();
             if (nickname.Length >= 20 || string.IsNullOrWhiteSpace(nickname))
             {
-                Prompt.Log.Add(Resources._WrongNickname);
+                Ui.Log.Add(Resources._WrongNickname);
             }
             else
             {
                 config.Nickname = nickname;
-                Prompt.Log.Add(Resources._SelfNicknameChanged);
-                Prompt.PromptIndicator.Text = $"[{config.Nickname}]> ";
+                Ui.Log.Add(Resources._SelfNicknameChanged);
+                Ui.PromptIndicator.Text = $"[{config.Nickname}]> ";
             }
         }
     }

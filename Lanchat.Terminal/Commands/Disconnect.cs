@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Lanchat.Core;
 using Lanchat.Terminal.Properties;
-using Lanchat.Terminal.Ui;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
@@ -11,7 +11,7 @@ namespace Lanchat.Terminal.Commands
         {
             if (args == null || args.Length < 1)
             {
-                Prompt.Log.Add(Resources.Manual_Disconnect);
+                Ui.Log.Add(Resources.Manual_Disconnect);
                 return;
             }
 
@@ -23,7 +23,7 @@ namespace Lanchat.Terminal.Commands
             }
             else
             {
-                Prompt.Log.Add("Not found");
+                Ui.Log.Add("Not found");
             }
         }
     }

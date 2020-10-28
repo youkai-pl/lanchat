@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using Lanchat.Terminal.Properties;
-using Lanchat.Terminal.Ui;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
@@ -10,7 +10,7 @@ namespace Lanchat.Terminal.Commands
         {
             if (args == null || args.Length < 1)
             {
-                Prompt.Log.Add(Resources.Manual_Unblock);
+                Ui.Log.Add(Resources.Manual_Unblock);
                 return;
             }
 
@@ -18,11 +18,11 @@ namespace Lanchat.Terminal.Commands
             if (correct)
             {
                 config.RemoveBlocked(parsedIp);
-                Prompt.Log.Add($"{parsedIp} unblocked");
+                Ui.Log.Add($"{parsedIp} unblocked");
             }
             else
             {
-                Prompt.Log.Add(Resources._IncorrectValues);
+                Ui.Log.Add(Resources._IncorrectValues);
             }
         }
     }

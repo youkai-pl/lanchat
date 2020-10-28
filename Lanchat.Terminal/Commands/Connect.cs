@@ -2,7 +2,7 @@
 using System.Net;
 using Lanchat.Core;
 using Lanchat.Terminal.Properties;
-using Lanchat.Terminal.Ui;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
@@ -12,19 +12,19 @@ namespace Lanchat.Terminal.Commands
         {
             if (args == null || args.Length < 1)
             {
-                Prompt.Log.Add(Resources.Manual_Connect);
+                Ui.Log.Add(Resources.Manual_Connect);
                 return;
             }
 
             try
             {
                 var parsedIp = IPAddress.Parse(args[0]);
-                Prompt.Log.Add($"{Resources._ConnectionAttempt} {args[0]}");
+                Ui.Log.Add($"{Resources._ConnectionAttempt} {args[0]}");
                 network.Connect(parsedIp);
             }
             catch (FormatException)
             {
-                Prompt.Log.Add(Resources._IncorrectValues);
+                Ui.Log.Add(Resources._IncorrectValues);
             }
         }
     }
