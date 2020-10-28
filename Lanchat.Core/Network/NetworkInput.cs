@@ -23,11 +23,6 @@ namespace Lanchat.Core.Network
         /// </summary>
         public event EventHandler<string> MessageReceived;
 
-        /// <summary>
-        ///     Ping received.
-        /// </summary>
-        public event EventHandler PingReceived;
-
         internal event EventHandler<Handshake> HandshakeReceived;
         internal event EventHandler<KeyInfo> KeyInfoReceived;
         internal event EventHandler<List<IPAddress>> NodesListReceived;
