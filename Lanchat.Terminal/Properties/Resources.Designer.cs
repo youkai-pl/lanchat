@@ -61,69 +61,146 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to blocked.
+        /// </summary>
+        internal static string Info_Blocked {
+            get {
+                return ResourceManager.GetString("Info_Blocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blocked IP addresses.
+        /// </summary>
+        internal static string Info_BlockedList {
+            get {
+                return ResourceManager.GetString("Info_BlockedList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to connected.
+        /// </summary>
+        internal static string Info_Connected {
+            get {
+                return ResourceManager.GetString("Info_Connected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connected nodes.
+        /// </summary>
+        internal static string Info_ConnectedList {
+            get {
+                return ResourceManager.GetString("Info_ConnectedList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attempting connect to.
         /// </summary>
-        internal static string _ConnectionAttempt {
+        internal static string Info_ConnectionAttempt {
             get {
-                return ResourceManager.GetString("_ConnectionAttempt", resourceCulture);
+                return ResourceManager.GetString("Info_ConnectionAttempt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection error.
+        /// </summary>
+        internal static string Info_ConnectionError {
+            get {
+                return ResourceManager.GetString("Info_ConnectionError", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Debug mode enabled.
         /// </summary>
-        internal static string _DebugMode {
+        internal static string Info_DebugMode {
             get {
-                return ResourceManager.GetString("_DebugMode", resourceCulture);
+                return ResourceManager.GetString("Info_DebugMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to disconnected.
+        /// </summary>
+        internal static string Info_Disconnected {
+            get {
+                return ResourceManager.GetString("Info_Disconnected", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Incorrect values.
         /// </summary>
-        internal static string _IncorrectValues {
+        internal static string Info_IncorrectValues {
             get {
-                return ResourceManager.GetString("_IncorrectValues", resourceCulture);
+                return ResourceManager.GetString("Info_IncorrectValues", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Manual not found.
         /// </summary>
-        internal static string _ManualNotFound {
+        internal static string Info_ManualNotFound {
             get {
-                return ResourceManager.GetString("_ManualNotFound", resourceCulture);
+                return ResourceManager.GetString("Info_ManualNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to changed nickname to.
+        /// </summary>
+        internal static string Info_NicknameChanged {
+            get {
+                return ResourceManager.GetString("Info_NicknameChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not found.
+        /// </summary>
+        internal static string Info_NotFound {
+            get {
+                return ResourceManager.GetString("Info_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to disconnected. Trying reconnect.
+        /// </summary>
+        internal static string Info_Reconnecting {
+            get {
+                return ResourceManager.GetString("Info_Reconnecting", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Nickname changed.
         /// </summary>
-        internal static string _SelfNicknameChanged {
+        internal static string Info_SelfNicknameChanged {
             get {
-                return ResourceManager.GetString("_SelfNicknameChanged", resourceCulture);
+                return ResourceManager.GetString("Info_SelfNicknameChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to unblocked.
+        /// </summary>
+        internal static string Info_Unblocked {
+            get {
+                return ResourceManager.GetString("Info_Unblocked", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Nick must be shorter than 20 characters and cannot be blank.
         /// </summary>
-        internal static string _WrongNickname {
+        internal static string Info_WrongNickname {
             get {
-                return ResourceManager.GetString("_WrongNickname", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to    __                 __        __  ___ 
-        ///  / /  ___ ____  ____/ /  ___ _/ /_|_  |
-        /// / /__/ _ `/ _ \/ __/ _ \/ _ `/ __/ __/ 
-        ////____/\_,_/_//_/\__/_//_/\_,_/\__/____/
-        ///.
-        /// </summary>
-        internal static string HelloAsci {
-            get {
-                return ResourceManager.GetString("HelloAsci", resourceCulture);
+                return ResourceManager.GetString("Info_WrongNickname", resourceCulture);
             }
         }
         
@@ -194,29 +271,33 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://tofu.ovh.
+        ///   Looks up a localized string similar to    __                 __        __  ___ 
+        ///  / /  ___ ____  ____/ /  ___ _/ /_|_  |
+        /// / /__/ _ `/ _ \/ __/ _ \/ _ `/ __/ __/ 
+        ////____/\_,_/_//_/\__/_//_/\_,_/\__/____/
+        ///    .
         /// </summary>
-        internal static string PageLink {
+        internal static string Ui_HelloMessage {
             get {
-                return ResourceManager.GetString("PageLink", resourceCulture);
+                return ResourceManager.GetString("Ui_HelloMessage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &gt; .
+        ///   Looks up a localized string similar to https://tofu.ovh.
         /// </summary>
-        internal static string PromptIndicator_Default {
+        internal static string Ui_Motd {
             get {
-                return ResourceManager.GetString("PromptIndicator_Default", resourceCulture);
+                return ResourceManager.GetString("Ui_Motd", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Lanchat.
         /// </summary>
-        internal static string Title {
+        internal static string Ui_WindowTitle {
             get {
-                return ResourceManager.GetString("Title", resourceCulture);
+                return ResourceManager.GetString("Ui_WindowTitle", resourceCulture);
             }
         }
     }

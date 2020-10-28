@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using Lanchat.Core;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
@@ -29,7 +28,7 @@ namespace Lanchat.Terminal
             if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
             {
                 Trace.Listeners.Add(new TerminalTraceListener());
-                Trace.WriteLine(Resources._DebugMode);
+                Trace.WriteLine(Resources.Info_DebugMode);
             }
 
             // Save logs to file

@@ -18,12 +18,12 @@ namespace Lanchat.Terminal.Commands
             try
             {
                 var parsedIp = IPAddress.Parse(args[0]);
-                Ui.Log.Add($"{Resources._ConnectionAttempt} {args[0]}");
+                Ui.Log.Add($"{Resources.Info_ConnectionAttempt} {args[0]}");
                 Program.Network.Connect(parsedIp);
             }
             catch (FormatException)
             {
-                Ui.Log.Add(Resources._IncorrectValues);
+                Ui.Log.Add(Resources.Info_IncorrectValues);
             }
         }
     }

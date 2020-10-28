@@ -19,11 +19,11 @@ namespace Lanchat.Terminal.Commands
             {
                 Program.Config.AddBlocked(parsedIp);
                 Program.Network.Nodes.Find(x => Equals(x.Endpoint.Address, parsedIp))?.Disconnect();
-                Ui.Log.Add($"{parsedIp} blocked");
+                Ui.Log.Add($"{parsedIp} {Resources.Info_Blocked}");
             }
             else
             {
-                Ui.Log.Add(Resources._IncorrectValues);
+                Ui.Log.Add(Resources.Info_IncorrectValues);
             }
         }
     }

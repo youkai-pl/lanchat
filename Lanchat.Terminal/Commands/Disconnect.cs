@@ -22,7 +22,7 @@ namespace Lanchat.Terminal.Commands
             }
             else
             {
-                Ui.Log.Add("Not found");
+                Ui.Log.Add(Resources.Info_NotFound);
             }
         }
     }

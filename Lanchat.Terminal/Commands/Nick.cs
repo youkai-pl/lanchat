@@ -22,13 +22,13 @@ namespace Lanchat.Terminal.Commands
             var nickname = args[0].Trim();
             if (nickname.Length >= 20 || string.IsNullOrWhiteSpace(nickname))
             {
-                Ui.Log.Add(Resources._WrongNickname);
+                Ui.Log.Add(Resources.Info_WrongNickname);
             }
             else
             {
                 Program.Config.Nickname = nickname;
-                Ui.Log.Add(Resources._SelfNicknameChanged);
-                Ui.PromptIndicator.Text = $"[{Program.Config.Nickname}]> ";
+                Ui.Log.Add(Resources.Info_SelfNicknameChanged);
+                Ui.PromptIndicator.Text = $"[{Program.Config.Nickname}] ";
             }
         }
     }

@@ -22,7 +22,7 @@ namespace Lanchat.Terminal.Commands
             {
                 var command = $"Manual_{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(args[0].ToLower())}";
                 var commandHelp = Resources.ResourceManager.GetObject(command);
-                Ui.Log.Add(commandHelp != null ? commandHelp.ToString() : Resources._ManualNotFound);
+                Ui.Log.Add(commandHelp != null ? commandHelp.ToString() : Resources.Info_ManualNotFound);
             }
         }
     }

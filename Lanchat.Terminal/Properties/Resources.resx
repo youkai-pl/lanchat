@@ -122,12 +122,12 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
-    <data name="HelloAsci" xml:space="preserve">
+    <data name="Ui_HelloMessage" xml:space="preserve">
     <value>   __                 __        __  ___ 
   / /  ___ ____  ____/ /  ___ _/ /_|_  |
  / /__/ _ `/ _ \/ __/ _ \/ _ `/ __/ __/ 
 /____/\_,_/_//_/\__/_//_/\_,_/\__/____/
-</value>
+    </value>
   </data>
     <data name="Manual_Connect" xml:space="preserve">
     <value>Syntax: /connect &lt;ip&gt;</value>
@@ -147,34 +147,31 @@ blocked
       
 Try /help &lt;command&gt;</value>
   </data>
-    <data name="PageLink" xml:space="preserve">
+    <data name="Ui_Motd" xml:space="preserve">
     <value>https://tofu.ovh</value>
   </data>
-    <data name="PromptIndicator_Default" xml:space="preserve">
-    <value>&gt; </value>
-  </data>
-    <data name="Title" xml:space="preserve">
+    <data name="Ui_WindowTitle" xml:space="preserve">
     <value>Lanchat</value>
   </data>
-    <data name="_ConnectionAttempt" xml:space="preserve">
+    <data name="Info_ConnectionAttempt" xml:space="preserve">
     <value>Attempting connect to</value>
   </data>
-    <data name="_DebugMode" xml:space="preserve">
+    <data name="Info_DebugMode" xml:space="preserve">
     <value>Debug mode enabled</value>
   </data>
-    <data name="_IncorrectValues" xml:space="preserve">
+    <data name="Info_IncorrectValues" xml:space="preserve">
     <value>Incorrect values</value>
   </data>
-    <data name="_ManualNotFound" xml:space="preserve">
+    <data name="Info_ManualNotFound" xml:space="preserve">
     <value>Manual not found</value>
   </data>
     <data name="Manual_Nick" xml:space="preserve">
     <value>Syntax: /nick &lt;new_nick&gt;</value>
   </data>
-    <data name="_WrongNickname" xml:space="preserve">
+    <data name="Info_WrongNickname" xml:space="preserve">
     <value>Nick must be shorter than 20 characters and cannot be blank</value>
   </data>
-    <data name="_SelfNicknameChanged" xml:space="preserve">
+    <data name="Info_SelfNicknameChanged" xml:space="preserve">
     <value>Nickname changed</value>
   </data>
     <data name="Manual_Disconnect" xml:space="preserve">
@@ -185,5 +182,35 @@ Try /help &lt;command&gt;</value>
     </data>
     <data name="Manual_Unblock" xml:space="preserve">
         <value>Syntax: /unblock &lt;ip&gt;</value>
+    </data>
+    <data name="Info_NotFound" xml:space="preserve">
+        <value>Not found</value>
+    </data>
+    <data name="Info_Blocked" xml:space="preserve">
+        <value>blocked</value>
+    </data>
+    <data name="Info_Unblocked" xml:space="preserve">
+        <value>unblocked</value>
+    </data>
+    <data name="Info_BlockedList" xml:space="preserve">
+        <value>Blocked IP addresses</value>
+    </data>
+    <data name="Info_ConnectedList" xml:space="preserve">
+        <value>Connected nodes</value>
+    </data>
+    <data name="Info_Disconnected" xml:space="preserve">
+        <value>disconnected</value>
+    </data>
+    <data name="Info_Reconnecting" xml:space="preserve">
+        <value>disconnected. Trying reconnect</value>
+    </data>
+    <data name="Info_Connected" xml:space="preserve">
+        <value>connected</value>
+    </data>
+    <data name="Info_ConnectionError" xml:space="preserve">
+        <value>Connection error</value>
+    </data>
+    <data name="Info_NicknameChanged" xml:space="preserve">
+        <value>changed nickname to</value>
     </data>
 </root>

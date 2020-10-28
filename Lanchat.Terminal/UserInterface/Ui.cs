@@ -38,7 +38,7 @@ namespace Lanchat.Terminal.UserInterface
 
             PromptIndicator = new TextBlock
             {
-                Text = $"[{Program.Config.Nickname}]> "
+                Text = $"[{Program.Config.Nickname}] "
             };
 
             ScrollPanel = new VerticalScrollPanel
@@ -64,7 +64,7 @@ namespace Lanchat.Terminal.UserInterface
                             Color = ConsoleColor.DarkBlue,
                             Content = new TextBlock
                             {
-                                Text = $" {Resources.Title} - {Resources.PageLink}"
+                                Text = $" {Resources.Ui_WindowTitle} - {Resources.Ui_Motd}"
                             }
                         }
                     },
@@ -124,8 +124,8 @@ namespace Lanchat.Terminal.UserInterface
             ConsoleManager.Setup();
             ConsoleManager.Resize(new Size(100, 30));
             ConsoleManager.Content = dockPanel;
-            Console.Title = Resources.Title;
-            Log.Add(Resources.HelloAsci);
+            Console.Title = Resources.Ui_WindowTitle;
+            Log.Add(Resources.Ui_HelloMessage);
 
             // Clock updates
             new Thread(() =>
