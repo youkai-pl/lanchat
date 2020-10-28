@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using Lanchat.Core;
-using Lanchat.Terminal.Handlers;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -17,17 +16,16 @@ namespace Lanchat.Terminal
 
         private static void Main(string[] args)
         {
+            // Load config
             Config = Config.Load();
-            CoreConfig.Nickname = Config.Nickname;
-            CoreConfig.ServerPort = Config.Port;
-            CoreConfig.BlockedAddresses = Config.BlockedAddresses.Select(IPAddress.Parse).ToList();
-            
+
+            // Initialize network and start UI
             Network = new P2P();
             Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
             Network.Start();
+            Ui.Start();
 
-            Ui.Start(Config, Network);
-
+            // Enable debug mode
             if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
             {
                 Trace.Listeners.Add(new TerminalTraceListener());

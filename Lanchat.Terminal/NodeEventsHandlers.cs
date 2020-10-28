@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using Lanchat.Core;
 using Lanchat.Terminal.UserInterface;
 
-namespace Lanchat.Terminal.Handlers
+namespace Lanchat.Terminal
 {
     public class NodeEventsHandlers
     {
@@ -33,29 +33,29 @@ namespace Lanchat.Terminal.Handlers
             Ui.Log.Add($"{node.Nickname} disconnected. Trying reconnect.");
             Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
-        
+
         private void OnHardDisconnected(object sender, EventArgs e)
         {
             Ui.Log.Add($"{node.Nickname} disconnected. Cannot reconnect.");
             Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
-        
+
         private void OnMessageReceived(object sender, string e)
         {
             Ui.Log.AddMessage(e, node.Nickname);
         }
-        
+
         private void OnPingReceived(object sender, EventArgs e)
         {
             Ui.Log.Add($"{node.Nickname} sent ping");
         }
-        
+
         private void OnSocketErrored(object sender, SocketError e)
         {
             Trace.WriteLine($"[NODE] Socket error {node.Id} / {e}");
             Ui.Log.Add($"Connection error {e}");
         }
-        
+
         private void OnNicknameChanged(object sender, string e)
         {
             Ui.Log.Add($"{e} changed nickname to {node.Nickname}");

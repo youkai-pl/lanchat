@@ -2,24 +2,17 @@
 using System.Linq;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Input;
-using Lanchat.Core;
 using Lanchat.Terminal.Commands;
 
 namespace Lanchat.Terminal.UserInterface
 {
     public class InputController : IInputListener
     {
-        private readonly Config config;
         private readonly TextBox input;
-        private readonly LogPanel log;
-        private readonly P2P network;
 
-        public InputController(TextBox input, LogPanel log, Config config, P2P network)
+        public InputController(TextBox input)
         {
             this.input = input;
-            this.log = log;
-            this.config = config;
-            this.network = network;
         }
 
         public void OnInput(InputEvent inputEvent)
@@ -28,7 +21,7 @@ namespace Lanchat.Terminal.UserInterface
             {
                 return;
             }
-            
+
             if (!string.IsNullOrWhiteSpace(input.Text))
             {
                 if (input.Text.StartsWith("/", StringComparison.CurrentCulture))
@@ -37,8 +30,8 @@ namespace Lanchat.Terminal.UserInterface
                 }
                 else
                 {
-                    log.AddMessage(input.Text, config.Nickname);
-                    network.BroadcastMessage(input.Text);
+                    Ui.Log.AddMessage(input.Text, Program.Config.Nickname);
+                    Program.Network.BroadcastMessage(input.Text);
                 }
             }
 
@@ -64,7 +57,7 @@ namespace Lanchat.Terminal.UserInterface
                 case "connect":
                     Connect.Execute(args);
                     break;
-                
+
                 case "disconnect":
                     Disconnect.Execute(args);
                     break;
@@ -72,15 +65,15 @@ namespace Lanchat.Terminal.UserInterface
                 case "list":
                     List.Execute();
                     break;
-                
+
                 case "nick":
                     Nick.Execute(args);
                     break;
-                
+
                 case "block":
                     Block.Execute(args);
                     break;
-                
+
                 case "unblock":
                     Unblock.Execute(args);
                     break;

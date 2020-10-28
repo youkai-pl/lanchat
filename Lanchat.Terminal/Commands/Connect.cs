@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using Lanchat.Core;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text.Json;
@@ -31,12 +32,13 @@ namespace Lanchat.Terminal
             get => _nickname;
             set
             {
-                
                 _nickname = value;
                 CoreConfig.Nickname = value;
                 Save();
             }
         }
+
+        public static string Path { get; private set; }
 
         public void AddBlocked(IPAddress ipAddress)
         {
@@ -46,12 +48,12 @@ namespace Lanchat.Terminal
             {
                 return;
             }
-            
+
             BlockedAddresses.Add(ipString);
             CoreConfig.BlockedAddresses.Add(ipAddress);
             Save();
         }
-        
+
         public void RemoveBlocked(IPAddress ipAddress)
         {
             BlockedAddresses.Remove(ipAddress.ToString());
@@ -59,10 +61,9 @@ namespace Lanchat.Terminal
             Save();
         }
 
-        public static string Path { get; private set; }
-
         public static Config Load()
         {
+            Config newConfig;
             try
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -78,7 +79,7 @@ namespace Lanchat.Terminal
                     Path = Environment.GetEnvironmentVariable("HOME") + "/Library/Preferences/.Lancaht2/";
                 }
 
-                return JsonSerializer.Deserialize<Config>(File.ReadAllText(Path + "config.json"));
+                newConfig = JsonSerializer.Deserialize<Config>(File.ReadAllText(Path + "config.json"));
             }
             catch (Exception e)
             {
@@ -88,8 +89,13 @@ namespace Lanchat.Terminal
                 }
 
                 Trace.WriteLine("[APP] Config load error");
-                return new Config();
+                newConfig = new Config();
             }
+
+            CoreConfig.Nickname = newConfig.Nickname;
+            CoreConfig.ServerPort = newConfig.Port;
+            CoreConfig.BlockedAddresses = newConfig.BlockedAddresses.Select(IPAddress.Parse).ToList();
+            return newConfig;
         }
 
         private void Save()

@@ -6,7 +6,6 @@ using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
 using ConsoleGUI.Input;
 using ConsoleGUI.Space;
-using Lanchat.Core;
 using Lanchat.Terminal.Properties;
 
 namespace Lanchat.Terminal.UserInterface
@@ -16,30 +15,30 @@ namespace Lanchat.Terminal.UserInterface
         private static TextBlock _clock;
         private static TextBox _input;
         internal static LogPanel Log { get; private set; }
-        internal static TextBlock NodesCount  { get; private set; }
+        internal static TextBlock NodesCount { get; private set; }
         internal static TextBlock PromptIndicator { get; private set; }
         internal static VerticalScrollPanel ScrollPanel { get; private set; }
 
-        public static void Start(Config config, P2P network)
+        public static void Start()
         {
             Log = new LogPanel();
-            
+
             _input = new TextBox();
-            
+
             _clock = new TextBlock
             {
                 Color = ConsoleColor.Gray
             };
-            
+
             NodesCount = new TextBlock
             {
                 Text = "0",
                 Color = ConsoleColor.Gray
             };
-            
+
             PromptIndicator = new TextBlock
             {
-                Text = $"[{config.Nickname}]> "
+                Text = $"[{Program.Config.Nickname}]> "
             };
 
             ScrollPanel = new VerticalScrollPanel
@@ -48,7 +47,7 @@ namespace Lanchat.Terminal.UserInterface
                 ScrollBarBackground = new Character(),
                 ScrollBarForeground = new Character()
             };
-            
+
             var dockPanel = new DockPanel
             {
                 Placement = DockPanel.DockedControlPlacement.Bottom,
@@ -119,7 +118,7 @@ namespace Lanchat.Terminal.UserInterface
                     }
                 }
             };
-            
+
             // Start console UI 
             ConsoleManager.Console = new SimplifiedConsole();
             ConsoleManager.Setup();
@@ -137,7 +136,7 @@ namespace Lanchat.Terminal.UserInterface
                     _clock.Text = DateTime.Now.ToString("HH:mm");
                     ConsoleManager.ReadInput(new IInputListener[]
                     {
-                        new InputController(_input, Log, config, network),
+                        new InputController(_input),
                         ScrollPanel,
                         _input
                     });
