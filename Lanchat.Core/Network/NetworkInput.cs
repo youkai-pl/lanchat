@@ -35,8 +35,14 @@ namespace Lanchat.Core.Network
                 var data = JsonSerializer.Deserialize<Wrapper>(json, serializerOptions);
                 var content = data.Data?.ToString();
 
-                // If node isn't ready ignore every messages except handshake and key info
+                // If node isn't ready ignore every messages except handshake and key info.
                 if (!node.Ready && data.Type != DataTypes.Handshake && data.Type != DataTypes.KeyInfo)
+                {
+                    return;
+                }
+                
+                // Ignore handshake and key info is node was set as ready before.
+                if (node.Ready && (data.Type == DataTypes.Handshake || data.Type == DataTypes.KeyInfo))
                 {
                     return;
                 }
@@ -65,7 +71,7 @@ namespace Lanchat.Core.Network
                         var stringList = JsonSerializer.Deserialize<List<string>>(content);
                         var list = new List<IPAddress>();
 
-                        // Convert strings to ip addresses
+                        // Convert strings to ip addresses.
                         stringList.ForEach(x =>
                         {
                             if (IPAddress.TryParse(x, out var ipAddress))
@@ -93,7 +99,7 @@ namespace Lanchat.Core.Network
                 }
             }
 
-            // Input errors catching
+            // Input errors catching.
             catch (Exception ex)
             {
                 if (ex is JsonException || ex is ArgumentNullException)
