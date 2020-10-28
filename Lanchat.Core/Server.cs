@@ -44,6 +44,12 @@ namespace Lanchat.Core
         /// </summary>
         public event EventHandler<Node> SessionCreated;
 
+        protected override void OnStarted()
+        {
+            Trace.WriteLine($"Server listening on {Endpoint.Port}");
+            base.OnStarted();
+        }
+
         protected override TcpSession CreateSession()
         {
             var session = new Session(this);
@@ -52,7 +58,7 @@ namespace Lanchat.Core
             {
                 if (CoreConfig.BlockedAddresses.Contains(session.Endpoint.Address))
                 {
-                    Trace.WriteLine($"[SERVER] Connection from {session.Endpoint.Address} blocked");
+                    Trace.WriteLine($"Connection from {session.Endpoint.Address} blocked");
                     session.Close();
                 }
                 else
@@ -61,6 +67,7 @@ namespace Lanchat.Core
                     IncomingConnections.Add(node);
                     node.HardDisconnect += OnHardDisconnected;
                     SessionCreated?.Invoke(this, node); 
+                    Trace.WriteLine($"Session for {session.Endpoint.Address} created. Session ID: {session.Id}");
                 }
             };
 
@@ -71,12 +78,14 @@ namespace Lanchat.Core
         {
             var node = (Node) sender;
             IncomingConnections.Remove(node);
+            Trace.WriteLine($"Session {node.Id} disconnected");
             node.Dispose();
         }
 
         protected override void OnError(SocketError error)
         {
             ServerErrored?.Invoke(this, error);
+            Trace.WriteLine($"Server errored: {error}");
         }
     }
 }

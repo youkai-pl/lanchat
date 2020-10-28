@@ -27,7 +27,7 @@ namespace Lanchat.Terminal
             Trace.Listeners.Add(new FileTraceListener($"{Config.Path}{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log"));
             Trace.IndentSize = 11;
             Trace.AutoFlush = true;
-            Trace.WriteLine("[APP] Logging started");
+            Trace.WriteLine("Logging started");
             
             // Initialize network
             Network = new P2P();
