@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Lanchat.Core;
-using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal
@@ -15,20 +14,13 @@ namespace Lanchat.Terminal
 
         private static void Main(string[] args)
         {
-            // Load config
             Config = Config.Load();
-
-            // Initialize network and start UI
-            Network = new P2P();
-            Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
-            Network.Start();
             Ui.Start();
 
             // Enable debug mode
             if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
             {
                 Trace.Listeners.Add(new TerminalTraceListener());
-                Trace.WriteLine(Resources.Info_DebugMode);
             }
 
             // Save logs to file
@@ -36,6 +28,11 @@ namespace Lanchat.Terminal
             Trace.IndentSize = 11;
             Trace.AutoFlush = true;
             Trace.WriteLine("[APP] Logging started");
+            
+            // Initialize network
+            Network = new P2P();
+            Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
+            Network.Start();
 
             // Remove old logs
             foreach (var fi in new DirectoryInfo(Config.Path)

@@ -156,9 +156,6 @@ Try /help &lt;command&gt;</value>
     <data name="Info_ConnectionAttempt" xml:space="preserve">
     <value>Attempting connect to</value>
   </data>
-    <data name="Info_DebugMode" xml:space="preserve">
-    <value>Debug mode enabled</value>
-  </data>
     <data name="Info_IncorrectValues" xml:space="preserve">
     <value>Incorrect values</value>
   </data>

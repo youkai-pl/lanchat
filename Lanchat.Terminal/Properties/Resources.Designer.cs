@@ -115,15 +115,6 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Debug mode enabled.
-        /// </summary>
-        internal static string Info_DebugMode {
-            get {
-                return ResourceManager.GetString("Info_DebugMode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to disconnected.
         /// </summary>
         internal static string Info_Disconnected {
