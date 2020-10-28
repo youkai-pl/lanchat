@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -46,6 +47,7 @@ namespace Lanchat.Core.Network
         {
             isReconnecting = false;
             Connected?.Invoke(this, EventArgs.Empty);
+            Trace.WriteLine($"Client {Id} connected");
         }
 
         protected override void OnDisconnected()
@@ -54,6 +56,7 @@ namespace Lanchat.Core.Network
             if (!EnableReconnecting)
             {
                 Disconnected?.Invoke(this, true);
+                Trace.WriteLine($"Client {Id} disconnected");
                 return;
             }
             
@@ -67,6 +70,7 @@ namespace Lanchat.Core.Network
             if (hardDisconnect || reconnectingCount == 3 || !EnableReconnecting)
             {
                 Disconnected?.Invoke(this, true);
+                Trace.WriteLine($"Client {Id} disconnected");
                 return;
             }
 
@@ -74,6 +78,7 @@ namespace Lanchat.Core.Network
             Thread.Sleep(1000);
             isReconnecting = true;
             reconnectingCount++;
+            Trace.WriteLine($"Client {Id} reconnecting");
             ConnectAsync();
         }
 
@@ -87,6 +92,7 @@ namespace Lanchat.Core.Network
         protected override void OnError(SocketError error)
         {
             SocketErrored?.Invoke(this, error);
+            Trace.WriteLine($"Client {Id} errored: {error}");
         }
     }
 }
