@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -110,7 +111,7 @@ namespace Lanchat.Core
         }
 
         // Network elements events
-
+        
         private void OnConnected(object sender, EventArgs e)
         {
             SendHandshakeAndWait();

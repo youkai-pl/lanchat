@@ -57,17 +57,20 @@ namespace Lanchat.Core.Network
                         break;
 
                     case DataTypes.Handshake:
+                        Trace.WriteLine($"Node {node.Id} received handshake");
                         var handshake = JsonSerializer.Deserialize<Handshake>(content);
                         handshake.Nickname = TruncateAndValidate(handshake.Nickname, CoreConfig.MaxNicknameLenght);
                         HandshakeReceived?.Invoke(this, handshake);
                         break;
 
                     case DataTypes.KeyInfo:
+                        Trace.WriteLine($"Node {node.Id} received key info");
                         var keyInfo = JsonSerializer.Deserialize<KeyInfo>(content);
                         KeyInfoReceived?.Invoke(this, keyInfo);
                         break;
 
                     case DataTypes.NodesList:
+                        Trace.WriteLine($"Node {node.Id} received nodes list");
                         var stringList = JsonSerializer.Deserialize<List<string>>(content);
                         var list = new List<IPAddress>();
 
@@ -84,15 +87,17 @@ namespace Lanchat.Core.Network
                         break;
                     
                     case DataTypes.NicknameUpdate:
+                        Trace.WriteLine($"Node {node.Id} received nickname update");
                         NicknameChanged?.Invoke(this, TruncateAndValidate(content, CoreConfig.MaxNicknameLenght));
                         break;
 
                     case DataTypes.Goodbye:
+                        Trace.WriteLine($"Node {node.Id} received goodbye");
                         node.NetworkElement.EnableReconnecting = false;
                         break;
                     
                     default:
-                        Trace.WriteLine("Unknown type received");
+                        Trace.WriteLine($"Node {node.Id} received unknown data");
                         break;
                 }
             }
