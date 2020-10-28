@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -32,11 +33,13 @@ namespace Lanchat.Core.Network
         protected override void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);
+            Trace.WriteLine($"Session {Id} connected");
         }
 
         protected override void OnDisconnected()
         {
             Disconnected?.Invoke(this, true);
+            Trace.WriteLine($"Session {Id} disconnected");
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
@@ -48,6 +51,7 @@ namespace Lanchat.Core.Network
         protected override void OnError(SocketError error)
         {
             SocketErrored?.Invoke(this, error);
+            Trace.WriteLine($"Session {Id} errored: {error}");
         }
     }
 }

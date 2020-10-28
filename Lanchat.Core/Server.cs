@@ -78,7 +78,6 @@ namespace Lanchat.Core
         {
             var node = (Node) sender;
             IncomingConnections.Remove(node);
-            Trace.WriteLine($"Session {node.Id} disconnected");
             node.Dispose();
         }
 
