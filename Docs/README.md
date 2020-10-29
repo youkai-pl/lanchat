@@ -1,29 +1,26 @@
-## Get started
+# Lanchat 2
 
-Requirements:
+Encrypted, P2P, local network chat. 
 
-* For Windows: `.NET 4.7.2`
-* For Linux or macOS: `.NET Core 3.1`
+## Projects
+* Lancaht.Core (2.1.0-beta1) - library
+* Lanchat.Terminal (2.1.0-beta1) - console app for Windows and Linux
+* Lancaht.Xamarin (0.1.0-alpha1) - experimental client for Android
+* Lanchat.Probe - tool for debugging 
 
-* [Get Lanchat](https://github.com/tofudd/lanchat/releases)
-* [Get .NET Runtime for Linux and macOS](https://dotnet.microsoft.com/download/dotnet-core/3.1)
+Check [release](https://github.com/tofudd/lanchat/releases) section for binaries.
 
-### Lanchat Terminal
+**Lanchat Terminal requires .NET Core 3.1 or newer**
 
-<img src="https://share.tofu.ovh/.hidden/github-images/Lanchat.png">
+## How it works
+In P2P mode nodes starts own server and multiple clients. Each node is connected with other by single TCP connection.
+It looks something like that.
 
-Looks familiar? 
+1. Node A client connects to Node B server.
+2. Nodes exchange RSA public keys.
+3. Nodes exchange AES keys encrypted with RSA.
+4. Nodes exchange previously connected nodes list.
+5. Both nodes trying to connect with nodes from list (if they didn't connected already).
+6. All done.
 
-Version 2.0.0.2008 introduces new terminal client based on [ConsoleGui](https://github.com/TomaszRewak/C-sharp-console-gui-framework) framework.
-I like the irssi look, so I tried to make something similar.
-
-## Contribute
-
-### Docs
-* [Lanchat.Common](https://github.com/tofudd/lanchat/blob/master/Docs/Lanchat.Common.md)
-* [Guide](https://github.com/tofudd/lanchat/blob/master/Docs/Guide.md)
-* [API](https://github.com/tofudd/lanchat/blob/master/Docs/API.md)
-
-## Lanchat 1.x note
-* Lanchat *1.x* is no longer supported.
-* [Archived branch](https://github.com/tofudd/lanchat/tree/1.x).
+TODO: Put some fancy scheme here.

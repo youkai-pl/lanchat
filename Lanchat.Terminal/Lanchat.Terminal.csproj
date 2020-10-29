@@ -2,11 +2,16 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFrameworks>netcoreapp3.1;net472</TargetFrameworks>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageIcon>icon.ico</PackageIcon>
     <AssemblyName>Lanchat</AssemblyName>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+    <AssemblyInformationalVersion>2.1.0-beta1</AssemblyInformationalVersion>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <IsPackable>false</IsPackable>
+    <Company>tofudd</Company>
+    <Version>2.1.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
@@ -20,20 +25,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs" Link="SharedAssemblyInfo.cs" />
+    <PackageReference Include="ConsoleGUI" Version="1.2.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ConsoleGUI" Version="1.2.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Lanchat.Common\Lanchat.Common.csproj" />
+    <ProjectReference Include="..\Lanchat.Core\Lanchat.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

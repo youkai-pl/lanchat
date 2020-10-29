@@ -1,63 +1,44 @@
-﻿using Lanchat.Common.NetworkLib;
-using Lanchat.Terminal.Ui;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Lanchat.Core;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal
 {
-    internal class Program
+    public static class Program
     {
-        internal static Config Config { get; set; }
-        internal static Network Network { get; set; }
-        internal static NetworkEventsHandlers NetworkEventsHandlers { get; set; }
+        public static P2P Network { get; private set; }
+        public static Config Config { get; private set; }
 
         private static void Main(string[] args)
         {
             Config = Config.Load();
-            try
-            {
-                Network = new Network(
-                    Config.BroadcastPort,
-                    Config.Nickname,
-                    Config.HostPort,
-                    Config.HeartbeatSendTimeout,
-                    Config.ConnectionTimeout
-                );
-                Prompt.Start(Config, Network);
-                NetworkEventsHandlers = new NetworkEventsHandlers(Config, Network);
-                Network.Events.HostStarted += NetworkEventsHandlers.OnHostStarted;
-                Network.Events.ReceivedMessage += NetworkEventsHandlers.OnReceivedMessage;
-                Network.Events.NodeConnected += NetworkEventsHandlers.OnNodeConnected;
-                Network.Events.NodeDisconnected += NetworkEventsHandlers.OnNodeDisconnected;
-                Network.Events.ChangedNickname += NetworkEventsHandlers.OnChangedNickname;
-                Network.Start();
-            }
-            catch (Exception e)
-            {
-                if (e is System.Net.Sockets.SocketException)
-                {
-                    Prompt.Log.Add(Properties.Resources._MultipleInstancesError);
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            Ui.Start();
 
+            // Enable debug mode
             if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
             {
-                Trace.WriteLine(Properties.Resources._DebugMode);
                 Trace.Listeners.Add(new TerminalTraceListener());
             }
 
+            // Save logs to file
             Trace.Listeners.Add(new FileTraceListener($"{Config.Path}{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log"));
             Trace.IndentSize = 11;
             Trace.AutoFlush = true;
-            Trace.WriteLine("[APP] Logging started");
+            Trace.WriteLine("Logging started");
+            
+            // Initialize network
+            Network = new P2P();
+            Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
+            Network.Start();
 
-            foreach (var fi in new DirectoryInfo(Config.Path).GetFiles("*.log").OrderByDescending(x => x.LastWriteTime).Skip(5))
+            // Remove old logs
+            foreach (var fi in new DirectoryInfo(Config.Path)
+                .GetFiles("*.log")
+                .OrderByDescending(x => x.LastWriteTime)
+                .Skip(5))
             {
                 fi.Delete();
             }

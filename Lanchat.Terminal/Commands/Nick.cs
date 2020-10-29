@@ -1,45 +1,34 @@
-﻿using Lanchat.Common.NetworkLib;
-using Lanchat.Terminal.Ui;
-using System;
+﻿using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
     public static class Nick
     {
-        public static void Execute(string[] args, Config config, Network network)
+        public static void Execute(string[] args)
         {
-            if (args == null)
+            if (args == null || args.Length < 1)
             {
-                throw new ArgumentNullException(nameof(args));
-            }
-
-            if (config == null)
-            {
-                throw new ArgumentNullException(nameof(config));
-            }
-
-            if (network == null)
-            {
-                throw new ArgumentNullException(nameof(network));
+                Ui.Log.Add(Resources.Manual_Connect);
+                return;
             }
 
             if (args.Length < 1)
             {
-                Prompt.Log.Add(Properties.Resources.Manual_Nick);
+                Ui.Log.Add(Resources.Manual_Nick);
                 return;
             }
 
             var nickname = args[0].Trim();
             if (nickname.Length >= 20 || string.IsNullOrWhiteSpace(nickname))
             {
-                Prompt.Log.Add(Properties.Resources._WrongNickname);
+                Ui.Log.Add(Resources.Info_WrongNickname);
             }
             else
             {
-                config.Nickname = nickname;
-                network.Nickname = nickname;
-                Prompt.Log.Add(Properties.Resources._SelfNicknameChanged);
-                Prompt.PromptIndicator.Text = $"[{config.Nickname}]> ";
+                Program.Config.Nickname = nickname;
+                Ui.Log.Add(Resources.Info_SelfNicknameChanged);
+                Ui.PromptIndicator.Text = $"[{Program.Config.Nickname}] ";
             }
         }
     }

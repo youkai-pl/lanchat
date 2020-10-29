@@ -19,7 +19,7 @@ namespace Lanchat.Terminal.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,137 +61,151 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Already connected.
+        ///   Looks up a localized string similar to blocked.
         /// </summary>
-        internal static string _AlreadyConnected {
+        internal static string Info_Blocked {
             get {
-                return ResourceManager.GetString("_AlreadyConnected", resourceCulture);
+                return ResourceManager.GetString("Info_Blocked", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User already muted.
+        ///   Looks up a localized string similar to Blocked IP addresses.
         /// </summary>
-        internal static string _AlreadyMuted {
+        internal static string Info_BlockedList {
             get {
-                return ResourceManager.GetString("_AlreadyMuted", resourceCulture);
+                return ResourceManager.GetString("Info_BlockedList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to connected.
+        /// </summary>
+        internal static string Info_Connected {
+            get {
+                return ResourceManager.GetString("Info_Connected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connected nodes.
+        /// </summary>
+        internal static string Info_ConnectedList {
+            get {
+                return ResourceManager.GetString("Info_ConnectedList", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Attempting connect to.
         /// </summary>
-        internal static string _ConnectionAttempt {
+        internal static string Info_ConnectionAttempt {
             get {
-                return ResourceManager.GetString("_ConnectionAttempt", resourceCulture);
+                return ResourceManager.GetString("Info_ConnectionAttempt", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Debug mode enabled.
+        ///   Looks up a localized string similar to Connection error.
         /// </summary>
-        internal static string _DebugMode {
+        internal static string Info_ConnectionError {
             get {
-                return ResourceManager.GetString("_DebugMode", resourceCulture);
+                return ResourceManager.GetString("Info_ConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to disconnected.
+        /// </summary>
+        internal static string Info_Disconnected {
+            get {
+                return ResourceManager.GetString("Info_Disconnected", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Incorrect values.
         /// </summary>
-        internal static string _IncorrectValues {
+        internal static string Info_IncorrectValues {
             get {
-                return ResourceManager.GetString("_IncorrectValues", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Manual connection failed.
-        /// </summary>
-        internal static string _ManualConnectionFailed {
-            get {
-                return ResourceManager.GetString("_ManualConnectionFailed", resourceCulture);
+                return ResourceManager.GetString("Info_IncorrectValues", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Manual not found.
         /// </summary>
-        internal static string _ManualNotFound {
+        internal static string Info_ManualNotFound {
             get {
-                return ResourceManager.GetString("_ManualNotFound", resourceCulture);
+                return ResourceManager.GetString("Info_ManualNotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only one instance can be run on single port.
+        ///   Looks up a localized string similar to changed nickname to.
         /// </summary>
-        internal static string _MultipleInstancesError {
+        internal static string Info_NicknameChanged {
             get {
-                return ResourceManager.GetString("_MultipleInstancesError", resourceCulture);
+                return ResourceManager.GetString("Info_NicknameChanged", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User is not muted.
+        ///   Looks up a localized string similar to Not found.
         /// </summary>
-        internal static string _NotMuted {
+        internal static string Info_NotFound {
             get {
-                return ResourceManager.GetString("_NotMuted", resourceCulture);
+                return ResourceManager.GetString("Info_NotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to on port.
+        ///   Looks up a localized string similar to disconnected. Trying reconnect.
         /// </summary>
-        internal static string _OnPort {
+        internal static string Info_Reconnecting {
             get {
-                return ResourceManager.GetString("_OnPort", resourceCulture);
+                return ResourceManager.GetString("Info_Reconnecting", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Nickname changed.
         /// </summary>
-        internal static string _SelfNicknameChanged {
+        internal static string Info_SelfNicknameChanged {
             get {
-                return ResourceManager.GetString("_SelfNicknameChanged", resourceCulture);
+                return ResourceManager.GetString("Info_SelfNicknameChanged", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User not found.
+        ///   Looks up a localized string similar to unblocked.
         /// </summary>
-        internal static string _UserNotFound {
+        internal static string Info_Unblocked {
             get {
-                return ResourceManager.GetString("_UserNotFound", resourceCulture);
+                return ResourceManager.GetString("Info_Unblocked", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Nick must be shorter than 20 characters and cannot be blank.
         /// </summary>
-        internal static string _WrongNickname {
+        internal static string Info_WrongNickname {
             get {
-                return ResourceManager.GetString("_WrongNickname", resourceCulture);
+                return ResourceManager.GetString("Info_WrongNickname", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to    __                 __        __  ___ 
-        ///  / /  ___ ____  ____/ /  ___ _/ /_|_  |
-        /// / /__/ _ `/ _ \/ __/ _ \/ _ `/ __/ __/ 
-        ////____/\_,_/_//_/\__/_//_/\_,_/\__/____/
-        ///.
+        ///   Looks up a localized string similar to Syntax: /block &lt;ip&gt;.
         /// </summary>
-        internal static string HelloAsci {
+        internal static string Manual_Block {
             get {
-                return ResourceManager.GetString("HelloAsci", resourceCulture);
+                return ResourceManager.GetString("Manual_Block", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax: /connect &lt;ip&gt; &lt;port&gt;.
+        ///   Looks up a localized string similar to Syntax: /connect &lt;ip&gt;.
         /// </summary>
         internal static string Manual_Connect {
             get {
@@ -200,38 +214,32 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syntax: /disconnect &lt;nickname&gt;.
+        /// </summary>
+        internal static string Manual_Disconnect {
+            get {
+                return ResourceManager.GetString("Manual_Disconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 
         ///Commands list:
         ///connect
+        ///disconnect
         ///help
         ///list
-        ///mute
-        ///m
-        ///nick
-        ///unmute
+        ///nickname
+        ///exit
+        ///block
+        ///unblock 
+        ///blocked
+        ///      
         ///Try /help &lt;command&gt;.
         /// </summary>
         internal static string Manual_Help {
             get {
                 return ResourceManager.GetString("Manual_Help", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Syntax: /m &lt;nickname&gt; &lt;message&gt;.
-        /// </summary>
-        internal static string Manual_Message {
-            get {
-                return ResourceManager.GetString("Manual_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Syntax: /mute &lt;nickname&gt;.
-        /// </summary>
-        internal static string Manual_Mute {
-            get {
-                return ResourceManager.GetString("Manual_Mute", resourceCulture);
             }
         }
         
@@ -245,65 +253,42 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax: /unmute &lt;nickname&gt;.
+        ///   Looks up a localized string similar to Syntax: /unblock &lt;ip&gt;.
         /// </summary>
-        internal static string Manual_Unmute {
+        internal static string Manual_Unblock {
             get {
-                return ResourceManager.GetString("Manual_Unmute", resourceCulture);
+                return ResourceManager.GetString("Manual_Unblock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to    __                 __        __  ___ 
+        ///  / /  ___ ____  ____/ /  ___ _/ /_|_  |
+        /// / /__/ _ `/ _ \/ __/ _ \/ _ `/ __/ __/ 
+        ////____/\_,_/_//_/\__/_//_/\_,_/\__/____/
+        ///    .
+        /// </summary>
+        internal static string Ui_HelloMessage {
+            get {
+                return ResourceManager.GetString("Ui_HelloMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to https://tofu.ovh.
         /// </summary>
-        internal static string PageLink {
+        internal static string Ui_Motd {
             get {
-                return ResourceManager.GetString("PageLink", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &gt; .
-        /// </summary>
-        internal static string PromptIndicator_Default {
-            get {
-                return ResourceManager.GetString("PromptIndicator_Default", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to muted.
-        /// </summary>
-        internal static string StatusMuted {
-            get {
-                return ResourceManager.GetString("StatusMuted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to offline.
-        /// </summary>
-        internal static string StatusOffline {
-            get {
-                return ResourceManager.GetString("StatusOffline", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to online.
-        /// </summary>
-        internal static string StatusOnline {
-            get {
-                return ResourceManager.GetString("StatusOnline", resourceCulture);
+                return ResourceManager.GetString("Ui_Motd", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Lanchat.
         /// </summary>
-        internal static string Title {
+        internal static string Ui_WindowTitle {
             get {
-                return ResourceManager.GetString("Title", resourceCulture);
+                return ResourceManager.GetString("Ui_WindowTitle", resourceCulture);
             }
         }
     }
