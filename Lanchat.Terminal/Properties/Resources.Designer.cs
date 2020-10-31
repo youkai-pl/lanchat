@@ -61,7 +61,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to blocked.
+        ///   Looks up a localized string similar to Blocked.
         /// </summary>
         internal static string Info_Blocked {
             get {

@@ -25,6 +25,10 @@ namespace Lanchat.Terminal.Commands
             {
                 Ui.Log.Add(Resources.Info_IncorrectValues);
             }
+            catch (ArgumentException e)
+            {
+                Ui.Log.Add(e.Message);
+            }
         }
     }
 }

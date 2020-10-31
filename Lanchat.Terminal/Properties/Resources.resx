@@ -184,7 +184,7 @@ Try /help &lt;command&gt;</value>
         <value>Not found</value>
     </data>
     <data name="Info_Blocked" xml:space="preserve">
-        <value>blocked</value>
+        <value>Blocked</value>
     </data>
     <data name="Info_Unblocked" xml:space="preserve">
         <value>unblocked</value>
