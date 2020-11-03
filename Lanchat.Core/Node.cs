@@ -51,7 +51,7 @@ namespace Lanchat.Core
         /// </summary>
         public string Nickname
         {
-            get => $"{nickname}#{Id.GetHashCode().ToString().Substring(1, 4)}";
+            get => $"{nickname}#{ShortId}";
             private set => nickname = value;
         }
 
@@ -64,6 +64,11 @@ namespace Lanchat.Core
         ///     ID of TCP client or session.
         /// </summary>
         public Guid Id => NetworkElement.Id;
+
+        /// <summary>
+        ///     Short ID.
+        /// </summary>
+        public string ShortId => Id.GetHashCode().ToString().Substring(1, 4);
 
         /// <summary>
         ///     IP address of node.
