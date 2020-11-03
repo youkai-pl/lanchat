@@ -14,6 +14,7 @@ namespace Lanchat.Terminal
         {
             this.node = node;
             node.NetworkInput.MessageReceived += OnMessageReceived;
+            node.NetworkInput.PrivateMessageReceived += OnPrivateMessageReceived;
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
             node.HardDisconnect += OnHardDisconnected;
@@ -44,6 +45,11 @@ namespace Lanchat.Terminal
             Ui.Log.AddMessage(e, node.Nickname);
         }
 
+        private void OnPrivateMessageReceived(object sender, string e)
+        {
+            Ui.Log.AddPrivateMessage(e, node.Nickname);
+        }
+        
         private void OnSocketErrored(object sender, SocketError e)
         {
             Ui.Log.Add($"{Resources.Info_ConnectionError}: {node.Nickname} / {e}");

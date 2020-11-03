@@ -58,6 +58,28 @@ namespace Lanchat.Terminal.UserInterface
                 Ui.ScrollPanel.Top = int.MaxValue;
             }
         }
+        
+        public void AddPrivateMessage(string text, string nickname = null)
+        {
+            foreach (var line in Prepare(text))
+            {
+                stackPanel.Add(new WrapPanel
+                {
+                    Content = new HorizontalStackPanel
+                    {
+                        Children = new[]
+                        {
+                            new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
+                            new TextBlock {Text = "<", Color = ConsoleColor.DarkGray},
+                            new TextBlock {Text = $"{nickname}", Color = ConsoleColor.Magenta},
+                            new TextBlock {Text = "> ", Color = ConsoleColor.DarkGray},
+                            new TextBlock {Text = line}
+                        }
+                    }
+                });
+                Ui.ScrollPanel.Top = int.MaxValue;
+            }
+        }
 
         private static IEnumerable<string> Prepare(string text)
         {
