@@ -144,7 +144,8 @@ exit
 block
 unblock 
 blocked
-      
+m        
+        
 Try /help &lt;command&gt;</value>
   </data>
     <data name="Ui_Motd" xml:space="preserve">
@@ -209,5 +210,8 @@ Try /help &lt;command&gt;</value>
     </data>
     <data name="Info_NicknameChanged" xml:space="preserve">
         <value>changed nickname to</value>
+    </data>
+    <data name="Manual_PrivateMessage" xml:space="preserve">
+        <value>Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
     </data>
 </root>

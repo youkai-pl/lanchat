@@ -234,7 +234,8 @@ namespace Lanchat.Terminal.Properties {
         ///block
         ///unblock 
         ///blocked
-        ///      
+        ///m        
+        ///        
         ///Try /help &lt;command&gt;.
         /// </summary>
         internal static string Manual_Help {
@@ -249,6 +250,15 @@ namespace Lanchat.Terminal.Properties {
         internal static string Manual_Nick {
             get {
                 return ResourceManager.GetString("Manual_Nick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax: /m &lt;short id&gt; &lt;message&gt;.
+        /// </summary>
+        internal static string Manual_PrivateMessage {
+            get {
+                return ResourceManager.GetString("Manual_PrivateMessage", resourceCulture);
             }
         }
         

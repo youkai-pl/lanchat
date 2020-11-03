@@ -12,6 +12,7 @@ namespace Lanchat.Probe.Handlers
         {
             this.node = node;
             node.NetworkInput.MessageReceived += OnMessageReceived;
+            node.NetworkInput.PrivateMessageReceived += NetworkInputOnPrivateMessageReceived;
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
             node.HardDisconnect += OnHardDisconnect;
@@ -54,6 +55,13 @@ namespace Lanchat.Probe.Handlers
             Console.WriteLine(e);
             Console.WriteLine("");
         }
+        
+        private void NetworkInputOnPrivateMessageReceived(object sender, string e)
+        {
+            Console.WriteLine("Private message received");
+            Console.WriteLine($"{node.Nickname} / {node.Id} / {node.Endpoint}");
+            Console.WriteLine(e);
+            Console.WriteLine("");        }
         
         private void NodeOnNicknameChanged(object sender, string e)
         {
