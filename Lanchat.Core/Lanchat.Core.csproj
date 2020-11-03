@@ -16,7 +16,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="NetCoreServer" Version="3.0.20" />
+      <PackageReference Include="NetCoreServer" Version="3.0.21" />
       <PackageReference Include="System.Text.Json" Version="4.7.2" />
     </ItemGroup>
 
