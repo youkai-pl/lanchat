@@ -34,6 +34,20 @@ namespace Lanchat.Core.Network
             SendData(DataTypes.Message, node.Encryption.Encrypt(content));
         }
 
+        /// <summary>
+        ///     Send private message.
+        /// </summary>
+        /// <param name="content">Message content.</param>
+        public void SendPrivateMessage(string content)
+        {
+            if (!node.Ready)
+            {
+                return;
+            }
+            
+            SendData(DataTypes.PrivateMessage, node.Encryption.Encrypt(content));
+        }
+        
         internal void SendHandshake()
         {
             var handshake = new Handshake

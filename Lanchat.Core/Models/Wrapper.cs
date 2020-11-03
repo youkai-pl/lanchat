@@ -13,6 +13,7 @@
         NodesList,
         KeyInfo,
         NicknameUpdate,
-        Goodbye
+        Goodbye,
+        PrivateMessage
     }
 }

@@ -23,6 +23,11 @@ namespace Lanchat.Core.Network
         /// </summary>
         public event EventHandler<string> MessageReceived;
 
+        /// <summary>
+        ///     Private message received.
+        /// </summary>
+        public event EventHandler<string> PrivateMessageReceived;
+
         internal event EventHandler<Handshake> HandshakeReceived;
         internal event EventHandler<KeyInfo> KeyInfoReceived;
         internal event EventHandler<List<IPAddress>> NodesListReceived;
@@ -40,7 +45,7 @@ namespace Lanchat.Core.Network
                 {
                     return;
                 }
-                
+
                 // Ignore handshake and key info is node was set as ready before.
                 if (node.Ready && (data.Type == DataTypes.Handshake || data.Type == DataTypes.KeyInfo))
                 {
@@ -50,7 +55,13 @@ namespace Lanchat.Core.Network
                 switch (data.Type)
                 {
                     case DataTypes.Message:
-                        MessageReceived?.Invoke(this, TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
+                        MessageReceived?.Invoke(this,
+                            TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
+                        break;
+
+                    case DataTypes.PrivateMessage:
+                        PrivateMessageReceived?.Invoke(this,
+                            TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
                         break;
 
                     case DataTypes.Handshake:
@@ -82,7 +93,7 @@ namespace Lanchat.Core.Network
 
                         NodesListReceived?.Invoke(this, list);
                         break;
-                    
+
                     case DataTypes.NicknameUpdate:
                         Trace.WriteLine($"Node {node.Id} received nickname update");
                         NicknameChanged?.Invoke(this, TruncateAndValidate(content, CoreConfig.MaxNicknameLenght));
@@ -92,7 +103,7 @@ namespace Lanchat.Core.Network
                         Trace.WriteLine($"Node {node.Id} received goodbye");
                         node.NetworkElement.EnableReconnecting = false;
                         break;
-                    
+
                     default:
                         Trace.WriteLine($"Node {node.Id} received unknown data");
                         break;
@@ -112,7 +123,7 @@ namespace Lanchat.Core.Network
                 }
             }
         }
-        
+
         private static string TruncateAndValidate(string value, int maxLength)
         {
             value = value.Trim();
@@ -121,7 +132,7 @@ namespace Lanchat.Core.Network
                 throw new ArgumentNullException();
             }
 
-            return value.Length <= maxLength ? value : value.Substring(0, maxLength) + "..."; 
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength) + "...";
         }
     }
 }
