@@ -79,6 +79,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot connect with.
+        /// </summary>
+        internal static string Info_CannotConnect {
+            get {
+                return ResourceManager.GetString("Info_CannotConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to connected.
         /// </summary>
         internal static string Info_Connected {

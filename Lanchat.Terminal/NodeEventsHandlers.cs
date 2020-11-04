@@ -20,6 +20,7 @@ namespace Lanchat.Terminal
             node.HardDisconnect += OnHardDisconnected;
             node.SocketErrored += OnSocketErrored;
             node.NicknameChanged += OnNicknameChanged;
+            node.CannotConnect += OnCannotConnect;
         }
 
         private void OnConnected(object sender, EventArgs e)
@@ -58,6 +59,11 @@ namespace Lanchat.Terminal
         private void OnNicknameChanged(object sender, string e)
         {
             Ui.Log.Add($"{e} {Resources.Info_NicknameChanged} {node.Nickname}");
+        }
+        
+        private void OnCannotConnect(object sender, EventArgs e)
+        {
+            Ui.Log.Add($"{Resources.Info_CannotConnect}: {node.Endpoint}");
         }
     }
 }
