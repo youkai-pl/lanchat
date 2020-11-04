@@ -214,4 +214,7 @@ Try /help &lt;command&gt;</value>
     <data name="Manual_PrivateMessage" xml:space="preserve">
         <value>Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
     </data>
+    <data name="Info_PortBusy" xml:space="preserve">
+        <value>Port busy. Cannot start server. Try change port in config.</value>
+    </data>
 </root>

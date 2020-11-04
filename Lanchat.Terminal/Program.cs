@@ -2,7 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using Lanchat.Core;
+using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal
@@ -32,7 +34,15 @@ namespace Lanchat.Terminal
             // Initialize network
             Network = new P2P();
             Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
-            Network.Start();
+
+            try
+            {
+                Network.Start();
+            }
+            catch (SocketException)
+            {
+                Ui.Log.Add(Resources.Info_PortBusy);
+            }
 
             // Remove old logs
             foreach (var fi in new DirectoryInfo(Config.Path)

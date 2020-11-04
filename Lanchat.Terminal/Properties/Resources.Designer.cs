@@ -160,6 +160,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Port busy. Cannot start server. Try change port in config..
+        /// </summary>
+        internal static string Info_PortBusy {
+            get {
+                return ResourceManager.GetString("Info_PortBusy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to disconnected. Trying reconnect.
         /// </summary>
         internal static string Info_Reconnecting {
