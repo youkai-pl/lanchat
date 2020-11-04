@@ -91,6 +91,7 @@ namespace Lanchat.Core
             outgoingConnections.Add(node);
             node.Connected += OnConnected;
             node.HardDisconnect += OnHardDisconnect;
+            node.CannotConnect += OnCannotConnect;
             node.NetworkInput.NodesListReceived += OnNodesListReceived;
             ConnectionCreated?.Invoke(this, node);
             client.ConnectAsync();
@@ -114,6 +115,14 @@ namespace Lanchat.Core
 
         // Dispose node after hard disconnection
         private void OnHardDisconnect(object sender, EventArgs e)
+        {
+            var node = (Node) sender;
+            outgoingConnections.Remove(node);
+            node.Dispose();
+        }
+        
+        // Dispose when connection cannot be established
+        private void OnCannotConnect(object sender, EventArgs e)
         {
             var node = (Node) sender;
             outgoingConnections.Remove(node);
