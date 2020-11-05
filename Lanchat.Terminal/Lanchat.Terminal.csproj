@@ -6,12 +6,13 @@
     <PackageIcon>icon.ico</PackageIcon>
     <AssemblyName>Lanchat</AssemblyName>
     <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <AssemblyInformationalVersion>2.1.0-beta1</AssemblyInformationalVersion>
+    <AssemblyInformationalVersion>2.1.0-beta2</AssemblyInformationalVersion>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <IsPackable>false</IsPackable>
     <Company>tofudd</Company>
     <Version>2.1.0</Version>
+    <PackageVersion>2.1.0</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
