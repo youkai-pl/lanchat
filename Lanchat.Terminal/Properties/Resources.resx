@@ -215,7 +215,7 @@ Try /help &lt;command&gt;</value>
         <value>Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
     </data>
     <data name="Info_PortBusy" xml:space="preserve">
-        <value>Port busy. Cannot start server. Try change port in config.</value>
+        <value>Port busy. Cannot start server. Try to change port in config.</value>
     </data>
     <data name="Info_CannotConnect" xml:space="preserve">
         <value>Cannot connect with</value>

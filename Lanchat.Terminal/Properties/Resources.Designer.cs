@@ -169,7 +169,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Port busy. Cannot start server. Try change port in config..
+        ///   Looks up a localized string similar to Port busy. Cannot start server. Try to change port in config..
         /// </summary>
         internal static string Info_PortBusy {
             get {

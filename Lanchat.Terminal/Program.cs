@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using Lanchat.Core;
 using Lanchat.Terminal.Properties;
@@ -17,10 +18,42 @@ namespace Lanchat.Terminal
         private static void Main(string[] args)
         {
             Config = Config.Load();
-            Ui.Start();
 
-            // Enable debug mode
-            if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
+            // Initialize server
+            if (args.Contains("--server") || args.Contains("-s"))
+            {
+                Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+                var server = new Server(IPAddress.Any, CoreConfig.ServerPort);
+                server.Start();
+                CleanLogs();
+                while (true)
+                {
+                    Console.ReadKey();
+                }
+            }
+
+            // Initialize p2p mode and ui
+            try
+            {
+                Ui.Start();
+                Network = new P2P();
+                Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
+                Network.Start();
+            }
+            catch (SocketException e)
+            {
+                if (e.SocketErrorCode == SocketError.AddressNotAvailable)
+                {
+                    Ui.Log.Add(Resources.Info_PortBusy);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            // Enable logging
+            if (args.Contains("--debug") || args.Contains("-d") || Debugger.IsAttached)
             {
                 Trace.Listeners.Add(new TerminalTraceListener());
             }
@@ -30,21 +63,19 @@ namespace Lanchat.Terminal
             Trace.IndentSize = 11;
             Trace.AutoFlush = true;
             Trace.WriteLine("Logging started");
-            
-            // Initialize network
-            Network = new P2P();
-            Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
 
-            try
+
+            // Connect with localhost
+            if (args.Contains("--loopback") || args.Contains("-l"))
             {
-                Network.Start();
-            }
-            catch (SocketException)
-            {
-                Ui.Log.Add(Resources.Info_PortBusy);
+                Network.Connect(IPAddress.Loopback);
             }
 
-            // Remove old logs
+            CleanLogs();
+        }
+
+        private static void CleanLogs()
+        {
             foreach (var fi in new DirectoryInfo(Config.Path)
                 .GetFiles("*.log")
                 .OrderByDescending(x => x.LastWriteTime)
