@@ -95,6 +95,7 @@ namespace Lanchat.Terminal
             CoreConfig.Nickname = newConfig.Nickname;
             CoreConfig.ServerPort = newConfig.Port;
             CoreConfig.BlockedAddresses = newConfig.BlockedAddresses.Select(IPAddress.Parse).ToList();
+            newConfig.Save();
             return newConfig;
         }
 
