@@ -3,8 +3,8 @@
 Encrypted, P2P, local network chat. 
 
 ## Projects
-* Lancaht.Core (2.1.0-beta1) - library
-* Lanchat.Terminal (2.1.0-beta1) - console app for Windows and Linux
+* Lancaht.Core (2.1.0-beta2) - library
+* Lanchat.Terminal (2.1.0-beta2) - console app for Windows and Linux
 * Lancaht.Xamarin (0.1.0-alpha1) - experimental client for Android
 
 Check [release](https://github.com/tofudd/lanchat/releases) section for binaries.
@@ -14,11 +14,12 @@ Check [release](https://github.com/tofudd/lanchat/releases) section for binaries
 ## Lanchat.Terminal
 You can start terminal client with the following arguments:
 
-| Argument   | Short | Description                                     |
-|------------|-------|-------------------------------------------------|
-| --debug    | -d    | Show logs.                                      |
-| --loopback | -l    | Connect with localhost after start (for debug). |
-| --server   | -s    | Start only server without UI.                   |
+| Argument    | Short | Description                                     |
+|-------------|-------|-------------------------------------------------|
+| --debug     | -d    | Show logs.                                      |
+| --loopback  | -l    | Connect with localhost after start (for debug). |
+| --server    | -s    | Start only server without UI.                   |
+| --no-server | -n    | Start without server.                           |
 
 ## How it works
 In P2P mode nodes starts own server and multiple clients. Each node is connected with other by single TCP connection.

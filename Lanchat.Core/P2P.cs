@@ -46,7 +46,7 @@ namespace Lanchat.Core
         /// <summary>
         ///     Start server.
         /// </summary>
-        public void Start()
+        public void StartServer()
         {
             server.Start();
         }

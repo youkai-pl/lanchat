@@ -19,7 +19,7 @@ namespace Lanchat.Terminal
         {
             Config = Config.Load();
 
-            // Initialize server
+            // Initialize server mode
             if (args.Contains("--server") || args.Contains("-s"))
             {
                 Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
@@ -38,11 +38,16 @@ namespace Lanchat.Terminal
                 Ui.Start();
                 Network = new P2P();
                 Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
-                Network.Start();
+
+                // Initialize server
+                if (!args.Contains("--no-server") && !args.Contains("-n"))
+                {
+                    Network.StartServer();
+                }
             }
             catch (SocketException e)
             {
-                if (e.SocketErrorCode == SocketError.AddressNotAvailable)
+                if (e.SocketErrorCode == SocketError.AddressAlreadyInUse)
                 {
                     Ui.Log.Add(Resources.Info_PortBusy);
                 }

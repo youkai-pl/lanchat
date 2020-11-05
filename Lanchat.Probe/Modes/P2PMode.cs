@@ -14,7 +14,7 @@ namespace Lanchat.Probe.Modes
             var network = new P2P();
             network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
 
-            network.Start();
+            network.StartServer();
 
             while (true)
             {
