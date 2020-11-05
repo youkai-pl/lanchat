@@ -16,8 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{4A81DEED-9
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lanchat.Core", "Lanchat.Core\Lanchat.Core.csproj", "{AA294C4F-B22C-4203-A706-F07CB153BD5F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lanchat.Probe", "Lanchat.Probe\Lanchat.Probe.csproj", "{775E7266-331C-4661-89A9-C0675DD5F22E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lanchat.Terminal", "Lanchat.Terminal\Lanchat.Terminal.csproj", "{3F4D450D-F8D2-43D1-9CC1-1B376957743C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lanchat.Xamarin", "Lanchat.Xamarin\Lanchat.Xamarin\Lanchat.Xamarin.csproj", "{70E19817-EB49-46B6-B041-30930982C089}"
@@ -34,10 +32,6 @@ Global
 		{AA294C4F-B22C-4203-A706-F07CB153BD5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA294C4F-B22C-4203-A706-F07CB153BD5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA294C4F-B22C-4203-A706-F07CB153BD5F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{775E7266-331C-4661-89A9-C0675DD5F22E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{775E7266-331C-4661-89A9-C0675DD5F22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{775E7266-331C-4661-89A9-C0675DD5F22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{775E7266-331C-4661-89A9-C0675DD5F22E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3F4D450D-F8D2-43D1-9CC1-1B376957743C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3F4D450D-F8D2-43D1-9CC1-1B376957743C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F4D450D-F8D2-43D1-9CC1-1B376957743C}.Release|Any CPU.ActiveCfg = Release|Any CPU
