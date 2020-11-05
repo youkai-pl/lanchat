@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -45,7 +46,7 @@ namespace Lanchat.Core
         /// <summary>
         ///     Start server.
         /// </summary>
-        public void Start()
+        public void StartServer()
         {
             server.Start();
         }
@@ -65,25 +66,32 @@ namespace Lanchat.Core
         /// <param name="ipAddress">Node IP address.</param>
         public void Connect(IPAddress ipAddress)
         {
-            // Return if node already connected
+            // Throw if node is blocked
+            if (CoreConfig.BlockedAddresses.Contains(ipAddress))
+            {
+                throw new ArgumentException("Node blocked");
+            }
+            
+            // Throw if node already connected
             if (Nodes.Any(x => x.Endpoint.Address.Equals(ipAddress)))
             {
-                return;
+                throw new ArgumentException("Already connected to this node");
             }
 
-            // Return if local address
+            // Throw if local address
             var host = Dns.GetHostEntry(Dns.GetHostName());
             if (host.AddressList.Where(ip => ip.AddressFamily == AddressFamily.InterNetwork).Contains(ipAddress))
             {
-                return;
+                throw new ArgumentException("Illegal IP address. Cannot connect");
             }
 
             var client = new Client(ipAddress, CoreConfig.ServerPort);
             var node = new Node(client, false);
-            
+
             outgoingConnections.Add(node);
             node.Connected += OnConnected;
             node.HardDisconnect += OnHardDisconnect;
+            node.CannotConnect += OnCannotConnect;
             node.NetworkInput.NodesListReceived += OnNodesListReceived;
             ConnectionCreated?.Invoke(this, node);
             client.ConnectAsync();
@@ -112,15 +120,27 @@ namespace Lanchat.Core
             outgoingConnections.Remove(node);
             node.Dispose();
         }
+        
+        // Dispose when connection cannot be established
+        private void OnCannotConnect(object sender, EventArgs e)
+        {
+            var node = (Node) sender;
+            outgoingConnections.Remove(node);
+            node.Dispose();
+        }
 
         // Try connect to every node from list
         private void OnNodesListReceived(object sender, List<IPAddress> list)
         {
             list.ForEach(x =>
             {
-                if (!CoreConfig.BlockedAddresses.Contains(x))
+                try
                 {
                     Connect(x);
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine($"Node connection error: {e.Message}");
                 }
             });
         }

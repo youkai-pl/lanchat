@@ -2,7 +2,10 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using Lanchat.Core;
+using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal
@@ -15,10 +18,47 @@ namespace Lanchat.Terminal
         private static void Main(string[] args)
         {
             Config = Config.Load();
-            Ui.Start();
 
-            // Enable debug mode
-            if (Array.IndexOf(args, "-debug") > -1 || Debugger.IsAttached)
+            // Initialize server mode
+            if (args.Contains("--server") || args.Contains("-s"))
+            {
+                Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+                var server = new Server(IPAddress.Any, CoreConfig.ServerPort);
+                server.Start();
+                CleanLogs();
+                while (true)
+                {
+                    Console.ReadKey();
+                }
+            }
+
+            // Initialize p2p mode and ui
+            try
+            {
+                Ui.Start();
+                Network = new P2P();
+                Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
+
+                // Initialize server
+                if (!args.Contains("--no-server") && !args.Contains("-n"))
+                {
+                    Network.StartServer();
+                }
+            }
+            catch (SocketException e)
+            {
+                if (e.SocketErrorCode == SocketError.AddressAlreadyInUse)
+                {
+                    Ui.Log.Add(Resources.Info_PortBusy);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            // Enable logging
+            if (args.Contains("--debug") || args.Contains("-d") || Debugger.IsAttached)
             {
                 Trace.Listeners.Add(new TerminalTraceListener());
             }
@@ -28,13 +68,19 @@ namespace Lanchat.Terminal
             Trace.IndentSize = 11;
             Trace.AutoFlush = true;
             Trace.WriteLine("Logging started");
-            
-            // Initialize network
-            Network = new P2P();
-            Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
-            Network.Start();
 
-            // Remove old logs
+
+            // Connect with localhost
+            if (args.Contains("--loopback") || args.Contains("-l"))
+            {
+                Network.Connect(IPAddress.Loopback);
+            }
+
+            CleanLogs();
+        }
+
+        private static void CleanLogs()
+        {
             foreach (var fi in new DirectoryInfo(Config.Path)
                 .GetFiles("*.log")
                 .OrderByDescending(x => x.LastWriteTime)

@@ -61,7 +61,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to blocked.
+        ///   Looks up a localized string similar to Blocked.
         /// </summary>
         internal static string Info_Blocked {
             get {
@@ -75,6 +75,15 @@ namespace Lanchat.Terminal.Properties {
         internal static string Info_BlockedList {
             get {
                 return ResourceManager.GetString("Info_BlockedList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot connect with.
+        /// </summary>
+        internal static string Info_CannotConnect {
+            get {
+                return ResourceManager.GetString("Info_CannotConnect", resourceCulture);
             }
         }
         
@@ -160,6 +169,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Port busy. Cannot start server. Try to change port in config..
+        /// </summary>
+        internal static string Info_PortBusy {
+            get {
+                return ResourceManager.GetString("Info_PortBusy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to disconnected. Trying reconnect.
         /// </summary>
         internal static string Info_Reconnecting {
@@ -224,22 +242,36 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///Commands list:
-        ///connect
-        ///disconnect
-        ///help
-        ///list
-        ///nickname
-        ///exit
-        ///block
-        ///unblock 
-        ///blocked
-        ///      
-        ///Try /help &lt;command&gt;.
+        ///The latest version can be found on https://github.com/tofudd/lanchat/releases
+        ///        
+        ///Start options:
+        ///--debug (-d)      Show logs      
+        ///--loopback (-l)   Connect with localhost after start        
+        ///--server (-s)     Start only sever
+        ///--no-server (-n)  Start without server
+        ///        
+        ///Commands:
+        ///connect   disconnect   help
+        ///list      nickname     exit
+        ///block     unblock      blocked
+        ///m        
+        ///        
+        ///Try /help &lt;command&gt; for detailed help.
+        ///    .
         /// </summary>
         internal static string Manual_Help {
             get {
                 return ResourceManager.GetString("Manual_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send private message.
+        ///Syntax: /m &lt;short id&gt; &lt;message&gt;.
+        /// </summary>
+        internal static string Manual_M {
+            get {
+                return ResourceManager.GetString("Manual_M", resourceCulture);
             }
         }
         

@@ -14,11 +14,13 @@ namespace Lanchat.Terminal
         {
             this.node = node;
             node.NetworkInput.MessageReceived += OnMessageReceived;
+            node.NetworkInput.PrivateMessageReceived += OnPrivateMessageReceived;
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
             node.HardDisconnect += OnHardDisconnected;
             node.SocketErrored += OnSocketErrored;
             node.NicknameChanged += OnNicknameChanged;
+            node.CannotConnect += OnCannotConnect;
         }
 
         private void OnConnected(object sender, EventArgs e)
@@ -44,6 +46,11 @@ namespace Lanchat.Terminal
             Ui.Log.AddMessage(e, node.Nickname);
         }
 
+        private void OnPrivateMessageReceived(object sender, string e)
+        {
+            Ui.Log.AddPrivateMessage(e, node.Nickname);
+        }
+        
         private void OnSocketErrored(object sender, SocketError e)
         {
             Ui.Log.Add($"{Resources.Info_ConnectionError}: {node.Nickname} / {e}");
@@ -52,6 +59,11 @@ namespace Lanchat.Terminal
         private void OnNicknameChanged(object sender, string e)
         {
             Ui.Log.Add($"{e} {Resources.Info_NicknameChanged} {node.Nickname}");
+        }
+        
+        private void OnCannotConnect(object sender, EventArgs e)
+        {
+            Ui.Log.Add($"{Resources.Info_CannotConnect}: {node.Endpoint}");
         }
     }
 }

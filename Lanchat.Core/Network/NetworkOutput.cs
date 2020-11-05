@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Text.Json;
+using System.Threading;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network
@@ -34,6 +35,20 @@ namespace Lanchat.Core.Network
             SendData(DataTypes.Message, node.Encryption.Encrypt(content));
         }
 
+        /// <summary>
+        ///     Send private message.
+        /// </summary>
+        /// <param name="content">Message content.</param>
+        public void SendPrivateMessage(string content)
+        {
+            if (!node.Ready)
+            {
+                return;
+            }
+
+            SendData(DataTypes.PrivateMessage, node.Encryption.Encrypt(content));
+        }
+
         internal void SendHandshake()
         {
             var handshake = new Handshake
@@ -47,6 +62,8 @@ namespace Lanchat.Core.Network
 
         internal void SendKey()
         {
+            // TODO: Sometimes handshake and key are sent to server in one packet. This should be fixed in better way.
+            Thread.Sleep(100);
             var keyInfo = node.Encryption.ExportAesKey();
             SendData(DataTypes.KeyInfo, keyInfo);
         }

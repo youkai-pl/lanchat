@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -51,7 +52,7 @@ namespace Lanchat.Core
         /// </summary>
         public string Nickname
         {
-            get => $"{nickname}#{Id.GetHashCode().ToString().Substring(1, 4)}";
+            get => $"{nickname}#{ShortId}";
             private set => nickname = value;
         }
 
@@ -64,6 +65,11 @@ namespace Lanchat.Core
         ///     ID of TCP client or session.
         /// </summary>
         public Guid Id => NetworkElement.Id;
+
+        /// <summary>
+        ///     Short ID.
+        /// </summary>
+        public string ShortId => Id.GetHashCode().ToString().Substring(1, 4);
 
         /// <summary>
         ///     IP address of node.
@@ -91,6 +97,11 @@ namespace Lanchat.Core
         public event EventHandler HardDisconnect;
 
         /// <summary>
+        ///     Raise when connection try failed.
+        /// </summary>
+        public event EventHandler CannotConnect;
+            
+        /// <summary>
         ///     User changed nickname of node. Returns previous nickname in parameter.
         /// </summary>
         public event EventHandler<string> NicknameChanged;
@@ -110,7 +121,7 @@ namespace Lanchat.Core
         }
 
         // Network elements events
-        
+
         private void OnConnected(object sender, EventArgs e)
         {
             SendHandshakeAndWait();
@@ -121,7 +132,12 @@ namespace Lanchat.Core
             UnderReconnecting = !hardDisconnect;
 
             // Raise event only if node was ready before
-            if (hardDisconnect && Ready)
+            if (hardDisconnect && !Ready)
+            {
+                Trace.WriteLine($"Cannot connect {Id} / {Endpoint}");
+                CannotConnect?.Invoke(this, EventArgs.Empty);
+            }
+            else if (hardDisconnect && Ready)
             {
                 HardDisconnect?.Invoke(this, EventArgs.Empty);
             }
@@ -179,7 +195,7 @@ namespace Lanchat.Core
                 }
             });
         }
-        
+
         public void Dispose()
         {
             NetworkElement.Close();

@@ -81,6 +81,10 @@ namespace Lanchat.Terminal.UserInterface
                 case "blocked":
                     Blocked.Execute();
                     break;
+                
+                case "m":
+                    PrivateMessage.Execute(args);
+                    break;
             }
         }
     }

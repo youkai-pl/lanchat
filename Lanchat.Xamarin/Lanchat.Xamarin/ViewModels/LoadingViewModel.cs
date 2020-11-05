@@ -21,7 +21,7 @@ namespace Lanchat.Xamarin.ViewModels
                 CoreConfig.ServerPort = 3645;
                 
                 Network = new P2P();
-                Network.Start();
+                Network.StartServer();
 
                 loadingIndicator = false;
                 Device.BeginInvokeOnMainThread(() =>
