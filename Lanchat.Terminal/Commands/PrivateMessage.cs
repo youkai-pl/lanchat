@@ -10,7 +10,7 @@ namespace Lanchat.Terminal.Commands
         {
             if (args == null || args.Length < 2)
             {
-                Ui.Log.Add(Resources.Manual_PrivateMessage);
+                Ui.Log.Add(Resources.Manual_M);
                 return;
             }
 

@@ -134,19 +134,22 @@
   </data>
     <data name="Manual_Help" xml:space="preserve">
     <value>
-Commands list:
-connect
-disconnect
-help
-list
-nickname
-exit
-block
-unblock 
-blocked
+The latest version can be found on https://github.com/tofudd/lanchat/releases
+        
+Start options:
+--debug (-d)      Show logs      
+--loopback (-l)   Connect with localhost after start        
+--server (-s)     Start only sever
+--no-server (-n)  Start without server
+        
+Commands:
+connect   disconnect   help
+list      nickname     exit
+block     unblock      blocked
 m        
         
-Try /help &lt;command&gt;</value>
+Try /help &lt;command&gt; for detailed help.
+    </value>
   </data>
     <data name="Ui_Motd" xml:space="preserve">
     <value>https://tofu.ovh</value>
@@ -211,8 +214,9 @@ Try /help &lt;command&gt;</value>
     <data name="Info_NicknameChanged" xml:space="preserve">
         <value>changed nickname to</value>
     </data>
-    <data name="Manual_PrivateMessage" xml:space="preserve">
-        <value>Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
+    <data name="Manual_M" xml:space="preserve">
+        <value>Send private message.
+Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
     </data>
     <data name="Info_PortBusy" xml:space="preserve">
         <value>Port busy. Cannot start server. Try to change port in config.</value>

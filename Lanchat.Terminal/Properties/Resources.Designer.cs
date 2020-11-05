@@ -242,23 +242,36 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///Commands list:
-        ///connect
-        ///disconnect
-        ///help
-        ///list
-        ///nickname
-        ///exit
-        ///block
-        ///unblock 
-        ///blocked
+        ///The latest version can be found on https://github.com/tofudd/lanchat/releases
+        ///        
+        ///Start options:
+        ///--debug (-d)      Show logs      
+        ///--loopback (-l)   Connect with localhost after start        
+        ///--server (-s)     Start only sever
+        ///--no-server (-n)  Start without server
+        ///        
+        ///Commands:
+        ///connect   disconnect   help
+        ///list      nickname     exit
+        ///block     unblock      blocked
         ///m        
         ///        
-        ///Try /help &lt;command&gt;.
+        ///Try /help &lt;command&gt; for detailed help.
+        ///    .
         /// </summary>
         internal static string Manual_Help {
             get {
                 return ResourceManager.GetString("Manual_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send private message.
+        ///Syntax: /m &lt;short id&gt; &lt;message&gt;.
+        /// </summary>
+        internal static string Manual_M {
+            get {
+                return ResourceManager.GetString("Manual_M", resourceCulture);
             }
         }
         
@@ -268,15 +281,6 @@ namespace Lanchat.Terminal.Properties {
         internal static string Manual_Nick {
             get {
                 return ResourceManager.GetString("Manual_Nick", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Syntax: /m &lt;short id&gt; &lt;message&gt;.
-        /// </summary>
-        internal static string Manual_PrivateMessage {
-            get {
-                return ResourceManager.GetString("Manual_PrivateMessage", resourceCulture);
             }
         }
         
