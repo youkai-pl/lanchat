@@ -35,10 +35,10 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
         </td>
         <td>
             <pre lang="json">
-                {
-                    "Type":"Message",
-                    "Data":"559iuSOtpMZZLrmmMTXp9w=="
-                }
+{
+    "Type":"Message",
+    "Data":"559iuSOtpMZZLrmmMTXp9w=="
+}
             </pre>
         </td>
     </tr>
@@ -68,16 +68,16 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
         </td>
         <td>
             <pre lang="json">
-                {
-                   "Type":"Handshake",
-                   "Data":{
-                      "Nickname":"test",
-                      "PublicKey":{
-                         "RsaModulus":"very long string",
-                         "RsaExponent":"AQAB"
-                      }
-                   }
-                }
+{
+   "Type":"Handshake",
+   "Data":{
+      "Nickname":"test",
+      "PublicKey":{
+         "RsaModulus":"very long string",
+         "RsaExponent":"AQAB"
+      }
+   }
+}
             </pre>
         </td>
     </tr>
@@ -100,13 +100,13 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
         </td>
         <td>
             <pre lang="json">
-                {
-                   "Type":"NodesList",
-                   "Data":[
-                      "192.168.18.1",
-                      "192.168.18.1"
-                   ]
-                }
+{
+   "Type":"NodesList",
+   "Data":[
+      "192.168.18.1",
+      "192.168.18.1"
+   ]
+}
             </pre>
         </td>
     </tr>
@@ -129,13 +129,13 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
         </td>
         <td>
             <pre lang="json">
-                {
-                   "Type":"KeyInfo",
-                   "Data":{
-                      "AesKey":"very long string",
-                      "AesIv":"very long string"
-                   }
-                }
+{
+   "Type":"KeyInfo",
+   "Data":{
+      "AesKey":"very long string",
+      "AesIv":"very long string"
+   }
+}
             </pre>
         </td>
     </tr>
@@ -153,10 +153,10 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
         </td>
         <td>
             <pre lang="json">
-                {
-                   "Type":"NicknameUpdate",
-                   "Data":"test"
-                }
+{
+   "Type":"NicknameUpdate",
+   "Data":"test"
+}
             </pre>
         </td>
     </tr>
@@ -172,10 +172,10 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
         </td>
         <td>
             <pre lang="json">
-                {
-                   "Type":"Goodbye",
-                   "Data":null
-                }
+{
+   "Type":"Goodbye",
+   "Data":null
+}
             </pre>
         </td>
     </tr>
@@ -191,10 +191,10 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
         </td>
         <td>
             <pre lang="json">
-                {
-                   "Type":"PrivateMessage",
-                   "Data":"scRzgudmk4I30rU9h\u002BNFyQ=="
-                }
+{
+   "Type":"PrivateMessage",
+   "Data":"scRzgudmk4I30rU9h\u002BNFyQ=="
+}
             </pre>
         </td>
     </tr>
