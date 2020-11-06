@@ -1,6 +1,27 @@
 ﻿# Lanchat 2.1 API
 
-Lanchat use JSON formatting and UTF-8 encoding to transfer data.
+Lanchat uses JSON formatting and UTF-8 encoding to transfer data.
+
+## Connecting
+
+Each node should start a TCP server and handle multiple TCP clients.
+
+After connecting to the TCP server or detecting an incoming connection on the server side:
+1. Send handshake
+2. Wait for incoming *Handshake* and send AES key info.
+3. After received *KeyInfo* node is ready.
+3. Send *NodesList*.
+
+## Disconnecting
+
+Before disconnection caused by block or disconnect command node should send *Goodbye* message.
+This prevents automatic reconnection.
+
+## Encryption
+
+Messages are encrypted with **256-bit AES** key. 
+During exchange AES key info is converted to **base64** encrypted with **2048-bit RSA**. 
+RSA public key comes in handshake.
 
 ## Data exchange
 
@@ -184,7 +205,9 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
             PrivateMessage
         </td>
         <td>
-            Data
+            <ul>
+                <li>Data</li>
+            </ul>
         </td>
         <td>
             Encrypted message sent to single node.
