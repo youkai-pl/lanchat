@@ -33,93 +33,96 @@ namespace Lanchat.Core.Network
         internal event EventHandler<List<IPAddress>> NodesListReceived;
         internal event EventHandler<string> NicknameChanged;
 
-        internal void ProcessReceivedData(object sender, string json)
+        internal void ProcessReceivedData(object sender, string dataString)
         {
-            try
+            foreach (var item in dataString.Replace("}{", "}|{").Split('|'))
             {
-                var data = JsonSerializer.Deserialize<Wrapper>(json, serializerOptions);
-                var content = data.Data?.ToString();
-
-                // If node isn't ready ignore every messages except handshake and key info.
-                if (!node.Ready && data.Type != DataTypes.Handshake && data.Type != DataTypes.KeyInfo)
+                try
                 {
-                    return;
-                }
+                    var json = JsonSerializer.Deserialize<Wrapper>(item, serializerOptions);
+                    var content = json.Data?.ToString();
 
-                // Ignore handshake and key info is node was set as ready before.
-                if (node.Ready && (data.Type == DataTypes.Handshake || data.Type == DataTypes.KeyInfo))
-                {
-                    return;
-                }
+                    // If node isn't ready ignore every messages except handshake and key info.
+                    if (!node.Ready && json.Type != DataTypes.Handshake && json.Type != DataTypes.KeyInfo)
+                    {
+                        return;
+                    }
 
-                switch (data.Type)
-                {
-                    case DataTypes.Message:
-                        MessageReceived?.Invoke(this,
-                            TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
-                        break;
+                    // Ignore handshake and key info is node was set as ready before.
+                    if (node.Ready && (json.Type == DataTypes.Handshake || json.Type == DataTypes.KeyInfo))
+                    {
+                        return;
+                    }
 
-                    case DataTypes.PrivateMessage:
-                        PrivateMessageReceived?.Invoke(this,
-                            TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
-                        break;
+                    switch (json.Type)
+                    {
+                        case DataTypes.Message:
+                            MessageReceived?.Invoke(this,
+                                TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
+                            break;
 
-                    case DataTypes.Handshake:
-                        Trace.WriteLine($"Node {node.Id} received handshake");
-                        var handshake = JsonSerializer.Deserialize<Handshake>(content);
-                        handshake.Nickname = TruncateAndValidate(handshake.Nickname, CoreConfig.MaxNicknameLenght);
-                        HandshakeReceived?.Invoke(this, handshake);
-                        break;
+                        case DataTypes.PrivateMessage:
+                            PrivateMessageReceived?.Invoke(this,
+                                TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
+                            break;
 
-                    case DataTypes.KeyInfo:
-                        Trace.WriteLine($"Node {node.Id} received key info");
-                        var keyInfo = JsonSerializer.Deserialize<KeyInfo>(content);
-                        KeyInfoReceived?.Invoke(this, keyInfo);
-                        break;
+                        case DataTypes.Handshake:
+                            Trace.WriteLine($"Node {node.Id} received handshake");
+                            var handshake = JsonSerializer.Deserialize<Handshake>(content);
+                            handshake.Nickname = TruncateAndValidate(handshake.Nickname, CoreConfig.MaxNicknameLenght);
+                            HandshakeReceived?.Invoke(this, handshake);
+                            break;
 
-                    case DataTypes.NodesList:
-                        Trace.WriteLine($"Node {node.Id} received nodes list");
-                        var stringList = JsonSerializer.Deserialize<List<string>>(content);
-                        var list = new List<IPAddress>();
+                        case DataTypes.KeyInfo:
+                            Trace.WriteLine($"Node {node.Id} received key info");
+                            var keyInfo = JsonSerializer.Deserialize<KeyInfo>(content);
+                            KeyInfoReceived?.Invoke(this, keyInfo);
+                            break;
 
-                        // Convert strings to ip addresses.
-                        stringList.ForEach(x =>
-                        {
-                            if (IPAddress.TryParse(x, out var ipAddress))
+                        case DataTypes.NodesList:
+                            Trace.WriteLine($"Node {node.Id} received nodes list");
+                            var stringList = JsonSerializer.Deserialize<List<string>>(content);
+                            var list = new List<IPAddress>();
+
+                            // Convert strings to ip addresses.
+                            stringList.ForEach(x =>
                             {
-                                list.Add(ipAddress);
-                            }
-                        });
+                                if (IPAddress.TryParse(x, out var ipAddress))
+                                {
+                                    list.Add(ipAddress);
+                                }
+                            });
 
-                        NodesListReceived?.Invoke(this, list);
-                        break;
+                            NodesListReceived?.Invoke(this, list);
+                            break;
 
-                    case DataTypes.NicknameUpdate:
-                        Trace.WriteLine($"Node {node.Id} received nickname update");
-                        NicknameChanged?.Invoke(this, TruncateAndValidate(content, CoreConfig.MaxNicknameLenght));
-                        break;
+                        case DataTypes.NicknameUpdate:
+                            Trace.WriteLine($"Node {node.Id} received nickname update");
+                            NicknameChanged?.Invoke(this, TruncateAndValidate(content, CoreConfig.MaxNicknameLenght));
+                            break;
 
-                    case DataTypes.Goodbye:
-                        Trace.WriteLine($"Node {node.Id} received goodbye");
-                        node.NetworkElement.EnableReconnecting = false;
-                        break;
+                        case DataTypes.Goodbye:
+                            Trace.WriteLine($"Node {node.Id} received goodbye");
+                            node.NetworkElement.EnableReconnecting = false;
+                            break;
 
-                    default:
-                        Trace.WriteLine($"Node {node.Id} received unknown data");
-                        break;
+                        default:
+                            Trace.WriteLine($"Node {node.Id} received unknown data");
+                            break;
+                    }
                 }
-            }
 
-            // Input errors catching.
-            catch (Exception ex)
-            {
-                if (ex is JsonException || ex is ArgumentNullException)
+                // Input errors catching.
+                catch (Exception ex)
                 {
-                    Trace.WriteLine("Invalid data received");
-                }
-                else
-                {
-                    throw;
+                    if (ex is JsonException || ex is ArgumentNullException)
+                    {
+                        Trace.WriteLine("Invalid data received");
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
         }

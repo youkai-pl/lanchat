@@ -11,6 +11,7 @@ namespace Lanchat.Core
     public class Node : IDisposable
     {
         private string nickname;
+        private readonly IPEndPoint firstEndPoint;
 
         internal readonly Encryption Encryption;
         internal readonly INetworkElement NetworkElement;
@@ -28,6 +29,8 @@ namespace Lanchat.Core
             NetworkOutput = new NetworkOutput(this);
             NetworkInput = new NetworkInput(this);
             Encryption = new Encryption();
+            
+            firstEndPoint = networkElement.Endpoint;
 
             networkElement.Disconnected += OnDisconnected;
             networkElement.SocketErrored += OnSocketErrored;
@@ -74,7 +77,23 @@ namespace Lanchat.Core
         /// <summary>
         ///     IP address of node.
         /// </summary>
-        public IPEndPoint Endpoint => NetworkElement.Endpoint;
+        public IPEndPoint Endpoint
+        {
+            get
+            {
+                // Return endpoint from network element.
+                try
+                {
+                    return NetworkElement.Endpoint;
+                }
+                
+                // Or from local variable if network element is disposed.
+                catch (ObjectDisposedException)
+                {
+                    return firstEndPoint;
+                }
+            }
+        }
 
         /// <summary>
         ///     Is node reconnecting.
@@ -120,7 +139,7 @@ namespace Lanchat.Core
             NetworkElement.Close();
         }
 
-        // Network elements events
+        // Network elements events.
 
         private void OnConnected(object sender, EventArgs e)
         {
@@ -131,7 +150,7 @@ namespace Lanchat.Core
         {
             UnderReconnecting = !hardDisconnect;
 
-            // Raise event only if node was ready before
+            // Raise event only if node was ready before.
             if (hardDisconnect && !Ready)
             {
                 Trace.WriteLine($"Cannot connect {Id} / {Endpoint}");
@@ -154,7 +173,7 @@ namespace Lanchat.Core
             SocketErrored?.Invoke(this, e);
         }
 
-        // Network Input events
+        // Network Input events.
 
         private void OnHandshakeReceived(object sender, Handshake handshake)
         {
@@ -186,7 +205,7 @@ namespace Lanchat.Core
         {
             NetworkOutput.SendHandshake();
 
-            // Check is connection established successful after timeout
+            // Check is connection established successful after timeout.
             Task.Delay(5000).ContinueWith(t =>
             {
                 if (!Ready && !UnderReconnecting)
