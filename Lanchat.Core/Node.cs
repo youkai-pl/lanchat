@@ -11,6 +11,7 @@ namespace Lanchat.Core
     public class Node : IDisposable
     {
         private string nickname;
+        private readonly IPEndPoint firstEndPoint;
 
         internal readonly Encryption Encryption;
         internal readonly INetworkElement NetworkElement;
@@ -28,6 +29,8 @@ namespace Lanchat.Core
             NetworkOutput = new NetworkOutput(this);
             NetworkInput = new NetworkInput(this);
             Encryption = new Encryption();
+            
+            firstEndPoint = networkElement.Endpoint;
 
             networkElement.Disconnected += OnDisconnected;
             networkElement.SocketErrored += OnSocketErrored;
@@ -74,7 +77,20 @@ namespace Lanchat.Core
         /// <summary>
         ///     IP address of node.
         /// </summary>
-        public IPEndPoint Endpoint => NetworkElement.Endpoint;
+        public IPEndPoint Endpoint
+        {
+            get
+            {
+                try
+                {
+                    return NetworkElement.Endpoint;
+                }
+                catch (ObjectDisposedException)
+                {
+                    return firstEndPoint;
+                }
+            }
+        }
 
         /// <summary>
         ///     Is node reconnecting.
