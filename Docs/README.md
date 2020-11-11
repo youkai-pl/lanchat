@@ -10,7 +10,7 @@ Encrypted, P2P, local network chat.
 
 Check [release](https://github.com/tofudd/lanchat/releases) section for binaries.
 
-**Lanchat.Terminal requires .NET Core 3.1 or newer**
+**Lanchat.Terminal requires .NET 5 runtime**
 
 ## Lanchat.Terminal
 You can start terminal client with the following arguments:
