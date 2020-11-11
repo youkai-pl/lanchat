@@ -2,17 +2,17 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <PackageIcon>icon.ico</PackageIcon>
     <AssemblyName>Lanchat</AssemblyName>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <AssemblyInformationalVersion>2.1.0</AssemblyInformationalVersion>
+    <AssemblyVersion>2.1.1.0</AssemblyVersion>
+    <AssemblyInformationalVersion>2.1.1</AssemblyInformationalVersion>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <IsPackable>false</IsPackable>
     <Company>tofudd</Company>
-    <Version>2.1.0</Version>
-    <PackageVersion>2.1.0</PackageVersion>
+    <Version>2.1.1</Version>
+    <PackageVersion>2.1.1</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
