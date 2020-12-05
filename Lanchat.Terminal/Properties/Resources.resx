@@ -130,8 +130,8 @@
     </value>
   </data>
     <data name="Manual_Connect" xml:space="preserve">
-    <value>Syntax: /connect &lt;ip&gt;</value>
-  </data>
+        <value>Syntax: /connect &lt;ip&gt; &lt;port&gt;</value>
+    </data>
     <data name="Manual_Help" xml:space="preserve">
     <value>
 The latest version can be found on https://github.com/tofudd/lanchat/releases

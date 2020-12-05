@@ -64,8 +64,12 @@ namespace Lanchat.Core
         ///     Connect to node.
         /// </summary>
         /// <param name="ipAddress">Node IP address.</param>
-        public void Connect(IPAddress ipAddress)
+        /// <param name="port">Node port.</param>
+        public void Connect(IPAddress ipAddress, int? port = null)
         {
+            // Use port from config if it's null
+            port ??= CoreConfig.ServerPort;
+            
             // Throw if node is blocked
             if (CoreConfig.BlockedAddresses.Contains(ipAddress))
             {
@@ -85,7 +89,7 @@ namespace Lanchat.Core
                 throw new ArgumentException("Illegal IP address. Cannot connect");
             }
 
-            var client = new Client(ipAddress, CoreConfig.ServerPort);
+            var client = new Client(ipAddress, port.Value);
             var node = new Node(client, false);
 
             outgoingConnections.Add(node);
