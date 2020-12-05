@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -15,13 +17,24 @@ namespace Lanchat.Terminal.Commands
                 return;
             }
 
+            var addressArgument = args[0].Trim();
+            
             try
             {
-                var parsedIp = IPAddress.Parse(args[0]);
-                Ui.Log.Add($"{Resources.Info_ConnectionAttempt} {args[0]}");
-                Program.Network.Connect(parsedIp);
+                // If input cannot be parsed as IP try get address from dns
+                if (!IPAddress.TryParse(addressArgument, out var ipAddress))
+                {
+                    ipAddress = Dns.GetHostAddresses(addressArgument).FirstOrDefault();
+                }
+                
+                Ui.Log.Add($"{Resources.Info_ConnectionAttempt} {addressArgument}");
+                Program.Network.Connect(ipAddress);
             }
             catch (FormatException)
+            {
+                Ui.Log.Add(Resources.Info_IncorrectValues);
+            }
+            catch (SocketException)
             {
                 Ui.Log.Add(Resources.Info_IncorrectValues);
             }
