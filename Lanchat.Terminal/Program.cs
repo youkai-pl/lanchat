@@ -23,7 +23,7 @@ namespace Lanchat.Terminal
             if (args.Contains("--server") || args.Contains("-s"))
             {
                 Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
-                var server = new Server(IPAddress.Any, CoreConfig.ServerPort);
+                var server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
                 server.Start();
                 CleanLogs();
                 while (true)

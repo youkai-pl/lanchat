@@ -19,7 +19,7 @@ namespace Lanchat.Core
         public P2P()
         {
             outgoingConnections = new List<Node>();
-            server = new Server(IPAddress.Any, CoreConfig.ServerPort);
+            server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
             server.SessionCreated += OnSessionCreated;
             CoreConfig.NicknameChanged += OnNicknameChanged;
         }

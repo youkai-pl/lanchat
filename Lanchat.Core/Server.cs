@@ -17,6 +17,7 @@ namespace Lanchat.Core
         /// <param name="port">Listening port</param>
         public Server(IPAddress address, int port) : base(address, port)
         {
+            OptionDualMode = true;
             IncomingConnections = new List<Node>();
         }
 
