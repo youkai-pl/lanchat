@@ -6,8 +6,8 @@ namespace Lanchat.Terminal.Commands
     {
         public static void Execute()
         {
-            Console.Clear();
             Console.ResetColor();
+            Console.Clear();
             Environment.Exit(0);
         }
     }
