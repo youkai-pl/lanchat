@@ -12,6 +12,7 @@ namespace Lanchat.Core
     {
         private readonly List<Node> outgoingConnections;
         private readonly Server server;
+        private readonly BroadcastService broadcastService;
 
         /// <summary>
         ///     Initialize p2p mode.
@@ -22,6 +23,8 @@ namespace Lanchat.Core
             server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
             server.SessionCreated += OnSessionCreated;
             CoreConfig.NicknameChanged += OnNicknameChanged;
+            broadcastService = new BroadcastService();
+            broadcastService.Start();
         }
 
         /// <summary>
