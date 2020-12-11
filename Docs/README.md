@@ -5,8 +5,8 @@ Encrypted, P2P, local network chat.
 [API documentation](https://github.com/tofudd/lanchat/blob/master/Docs/API.md)
 
 ## Projects
-* Lancaht.Core (2.1.0) - library
-* Lanchat.Terminal (2.1.0) - console app for Windows and Linux
+* Lancaht.Core (2.2.0) - library
+* Lanchat.Terminal (2.2.0) - console app for Windows and Linux
 
 Check [release](https://github.com/tofudd/lanchat/releases) section for binaries.
 
