@@ -176,10 +176,10 @@ Try /help &lt;command&gt; for detailed help.
     <value>Nickname changed</value>
   </data>
     <data name="Manual_Disconnect" xml:space="preserve">
-        <value>Syntax: /disconnect &lt;shortid&gt;</value>
+        <value>Syntax: /disconnect &lt;short id&gt;</value>
     </data>
     <data name="Manual_Block" xml:space="preserve">
-        <value>Syntax: /block &lt;ip&gt;</value>
+        <value>Syntax: /block &lt;ip | short id&gt;</value>
     </data>
     <data name="Manual_Unblock" xml:space="preserve">
         <value>Syntax: /unblock &lt;ip&gt;</value>
