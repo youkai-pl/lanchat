@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Lanchat.Terminal.Properties;
+﻿using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
@@ -14,8 +13,7 @@ namespace Lanchat.Terminal.Commands
                 return;
             }
 
-            var nickname = string.Join(" ", args).Trim();
-            var node = Program.Network.Nodes.FirstOrDefault(x => x.Nickname.Equals(nickname));
+            var node = Program.Network.Nodes.Find(x => x.ShortId == args[0]);
             if (node != null)
             {
                 node.Disconnect();
