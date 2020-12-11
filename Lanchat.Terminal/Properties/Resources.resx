@@ -176,7 +176,7 @@ Try /help &lt;command&gt; for detailed help.
     <value>Nickname changed</value>
   </data>
     <data name="Manual_Disconnect" xml:space="preserve">
-        <value>Syntax: /disconnect &lt;nickname&gt;</value>
+        <value>Syntax: /disconnect &lt;shortid&gt;</value>
     </data>
     <data name="Manual_Block" xml:space="preserve">
         <value>Syntax: /block &lt;ip&gt;</value>
@@ -188,7 +188,7 @@ Try /help &lt;command&gt; for detailed help.
         <value>Not found</value>
     </data>
     <data name="Info_Blocked" xml:space="preserve">
-        <value>Blocked</value>
+        <value>blocked</value>
     </data>
     <data name="Info_Unblocked" xml:space="preserve">
         <value>unblocked</value>
