@@ -222,3 +222,6 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
         </td>
     </tr>
 </table>
+
+## UDP broadcasting
+Lanchat nodes can use UDP broadcast to discover each other. UDP packet contains random GUID. 
