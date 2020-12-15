@@ -37,6 +37,11 @@ namespace Lanchat.Core
         public static int ServerPort { get; set; } = 3645;
 
         /// <summary>
+        ///     Broadcast port.
+        /// </summary>
+        public static int BroadcastPort { get; set; } = 3646;
+
+        /// <summary>
         ///     Max message lenght. Longer incoming messages will be trimmed.
         /// </summary>
         public static int MaxMessageLenght { get; set; } = 2000;

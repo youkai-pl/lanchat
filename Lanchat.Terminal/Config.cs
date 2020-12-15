@@ -13,6 +13,7 @@ namespace Lanchat.Terminal
     public class Config
     {
         private static int _port = 3645;
+        private static int _broadcastPort = 3646;
         private static string _nickname = "user";
 
         public List<string> BlockedAddresses { get; } = new List<string>();
@@ -23,6 +24,16 @@ namespace Lanchat.Terminal
             set
             {
                 _port = value;
+                Save();
+            }
+        }
+        
+        public int BroadcastPort
+        {
+            get => _broadcastPort;
+            set
+            {
+                _broadcastPort = value;
                 Save();
             }
         }
@@ -94,6 +105,7 @@ namespace Lanchat.Terminal
 
             CoreConfig.Nickname = newConfig.Nickname;
             CoreConfig.ServerPort = newConfig.Port;
+            CoreConfig.BroadcastPort = newConfig.BroadcastPort;
             CoreConfig.BlockedAddresses = newConfig.BlockedAddresses.Select(IPAddress.Parse).ToList();
             newConfig.Save();
             return newConfig;
