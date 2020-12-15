@@ -1,4 +1,4 @@
-using System.Diagnostics;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -13,10 +13,14 @@ namespace Lanchat.Core.Network
     {
         private readonly UdpClient udpClient;
         private readonly int port;
+        private readonly string uniqueId;
 
+        internal EventHandler<IPAddress> BroadcastReceived;
+        
         internal BroadcastService()
         {
             port = 3646;
+            uniqueId = new Guid().ToString();
             udpClient = new UdpClient();
             udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, port));
         }
@@ -29,7 +33,10 @@ namespace Lanchat.Core.Network
                 while (true)
                 {
                     var recvBuffer = udpClient.Receive(ref from);
-                    Trace.WriteLine(Encoding.UTF8.GetString(recvBuffer));
+                    if (Encoding.UTF8.GetString(recvBuffer) != uniqueId)
+                    {
+                        BroadcastReceived?.Invoke(this, from.Address);
+                    }
                 }
             });
 
@@ -37,7 +44,7 @@ namespace Lanchat.Core.Network
             {
                 while (true)
                 {
-                    var data = Encoding.UTF8.GetBytes("test");
+                    var data = Encoding.UTF8.GetBytes(uniqueId);
                     udpClient.Send(data, data.Length, "255.255.255.255", port);
                     Thread.Sleep(2000);
                 }

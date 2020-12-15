@@ -25,6 +25,7 @@ namespace Lanchat.Core
             CoreConfig.NicknameChanged += OnNicknameChanged;
             broadcastService = new BroadcastService();
             broadcastService.Start();
+            broadcastService.BroadcastReceived += BroadcastReceived;
         }
 
         /// <summary>
@@ -156,6 +157,12 @@ namespace Lanchat.Core
         private void OnNicknameChanged(object sender, EventArgs e)
         {
             Nodes.ForEach(x => x.NetworkOutput.SendNicknameUpdate(CoreConfig.Nickname));
+        }
+        
+        // UDP broadcast received
+        private void BroadcastReceived(object sender, IPAddress e)
+        {
+            throw new NotImplementedException();
         }
     }
 }
