@@ -1,0 +1,18 @@
+using System.Net.Http;
+using System.Text.RegularExpressions;
+
+namespace Lanchat.Terminal
+{
+    public static class UpdateChecker
+    {
+        public static void CheckUpdates()
+        {
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("User-Agent", "lanchat-terminal");
+
+            var response = client.GetAsync("https://api.github.com/repos/tofudd/lanchat/releases/latest").Result;
+            var result = response.Content.ReadAsStringAsync().Result;
+            var versionNumber = Regex.Match(result, "(?<=\"tag_name\":\")(.*)(?=\",\"target)");
+        }
+    }
+}

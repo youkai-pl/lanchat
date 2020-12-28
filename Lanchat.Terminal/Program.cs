@@ -76,6 +76,7 @@ namespace Lanchat.Terminal
                 Network.Connect(IPAddress.Loopback);
             }
 
+            UpdateChecker.CheckUpdates();
             CleanLogs();
         }
 
