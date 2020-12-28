@@ -13,6 +13,7 @@
     <Company>tofudd</Company>
     <Version>2.2.0</Version>
     <PackageVersion>2.2.0</PackageVersion>
+    <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
