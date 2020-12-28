@@ -206,5 +206,11 @@ namespace Lanchat.Terminal.Properties {
                 return ResourceManager.GetString("Info_CannotConnect", resourceCulture);
             }
         }
+        
+        internal static string Info_GithubReleases {
+            get {
+                return ResourceManager.GetString("Info_GithubReleases", resourceCulture);
+            }
+        }
     }
 }

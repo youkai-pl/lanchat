@@ -69,14 +69,19 @@ namespace Lanchat.Terminal
             Trace.AutoFlush = true;
             Trace.WriteLine("Logging started");
 
-
             // Connect with localhost
             if (args.Contains("--loopback") || args.Contains("-l"))
             {
                 Network.Connect(IPAddress.Loopback);
             }
 
-            UpdateChecker.CheckUpdates();
+            var newVersion = UpdateChecker.CheckUpdates();
+            if (newVersion != null)
+            {
+                Ui.Log.Add($"Update available ({newVersion}).");
+                Ui.Log.Add(Resources.Info_GithubReleases);
+            }
+
             CleanLogs();
         }
 
