@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 
@@ -5,14 +6,17 @@ namespace Lanchat.Terminal
 {
     public static class UpdateChecker
     {
-        public static void CheckUpdates()
+        public static string CheckUpdates()
         {
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "lanchat-terminal");
 
             var response = client.GetAsync("https://api.github.com/repos/tofudd/lanchat/releases/latest").Result;
             var result = response.Content.ReadAsStringAsync().Result;
-            var versionNumber = Regex.Match(result, "(?<=\"tag_name\":\")(.*)(?=\",\"target)");
+            var lastGithubVersion = new Version(Regex.Match(result, "(?<=\"tag_name\":\")(.*)(?=\",\"target)").Value);
+            return System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version?.CompareTo(lastGithubVersion) == -1
+                ? lastGithubVersion.ToString()
+                : null;
         }
     }
 }

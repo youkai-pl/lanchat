@@ -5,14 +5,14 @@
     <TargetFramework>net5.0</TargetFramework>
     <PackageIcon>icon.ico</PackageIcon>
     <AssemblyName>Lanchat</AssemblyName>
-    <AssemblyVersion>2.2.0.0</AssemblyVersion>
-    <AssemblyInformationalVersion>2.2.0</AssemblyInformationalVersion>
+    <AssemblyVersion>2.3.0.0</AssemblyVersion>
+    <AssemblyInformationalVersion>2.3.0</AssemblyInformationalVersion>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <IsPackable>false</IsPackable>
     <Company>tofudd</Company>
-    <Version>2.2.0</Version>
-    <PackageVersion>2.2.0</PackageVersion>
+    <Version>2.3.0</Version>
+    <PackageVersion>2.3.0</PackageVersion>
     <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
