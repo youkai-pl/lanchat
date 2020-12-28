@@ -1,13 +1,18 @@
-dotnet publish -c Release -p:PublishSingleFile=true --self-contained false -r win-x86
-dotnet publish -c Release -p:PublishSingleFile=true --self-contained false -r win-x64
-dotnet publish -c Release -p:PublishSingleFile=true --self-contained false -r linux-x64
-dotnet publish -c Release -p:PublishSingleFile=true --self-contained false -r linux-arm
-dotnet publish -c Release -p:PublishSingleFile=true --self-contained false -r linux-arm64
-dotnet publish -c Release -p:PublishSingleFile=true --self-contained false -r osx-x64
+rm -r bin/Release/
 
-mv bin/Release/net5.0/win-x86/publish/Lanchat.exe bin/Release/net5.0/win-x86/publish/Lanchat_win-x86.exe
-mv bin/Release/net5.0/win-x64/publish/Lanchat.exe bin/Release/net5.0/win-x64/publish/Lanchat_win-x64.exe
-mv bin/Release/net5.0/linux-x64/publish/Lanchat bin/Release/net5.0/linux-x64/publish/Lanchat_linux-x64
-mv bin/Release/net5.0/linux-arm/publish/Lanchat bin/Release/net5.0/linux-arm/publish/Lanchat_linux-arm
-mv bin/Release/net5.0/linux-arm64/publish/Lanchat bin/Release/net5.0/linux-arm64/publish/Lanchat_linux-arm64
-mv bin/Release/net5.0/osx-x64/publish/Lanchat bin/Release/net5.0/osx-x64/publish/Lanchat_osx-x64
+dotnet publish -c Release -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false --self-contained true -r win-x86
+dotnet publish -c Release -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false --self-contained true -r win-x64
+dotnet publish -c Release -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false --self-contained true -r linux-x64
+dotnet publish -c Release -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false --self-contained true -r linux-arm
+dotnet publish -c Release -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false --self-contained true -r linux-arm64
+dotnet publish -c Release -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false --self-contained true -r osx-x64
+
+rm -r bin/Packages/
+mkdir -p bin/Packages
+
+zip -r -j bin/Packages/win-x86.zip bin/Release/net5.0/win-x86/publish/
+zip -r -j bin/Packages/win-x64.zip bin/Release/net5.0/win-x64/publish/
+zip -r -j bin/Packages/linux-x64.zip bin/Release/net5.0/linux-x64/publish/
+zip -r -j bin/Packages/linux-arm.zip bin/Release/net5.0/linux-arm/publish/
+zip -r -j bin/Packages/linux-arm64.zip bin/Release/net5.0/linux-arm64/publish/
+zip -r -j bin/Packages/osx-x64.zip bin/Release/net5.0/osx-x64/publish/
