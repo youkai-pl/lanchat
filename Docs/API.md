@@ -224,4 +224,43 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
 </table>
 
 ## UDP broadcasting
-Lanchat nodes can use UDP broadcast to discover each other. UDP packet contains random GUID. 
+Lanchat nodes can use UDP broadcast to discover each other.
+
+<table>
+    <tr>
+        <th>
+            Type
+        </th>
+        <th>
+            Keys
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Example
+        </th>
+    </tr>
+    <tr>
+        <td>
+            Broadcast
+        </td>
+        <td>
+            <ul>
+                <li>Guid</li>
+                <li>Nickname</li>
+            </ul>
+        </td>
+        <td>
+            Broadcast message.
+        </td>
+        <td>
+            <pre lang="json">
+{
+  "Guid":"00000000-0000-0000-0000-000000000000",
+  "Nickname":"username"
+}
+            </pre>
+        </td>
+    </tr>
+</table>

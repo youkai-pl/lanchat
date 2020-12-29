@@ -62,7 +62,7 @@ namespace Lanchat.Core.Network
                         Guid = uniqueId,
                         Nickname = CoreConfig.Nickname
                     });
-
+                    
                     var data = Encoding.UTF8.GetBytes(json);
                     udpClient.Send(data, data.Length, endPoint);
                     Thread.Sleep(2000);
