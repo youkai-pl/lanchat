@@ -12,13 +12,15 @@ namespace Lanchat.Core.Network
     internal class BroadcastService
     {
         private readonly UdpClient udpClient;
+        private readonly IPEndPoint endPoint;
         private readonly string uniqueId;
 
         internal EventHandler<IPAddress> BroadcastReceived;
-        
+
         internal BroadcastService()
         {
-            uniqueId = new Guid().ToString();
+            uniqueId = Guid.NewGuid().ToString();
+            endPoint = new IPEndPoint(IPAddress.Broadcast, CoreConfig.BroadcastPort);
             udpClient = new UdpClient();
             udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, CoreConfig.BroadcastPort));
         }
@@ -43,7 +45,7 @@ namespace Lanchat.Core.Network
                 while (true)
                 {
                     var data = Encoding.UTF8.GetBytes(uniqueId);
-                    udpClient.Send(data, data.Length, "255.255.255.255", CoreConfig.BroadcastPort);
+                    udpClient.Send(data, data.Length, endPoint);
                     Thread.Sleep(2000);
                 }
             });
