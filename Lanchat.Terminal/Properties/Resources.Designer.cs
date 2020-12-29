@@ -207,6 +207,12 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
+        internal static string Info_DetectedList {
+            get {
+                return ResourceManager.GetString("Info_DetectedList", resourceCulture);
+            }
+        }
+        
         internal static string Info_GithubReleases {
             get {
                 return ResourceManager.GetString("Info_GithubReleases", resourceCulture);

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 
 namespace Lanchat.Core
@@ -11,6 +12,7 @@ namespace Lanchat.Core
     public class P2P
     {
         private readonly List<Node> outgoingConnections;
+        private readonly List<Broadcast> detectedNodes;
         private readonly Server server;
 
         /// <summary>
@@ -19,9 +21,15 @@ namespace Lanchat.Core
         public P2P()
         {
             outgoingConnections = new List<Node>();
+            detectedNodes = new List<Broadcast>();
+
             server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
             server.SessionCreated += OnSessionCreated;
             CoreConfig.NicknameChanged += OnNicknameChanged;
+
+            var broadcastService = new BroadcastService();
+            broadcastService.Start();
+            broadcastService.BroadcastReceived += BroadcastReceived;
         }
 
         /// <summary>
@@ -35,6 +43,25 @@ namespace Lanchat.Core
                 nodes.AddRange(outgoingConnections);
                 nodes.AddRange(server.IncomingConnections);
                 return nodes.Where(x => x.Ready).ToList();
+            }
+        }
+
+        /// <summary>
+        ///     List of detected nodes.
+        /// </summary>
+        public List<Broadcast> DetectedNodes
+        {
+            get
+            {
+                var list = new List<Broadcast>();
+                detectedNodes.ForEach(x =>
+                {
+                    if (!Nodes.Any(y => Equals(y.Endpoint.Address, x.IpAddress)))
+                    {
+                        list.Add(x);
+                    }
+                });
+                return list;
             }
         }
 
@@ -69,13 +96,13 @@ namespace Lanchat.Core
         {
             // Use port from config if it's null
             port ??= CoreConfig.ServerPort;
-            
+
             // Throw if node is blocked
             if (CoreConfig.BlockedAddresses.Contains(ipAddress))
             {
                 throw new ArgumentException("Node blocked");
             }
-            
+
             // Throw if node already connected
             if (Nodes.Any(x => x.Endpoint.Address.Equals(ipAddress)))
             {
@@ -124,7 +151,7 @@ namespace Lanchat.Core
             outgoingConnections.Remove(node);
             node.Dispose();
         }
-        
+
         // Dispose when connection cannot be established
         private void OnCannotConnect(object sender, EventArgs e)
         {
@@ -153,6 +180,25 @@ namespace Lanchat.Core
         private void OnNicknameChanged(object sender, EventArgs e)
         {
             Nodes.ForEach(x => x.NetworkOutput.SendNicknameUpdate(CoreConfig.Nickname));
+        }
+
+        // UDP broadcast received
+        private void BroadcastReceived(object sender, Broadcast e)
+        {
+            var alreadyDetected = detectedNodes.FirstOrDefault(x => x.Guid == e.Guid) ??
+                                  detectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
+
+            if (alreadyDetected == null)
+            {
+                detectedNodes.Add(e);
+                Trace.WriteLine("New node detected");
+            }
+            else
+            {
+                alreadyDetected.Nickname = e.Nickname;
+                alreadyDetected.IpAddress = e.IpAddress;
+                alreadyDetected.Guid = e.Guid;
+            }
         }
     }
 }

@@ -224,6 +224,9 @@ Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
     <data name="Info_CannotConnect" xml:space="preserve">
         <value>Cannot connect with</value>
     </data>
+    <data name="Info_DetectedList" xml:space="preserve">
+        <value>Detected nodes</value>
+    </data>
     <data name="Info_GithubReleases" xml:space="preserve">
         <value>Get at https://github.com/tofudd/lanchat/releases</value>
     </data>
