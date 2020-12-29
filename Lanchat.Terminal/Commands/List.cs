@@ -9,6 +9,8 @@ namespace Lanchat.Terminal.Commands
         {
             Ui.Log.Add($"{Resources.Info_ConnectedList} ({Program.Network.Nodes.Count})");
             Program.Network.Nodes.ForEach(x => Ui.Log.Add($"{x.Nickname} ({x.Endpoint})"));
+            Ui.Log.Add($"{Resources.Info_DetectedList} ({Program.Network.DetectedNodes.Count})");
+            Program.Network.DetectedNodes.ForEach(x => Ui.Log.Add($"{x}"));
         }
     }
 }

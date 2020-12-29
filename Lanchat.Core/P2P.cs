@@ -11,6 +11,7 @@ namespace Lanchat.Core
     public class P2P
     {
         private readonly List<Node> outgoingConnections;
+        private readonly List<IPAddress> detectedNodes;
         private readonly Server server;
 
         /// <summary>
@@ -19,11 +20,12 @@ namespace Lanchat.Core
         public P2P()
         {
             outgoingConnections = new List<Node>();
+            detectedNodes = new List<IPAddress>();
+
             server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
             server.SessionCreated += OnSessionCreated;
             CoreConfig.NicknameChanged += OnNicknameChanged;
 
-            DetectedNodes = new List<IPAddress>();
             var broadcastService = new BroadcastService();
             broadcastService.Start();
             broadcastService.BroadcastReceived += BroadcastReceived;
@@ -42,11 +44,25 @@ namespace Lanchat.Core
                 return nodes.Where(x => x.Ready).ToList();
             }
         }
-        
+
         /// <summary>
         ///     List of detected nodes.
         /// </summary>
-        public List<IPAddress> DetectedNodes { get; }
+        public List<IPAddress> DetectedNodes
+        {
+            get
+            {
+                var list = new List<IPAddress>();
+                detectedNodes.ForEach(x =>
+                {
+                    if (!Nodes.Any(y=> Equals(y.Endpoint.Address, x)))
+                    {
+                        list.Add(x);
+                    }
+                });
+                return list;
+            }
+        }
 
         /// <summary>
         ///     New node connected. After receiving this handlers for node events can be created.
@@ -168,11 +184,9 @@ namespace Lanchat.Core
         // UDP broadcast received
         private void BroadcastReceived(object sender, IPAddress e)
         {
-            if (!DetectedNodes.Contains(e))
-            {
-                DetectedNodes.Add(e);
-                Trace.WriteLine("New node detected");
-            }
+            if (detectedNodes.Contains(e)) return;
+            detectedNodes.Add(e);
+            Trace.WriteLine("New node detected");
         }
     }
 }
