@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Lanchat 2
+Comment=Local network chat
+Exec=application
+Icon=icon.png
+Terminal=true
+Categories=Chat;Network;InstantMessaging;
