@@ -22,7 +22,8 @@ namespace Lanchat.Core
             server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
             server.SessionCreated += OnSessionCreated;
             CoreConfig.NicknameChanged += OnNicknameChanged;
-            
+
+            DetectedNodes = new List<IPAddress>();
             var broadcastService = new BroadcastService();
             broadcastService.Start();
             broadcastService.BroadcastReceived += BroadcastReceived;
@@ -41,6 +42,11 @@ namespace Lanchat.Core
                 return nodes.Where(x => x.Ready).ToList();
             }
         }
+        
+        /// <summary>
+        ///     List of detected nodes.
+        /// </summary>
+        public List<IPAddress> DetectedNodes { get; }
 
         /// <summary>
         ///     New node connected. After receiving this handlers for node events can be created.
@@ -162,7 +168,11 @@ namespace Lanchat.Core
         // UDP broadcast received
         private void BroadcastReceived(object sender, IPAddress e)
         {
-            Trace.WriteLine("Broadcast received");
+            if (!DetectedNodes.Contains(e))
+            {
+                DetectedNodes.Add(e);
+                Trace.WriteLine("New node detected");
+            }
         }
     }
 }
