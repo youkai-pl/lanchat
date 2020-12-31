@@ -141,6 +141,7 @@ Start options:
 --loopback (-l)   Connect with localhost after start        
 --server (-s)     Start only sever
 --no-server (-n)  Start without server
+--no-udp (-b)     Start without broadcast
         
 Commands:
 connect   disconnect   help
