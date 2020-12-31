@@ -28,7 +28,7 @@ namespace Lanchat.Core
             CoreConfig.NicknameChanged += OnNicknameChanged;
 
             var broadcastService = new BroadcastService();
-            broadcastService.Start();
+            //broadcastService.Start();
             broadcastService.BroadcastReceived += BroadcastReceived;
         }
 

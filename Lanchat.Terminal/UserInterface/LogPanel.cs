@@ -8,7 +8,8 @@ namespace Lanchat.Terminal.UserInterface
     public class LogPanel : SimpleControl
     {
         private readonly VerticalStackPanel stackPanel;
-
+        private readonly object lockUi = new object();
+        
         public LogPanel()
         {
             stackPanel = new VerticalStackPanel();
@@ -17,67 +18,76 @@ namespace Lanchat.Terminal.UserInterface
 
         public void Add(string text)
         {
-            foreach (var line in Prepare(text))
+            lock (lockUi)
             {
-                stackPanel.Add(new WrapPanel
+                foreach (var line in Prepare(text))
                 {
-                    Content = new HorizontalStackPanel
+                    stackPanel.Add(new WrapPanel
                     {
-                        Children = new[]
+                        Content = new HorizontalStackPanel
                         {
-                            new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
-                            new TextBlock {Text = "-", Color = ConsoleColor.Blue},
-                            new TextBlock {Text = "!"},
-                            new TextBlock {Text = "- ", Color = ConsoleColor.Blue},
-                            new TextBlock {Text = line}
+                            Children = new[]
+                            {
+                                new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
+                                new TextBlock {Text = "-", Color = ConsoleColor.Blue},
+                                new TextBlock {Text = "!"},
+                                new TextBlock {Text = "- ", Color = ConsoleColor.Blue},
+                                new TextBlock {Text = line}
+                            }
                         }
-                    }
-                });
-                Ui.ScrollPanel.Top = int.MaxValue;
+                    });
+                    Ui.ScrollPanel.Top = int.MaxValue;
+                } 
             }
         }
 
         public void AddMessage(string text, string nickname = null)
         {
-            foreach (var line in Prepare(text))
+            lock (lockUi)
             {
-                stackPanel.Add(new WrapPanel
+                foreach (var line in Prepare(text))
                 {
-                    Content = new HorizontalStackPanel
+                    stackPanel.Add(new WrapPanel
                     {
-                        Children = new[]
+                        Content = new HorizontalStackPanel
                         {
-                            new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
-                            new TextBlock {Text = "<", Color = ConsoleColor.DarkGray},
-                            new TextBlock {Text = $"{nickname}"},
-                            new TextBlock {Text = "> ", Color = ConsoleColor.DarkGray},
-                            new TextBlock {Text = line}
+                            Children = new[]
+                            {
+                                new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
+                                new TextBlock {Text = "<", Color = ConsoleColor.DarkGray},
+                                new TextBlock {Text = $"{nickname}"},
+                                new TextBlock {Text = "> ", Color = ConsoleColor.DarkGray},
+                                new TextBlock {Text = line}
+                            }
                         }
-                    }
-                });
-                Ui.ScrollPanel.Top = int.MaxValue;
+                    });
+                    Ui.ScrollPanel.Top = int.MaxValue;
+                }
             }
         }
-        
+
         public void AddPrivateMessage(string text, string nickname = null)
         {
-            foreach (var line in Prepare(text))
+            lock (lockUi)
             {
-                stackPanel.Add(new WrapPanel
+                foreach (var line in Prepare(text))
                 {
-                    Content = new HorizontalStackPanel
+                    stackPanel.Add(new WrapPanel
                     {
-                        Children = new[]
+                        Content = new HorizontalStackPanel
                         {
-                            new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
-                            new TextBlock {Text = "<", Color = ConsoleColor.DarkGray},
-                            new TextBlock {Text = $"{nickname}", Color = ConsoleColor.Magenta},
-                            new TextBlock {Text = "> ", Color = ConsoleColor.DarkGray},
-                            new TextBlock {Text = line}
+                            Children = new[]
+                            {
+                                new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
+                                new TextBlock {Text = "<", Color = ConsoleColor.DarkGray},
+                                new TextBlock {Text = $"{nickname}", Color = ConsoleColor.Magenta},
+                                new TextBlock {Text = "> ", Color = ConsoleColor.DarkGray},
+                                new TextBlock {Text = line}
+                            }
                         }
-                    }
-                });
-                Ui.ScrollPanel.Top = int.MaxValue;
+                    });
+                    Ui.ScrollPanel.Top = int.MaxValue;
+                }
             }
         }
 
