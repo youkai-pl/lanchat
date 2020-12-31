@@ -63,12 +63,6 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Ui_Motd {
-            get {
-                return ResourceManager.GetString("Ui_Motd", resourceCulture);
-            }
-        }
-        
         internal static string Ui_WindowTitle {
             get {
                 return ResourceManager.GetString("Ui_WindowTitle", resourceCulture);
@@ -210,12 +204,6 @@ namespace Lanchat.Terminal.Properties {
         internal static string Info_DetectedList {
             get {
                 return ResourceManager.GetString("Info_DetectedList", resourceCulture);
-            }
-        }
-        
-        internal static string Info_GithubReleases {
-            get {
-                return ResourceManager.GetString("Info_GithubReleases", resourceCulture);
             }
         }
     }

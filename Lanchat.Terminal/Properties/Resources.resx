@@ -151,9 +151,6 @@ m
 Try /help &lt;command&gt; for detailed help.
     </value>
   </data>
-    <data name="Ui_Motd" xml:space="preserve">
-    <value>https://tofu.ovh</value>
-  </data>
     <data name="Ui_WindowTitle" xml:space="preserve">
     <value>Lanchat</value>
   </data>
@@ -226,8 +223,5 @@ Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
     </data>
     <data name="Info_DetectedList" xml:space="preserve">
         <value>Detected nodes</value>
-    </data>
-    <data name="Info_GithubReleases" xml:space="preserve">
-        <value>Get at https://github.com/tofudd/lanchat/releases</value>
     </data>
 </root>
