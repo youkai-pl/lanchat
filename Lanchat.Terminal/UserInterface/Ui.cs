@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using ConsoleGUI;
 using ConsoleGUI.Api;
@@ -18,6 +19,7 @@ namespace Lanchat.Terminal.UserInterface
         internal static TextBlock NodesCount { get; private set; }
         internal static TextBlock PromptIndicator { get; private set; }
         internal static VerticalScrollPanel ScrollPanel { get; private set; }
+        internal static TextBlock StatusBar { get; private set; }
 
         public static void Start()
         {
@@ -48,6 +50,14 @@ namespace Lanchat.Terminal.UserInterface
                 ScrollBarForeground = new Character()
             };
 
+            var version = Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
+            version = version?.Remove(version.Length - 2);
+
+            StatusBar = new TextBlock
+            {
+                Text = $"Lanchat {version}"
+            };
+
             var dockPanel = new DockPanel
             {
                 Placement = DockPanel.DockedControlPlacement.Bottom,
@@ -62,10 +72,7 @@ namespace Lanchat.Terminal.UserInterface
                         Content = new Background
                         {
                             Color = ConsoleColor.DarkBlue,
-                            Content = new TextBlock
-                            {
-                                Text = $" {Resources.Ui_WindowTitle} - {Resources.Ui_Motd}"
-                            }
+                            Content = StatusBar
                         }
                     },
 

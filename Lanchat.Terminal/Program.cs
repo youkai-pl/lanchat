@@ -78,8 +78,7 @@ namespace Lanchat.Terminal
             var newVersion = UpdateChecker.CheckUpdates();
             if (newVersion != null)
             {
-                Ui.Log.Add($"Update available ({newVersion}).");
-                Ui.Log.Add(Resources.Info_GithubReleases);
+                Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
             }
 
             CleanLogs();
