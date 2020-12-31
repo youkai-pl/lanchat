@@ -26,11 +26,11 @@ namespace Lanchat.Core.Network
             uniqueId = Guid.NewGuid().ToString();
             endPoint = new IPEndPoint(IPAddress.Broadcast, CoreConfig.BroadcastPort);
             udpClient = new UdpClient();
-            udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, CoreConfig.BroadcastPort));
         }
 
         internal void Start()
         {
+            udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, CoreConfig.BroadcastPort));
             var from = new IPEndPoint(0, 0);
             Task.Run(() =>
             {

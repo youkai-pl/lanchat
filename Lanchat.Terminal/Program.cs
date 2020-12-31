@@ -44,6 +44,12 @@ namespace Lanchat.Terminal
                 {
                     Network.StartServer();
                 }
+                
+                // Start broadcast service
+                if (!args.Contains("--no-udp") && !args.Contains("-b"))
+                {
+                    Network.StartBroadcast();
+                }
             }
             catch (SocketException e)
             {

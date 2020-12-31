@@ -14,6 +14,7 @@ namespace Lanchat.Core
         private readonly List<Node> outgoingConnections;
         private readonly List<Broadcast> detectedNodes;
         private readonly Server server;
+        private readonly BroadcastService broadcastService;
 
         /// <summary>
         ///     Initialize p2p mode.
@@ -27,8 +28,7 @@ namespace Lanchat.Core
             server.SessionCreated += OnSessionCreated;
             CoreConfig.NicknameChanged += OnNicknameChanged;
 
-            var broadcastService = new BroadcastService();
-            //broadcastService.Start();
+            broadcastService = new BroadcastService();
             broadcastService.BroadcastReceived += BroadcastReceived;
         }
 
@@ -76,6 +76,14 @@ namespace Lanchat.Core
         public void StartServer()
         {
             server.Start();
+        }
+
+        /// <summary>
+        ///     Start broadcasting.
+        /// </summary>
+        public void StartBroadcast()
+        {
+            broadcastService.Start();
         }
 
         /// <summary>
