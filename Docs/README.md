@@ -4,13 +4,8 @@ Encrypted, P2P, local network chat.
 
 [API documentation](https://github.com/tofudd/lanchat/blob/master/Docs/API.md)
 
-## Projects
-* Lancaht.Core (2.2.0) - library
-* Lanchat.Terminal (2.2.0) - console app for Windows and Linux
-
-Check [release](https://github.com/tofudd/lanchat/releases) section for binaries.
-
-**Lanchat.Terminal requires .NET 5 runtime**
+## Get Lanchat
+Download self-contained binary from [releases](https://github.com/tofudd/lanchat/releases).
 
 ## Lanchat.Terminal
 You can start terminal client with the following arguments:
