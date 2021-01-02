@@ -7,9 +7,10 @@
     "org.freedesktop.Sdk.Extension.dotnet"
   ],
   "finish-args": [
-    "--share=network"
+    "--share=network",
+    "--env=DOTNET_ROOT=/app/dotnet/lib"
   ],
-  "command": "start.sh",
+  "command": "Lanchat",
   "modules": [
     {
       "name": "Lanchat",
@@ -17,20 +18,12 @@
       "build-commands": [
         "/usr/lib/sdk/dotnet/install.sh",
         "/usr/lib/sdk/dotnet/bin/dotnet publish -c Release --source ../nuget-sources Lanchat.Terminal/Lanchat.Terminal.csproj",
-        "cp -r --remove-destination /run/build/Lanchat/Lanchat.Terminal/bin/Release/net5.0/publish/ /app/bin/",
-        "cp --remove-destination start.sh /app/bin/start.sh"
+        "cp -r --remove-destination /run/build/Lanchat/Lanchat.Terminal/bin/Release/net5.0/publish/ /app/bin/"
       ],
       "sources": [
         {
           "type": "dir",
           "path": "."
-        },
-        {
-          "type": "script",
-          "commands": [
-            "/app/dotnet/bin/dotnet /app/bin/Lanchat.dll \"$@\""
-          ],
-          "dest-filename": "start.sh"
         },
         "sources.json"
       ]
