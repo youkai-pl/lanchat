@@ -9,19 +9,28 @@
   "finish-args": [
     "--share=network"
   ],
+  "command": "start.sh",
   "modules": [
     {
       "name": "Lanchat",
       "buildsystem": "simple",
       "build-commands": [
-        "/usr/lib/sdk/dotnet/install.sh",
+        "/usr/lib/sdk/dotnet/enable.sh",
         "/usr/lib/sdk/dotnet/bin/dotnet publish -c Release --source ../nuget-sources Lanchat.Terminal/Lanchat.Terminal.csproj",
-        " cp -r /run/build/Lanchat/Lanchat.Terminal/bin/Release/net5.0/publish/ /app/bin/"
+        "cp -r --remove-destination /run/build/Lanchat/Lanchat.Terminal/bin/Release/net5.0/publish/ /app/bin/",
+        "cp --remove-destination start.sh /app/bin/start.sh"
       ],
       "sources": [
         {
           "type": "dir",
           "path": "."
+        },
+        {
+          "type": "script",
+          "commands": [
+            "/usr/lib/sdk/dotnet/bin/dotnet /app/bin/Lanchat.dll \"$@\""
+          ],
+          "dest-filename": "start.sh"
         },
         {
           "type": "file",
