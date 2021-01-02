@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Lanchat
+Exec=Lanchat
+Terminal=true
+Categories=Chat;Network;InstantMessaging;

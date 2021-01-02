@@ -18,7 +18,8 @@
       "build-commands": [
         "/usr/lib/sdk/dotnet/install.sh",
         "/usr/lib/sdk/dotnet/bin/dotnet publish -c Release --source ../nuget-sources Lanchat.Terminal/Lanchat.Terminal.csproj",
-        "cp -r --remove-destination /run/build/Lanchat/Lanchat.Terminal/bin/Release/net5.0/publish/ /app/bin/"
+        "cp -r --remove-destination /run/build/Lanchat/Lanchat.Terminal/bin/Release/net5.0/publish/ /app/bin/",
+        "install -D io.github.tofudd.lanchat.desktop  /app/share/applications/io.github.tofudd.lanchat.desktop"
       ],
       "sources": [
         {
