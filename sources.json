@@ -1,17 +1,17 @@
 [
     {
         "type": "file",
+        "url": "https://api.nuget.org/v3-flatcontainer/system.valuetuple/4.5.0/system.valuetuple.4.5.0.nupkg",
+        "sha512": "fa00ebb5045d12c51274f64411c551981beceb1266a8606a4731063109b95ea1f15939197bf3d2ba899db61e593dc39bfce876908bba34286823525093ae3d8e",
+        "dest": "nuget-sources",
+        "dest-filename": "system.valuetuple.4.5.0.nupkg"
+    },
+    {
+        "type": "file",
         "url": "https://api.nuget.org/v3-flatcontainer/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg",
         "sha512": "68052086e77d3c7198737a3da163d67740b7c44f93250c39659b3bf21b6547a9abf64cbf40481f5c78f24361af3aaf47d52d188b371554a0928a7f7665c1fc14",
         "dest": "nuget-sources",
         "dest-filename": "system.threading.tasks.extensions.4.5.4.nupkg"
-    },
-    {
-        "type": "file",
-        "url": "https://api.nuget.org/v3-flatcontainer/system.runtime.compilerservices.unsafe/5.0.0/system.runtime.compilerservices.unsafe.5.0.0.nupkg",
-        "sha512": "23226c503b06abecee5a9604a6e4dd3dabcdf921f55d6aa6dad2bab1ca12a001c7866af5a6de01cc9b4ace54e5c8ee1d5c2fd29dd9dfd7eda3ed86f9b35fa59f",
-        "dest": "nuget-sources",
-        "dest-filename": "system.runtime.compilerservices.unsafe.5.0.0.nupkg"
     },
     {
         "type": "file",
@@ -22,17 +22,17 @@
     },
     {
         "type": "file",
+        "url": "https://api.nuget.org/v3-flatcontainer/system.runtime.compilerservices.unsafe/5.0.0/system.runtime.compilerservices.unsafe.5.0.0.nupkg",
+        "sha512": "23226c503b06abecee5a9604a6e4dd3dabcdf921f55d6aa6dad2bab1ca12a001c7866af5a6de01cc9b4ace54e5c8ee1d5c2fd29dd9dfd7eda3ed86f9b35fa59f",
+        "dest": "nuget-sources",
+        "dest-filename": "system.runtime.compilerservices.unsafe.5.0.0.nupkg"
+    },
+    {
+        "type": "file",
         "url": "https://api.nuget.org/v3-flatcontainer/system.numerics.vectors/4.5.0/system.numerics.vectors.4.5.0.nupkg",
         "sha512": "9c04ec0530f608aaf801837a791b33857e2ca6d2265a6049c01fd4e972825967e709cad3070f174829b7400f608e9a641d3afc3a45d4636d4c47dd43dd0657b3",
         "dest": "nuget-sources",
         "dest-filename": "system.numerics.vectors.4.5.0.nupkg"
-    },
-    {
-        "type": "file",
-        "url": "https://api.nuget.org/v3-flatcontainer/system.valuetuple/4.5.0/system.valuetuple.4.5.0.nupkg",
-        "sha512": "fa00ebb5045d12c51274f64411c551981beceb1266a8606a4731063109b95ea1f15939197bf3d2ba899db61e593dc39bfce876908bba34286823525093ae3d8e",
-        "dest": "nuget-sources",
-        "dest-filename": "system.valuetuple.4.5.0.nupkg"
     },
     {
         "type": "file",
