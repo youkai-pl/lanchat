@@ -10,7 +10,6 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <IsPackable>false</IsPackable>
     <Company>tofudd</Company>
-    <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
