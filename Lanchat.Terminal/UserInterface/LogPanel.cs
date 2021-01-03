@@ -7,9 +7,9 @@ namespace Lanchat.Terminal.UserInterface
 {
     public class LogPanel : SimpleControl
     {
+        private readonly object lockUi = new();
         private readonly VerticalStackPanel stackPanel;
-        private readonly object lockUi = new object();
-        
+
         public LogPanel()
         {
             stackPanel = new VerticalStackPanel();
@@ -37,7 +37,7 @@ namespace Lanchat.Terminal.UserInterface
                         }
                     });
                     Ui.ScrollPanel.Top = int.MaxValue;
-                } 
+                }
             }
         }
 

@@ -10,13 +10,12 @@ namespace Lanchat.Core
 {
     public class Node : IDisposable
     {
-        private string nickname;
-        private readonly IPEndPoint firstEndPoint;
-
         internal readonly Encryption Encryption;
+        private readonly IPEndPoint firstEndPoint;
         internal readonly INetworkElement NetworkElement;
         public readonly NetworkInput NetworkInput;
         public readonly NetworkOutput NetworkOutput;
+        private string nickname;
 
         /// <summary>
         ///     Initialize node.
@@ -29,7 +28,7 @@ namespace Lanchat.Core
             NetworkOutput = new NetworkOutput(this);
             NetworkInput = new NetworkInput(this);
             Encryption = new Encryption();
-            
+
             firstEndPoint = networkElement.Endpoint;
 
             networkElement.Disconnected += OnDisconnected;
@@ -41,13 +40,9 @@ namespace Lanchat.Core
             NetworkInput.NicknameChanged += OnNicknameChanged;
 
             if (sendHandshake)
-            {
                 SendHandshakeAndWait();
-            }
             else
-            {
                 networkElement.Connected += OnConnected;
-            }
         }
 
         /// <summary>
@@ -86,7 +81,7 @@ namespace Lanchat.Core
                 {
                     return NetworkElement.Endpoint;
                 }
-                
+
                 // Or from local variable if network element is disposed.
                 catch (ObjectDisposedException)
                 {
@@ -99,6 +94,12 @@ namespace Lanchat.Core
         ///     Is node reconnecting.
         /// </summary>
         public bool UnderReconnecting { get; private set; }
+
+        public void Dispose()
+        {
+            NetworkElement.Close();
+            Encryption.Dispose();
+        }
 
         /// <summary>
         ///     Node successful connected and ready.
@@ -119,7 +120,7 @@ namespace Lanchat.Core
         ///     Raise when connection try failed.
         /// </summary>
         public event EventHandler CannotConnect;
-            
+
         /// <summary>
         ///     User changed nickname of node. Returns previous nickname in parameter.
         /// </summary>
@@ -131,7 +132,7 @@ namespace Lanchat.Core
         public event EventHandler<SocketError> SocketErrored;
 
         /// <summary>
-        /// Disconnect from node.
+        ///     Disconnect from node.
         /// </summary>
         public void Disconnect()
         {
@@ -191,10 +192,7 @@ namespace Lanchat.Core
 
         private void OnNicknameChanged(object sender, string e)
         {
-            if (e == Nickname)
-            {
-                return;
-            }
+            if (e == Nickname) return;
 
             var previousNickname = Nickname;
             Nickname = e;
@@ -208,17 +206,8 @@ namespace Lanchat.Core
             // Check is connection established successful after timeout.
             Task.Delay(5000).ContinueWith(t =>
             {
-                if (!Ready && !UnderReconnecting)
-                {
-                    NetworkElement.Close();
-                }
+                if (!Ready && !UnderReconnecting) NetworkElement.Close();
             });
-        }
-
-        public void Dispose()
-        {
-            NetworkElement.Close();
-            Encryption.Dispose();
         }
     }
 }

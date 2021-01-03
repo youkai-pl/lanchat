@@ -50,7 +50,7 @@ namespace Lanchat.Core.Network
 
         internal KeyInfo ExportAesKey()
         {
-            return new KeyInfo
+            return new()
             {
                 AesKey = RsaEncrypt(localAes.Key),
                 AesIv = RsaEncrypt(localAes.IV)

@@ -27,10 +27,7 @@ namespace Lanchat.Core.Network
         /// <param name="content">Message content.</param>
         public void SendMessage(string content)
         {
-            if (!node.Ready)
-            {
-                return;
-            }
+            if (!node.Ready) return;
 
             SendData(DataTypes.Message, node.Encryption.Encrypt(content));
         }
@@ -41,10 +38,7 @@ namespace Lanchat.Core.Network
         /// <param name="content">Message content.</param>
         public void SendPrivateMessage(string content)
         {
-            if (!node.Ready)
-            {
-                return;
-            }
+            if (!node.Ready) return;
 
             SendData(DataTypes.PrivateMessage, node.Encryption.Encrypt(content));
         }

@@ -1,6 +1,7 @@
 using System;
-using Gtk;
+using GLib;
 using Lanchat.Gtk.Windows;
+using Application = Gtk.Application;
 
 namespace Lanchat.Gtk
 {
@@ -11,8 +12,8 @@ namespace Lanchat.Gtk
         {
             Application.Init();
 
-            var app = new Application("org.Lanchat.Gtk.Lanchat.Gtk", GLib.ApplicationFlags.None);
-            app.Register(GLib.Cancellable.Current);
+            var app = new Application("org.Lanchat.Gtk.Lanchat.Gtk", ApplicationFlags.None);
+            app.Register(Cancellable.Current);
 
             var win = new MainWindow();
             app.AddWindow(win);

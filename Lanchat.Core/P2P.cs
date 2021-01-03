@@ -11,10 +11,10 @@ namespace Lanchat.Core
 {
     public class P2P
     {
-        private readonly List<Node> outgoingConnections;
-        private readonly List<Broadcast> detectedNodes;
-        private readonly Server server;
         private readonly BroadcastService broadcastService;
+        private readonly List<Broadcast> detectedNodes;
+        private readonly List<Node> outgoingConnections;
+        private readonly Server server;
 
         /// <summary>
         ///     Initialize p2p mode.
@@ -56,10 +56,7 @@ namespace Lanchat.Core
                 var list = new List<Broadcast>();
                 detectedNodes.ForEach(x =>
                 {
-                    if (!Nodes.Any(y => Equals(y.Endpoint.Address, x.IpAddress)))
-                    {
-                        list.Add(x);
-                    }
+                    if (!Nodes.Any(y => Equals(y.Endpoint.Address, x.IpAddress))) list.Add(x);
                 });
                 return list;
             }
@@ -106,23 +103,16 @@ namespace Lanchat.Core
             port ??= CoreConfig.ServerPort;
 
             // Throw if node is blocked
-            if (CoreConfig.BlockedAddresses.Contains(ipAddress))
-            {
-                throw new ArgumentException("Node blocked");
-            }
+            if (CoreConfig.BlockedAddresses.Contains(ipAddress)) throw new ArgumentException("Node blocked");
 
             // Throw if node already connected
             if (Nodes.Any(x => x.Endpoint.Address.Equals(ipAddress)))
-            {
                 throw new ArgumentException("Already connected to this node");
-            }
 
             // Throw if local address
             var host = Dns.GetHostEntry(Dns.GetHostName());
             if (host.AddressList.Where(ip => ip.AddressFamily == AddressFamily.InterNetwork).Contains(ipAddress))
-            {
                 throw new ArgumentException("Illegal IP address. Cannot connect");
-            }
 
             var client = new Client(ipAddress, port.Value);
             var node = new Node(client, false);

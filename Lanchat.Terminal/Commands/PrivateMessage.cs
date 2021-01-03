@@ -20,7 +20,7 @@ namespace Lanchat.Terminal.Commands
                 Ui.Log.Add(Resources.Info_NotFound);
                 return;
             }
-            
+
             node.NetworkOutput.SendPrivateMessage(string.Join(" ", args.Skip(1)));
         }
     }

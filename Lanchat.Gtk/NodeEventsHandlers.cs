@@ -7,8 +7,8 @@ namespace Lanchat.Gtk
 {
     public class NodeEventsHandlers
     {
-        private readonly Node node;
         private readonly TextView log;
+        private readonly Node node;
 
         public NodeEventsHandlers(Node node, TextView log)
         {
@@ -43,7 +43,7 @@ namespace Lanchat.Gtk
         private void OnPrivateMessageReceived(object sender, string e)
         {
         }
-        
+
         private void OnSocketErrored(object sender, SocketError e)
         {
         }
@@ -51,7 +51,7 @@ namespace Lanchat.Gtk
         private void OnNicknameChanged(object sender, string e)
         {
         }
-        
+
         private void OnCannotConnect(object sender, EventArgs e)
         {
         }

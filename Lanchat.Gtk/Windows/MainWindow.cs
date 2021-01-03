@@ -1,5 +1,3 @@
-using System;
-using System.Diagnostics;
 using Gtk;
 using Lanchat.Core;
 using Key = Gdk.Key;
@@ -9,13 +7,12 @@ namespace Lanchat.Gtk.Windows
 {
     internal class MainWindow : Window
     {
+        private readonly P2P network;
         [UI] private Entry _input;
         [UI] private TextView _log;
-        [UI] private ScrolledWindow _scroll;
-        [UI] private ToggleButton _menuToggle;
         [UI] private Popover _menu;
-
-        private readonly P2P network;
+        [UI] private ToggleButton _menuToggle;
+        [UI] private ScrolledWindow _scroll;
 
         public MainWindow() : this(new Builder("MainWindow.glade"))
         {
@@ -29,12 +26,9 @@ namespace Lanchat.Gtk.Windows
             _input.KeyReleaseEvent += InputOnKeyReleaseEvent;
             _menuToggle.Toggled += (o, args) =>
             {
-                if (_menuToggle.Active)
-                {
-                    _menu.ShowAll();
-                }
+                if (_menuToggle.Active) _menu.ShowAll();
             };
-            
+
             _menu.Closed += (o, args) => { _menuToggle.Active = false; };
 
             network = new P2P();

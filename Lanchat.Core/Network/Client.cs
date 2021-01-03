@@ -35,10 +35,7 @@ namespace Lanchat.Core.Network
         {
             hardDisconnect = true;
             DisconnectAsync();
-            while (IsConnected)
-            {
-                Thread.Yield();
-            }
+            while (IsConnected) Thread.Yield();
 
             Dispose();
         }
@@ -59,12 +56,9 @@ namespace Lanchat.Core.Network
                 Trace.WriteLine($"Client {Id} disconnected");
                 return;
             }
-            
+
             // Don't invoke event during reconnecting.
-            if (!isReconnecting)
-            {
-                Disconnected?.Invoke(this, false);
-            }
+            if (!isReconnecting) Disconnected?.Invoke(this, false);
 
             // Stop if reconnect counter is equal 3 or client disconnected caused by local. 
             if (hardDisconnect || reconnectingCount == 3 || !EnableReconnecting)

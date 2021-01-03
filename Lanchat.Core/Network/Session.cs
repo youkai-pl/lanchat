@@ -10,7 +10,8 @@ namespace Lanchat.Core.Network
     internal class Session : TcpSession, INetworkElement
     {
         internal Session(TcpServer server) : base(server)
-        { }
+        {
+        }
 
         public IPEndPoint Endpoint => (IPEndPoint) Socket.RemoteEndPoint;
         public bool EnableReconnecting { get; set; } //TODO: This one smells
