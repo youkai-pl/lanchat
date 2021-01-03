@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using Gtk;
 using Lanchat.ClientCore;
@@ -19,6 +20,8 @@ namespace Lanchat.Gtk.Windows
         [UI] private Popover menu;
         [UI] private ToggleButton menuToggle;
         [UI] private ScrolledWindow scroll;
+        [UI] private Button menuSaveButton;
+        [UI] private Entry menuNicknameField;
 #pragma warning restore 649
 
 
@@ -32,6 +35,7 @@ namespace Lanchat.Gtk.Windows
             DeleteEvent += Window_DeleteEvent;
 
             input.KeyReleaseEvent += InputOnKeyReleaseEvent;
+            menuSaveButton.Clicked += MenuSaveButtonOnClicked; 
             menuToggle.Toggled += (o, args) =>
             {
                 if (menuToggle.Active) menu.ShowAll();
@@ -45,6 +49,11 @@ namespace Lanchat.Gtk.Windows
             network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, log); };
             network.StartServer();
             LoggingService.CleanLogs();
+        }
+
+        private void MenuSaveButtonOnClicked(object sender, EventArgs e)
+        {
+            Config.Nickname = menuNicknameField.Text;
         }
 
         private void InputOnKeyReleaseEvent(object o, KeyReleaseEventArgs args)

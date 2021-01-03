@@ -100,7 +100,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry">
+          <object class="GtkEntry" id="menuNicknameField">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="margin-bottom">5</property>
@@ -112,7 +112,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="menuSaveButton">
             <property name="label" translatable="yes">Save</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
