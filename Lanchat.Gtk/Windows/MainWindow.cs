@@ -94,7 +94,7 @@ namespace Lanchat.Gtk.Windows
         private void InputOnKeyReleaseEvent(object o, KeyReleaseEventArgs args)
         {
             if (args.Event.Key != Key.Return) return;
-            AddChatEntry(Program.Config.Nickname, input.Text);
+            AddChatEntry($"{Program.Config.Nickname}#0000", input.Text);
             Program.Network.BroadcastMessage(input.Text);
             input.Text = string.Empty;
             scroll.Vadjustment.Value = double.MaxValue;
@@ -107,13 +107,13 @@ namespace Lanchat.Gtk.Windows
 
         public void AddChatEntry(string nickname, string message)
         {
-            var box = new Box(Orientation.Vertical, 2);
+            var box = new Box(Orientation.Vertical, 0);
 
-            var sender = new Label(nickname)
+            var sender = new Label
             {
                 Valign = Align.Start,
                 Halign = Align.Start,
-                MarginTop = 10
+                Markup = $"<b>{nickname}</b>"
             };
 
             var content = new Label(message)
@@ -121,7 +121,8 @@ namespace Lanchat.Gtk.Windows
                 Valign = Align.Start,
                 Halign = Align.Start,
                 Wrap = true,
-                LineWrapMode = WrapMode.Char
+                LineWrapMode = WrapMode.Char,
+                Selectable = true
             };
 
             if (lastMessageAuthor != nickname)
@@ -131,7 +132,7 @@ namespace Lanchat.Gtk.Windows
             }
 
             box.Add(content);
-            chat.Add(box);
+            chat.Add(new ListBoxRow {Child = box});
             chat.ShowAll();
         }
     }
