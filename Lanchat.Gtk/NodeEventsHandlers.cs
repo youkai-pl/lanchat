@@ -38,6 +38,7 @@ namespace Lanchat.Gtk
 
         private void OnMessageReceived(object sender, string e)
         {
+            log.Buffer.Text += $"{node.Nickname}: {e}\n";
         }
 
         private void OnPrivateMessageReceived(object sender, string e)

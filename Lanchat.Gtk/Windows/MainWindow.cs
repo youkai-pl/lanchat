@@ -81,13 +81,14 @@ namespace Lanchat.Gtk.Windows
             if (IPAddress.TryParse(connectIpAddress.Text, out var ipAddress))
             {
                 Program.Network.Connect(ipAddress, int.Parse(connectPortNumber.Text));
+                connectMenu.Hide();
             }
         }
 
         private void InputOnKeyReleaseEvent(object o, KeyReleaseEventArgs args)
         {
             if (args.Event.Key != Key.Return) return;
-            log.Buffer.Text += input.Text + "\n";
+            log.Buffer.Text +=  $"{Program.Config.Nickname}: {input.Text}\n";
             scroll.Vadjustment.Value = double.MaxValue;
             Program.Network.BroadcastMessage(input.Text);
             input.Text = string.Empty;
