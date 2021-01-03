@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Lanchat.ClientCore\Lanchat.ClientCore.csproj" />
       <ProjectReference Include="..\Lanchat.Core\Lanchat.Core.csproj" />
     </ItemGroup>
 

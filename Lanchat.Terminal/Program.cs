@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Lanchat.ClientCore;
 using Lanchat.Core;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;

@@ -1,4 +1,5 @@
 using Gtk;
+using Lanchat.ClientCore;
 using Lanchat.Core;
 using Key = Gdk.Key;
 using UI = Gtk.Builder.ObjectAttribute;
@@ -8,7 +9,8 @@ namespace Lanchat.Gtk.Windows
     internal class MainWindow : Window
     {
         private readonly P2P network;
-        
+        public static Config Config { get; private set; }
+
         // UI elements
 #pragma warning disable 649
         [UI] private Entry input;
@@ -33,11 +35,10 @@ namespace Lanchat.Gtk.Windows
             {
                 if (menuToggle.Active) menu.ShowAll();
             };
-
             menu.Closed += (o, args) => { menuToggle.Active = false; };
 
+            Config = Config.Load();
             network = new P2P();
-            CoreConfig.Nickname = "test";
 
             network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, log); };
             network.StartServer();

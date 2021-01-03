@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lanchat.Terminal", "Lanchat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lanchat.Gtk", "Lanchat.Gtk\Lanchat.Gtk.csproj", "{9CED36F2-C092-4DE9-A3AE-9C9E52AAC02C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lanchat.ClientCore", "Lanchat.ClientCore\Lanchat.ClientCore.csproj", "{FB1A7A28-00AD-4D59-B141-A127181714D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{9CED36F2-C092-4DE9-A3AE-9C9E52AAC02C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CED36F2-C092-4DE9-A3AE-9C9E52AAC02C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CED36F2-C092-4DE9-A3AE-9C9E52AAC02C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB1A7A28-00AD-4D59-B141-A127181714D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB1A7A28-00AD-4D59-B141-A127181714D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB1A7A28-00AD-4D59-B141-A127181714D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB1A7A28-00AD-4D59-B141-A127181714D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

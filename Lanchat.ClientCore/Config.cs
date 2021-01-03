@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text.Json;
 using Lanchat.Core;
 
-namespace Lanchat.Terminal
+namespace Lanchat.ClientCore
 {
     public class Config
     {
