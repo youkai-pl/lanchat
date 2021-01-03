@@ -1,12 +1,16 @@
 using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using Gtk;
+using Pango;
 using Key = Gdk.Key;
 using UI = Gtk.Builder.ObjectAttribute;
+using WrapMode = Pango.WrapMode;
 
 namespace Lanchat.Gtk.Windows
 {
-    internal class MainWindow : Window
+    public class MainWindow : Window
     {
 #pragma warning disable 649
         // Main content
@@ -28,6 +32,8 @@ namespace Lanchat.Gtk.Windows
         [UI] private Button connectButton;
 #pragma warning restore 649
 
+        private string lastMessageAuthor;
+
         public MainWindow() : this(new Builder("MainWindow.glade"))
         {
         }
@@ -47,7 +53,7 @@ namespace Lanchat.Gtk.Windows
 
             menuNicknameField.Text = Program.Config.Nickname;
             connectPortNumber.Text = Program.Config.Port.ToString();
-            Program.Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, chat); };
+            Program.Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, this); };
         }
 
         // UI Events
@@ -88,21 +94,45 @@ namespace Lanchat.Gtk.Windows
         private void InputOnKeyReleaseEvent(object o, KeyReleaseEventArgs args)
         {
             if (args.Event.Key != Key.Return) return;
-            
-            chat.Add(new Label
-            {
-                Text = $"{Program.Config.Nickname}: {input.Text}",
-            });
-            chat.ShowAll();
-            
-            scroll.Vadjustment.Value = double.MaxValue;
+            AddChatEntry(Program.Config.Nickname, input.Text);
             Program.Network.BroadcastMessage(input.Text);
             input.Text = string.Empty;
+            scroll.Vadjustment.Value = double.MaxValue;
         }
 
         private static void Window_DeleteEvent(object sender, DeleteEventArgs a)
         {
             Application.Quit();
+        }
+
+        public void AddChatEntry(string nickname, string message)
+        {
+            var box = new Box(Orientation.Vertical, 2);
+
+            var sender = new Label(nickname)
+            {
+                Valign = Align.Start,
+                Halign = Align.Start,
+                MarginTop = 10
+            };
+
+            var content = new Label(message)
+            {
+                Valign = Align.Start,
+                Halign = Align.Start,
+                Wrap = true,
+                LineWrapMode = WrapMode.Char
+            };
+
+            if (lastMessageAuthor != nickname)
+            {
+                box.Add(sender);
+                lastMessageAuthor = nickname;
+            }
+
+            box.Add(content);
+            chat.Add(box);
+            chat.ShowAll();
         }
     }
 }

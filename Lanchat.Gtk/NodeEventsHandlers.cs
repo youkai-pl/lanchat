@@ -1,18 +1,20 @@
 using System;
 using System.Net.Sockets;
 using Gtk;
+using Lanchat.Gtk.Windows;
 using Node = Lanchat.Core.Node;
 
 namespace Lanchat.Gtk
 {
     public class NodeEventsHandlers
     {
-        private readonly ListBox chat;
         private readonly Node node;
+        private readonly MainWindow mainWindow;
+        private object lockChat = new object();
 
-        public NodeEventsHandlers(Node node, ListBox chat)
+        public NodeEventsHandlers(Node node, MainWindow mainWindow)
         {
-            this.chat = chat;
+            this.mainWindow = mainWindow;
             this.node = node;
             node.NetworkInput.MessageReceived += OnMessageReceived;
             node.NetworkInput.PrivateMessageReceived += OnPrivateMessageReceived;
@@ -38,6 +40,7 @@ namespace Lanchat.Gtk
 
         private void OnMessageReceived(object sender, string e)
         {
+            mainWindow.AddChatEntry(node.Nickname, e);
         }
 
         private void OnPrivateMessageReceived(object sender, string e)
