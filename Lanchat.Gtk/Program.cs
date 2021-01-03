@@ -1,9 +1,10 @@
 using System;
 using Gtk;
+using Lanchat.Gtk.Windows;
 
 namespace Lanchat.Gtk
 {
-    class Program
+    public static class Program
     {
         [STAThread]
         public static void Main(string[] args)

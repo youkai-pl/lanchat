@@ -12,7 +12,7 @@
         <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkTextView">
+          <object class="GtkTextView" id="_log">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="editable">False</property>
@@ -25,7 +25,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry">
+          <object class="GtkEntry" id="_input">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
           </object>

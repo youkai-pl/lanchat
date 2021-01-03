@@ -10,6 +10,9 @@
         <EmbeddedResource Include="**\*.glade">
             <LogicalName>%(Filename)%(Extension)</LogicalName>
         </EmbeddedResource>
+        <EmbeddedResource Update="Windows\MainWindow.glade">
+          <LogicalName>MainWindow.glade</LogicalName>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
