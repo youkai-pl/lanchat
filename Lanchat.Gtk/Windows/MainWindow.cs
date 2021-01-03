@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Gtk;
 using Lanchat.ClientCore;
 using Lanchat.Core;
@@ -38,10 +39,12 @@ namespace Lanchat.Gtk.Windows
             menu.Closed += (o, args) => { menuToggle.Active = false; };
 
             Config = Config.Load();
+            LoggingService.StartLogging();
             network = new P2P();
 
             network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, log); };
             network.StartServer();
+            LoggingService.CleanLogs();
         }
 
         private void InputOnKeyReleaseEvent(object o, KeyReleaseEventArgs args)

@@ -24,9 +24,10 @@ namespace Lanchat.Terminal
             if (args.Contains("--server") || args.Contains("-s"))
             {
                 Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+                LoggingService.StartLogging();
                 var server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
                 server.Start();
-                CleanLogs();
+                LoggingService.CleanLogs();
                 while (true) Console.ReadKey();
             }
 
@@ -56,10 +57,7 @@ namespace Lanchat.Terminal
                 Trace.Listeners.Add(new TerminalTraceListener());
 
             // Save logs to file
-            Trace.Listeners.Add(new FileTraceListener($"{Config.Path}{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log"));
-            Trace.IndentSize = 11;
-            Trace.AutoFlush = true;
-            Trace.WriteLine("Logging started");
+            LoggingService.StartLogging();
 
             // Connect with localhost
             if (args.Contains("--loopback") || args.Contains("-l")) Network.Connect(IPAddress.Loopback);
@@ -67,16 +65,7 @@ namespace Lanchat.Terminal
             var newVersion = UpdateChecker.CheckUpdates();
             if (newVersion != null) Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
 
-            CleanLogs();
-        }
-
-        private static void CleanLogs()
-        {
-            foreach (var fi in new DirectoryInfo(Config.Path)
-                .GetFiles("*.log")
-                .OrderByDescending(x => x.LastWriteTime)
-                .Skip(5))
-                fi.Delete();
+            LoggingService.CleanLogs();
         }
     }
 }
