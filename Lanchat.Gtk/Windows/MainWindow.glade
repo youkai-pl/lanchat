@@ -108,7 +108,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="margin-bottom">5</property>
-            <property name="label" translatable="yes">IP addres or hostname</property>
+            <property name="label" translatable="yes">IP address</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -142,10 +142,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry">
+          <object class="GtkEntry" id="connectPortNumber">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="margin-bottom">5</property>
+            <property name="input-purpose">digits</property>
           </object>
           <packing>
             <property name="expand">False</property>

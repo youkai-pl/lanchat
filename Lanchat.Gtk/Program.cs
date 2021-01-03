@@ -29,7 +29,7 @@ namespace Lanchat.Gtk
             win.Show();
             Application.Run();
             
-            Network.StartServer();
+            //Network.StartServer();
             LoggingService.StartLogging();
             LoggingService.CleanLogs();
         }
