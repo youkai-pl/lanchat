@@ -1,8 +1,5 @@
 using System;
-using System.Diagnostics;
 using Gtk;
-using Lanchat.ClientCore;
-using Lanchat.Core;
 using Key = Gdk.Key;
 using UI = Gtk.Builder.ObjectAttribute;
 
@@ -10,21 +7,19 @@ namespace Lanchat.Gtk.Windows
 {
     internal class MainWindow : Window
     {
-        private readonly P2P network;
-        public static Config Config { get; private set; }
-
-        // UI elements
 #pragma warning disable 649
-        [UI] private Entry input;
+        // Main content
+        [UI] private ScrolledWindow scroll;
         [UI] private TextView log;
+        [UI] private Entry input;
+        
+        // Settings menu
         [UI] private Popover menu;
         [UI] private ToggleButton menuToggle;
-        [UI] private ScrolledWindow scroll;
-        [UI] private Button menuSaveButton;
         [UI] private Entry menuNicknameField;
+        [UI] private Button menuSaveButton;
 #pragma warning restore 649
-
-
+        
         public MainWindow() : this(new Builder("MainWindow.glade"))
         {
         }
@@ -32,28 +27,31 @@ namespace Lanchat.Gtk.Windows
         private MainWindow(Builder builder) : base(builder.GetObject("MainWindow").Handle)
         {
             builder.Autoconnect(this);
+
             DeleteEvent += Window_DeleteEvent;
-
             input.KeyReleaseEvent += InputOnKeyReleaseEvent;
-            menuSaveButton.Clicked += MenuSaveButtonOnClicked; 
-            menuToggle.Toggled += (o, args) =>
-            {
-                if (menuToggle.Active) menu.ShowAll();
-            };
-            menu.Closed += (o, args) => { menuToggle.Active = false; };
+            menuSaveButton.Clicked += MenuSaveButtonOnClicked;
+            menuToggle.Toggled += MenuToggleOnToggled;
+            menu.Closed += MenuOnClosed;
 
-            Config = Config.Load();
-            LoggingService.StartLogging();
-            network = new P2P();
-
-            network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, log); };
-            network.StartServer();
-            LoggingService.CleanLogs();
+            menuNicknameField.Text = Program.Config.Nickname;
+            Program.Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, log); };
         }
 
+        // UI Events
+        private void MenuToggleOnToggled(object sender, EventArgs e)
+        {
+            if (menuToggle.Active) menu.ShowAll();
+        }
+        
+        private void MenuOnClosed(object sender, EventArgs e)
+        {
+            menuToggle.Active = false;
+        }
+        
         private void MenuSaveButtonOnClicked(object sender, EventArgs e)
         {
-            Config.Nickname = menuNicknameField.Text;
+            Program.Config.Nickname = menuNicknameField.Text;
         }
 
         private void InputOnKeyReleaseEvent(object o, KeyReleaseEventArgs args)
@@ -61,7 +59,7 @@ namespace Lanchat.Gtk.Windows
             if (args.Event.Key != Key.Return) return;
             log.Buffer.Text += input.Text + "\n";
             scroll.Vadjustment.Value = double.MaxValue;
-            network.BroadcastMessage(input.Text);
+            Program.Network.BroadcastMessage(input.Text);
             input.Text = string.Empty;
         }
 
