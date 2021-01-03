@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using Gtk;
 using Lanchat.Core;
 using Key = Gdk.Key;
@@ -9,6 +11,9 @@ namespace Lanchat.Gtk.Windows
     {
         [UI] private Entry _input;
         [UI] private TextView _log;
+        [UI] private ScrolledWindow _scroll;
+        [UI] private ToggleButton _menuToggle;
+        [UI] private Popover _menu;
 
         private readonly P2P network;
 
@@ -22,19 +27,28 @@ namespace Lanchat.Gtk.Windows
             DeleteEvent += Window_DeleteEvent;
 
             _input.KeyReleaseEvent += InputOnKeyReleaseEvent;
+            _menuToggle.Toggled += (o, args) =>
+            {
+                if (_menuToggle.Active)
+                {
+                    _menu.ShowAll();
+                }
+            };
+            
+            _menu.Closed += (o, args) => { _menuToggle.Active = false; };
 
             network = new P2P();
             CoreConfig.Nickname = "test";
-            
+
             network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, _log); };
             network.StartServer();
         }
-
 
         private void InputOnKeyReleaseEvent(object o, KeyReleaseEventArgs args)
         {
             if (args.Event.Key != Key.Return) return;
             _log.Buffer.Text += _input.Text + "\n";
+            _scroll.Vadjustment.Value = double.MaxValue;
             network.BroadcastMessage(_input.Text);
             _input.Text = string.Empty;
         }

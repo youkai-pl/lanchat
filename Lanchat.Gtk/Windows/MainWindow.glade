@@ -12,11 +12,20 @@
         <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkTextView" id="_log">
+          <object class="GtkScrolledWindow" id="_scroll">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
-            <property name="editable">False</property>
-            <property name="cursor-visible">False</property>
+            <property name="hscrollbar-policy">never</property>
+            <property name="vscrollbar-policy">always</property>
+            <property name="window-placement-set">False</property>
+            <child>
+              <object class="GtkTextView" id="_log">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="editable">False</property>
+                <property name="cursor-visible">False</property>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -45,17 +54,30 @@
         <property name="title" translatable="yes">Lanchat GTK</property>
         <property name="show-close-button">True</property>
         <child>
-          <object class="GtkButton">
-            <property name="label" translatable="yes">placeholder</property>
+          <object class="GtkToggleButton" id="_menuToggle">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">open-menu-symbolic</property>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="pack-type">end</property>
           </packing>
         </child>
       </object>
+    </child>
+  </object>
+  <object class="GtkPopover" id="_menu">
+    <property name="can-focus">False</property>
+    <property name="relative-to">_menuToggle</property>
+    <child>
+      <placeholder/>
     </child>
   </object>
 </interface>
