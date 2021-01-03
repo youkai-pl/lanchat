@@ -18,6 +18,10 @@ namespace Lanchat.Gtk.Windows
         [UI] private ToggleButton menuToggle;
         [UI] private Entry menuNicknameField;
         [UI] private Button menuSaveButton;
+        
+        // Connect menu
+        [UI] private Popover connectMenu;
+        [UI] private ToggleButton connectMenuToggle;
 #pragma warning restore 649
         
         public MainWindow() : this(new Builder("MainWindow.glade"))
@@ -31,13 +35,15 @@ namespace Lanchat.Gtk.Windows
             DeleteEvent += Window_DeleteEvent;
             input.KeyReleaseEvent += InputOnKeyReleaseEvent;
             menuSaveButton.Clicked += MenuSaveButtonOnClicked;
-            menuToggle.Toggled += MenuToggleOnToggled;
             menu.Closed += MenuOnClosed;
+            menuToggle.Toggled += MenuToggleOnToggled;
+            connectMenu.Closed += ConnectMenuOnClosed;
+            connectMenuToggle.Toggled += ConnectMenuToggleOnToggled;
 
             menuNicknameField.Text = Program.Config.Nickname;
             Program.Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, log); };
         }
-
+        
         // UI Events
         private void MenuToggleOnToggled(object sender, EventArgs e)
         {
@@ -52,6 +58,16 @@ namespace Lanchat.Gtk.Windows
         private void MenuSaveButtonOnClicked(object sender, EventArgs e)
         {
             Program.Config.Nickname = menuNicknameField.Text;
+        }
+        
+        private void ConnectMenuOnClosed(object sender, EventArgs e)
+        {
+            connectMenuToggle.Active = false;
+        }
+        
+        private void ConnectMenuToggleOnToggled(object sender, EventArgs e)
+        {
+            if (connectMenuToggle.Active) connectMenu.ShowAll();
         }
 
         private void InputOnKeyReleaseEvent(object o, KeyReleaseEventArgs args)
