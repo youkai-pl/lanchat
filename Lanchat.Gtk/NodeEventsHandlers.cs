@@ -7,12 +7,12 @@ namespace Lanchat.Gtk
 {
     public class NodeEventsHandlers
     {
-        private readonly TextView log;
+        private readonly ListBox chat;
         private readonly Node node;
 
-        public NodeEventsHandlers(Node node, TextView log)
+        public NodeEventsHandlers(Node node, ListBox chat)
         {
-            this.log = log;
+            this.chat = chat;
             this.node = node;
             node.NetworkInput.MessageReceived += OnMessageReceived;
             node.NetworkInput.PrivateMessageReceived += OnPrivateMessageReceived;
@@ -38,7 +38,6 @@ namespace Lanchat.Gtk
 
         private void OnMessageReceived(object sender, string e)
         {
-            log.Buffer.Text += $"{node.Nickname}: {e}\n";
         }
 
         private void OnPrivateMessageReceived(object sender, string e)

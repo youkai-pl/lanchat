@@ -20,11 +20,17 @@
             <property name="hscrollbar-policy">never</property>
             <property name="vscrollbar-policy">always</property>
             <child>
-              <object class="GtkTextView" id="log">
+              <object class="GtkViewport">
                 <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="editable">False</property>
-                <property name="cursor-visible">False</property>
+                <property name="can-focus">False</property>
+                <property name="shadow-type">none</property>
+                <child>
+                  <object class="GtkListBox" id="chat">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="selection-mode">none</property>
+                  </object>
+                </child>
               </object>
             </child>
           </object>

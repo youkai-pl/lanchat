@@ -11,7 +11,7 @@ namespace Lanchat.Gtk.Windows
 #pragma warning disable 649
         // Main content
         [UI] private ScrolledWindow scroll;
-        [UI] private TextView log;
+        [UI] private ListBox chat;
         [UI] private Entry input;
 
         // Settings menu
@@ -47,7 +47,7 @@ namespace Lanchat.Gtk.Windows
 
             menuNicknameField.Text = Program.Config.Nickname;
             connectPortNumber.Text = Program.Config.Port.ToString();
-            Program.Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, log); };
+            Program.Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, chat); };
         }
 
         // UI Events
@@ -88,7 +88,13 @@ namespace Lanchat.Gtk.Windows
         private void InputOnKeyReleaseEvent(object o, KeyReleaseEventArgs args)
         {
             if (args.Event.Key != Key.Return) return;
-            log.Buffer.Text +=  $"{Program.Config.Nickname}: {input.Text}\n";
+            
+            chat.Add(new Label
+            {
+                Text = $"{Program.Config.Nickname}: {input.Text}",
+            });
+            chat.ShowAll();
+            
             scroll.Vadjustment.Value = double.MaxValue;
             Program.Network.BroadcastMessage(input.Text);
             input.Text = string.Empty;
