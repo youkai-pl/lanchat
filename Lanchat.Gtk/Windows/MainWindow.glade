@@ -13,14 +13,14 @@
         <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkScrolledWindow" id="_scroll">
+          <object class="GtkScrolledWindow" id="scroll">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="margin-bottom">5</property>
             <property name="hscrollbar-policy">never</property>
             <property name="vscrollbar-policy">always</property>
             <child>
-              <object class="GtkTextView" id="_log">
+              <object class="GtkTextView" id="log">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="editable">False</property>
@@ -35,7 +35,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry" id="_input">
+          <object class="GtkEntry" id="input">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
           </object>
@@ -55,7 +55,7 @@
         <property name="title" translatable="yes">Lanchat GTK</property>
         <property name="show-close-button">True</property>
         <child>
-          <object class="GtkToggleButton" id="_menuToggle">
+          <object class="GtkToggleButton" id="menuToggle">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
@@ -74,9 +74,9 @@
       </object>
     </child>
   </object>
-  <object class="GtkPopover" id="_menu">
+  <object class="GtkPopover" id="menu">
     <property name="can-focus">False</property>
-    <property name="relative-to">_menuToggle</property>
+    <property name="relative-to">menuToggle</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>

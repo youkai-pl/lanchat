@@ -8,11 +8,16 @@ namespace Lanchat.Gtk.Windows
     internal class MainWindow : Window
     {
         private readonly P2P network;
-        [UI] private Entry _input;
-        [UI] private TextView _log;
-        [UI] private Popover _menu;
-        [UI] private ToggleButton _menuToggle;
-        [UI] private ScrolledWindow _scroll;
+        
+        // UI elements
+#pragma warning disable 649
+        [UI] private Entry input;
+        [UI] private TextView log;
+        [UI] private Popover menu;
+        [UI] private ToggleButton menuToggle;
+        [UI] private ScrolledWindow scroll;
+#pragma warning restore 649
+
 
         public MainWindow() : this(new Builder("MainWindow.glade"))
         {
@@ -23,28 +28,28 @@ namespace Lanchat.Gtk.Windows
             builder.Autoconnect(this);
             DeleteEvent += Window_DeleteEvent;
 
-            _input.KeyReleaseEvent += InputOnKeyReleaseEvent;
-            _menuToggle.Toggled += (o, args) =>
+            input.KeyReleaseEvent += InputOnKeyReleaseEvent;
+            menuToggle.Toggled += (o, args) =>
             {
-                if (_menuToggle.Active) _menu.ShowAll();
+                if (menuToggle.Active) menu.ShowAll();
             };
 
-            _menu.Closed += (o, args) => { _menuToggle.Active = false; };
+            menu.Closed += (o, args) => { menuToggle.Active = false; };
 
             network = new P2P();
             CoreConfig.Nickname = "test";
 
-            network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, _log); };
+            network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, log); };
             network.StartServer();
         }
 
         private void InputOnKeyReleaseEvent(object o, KeyReleaseEventArgs args)
         {
             if (args.Event.Key != Key.Return) return;
-            _log.Buffer.Text += _input.Text + "\n";
-            _scroll.Vadjustment.Value = double.MaxValue;
-            network.BroadcastMessage(_input.Text);
-            _input.Text = string.Empty;
+            log.Buffer.Text += input.Text + "\n";
+            scroll.Vadjustment.Value = double.MaxValue;
+            network.BroadcastMessage(input.Text);
+            input.Text = string.Empty;
         }
 
         private static void Window_DeleteEvent(object sender, DeleteEventArgs a)
