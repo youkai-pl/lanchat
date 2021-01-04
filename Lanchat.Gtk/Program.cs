@@ -2,7 +2,7 @@ using System;
 using GLib;
 using Lanchat.ClientCore;
 using Lanchat.Core;
-using Lanchat.Gtk.Windows;
+using Lanchat.Gtk.Views;
 using Application = Gtk.Application;
 
 namespace Lanchat.Gtk

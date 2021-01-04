@@ -1,14 +1,12 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using Gtk;
-using Pango;
 using Key = Gdk.Key;
 using UI = Gtk.Builder.ObjectAttribute;
 using WrapMode = Pango.WrapMode;
 
-namespace Lanchat.Gtk.Windows
+namespace Lanchat.Gtk.Views
 {
     public class MainWindow : Window
     {
@@ -30,6 +28,10 @@ namespace Lanchat.Gtk.Windows
         [UI] private Entry connectIpAddress;
         [UI] private Entry connectPortNumber;
         [UI] private Button connectButton;
+
+        // Sidebar
+        [UI] private ListBox connectedList;
+        [UI] private ListBox onlineList;
 #pragma warning restore 649
 
         private string lastMessageAuthor;
@@ -134,6 +136,25 @@ namespace Lanchat.Gtk.Windows
             chat.Add(new ListBoxRow {Child = box});
             chat.ShowAll();
             scroll.Vadjustment.Value = scroll.Vadjustment.Upper;
+        }
+
+        public void AddConnected(string nickname, Guid id)
+        {
+            connectedList.Add(new ListBoxRow
+            {
+                Child = new Label(nickname)
+                {
+                    Margin = 2
+                },
+                Halign = Align.Start,
+                Name = $"{id}-cl"
+            });
+            connectedList.ShowAll();
+        }
+
+        public void RemoveConnected(Guid id)
+        {
+            connectedList.Remove(connectedList.Children.FirstOrDefault(x => x.Name == $"{id}-cl"));
         }
     }
 }

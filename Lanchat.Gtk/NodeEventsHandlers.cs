@@ -1,7 +1,7 @@
 using System;
 using System.Net.Sockets;
 using Gtk;
-using Lanchat.Gtk.Windows;
+using Lanchat.Gtk.Views;
 using Node = Lanchat.Core.Node;
 
 namespace Lanchat.Gtk
@@ -28,14 +28,17 @@ namespace Lanchat.Gtk
 
         private void OnConnected(object sender, EventArgs e)
         {
+            mainWindow.AddConnected(node.Nickname, node.Id);
         }
 
         private void OnDisconnected(object sender, EventArgs e)
         {
+            mainWindow.RemoveConnected(node.Id);
         }
 
         private void OnHardDisconnected(object sender, EventArgs e)
         {
+            mainWindow.RemoveConnected(node.Id);
         }
 
         private void OnMessageReceived(object sender, string e)
