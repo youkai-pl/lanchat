@@ -97,7 +97,6 @@ namespace Lanchat.Gtk.Windows
             AddChatEntry($"{Program.Config.Nickname}#0000", input.Text);
             Program.Network.BroadcastMessage(input.Text);
             input.Text = string.Empty;
-            scroll.Vadjustment.Value = double.MaxValue;
         }
 
         private static void Window_DeleteEvent(object sender, DeleteEventArgs a)
@@ -134,6 +133,7 @@ namespace Lanchat.Gtk.Windows
             box.Add(content);
             chat.Add(new ListBoxRow {Child = box});
             chat.ShowAll();
+            scroll.Vadjustment.Value = scroll.Vadjustment.Upper;
         }
     }
 }
