@@ -272,7 +272,7 @@
       </object>
     </child>
   </object>
-  <object class="GtkPopover" id="menu">
+  <object class="GtkPopover" id="settingsMenu">
     <property name="can-focus">False</property>
     <property name="relative-to">menuToggle</property>
     <child>

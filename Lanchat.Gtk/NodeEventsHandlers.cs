@@ -1,16 +1,14 @@
 using System;
 using System.Net.Sockets;
-using Gtk;
+using Lanchat.Core;
 using Lanchat.Gtk.Views;
-using Node = Lanchat.Core.Node;
 
 namespace Lanchat.Gtk
 {
     public class NodeEventsHandlers
     {
-        private readonly Node node;
         private readonly MainWindow mainWindow;
-        private object lockChat = new object();
+        private readonly Node node;
 
         public NodeEventsHandlers(Node node, MainWindow mainWindow)
         {
@@ -28,22 +26,22 @@ namespace Lanchat.Gtk
 
         private void OnConnected(object sender, EventArgs e)
         {
-            mainWindow.AddConnected(node.Nickname, node.Id);
+            mainWindow.SideBar.AddConnected(node.Nickname, node.Id);
         }
 
         private void OnDisconnected(object sender, EventArgs e)
         {
-            mainWindow.RemoveConnected(node.Id);
+            mainWindow.SideBar.RemoveConnected(node.Id);
         }
 
         private void OnHardDisconnected(object sender, EventArgs e)
         {
-            mainWindow.RemoveConnected(node.Id);
+            mainWindow.SideBar.RemoveConnected(node.Id);
         }
 
         private void OnMessageReceived(object sender, string e)
         {
-            mainWindow.AddChatEntry(node.Nickname, e);
+            mainWindow.Chat.AddChatEntry(node.Nickname, e);
         }
 
         private void OnPrivateMessageReceived(object sender, string e)
