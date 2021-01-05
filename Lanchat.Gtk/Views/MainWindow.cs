@@ -108,53 +108,62 @@ namespace Lanchat.Gtk.Views
 
         public void AddChatEntry(string nickname, string message)
         {
-            var box = new Box(Orientation.Vertical, 0);
-
-            var sender = new Label
+            Application.Invoke(delegate
             {
-                Valign = Align.Start,
-                Halign = Align.Start,
-                Markup = $"<b>{nickname}</b>"
-            };
+                var box = new Box(Orientation.Vertical, 0);
 
-            var content = new Label(message)
-            {
-                Valign = Align.Start,
-                Halign = Align.Start,
-                Wrap = true,
-                LineWrapMode = WrapMode.Char,
-                Selectable = true
-            };
+                var sender = new Label
+                {
+                    Valign = Align.Start,
+                    Halign = Align.Start,
+                    Markup = $"<b>{nickname}</b>"
+                };
 
-            if (lastMessageAuthor != nickname)
-            {
-                box.Add(sender);
-                lastMessageAuthor = nickname;
-            }
+                var content = new Label(message)
+                {
+                    Valign = Align.Start,
+                    Halign = Align.Start,
+                    Wrap = true,
+                    LineWrapMode = WrapMode.Char,
+                    Selectable = true
+                };
 
-            box.Add(content);
-            chat.Add(new ListBoxRow {Child = box});
-            chat.ShowAll();
-            scroll.Vadjustment.Value = scroll.Vadjustment.Upper;
+                if (lastMessageAuthor != nickname)
+                {
+                    box.Add(sender);
+                    lastMessageAuthor = nickname;
+                }
+
+                box.Add(content);
+                chat.Add(new ListBoxRow {Child = box});
+                chat.ShowAll();
+                scroll.Vadjustment.Value = scroll.Vadjustment.Upper;
+            });
         }
 
         public void AddConnected(string nickname, Guid id)
         {
-            connectedList.Add(new ListBoxRow
+            Application.Invoke(delegate
             {
-                Child = new Label(nickname)
+                connectedList.Add(new ListBoxRow
                 {
-                    Margin = 2
-                },
-                Halign = Align.Start,
-                Name = $"{id}-cl"
+                    Child = new Label(nickname)
+                    {
+                        Margin = 2
+                    },
+                    Halign = Align.Start,
+                    Name = $"{id}-cl"
+                });
+                connectedList.ShowAll();
             });
-            connectedList.ShowAll();
         }
 
         public void RemoveConnected(Guid id)
         {
-            connectedList.Remove(connectedList.Children.FirstOrDefault(x => x.Name == $"{id}-cl"));
+            Application.Invoke(delegate
+            {
+                connectedList.Remove(connectedList.Children.FirstOrDefault(x => x.Name == $"{id}-cl"));
+            });
         }
     }
 }
