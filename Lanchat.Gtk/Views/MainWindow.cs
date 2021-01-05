@@ -16,13 +16,15 @@ namespace Lanchat.Gtk.Views
             builder.Autoconnect(this);
 
             Chat = new Chat(scroll, chat, input);
-            SideBar = new SideBar(connectedList, onlineList);
+            SideBar = new SideBar(sideBar, connectedList, onlineList);
 
             _ = new SettingsMenu(
+                this,
                 settingsMenu,
                 menuToggle,
                 menuNicknameField,
-                menuSaveButton);
+                menuSaveButton,
+                sidebarSwitch);
 
             _ = new ConnectMenu(
                 connectMenu,
@@ -53,6 +55,7 @@ namespace Lanchat.Gtk.Views
         [UI] private ToggleButton menuToggle;
         [UI] private Entry menuNicknameField;
         [UI] private Button menuSaveButton;
+        [UI] private CheckButton sidebarSwitch;
 
         // Connect menu
         [UI] private Popover connectMenu;
@@ -62,6 +65,7 @@ namespace Lanchat.Gtk.Views
         [UI] private Button connectButton;
 
         // Sidebar
+        [UI] private ScrolledWindow sideBar;
         [UI] private ListBox connectedList;
         [UI] private ListBox onlineList;
 #pragma warning restore 649

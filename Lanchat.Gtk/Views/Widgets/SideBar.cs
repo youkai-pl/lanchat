@@ -7,11 +7,13 @@ namespace Lanchat.Gtk.Views.Widgets
 {
     public class SideBar
     {
+        [UI] private readonly ScrolledWindow sideBar;
         [UI] private readonly ListBox connectedList;
         [UI] private readonly ListBox onlineList;
 
-        public SideBar(ListBox connectedList, ListBox onlineList)
+        public SideBar(ScrolledWindow sideBar, ListBox connectedList, ListBox onlineList)
         {
+            this.sideBar = sideBar;
             this.connectedList = connectedList;
             this.onlineList = onlineList;
         }
@@ -39,6 +41,18 @@ namespace Lanchat.Gtk.Views.Widgets
             {
                 connectedList.Remove(connectedList.Children.FirstOrDefault(x => x.Name == $"{id}-cl"));
             });
+        }
+
+        public void SwitchVisibility()
+        {
+            if (sideBar.Visible)
+            {
+                sideBar.Hide();
+            }
+            else
+            {
+                sideBar.Show();
+            }
         }
     }
 }
