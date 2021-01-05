@@ -26,22 +26,22 @@ namespace Lanchat.Gtk
 
         private void OnConnected(object sender, EventArgs e)
         {
-            mainWindow.SideBar.AddConnected(node.Nickname, node.Id);
+            mainWindow.SideBarWidget.AddConnected(node.Nickname, node.Id);
         }
 
         private void OnDisconnected(object sender, EventArgs e)
         {
-            mainWindow.SideBar.RemoveConnected(node.Id);
+            mainWindow.SideBarWidget.RemoveConnected(node.Id);
         }
 
         private void OnHardDisconnected(object sender, EventArgs e)
         {
-            mainWindow.SideBar.RemoveConnected(node.Id);
+            mainWindow.SideBarWidget.RemoveConnected(node.Id);
         }
 
         private void OnMessageReceived(object sender, string e)
         {
-            mainWindow.Chat.AddChatEntry(node.Nickname, e);
+            mainWindow.ChatWidget.AddChatEntry(node.Nickname, e);
         }
 
         private void OnPrivateMessageReceived(object sender, string e)

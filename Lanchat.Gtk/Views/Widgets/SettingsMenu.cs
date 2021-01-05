@@ -1,30 +1,26 @@
 using System;
-using System.Diagnostics;
 using Gtk;
-using Switch = Gtk.Switch;
-using UI = Gtk.Builder.ObjectAttribute;
 
 namespace Lanchat.Gtk.Views.Widgets
 {
     public class SettingsMenu
     {
         private readonly MainWindow mainWindow;
-        [UI] private readonly Popover menu;
-        [UI] private readonly Entry nickname;
-        [UI] private readonly Button saveButton;
-        [UI] private readonly ToggleButton toggle;
-        [UI] private readonly CheckButton sidebarSwitch;
+        private readonly Popover menu;
+        private readonly Entry nickname;
+        private readonly Button saveButton;
+        private readonly CheckButton sidebarSwitch;
+        private readonly ToggleButton toggle;
 
-        public SettingsMenu(MainWindow mainWindow, Popover menu, ToggleButton toggle, Entry nickname, Button saveButton,
-            CheckButton sidebarSwitch)
+        public SettingsMenu(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
-            this.menu = menu;
-            this.toggle = toggle;
-            this.nickname = nickname;
-            this.saveButton = saveButton;
-            this.sidebarSwitch = sidebarSwitch;
-            
+            menu = mainWindow.Menu;
+            toggle = mainWindow.MenuToggle;
+            nickname = mainWindow.MenuNicknameField;
+            saveButton = mainWindow.MenuSaveButton;
+            sidebarSwitch = mainWindow.SidebarSwitch;
+
             nickname.Text = Program.Config.Nickname;
 
             menu.Closed += OnClosed;
@@ -35,7 +31,7 @@ namespace Lanchat.Gtk.Views.Widgets
 
         private void SidebarSwitchOnClicked(object sender, EventArgs e)
         {
-            mainWindow.SideBar.SwitchVisibility();
+            mainWindow.SideBarWidget.SwitchVisibility();
         }
 
         private void ToggleOnToggled(object sender, EventArgs e)

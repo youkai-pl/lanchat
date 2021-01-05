@@ -1,23 +1,22 @@
 using Gtk;
 using Key = Gdk.Key;
-using UI = Gtk.Builder.ObjectAttribute;
 using WrapMode = Pango.WrapMode;
 
 namespace Lanchat.Gtk.Views.Widgets
 {
-    public class Chat
+    public class ChatWidget
     {
-        [UI] private readonly ListBox chat;
-        [UI] private readonly Entry input;
-        [UI] private readonly ScrolledWindow scroll;
+        private readonly ListBox chat;
+        private readonly Entry input;
+        private readonly ScrolledWindow scroll;
 
         private string lastMessageAuthor;
 
-        public Chat(ScrolledWindow scroll, ListBox chat, Entry input)
+        public ChatWidget(MainWindow mainWindow)
         {
-            this.scroll = scroll;
-            this.chat = chat;
-            this.input = input;
+            scroll = mainWindow.Scroll;
+            chat = mainWindow.Chat;
+            input = mainWindow.Input;
 
             input.KeyReleaseEvent += InputOnKeyReleaseEvent;
         }

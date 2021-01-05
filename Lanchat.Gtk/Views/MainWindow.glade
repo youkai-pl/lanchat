@@ -18,7 +18,7 @@
             <property name="margin-end">5</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkScrolledWindow" id="scroll">
+              <object class="GtkScrolledWindow" id="Scroll">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="margin-bottom">5</property>
@@ -31,7 +31,7 @@
                     <property name="can-focus">False</property>
                     <property name="shadow-type">none</property>
                     <child>
-                      <object class="GtkListBox" id="chat">
+                      <object class="GtkListBox" id="Chat">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="selection-mode">none</property>
@@ -48,7 +48,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="input">
+              <object class="GtkEntry" id="Input">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
               </object>
@@ -66,7 +66,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkScrolledWindow" id="sideBar">
+          <object class="GtkScrolledWindow" id="SideBar">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="hscrollbar-policy">never</property>
@@ -98,7 +98,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkListBox" id="connectedList">
+                      <object class="GtkListBox" id="ConnectedList">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="selection-mode">none</property>
@@ -126,7 +126,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkListBox" id="onlineList">
+                      <object class="GtkListBox" id="OnlineList">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="selection-mode">none</property>
@@ -157,7 +157,7 @@
         <property name="title" translatable="yes">Lanchat GTK</property>
         <property name="show-close-button">True</property>
         <child>
-          <object class="GtkToggleButton" id="menuToggle">
+          <object class="GtkToggleButton" id="MenuToggle">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
@@ -174,7 +174,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkToggleButton" id="connectMenuToggle">
+          <object class="GtkToggleButton" id="ConnectMenuToggle">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
@@ -193,9 +193,9 @@
       </object>
     </child>
   </object>
-  <object class="GtkPopover" id="connectMenu">
+  <object class="GtkPopover" id="ConnectMenu">
     <property name="can-focus">False</property>
-    <property name="relative-to">connectMenuToggle</property>
+    <property name="relative-to">ConnectMenuToggle</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -219,7 +219,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry" id="connectIpAddress">
+          <object class="GtkEntry" id="ConnectIpAddress">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="margin-bottom">5</property>
@@ -244,7 +244,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry" id="connectPortNumber">
+          <object class="GtkEntry" id="ConnectPortNumber">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="margin-bottom">5</property>
@@ -257,7 +257,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="connectButton">
+          <object class="GtkButton" id="ConnectButton">
             <property name="label" translatable="yes">Connect</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
@@ -272,9 +272,9 @@
       </object>
     </child>
   </object>
-  <object class="GtkPopover" id="settingsMenu">
+  <object class="GtkPopover" id="Menu">
     <property name="can-focus">False</property>
-    <property name="relative-to">menuToggle</property>
+    <property name="relative-to">MenuToggle</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -298,7 +298,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry" id="menuNicknameField">
+          <object class="GtkEntry" id="MenuNicknameField">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="margin-bottom">5</property>
@@ -310,7 +310,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="menuSaveButton">
+          <object class="GtkButton" id="MenuSaveButton">
             <property name="label" translatable="yes">Save</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
@@ -335,7 +335,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="sidebarSwitch">
+          <object class="GtkCheckButton" id="SidebarSwitch">
             <property name="label" translatable="yes">Show side bar</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>

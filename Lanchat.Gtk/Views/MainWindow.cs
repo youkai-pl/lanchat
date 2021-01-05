@@ -2,10 +2,39 @@ using Gtk;
 using Lanchat.Gtk.Views.Widgets;
 using UI = Gtk.Builder.ObjectAttribute;
 
+// ReSharper disable UnassignedField.Global
+
 namespace Lanchat.Gtk.Views
 {
     public class MainWindow : Window
     {
+        // Chat
+        [UI] public ScrolledWindow Scroll;
+        [UI] public ListBox Chat;
+        [UI] public Button ConnectButton;
+        [UI] public ListBox ConnectedList;
+        [UI] public Entry ConnectIpAddress;
+
+        // Connect menu
+        [UI] public Popover ConnectMenu;
+        [UI] public ToggleButton ConnectMenuToggle;
+        [UI] public Entry ConnectPortNumber;
+        [UI] public Entry Input;
+
+        // Settings menu
+        [UI] public Popover Menu;
+        [UI] public Entry MenuNicknameField;
+        [UI] public Button MenuSaveButton;
+        [UI] public ToggleButton MenuToggle;
+        [UI] public ListBox OnlineList;
+
+        // Sidebar
+        [UI] public ScrolledWindow SideBar;
+        [UI] public CheckButton SidebarSwitch;
+
+        public ChatWidget ChatWidget { get; }
+        public SideBar SideBarWidget { get; }
+        
         public MainWindow() : this(new Builder("MainWindow.glade"))
         {
         }
@@ -15,59 +44,18 @@ namespace Lanchat.Gtk.Views
             DeleteEvent += Window_DeleteEvent;
             builder.Autoconnect(this);
 
-            Chat = new Chat(scroll, chat, input);
-            SideBar = new SideBar(sideBar, connectedList, onlineList);
+            ChatWidget = new ChatWidget(this);
+            SideBarWidget = new SideBar(this);
 
-            _ = new SettingsMenu(
-                this,
-                settingsMenu,
-                menuToggle,
-                menuNicknameField,
-                menuSaveButton,
-                sidebarSwitch);
-
-            _ = new ConnectMenu(
-                connectMenu,
-                connectMenuToggle,
-                connectIpAddress,
-                connectPortNumber,
-                connectButton);
+            _ = new SettingsMenu(this);
+            _ = new ConnectMenu(this);
 
             Program.Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, this); };
         }
-
-        public Chat Chat { get; }
-        public SideBar SideBar { get; }
 
         private static void Window_DeleteEvent(object sender, DeleteEventArgs a)
         {
             Application.Quit();
         }
-        
-#pragma warning disable 649
-        // Chat
-        [UI] private ScrolledWindow scroll;
-        [UI] private ListBox chat;
-        [UI] private Entry input;
-
-        // Settings menu
-        [UI] private Popover settingsMenu;
-        [UI] private ToggleButton menuToggle;
-        [UI] private Entry menuNicknameField;
-        [UI] private Button menuSaveButton;
-        [UI] private CheckButton sidebarSwitch;
-
-        // Connect menu
-        [UI] private Popover connectMenu;
-        [UI] private ToggleButton connectMenuToggle;
-        [UI] private Entry connectIpAddress;
-        [UI] private Entry connectPortNumber;
-        [UI] private Button connectButton;
-
-        // Sidebar
-        [UI] private ScrolledWindow sideBar;
-        [UI] private ListBox connectedList;
-        [UI] private ListBox onlineList;
-#pragma warning restore 649
     }
 }

@@ -1,27 +1,24 @@
 using System;
 using System.Net;
 using Gtk;
-using UI = Gtk.Builder.ObjectAttribute;
 
 namespace Lanchat.Gtk.Views.Widgets
 {
     public class ConnectMenu
     {
-        [UI] private readonly Entry ipAddressEntry;
-        [UI] private readonly Popover menu;
-        [UI] private readonly Entry portNumberEntry;
-        [UI] private readonly ToggleButton toggle;
-        [UI] private Button connectButton;
+        private readonly Entry ipAddressEntry;
+        private readonly Popover menu;
+        private readonly Entry portNumberEntry;
+        private readonly ToggleButton toggle;
+        private readonly Button connectButton;
 
-        public ConnectMenu(Popover menu, ToggleButton toggle, Entry ipAddressEntry,
-            Entry portNumberEntry, Button connectButton)
+        public ConnectMenu(MainWindow mainWindow)
         {
-            this.menu = menu;
-            this.toggle = toggle;
-            this.ipAddressEntry = ipAddressEntry;
-            this.portNumberEntry = portNumberEntry;
-            this.connectButton = connectButton;
-
+            menu = mainWindow.ConnectMenu;
+            toggle = mainWindow.ConnectMenuToggle;
+            ipAddressEntry = mainWindow.ConnectIpAddress;
+            portNumberEntry = mainWindow.ConnectPortNumber;
+            connectButton = mainWindow.ConnectButton;
             portNumberEntry.Text = Program.Config.Port.ToString();
 
             menu.Closed += MenuOnClosed;
