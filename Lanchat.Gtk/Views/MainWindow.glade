@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.38.2 -->
 <interface>
-  <requires lib="gtk+" version="3.18"/>
+  <requires lib="gtk+" version="3.22"/>
   <object class="GtkWindow" id="MainWindow">
     <property name="can-focus">False</property>
     <property name="border-width">5</property>
@@ -51,7 +51,6 @@
               <object class="GtkEntry" id="input">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
-                <property name="shadow-type">out</property>
               </object>
               <packing>
                 <property name="expand">False</property>
