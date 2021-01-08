@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Timers;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 
@@ -71,11 +72,16 @@ namespace Lanchat.Core
         ///     New node detected in network.
         /// </summary>
         public event EventHandler<Broadcast> NodeDetected;
-        
+
         /// <summary>
         ///     Detected node has changed its nickname.
         /// </summary>
         public event EventHandler<Broadcast> DetectedNodeChanged;
+
+        /// <summary>
+        ///     Detected node doesn't send broadcasts.
+        /// </summary>
+        public event EventHandler<Broadcast> DetectedNodeDisappeared;
 
         /// <summary>
         ///     Start server.
@@ -197,10 +203,33 @@ namespace Lanchat.Core
             if (alreadyDetected == null)
             {
                 detectedNodes.Add(e);
+                e.Active = true;
                 NodeDetected?.Invoke(this, e);
+
+                var timer = new Timer
+                {
+                    Interval = 2500,
+                    Enabled = true
+                };
+
+                timer.Elapsed += (o, args) =>
+                {
+                    if (e.Active)
+                    {
+                        e.Active = false;
+                    }
+                    else
+                    {
+                        timer.Dispose();
+                        DetectedNodeDisappeared?.Invoke(this, e);
+                        detectedNodes.Remove(e);
+                    }
+                };
             }
-            else if (alreadyDetected.Nickname != e.Nickname)
+            else
             {
+                alreadyDetected.Active = true;
+                if (alreadyDetected.Nickname == e.Nickname) return;
                 alreadyDetected.Nickname = e.Nickname;
                 DetectedNodeChanged?.Invoke(this, alreadyDetected);
             }
