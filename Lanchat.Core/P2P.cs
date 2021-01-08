@@ -68,6 +68,16 @@ namespace Lanchat.Core
         public event EventHandler<Node> ConnectionCreated;
 
         /// <summary>
+        ///     New node detected in network.
+        /// </summary>
+        public event EventHandler<Broadcast> NodeDetected;
+        
+        /// <summary>
+        ///     Detected node has changed its nickname.
+        /// </summary>
+        public event EventHandler<Broadcast> DetectedNodeChanged;
+
+        /// <summary>
         ///     Start server.
         /// </summary>
         public void StartServer()
@@ -183,19 +193,16 @@ namespace Lanchat.Core
         // UDP broadcast received
         private void BroadcastReceived(object sender, Broadcast e)
         {
-            var alreadyDetected = detectedNodes.FirstOrDefault(x => x.Guid == e.Guid) ??
-                                  detectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
-
+            var alreadyDetected = detectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
             if (alreadyDetected == null)
             {
                 detectedNodes.Add(e);
-                Trace.WriteLine("New node detected");
+                NodeDetected?.Invoke(this, e);
             }
-            else
+            else if (alreadyDetected.Nickname != e.Nickname)
             {
                 alreadyDetected.Nickname = e.Nickname;
-                alreadyDetected.IpAddress = e.IpAddress;
-                alreadyDetected.Guid = e.Guid;
+                DetectedNodeChanged?.Invoke(this, alreadyDetected);
             }
         }
     }
