@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Gtk;
 using Lanchat.Gtk.Views.Widgets;
 using UI = Gtk.Builder.ObjectAttribute;

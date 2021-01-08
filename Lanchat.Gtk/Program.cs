@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using GLib;
 using Lanchat.ClientCore;
 using Lanchat.Core;
@@ -28,6 +29,7 @@ namespace Lanchat.Gtk
 
             win.Show();
             Network.StartServer();
+            Network.StartBroadcast();
             LoggingService.StartLogging();
             LoggingService.CleanLogs();
             Application.Run();
