@@ -21,10 +21,7 @@ namespace Lanchat.Core
             get => _nickname;
             set
             {
-                if (_nickname == value)
-                {
-                    return;
-                }
+                if (_nickname == value) return;
 
                 _nickname = value;
                 NicknameChanged?.Invoke(null, EventArgs.Empty);
@@ -45,27 +42,27 @@ namespace Lanchat.Core
         ///     Max message lenght. Longer incoming messages will be trimmed.
         /// </summary>
         public static int MaxMessageLenght { get; set; } = 2000;
-        
+
         /// <summary>
         ///     Max nickname lenght. Longer nicknames will be trimmed.
         /// </summary>
         public static int MaxNicknameLenght { get; set; } = 20;
-        
+
         /// <summary>
         ///     Blocked IP addresses.
         /// </summary>
-        public static List<IPAddress> BlockedAddresses { get; set; } = new List<IPAddress>();
-        
+        public static List<IPAddress> BlockedAddresses { get; set; } = new();
+
         // Internal configurations
         internal static JsonSerializerOptions JsonSerializerOptions =>
-            new JsonSerializerOptions
+            new()
             {
                 Converters =
                 {
                     new JsonStringEnumConverter()
                 }
             };
-        
+
         // Config events
         internal static event EventHandler NicknameChanged;
     }

@@ -16,7 +16,7 @@ namespace Lanchat.Terminal
         private static int _broadcastPort = 3646;
         private static string _nickname = "user";
 
-        public List<string> BlockedAddresses { get; } = new List<string>();
+        public List<string> BlockedAddresses { get; } = new();
 
         public int Port
         {
@@ -27,7 +27,7 @@ namespace Lanchat.Terminal
                 Save();
             }
         }
-        
+
         public int BroadcastPort
         {
             get => _broadcastPort;
@@ -55,10 +55,7 @@ namespace Lanchat.Terminal
         {
             var ipString = ipAddress.ToString();
 
-            if (BlockedAddresses.Contains(ipString))
-            {
-                return;
-            }
+            if (BlockedAddresses.Contains(ipString)) return;
 
             BlockedAddresses.Add(ipString);
             CoreConfig.BlockedAddresses.Add(ipAddress);
@@ -78,26 +75,17 @@ namespace Lanchat.Terminal
             try
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
                     Path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Lanchat2/";
-                }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
                     Path = Environment.GetEnvironmentVariable("HOME") + "/.Lancaht2/";
-                }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
                     Path = Environment.GetEnvironmentVariable("HOME") + "/Library/Preferences/.Lancaht2/";
-                }
 
                 newConfig = JsonSerializer.Deserialize<Config>(File.ReadAllText(Path + "config.json"));
             }
             catch (Exception e)
             {
-                if (!(e is FileNotFoundException) && !(e is DirectoryNotFoundException) && !(e is JsonException))
-                {
-                    throw;
-                }
+                if (!(e is FileNotFoundException) && !(e is DirectoryNotFoundException) && !(e is JsonException)) throw;
 
                 Trace.WriteLine("[APP] Config load error");
                 newConfig = new Config();
@@ -115,20 +103,14 @@ namespace Lanchat.Terminal
         {
             try
             {
-                if (!Directory.Exists(Path))
-                {
-                    Directory.CreateDirectory(Path);
-                }
+                if (!Directory.Exists(Path)) Directory.CreateDirectory(Path);
 
                 File.WriteAllText(Path + "config.json",
                     JsonSerializer.Serialize(this, new JsonSerializerOptions {WriteIndented = true}));
             }
             catch (Exception e)
             {
-                if (!(e is DirectoryNotFoundException) && !(e is UnauthorizedAccessException))
-                {
-                    throw;
-                }
+                if (!(e is DirectoryNotFoundException) && !(e is UnauthorizedAccessException)) throw;
 
                 Trace.WriteLine(e.Message);
             }

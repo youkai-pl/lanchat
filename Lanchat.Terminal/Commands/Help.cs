@@ -9,10 +9,7 @@ namespace Lanchat.Terminal.Commands
     {
         public static void Execute(string[] args)
         {
-            if (args == null)
-            {
-                throw new ArgumentNullException(nameof(args));
-            }
+            if (args == null) throw new ArgumentNullException(nameof(args));
 
             if (args.Length < 1)
             {

@@ -15,7 +15,7 @@ namespace Lanchat.Terminal.Commands
                 Ui.Log.Add(Resources.Manual_Block);
                 return;
             }
-            
+
             if (args[0].Length == 4)
             {
                 var node = Program.Network.Nodes.Find(x => x.ShortId == args[0]);

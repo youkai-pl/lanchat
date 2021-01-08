@@ -54,7 +54,7 @@ namespace Lanchat.Core
         protected override TcpSession CreateSession()
         {
             var session = new Session(this);
-            
+
             session.Connected += (sender, args) =>
             {
                 if (CoreConfig.BlockedAddresses.Contains(session.Endpoint.Address))
@@ -67,7 +67,7 @@ namespace Lanchat.Core
                     var node = new Node(session, true);
                     IncomingConnections.Add(node);
                     node.HardDisconnect += OnHardDisconnected;
-                    SessionCreated?.Invoke(this, node); 
+                    SessionCreated?.Invoke(this, node);
                     Trace.WriteLine($"Session for {session.Endpoint.Address} created. Session ID: {session.Id}");
                 }
             };

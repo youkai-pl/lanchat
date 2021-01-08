@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Net;
-using System.Net.Http.Json;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
@@ -15,8 +14,8 @@ namespace Lanchat.Core.Network
 {
     internal class BroadcastService
     {
-        private readonly UdpClient udpClient;
         private readonly IPEndPoint endPoint;
+        private readonly UdpClient udpClient;
         private readonly string uniqueId;
 
         internal EventHandler<Broadcast> BroadcastReceived;
@@ -62,7 +61,7 @@ namespace Lanchat.Core.Network
                         Guid = uniqueId,
                         Nickname = CoreConfig.Nickname
                     });
-                    
+
                     var data = Encoding.UTF8.GetBytes(json);
                     udpClient.Send(data, data.Length, endPoint);
                     Thread.Sleep(2000);

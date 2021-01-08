@@ -36,23 +36,16 @@ namespace Lanchat.Core.Network
         internal void ProcessReceivedData(object sender, string dataString)
         {
             foreach (var item in dataString.Replace("}{", "}|{").Split('|'))
-            {
                 try
                 {
                     var json = JsonSerializer.Deserialize<Wrapper>(item, serializerOptions);
                     var content = json.Data?.ToString();
 
                     // If node isn't ready ignore every messages except handshake and key info.
-                    if (!node.Ready && json.Type != DataTypes.Handshake && json.Type != DataTypes.KeyInfo)
-                    {
-                        return;
-                    }
+                    if (!node.Ready && json.Type != DataTypes.Handshake && json.Type != DataTypes.KeyInfo) return;
 
                     // Ignore handshake and key info is node was set as ready before.
-                    if (node.Ready && (json.Type == DataTypes.Handshake || json.Type == DataTypes.KeyInfo))
-                    {
-                        return;
-                    }
+                    if (node.Ready && (json.Type == DataTypes.Handshake || json.Type == DataTypes.KeyInfo)) return;
 
                     switch (json.Type)
                     {
@@ -87,10 +80,7 @@ namespace Lanchat.Core.Network
                             // Convert strings to ip addresses.
                             stringList.ForEach(x =>
                             {
-                                if (IPAddress.TryParse(x, out var ipAddress))
-                                {
-                                    list.Add(ipAddress);
-                                }
+                                if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
                             });
 
                             NodesListReceived?.Invoke(this, list);
@@ -116,24 +106,16 @@ namespace Lanchat.Core.Network
                 catch (Exception ex)
                 {
                     if (ex is JsonException || ex is ArgumentNullException)
-                    {
                         Trace.WriteLine("Invalid data received");
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
-            }
         }
 
         private static string TruncateAndValidate(string value, int maxLength)
         {
             value = value.Trim();
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                throw new ArgumentNullException();
-            }
+            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException();
 
             return value.Length <= maxLength ? value : value.Substring(0, maxLength) + "...";
         }

@@ -24,22 +24,14 @@ namespace Lanchat.Terminal.Commands
             {
                 // If input cannot be parsed as IP try get address from dns
                 if (!IPAddress.TryParse(addressArgument, out var ipAddress))
-                {
                     ipAddress = Dns.GetHostAddresses(addressArgument).FirstOrDefault();
-                }
-                
+
                 // Use port from argument or config
                 var port = 0;
-                if (args.Length > 1)
-                {
-                    port = Parse(args[1]);
-                }
-                
-                if (port == 0)
-                {
-                    port = CoreConfig.ServerPort;
-                }
-                
+                if (args.Length > 1) port = Parse(args[1]);
+
+                if (port == 0) port = CoreConfig.ServerPort;
+
                 Ui.Log.Add($"{Resources.Info_ConnectionAttempt} {addressArgument}");
                 Program.Network.Connect(ipAddress, port);
             }
