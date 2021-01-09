@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Gtk;
 using Lanchat.Gtk.Views.Widgets;
 using UI = Gtk.Builder.ObjectAttribute;
@@ -9,8 +8,6 @@ namespace Lanchat.Gtk.Views
 {
     public class MainWindow : Window
     {
-        // Chat
-        [UI] public ScrolledWindow Scroll;
         [UI] public ListBox Chat;
         [UI] public Button ConnectButton;
         [UI] public ListBox ConnectedList;
@@ -27,15 +24,16 @@ namespace Lanchat.Gtk.Views
         [UI] public Entry MenuNicknameField;
         [UI] public Button MenuSaveButton;
         [UI] public ToggleButton MenuToggle;
+
         [UI] public ListBox OnlineList;
+
+        // Chat
+        [UI] public ScrolledWindow Scroll;
 
         // Sidebar
         [UI] public ScrolledWindow SideBar;
         [UI] public CheckButton SidebarSwitch;
 
-        public ChatWidget ChatWidget { get; }
-        public SideBar SideBarWidget { get; }
-        
         public MainWindow() : this(new Builder("MainWindow.glade"))
         {
         }
@@ -53,6 +51,9 @@ namespace Lanchat.Gtk.Views
 
             Program.Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node, this); };
         }
+
+        public ChatWidget ChatWidget { get; }
+        public SideBar SideBarWidget { get; }
 
         private static void Window_DeleteEvent(object sender, DeleteEventArgs a)
         {

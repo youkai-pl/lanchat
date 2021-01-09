@@ -6,11 +6,11 @@ namespace Lanchat.Gtk.Views.Widgets
 {
     public class ConnectMenu
     {
+        private readonly Button connectButton;
         private readonly Entry ipAddressEntry;
         private readonly Popover menu;
         private readonly Entry portNumberEntry;
         private readonly ToggleButton toggle;
-        private readonly Button connectButton;
 
         public ConnectMenu(MainWindow mainWindow)
         {

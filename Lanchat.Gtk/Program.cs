@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using GLib;
 using Lanchat.ClientCore;
 using Lanchat.Core;
