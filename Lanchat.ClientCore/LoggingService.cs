@@ -9,6 +9,11 @@ namespace Lanchat.ClientCore
     {
         public static void StartLogging()
         {
+            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
+            {
+                Trace.WriteLine(eventArgs.Exception.ToString());
+            };
+            
             Trace.Listeners.Add(new FileTraceListener($"{Config.Path}{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log"));
             Trace.IndentSize = 11;
             Trace.AutoFlush = true;

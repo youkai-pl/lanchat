@@ -52,7 +52,7 @@ namespace Lanchat.Terminal
                     throw;
             }
 
-            // Enable logging
+            // Show logs in console
             if (args.Contains("--debug") || args.Contains("-d") || Debugger.IsAttached)
                 Trace.Listeners.Add(new TerminalTraceListener());
 
