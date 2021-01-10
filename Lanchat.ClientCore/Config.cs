@@ -64,7 +64,7 @@ namespace Lanchat.ClientCore
 
         public void AddBlocked(IPAddress ipAddress)
         {
-            var ipString = ipAddress.ToString();
+            var ipString = ipAddress.MapToIPv6().ToString();
             if (BlockedAddresses.Contains(ipString)) return;
             BlockedAddresses.Add(ipString);
             CoreConfig.BlockedAddresses.Add(ipAddress);
@@ -73,7 +73,7 @@ namespace Lanchat.ClientCore
 
         public void RemoveBlocked(IPAddress ipAddress)
         {
-            BlockedAddresses.Remove(ipAddress.ToString());
+            BlockedAddresses.Remove(ipAddress.MapToIPv6().ToString());
             CoreConfig.BlockedAddresses.Remove(ipAddress);
             Save();
         }
