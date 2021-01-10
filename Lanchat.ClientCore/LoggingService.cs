@@ -9,7 +9,7 @@ namespace Lanchat.ClientCore
     {
         public static void StartLogging()
         {
-            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
+            AppDomain.CurrentDomain.FirstChanceException += (_, eventArgs) =>
             {
                 Trace.WriteLine(eventArgs.Exception.ToString());
             };

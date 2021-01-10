@@ -55,7 +55,7 @@ namespace Lanchat.Core
         {
             var session = new Session(this);
 
-            session.Connected += (sender, args) =>
+            session.Connected += (_, _) =>
             {
                 if (CoreConfig.BlockedAddresses.Contains(session.Endpoint.Address))
                 {

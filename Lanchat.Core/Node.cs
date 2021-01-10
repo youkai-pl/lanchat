@@ -204,7 +204,7 @@ namespace Lanchat.Core
             NetworkOutput.SendHandshake();
 
             // Check is connection established successful after timeout.
-            Task.Delay(5000).ContinueWith(t =>
+            Task.Delay(5000).ContinueWith(_ =>
             {
                 if (!Ready && !UnderReconnecting) NetworkElement.Close();
             });

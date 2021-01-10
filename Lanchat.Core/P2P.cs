@@ -212,7 +212,7 @@ namespace Lanchat.Core
                     Enabled = true
                 };
 
-                timer.Elapsed += (o, args) =>
+                timer.Elapsed += (_, _) =>
                 {
                     if (e.Active)
                     {
