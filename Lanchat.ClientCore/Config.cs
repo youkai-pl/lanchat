@@ -15,8 +15,17 @@ namespace Lanchat.ClientCore
         private static int _port = 3645;
         private static int _broadcastPort = 3646;
         private static string _nickname = "user";
+        private static List<string> _blockedAddresses = new();
 
-        public List<string> BlockedAddresses { get; } = new();
+        public List<string> BlockedAddresses
+        {
+            get => _blockedAddresses;
+            set
+            {
+                _blockedAddresses = value;
+                CoreConfig.BlockedAddresses = _blockedAddresses.Select(IPAddress.Parse).ToList();
+            }
+        }
 
         public int Port
         {
@@ -24,6 +33,7 @@ namespace Lanchat.ClientCore
             set
             {
                 _port = value;
+                CoreConfig.ServerPort = value;
                 Save();
             }
         }
@@ -34,6 +44,7 @@ namespace Lanchat.ClientCore
             set
             {
                 _broadcastPort = value;
+                CoreConfig.BroadcastPort = value;
                 Save();
             }
         }
@@ -54,9 +65,7 @@ namespace Lanchat.ClientCore
         public void AddBlocked(IPAddress ipAddress)
         {
             var ipString = ipAddress.ToString();
-
             if (BlockedAddresses.Contains(ipString)) return;
-
             BlockedAddresses.Add(ipString);
             CoreConfig.BlockedAddresses.Add(ipAddress);
             Save();
@@ -71,7 +80,7 @@ namespace Lanchat.ClientCore
 
         public static Config Load()
         {
-            Config newConfig;
+            Config config;
             try
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -81,22 +90,17 @@ namespace Lanchat.ClientCore
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                     Path = Environment.GetEnvironmentVariable("HOME") + "/Library/Preferences/.Lancaht2/";
 
-                newConfig = JsonSerializer.Deserialize<Config>(File.ReadAllText(Path + "config.json"));
+                config = JsonSerializer.Deserialize<Config>(File.ReadAllText(Path + "config.json"));
             }
             catch (Exception e)
             {
                 if (!(e is FileNotFoundException) && !(e is DirectoryNotFoundException) && !(e is JsonException)) throw;
-
                 Trace.WriteLine("[APP] Config load error");
-                newConfig = new Config();
+                config = new Config();
+                config.Save();
             }
 
-            CoreConfig.Nickname = newConfig.Nickname;
-            CoreConfig.ServerPort = newConfig.Port;
-            CoreConfig.BroadcastPort = newConfig.BroadcastPort;
-            CoreConfig.BlockedAddresses = newConfig.BlockedAddresses.Select(IPAddress.Parse).ToList();
-            newConfig.Save();
-            return newConfig;
+            return config;
         }
 
         private void Save()
@@ -104,14 +108,12 @@ namespace Lanchat.ClientCore
             try
             {
                 if (!Directory.Exists(Path)) Directory.CreateDirectory(Path);
-
                 File.WriteAllText(Path + "config.json",
                     JsonSerializer.Serialize(this, new JsonSerializerOptions {WriteIndented = true}));
             }
             catch (Exception e)
             {
                 if (!(e is DirectoryNotFoundException) && !(e is UnauthorizedAccessException)) throw;
-
                 Trace.WriteLine(e.Message);
             }
         }
