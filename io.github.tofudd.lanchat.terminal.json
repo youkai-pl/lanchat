@@ -1,5 +1,5 @@
 {
-  "app-id": "io.github.tofudd.lanchat",
+  "app-id": "io.github.tofudd.lanchat.terminal",
   "runtime": "org.freedesktop.Platform",
   "runtime-version": "20.08",
   "sdk": "org.freedesktop.Sdk",
@@ -38,17 +38,17 @@
       "build-commands": [
         "/usr/lib/sdk/dotnet5/bin/dotnet publish -c Release --source ../nuget-sources Lanchat.Terminal/Lanchat.Terminal.csproj --runtime $RUNTIME --self-contained true",
         "cp -r --remove-destination /run/build/Lanchat/Lanchat.Terminal/bin/Release/net5.0/$RUNTIME/publish/ /app/bin/",
-        "install -D io.github.tofudd.lanchat.svg /app/share/icons/hicolor/128x128/apps/io.github.tofudd.lanchat.svg",
-        "install -D io.github.tofudd.lanchat.desktop /app/share/applications/io.github.tofudd.lanchat.desktop"
+        "install -D io.github.tofudd.lanchat.terminal.svg /app/share/icons/hicolor/128x128/apps/io.github.tofudd.lanchat.terminal.svg",
+        "install -D io.github.tofudd.lanchat.terminal.desktop /app/share/applications/io.github.tofudd.lanchat.terminal.desktop"
       ],
       "sources": [
         {
           "type": "file",
-          "path": "io.github.tofudd.lanchat.svg"
+          "path": "io.github.tofudd.lanchat.terminal.svg"
         },
         {
           "type": "file",
-          "path": "io.github.tofudd.lanchat.desktop"
+          "path": "io.github.tofudd.lanchat.terminal.desktop"
         },
         {
           "type": "git",
