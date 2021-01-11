@@ -71,6 +71,20 @@
     },
     {
         "type": "file",
+        "url": "https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.app.runtime.linux-x64/5.0.1/microsoft.aspnetcore.app.runtime.linux-x64.5.0.1.nupkg",
+        "sha512": "1596cc7e60435327f25a29ee5bf66e90230d7610561d6ede244d62df0fba6fd0c2d1cc818fdc59dcaaa828a392267ce106f80ec17e1ed2330ef2f58f700b3ec9",
+        "dest": "nuget-sources",
+        "dest-filename": "microsoft.aspnetcore.app.runtime.linux-x64.5.0.1.nupkg"
+    },
+    {
+        "type": "file",
+        "url": "https://api.nuget.org/v3-flatcontainer/microsoft.netcore.app.runtime.linux-x64/5.0.1/microsoft.netcore.app.runtime.linux-x64.5.0.1.nupkg",
+        "sha512": "2692453f8c7db7422f3eb9b41f96623ea111ffd18619f1f360da6b829ba0886154b8cc9b65cb9e0c66cece6c6cc0d128179b82b126beeaef1ad9122a9f103281",
+        "dest": "nuget-sources",
+        "dest-filename": "microsoft.netcore.app.runtime.linux-x64.5.0.1.nupkg"
+    },
+    {
+        "type": "file",
         "url": "https://api.nuget.org/v3-flatcontainer/consolegui/1.2.2/consolegui.1.2.2.nupkg",
         "sha512": "9cd0873d8d8324a76882b9f92f8109eaa5b7a8dd83f4c92cbf4d26a5ab722e3d815469854539c349b19ef9738b2191d701274b2578d616a492533668a515574e",
         "dest": "nuget-sources",
