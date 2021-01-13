@@ -1,17 +1,18 @@
-﻿using System;
+using System;
 using System.Net.Sockets;
 using Lanchat.Core;
-using Lanchat.Terminal.Properties;
-using Lanchat.Terminal.UserInterface;
+using Lanchat.Gtk.Views;
 
-namespace Lanchat.Terminal
+namespace Lanchat.Gtk
 {
     public class NodeEventsHandlers
     {
+        private readonly MainWindow mainWindow;
         private readonly Node node;
 
-        public NodeEventsHandlers(Node node)
+        public NodeEventsHandlers(Node node, MainWindow mainWindow)
         {
+            this.mainWindow = mainWindow;
             this.node = node;
             node.NetworkInput.MessageReceived += OnMessageReceived;
             node.NetworkInput.PrivateMessageReceived += OnPrivateMessageReceived;
@@ -25,45 +26,38 @@ namespace Lanchat.Terminal
 
         private void OnConnected(object sender, EventArgs e)
         {
-            Ui.Log.Add($"{node.Nickname} {Resources.Info_Connected}");
-            Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
+            mainWindow.SideBarWidget.AddConnected(node.Nickname, node.Id);
         }
 
         private void OnDisconnected(object sender, EventArgs e)
         {
-            Ui.Log.Add($"{node.Nickname} {Resources.Info_Reconnecting}");
-            Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
+            mainWindow.SideBarWidget.RemoveConnected(node.Id);
         }
 
         private void OnHardDisconnected(object sender, EventArgs e)
         {
-            Ui.Log.Add($"{node.Nickname} {Resources.Info_Disconnected}");
-            Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
+            mainWindow.SideBarWidget.RemoveConnected(node.Id);
         }
 
         private void OnMessageReceived(object sender, string e)
         {
-            Ui.Log.AddMessage(e, node.Nickname);
+            mainWindow.ChatWidget.AddChatEntry(node.Nickname, e);
         }
 
         private void OnPrivateMessageReceived(object sender, string e)
         {
-            Ui.Log.AddPrivateMessage(e, node.Nickname);
         }
 
         private void OnSocketErrored(object sender, SocketError e)
         {
-            Ui.Log.Add($"{Resources.Info_ConnectionError}: {node.Nickname} / {e}");
         }
 
         private void OnNicknameChanged(object sender, string e)
         {
-            Ui.Log.Add($"{e} {Resources.Info_NicknameChanged} {node.Nickname}");
         }
 
         private void OnCannotConnect(object sender, EventArgs e)
         {
-            Ui.Log.Add($"{Resources.Info_CannotConnect}: {node.Endpoint}");
         }
     }
 }

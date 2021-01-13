@@ -9,5 +9,6 @@ namespace Lanchat.Core.Models
         public string Nickname { get; set; }
 
         [JsonIgnore] public IPAddress IpAddress { get; set; }
+        [JsonIgnore] public bool Active { get; set; }
     }
 }

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Remove="**\*.glade" />
+        <EmbeddedResource Include="**\*.glade">
+            <LogicalName>%(Filename)%(Extension)</LogicalName>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Windows\MainWindow.glade">
+          <LogicalName>MainWindow.glade</LogicalName>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="GtkSharp" Version="3.22.25.*" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Lanchat.ClientCore\Lanchat.ClientCore.csproj" />
+      <ProjectReference Include="..\Lanchat.Core\Lanchat.Core.csproj" />
+    </ItemGroup>
+
+</Project>

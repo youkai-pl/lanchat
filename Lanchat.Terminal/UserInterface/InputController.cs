@@ -17,10 +17,7 @@ namespace Lanchat.Terminal.UserInterface
 
         public void OnInput(InputEvent inputEvent)
         {
-            if (inputEvent.Key.Key != ConsoleKey.Enter)
-            {
-                return;
-            }
+            if (inputEvent.Key.Key != ConsoleKey.Enter) return;
 
             if (!string.IsNullOrWhiteSpace(input.Text))
             {
@@ -77,11 +74,11 @@ namespace Lanchat.Terminal.UserInterface
                 case "unblock":
                     Unblock.Execute(args);
                     break;
-                
+
                 case "blocked":
                     Blocked.Execute();
                     break;
-                
+
                 case "m":
                     PrivateMessage.Execute(args);
                     break;

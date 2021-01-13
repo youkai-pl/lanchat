@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Lanchat.ClientCore;
 using Lanchat.Core;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
@@ -23,13 +23,11 @@ namespace Lanchat.Terminal
             if (args.Contains("--server") || args.Contains("-s"))
             {
                 Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+                LoggingService.StartLogging();
                 var server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
                 server.Start();
-                CleanLogs();
-                while (true)
-                {
-                    Console.ReadKey();
-                }
+                LoggingService.CleanLogs();
+                while (true) Console.ReadKey();
             }
 
             // Initialize p2p mode and ui
@@ -40,65 +38,33 @@ namespace Lanchat.Terminal
                 Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
 
                 // Initialize server
-                if (!args.Contains("--no-server") && !args.Contains("-n"))
-                {
-                    Network.StartServer();
-                }
-                
+                if (!args.Contains("--no-server") && !args.Contains("-n")) Network.StartServer();
+
                 // Start broadcast service
-                if (!args.Contains("--no-udp") && !args.Contains("-b"))
-                {
-                    Network.StartBroadcast();
-                }
+                if (!args.Contains("--no-udp") && !args.Contains("-b")) Network.StartBroadcast();
             }
             catch (SocketException e)
             {
                 if (e.SocketErrorCode == SocketError.AddressAlreadyInUse)
-                {
                     Ui.Log.Add(Resources.Info_PortBusy);
-                }
                 else
-                {
                     throw;
-                }
             }
 
-            // Enable logging
+            // Show logs in console
             if (args.Contains("--debug") || args.Contains("-d") || Debugger.IsAttached)
-            {
                 Trace.Listeners.Add(new TerminalTraceListener());
-            }
 
             // Save logs to file
-            Trace.Listeners.Add(new FileTraceListener($"{Config.Path}{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log"));
-            Trace.IndentSize = 11;
-            Trace.AutoFlush = true;
-            Trace.WriteLine("Logging started");
+            LoggingService.StartLogging();
 
             // Connect with localhost
-            if (args.Contains("--loopback") || args.Contains("-l"))
-            {
-                Network.Connect(IPAddress.Loopback);
-            }
+            if (args.Contains("--loopback") || args.Contains("-l")) Network.Connect(IPAddress.Loopback);
 
             var newVersion = UpdateChecker.CheckUpdates();
-            if (newVersion != null)
-            {
-                Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
-            }
+            if (newVersion != null) Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
 
-            CleanLogs();
-        }
-
-        private static void CleanLogs()
-        {
-            foreach (var fi in new DirectoryInfo(Config.Path)
-                .GetFiles("*.log")
-                .OrderByDescending(x => x.LastWriteTime)
-                .Skip(5))
-            {
-                fi.Delete();
-            }
+            LoggingService.CleanLogs();
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Timers;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 
@@ -11,10 +12,10 @@ namespace Lanchat.Core
 {
     public class P2P
     {
-        private readonly List<Node> outgoingConnections;
-        private readonly List<Broadcast> detectedNodes;
-        private readonly Server server;
         private readonly BroadcastService broadcastService;
+        private readonly List<Broadcast> detectedNodes;
+        private readonly List<Node> outgoingConnections;
+        private readonly Server server;
 
         /// <summary>
         ///     Initialize p2p mode.
@@ -56,10 +57,7 @@ namespace Lanchat.Core
                 var list = new List<Broadcast>();
                 detectedNodes.ForEach(x =>
                 {
-                    if (!Nodes.Any(y => Equals(y.Endpoint.Address, x.IpAddress)))
-                    {
-                        list.Add(x);
-                    }
+                    if (!Nodes.Any(y => Equals(y.Endpoint.Address, x.IpAddress))) list.Add(x);
                 });
                 return list;
             }
@@ -69,6 +67,21 @@ namespace Lanchat.Core
         ///     New node connected. After receiving this handlers for node events can be created.
         /// </summary>
         public event EventHandler<Node> ConnectionCreated;
+
+        /// <summary>
+        ///     New node detected in network.
+        /// </summary>
+        public event EventHandler<Broadcast> NodeDetected;
+
+        /// <summary>
+        ///     Detected node has changed its nickname.
+        /// </summary>
+        public event EventHandler<Broadcast> DetectedNodeChanged;
+
+        /// <summary>
+        ///     Detected node doesn't send broadcasts.
+        /// </summary>
+        public event EventHandler<Broadcast> DetectedNodeDisappeared;
 
         /// <summary>
         ///     Start server.
@@ -106,23 +119,16 @@ namespace Lanchat.Core
             port ??= CoreConfig.ServerPort;
 
             // Throw if node is blocked
-            if (CoreConfig.BlockedAddresses.Contains(ipAddress))
-            {
-                throw new ArgumentException("Node blocked");
-            }
+            if (CoreConfig.BlockedAddresses.Contains(ipAddress)) throw new ArgumentException("Node blocked");
 
             // Throw if node already connected
             if (Nodes.Any(x => x.Endpoint.Address.Equals(ipAddress)))
-            {
                 throw new ArgumentException("Already connected to this node");
-            }
 
             // Throw if local address
             var host = Dns.GetHostEntry(Dns.GetHostName());
             if (host.AddressList.Where(ip => ip.AddressFamily == AddressFamily.InterNetwork).Contains(ipAddress))
-            {
                 throw new ArgumentException("Illegal IP address. Cannot connect");
-            }
 
             var client = new Client(ipAddress, port.Value);
             var node = new Node(client, false);
@@ -193,19 +199,39 @@ namespace Lanchat.Core
         // UDP broadcast received
         private void BroadcastReceived(object sender, Broadcast e)
         {
-            var alreadyDetected = detectedNodes.FirstOrDefault(x => x.Guid == e.Guid) ??
-                                  detectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
-
+            var alreadyDetected = detectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
             if (alreadyDetected == null)
             {
                 detectedNodes.Add(e);
-                Trace.WriteLine("New node detected");
+                e.Active = true;
+                NodeDetected?.Invoke(this, e);
+
+                var timer = new Timer
+                {
+                    Interval = 2500,
+                    Enabled = true
+                };
+
+                timer.Elapsed += (_, _) =>
+                {
+                    if (e.Active)
+                    {
+                        e.Active = false;
+                    }
+                    else
+                    {
+                        timer.Dispose();
+                        DetectedNodeDisappeared?.Invoke(this, e);
+                        detectedNodes.Remove(e);
+                    }
+                };
             }
             else
             {
+                alreadyDetected.Active = true;
+                if (alreadyDetected.Nickname == e.Nickname) return;
                 alreadyDetected.Nickname = e.Nickname;
-                alreadyDetected.IpAddress = e.IpAddress;
-                alreadyDetected.Guid = e.Guid;
+                DetectedNodeChanged?.Invoke(this, alreadyDetected);
             }
         }
     }
