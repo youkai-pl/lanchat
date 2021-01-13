@@ -93,6 +93,11 @@ namespace Lanchat.Terminal.UserInterface
 
         private static IEnumerable<string> Prepare(string text)
         {
+            if (text == null)
+            {
+                return new[] {""};
+            }
+
             return text.Split(
                 new[] {"\r\n", "\r", "\n"},
                 StringSplitOptions.None
