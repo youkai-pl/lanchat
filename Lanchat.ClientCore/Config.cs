@@ -60,7 +60,8 @@ namespace Lanchat.ClientCore
             }
         }
 
-        public static string Path { get; private set; }
+        public static string ConfigPath { get; private set; }
+        public static string DataPath { get; private set; }
 
         public void AddBlocked(IPAddress ipAddress)
         {
@@ -83,14 +84,31 @@ namespace Lanchat.ClientCore
             Config config;
             try
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                    Path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Lanchat2/";
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                    Path = Environment.GetEnvironmentVariable("HOME") + "/.Lancaht2/";
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                    Path = Environment.GetEnvironmentVariable("HOME") + "/Library/Preferences/.Lancaht2/";
+                var xdgConfigHome = Environment.GetEnvironmentVariable("XDG_CONFIG_HOME");
+                var xdgDataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
 
-                config = JsonSerializer.Deserialize<Config>(File.ReadAllText(Path + "config.json"));
+                if (xdgDataHome != null && xdgConfigHome != null)
+                {
+                    DataPath = xdgDataHome;
+                    ConfigPath = $"{xdgConfigHome}/config.json";
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    DataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Lanchat2";
+                    ConfigPath = $"{DataPath}/config.json";
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    DataPath = Environment.GetEnvironmentVariable("HOME") + "/.Lancaht2";
+                    ConfigPath = $"{DataPath}/config.json";
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    DataPath = Environment.GetEnvironmentVariable("HOME") + "/Library/Preferences/.Lancaht2";
+                    ConfigPath = $"{DataPath}/config.json";
+                }
+
+                config = JsonSerializer.Deserialize<Config>(File.ReadAllText(ConfigPath));
             }
             catch (Exception e)
             {
@@ -107,8 +125,12 @@ namespace Lanchat.ClientCore
         {
             try
             {
-                if (!Directory.Exists(Path)) Directory.CreateDirectory(Path);
-                File.WriteAllText(Path + "config.json",
+                var configFileDirectory = Path.GetDirectoryName(ConfigPath);
+                if (!Directory.Exists(configFileDirectory))
+                {
+                    Directory.CreateDirectory(configFileDirectory!);
+                }
+                File.WriteAllText(ConfigPath,
                     JsonSerializer.Serialize(this, new JsonSerializerOptions {WriteIndented = true}));
             }
             catch (Exception e)
