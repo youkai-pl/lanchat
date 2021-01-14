@@ -51,18 +51,21 @@ namespace Lanchat.Core.Network
                     {
                         case DataTypes.Message:
                             MessageReceived?.Invoke(this,
-                                Common.TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
+                                Common.TruncateAndValidate(node.Encryption.Decrypt(content),
+                                    CoreConfig.MaxMessageLenght));
                             break;
 
                         case DataTypes.PrivateMessage:
                             PrivateMessageReceived?.Invoke(this,
-                                Common.TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
+                                Common.TruncateAndValidate(node.Encryption.Decrypt(content),
+                                    CoreConfig.MaxMessageLenght));
                             break;
 
                         case DataTypes.Handshake:
                             Trace.WriteLine($"Node {node.Id} received handshake");
-                            var handshake = JsonSerializer.Deserialize<Handshake>(content);
-                            handshake.Nickname = Common.TruncateAndValidate(handshake.Nickname, CoreConfig.MaxNicknameLenght);
+                            var handshake = JsonSerializer.Deserialize<Handshake>(content, serializerOptions);
+                            handshake.Nickname =
+                                Common.TruncateAndValidate(handshake.Nickname, CoreConfig.MaxNicknameLenght);
                             node.Status = handshake.Status;
                             HandshakeReceived?.Invoke(this, handshake);
                             break;
@@ -89,16 +92,17 @@ namespace Lanchat.Core.Network
 
                         case DataTypes.NicknameUpdate:
                             Trace.WriteLine($"Node {node.Id} received nickname update");
-                            NicknameChanged?.Invoke(this, Common.TruncateAndValidate(content, CoreConfig.MaxNicknameLenght));
+                            NicknameChanged?.Invoke(this,
+                                Common.TruncateAndValidate(content, CoreConfig.MaxNicknameLenght));
                             break;
 
                         case DataTypes.Goodbye:
                             Trace.WriteLine($"Node {node.Id} received goodbye");
                             node.NetworkElement.EnableReconnecting = false;
                             break;
-                        
+
                         case DataTypes.StatusUpdate:
-                            var status = JsonSerializer.Deserialize<Status>(content);
+                            var status = JsonSerializer.Deserialize<Status>(content, serializerOptions);
                             node.Status = status;
                             break;
 
