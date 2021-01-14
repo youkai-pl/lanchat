@@ -14,6 +14,7 @@
         KeyInfo,
         NicknameUpdate,
         Goodbye,
-        PrivateMessage
+        PrivateMessage,
+        StatusUpdate
     }
 }
