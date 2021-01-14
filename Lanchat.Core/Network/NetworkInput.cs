@@ -95,6 +95,11 @@ namespace Lanchat.Core.Network
                             Trace.WriteLine($"Node {node.Id} received goodbye");
                             node.NetworkElement.EnableReconnecting = false;
                             break;
+                        
+                        case DataTypes.StatusUpdate:
+                            var status = JsonSerializer.Deserialize<Status>(content);
+                            node.Status = status;
+                            break;
 
                         default:
                             Trace.WriteLine($"Node {node.Id} received unknown data");

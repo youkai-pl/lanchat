@@ -94,6 +94,11 @@ namespace Lanchat.Core
         ///     Is node reconnecting.
         /// </summary>
         public bool UnderReconnecting { get; private set; }
+      
+        /// <summary>
+        ///     User status.
+        /// </summary>
+        public Status Status { get; internal set; }
 
         public void Dispose()
         {
@@ -180,6 +185,7 @@ namespace Lanchat.Core
         {
             Nickname = handshake.Nickname;
             Encryption.ImportPublicKey(handshake.PublicKey);
+            Status = handshake.Status;
             NetworkOutput.SendKey();
         }
 

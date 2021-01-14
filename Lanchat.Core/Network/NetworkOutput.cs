@@ -78,6 +78,11 @@ namespace Lanchat.Core.Network
             SendData(DataTypes.Goodbye);
         }
 
+        internal void SendStatusUpdate(Status status)
+        {
+            SendData(DataTypes.StatusUpdate, status);
+        }
+        
         private void SendData(DataTypes dataType, object content = null)
         {
             var data = new Wrapper {Type = dataType, Data = content};
