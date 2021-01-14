@@ -5,7 +5,13 @@ Encrypted, P2P, local network chat.
 [API documentation](https://github.com/tofudd/lanchat/blob/master/Docs/API.md)
 
 ## Get Lanchat
-Download self-contained binary from [releases](https://github.com/tofudd/lanchat/releases).
+
+### Windows & MacOS
+* [Self-contained binary](https://github.com/tofudd/lanchat/releases)
+
+### Linux
+* Flathub: `flatpak install io.github.tofudd.lanchat.terminal`
+* [Self-contained binary](https://github.com/tofudd/lanchat/releases/)
 
 ## Lanchat.Terminal
 You can start terminal client with the following arguments:
