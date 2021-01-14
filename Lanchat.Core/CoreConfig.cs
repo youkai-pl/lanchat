@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Lanchat.Core.Models;
 
 namespace Lanchat.Core
 {
@@ -12,6 +13,7 @@ namespace Lanchat.Core
     public static class CoreConfig
     {
         private static string _nickname;
+        private static Status _status;
 
         /// <summary>
         ///     User nickname.
@@ -25,6 +27,17 @@ namespace Lanchat.Core
 
                 _nickname = value;
                 NicknameChanged?.Invoke(null, EventArgs.Empty);
+            }
+        }
+
+        public static Status Status
+        {
+            get => _status;
+            set
+            {
+                if (_status == value) return;
+                _status = value;
+                StatusChanged?.Invoke(null, EventArgs.Empty);
             }
         }
 
@@ -65,5 +78,6 @@ namespace Lanchat.Core
 
         // Config events
         internal static event EventHandler NicknameChanged;
+        internal static event EventHandler StatusChanged;
     }
 }

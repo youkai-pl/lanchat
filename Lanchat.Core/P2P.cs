@@ -27,7 +27,9 @@ namespace Lanchat.Core
 
             server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
             server.SessionCreated += OnSessionCreated;
+            
             CoreConfig.NicknameChanged += OnNicknameChanged;
+            CoreConfig.StatusChanged += OnStatusChanged;
 
             broadcastService = new BroadcastService();
             broadcastService.BroadcastReceived += BroadcastReceived;
@@ -194,6 +196,12 @@ namespace Lanchat.Core
         private void OnNicknameChanged(object sender, EventArgs e)
         {
             Nodes.ForEach(x => x.NetworkOutput.SendNicknameUpdate(CoreConfig.Nickname));
+        }
+        
+        // Broadcast new nickname
+        private void OnStatusChanged(object sender, EventArgs e)
+        {
+            Nodes.ForEach(x => x.NetworkOutput.SendStatusUpdate(CoreConfig.Status));
         }
 
         // UDP broadcast received
