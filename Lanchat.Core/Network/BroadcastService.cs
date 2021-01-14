@@ -42,6 +42,8 @@ namespace Lanchat.Core.Network
                         if (broadcast != null && broadcast.Guid != uniqueId)
                         {
                             broadcast.IpAddress = from.Address;
+                            broadcast.Nickname =
+                                Common.TruncateAndValidate(broadcast.Nickname, CoreConfig.MaxNicknameLenght);
                             BroadcastReceived?.Invoke(this, broadcast);
                         }
                     }

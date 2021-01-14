@@ -51,18 +51,18 @@ namespace Lanchat.Core.Network
                     {
                         case DataTypes.Message:
                             MessageReceived?.Invoke(this,
-                                TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
+                                Common.TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
                             break;
 
                         case DataTypes.PrivateMessage:
                             PrivateMessageReceived?.Invoke(this,
-                                TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
+                                Common.TruncateAndValidate(node.Encryption.Decrypt(content), CoreConfig.MaxMessageLenght));
                             break;
 
                         case DataTypes.Handshake:
                             Trace.WriteLine($"Node {node.Id} received handshake");
                             var handshake = JsonSerializer.Deserialize<Handshake>(content);
-                            handshake.Nickname = TruncateAndValidate(handshake.Nickname, CoreConfig.MaxNicknameLenght);
+                            handshake.Nickname = Common.TruncateAndValidate(handshake.Nickname, CoreConfig.MaxNicknameLenght);
                             HandshakeReceived?.Invoke(this, handshake);
                             break;
 
@@ -88,7 +88,7 @@ namespace Lanchat.Core.Network
 
                         case DataTypes.NicknameUpdate:
                             Trace.WriteLine($"Node {node.Id} received nickname update");
-                            NicknameChanged?.Invoke(this, TruncateAndValidate(content, CoreConfig.MaxNicknameLenght));
+                            NicknameChanged?.Invoke(this, Common.TruncateAndValidate(content, CoreConfig.MaxNicknameLenght));
                             break;
 
                         case DataTypes.Goodbye:
@@ -110,14 +110,6 @@ namespace Lanchat.Core.Network
                     else
                         throw;
                 }
-        }
-
-        private static string TruncateAndValidate(string value, int maxLength)
-        {
-            value = value.Trim();
-            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException();
-
-            return value.Length <= maxLength ? value : value.Substring(0, maxLength) + "...";
         }
     }
 }
