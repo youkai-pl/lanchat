@@ -11,15 +11,18 @@ namespace Lanchat.ClientCore
         {
             AppDomain.CurrentDomain.FirstChanceException += (_, eventArgs) =>
             {
-                Trace.WriteLine(eventArgs.Exception.ToString());
+                if (eventArgs.Exception.Source != "System.Console")
+                {
+                    Trace.WriteLine(eventArgs.Exception.TargetSite);
+                }
             };
-            
+
             Trace.Listeners.Add(new FileTraceListener($"{Config.DataPath}/{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log"));
             Trace.IndentSize = 11;
             Trace.AutoFlush = true;
             Trace.WriteLine("Logging started");
         }
-        
+
         public static void CleanLogs()
         {
             foreach (var fi in new DirectoryInfo(Config.DataPath)
