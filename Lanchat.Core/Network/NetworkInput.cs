@@ -63,6 +63,7 @@ namespace Lanchat.Core.Network
                             Trace.WriteLine($"Node {node.Id} received handshake");
                             var handshake = JsonSerializer.Deserialize<Handshake>(content);
                             handshake.Nickname = Common.TruncateAndValidate(handshake.Nickname, CoreConfig.MaxNicknameLenght);
+                            node.Status = handshake.Status;
                             HandshakeReceived?.Invoke(this, handshake);
                             break;
 

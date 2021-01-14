@@ -48,7 +48,8 @@ namespace Lanchat.Core.Network
             var handshake = new Handshake
             {
                 Nickname = CoreConfig.Nickname,
-                PublicKey = node.Encryption.ExportPublicKey()
+                Status = CoreConfig.Status,
+                PublicKey = node.Encryption.ExportPublicKey(),
             };
 
             SendData(DataTypes.Handshake, handshake);
