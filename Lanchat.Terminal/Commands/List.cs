@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using ConsoleGUI.Controls;
 using Lanchat.Core.Models;
 using Lanchat.Terminal.UserInterface;

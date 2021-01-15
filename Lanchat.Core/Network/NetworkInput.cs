@@ -92,8 +92,7 @@ namespace Lanchat.Core.Network
 
                         case DataTypes.NicknameUpdate:
                             Trace.WriteLine($"Node {node.Id} received nickname update");
-                            NicknameChanged?.Invoke(this,
-                                Common.TruncateAndValidate(content, CoreConfig.MaxNicknameLenght));
+                            node.Nickname = Common.TruncateAndValidate(content, CoreConfig.MaxNicknameLenght);
                             break;
 
                         case DataTypes.Goodbye:

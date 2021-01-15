@@ -1,14 +1,16 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 
 namespace Lanchat.Core
 {
-    public class Node : IDisposable
+    public class Node : IDisposable, INotifyPropertyChanged
     {
         internal readonly Encryption Encryption;
         private readonly IPEndPoint firstEndPoint;
@@ -16,6 +18,8 @@ namespace Lanchat.Core
         public readonly NetworkInput NetworkInput;
         public readonly NetworkOutput NetworkOutput;
         private string nickname;
+        private string previousNickname;
+        private Status status;
 
         /// <summary>
         ///     Initialize node.
@@ -37,7 +41,6 @@ namespace Lanchat.Core
 
             NetworkInput.HandshakeReceived += OnHandshakeReceived;
             NetworkInput.KeyInfoReceived += OnKeyInfoReceived;
-            NetworkInput.NicknameChanged += OnNicknameChanged;
 
             if (sendHandshake)
                 SendHandshakeAndWait();
@@ -51,8 +54,16 @@ namespace Lanchat.Core
         public string Nickname
         {
             get => $"{nickname}#{ShortId}";
-            private set => nickname = value;
+            set
+            {
+                if (value == nickname) return;
+                previousNickname = nickname;
+                nickname = value;
+                OnPropertyChanged();
+            }
         }
+
+        public string PreviousNickname => $"{previousNickname}#{ShortId}";
 
         /// <summary>
         ///     Node ready. If set to false node won't send or receive messages.
@@ -94,11 +105,20 @@ namespace Lanchat.Core
         ///     Is node reconnecting.
         /// </summary>
         public bool UnderReconnecting { get; private set; }
-      
+
         /// <summary>
         ///     User status.
         /// </summary>
-        public Status Status { get; internal set; }
+        public Status Status
+        {
+            get => status;
+            set
+            {
+                if (value == status) return;
+                status = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void Dispose()
         {
@@ -125,11 +145,6 @@ namespace Lanchat.Core
         ///     Raise when connection try failed.
         /// </summary>
         public event EventHandler CannotConnect;
-
-        /// <summary>
-        ///     User changed nickname of node. Returns previous nickname in parameter.
-        /// </summary>
-        public event EventHandler<string> NicknameChanged;
 
         /// <summary>
         ///     TCP session or client for this node returned error.
@@ -195,16 +210,7 @@ namespace Lanchat.Core
             Ready = true;
             Connected?.Invoke(this, EventArgs.Empty);
         }
-
-        private void OnNicknameChanged(object sender, string e)
-        {
-            if (e == Nickname) return;
-
-            var previousNickname = Nickname;
-            Nickname = e;
-            NicknameChanged?.Invoke(this, previousNickname);
-        }
-
+        
         private void SendHandshakeAndWait()
         {
             NetworkOutput.SendHandshake();
@@ -214,6 +220,12 @@ namespace Lanchat.Core
             {
                 if (!Ready && !UnderReconnecting) NetworkElement.Close();
             });
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
