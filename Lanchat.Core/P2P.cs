@@ -193,15 +193,15 @@ namespace Lanchat.Core
         }
 
         // Broadcast new nickname
-        private void OnNicknameChanged(object sender, EventArgs e)
+        private void OnNicknameChanged(object sender, string e)
         {
-            Nodes.ForEach(x => x.NetworkOutput.SendNicknameUpdate(CoreConfig.Nickname));
+            Nodes.ForEach(x => x.NetworkOutput.SendNicknameUpdate(e));
         }
         
         // Broadcast new nickname
-        private void OnStatusChanged(object sender, EventArgs e)
+        private void OnStatusChanged(object sender, Status e)
         {
-            Nodes.ForEach(x => x.NetworkOutput.SendStatusUpdate(CoreConfig.Status));
+            Nodes.ForEach(x => x.NetworkOutput.SendStatusUpdate(e));
         }
 
         // UDP broadcast received

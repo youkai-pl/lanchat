@@ -82,6 +82,18 @@ namespace Lanchat.Terminal.UserInterface
                 case "m":
                     PrivateMessage.Execute(args);
                     break;
+                
+                case "online":
+                    Online.Execute();
+                    break;
+                
+                case "afk":
+                    Afk.Execute();
+                    break;
+                
+                case "dnd":
+                    Dnd.Execute();
+                    break;
             }
         }
     }

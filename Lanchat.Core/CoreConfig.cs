@@ -26,7 +26,7 @@ namespace Lanchat.Core
                 if (_nickname == value) return;
 
                 _nickname = value;
-                NicknameChanged?.Invoke(null, EventArgs.Empty);
+                NicknameChanged?.Invoke(null, value);
             }
         }
 
@@ -37,7 +37,7 @@ namespace Lanchat.Core
             {
                 if (_status == value) return;
                 _status = value;
-                StatusChanged?.Invoke(null, EventArgs.Empty);
+                StatusChanged?.Invoke(null, value);
             }
         }
 
@@ -77,7 +77,7 @@ namespace Lanchat.Core
             };
 
         // Config events
-        internal static event EventHandler NicknameChanged;
-        internal static event EventHandler StatusChanged;
+        internal static event EventHandler<string> NicknameChanged;
+        internal static event EventHandler<Status> StatusChanged;
     }
 }
