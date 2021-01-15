@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ConsoleGUI.Controls;
 using ConsoleGUI.UserDefined;
 
@@ -88,6 +89,30 @@ namespace Lanchat.Terminal.UserInterface
                     });
                     Ui.ScrollPanel.Top = int.MaxValue;
                 }
+            }
+        }
+
+        public void AddCustomTextBlock(IEnumerable<TextBlock> line)
+        {
+            var children = new[]
+            {
+                new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
+                new TextBlock {Text = "-", Color = ConsoleColor.Blue},
+                new TextBlock {Text = "!"},
+                new TextBlock {Text = "- ", Color = ConsoleColor.Blue},
+            };
+
+
+            lock (lockUi)
+            {
+                stackPanel.Add(new WrapPanel
+                {
+                    Content = new HorizontalStackPanel
+                    {
+                        Children = children.Concat(line)
+                    }
+                });
+                Ui.ScrollPanel.Top = int.MaxValue;
             }
         }
 
