@@ -31,7 +31,6 @@ namespace Lanchat.Core.Network
         internal event EventHandler<Handshake> HandshakeReceived;
         internal event EventHandler<KeyInfo> KeyInfoReceived;
         internal event EventHandler<List<IPAddress>> NodesListReceived;
-        internal event EventHandler<string> NicknameChanged;
 
         internal void ProcessReceivedData(object sender, string dataString)
         {
