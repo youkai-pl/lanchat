@@ -102,8 +102,11 @@ namespace Lanchat.Core.Network
                             break;
 
                         case DataTypes.StatusUpdate:
-                            var status = JsonSerializer.Deserialize<Status>(content, serializerOptions);
-                            node.Status = status;
+                            if (Enum.TryParse<Status>(content, out var status))
+                            {
+                                node.Status = status;
+                            }
+
                             break;
 
                         default:
