@@ -51,13 +51,20 @@ namespace Lanchat.Core.Network
                     switch (json.Type)
                     {
                         case DataTypes.Message:
-                            MessageReceived?.Invoke(this,
-                                node.Encryption.Decrypt(content).Truncate(CoreConfig.MaxMessageLenght));
+                            var decryptedMessage = node.Encryption.Decrypt(content);
+                            if (decryptedMessage != null)
+                            {
+                                MessageReceived?.Invoke(this, decryptedMessage.Truncate(CoreConfig.MaxMessageLenght));
+                            }
                             break;
 
                         case DataTypes.PrivateMessage:
-                            PrivateMessageReceived?.Invoke(this,
-                                node.Encryption.Decrypt(content).Truncate(CoreConfig.MaxMessageLenght));
+                            var decryptedPrivateMessage = node.Encryption.Decrypt(content);
+                            if (decryptedPrivateMessage != null)
+                            {
+                                PrivateMessageReceived?.Invoke(this,
+                                    decryptedPrivateMessage.Truncate(CoreConfig.MaxMessageLenght)); 
+                            }
                             break;
 
                         case DataTypes.Handshake:

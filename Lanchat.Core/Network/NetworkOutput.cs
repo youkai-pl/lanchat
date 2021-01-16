@@ -27,8 +27,8 @@ namespace Lanchat.Core.Network
         public void SendMessage(string content)
         {
             if (!node.Ready) return;
-
-            SendData(DataTypes.Message, node.Encryption.Encrypt(content));
+            SendData(DataTypes.Message, content);
+            //SendData(DataTypes.Message, node.Encryption.Encrypt(content));
         }
 
         /// <summary>
