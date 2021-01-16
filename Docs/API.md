@@ -117,7 +117,7 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
             </ul>
         </td>
         <td>
-            List of nodes alredy connected with sending node.
+            List of nodes already connected with sending node.
         </td>
         <td>
             <pre lang="json">
@@ -217,6 +217,34 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
 {
    "Type":"PrivateMessage",
    "Data":"scRzgudmk4I30rU9h\u002BNFyQ=="
+}
+            </pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Status
+        </td>
+        <td>
+            <ul>
+                <li>
+                    Data (enum)
+                    <ul>
+                        <li>Online</li>
+                        <li>AwayFromKeyboard</li>
+                        <li>DoNotDisturb</li>
+                    </ul>
+                </li>
+            </ul>
+        </td>
+        <td>
+            New node user status.
+        </td>
+        <td>
+            <pre lang="json">
+{
+   "Type":"Status",
+   "Data":"Online"
 }
             </pre>
         </td>
