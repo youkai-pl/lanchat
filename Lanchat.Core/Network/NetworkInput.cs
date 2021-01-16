@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
+using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network
@@ -50,21 +51,19 @@ namespace Lanchat.Core.Network
                     {
                         case DataTypes.Message:
                             MessageReceived?.Invoke(this,
-                                Common.TruncateAndValidate(node.Encryption.Decrypt(content),
-                                    CoreConfig.MaxMessageLenght));
+                                node.Encryption.Decrypt(content).Truncate(CoreConfig.MaxMessageLenght));
                             break;
 
                         case DataTypes.PrivateMessage:
                             PrivateMessageReceived?.Invoke(this,
-                                Common.TruncateAndValidate(node.Encryption.Decrypt(content),
-                                    CoreConfig.MaxMessageLenght));
+                                node.Encryption.Decrypt(content).Truncate(CoreConfig.MaxMessageLenght));
                             break;
 
                         case DataTypes.Handshake:
                             Trace.WriteLine($"Node {node.Id} received handshake");
                             var handshake = JsonSerializer.Deserialize<Handshake>(content, serializerOptions);
                             handshake.Nickname =
-                                Common.TruncateAndValidate(handshake.Nickname, CoreConfig.MaxNicknameLenght);
+                                handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
                             node.Status = handshake.Status;
                             HandshakeReceived?.Invoke(this, handshake);
                             break;
@@ -91,7 +90,7 @@ namespace Lanchat.Core.Network
 
                         case DataTypes.NicknameUpdate:
                             Trace.WriteLine($"Node {node.Id} received nickname update");
-                            node.Nickname = Common.TruncateAndValidate(content, CoreConfig.MaxNicknameLenght);
+                            node.Nickname = content.Truncate(CoreConfig.MaxNicknameLenght);
                             break;
 
                         case DataTypes.Goodbye:

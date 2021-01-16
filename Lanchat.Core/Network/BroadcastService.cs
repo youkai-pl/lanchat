@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 
 // ReSharper disable FunctionNeverReturns
@@ -42,8 +43,7 @@ namespace Lanchat.Core.Network
                         if (broadcast != null && broadcast.Guid != uniqueId)
                         {
                             broadcast.IpAddress = from.Address;
-                            broadcast.Nickname =
-                                Common.TruncateAndValidate(broadcast.Nickname, CoreConfig.MaxNicknameLenght);
+                            broadcast.Nickname = broadcast.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
                             BroadcastReceived?.Invoke(this, broadcast);
                         }
                     }
