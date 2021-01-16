@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Lanchat.Core.Models;
@@ -24,9 +25,8 @@ namespace Lanchat.Core
             set
             {
                 if (_nickname == value) return;
-
                 _nickname = value;
-                NicknameChanged?.Invoke(null, value);
+                OnPropertyChanged();
             }
         }
 
@@ -37,7 +37,7 @@ namespace Lanchat.Core
             {
                 if (_status == value) return;
                 _status = value;
-                StatusChanged?.Invoke(null, value);
+                OnPropertyChanged();
             }
         }
 
@@ -76,8 +76,11 @@ namespace Lanchat.Core
                 }
             };
 
-        // Config events
-        internal static event EventHandler<string> NicknameChanged;
-        internal static event EventHandler<Status> StatusChanged;
+        public static event PropertyChangedEventHandler PropertyChanged;
+
+        private static void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

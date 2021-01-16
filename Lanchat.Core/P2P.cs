@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -28,11 +29,24 @@ namespace Lanchat.Core
             server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
             server.SessionCreated += OnSessionCreated;
             
-            CoreConfig.NicknameChanged += OnNicknameChanged;
-            CoreConfig.StatusChanged += OnStatusChanged;
+            CoreConfig.PropertyChanged += CoreConfigOnPropertyChanged;
 
             broadcastService = new BroadcastService();
             broadcastService.BroadcastReceived += BroadcastReceived;
+        }
+
+        private void CoreConfigOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Nickname":
+                    Nodes.ForEach(x => x.NetworkOutput.SendNicknameUpdate(CoreConfig.Nickname));
+                    break;
+                
+                case "Status":
+                    Nodes.ForEach(x => x.NetworkOutput.SendStatusUpdate(CoreConfig.Status));
+                    break;
+            }
         }
 
         /// <summary>
@@ -190,18 +204,6 @@ namespace Lanchat.Core
                     Trace.WriteLine($"Node connection error: {e.Message}");
                 }
             });
-        }
-
-        // Broadcast new nickname
-        private void OnNicknameChanged(object sender, string e)
-        {
-            Nodes.ForEach(x => x.NetworkOutput.SendNicknameUpdate(e));
-        }
-        
-        // Broadcast new nickname
-        private void OnStatusChanged(object sender, Status e)
-        {
-            Nodes.ForEach(x => x.NetworkOutput.SendStatusUpdate(e));
         }
 
         // UDP broadcast received
