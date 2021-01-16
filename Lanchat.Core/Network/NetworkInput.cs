@@ -32,7 +32,7 @@ namespace Lanchat.Core.Network
         /// <summary>
         ///     Ping pong.
         /// </summary>
-        public event EventHandler<TimeSpan> PongReceived;
+        public event EventHandler<TimeSpan?> PongReceived;
 
         internal event EventHandler<Handshake> HandshakeReceived;
         internal event EventHandler<KeyInfo> KeyInfoReceived;
@@ -109,8 +109,9 @@ namespace Lanchat.Core.Network
                             break;
                         
                         case DataTypes.Pong:
-                            if(node.pingSendTime == null) return;
-                            node.pingReceiveTime = DateTime.Now;
+                            if(node.PingSendTime == null) return;
+                            node.Ping = DateTime.Now - node.PingSendTime;
+                            node.PingSendTime = null;
                             PongReceived?.Invoke(this, node.Ping);
                             break;
 

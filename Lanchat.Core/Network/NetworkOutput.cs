@@ -46,7 +46,7 @@ namespace Lanchat.Core.Network
         /// </summary>
         public void SendPing()
         {
-            node.pingSendTime = DateTime.Now;
+            node.PingSendTime = DateTime.Now;
             SendData(DataTypes.Ping);
         }
 

@@ -32,7 +32,7 @@ namespace Lanchat.Terminal
                 case "Status":
                     Ui.Log.Add($"{node.Nickname} changed status to {node.Status}");
                     break;
-                
+
                 case "Nickname":
                     Ui.Log.Add($"{node.PreviousNickname} is now {node.Nickname}");
                     break;
@@ -76,10 +76,11 @@ namespace Lanchat.Terminal
         {
             Ui.Log.Add($"{Resources.Info_CannotConnect}: {node.Endpoint}");
         }
-        
-        private void OnPongReceived(object sender, TimeSpan e)
+
+        private void OnPongReceived(object sender, TimeSpan? e)
         {
-            Ui.Log.Add($"Ping to {node.Nickname} is {e.Milliseconds}ms");
+            if (e != null)
+                Ui.Log.Add($"Ping to {node.Nickname} is {e.Value.Milliseconds}ms");
         }
     }
 }
