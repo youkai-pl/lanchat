@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 
@@ -196,12 +197,10 @@ namespace Lanchat.Core
 
             Ready = false;
         }
-
-        // Network Input events.
-
+        
         private void OnHandshakeReceived(object sender, Handshake handshake)
         {
-            Nickname = handshake.Nickname;
+            Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
             Encryption.ImportPublicKey(handshake.PublicKey);
             Status = handshake.Status;
             NetworkOutput.SendKey();

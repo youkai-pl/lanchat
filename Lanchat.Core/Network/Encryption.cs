@@ -26,6 +26,7 @@ namespace Lanchat.Core.Network
             localRsa?.Dispose();
             remoteAes?.Dispose();
             remoteRsa?.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         internal PublicKey ExportPublicKey()

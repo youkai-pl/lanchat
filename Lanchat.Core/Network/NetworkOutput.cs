@@ -27,8 +27,7 @@ namespace Lanchat.Core.Network
         public void SendMessage(string content)
         {
             if (!node.Ready) return;
-            SendData(DataTypes.Message, content);
-            //SendData(DataTypes.Message, node.Encryption.Encrypt(content));
+            SendData(DataTypes.Message, node.Encryption.Encrypt(content));
         }
 
         /// <summary>
@@ -38,7 +37,6 @@ namespace Lanchat.Core.Network
         public void SendPrivateMessage(string content)
         {
             if (!node.Ready) return;
-
             SendData(DataTypes.PrivateMessage, node.Encryption.Encrypt(content));
         }
 
@@ -80,7 +78,7 @@ namespace Lanchat.Core.Network
         {
             SendData(DataTypes.StatusUpdate, status);
         }
-        
+
         private void SendData(DataTypes dataType, object content = null)
         {
             var data = new Wrapper {Type = dataType, Data = content};
