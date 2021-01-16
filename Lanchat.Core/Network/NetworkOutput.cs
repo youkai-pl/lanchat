@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
@@ -39,6 +40,15 @@ namespace Lanchat.Core.Network
             if (!node.Ready) return;
             SendData(DataTypes.PrivateMessage, node.Encryption.Encrypt(content));
         }
+        
+        /// <summary>
+        ///     Send ping.
+        /// </summary>
+        public void SendPing()
+        {
+            node.pingSendTime = DateTime.Now;
+            SendData(DataTypes.Ping);
+        }
 
         internal void SendHandshake()
         {
@@ -77,6 +87,11 @@ namespace Lanchat.Core.Network
         internal void SendStatusUpdate(Status status)
         {
             SendData(DataTypes.StatusUpdate, status);
+        }
+
+        internal void SendPong()
+        {
+            SendData(DataTypes.Pong);
         }
 
         private void SendData(DataTypes dataType, object content = null)

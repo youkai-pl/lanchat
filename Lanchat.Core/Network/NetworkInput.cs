@@ -29,6 +29,11 @@ namespace Lanchat.Core.Network
         /// </summary>
         public event EventHandler<string> PrivateMessageReceived;
 
+        /// <summary>
+        ///     Ping pong.
+        /// </summary>
+        public event EventHandler<TimeSpan> PongReceived;
+
         internal event EventHandler<Handshake> HandshakeReceived;
         internal event EventHandler<KeyInfo> KeyInfoReceived;
         internal event EventHandler<List<IPAddress>> NodesListReceived;
@@ -46,7 +51,6 @@ namespace Lanchat.Core.Network
 
                     // Ignore handshake and key info is node was set as ready before.
                     if (node.Ready && (json.Type == DataTypes.Handshake || json.Type == DataTypes.KeyInfo)) return;
-
                     
                     Trace.WriteLine($"Node {node.Id} received {json.Type}");
 
@@ -98,6 +102,16 @@ namespace Lanchat.Core.Network
 
                         case DataTypes.StatusUpdate:
                             if (Enum.TryParse<Status>(content, out var status)) node.Status = status;
+                            break;
+                        
+                        case DataTypes.Ping:
+                            node.NetworkOutput.SendPong();
+                            break;
+                        
+                        case DataTypes.Pong:
+                            if(node.pingSendTime == null) return;
+                            node.pingReceiveTime = DateTime.Now;
+                            PongReceived?.Invoke(this, node.Ping);
                             break;
 
                         default:

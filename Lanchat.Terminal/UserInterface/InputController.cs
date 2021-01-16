@@ -94,6 +94,10 @@ namespace Lanchat.Terminal.UserInterface
                 case "dnd":
                     Dnd.Execute();
                     break;
+                
+                case "ping":
+                    Ping.Execute(args);
+                    break;
             }
         }
     }

@@ -16,15 +16,16 @@ namespace Lanchat.Terminal
             this.node = node;
             node.NetworkInput.MessageReceived += OnMessageReceived;
             node.NetworkInput.PrivateMessageReceived += OnPrivateMessageReceived;
+            node.NetworkInput.PongReceived += OnPongReceived;
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
             node.HardDisconnect += OnHardDisconnected;
             node.SocketErrored += OnSocketErrored;
             node.CannotConnect += OnCannotConnect;
-            node.PropertyChanged += NodeOnPropertyChanged;
+            node.PropertyChanged += OnPropertyChanged;
         }
 
-        private void NodeOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -74,6 +75,11 @@ namespace Lanchat.Terminal
         private void OnCannotConnect(object sender, EventArgs e)
         {
             Ui.Log.Add($"{Resources.Info_CannotConnect}: {node.Endpoint}");
+        }
+        
+        private void OnPongReceived(object sender, TimeSpan e)
+        {
+            Ui.Log.Add($"Ping to {node.Nickname} is {e.Milliseconds}ms");
         }
     }
 }

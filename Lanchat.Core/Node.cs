@@ -18,6 +18,9 @@ namespace Lanchat.Core
         internal readonly Encryption Encryption;
         internal readonly INetworkElement NetworkElement;
 
+        internal DateTime pingSendTime;
+        internal DateTime pingReceiveTime;
+        
         private readonly IPEndPoint firstEndPoint;
         private string nickname;
         private string previousNickname;
@@ -90,6 +93,8 @@ namespace Lanchat.Core
                 OnPropertyChanged();
             }
         }
+
+        public TimeSpan Ping => pingReceiveTime - pingSendTime;
 
         /// <summary>
         ///     Nickname before last change.

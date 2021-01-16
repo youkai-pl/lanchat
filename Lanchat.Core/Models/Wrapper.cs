@@ -15,6 +15,8 @@
         NicknameUpdate,
         Goodbye,
         PrivateMessage,
-        StatusUpdate
+        StatusUpdate,
+        Ping,
+        Pong
     }
 }
