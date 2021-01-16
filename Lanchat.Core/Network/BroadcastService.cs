@@ -47,9 +47,12 @@ namespace Lanchat.Core.Network
                             BroadcastReceived?.Invoke(this, broadcast);
                         }
                     }
-                    catch (JsonException)
+                    catch (Exception e)
                     {
-                        Trace.WriteLine("Invalid broadcast data received");
+                        if (e is not JsonException)
+                        {
+                            throw;
+                        }
                     }
                 }
             });

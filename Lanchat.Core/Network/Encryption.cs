@@ -76,7 +76,8 @@ namespace Lanchat.Core.Network
             var encrypted = msEncrypt.ToArray();
             return Convert.ToBase64String(encrypted);
         }
-
+        
+        // TODO: Catch decryption errors
         internal string Decrypt(string text)
         {
             var encryptedBytes = Convert.FromBase64String(text);

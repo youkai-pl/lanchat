@@ -36,6 +36,7 @@ namespace Lanchat.Core.Network
         internal void ProcessReceivedData(object sender, string dataString)
         {
             foreach (var item in dataString.Replace("}{", "}|{").Split('|'))
+            {
                 try
                 {
                     var json = JsonSerializer.Deserialize<Wrapper>(item, serializerOptions);
@@ -115,11 +116,12 @@ namespace Lanchat.Core.Network
                 // Input errors catching.
                 catch (Exception ex)
                 {
-                    if (ex is JsonException || ex is ArgumentNullException)
-                        Trace.WriteLine("Invalid data received");
-                    else
+                    if (ex is not JsonException && ex is not ArgumentNullException)
+                    {
                         throw;
+                    }
                 }
+            }
         }
     }
 }

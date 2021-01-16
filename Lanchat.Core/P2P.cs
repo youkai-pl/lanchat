@@ -199,9 +199,9 @@ namespace Lanchat.Core
                 {
                     Connect(x);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Trace.WriteLine($"Node connection error: {e.Message}");
+                    // TODO: Catch only specific exceptions
                 }
             });
         }

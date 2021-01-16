@@ -11,9 +11,10 @@ namespace Lanchat.ClientCore
         {
             AppDomain.CurrentDomain.FirstChanceException += (_, eventArgs) =>
             {
+                // Console error logging is disabled because a lot is thrown when the window is resized.
                 if (eventArgs.Exception.Source != "System.Console")
                 {
-                    Trace.WriteLine(eventArgs.Exception.TargetSite);
+                    Trace.WriteLine(eventArgs.Exception);
                 }
             };
 

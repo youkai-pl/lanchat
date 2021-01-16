@@ -113,7 +113,6 @@ namespace Lanchat.ClientCore
             catch (Exception e)
             {
                 if (!(e is FileNotFoundException) && !(e is DirectoryNotFoundException) && !(e is JsonException)) throw;
-                Trace.WriteLine("[APP] Config load error");
                 config = new Config();
                 config.Save();
             }
@@ -136,7 +135,6 @@ namespace Lanchat.ClientCore
             catch (Exception e)
             {
                 if (!(e is DirectoryNotFoundException) && !(e is UnauthorizedAccessException)) throw;
-                Trace.WriteLine(e.Message);
             }
         }
     }
