@@ -225,4 +225,7 @@ Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
     <data name="Info_DetectedList" xml:space="preserve">
         <value>Detected nodes</value>
     </data>
+    <data name="Manual_Ping" xml:space="preserve">
+        <value>Syntax: /ping &lt;short id&gt;</value>
+    </data>
 </root>

@@ -183,7 +183,7 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Manual_M {
+        internal static string Manual_PrivateMessage {
             get {
                 return ResourceManager.GetString("Manual_M", resourceCulture);
             }
@@ -204,6 +204,12 @@ namespace Lanchat.Terminal.Properties {
         internal static string Info_DetectedList {
             get {
                 return ResourceManager.GetString("Info_DetectedList", resourceCulture);
+            }
+        }
+        
+        internal static string Manual_Ping {
+            get {
+                return ResourceManager.GetString("Manual_Ping", resourceCulture);
             }
         }
     }

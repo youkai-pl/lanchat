@@ -9,8 +9,7 @@ namespace Lanchat.Terminal.Commands
         {
             if (args == null || args.Length < 1)
             {
-                // TODO: Add ping command manual
-                Ui.Log.Add(Resources.Manual_M);
+                Ui.Log.Add(Resources.Manual_Ping);
                 return;
             }
 
