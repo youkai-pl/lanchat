@@ -5,9 +5,12 @@ using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
-    public static class List
+    public class List : ICommand
     {
-        public static void Execute()
+        public string Alias { get; set; } = "list";
+        public int ArgsCount { get; set; }
+
+        public void Execute(string [] _)
         {
             Program.Network.Nodes.ForEach(x =>
             {

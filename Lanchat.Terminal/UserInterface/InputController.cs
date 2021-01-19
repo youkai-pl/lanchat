@@ -1,17 +1,36 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Input;
 using Lanchat.Terminal.Commands;
+using Lanchat.Terminal.Properties;
 
 namespace Lanchat.Terminal.UserInterface
 {
     public class InputController : IInputListener
     {
         private readonly TextBox input;
+        private readonly IList<ICommand> commands = new List<ICommand>();
 
         public InputController(TextBox input)
         {
+            commands.Add(new Afk());
+            commands.Add(new Block());
+            commands.Add(new Blocked());
+            commands.Add(new Connect());
+            commands.Add(new Disconnect());
+            commands.Add(new Dnd());
+            commands.Add(new Exit());
+            commands.Add(new Help());
+            commands.Add(new List());
+            commands.Add(new Nick());
+            commands.Add(new Online());
+            commands.Add(new Ping());
+            commands.Add(new PrivateMessage());
+            commands.Add(new Unblock());
+
             this.input = input;
         }
 
@@ -36,69 +55,19 @@ namespace Lanchat.Terminal.UserInterface
             inputEvent.Handled = true;
         }
 
-        private static void ExecuteCommand(string[] args)
+        private void ExecuteCommand(string[] args)
         {
-            var command = args[0].Substring(1);
+            var commandAlias = args[0].Substring(1);
             args = args.Skip(1).ToArray();
-
-            switch (command)
+            var command = commands.FirstOrDefault(x => x.Alias == commandAlias);
+            
+            if (args.Length < command?.ArgsCount)
             {
-                case "help":
-                    Help.Execute(args);
-                    break;
-
-                case "exit":
-                    Exit.Execute();
-                    break;
-
-                case "connect":
-                    Connect.Execute(args);
-                    break;
-
-                case "disconnect":
-                    Disconnect.Execute(args);
-                    break;
-
-                case "list":
-                    List.Execute();
-                    break;
-
-                case "nick":
-                    Nick.Execute(args);
-                    break;
-
-                case "block":
-                    Block.Execute(args);
-                    break;
-
-                case "unblock":
-                    Unblock.Execute(args);
-                    break;
-
-                case "blocked":
-                    Blocked.Execute();
-                    break;
-
-                case "m":
-                    PrivateMessage.Execute(args);
-                    break;
-                
-                case "online":
-                    Online.Execute();
-                    break;
-                
-                case "afk":
-                    Afk.Execute();
-                    break;
-                
-                case "dnd":
-                    Dnd.Execute();
-                    break;
-                
-                case "ping":
-                    Ping.Execute(args);
-                    break;
+                Ui.Log.Add("Invalid command syntax");
+                return;
             }
+            
+            command?.Execute(args);
         }
     }
 }

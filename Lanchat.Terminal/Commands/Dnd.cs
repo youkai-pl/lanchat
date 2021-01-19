@@ -4,9 +4,12 @@ using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
-    public static class Dnd
+    public class Dnd : ICommand
     {
-        public static void Execute()
+        public string Alias { get; set; } = "dnd";
+        public int ArgsCount { get; set; }
+
+        public void Execute(string[] _)
         {
             CoreConfig.Status = Status.DoNotDisturb;
             Ui.Status.Text = "Do not disturb";

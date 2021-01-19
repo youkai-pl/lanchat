@@ -4,9 +4,12 @@ using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
-    public static class Afk
+    public class Afk : ICommand
     {
-        public static void Execute()
+        public string Alias { get; set; } = "afk";
+        public int ArgsCount { get; set; }
+
+        public void Execute(string[] _)
         {
             CoreConfig.Status = Status.AwayFromKeyboard;
             Ui.Status.Text = "Away from keyboard";

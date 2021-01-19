@@ -1,16 +1,16 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
-    public static class Help
+    public class Help : ICommand
     {
-        public static void Execute(string[] args)
-        {
-            if (args == null) throw new ArgumentNullException(nameof(args));
+        public string Alias { get; set; } = "help";
+        public int ArgsCount { get; set; }
 
+        public void Execute(string[] args)
+        {
             if (args.Length < 1)
             {
                 Ui.Log.Add(Resources.Manual_Help);

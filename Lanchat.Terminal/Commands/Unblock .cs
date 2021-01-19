@@ -4,9 +4,12 @@ using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
-    public static class Unblock
+    public class Unblock : ICommand
     {
-        public static void Execute(string[] args)
+        public string Alias { get; set; } = "unblock";
+        public int ArgsCount { get; set; } = 1;
+
+        public void Execute(string[] args)
         {
             if (args == null || args.Length < 1)
             {

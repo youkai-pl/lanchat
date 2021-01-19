@@ -3,16 +3,13 @@ using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
-    public static class Ping
+    public class Ping : ICommand
     {
-        public static void Execute(string[] args)
-        {
-            if (args == null || args.Length < 1)
-            {
-                Ui.Log.Add(Resources.Manual_Ping);
-                return;
-            }
+        public string Alias { get; set; } = "ping";
+        public int ArgsCount { get; set; } = 1;
 
+        public void Execute(string[] args)
+        {
             var node = Program.Network.Nodes.Find(x => x.ShortId == args[0]);
             if (node == null)
             {
