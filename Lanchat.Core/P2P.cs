@@ -199,9 +199,12 @@ namespace Lanchat.Core
                 {
                     Connect(x);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    // TODO: Catch only specific exceptions
+                    if (e is not ArgumentException)
+                    {
+                        throw;
+                    }
                 }
             });
         }
