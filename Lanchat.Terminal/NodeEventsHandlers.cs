@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Net.Sockets;
 using Lanchat.Core;
+using Lanchat.Core.Models;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -30,7 +31,14 @@ namespace Lanchat.Terminal
             switch (e.PropertyName)
             {
                 case "Status":
-                    Ui.Log.Add($"{node.Nickname} changed status to {node.Status}");
+                    var status = node.Status switch
+                    {
+                        Status.Online => "online",
+                        Status.AwayFromKeyboard => "afk",
+                        Status.DoNotDisturb => "dnd",
+                        _ => ""
+                    };
+                    Ui.Log.Add($"{node.Nickname} changed status to {status}");
                     break;
 
                 case "Nickname":
