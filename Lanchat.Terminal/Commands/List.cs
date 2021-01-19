@@ -10,7 +10,7 @@ namespace Lanchat.Terminal.Commands
         public string Alias { get; set; } = "list";
         public int ArgsCount { get; set; }
 
-        public void Execute(string [] _)
+        public void Execute(string[] _)
         {
             Program.Network.Nodes.ForEach(x =>
             {
@@ -38,7 +38,7 @@ namespace Lanchat.Terminal.Commands
                 {
                     new TextBlock {Text = $"{x.Nickname} (", Color = ConsoleColor.White},
                     status,
-                    new TextBlock {Text = ")", Color = ConsoleColor.White},
+                    new TextBlock {Text = ")", Color = ConsoleColor.White}
                 };
 
                 Ui.Log.AddCustomTextBlock(line);
@@ -50,7 +50,7 @@ namespace Lanchat.Terminal.Commands
                 {
                     new TextBlock {Text = $"{x.Nickname} (", Color = ConsoleColor.White},
                     new TextBlock {Text = "Detected", Color = ConsoleColor.DarkCyan},
-                    new TextBlock {Text = ")", Color = ConsoleColor.White},
+                    new TextBlock {Text = ")", Color = ConsoleColor.White}
                 };
 
                 Ui.Log.AddCustomTextBlock(line);

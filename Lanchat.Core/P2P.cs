@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -28,25 +27,11 @@ namespace Lanchat.Core
 
             server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
             server.SessionCreated += OnSessionCreated;
-            
+
             CoreConfig.PropertyChanged += CoreConfigOnPropertyChanged;
 
             broadcastService = new BroadcastService();
             broadcastService.BroadcastReceived += BroadcastReceived;
-        }
-
-        private void CoreConfigOnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "Nickname":
-                    Nodes.ForEach(x => x.NetworkOutput.SendNicknameUpdate(CoreConfig.Nickname));
-                    break;
-                
-                case "Status":
-                    Nodes.ForEach(x => x.NetworkOutput.SendStatusUpdate(CoreConfig.Status));
-                    break;
-            }
         }
 
         /// <summary>
@@ -76,6 +61,20 @@ namespace Lanchat.Core
                     if (!Nodes.Any(y => Equals(y.Endpoint.Address, x.IpAddress))) list.Add(x);
                 });
                 return list;
+            }
+        }
+
+        private void CoreConfigOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Nickname":
+                    Nodes.ForEach(x => x.NetworkOutput.SendNicknameUpdate(CoreConfig.Nickname));
+                    break;
+
+                case "Status":
+                    Nodes.ForEach(x => x.NetworkOutput.SendStatusUpdate(CoreConfig.Status));
+                    break;
             }
         }
 
@@ -193,7 +192,7 @@ namespace Lanchat.Core
         // Try connect to every node from list
         private void OnNodesListReceived(object sender, List<IPAddress> list)
         {
-            if(!CoreConfig.AutomaticConnecting) return;
+            if (!CoreConfig.AutomaticConnecting) return;
             list.ForEach(x =>
             {
                 try

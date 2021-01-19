@@ -99,7 +99,7 @@ namespace Lanchat.Terminal.UserInterface
                 new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
                 new TextBlock {Text = "-", Color = ConsoleColor.Blue},
                 new TextBlock {Text = "!"},
-                new TextBlock {Text = "- ", Color = ConsoleColor.Blue},
+                new TextBlock {Text = "- ", Color = ConsoleColor.Blue}
             };
 
 
@@ -118,10 +118,7 @@ namespace Lanchat.Terminal.UserInterface
 
         private static IEnumerable<string> Prepare(string text)
         {
-            if (text == null)
-            {
-                return new[] {""};
-            }
+            if (text == null) return new[] {""};
 
             return text.Split(
                 new[] {"\r\n", "\r", "\n"},

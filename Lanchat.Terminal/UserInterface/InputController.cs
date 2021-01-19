@@ -10,8 +10,8 @@ namespace Lanchat.Terminal.UserInterface
 {
     public class InputController : IInputListener
     {
-        private readonly TextBox input;
         private readonly IList<ICommand> commands = new List<ICommand>();
+        private readonly TextBox input;
 
         public InputController(TextBox input)
         {
@@ -59,17 +59,14 @@ namespace Lanchat.Terminal.UserInterface
             var commandAlias = args[0].Substring(1);
             args = args.Skip(1).ToArray();
             var command = commands.FirstOrDefault(x => x.Alias == commandAlias);
-            
+
             if (args.Length < command?.ArgsCount)
             {
                 var help = Resources.ResourceManager.GetString($"Help_{commandAlias}");
-                if (help != null)
-                {
-                    Ui.Log.Add(help);
-                }
+                if (help != null) Ui.Log.Add(help);
                 return;
             }
-            
+
             command?.Execute(args);
         }
     }

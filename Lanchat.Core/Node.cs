@@ -13,15 +13,15 @@ namespace Lanchat.Core
 {
     public class Node : IDisposable, INotifyPropertyChanged
     {
+        internal readonly Encryption Encryption;
+
+        private readonly IPEndPoint firstEndPoint;
+        internal readonly INetworkElement NetworkElement;
         public readonly NetworkInput NetworkInput;
         public readonly NetworkOutput NetworkOutput;
-        internal readonly Encryption Encryption;
-        internal readonly INetworkElement NetworkElement;
+        private string nickname;
 
         internal DateTime? PingSendTime;
-        
-        private readonly IPEndPoint firstEndPoint;
-        private string nickname;
         private string previousNickname;
         private Status status;
         private bool underReconnecting;
@@ -38,7 +38,7 @@ namespace Lanchat.Core
             NetworkOutput = new NetworkOutput(this);
             NetworkInput = new NetworkInput(this);
             Encryption = new Encryption();
-            
+
             networkElement.Disconnected += OnDisconnected;
             networkElement.DataReceived += NetworkInput.ProcessReceivedData;
             networkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
@@ -204,7 +204,7 @@ namespace Lanchat.Core
 
             Ready = false;
         }
-        
+
         private void OnHandshakeReceived(object sender, Handshake handshake)
         {
             Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);

@@ -48,10 +48,7 @@ namespace Lanchat.Core.Network
                     }
                     catch (Exception e)
                     {
-                        if (e is not JsonException)
-                        {
-                            throw;
-                        }
+                        if (e is not JsonException) throw;
                     }
                 }
             });

@@ -3,7 +3,7 @@ using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
-    public class Blocked: ICommand
+    public class Blocked : ICommand
     {
         public string Alias { get; set; } = "blocked";
         public int ArgsCount { get; set; }

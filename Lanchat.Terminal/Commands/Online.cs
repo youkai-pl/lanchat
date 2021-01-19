@@ -4,7 +4,7 @@ using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
-    public class Online: ICommand
+    public class Online : ICommand
     {
         public string Alias { get; set; } = "online";
         public int ArgsCount { get; set; }

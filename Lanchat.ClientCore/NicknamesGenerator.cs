@@ -4,7 +4,7 @@ namespace Lanchat.ClientCore
 {
     public static class NicknamesGenerator
     {
-        private static readonly string[] Nicknames = new[]
+        private static readonly string[] Nicknames =
         {
             "Reimu",
             "Marisa",
@@ -25,9 +25,9 @@ namespace Lanchat.ClientCore
             "Utsuho",
             "Koishi",
             "Byakuren",
-            "Seiga",
+            "Seiga"
         };
-        
+
         public static string GimmeNickname()
         {
             var random = new Random();

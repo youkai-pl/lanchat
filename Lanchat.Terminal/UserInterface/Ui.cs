@@ -38,7 +38,7 @@ namespace Lanchat.Terminal.UserInterface
                 Text = "Online",
                 Color = ConsoleColor.Gray
             };
-            
+
             NodesCount = new TextBlock
             {
                 Text = "0",
@@ -128,7 +128,7 @@ namespace Lanchat.Terminal.UserInterface
                                     new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan},
                                     new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
                                     Status,
-                                    new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
+                                    new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan}
                                 }
                             }
                         }

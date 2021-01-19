@@ -40,7 +40,7 @@ namespace Lanchat.Core.Network
             if (!node.Ready) return;
             SendData(DataTypes.PrivateMessage, node.Encryption.Encrypt(content));
         }
-        
+
         /// <summary>
         ///     Send ping.
         /// </summary>
@@ -56,7 +56,7 @@ namespace Lanchat.Core.Network
             {
                 Nickname = CoreConfig.Nickname,
                 Status = CoreConfig.Status,
-                PublicKey = node.Encryption.ExportPublicKey(),
+                PublicKey = node.Encryption.ExportPublicKey()
             };
 
             SendData(DataTypes.Handshake, handshake);

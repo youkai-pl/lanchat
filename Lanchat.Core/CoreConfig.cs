@@ -15,11 +15,6 @@ namespace Lanchat.Core
     {
         private static string _nickname = "user";
         private static Status _status = Status.Online;
-        
-        /// <summary>
-        ///     Invoked for properties like nickname or status.
-        /// </summary>
-        public static event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         ///     User nickname.
@@ -88,6 +83,11 @@ namespace Lanchat.Core
                     new JsonStringEnumConverter()
                 }
             };
+
+        /// <summary>
+        ///     Invoked for properties like nickname or status.
+        /// </summary>
+        public static event PropertyChangedEventHandler PropertyChanged;
 
         private static void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

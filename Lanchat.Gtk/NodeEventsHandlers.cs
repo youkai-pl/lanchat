@@ -55,10 +55,7 @@ namespace Lanchat.Gtk
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Nickname")
-            {
-                throw new NotImplementedException();
-            }
+            if (e.PropertyName == "Nickname") throw new NotImplementedException();
         }
 
         private void OnCannotConnect(object sender, EventArgs e)

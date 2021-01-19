@@ -136,10 +136,7 @@ namespace Lanchat.ClientCore
             try
             {
                 var configFileDirectory = Path.GetDirectoryName(ConfigPath);
-                if (!Directory.Exists(configFileDirectory))
-                {
-                    Directory.CreateDirectory(configFileDirectory!);
-                }
+                if (!Directory.Exists(configFileDirectory)) Directory.CreateDirectory(configFileDirectory!);
                 File.WriteAllText(ConfigPath,
                     JsonSerializer.Serialize(this, new JsonSerializerOptions {WriteIndented = true}));
             }
