@@ -249,6 +249,44 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
             </pre>
         </td>
     </tr>
+    <tr>
+        <td>
+            Ping
+        </td>
+        <td>
+            null
+        </td>
+        <td>
+            Ping.
+        </td>
+        <td>
+            <pre lang="json">
+{
+   "Type":"Goodbye",
+   "Data":null
+}
+            </pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Pong
+        </td>
+        <td>
+            null
+        </td>
+        <td>
+            Reply to ping.
+        </td>
+        <td>
+            <pre lang="json">
+{
+   "Type":"Goodbye",
+   "Data":null
+}
+            </pre>
+        </td>
+    </tr>
 </table>
 
 ## UDP broadcasting
