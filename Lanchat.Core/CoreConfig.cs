@@ -70,6 +70,11 @@ namespace Lanchat.Core
         public static int MaxNicknameLenght { get; set; } = 20;
 
         /// <summary>
+        ///     Enable automatic connecting to nodes from received list.
+        /// </summary>
+        public static bool AutomaticConnecting { get; set; } = true;
+
+        /// <summary>
         ///     Blocked IP addresses.
         /// </summary>
         public static List<IPAddress> BlockedAddresses { get; set; } = new();

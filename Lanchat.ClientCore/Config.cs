@@ -15,6 +15,7 @@ namespace Lanchat.ClientCore
         private static int _broadcastPort = 3646;
         private static string _nickname = "user";
         private static List<string> _blockedAddresses = new();
+        private static bool _automaticConnecting = true;
 
         public List<string> BlockedAddresses
         {
@@ -55,6 +56,17 @@ namespace Lanchat.ClientCore
             {
                 _nickname = value;
                 CoreConfig.Nickname = value;
+                Save();
+            }
+        }
+
+        public bool AutomaticConnecting
+        {
+            get => _automaticConnecting;
+            set
+            {
+                _automaticConnecting = value;
+                CoreConfig.AutomaticConnecting = value;
                 Save();
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -192,6 +193,7 @@ namespace Lanchat.Core
         // Try connect to every node from list
         private void OnNodesListReceived(object sender, List<IPAddress> list)
         {
+            if(!CoreConfig.AutomaticConnecting) return;
             list.ForEach(x =>
             {
                 try
