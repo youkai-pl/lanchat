@@ -141,11 +141,12 @@
 --no-udp (-b)     Start without broadcast
         
 Commands:
-connect   disconnect   help
-list      nickname     exit
+connect   disconnect
+list      nickname     m
 block     unblock      blocked
-m        
-        
+afk       dnd          online
+exit      ping         help
+            
 Try /help &lt;command&gt; for detailed help.
     </value>
     </data>
