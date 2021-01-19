@@ -13,7 +13,7 @@ namespace Lanchat.Terminal.Commands
         {
             if (args == null || args.Length < 1)
             {
-                Ui.Log.Add(Resources.Manual_Unblock);
+                Ui.Log.Add(Resources.Help_unblock);
                 return;
             }
 

@@ -15,7 +15,7 @@ namespace Lanchat.Terminal.Commands
 
             if (args == null || args.Length < 1)
             {
-                Ui.Log.Add(Resources.Manual_Block);
+                Ui.Log.Add(Resources.Help_block);
                 return;
             }
 

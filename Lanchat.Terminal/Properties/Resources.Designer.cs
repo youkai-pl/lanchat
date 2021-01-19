@@ -51,15 +51,15 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Manual_Connect {
+        internal static string Help_connect {
             get {
-                return ResourceManager.GetString("Manual_Connect", resourceCulture);
+                return ResourceManager.GetString("Help_connect", resourceCulture);
             }
         }
         
-        internal static string Manual_Help {
+        internal static string Help {
             get {
-                return ResourceManager.GetString("Manual_Help", resourceCulture);
+                return ResourceManager.GetString("Help", resourceCulture);
             }
         }
         
@@ -87,9 +87,9 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Manual_Nick {
+        internal static string Help_nick {
             get {
-                return ResourceManager.GetString("Manual_Nick", resourceCulture);
+                return ResourceManager.GetString("Help_nick", resourceCulture);
             }
         }
         
@@ -105,21 +105,21 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Manual_Disconnect {
+        internal static string Help_disconnect {
             get {
-                return ResourceManager.GetString("Manual_Disconnect", resourceCulture);
+                return ResourceManager.GetString("Help_disconnect", resourceCulture);
             }
         }
         
-        internal static string Manual_Block {
+        internal static string Help_block {
             get {
-                return ResourceManager.GetString("Manual_Block", resourceCulture);
+                return ResourceManager.GetString("Help_block", resourceCulture);
             }
         }
         
-        internal static string Manual_Unblock {
+        internal static string Help_unblock {
             get {
-                return ResourceManager.GetString("Manual_Unblock", resourceCulture);
+                return ResourceManager.GetString("Help_unblock", resourceCulture);
             }
         }
         
@@ -183,9 +183,9 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Manual_PrivateMessage {
+        internal static string Help_m {
             get {
-                return ResourceManager.GetString("Manual_M", resourceCulture);
+                return ResourceManager.GetString("Help_m", resourceCulture);
             }
         }
         
@@ -207,9 +207,9 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Manual_Ping {
+        internal static string Help_ping {
             get {
-                return ResourceManager.GetString("Manual_Ping", resourceCulture);
+                return ResourceManager.GetString("Help_ping", resourceCulture);
             }
         }
     }

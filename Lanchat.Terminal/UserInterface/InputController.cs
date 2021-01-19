@@ -63,7 +63,11 @@ namespace Lanchat.Terminal.UserInterface
             
             if (args.Length < command?.ArgsCount)
             {
-                Ui.Log.Add("Invalid command syntax");
+                var help = Resources.ResourceManager.GetString($"Help_{commandAlias}");
+                if (help != null)
+                {
+                    Ui.Log.Add(help);
+                }
                 return;
             }
             
