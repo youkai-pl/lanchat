@@ -24,8 +24,18 @@ namespace Lanchat.Terminal
             {
                 Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
                 LoggingService.StartLogging();
-                var server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
-                server.Start();
+
+                if (Config.UseIPv6)
+                {
+                    var server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
+                    server.Start(); 
+                }
+                else
+                {
+                    var server = new Server(IPAddress.Any, CoreConfig.ServerPort);
+                    server.Start();
+                }
+                
                 LoggingService.CleanLogs();
                 while (true) Console.ReadKey();
             }

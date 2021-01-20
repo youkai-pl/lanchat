@@ -16,6 +16,7 @@ namespace Lanchat.ClientCore
         private static string _nickname;
         private static List<string> _blockedAddresses;
         private static bool _automaticConnecting;
+        private static bool _useIPv6;
 
         public List<string> BlockedAddresses
         {
@@ -70,13 +71,24 @@ namespace Lanchat.ClientCore
                 Save();
             }
         }
+        
+        public bool UseIPv6
+        {
+            get => _useIPv6;
+            set
+            {
+                _useIPv6 = value;
+                CoreConfig.UseIPv6 = value;
+                Save();
+            }
+        }
 
         public static string ConfigPath { get; private set; }
         public static string DataPath { get; private set; }
 
         public void AddBlocked(IPAddress ipAddress)
         {
-            var ipString = ipAddress.MapToIPv6().ToString();
+            var ipString = ipAddress.ToString();
             if (BlockedAddresses.Contains(ipString)) return;
             BlockedAddresses.Add(ipString);
             CoreConfig.BlockedAddresses.Add(ipAddress);
@@ -85,7 +97,7 @@ namespace Lanchat.ClientCore
 
         public void RemoveBlocked(IPAddress ipAddress)
         {
-            BlockedAddresses.Remove(ipAddress.MapToIPv6().ToString());
+            BlockedAddresses.Remove(ipAddress.ToString());
             CoreConfig.BlockedAddresses.Remove(ipAddress);
             Save();
         }
@@ -130,7 +142,8 @@ namespace Lanchat.ClientCore
                     BroadcastPort = 3646,
                     BlockedAddresses = new List<string>(),
                     Nickname = NicknamesGenerator.GimmeNickname(),
-                    AutomaticConnecting = true
+                    AutomaticConnecting = true,
+                    UseIPv6 = false
                 };
                 config.Save();
             }

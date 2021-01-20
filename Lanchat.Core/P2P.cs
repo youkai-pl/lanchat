@@ -25,7 +25,10 @@ namespace Lanchat.Core
             outgoingConnections = new List<Node>();
             detectedNodes = new List<Broadcast>();
 
-            server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
+            server = CoreConfig.UseIPv6
+                ? new Server(IPAddress.IPv6Any, CoreConfig.ServerPort)
+                : new Server(IPAddress.Any, CoreConfig.ServerPort);
+
             server.SessionCreated += OnSessionCreated;
 
             CoreConfig.PropertyChanged += CoreConfigOnPropertyChanged;

@@ -68,6 +68,11 @@ namespace Lanchat.Core
         ///     Enable automatic connecting to nodes from received list.
         /// </summary>
         public static bool AutomaticConnecting { get; set; } = true;
+        
+        /// <summary>
+        ///     Use IPv6 instead IPv4.
+        /// </summary>
+        public static bool UseIPv6 { get; set; } = false;
 
         /// <summary>
         ///     Blocked IP addresses.
