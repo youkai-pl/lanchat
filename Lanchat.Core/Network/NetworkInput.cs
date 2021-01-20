@@ -70,7 +70,6 @@ namespace Lanchat.Core.Network
                             break;
 
                         case DataTypes.Handshake:
-                            // TODO: Catch null handshake values
                             var handshake = JsonSerializer.Deserialize<Handshake>(content, serializerOptions);
                             HandshakeReceived?.Invoke(this, handshake);
                             break;
@@ -125,7 +124,9 @@ namespace Lanchat.Core.Network
                 // Input errors catching.
                 catch (Exception ex)
                 {
-                    if (ex is not JsonException && ex is not ArgumentNullException) throw;
+                    if (ex is not JsonException && 
+                        ex is not ArgumentNullException && 
+                        ex is not NullReferenceException) throw;
                 }
         }
     }
