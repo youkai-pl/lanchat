@@ -48,7 +48,7 @@ namespace Lanchat.Terminal.Commands
             {
                 var line = new[]
                 {
-                    new TextBlock {Text = $"{x.Nickname} (", Color = ConsoleColor.White},
+                    new TextBlock {Text = $"{x.Nickname} - {x.IpAddress}(", Color = ConsoleColor.White},
                     new TextBlock {Text = "Detected", Color = ConsoleColor.DarkCyan},
                     new TextBlock {Text = ")", Color = ConsoleColor.White}
                 };
