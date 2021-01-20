@@ -70,6 +70,7 @@ namespace Lanchat.Core.Network
                             break;
 
                         case DataTypes.Handshake:
+                            // TODO: Catch null handshake values
                             var handshake = JsonSerializer.Deserialize<Handshake>(content, serializerOptions);
                             HandshakeReceived?.Invoke(this, handshake);
                             break;

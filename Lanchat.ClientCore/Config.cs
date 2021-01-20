@@ -11,11 +11,11 @@ namespace Lanchat.ClientCore
 {
     public class Config
     {
-        private static int _port = 3645;
-        private static int _broadcastPort = 3646;
-        private static string _nickname = NicknamesGenerator.GimmeNickname();
-        private static List<string> _blockedAddresses = new();
-        private static bool _automaticConnecting = true;
+        private static int _port;
+        private static int _broadcastPort;
+        private static string _nickname;
+        private static List<string> _blockedAddresses;
+        private static bool _automaticConnecting;
 
         public List<string> BlockedAddresses
         {
@@ -124,7 +124,14 @@ namespace Lanchat.ClientCore
             catch (Exception e)
             {
                 if (!(e is FileNotFoundException) && !(e is DirectoryNotFoundException) && !(e is JsonException)) throw;
-                config = new Config();
+                config = new Config
+                {
+                    Port = 3645,
+                    BroadcastPort = 3646,
+                    BlockedAddresses = new List<string>(),
+                    Nickname = NicknamesGenerator.GimmeNickname(),
+                    AutomaticConnecting = true
+                };
                 config.Save();
             }
 

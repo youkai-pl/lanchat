@@ -13,7 +13,7 @@ namespace Lanchat.Core
     /// </summary>
     public static class CoreConfig
     {
-        private static string _nickname = "user";
+        private static string _nickname;
         private static Status _status = Status.Online;
 
         /// <summary>
