@@ -262,7 +262,7 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
         <td>
             <pre lang="json">
 {
-   "Type":"Goodbye",
+   "Type":"Ping",
    "Data":null
 }
             </pre>
@@ -281,7 +281,7 @@ All packets contains jsons with two keys in root (*Type*, *Data*) and multiple k
         <td>
             <pre lang="json">
 {
-   "Type":"Goodbye",
+   "Type":"Pong",
    "Data":null
 }
             </pre>
