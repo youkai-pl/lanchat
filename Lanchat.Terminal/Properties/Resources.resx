@@ -205,7 +205,7 @@ Try /help &lt;command&gt; for detailed help.
         <value>{0} connected</value>
     </data>
     <data name="Info_ConnectionError" xml:space="preserve">
-        <value>Connection error</value>
+        <value>Connection error: {0} / {1}</value>
     </data>
     <data name="Info_NicknameChanged" xml:space="preserve">
         <value>{0} is now {1}</value>
@@ -225,5 +225,11 @@ Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
     </data>
     <data name="Help_ping" xml:space="preserve">
         <value>Syntax: /ping &lt;short id&gt;</value>
+    </data>
+    <data name="Info_StatusChange" xml:space="preserve">
+        <value>{0} is {1}</value>
+    </data>
+    <data name="Info_Ping" xml:space="preserve">
+        <value>Ping to {0} is {1}ms</value>
     </data>
 </root>

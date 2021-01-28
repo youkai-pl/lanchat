@@ -36,7 +36,7 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
         <value>Podłączone węzły</value>
     </data>
     <data name="Info_ConnectionError" xml:space="preserve">
-        <value>Błąd połączenia</value>
+        <value>Błąd połączenia: {0} / {1}</value>
     </data>
     <data name="Info_DetectedList" xml:space="preserve">
         <value>Wykryte węzły</value>
@@ -82,5 +82,11 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     </data>
     <data name="Info_Blocked" xml:space="preserve">
         <value>{0} został zablokowany</value>
+    </data>
+    <data name="Info_StatusChange" xml:space="preserve">
+        <value>{0} jest {1}</value>
+    </data>
+    <data name="Info_Ping" xml:space="preserve">
+        <value>Ping do {0} wynosi {1}ms</value>
     </data>
 </root>

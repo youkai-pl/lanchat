@@ -38,7 +38,7 @@ namespace Lanchat.Terminal
                         Status.DoNotDisturb => "dnd",
                         _ => ""
                     };
-                    Ui.Log.Add($"{node.Nickname} changed status to {status}");
+                    Ui.Log.Add(string.Format(Resources.Info_StatusChange, node.Nickname, status));
                     break;
 
                 case "Nickname":
@@ -78,7 +78,7 @@ namespace Lanchat.Terminal
 
         private void OnSocketErrored(object sender, SocketError e)
         {
-            Ui.Log.Add($"{Resources.Info_ConnectionError}: {node.Nickname} / {e}");
+            Ui.Log.Add(string.Format(Resources.Info_ConnectionError, node.Endpoint.Address, e));
         }
 
         private void OnCannotConnect(object sender, EventArgs e)
@@ -89,7 +89,7 @@ namespace Lanchat.Terminal
         private void OnPongReceived(object sender, TimeSpan? e)
         {
             if (e != null)
-                Ui.Log.Add($"Ping to {node.Nickname} is {e.Value.Milliseconds}ms");
+                Ui.Log.Add(string.Format(Resources.Info_Ping, node.Nickname, e.Value.Milliseconds));
         }
     }
 }

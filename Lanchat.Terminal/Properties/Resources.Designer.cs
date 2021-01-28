@@ -212,5 +212,17 @@ namespace Lanchat.Terminal.Properties {
                 return ResourceManager.GetString("Help_ping", resourceCulture);
             }
         }
+        
+        internal static string Info_StatusChange {
+            get {
+                return ResourceManager.GetString("Info_StatusChange", resourceCulture);
+            }
+        }
+        
+        internal static string Info_Ping {
+            get {
+                return ResourceManager.GetString("Info_Ping", resourceCulture);
+            }
+        }
     }
 }
