@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Reflection;
 using System.Threading;
 using ConsoleGUI;
@@ -8,6 +7,7 @@ using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
 using ConsoleGUI.Input;
 using ConsoleGUI.Space;
+using Lanchat.ClientCore;
 using Lanchat.Terminal.Properties;
 
 namespace Lanchat.Terminal.UserInterface
@@ -143,7 +143,12 @@ namespace Lanchat.Terminal.UserInterface
             ConsoleManager.Resize(new Size(100, 30));
             ConsoleManager.Content = dockPanel;
             Console.Title = Resources.Ui_WindowTitle;
-            Log.Add(Resources.Ui_HelloMessage);
+            Log.Add(Resources.Ui_Logo);
+
+            if (Program.Config.Fresh)
+            {
+                Log.Add(string.Format(Resources.Ui_FirstRunMessage, Config.ConfigPath));
+            }
 
             // Clock updates
             new Thread(() =>

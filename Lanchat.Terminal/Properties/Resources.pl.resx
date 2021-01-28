@@ -103,4 +103,11 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="Help_unblock" xml:space="preserve">
         <value>Składnia: /unblock &lt;ip&gt;</value>
     </data>
+    <data name="Ui_FirstRunMessage" xml:space="preserve">
+        <value>Szybka instrukcja:
+1. Pomoc jest dostępna pod komendą /help
+2. Aby połączyć się z innym użytkownikiem użyj komedny /connect &lt;adres ip&gt;
+3. Możesz zobaczyć adresy dostępnych w sieci osób przy pomocy komendy /list
+4. Plik konfiguracyjny znajduje się w {0}</value>
+    </data>
 </root>

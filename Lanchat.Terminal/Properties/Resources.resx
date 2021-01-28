@@ -122,7 +122,7 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
-    <data name="Ui_HelloMessage" xml:space="preserve">
+    <data name="Ui_Logo" xml:space="preserve">
     <value>   __                 __        __  ___ 
   / /  ___ ____  ____/ /  ___ _/ /_|_  |
  / /__/ _ `/ _ \/ __/ _ \/ _ `/ __/ __/ 
@@ -223,5 +223,12 @@ Try /help &lt;command&gt; for detailed help.
     </data>
     <data name="Info_Ping" xml:space="preserve">
         <value>Ping to {0} is {1}ms</value>
+    </data>
+    <data name="Ui_FirstRunMessage" xml:space="preserve">
+        <value>Quickstart guide:
+1. Help is available under /help command.
+2. Connect with other users witch /connect &lt;ip&gt;
+3. You can see detected users addresses by calling /list
+4. Config file can be found in {0}</value>
     </data>
 </root>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Lanchat.Core;
 
 namespace Lanchat.ClientCore
@@ -89,11 +90,14 @@ namespace Lanchat.ClientCore
             get => _language;
             set
             {
-                _language = value ?? throw new ArgumentNullException(nameof(value));
+                _language = value;
                 Save();
             }
         }
 
+        [JsonIgnore]
+        public bool Fresh { get; set; }
+        
         public static string ConfigPath { get; private set; }
         public static string DataPath { get; private set; }
 
@@ -148,8 +152,7 @@ namespace Lanchat.ClientCore
             {
                 if (!(e is FileNotFoundException) && 
                     !(e is DirectoryNotFoundException) &&
-                    !(e is JsonException) &&
-                    !(e is ArgumentNullException)) throw;
+                    !(e is JsonException)) throw;
                 
                 config = new Config
                 {
@@ -159,7 +162,8 @@ namespace Lanchat.ClientCore
                     Nickname = NicknamesGenerator.GimmeNickname(),
                     AutomaticConnecting = true,
                     UseIPv6 = false,
-                    Language = "default"
+                    Language = "default",
+                    Fresh = true
                 };
                 config.Save();
             }

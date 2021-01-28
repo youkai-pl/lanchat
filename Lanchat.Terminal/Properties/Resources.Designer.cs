@@ -45,9 +45,9 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Ui_HelloMessage {
+        internal static string Ui_Logo {
             get {
-                return ResourceManager.GetString("Ui_HelloMessage", resourceCulture);
+                return ResourceManager.GetString("Ui_Logo", resourceCulture);
             }
         }
         
@@ -210,6 +210,12 @@ namespace Lanchat.Terminal.Properties {
         internal static string Info_Ping {
             get {
                 return ResourceManager.GetString("Info_Ping", resourceCulture);
+            }
+        }
+        
+        internal static string Ui_FirstRunMessage {
+            get {
+                return ResourceManager.GetString("Ui_FirstRunMessage", resourceCulture);
             }
         }
     }
