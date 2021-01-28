@@ -147,12 +147,6 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Info_ConnectedList {
-            get {
-                return ResourceManager.GetString("Info_ConnectedList", resourceCulture);
-            }
-        }
-        
         internal static string Info_Disconnected {
             get {
                 return ResourceManager.GetString("Info_Disconnected", resourceCulture);
@@ -198,12 +192,6 @@ namespace Lanchat.Terminal.Properties {
         internal static string Info_CannotConnect {
             get {
                 return ResourceManager.GetString("Info_CannotConnect", resourceCulture);
-            }
-        }
-        
-        internal static string Info_DetectedList {
-            get {
-                return ResourceManager.GetString("Info_DetectedList", resourceCulture);
             }
         }
         

@@ -192,9 +192,6 @@ Try /help &lt;command&gt; for detailed help.
     <data name="Info_BlockedList" xml:space="preserve">
         <value>Blocked IP addresses</value>
     </data>
-    <data name="Info_ConnectedList" xml:space="preserve">
-        <value>Connected nodes</value>
-    </data>
     <data name="Info_Disconnected" xml:space="preserve">
         <value>{0} disconnected</value>
     </data>
@@ -211,17 +208,13 @@ Try /help &lt;command&gt; for detailed help.
         <value>{0} is now {1}</value>
     </data>
     <data name="Help_m" xml:space="preserve">
-        <value>Send private message.
-Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
+        <value>Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
     </data>
     <data name="Info_PortBusy" xml:space="preserve">
         <value>Port busy. Cannot start server. Try to change port in config.</value>
     </data>
     <data name="Info_CannotConnect" xml:space="preserve">
         <value>Cannot connect with {0}</value>
-    </data>
-    <data name="Info_DetectedList" xml:space="preserve">
-        <value>Detected nodes</value>
     </data>
     <data name="Help_ping" xml:space="preserve">
         <value>Syntax: /ping &lt;short id&gt;</value>

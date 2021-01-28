@@ -32,14 +32,8 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="Info_Connected" xml:space="preserve">
         <value>Połączono z {0}</value>
     </data>
-    <data name="Info_ConnectedList" xml:space="preserve">
-        <value>Podłączone węzły</value>
-    </data>
     <data name="Info_ConnectionError" xml:space="preserve">
         <value>Błąd połączenia: {0} / {1}</value>
-    </data>
-    <data name="Info_DetectedList" xml:space="preserve">
-        <value>Wykryte węzły</value>
     </data>
     <data name="Info_Disconnected" xml:space="preserve">
         <value>Rozłączono z {0}</value>
@@ -88,5 +82,26 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     </data>
     <data name="Info_Ping" xml:space="preserve">
         <value>Ping do {0} wynosi {1}ms</value>
+    </data>
+    <data name="Help_block" xml:space="preserve">
+        <value>Składnia: /block &lt;ip | krótkie id&gt;</value>
+    </data>
+    <data name="Help_connect" xml:space="preserve">
+        <value>Składnia: /connect &lt;ip&gt; &lt;port&gt;</value>
+    </data>
+    <data name="Help_disconnect" xml:space="preserve">
+        <value>Składnia: /disconnect &lt;krótkie id&gt;</value>
+    </data>
+    <data name="Help_m" xml:space="preserve">
+        <value>Składnia: /m &lt;krótkie id&gt; &lt;wiadomość&gt;</value>
+    </data>
+    <data name="Help_nick" xml:space="preserve">
+        <value>Składnia: /nick &lt;nowy nick&gt;</value>
+    </data>
+    <data name="Help_ping" xml:space="preserve">
+        <value>Składnia: /ping &lt;krótkie id&gt;</value>
+    </data>
+    <data name="Help_unblock" xml:space="preserve">
+        <value>Składnia: /unblock &lt;ip&gt;</value>
     </data>
 </root>
