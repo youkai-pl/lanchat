@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Input;
@@ -62,7 +63,7 @@ namespace Lanchat.Terminal.UserInterface
 
             if (args.Length < command?.ArgsCount)
             {
-                var help = Resources.ResourceManager.GetString($"Help_{commandAlias}");
+                var help = Resources.ResourceManager.GetString($"Help_{commandAlias}", CultureInfo.CurrentCulture);
                 if (help != null) Ui.Log.Add(help);
                 return;
             }
