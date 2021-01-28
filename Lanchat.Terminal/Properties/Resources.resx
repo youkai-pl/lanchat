@@ -202,7 +202,7 @@ Try /help &lt;command&gt; for detailed help.
         <value>disconnected. Trying reconnect</value>
     </data>
     <data name="Info_Connected" xml:space="preserve">
-        <value>connected</value>
+        <value>{0} connected</value>
     </data>
     <data name="Info_ConnectionError" xml:space="preserve">
         <value>Connection error</value>

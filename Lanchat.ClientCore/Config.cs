@@ -17,6 +17,7 @@ namespace Lanchat.ClientCore
         private static List<string> _blockedAddresses;
         private static bool _automaticConnecting;
         private static bool _useIPv6;
+        private static string _language;
 
         public List<string> BlockedAddresses
         {
@@ -83,6 +84,16 @@ namespace Lanchat.ClientCore
             }
         }
 
+        public string Language
+        {
+            get => _language;
+            set
+            {
+                _language = value ?? throw new ArgumentNullException(nameof(value));
+                Save();
+            }
+        }
+
         public static string ConfigPath { get; private set; }
         public static string DataPath { get; private set; }
 
@@ -135,7 +146,11 @@ namespace Lanchat.ClientCore
             }
             catch (Exception e)
             {
-                if (!(e is FileNotFoundException) && !(e is DirectoryNotFoundException) && !(e is JsonException)) throw;
+                if (!(e is FileNotFoundException) && 
+                    !(e is DirectoryNotFoundException) &&
+                    !(e is JsonException) &&
+                    !(e is ArgumentNullException)) throw;
+                
                 config = new Config
                 {
                     Port = 3645,
@@ -143,7 +158,8 @@ namespace Lanchat.ClientCore
                     BlockedAddresses = new List<string>(),
                     Nickname = NicknamesGenerator.GimmeNickname(),
                     AutomaticConnecting = true,
-                    UseIPv6 = false
+                    UseIPv6 = false,
+                    Language = "default"
                 };
                 config.Save();
             }

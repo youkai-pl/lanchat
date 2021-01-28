@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -28,17 +29,20 @@ namespace Lanchat.Terminal
                 if (Config.UseIPv6)
                 {
                     var server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
-                    server.Start(); 
+                    server.Start();
                 }
                 else
                 {
                     var server = new Server(IPAddress.Any, CoreConfig.ServerPort);
                     server.Start();
                 }
-                
+
                 LoggingService.CleanLogs();
                 while (true) Console.ReadKey();
             }
+
+            // Load resources
+            Resources.Culture = new CultureInfo(Config.Language);
 
             // Initialize p2p mode and ui
             try

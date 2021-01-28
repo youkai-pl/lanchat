@@ -50,7 +50,7 @@ namespace Lanchat.Terminal
 
         private void OnConnected(object sender, EventArgs e)
         {
-            Ui.Log.Add($"{node.Nickname} {Resources.Info_Connected}");
+            Ui.Log.Add(String.Format(Resources.Info_Connected, node.Nickname));
             Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
