@@ -12,7 +12,7 @@ namespace Lanchat.Terminal.Commands
         public void Execute(string[] _)
         {
             CoreConfig.Status = Status.AwayFromKeyboard;
-            Ui.Status.Text = "Away from keyboard";
+            Ui.Status.Text = "AFK";
         }
     }
 }
