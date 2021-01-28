@@ -21,7 +21,7 @@ namespace Lanchat.Terminal.Commands
             if (correct)
             {
                 Program.Config.RemoveBlocked(parsedIp);
-                Ui.Log.Add($"{parsedIp} {Resources.Info_Unblocked}");
+                Ui.Log.Add(string.Format(Resources.Info_Unblocked, parsedIp));
             }
             else
             {

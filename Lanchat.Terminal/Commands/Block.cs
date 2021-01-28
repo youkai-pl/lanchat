@@ -37,7 +37,7 @@ namespace Lanchat.Terminal.Commands
             }
 
             Program.Config.AddBlocked(ipAddress);
-            Ui.Log.Add($"{ipAddress} {Resources.Info_Blocked}");
+            Ui.Log.Add(string.Format(Resources.Info_Blocked, ipAddress));
         }
     }
 }

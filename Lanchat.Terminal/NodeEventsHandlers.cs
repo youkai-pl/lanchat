@@ -43,26 +43,26 @@ namespace Lanchat.Terminal
 
                 case "Nickname":
                     if (!node.Ready) return;
-                    Ui.Log.Add($"{node.PreviousNickname} is now {node.Nickname}");
+                    Ui.Log.Add(string.Format(Resources.Info_NicknameChanged, node.PreviousNickname, node.Nickname));
                     break;
             }
         }
 
         private void OnConnected(object sender, EventArgs e)
         {
-            Ui.Log.Add(String.Format(Resources.Info_Connected, node.Nickname));
+            Ui.Log.Add(string.Format(Resources.Info_Connected, node.Nickname));
             Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
         private void OnDisconnected(object sender, EventArgs e)
         {
-            Ui.Log.Add($"{node.Nickname} {Resources.Info_Reconnecting}");
+            Ui.Log.Add(string.Format(Resources.Info_Reconnecting, node.Nickname));
             Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
         private void OnHardDisconnected(object sender, EventArgs e)
         {
-            Ui.Log.Add($"{node.Nickname} {Resources.Info_Disconnected}");
+            Ui.Log.Add(string.Format(Resources.Info_Disconnected, node.Nickname));
             Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
@@ -83,7 +83,7 @@ namespace Lanchat.Terminal
 
         private void OnCannotConnect(object sender, EventArgs e)
         {
-            Ui.Log.Add($"{Resources.Info_CannotConnect}: {node.Endpoint}");
+            Ui.Log.Add(string.Format(Resources.Info_CannotConnect, node.Endpoint));
         }
 
         private void OnPongReceived(object sender, TimeSpan? e)

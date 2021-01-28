@@ -32,10 +32,8 @@ namespace Lanchat.Terminal.Commands
                 // Use port from argument or config
                 var port = 0;
                 if (args.Length > 1) port = Parse(args[1]);
-
                 if (port == 0) port = CoreConfig.ServerPort;
-
-                Ui.Log.Add($"{Resources.Info_ConnectionAttempt} {addressArgument}");
+                Ui.Log.Add(string.Format(Resources.Info_ConnectionAttempt, addressArgument));
                 Program.Network.Connect(ipAddress, port);
             }
             catch (FormatException)

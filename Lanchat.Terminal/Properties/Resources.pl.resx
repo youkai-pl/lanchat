@@ -26,10 +26,61 @@ block     unblock      blocked
 afk       dnd          online
 exit      ping         help
             
-Użyj komendy /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
+Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     </value>
     </data>
     <data name="Info_Connected" xml:space="preserve">
         <value>Połączono z {0}</value>
+    </data>
+    <data name="Info_ConnectedList" xml:space="preserve">
+        <value>Podłączone węzły</value>
+    </data>
+    <data name="Info_ConnectionError" xml:space="preserve">
+        <value>Błąd połączenia</value>
+    </data>
+    <data name="Info_DetectedList" xml:space="preserve">
+        <value>Wykryte węzły</value>
+    </data>
+    <data name="Info_Disconnected" xml:space="preserve">
+        <value>Rozłączono z {0}</value>
+    </data>
+    <data name="Info_IncorrectValues" xml:space="preserve">
+        <value>Nieprawidłowa wartość</value>
+    </data>
+    <data name="Info_ManualNotFound" xml:space="preserve">
+        <value>Pomoc nie została znaleziona</value>
+    </data>
+    <data name="Info_NicknameChanged" xml:space="preserve">
+        <value>{0} zmienił nick na {1}</value>
+    </data>
+    <data name="Info_NotFound" xml:space="preserve">
+        <value>Nie znaleziono</value>
+    </data>
+    <data name="Info_PortBusy" xml:space="preserve">
+        <value>Port zajęty, nie można uruchomić serwera. Spróbuj zmienić port w pliku konfiguracyjnym.</value>
+    </data>
+    <data name="Info_Reconnecting" xml:space="preserve">
+        <value>Rozłączono z {0}.  Trwa ponowne łączenie.</value>
+    </data>
+    <data name="Info_SelfNicknameChanged" xml:space="preserve">
+        <value>Nick został zmieniony</value>
+    </data>
+    <data name="Info_Unblocked" xml:space="preserve">
+        <value>{0} został odblokowany</value>
+    </data>
+    <data name="Info_WrongNickname" xml:space="preserve">
+        <value>Nick musi być krótszy niż 20 znaków i nie może być pusty</value>
+    </data>
+    <data name="Info_ConnectionAttempt" xml:space="preserve">
+        <value>Łączenie z {0}</value>
+    </data>
+    <data name="Info_CannotConnect" xml:space="preserve">
+        <value>Nie można połączyć z {0}</value>
+    </data>
+    <data name="Info_BlockedList" xml:space="preserve">
+        <value>Zablokowane adresy IP</value>
+    </data>
+    <data name="Info_Blocked" xml:space="preserve">
+        <value>{0} został zablokowany</value>
     </data>
 </root>

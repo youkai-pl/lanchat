@@ -136,7 +136,7 @@
         <value>Start options:
 --debug (-d)      Show logs      
 --loopback (-l)   Connect with localhost after start        
---server (-s)     Start only sever
+--server (-s)     Start only server
 --no-server (-n)  Start without server
 --no-udp (-b)     Start without broadcast
         
@@ -154,8 +154,8 @@ Try /help &lt;command&gt; for detailed help.
     <value>Lanchat</value>
   </data>
     <data name="Info_ConnectionAttempt" xml:space="preserve">
-    <value>Attempting connect to</value>
-  </data>
+        <value>Attempting connect to {0}</value>
+    </data>
     <data name="Info_IncorrectValues" xml:space="preserve">
     <value>Incorrect values</value>
   </data>
@@ -184,10 +184,10 @@ Try /help &lt;command&gt; for detailed help.
         <value>Not found</value>
     </data>
     <data name="Info_Blocked" xml:space="preserve">
-        <value>blocked</value>
+        <value>{0} blocked</value>
     </data>
     <data name="Info_Unblocked" xml:space="preserve">
-        <value>unblocked</value>
+        <value>{0} unblocked</value>
     </data>
     <data name="Info_BlockedList" xml:space="preserve">
         <value>Blocked IP addresses</value>
@@ -196,10 +196,10 @@ Try /help &lt;command&gt; for detailed help.
         <value>Connected nodes</value>
     </data>
     <data name="Info_Disconnected" xml:space="preserve">
-        <value>disconnected</value>
+        <value>{0} disconnected</value>
     </data>
     <data name="Info_Reconnecting" xml:space="preserve">
-        <value>disconnected. Trying reconnect</value>
+        <value>{0} disconnected. Trying reconnect</value>
     </data>
     <data name="Info_Connected" xml:space="preserve">
         <value>{0} connected</value>
@@ -208,7 +208,7 @@ Try /help &lt;command&gt; for detailed help.
         <value>Connection error</value>
     </data>
     <data name="Info_NicknameChanged" xml:space="preserve">
-        <value>changed nickname to</value>
+        <value>{0} is now {1}</value>
     </data>
     <data name="Help_m" xml:space="preserve">
         <value>Send private message.
@@ -218,7 +218,7 @@ Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
         <value>Port busy. Cannot start server. Try to change port in config.</value>
     </data>
     <data name="Info_CannotConnect" xml:space="preserve">
-        <value>Cannot connect with</value>
+        <value>Cannot connect with {0}</value>
     </data>
     <data name="Info_DetectedList" xml:space="preserve">
         <value>Detected nodes</value>
