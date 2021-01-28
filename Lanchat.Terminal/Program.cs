@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -19,27 +18,6 @@ namespace Lanchat.Terminal
         private static void Main(string[] args)
         {
             Config = Config.Load();
-
-            // Initialize server mode
-            if (args.Contains("--server") || args.Contains("-s"))
-            {
-                Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
-                LoggingService.StartLogging();
-
-                if (Config.UseIPv6)
-                {
-                    var server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
-                    server.Start();
-                }
-                else
-                {
-                    var server = new Server(IPAddress.Any, CoreConfig.ServerPort);
-                    server.Start();
-                }
-
-                LoggingService.CleanLogs();
-                while (true) Console.ReadKey();
-            }
 
             // Load resources
             CultureInfo.CurrentCulture = new CultureInfo(Config.Language);

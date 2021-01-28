@@ -136,7 +136,6 @@
         <value>Start options:
 --debug (-d)      Show logs      
 --loopback (-l)   Connect with localhost after start        
---server (-s)     Start only server
 --no-server (-n)  Start without server
 --no-udp (-b)     Start without broadcast
         

@@ -15,7 +15,6 @@
         <value>Parametry uruchamiania:
 --debug (-d)      Wyświetlanie logów     
 --loopback (-l)   Łączenie z localhostem po starcie
---server (-s)     Uruchaminie w trybie serwera
 --no-server (-n)  Uruchamianie bez serwera
 --no-udp (-b)     Uruchamianie bez rozgłaszania
         

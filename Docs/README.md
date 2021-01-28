@@ -20,7 +20,6 @@ You can start terminal client with the following arguments:
 |-------------|-------|-------------------------------------------------|
 | --debug     | -d    | Show logs.                                      |
 | --loopback  | -l    | Connect with localhost after start (for debug). |
-| --server    | -s    | Start only server without UI.                   |
 | --no-server | -n    | Start without server.                           |
 | --no-udp    | -b    | Start without broadcasting.                     |
 
