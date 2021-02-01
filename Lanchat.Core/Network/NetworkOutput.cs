@@ -57,7 +57,11 @@ namespace Lanchat.Core.Network
         /// <param name="path">File path</param>
         public void SendFile(string path)
         {
-            SendData(DataTypes.FileExchangeRequest, node.FileExchange.CreateSendRequest(path));
+            var request = node.FileExchange.CreateSendRequest(path);
+            if (request != null)
+            {
+                SendData(DataTypes.FileExchangeRequest, request);
+            }
         }
 
         public void SendFileExchangeAccept()
@@ -112,7 +116,11 @@ namespace Lanchat.Core.Network
 
         internal void SendFile()
         {
-            SendData(DataTypes.File, node.FileExchange.LoadSendRequest());
+            var binary = node.FileExchange.PrepareFileToSend();
+            if (binary != null)
+            {
+                SendData(DataTypes.File, binary);
+            }
         }
 
         private void SendData(DataTypes dataType, object content = null)

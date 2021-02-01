@@ -123,8 +123,7 @@ namespace Lanchat.Core.Network
 
                         case DataTypes.File:
                             var binary = JsonSerializer.Deserialize<Binary>(content);
-                            File.WriteAllBytes(Path.GetFileName(binary.Filename + "2"),
-                                Convert.FromBase64String(binary.Data));
+                            node.FileExchange.HandleReceivedFile(binary);
                             break;
 
                         case DataTypes.FileExchangeRequest:
