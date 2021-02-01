@@ -118,7 +118,13 @@ namespace Lanchat.Core.Network
 
                         case DataTypes.File:
                             var binary = JsonSerializer.Deserialize<Binary>(content);
-                            File.WriteAllBytes(binary.Filename + "2", Convert.FromBase64String(binary.Data));
+                            File.WriteAllBytes(Path.GetFileName(binary.Filename),
+                                Convert.FromBase64String(binary.Data));
+                            break;
+
+                        case DataTypes.FileExchangeRequest:
+                            var request = JsonSerializer.Deserialize<FileExchangeRequest>(content, serializerOptions);
+                            HandleFileExchangeRequest(request);
                             break;
 
                         default:
@@ -134,6 +140,28 @@ namespace Lanchat.Core.Network
                         ex is not ArgumentNullException &&
                         ex is not NullReferenceException) throw;
                 }
+        }
+
+        private void HandleFileExchangeRequest(FileExchangeRequest request)
+        {
+            switch (request.RequestType)
+            {
+                case FileExchangeRequestType.Accepted:
+                    node.NetworkOutput.SendFile(node.FileExchange.CurrentSendRequest.FilePath);
+                    break;
+                
+                case FileExchangeRequestType.Rejected:
+                    node.FileExchange.CurrentSendRequest = null;
+                    break;
+                
+                case FileExchangeRequestType.Sending:
+                    node.FileExchange.CurrentReceiveRequest = request;
+                    break;
+                
+                default:
+                    Trace.Write($"Node {node.Id} received file exchange request of unknown type.");
+                    break;
+            }
         }
     }
 }

@@ -50,21 +50,14 @@ namespace Lanchat.Core.Network
             node.PingSendTime = DateTime.Now;
             SendData(DataTypes.Ping);
         }
-        
+
         /// <summary>
-        ///     Send file.
+        ///     Send file exchange request.
         /// </summary>
         /// <param name="path">File path</param>
         public void SendFile(string path)
         {
-            var file = File.ReadAllBytes(path);
-            var binary = new Binary
-            {
-                Data = Convert.ToBase64String(file),
-                Filename = Path.GetFileName(path)
-            };
-            
-            SendData(DataTypes.File, binary);
+            SendData(DataTypes.FileExchangeRequest, node.FileExchange.CreateSendRequest(path));
         }
 
         internal void SendHandshake()
@@ -109,6 +102,11 @@ namespace Lanchat.Core.Network
         internal void SendPong()
         {
             SendData(DataTypes.Pong);
+        }
+
+        internal void SendFile()
+        {
+            SendData(DataTypes.File, node.FileExchange.LoadSendRequest());
         }
 
         private void SendData(DataTypes dataType, object content = null)

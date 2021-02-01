@@ -18,6 +18,7 @@
         StatusUpdate,
         Ping,
         Pong,
-        File
+        File,
+        FileExchangeRequest
     }
 }

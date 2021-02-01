@@ -14,6 +14,7 @@ namespace Lanchat.Core
     public class Node : IDisposable, INotifyPropertyChanged
     {
         internal readonly Encryption Encryption;
+        internal readonly FileExchange FileExchange;
 
         private readonly IPEndPoint firstEndPoint;
         internal readonly INetworkElement NetworkElement;
@@ -38,6 +39,7 @@ namespace Lanchat.Core
             NetworkOutput = new NetworkOutput(this);
             NetworkInput = new NetworkInput(this);
             Encryption = new Encryption();
+            FileExchange = new FileExchange();
 
             networkElement.Disconnected += OnDisconnected;
             networkElement.DataReceived += NetworkInput.ProcessReceivedData;
