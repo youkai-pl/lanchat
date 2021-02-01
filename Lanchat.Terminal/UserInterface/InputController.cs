@@ -31,6 +31,7 @@ namespace Lanchat.Terminal.UserInterface
             commands.Add(new PrivateMessage());
             commands.Add(new Unblock());
             commands.Add(new SendFile());
+            commands.Add(new Accept());
 
             this.input = input;
         }

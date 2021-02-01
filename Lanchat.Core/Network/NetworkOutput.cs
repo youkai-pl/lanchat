@@ -60,6 +60,12 @@ namespace Lanchat.Core.Network
             SendData(DataTypes.FileExchangeRequest, node.FileExchange.CreateSendRequest(path));
         }
 
+        public void SendFileExchangeAccept()
+        {
+            node.FileExchange.CurrentReceiveRequest.RequestStatus = RequestStatus.Accepted;
+            SendData(DataTypes.FileExchangeRequest, node.FileExchange.CurrentReceiveRequest);
+        }
+
         internal void SendHandshake()
         {
             var handshake = new Handshake

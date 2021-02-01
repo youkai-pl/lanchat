@@ -31,6 +31,11 @@ namespace Lanchat.Core.Network
         public event EventHandler<string> PrivateMessageReceived;
 
         /// <summary>
+        ///     File exchange request received;
+        /// </summary>
+        public event EventHandler<FileExchangeRequest> FileExchangeRequestReceived; 
+        
+        /// <summary>
         ///     Ping pong.
         /// </summary>
         public event EventHandler<TimeSpan?> PongReceived;
@@ -118,7 +123,7 @@ namespace Lanchat.Core.Network
 
                         case DataTypes.File:
                             var binary = JsonSerializer.Deserialize<Binary>(content);
-                            File.WriteAllBytes(Path.GetFileName(binary.Filename),
+                            File.WriteAllBytes(Path.GetFileName(binary.Filename + "2"),
                                 Convert.FromBase64String(binary.Data));
                             break;
 
@@ -144,18 +149,19 @@ namespace Lanchat.Core.Network
 
         private void HandleFileExchangeRequest(FileExchangeRequest request)
         {
-            switch (request.RequestType)
+            switch (request.RequestStatus)
             {
-                case FileExchangeRequestType.Accepted:
-                    node.NetworkOutput.SendFile(node.FileExchange.CurrentSendRequest.FilePath);
+                case RequestStatus.Accepted:
+                    node.NetworkOutput.SendFile();
                     break;
                 
-                case FileExchangeRequestType.Rejected:
+                case RequestStatus.Rejected:
                     node.FileExchange.CurrentSendRequest = null;
                     break;
                 
-                case FileExchangeRequestType.Sending:
+                case RequestStatus.Sending:
                     node.FileExchange.CurrentReceiveRequest = request;
+                    FileExchangeRequestReceived?.Invoke(this, request);
                     break;
                 
                 default:

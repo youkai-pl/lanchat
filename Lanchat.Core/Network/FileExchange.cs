@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using Lanchat.Core.Models;
 
@@ -16,8 +18,9 @@ namespace Lanchat.Core.Network
             using var stream = File.OpenRead(path);
             CurrentSendRequest = new FileExchangeRequest
             {
-                Checksum = md5.ComputeHash(stream).ToString(),
-                RequestType = FileExchangeRequestType.Sending
+                Checksum = string.Concat(md5.ComputeHash(stream).Select(x => x.ToString("X2"))),
+                FilePath = path,
+                RequestStatus = RequestStatus.Sending
             };
             
             return CurrentSendRequest;

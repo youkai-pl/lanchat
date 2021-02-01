@@ -18,6 +18,7 @@ namespace Lanchat.Terminal
             node.NetworkInput.MessageReceived += OnMessageReceived;
             node.NetworkInput.PrivateMessageReceived += OnPrivateMessageReceived;
             node.NetworkInput.PongReceived += OnPongReceived;
+            node.NetworkInput.FileExchangeRequestReceived += OnFileExchangeRequestReceived;
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
             node.HardDisconnect += OnHardDisconnected;
@@ -90,6 +91,12 @@ namespace Lanchat.Terminal
         {
             if (e != null)
                 Ui.Log.Add(string.Format(Resources.Info_Ping, node.Nickname, e.Value.Milliseconds));
+        }
+        
+        private void OnFileExchangeRequestReceived(object sender, FileExchangeRequest e)
+        {
+            // TODO: Move this message to resources
+            Ui.Log.Add($"{node.Nickname} wants to send you a file ({e.Checksum}) (/accept | /reject)");
         }
     }
 }
