@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Text.Json;
 using Lanchat.Core.Extensions;
@@ -113,6 +114,11 @@ namespace Lanchat.Core.Network
                             node.Ping = DateTime.Now - node.PingSendTime;
                             node.PingSendTime = null;
                             PongReceived?.Invoke(this, node.Ping);
+                            break;
+                        
+                        case DataTypes.File:
+                            var binary = JsonSerializer.Deserialize<Binary>(content);
+                            File.WriteAllBytes(binary.Filename, Convert.FromBase64String(binary.Data));
                             break;
 
                         default:

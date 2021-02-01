@@ -17,6 +17,7 @@
         PrivateMessage,
         StatusUpdate,
         Ping,
-        Pong
+        Pong,
+        File
     }
 }

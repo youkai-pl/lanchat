@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
@@ -92,6 +93,18 @@ namespace Lanchat.Core.Network
         internal void SendPong()
         {
             SendData(DataTypes.Pong);
+        }
+
+        internal void SendFile(string path)
+        {
+            var file = File.ReadAllBytes(path);
+            var binary = new Binary
+            {
+                Data = Convert.ToBase64String(file),
+                Filename = Path.GetFileName(path)
+            };
+            
+            SendData(DataTypes.File, binary);
         }
 
         private void SendData(DataTypes dataType, object content = null)
