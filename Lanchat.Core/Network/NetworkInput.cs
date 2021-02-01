@@ -115,10 +115,10 @@ namespace Lanchat.Core.Network
                             node.PingSendTime = null;
                             PongReceived?.Invoke(this, node.Ping);
                             break;
-                        
+
                         case DataTypes.File:
                             var binary = JsonSerializer.Deserialize<Binary>(content);
-                            File.WriteAllBytes(binary.Filename, Convert.FromBase64String(binary.Data));
+                            File.WriteAllBytes(binary.Filename + "2", Convert.FromBase64String(binary.Data));
                             break;
 
                         default:
@@ -130,8 +130,8 @@ namespace Lanchat.Core.Network
                 // Input errors catching.
                 catch (Exception ex)
                 {
-                    if (ex is not JsonException && 
-                        ex is not ArgumentNullException && 
+                    if (ex is not JsonException &&
+                        ex is not ArgumentNullException &&
                         ex is not NullReferenceException) throw;
                 }
         }
