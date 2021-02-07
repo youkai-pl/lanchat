@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -54,11 +53,11 @@ namespace Lanchat.Core.Network
             }
         }
 
-        internal void HandleReceivedFile(Binary file)
+        internal bool HandleReceivedFile(Binary file)
         {
             if (CurrentReceiveRequest.RequestStatus != RequestStatus.Accepted)
             {
-                return;
+                return false;
             }
 
             try
@@ -76,10 +75,12 @@ namespace Lanchat.Core.Network
                 }
 
                 File.WriteAllBytes(fileName, Convert.FromBase64String(file.Data));
+                return true;
             }
             catch (Exception e)
             {
                 // TODO: Create exception event
+                return false;
             }
         }
     }

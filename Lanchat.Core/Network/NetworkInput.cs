@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
 using System.Text.Json;
 using Lanchat.Core.Extensions;
@@ -33,12 +32,18 @@ namespace Lanchat.Core.Network
         /// <summary>
         ///     File exchange request received;
         /// </summary>
-        public event EventHandler<FileExchangeRequest> FileExchangeRequestReceived; 
-        
+        public event EventHandler<FileExchangeRequest> FileExchangeRequestReceived;
+
         /// <summary>
         ///     Ping pong.
         /// </summary>
         public event EventHandler<TimeSpan?> PongReceived;
+
+
+        /// <summary>
+        ///     File received.
+        /// </summary>
+        public event EventHandler<FileExchangeRequest> FileReceived;
 
         internal event EventHandler<Handshake> HandshakeReceived;
         internal event EventHandler<KeyInfo> KeyInfoReceived;
@@ -123,7 +128,10 @@ namespace Lanchat.Core.Network
 
                         case DataTypes.File:
                             var binary = JsonSerializer.Deserialize<Binary>(content);
-                            node.FileExchange.HandleReceivedFile(binary);
+                            if (node.FileExchange.HandleReceivedFile(binary))
+                            {
+                                FileReceived?.Invoke(this, node.FileExchange.CurrentReceiveRequest);
+                            }
                             break;
 
                         case DataTypes.FileExchangeRequest:
@@ -153,16 +161,16 @@ namespace Lanchat.Core.Network
                 case RequestStatus.Accepted:
                     node.NetworkOutput.SendFile();
                     break;
-                
+
                 case RequestStatus.Rejected:
                     node.FileExchange.CurrentSendRequest = null;
                     break;
-                
+
                 case RequestStatus.Sending:
                     node.FileExchange.CurrentReceiveRequest = request;
                     FileExchangeRequestReceived?.Invoke(this, request);
                     break;
-                
+
                 default:
                     Trace.Write($"Node {node.Id} received file exchange request of unknown type.");
                     break;
