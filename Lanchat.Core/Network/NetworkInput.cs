@@ -30,11 +30,6 @@ namespace Lanchat.Core.Network
         public event EventHandler<string> PrivateMessageReceived;
 
         /// <summary>
-        ///     File exchange request received;
-        /// </summary>
-        public event EventHandler<FileExchangeRequest> FileExchangeRequestReceived;
-
-        /// <summary>
         ///     Ping pong.
         /// </summary>
         public event EventHandler<TimeSpan?> PongReceived;
@@ -122,12 +117,12 @@ namespace Lanchat.Core.Network
 
                         case DataTypes.File:
                             var binary = JsonSerializer.Deserialize<Binary>(content);
-                            node.FileExchange.HandleReceivedFile(binary);
+                            node.FilesExchange.HandleReceivedFile(binary);
                             break;
 
                         case DataTypes.FileExchangeRequest:
                             var request = JsonSerializer.Deserialize<FileExchangeRequest>(content, serializerOptions);
-                            HandleFileExchangeRequest(request);
+                            node.FilesExchange.HandleFileExchangeRequest(request);
                             break;
 
                         default:
@@ -143,29 +138,6 @@ namespace Lanchat.Core.Network
                         ex is not ArgumentNullException &&
                         ex is not NullReferenceException) throw;
                 }
-        }
-
-        private void HandleFileExchangeRequest(FileExchangeRequest request)
-        {
-            switch (request.RequestStatus)
-            {
-                case RequestStatus.Accepted:
-                    node.NetworkOutput.SendFile();
-                    break;
-
-                case RequestStatus.Rejected:
-                    node.FileExchange.CurrentSendRequest = null;
-                    break;
-
-                case RequestStatus.Sending:
-                    node.FileExchange.CurrentReceiveRequest = request;
-                    FileExchangeRequestReceived?.Invoke(this, request);
-                    break;
-
-                default:
-                    Trace.Write($"Node {node.Id} received file exchange request of unknown type.");
-                    break;
-            }
         }
     }
 }

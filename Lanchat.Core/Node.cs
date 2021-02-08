@@ -18,7 +18,7 @@ namespace Lanchat.Core
 
         public readonly NetworkInput NetworkInput;
         public readonly NetworkOutput NetworkOutput;
-        public readonly FileExchange FileExchange;
+        public readonly FilesExchange FilesExchange;
 
         internal DateTime? PingSendTime;
         private string previousNickname;
@@ -39,7 +39,7 @@ namespace Lanchat.Core
             NetworkOutput = new NetworkOutput(this);
             NetworkInput = new NetworkInput(this);
             Encryption = new Encryption();
-            FileExchange = new FileExchange(this);
+            FilesExchange = new FilesExchange(this);
 
             networkElement.Disconnected += OnDisconnected;
             networkElement.DataReceived += NetworkInput.ProcessReceivedData;

@@ -18,8 +18,8 @@ namespace Lanchat.Terminal
             node.NetworkInput.MessageReceived += OnMessageReceived;
             node.NetworkInput.PrivateMessageReceived += OnPrivateMessageReceived;
             node.NetworkInput.PongReceived += OnPongReceived;
-            node.NetworkInput.FileExchangeRequestReceived += OnFileExchangeRequestReceived;
-            node.FileExchange.FileReceived += OnFileReceived;
+            node.FilesExchange.FileExchangeRequestReceived += OnFilesExchangeRequestReceived;
+            node.FilesExchange.FileReceived += OnFilesReceived;
             
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
@@ -95,12 +95,12 @@ namespace Lanchat.Terminal
                 Ui.Log.Add(string.Format(Resources.Info_Ping, node.Nickname, e.Value.Milliseconds));
         }
         
-        private void OnFileExchangeRequestReceived(object sender, FileExchangeRequest e)
+        private void OnFilesExchangeRequestReceived(object sender, FileExchangeRequest e)
         {
             Ui.Log.Add(string.Format(Resources.Info_FileRequest, node.Nickname));
         }
         
-        private void OnFileReceived(object sender, FileExchangeRequest e)
+        private void OnFilesReceived(object sender, FileExchangeRequest e)
         {
             Ui.Log.Add($"File from {node.Nickname} saved to {e.FilePath}");
         }

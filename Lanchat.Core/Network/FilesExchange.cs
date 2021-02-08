@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -6,16 +7,17 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network
 {
-    public class FileExchange
+    public class FilesExchange
     {
         public FileExchangeRequest CurrentSendRequest { get; set; }
         public FileExchangeRequest CurrentReceiveRequest { get; set; }
 
         public event EventHandler<FileExchangeRequest> FileReceived;
+        public event EventHandler<FileExchangeRequest> FileExchangeRequestReceived;
 
         private readonly Node node;
 
-        public FileExchange(Node node)
+        public FilesExchange(Node node)
         {
             this.node = node;
         }
@@ -86,11 +88,34 @@ namespace Lanchat.Core.Network
 
                 var decrypted = Convert.FromBase64String(node.Encryption.Decrypt(file.Data));
                 File.WriteAllBytes(fileName, decrypted);
-                FileReceived?.Invoke(this, node.FileExchange.CurrentReceiveRequest);
+                FileReceived?.Invoke(this, node.FilesExchange.CurrentReceiveRequest);
             }
             catch (Exception e)
             {
                 // TODO: Create exception event
+            }
+        }
+        
+        internal void HandleFileExchangeRequest(FileExchangeRequest request)
+        {
+            switch (request.RequestStatus)
+            {
+                case RequestStatus.Accepted:
+                    node.NetworkOutput.SendFile();
+                    break;
+
+                case RequestStatus.Rejected:
+                    CurrentSendRequest = null;
+                    break;
+
+                case RequestStatus.Sending:
+                    CurrentReceiveRequest = request;
+                    FileExchangeRequestReceived?.Invoke(this, request);
+                    break;
+
+                default:
+                    Trace.Write($"Node {node.Id} received file exchange request of unknown type.");
+                    break;
             }
         }
     }
