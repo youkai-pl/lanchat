@@ -11,6 +11,13 @@ namespace Lanchat.Core.Network
         public FileExchangeRequest CurrentSendRequest { get; set; }
         public FileExchangeRequest CurrentReceiveRequest { get; set; }
 
+        private readonly Node node;
+
+        public FileExchange(Node node)
+        {
+            this.node = node;
+        }
+
         internal FileExchangeRequest CreateSendRequest(string path)
         {
             try
@@ -38,11 +45,12 @@ namespace Lanchat.Core.Network
             try
             {
                 var file = File.ReadAllBytes(CurrentSendRequest.FilePath);
+                var encrypted = node.Encryption.Encrypt(Convert.ToBase64String(file));
                 var fileName = Path.GetFileName(CurrentSendRequest.FilePath);
                 CurrentSendRequest = null;
                 return new Binary
                 {
-                    Data = Convert.ToBase64String(file),
+                    Data = encrypted,
                     Filename = fileName
                 };
             }
@@ -74,7 +82,8 @@ namespace Lanchat.Core.Network
                         $"{Path.GetFileNameWithoutExtension(fileName)}({DateTime.Now:HH_mm_ss}){Path.GetExtension(fileName)}";
                 }
 
-                File.WriteAllBytes(fileName, Convert.FromBase64String(file.Data));
+                var decrypted = Convert.FromBase64String(node.Encryption.Decrypt(file.Data));
+                File.WriteAllBytes(fileName, decrypted);
                 return true;
             }
             catch (Exception e)

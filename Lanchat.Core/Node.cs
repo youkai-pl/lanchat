@@ -39,7 +39,7 @@ namespace Lanchat.Core
             NetworkOutput = new NetworkOutput(this);
             NetworkInput = new NetworkInput(this);
             Encryption = new Encryption();
-            FileExchange = new FileExchange();
+            FileExchange = new FileExchange(this);
 
             networkElement.Disconnected += OnDisconnected;
             networkElement.DataReceived += NetworkInput.ProcessReceivedData;
