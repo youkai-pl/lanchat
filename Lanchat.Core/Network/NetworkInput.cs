@@ -39,12 +39,6 @@ namespace Lanchat.Core.Network
         /// </summary>
         public event EventHandler<TimeSpan?> PongReceived;
 
-
-        /// <summary>
-        ///     File received.
-        /// </summary>
-        public event EventHandler<FileExchangeRequest> FileReceived;
-
         internal event EventHandler<Handshake> HandshakeReceived;
         internal event EventHandler<KeyInfo> KeyInfoReceived;
         internal event EventHandler<List<IPAddress>> NodesListReceived;
@@ -128,10 +122,7 @@ namespace Lanchat.Core.Network
 
                         case DataTypes.File:
                             var binary = JsonSerializer.Deserialize<Binary>(content);
-                            if (node.FileExchange.HandleReceivedFile(binary))
-                            {
-                                FileReceived?.Invoke(this, node.FileExchange.CurrentReceiveRequest);
-                            }
+                            node.FileExchange.HandleReceivedFile(binary);
                             break;
 
                         case DataTypes.FileExchangeRequest:

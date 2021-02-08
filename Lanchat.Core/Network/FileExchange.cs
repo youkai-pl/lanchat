@@ -11,6 +11,8 @@ namespace Lanchat.Core.Network
         public FileExchangeRequest CurrentSendRequest { get; set; }
         public FileExchangeRequest CurrentReceiveRequest { get; set; }
 
+        public event EventHandler<FileExchangeRequest> FileReceived;
+
         private readonly Node node;
 
         public FileExchange(Node node)
@@ -61,11 +63,11 @@ namespace Lanchat.Core.Network
             }
         }
 
-        internal bool HandleReceivedFile(Binary file)
+        internal void HandleReceivedFile(Binary file)
         {
             if (CurrentReceiveRequest.RequestStatus != RequestStatus.Accepted)
             {
-                return false;
+                return;
             }
 
             try
@@ -84,12 +86,11 @@ namespace Lanchat.Core.Network
 
                 var decrypted = Convert.FromBase64String(node.Encryption.Decrypt(file.Data));
                 File.WriteAllBytes(fileName, decrypted);
-                return true;
+                FileReceived?.Invoke(this, node.FileExchange.CurrentReceiveRequest);
             }
             catch (Exception e)
             {
                 // TODO: Create exception event
-                return false;
             }
         }
     }

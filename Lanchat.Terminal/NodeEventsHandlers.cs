@@ -19,7 +19,7 @@ namespace Lanchat.Terminal
             node.NetworkInput.PrivateMessageReceived += OnPrivateMessageReceived;
             node.NetworkInput.PongReceived += OnPongReceived;
             node.NetworkInput.FileExchangeRequestReceived += OnFileExchangeRequestReceived;
-            node.NetworkInput.FileReceived += OnFileReceived;
+            node.FileExchange.FileReceived += OnFileReceived;
             
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
