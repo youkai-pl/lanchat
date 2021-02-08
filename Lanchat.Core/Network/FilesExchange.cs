@@ -14,6 +14,7 @@ namespace Lanchat.Core.Network
 
         public event EventHandler<FileExchangeRequest> FileReceived;
         public event EventHandler<FileExchangeRequest> FileExchangeRequestReceived;
+        public event EventHandler<Exception> FileExchangeError;
 
         private readonly Node node;
 
@@ -39,7 +40,7 @@ namespace Lanchat.Core.Network
             }
             catch (Exception e)
             {
-                // TODO: Create exception event
+                FileExchangeError?.Invoke(this, e);
                 return null;
             }
         }
@@ -60,7 +61,7 @@ namespace Lanchat.Core.Network
             }
             catch (Exception e)
             {
-                // TODO: Create exception event
+                FileExchangeError?.Invoke(this, e);
                 return null;
             }
         }
@@ -92,7 +93,7 @@ namespace Lanchat.Core.Network
             }
             catch (Exception e)
             {
-                // TODO: Create exception event
+                FileExchangeError?.Invoke(this, e);
             }
         }
         

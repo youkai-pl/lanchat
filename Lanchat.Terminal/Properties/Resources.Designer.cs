@@ -230,5 +230,11 @@ namespace Lanchat.Terminal.Properties {
                 return ResourceManager.GetString("Info_FileReceived", resourceCulture);
             }
         }
+        
+        internal static string Info_FileExchangeError {
+            get {
+                return ResourceManager.GetString("Info_FileExchangeError", resourceCulture);
+            }
+        }
     }
 }

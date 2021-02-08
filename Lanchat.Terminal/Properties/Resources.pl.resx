@@ -116,4 +116,7 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="Info_FileReceived" xml:space="preserve">
         <value>Plik od {0} zapisany w {1}</value>
     </data>
+    <data name="Info_FileExchangeError" xml:space="preserve">
+        <value>Błąd wymiany plików: {0}</value>
+    </data>
 </root>

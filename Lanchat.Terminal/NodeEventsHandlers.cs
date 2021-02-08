@@ -20,6 +20,7 @@ namespace Lanchat.Terminal
             node.NetworkInput.PongReceived += OnPongReceived;
             node.FilesExchange.FileExchangeRequestReceived += OnFilesExchangeRequestReceived;
             node.FilesExchange.FileReceived += OnFilesReceived;
+            node.FilesExchange.FileExchangeError += OnFileExchangeError;
             
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
@@ -102,7 +103,12 @@ namespace Lanchat.Terminal
         
         private void OnFilesReceived(object sender, FileExchangeRequest e)
         {
-            Ui.Log.Add($"File from {node.Nickname} saved to {e.FilePath}");
+            Ui.Log.Add(string.Format(Resources.Info_FileReceived, node.Nickname, e.FilePath));
+        }
+        
+        private void OnFileExchangeError(object sender, Exception e)
+        {
+            Ui.Log.Add(string.Format(Resources.Info_FileExchangeError, e.Message));
         }
     }
 }

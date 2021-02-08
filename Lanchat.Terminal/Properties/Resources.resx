@@ -238,4 +238,7 @@ Try /help &lt;command&gt; for detailed help.
     <data name="Info_FileReceived" xml:space="preserve">
         <value>File from {0} saved to {1}</value>
     </data>
+    <data name="Info_FileExchangeError" xml:space="preserve">
+        <value>File exchange error: {0}</value>
+    </data>
 </root>
