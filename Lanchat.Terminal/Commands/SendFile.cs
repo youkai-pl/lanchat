@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Lanchat.Terminal.Properties;
+﻿using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands

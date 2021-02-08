@@ -97,13 +97,11 @@ namespace Lanchat.Terminal
         
         private void OnFileExchangeRequestReceived(object sender, FileExchangeRequest e)
         {
-            // TODO: Move this message to resources
-            Ui.Log.Add($"{node.Nickname} wants to send you a file ({e.Checksum}) (/accept | /reject)");
+            Ui.Log.Add(string.Format(Resources.Info_FileRequest, node.Nickname));
         }
         
         private void OnFileReceived(object sender, FileExchangeRequest e)
         {
-            // TODO: Move this message to resources
             Ui.Log.Add($"File from {node.Nickname} saved to {e.FilePath}");
         }
     }

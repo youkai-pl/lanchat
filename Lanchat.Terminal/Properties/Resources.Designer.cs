@@ -218,5 +218,17 @@ namespace Lanchat.Terminal.Properties {
                 return ResourceManager.GetString("Ui_FirstRunMessage", resourceCulture);
             }
         }
+        
+        internal static string Info_FileRequest {
+            get {
+                return ResourceManager.GetString("Info_FileRequest", resourceCulture);
+            }
+        }
+        
+        internal static string Info_FileReceived {
+            get {
+                return ResourceManager.GetString("Info_FileReceived", resourceCulture);
+            }
+        }
     }
 }

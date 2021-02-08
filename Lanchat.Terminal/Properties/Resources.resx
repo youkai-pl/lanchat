@@ -232,4 +232,10 @@ Try /help &lt;command&gt; for detailed help.
 3. You can see detected users addresses by calling /list
 4. Config file can be found in {0}</value>
     </data>
+    <data name="Info_FileRequest" xml:space="preserve">
+        <value>{0} wants to send you a file (/accept | /reject)</value>
+    </data>
+    <data name="Info_FileReceived" xml:space="preserve">
+        <value>File from {0} saved to {1}</value>
+    </data>
 </root>
