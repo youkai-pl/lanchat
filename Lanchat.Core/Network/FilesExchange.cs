@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -31,8 +33,8 @@ namespace Lanchat.Core.Network
                 using var stream = File.OpenRead(path);
                 CurrentSendRequest = new FileExchangeRequest
                 {
-                    Checksum = string.Concat(md5.ComputeHash(stream).Select(x => x.ToString("X2"))),
                     FilePath = path,
+                    FileName = Path.GetFileName(path),
                     RequestStatus = RequestStatus.Sending
                 };
 
@@ -45,19 +47,29 @@ namespace Lanchat.Core.Network
             }
         }
 
-        internal Binary PrepareFileToSend()
+        internal IEnumerable<FilePart> PrepareFileToSend()
         {
             try
             {
-                var file = File.ReadAllBytes(CurrentSendRequest.FilePath);
-                var encrypted = node.Encryption.Encrypt(Convert.ToBase64String(file));
-                var fileName = Path.GetFileName(CurrentSendRequest.FilePath);
-                CurrentSendRequest = null;
-                return new Binary
+                var file = Convert.ToBase64String(File.ReadAllBytes(CurrentSendRequest.FilePath));
+                var list = new List<FilePart>();
+                const int chunkSize = 1024 * 1024;
+                for (var i = 0; i < file.Length; i += chunkSize)
                 {
-                    Data = encrypted,
-                    Filename = fileName
-                };
+                    var dataPart = file.Substring(i, Math.Min(chunkSize, file.Length - i));
+                    var filePart = new FilePart
+                    {
+                        Data = dataPart
+                    };
+                    if (i == file.Length - 1)
+                    {
+                        filePart.Last = true;
+                    }
+
+                    list.Add(filePart);
+                }
+
+                return list;
             }
             catch (Exception e)
             {
@@ -66,7 +78,7 @@ namespace Lanchat.Core.Network
             }
         }
 
-        internal void HandleReceivedFile(Binary file)
+        internal void HandleReceivedFile(FilePart file)
         {
             if (CurrentReceiveRequest.RequestStatus != RequestStatus.Accepted)
             {
@@ -75,20 +87,12 @@ namespace Lanchat.Core.Network
 
             try
             {
-                var fileName = Path.GetFileName(file.Filename);
-                if (string.IsNullOrWhiteSpace(fileName))
-                {
-                    fileName = "unknown_file_from_lanchat";
-                }
+                var fileName = Path.GetFileName("tmp" + CurrentReceiveRequest.FileName);
+                var data = Convert.FromBase64String(file.Data);
+                using var tempFile = new FileStream(fileName, FileMode.Append);
+                tempFile.Write(data, 0, data.Length);
 
-                if (File.Exists(fileName))
-                {
-                    fileName =
-                        $"{Path.GetFileNameWithoutExtension(fileName)}({DateTime.Now:HH_mm_ss}){Path.GetExtension(fileName)}";
-                }
-
-                var decrypted = Convert.FromBase64String(node.Encryption.Decrypt(file.Data));
-                File.WriteAllBytes(fileName, decrypted);
+                if (!file.Last) return;
                 FileReceived?.Invoke(this, node.FilesExchange.CurrentReceiveRequest);
             }
             catch (Exception e)
@@ -96,7 +100,7 @@ namespace Lanchat.Core.Network
                 FileExchangeError?.Invoke(this, e);
             }
         }
-        
+
         internal void HandleFileExchangeRequest(FileExchangeRequest request)
         {
             switch (request.RequestStatus)

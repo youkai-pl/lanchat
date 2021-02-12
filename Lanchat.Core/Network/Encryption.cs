@@ -80,9 +80,9 @@ namespace Lanchat.Core.Network
 
         internal string Decrypt(string text)
         {
+            var encryptedBytes = Convert.FromBase64String(text);
             try
             {
-                var encryptedBytes = Convert.FromBase64String(text);
                 var decryptor = localAes.CreateDecryptor();
                 using var msDecrypt = new MemoryStream(encryptedBytes);
                 using var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read);
@@ -94,7 +94,7 @@ namespace Lanchat.Core.Network
             {
                 if (e is not CryptographicException && e is not FormatException) throw;
                 return null;
-            }
+            }  
         }
 
         private string RsaEncrypt(byte[] bytes)

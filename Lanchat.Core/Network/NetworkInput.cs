@@ -116,7 +116,7 @@ namespace Lanchat.Core.Network
                             break;
 
                         case DataTypes.File:
-                            var binary = JsonSerializer.Deserialize<Binary>(content);
+                            var binary = JsonSerializer.Deserialize<FilePart>(content);
                             node.FilesExchange.HandleReceivedFile(binary);
                             break;
 

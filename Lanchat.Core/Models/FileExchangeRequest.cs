@@ -4,11 +4,12 @@ namespace Lanchat.Core.Models
 {
     public class FileExchangeRequest
     {
-        public string Checksum { get; set; }
         public RequestStatus RequestStatus { get; set; }
         
         [JsonIgnore]
         public string FilePath { get; set; }
+        
+        public string FileName { get; set; }
     }
 
     public enum RequestStatus

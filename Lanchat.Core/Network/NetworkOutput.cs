@@ -115,10 +115,10 @@ namespace Lanchat.Core.Network
 
         internal void SendFile()
         {
-            var binary = node.FilesExchange.PrepareFileToSend();
-            if (binary != null)
+            var fileParts = node.FilesExchange.PrepareFileToSend();
+            foreach (var part in fileParts)
             {
-                SendData(DataTypes.File, binary);
+                SendData(DataTypes.File, part);
             }
         }
 

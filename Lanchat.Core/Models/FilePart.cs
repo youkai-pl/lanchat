@@ -1,8 +1,8 @@
 namespace Lanchat.Core.Models
 {
-    public class Binary
+    public class FilePart
     {
         public string Data { get; set; }
-        public string Filename { get; set; }
+        public bool Last { get; set; }
     }
 }
