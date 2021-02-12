@@ -38,9 +38,24 @@ namespace Lanchat.Core.Network
         internal event EventHandler<KeyInfo> KeyInfoReceived;
         internal event EventHandler<List<IPAddress>> NodesListReceived;
 
+        private string buffer = string.Empty;
+        
         internal void ProcessReceivedData(object sender, string dataString)
         {
-            foreach (var item in dataString.Replace("}{", "}|{").Split('|'))
+            if (dataString.StartsWith("{") && dataString.EndsWith("}"))
+            {
+                buffer = dataString;
+            }
+            else
+            {
+                buffer += dataString;
+                if (!(buffer.StartsWith("{") && buffer.EndsWith("}")))
+                {
+                    return;
+                }
+            }
+            
+            foreach (var item in buffer.Replace("}{", "}|{").Split('|'))
                 try
                 {
                     var json = JsonSerializer.Deserialize<Wrapper>(item, serializerOptions);
@@ -115,7 +130,7 @@ namespace Lanchat.Core.Network
                             PongReceived?.Invoke(this, node.Ping);
                             break;
 
-                        case DataTypes.File:
+                        case DataTypes.FilePart:
                             var binary = JsonSerializer.Deserialize<FilePart>(content);
                             node.FilesExchange.HandleReceivedFile(binary);
                             break;
@@ -138,6 +153,8 @@ namespace Lanchat.Core.Network
                         ex is not ArgumentNullException &&
                         ex is not NullReferenceException) throw;
                 }
+
+            buffer = string.Empty;
         }
     }
 }

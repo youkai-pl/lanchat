@@ -57,18 +57,13 @@ namespace Lanchat.Core.Network
                 for (var i = 0; i < file.Length; i += chunkSize)
                 {
                     var dataPart = file.Substring(i, Math.Min(chunkSize, file.Length - i));
-                    var filePart = new FilePart
+                    list.Add(new FilePart
                     {
                         Data = dataPart
-                    };
-                    if (i == file.Length - 1)
-                    {
-                        filePart.Last = true;
-                    }
-
-                    list.Add(filePart);
+                    });
                 }
 
+                list.Last().Last = true;
                 return list;
             }
             catch (Exception e)

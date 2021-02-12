@@ -118,7 +118,7 @@ namespace Lanchat.Core.Network
             var fileParts = node.FilesExchange.PrepareFileToSend();
             foreach (var part in fileParts)
             {
-                SendData(DataTypes.File, part);
+                SendData(DataTypes.FilePart, part);
             }
         }
 
