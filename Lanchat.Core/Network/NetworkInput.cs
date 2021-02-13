@@ -136,7 +136,7 @@ namespace Lanchat.Core.Network
                             break;
 
                         case DataTypes.FileExchangeRequest:
-                            var request = JsonSerializer.Deserialize<FileExchangeRequest>(content, serializerOptions);
+                            var request = JsonSerializer.Deserialize<FileTransferStatus>(content, serializerOptions);
                             node.FilesExchange.HandleFileExchangeRequest(request);
                             break;
 

@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Lanchat.Core.Extensions;
+using Lanchat.Core.FilesTransfer;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 

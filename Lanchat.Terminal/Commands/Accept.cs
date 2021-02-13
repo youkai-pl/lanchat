@@ -17,7 +17,7 @@ namespace Lanchat.Terminal.Commands
                 return;
             }
             
-            node.NetworkOutput.SendFileExchangeAccept();
+            node.FilesExchange.AcceptRequest();
         }
     }
 }

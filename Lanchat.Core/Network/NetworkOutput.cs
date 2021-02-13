@@ -65,8 +65,11 @@ namespace Lanchat.Core.Network
 
         public void SendFileExchangeAccept()
         {
-            node.FilesExchange.CurrentReceiveRequest.RequestStatus = RequestStatus.Accepted;
-            SendData(DataTypes.FileExchangeRequest, node.FilesExchange.CurrentReceiveRequest);
+            SendData(DataTypes.FileExchangeRequest, new FileTransferStatus
+            {
+                FileName = node.FilesExchange.CurrentReceiveRequest.FileName,
+                RequestStatus = RequestStatus.Accepted
+            });
         }
 
         internal void SendHandshake()
@@ -115,7 +118,7 @@ namespace Lanchat.Core.Network
 
         internal void SendFile()
         {
-            var fileParts = node.FilesExchange.PrepareFileToSend();
+            var fileParts = node.FilesExchange.SplitFile();
             foreach (var part in fileParts)
             {
                 SendData(DataTypes.FilePart, part);

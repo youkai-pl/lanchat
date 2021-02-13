@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,15 +6,15 @@ using System.Linq;
 using System.Security.Cryptography;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core.Network
+namespace Lanchat.Core.FilesTransfer
 {
     public class FilesExchange
     {
-        public FileExchangeRequest CurrentSendRequest { get; set; }
-        public FileExchangeRequest CurrentReceiveRequest { get; set; }
+        public FileTransferRequest CurrentSendRequest { get; set; }
+        public FileTransferRequest CurrentReceiveRequest { get; set; }
 
-        public event EventHandler<FileExchangeRequest> FileReceived;
-        public event EventHandler<FileExchangeRequest> FileExchangeRequestReceived;
+        public event EventHandler<FileTransferRequest> FileReceived;
+        public event EventHandler<FileTransferRequest> FileExchangeRequestReceived;
         public event EventHandler<Exception> FileExchangeError;
 
         private readonly Node node;
@@ -25,20 +24,33 @@ namespace Lanchat.Core.Network
             this.node = node;
         }
 
-        internal FileExchangeRequest CreateSendRequest(string path)
+        public void AcceptRequest()
+        {
+            CurrentReceiveRequest.Accepted = true;
+            node.NetworkOutput.SendFileExchangeAccept();
+        }
+
+        public void DenyRequest()
+        {
+            CurrentReceiveRequest.Accepted = false;
+        }
+        
+        internal FileTransferStatus CreateSendRequest(string path)
         {
             try
             {
                 using var md5 = MD5.Create();
                 using var stream = File.OpenRead(path);
-                CurrentSendRequest = new FileExchangeRequest
+                CurrentSendRequest = new FileTransferRequest
                 {
-                    FilePath = path,
-                    FileName = Path.GetFileName(path),
-                    RequestStatus = RequestStatus.Sending
+                    FilePath = path
                 };
 
-                return CurrentSendRequest;
+                return new FileTransferStatus
+                {
+                    FileName = CurrentSendRequest.FileName,
+                    RequestStatus = RequestStatus.Sending
+                };
             }
             catch (Exception e)
             {
@@ -47,7 +59,7 @@ namespace Lanchat.Core.Network
             }
         }
 
-        internal IEnumerable<FilePart> PrepareFileToSend()
+        internal IEnumerable<FilePart> SplitFile()
         {
             try
             {
@@ -75,7 +87,7 @@ namespace Lanchat.Core.Network
 
         internal void HandleReceivedFile(FilePart file)
         {
-            if (CurrentReceiveRequest.RequestStatus != RequestStatus.Accepted)
+            if (!CurrentReceiveRequest.Accepted)
             {
                 return;
             }
@@ -96,7 +108,7 @@ namespace Lanchat.Core.Network
             }
         }
 
-        internal void HandleFileExchangeRequest(FileExchangeRequest request)
+        internal void HandleFileExchangeRequest(FileTransferStatus request)
         {
             switch (request.RequestStatus)
             {
@@ -109,8 +121,11 @@ namespace Lanchat.Core.Network
                     break;
 
                 case RequestStatus.Sending:
-                    CurrentReceiveRequest = request;
-                    FileExchangeRequestReceived?.Invoke(this, request);
+                    CurrentReceiveRequest = new FileTransferRequest
+                    {
+                        FilePath = request.FileName
+                    };
+                    FileExchangeRequestReceived?.Invoke(this, CurrentReceiveRequest);
                     break;
 
                 default:
