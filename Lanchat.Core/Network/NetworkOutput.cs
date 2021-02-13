@@ -116,16 +116,7 @@ namespace Lanchat.Core.Network
             SendData(DataTypes.Pong);
         }
 
-        internal void SendFile()
-        {
-            var fileParts = node.FilesExchange.SplitFile();
-            foreach (var part in fileParts)
-            {
-                SendData(DataTypes.FilePart, part);
-            }
-        }
-
-        private void SendData(DataTypes dataType, object content = null)
+        internal void SendData(DataTypes dataType, object content = null)
         {
             var data = new Wrapper {Type = dataType, Data = content};
             node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
