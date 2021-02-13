@@ -7,7 +7,7 @@ namespace Lanchat.Terminal.Commands
     {
         public string Alias { get; set; } = "accept";
         public int ArgsCount { get; set; } = 1;
-        
+
         public void Execute(string[] args)
         {
             var node = Program.Network.Nodes.Find(x => x.ShortId == args[0]);
@@ -16,7 +16,7 @@ namespace Lanchat.Terminal.Commands
                 Ui.Log.Add(Resources.Info_NotFound);
                 return;
             }
-            
+
             node.FilesExchange.AcceptRequest();
         }
     }

@@ -11,6 +11,8 @@ namespace Lanchat.Core.FilesTransfer
     {
         private readonly Node node;
 
+        private FileStream writeFileStream;
+
         public FilesExchange(Node node)
         {
             this.node = node;
@@ -26,12 +28,8 @@ namespace Lanchat.Core.FilesTransfer
         public void AcceptRequest()
         {
             CurrentReceiveRequest.Accepted = true;
+            writeFileStream = new FileStream(CurrentReceiveRequest.FileName, FileMode.Append);
             node.NetworkOutput.SendFileExchangeAccept();
-        }
-
-        public void DenyRequest()
-        {
-            CurrentReceiveRequest.Accepted = false;
         }
 
         internal FileTransferStatus CreateSendRequest(string path)
@@ -65,10 +63,10 @@ namespace Lanchat.Core.FilesTransfer
             try
             {
                 var data = filePart.Data;
-                using var tempFile = new FileStream(CurrentReceiveRequest.FileName, FileMode.Append);
-                tempFile.Write(data, 0, data.Length);
+                writeFileStream.Write(data, 0, data.Length);
                 if (!filePart.Last) return;
                 FileReceived?.Invoke(this, CurrentReceiveRequest);
+                writeFileStream.Dispose();
             }
             catch (Exception e)
             {
@@ -117,10 +115,7 @@ namespace Lanchat.Core.FilesTransfer
                         Data = buffer.Take(bytesRead).ToArray()
                     };
 
-                    if (bytesRead < chunkSize)
-                    {
-                        part.Last = true;
-                    }
+                    if (bytesRead < chunkSize) part.Last = true;
 
                     node.NetworkOutput.SendData(DataTypes.FilePart, part);
                 }
@@ -132,13 +127,14 @@ namespace Lanchat.Core.FilesTransfer
         }
 
         private static string MakeUnique(string file)
-        {            
+        {
             var fileName = Path.GetFileNameWithoutExtension(file);
             var fileExt = Path.GetExtension(file);
 
-            for (var i = 1; ;++i) {
+            for (var i = 1;; ++i)
+            {
                 if (!File.Exists(file))
-                   return file;
+                    return file;
                 file = $"{fileName}({i}){fileExt}";
             }
         }

@@ -145,10 +145,7 @@ namespace Lanchat.Terminal.UserInterface
             Console.Title = Resources.Ui_WindowTitle;
             Log.Add(Resources.Ui_Logo);
 
-            if (Program.Config.Fresh)
-            {
-                Log.Add(string.Format(Resources.Ui_FirstRunMessage, Config.ConfigPath));
-            }
+            if (Program.Config.Fresh) Log.Add(string.Format(Resources.Ui_FirstRunMessage, Config.ConfigPath));
 
             // Clock updates
             new Thread(() =>

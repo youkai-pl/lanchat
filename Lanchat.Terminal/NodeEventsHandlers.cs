@@ -22,7 +22,7 @@ namespace Lanchat.Terminal
             node.FilesExchange.FileExchangeRequestReceived += OnFilesExchangeRequestReceived;
             node.FilesExchange.FileReceived += OnFilesReceived;
             node.FilesExchange.FileExchangeError += OnFileExchangeError;
-            
+
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
             node.HardDisconnect += OnHardDisconnected;
@@ -96,17 +96,17 @@ namespace Lanchat.Terminal
             if (e != null)
                 Ui.Log.Add(string.Format(Resources.Info_Ping, node.Nickname, e.Value.Milliseconds));
         }
-        
+
         private void OnFilesExchangeRequestReceived(object sender, FileTransferRequest e)
         {
             Ui.Log.Add(string.Format(Resources.Info_FileRequest, node.Nickname));
         }
-        
+
         private void OnFilesReceived(object sender, FileTransferRequest e)
         {
             Ui.Log.Add(string.Format(Resources.Info_FileReceived, node.Nickname, e.FilePath));
         }
-        
+
         private void OnFileExchangeError(object sender, Exception e)
         {
             Ui.Log.Add(string.Format(Resources.Info_FileExchangeError, e.Message));

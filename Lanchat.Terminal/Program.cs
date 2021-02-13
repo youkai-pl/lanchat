@@ -20,12 +20,9 @@ namespace Lanchat.Terminal
             Config = Config.Load();
 
             // Load resources
-            if (Config.Language != null)
-            {
-                CultureInfo.CurrentCulture = new CultureInfo(Config.Language);
-            }
+            if (Config.Language != null) CultureInfo.CurrentCulture = new CultureInfo(Config.Language);
             Resources.Culture = CultureInfo.CurrentCulture;
-            
+
             // Initialize p2p mode and ui
             try
             {

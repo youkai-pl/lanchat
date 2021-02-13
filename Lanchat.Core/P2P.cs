@@ -204,10 +204,7 @@ namespace Lanchat.Core
                 }
                 catch (Exception e)
                 {
-                    if (e is not ArgumentException)
-                    {
-                        throw;
-                    }
+                    if (e is not ArgumentException) throw;
                 }
             });
         }

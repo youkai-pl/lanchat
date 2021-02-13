@@ -13,6 +13,8 @@ namespace Lanchat.Core.Network
         private readonly Node node;
         private readonly JsonSerializerOptions serializerOptions;
 
+        private string buffer = string.Empty;
+
         internal NetworkInput(Node node)
         {
             this.node = node;
@@ -38,8 +40,6 @@ namespace Lanchat.Core.Network
         internal event EventHandler<KeyInfo> KeyInfoReceived;
         internal event EventHandler<List<IPAddress>> NodesListReceived;
 
-        private string buffer = string.Empty;
-        
         internal void ProcessReceivedData(object sender, string dataString)
         {
             if (dataString.StartsWith("{") && dataString.EndsWith("}"))
@@ -49,12 +49,9 @@ namespace Lanchat.Core.Network
             else
             {
                 buffer += dataString;
-                if (!(buffer.StartsWith("{") && buffer.EndsWith("}")))
-                {
-                    return;
-                }
+                if (!(buffer.StartsWith("{") && buffer.EndsWith("}"))) return;
             }
-            
+
             foreach (var item in buffer.Replace("}{", "}|{").Split('|'))
                 try
                 {

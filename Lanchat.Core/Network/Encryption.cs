@@ -94,7 +94,7 @@ namespace Lanchat.Core.Network
             {
                 if (e is not CryptographicException && e is not FormatException) throw;
                 return null;
-            }  
+            }
         }
 
         private string RsaEncrypt(byte[] bytes)

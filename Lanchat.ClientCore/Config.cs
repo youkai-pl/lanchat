@@ -73,7 +73,7 @@ namespace Lanchat.ClientCore
                 Save();
             }
         }
-        
+
         public bool UseIPv6
         {
             get => _useIPv6;
@@ -95,9 +95,8 @@ namespace Lanchat.ClientCore
             }
         }
 
-        [JsonIgnore]
-        public bool Fresh { get; set; }
-        
+        [JsonIgnore] public bool Fresh { get; set; }
+
         public static string ConfigPath { get; private set; }
         public static string DataPath { get; private set; }
 
@@ -150,10 +149,10 @@ namespace Lanchat.ClientCore
             }
             catch (Exception e)
             {
-                if (!(e is FileNotFoundException) && 
+                if (!(e is FileNotFoundException) &&
                     !(e is DirectoryNotFoundException) &&
                     !(e is JsonException)) throw;
-                
+
                 config = new Config
                 {
                     Port = 3645,

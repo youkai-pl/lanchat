@@ -15,18 +15,18 @@ namespace Lanchat.Core
     public class Node : IDisposable, INotifyPropertyChanged
     {
         internal readonly Encryption Encryption;
+        public readonly FilesExchange FilesExchange;
+        private readonly IPEndPoint firstEndPoint;
         internal readonly INetworkElement NetworkElement;
 
         public readonly NetworkInput NetworkInput;
         public readonly NetworkOutput NetworkOutput;
-        public readonly FilesExchange FilesExchange;
+        private string nickname;
 
         internal DateTime? PingSendTime;
         private string previousNickname;
         private Status status;
         private bool underReconnecting;
-        private string nickname;
-        private readonly IPEndPoint firstEndPoint;
 
         /// <summary>
         ///     Initialize node.
