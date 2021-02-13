@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -59,19 +58,17 @@ namespace Lanchat.Core.FilesTransfer
             }
         }
 
-        internal void HandleReceivedFile(FilePart filePart)
+        internal void HandleReceivedFilePart(FilePart filePart)
         {
             if (!CurrentReceiveRequest.Accepted) return;
 
             try
             {
-                var fileName = Path.GetFileName("tmp" + CurrentReceiveRequest.FileName);
                 var data = filePart.Data;
-                using var tempFile = new FileStream(fileName, FileMode.Append);
+                using var tempFile = new FileStream(CurrentReceiveRequest.FileName, FileMode.Append);
                 tempFile.Write(data, 0, data.Length);
-
                 if (!filePart.Last) return;
-                FileReceived?.Invoke(this, node.FilesExchange.CurrentReceiveRequest);
+                FileReceived?.Invoke(this, CurrentReceiveRequest);
             }
             catch (Exception e)
             {
@@ -94,7 +91,7 @@ namespace Lanchat.Core.FilesTransfer
                 case RequestStatus.Sending:
                     CurrentReceiveRequest = new FileTransferRequest
                     {
-                        FilePath = request.FileName
+                        FilePath = MakeUnique(request.FileName)
                     };
                     FileExchangeRequestReceived?.Invoke(this, CurrentReceiveRequest);
                     break;
@@ -124,13 +121,25 @@ namespace Lanchat.Core.FilesTransfer
                     {
                         part.Last = true;
                     }
-                    
+
                     node.NetworkOutput.SendData(DataTypes.FilePart, part);
                 }
             }
             catch (Exception e)
             {
                 FileExchangeError?.Invoke(this, e);
+            }
+        }
+
+        private static string MakeUnique(string file)
+        {            
+            var fileName = Path.GetFileNameWithoutExtension(file);
+            var fileExt = Path.GetExtension(file);
+
+            for (var i = 1; ;++i) {
+                if (!File.Exists(file))
+                   return file;
+                file = $"{fileName}({i}){fileExt}";
             }
         }
     }
