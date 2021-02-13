@@ -23,6 +23,8 @@ namespace Lanchat.Core.FilesTransfer
 
         public event EventHandler<FileTransferRequest> FileReceived;
         public event EventHandler<FileTransferRequest> FileExchangeRequestReceived;
+        public event EventHandler FileExchangeRequestAccepted;
+        public event EventHandler FileExchangeRequestRejected;
         public event EventHandler<Exception> FileExchangeError;
 
         public void AcceptRequest()
@@ -30,6 +32,11 @@ namespace Lanchat.Core.FilesTransfer
             CurrentReceiveRequest.Accepted = true;
             writeFileStream = new FileStream(CurrentReceiveRequest.FileName, FileMode.Append);
             node.NetworkOutput.SendFileExchangeAccept();
+        }
+
+        public void RejectRequest()
+        {
+            node.NetworkOutput.SendFileExchangeReject();
         }
 
         internal FileTransferStatus CreateSendRequest(string path)
@@ -79,10 +86,12 @@ namespace Lanchat.Core.FilesTransfer
             switch (request.RequestStatus)
             {
                 case RequestStatus.Accepted:
+                    FileExchangeRequestAccepted?.Invoke(this, EventArgs.Empty);
                     SendFile();
                     break;
 
                 case RequestStatus.Rejected:
+                    FileExchangeRequestRejected?.Invoke(this, EventArgs.Empty);
                     CurrentSendRequest = null;
                     break;
 

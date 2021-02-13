@@ -60,12 +60,19 @@ namespace Lanchat.Core.Network
             if (request != null) SendData(DataTypes.FileExchangeRequest, request);
         }
 
-        public void SendFileExchangeAccept()
+        internal void SendFileExchangeAccept()
         {
             SendData(DataTypes.FileExchangeRequest, new FileTransferStatus
             {
-                FileName = node.FilesExchange.CurrentReceiveRequest.FileName,
                 RequestStatus = RequestStatus.Accepted
+            });
+        }
+        
+        internal void SendFileExchangeReject()
+        {
+            SendData(DataTypes.FileExchangeRequest, new FileTransferStatus
+            {
+                RequestStatus = RequestStatus.Rejected
             });
         }
 

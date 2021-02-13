@@ -241,4 +241,10 @@ Try /help &lt;command&gt; for detailed help.
     <data name="Info_FileExchangeError" xml:space="preserve">
         <value>File exchange error: {0}</value>
     </data>
+    <data name="Info_FileRequestAccepted" xml:space="preserve">
+        <value>{0} accepted your request. File is sending.</value>
+    </data>
+    <data name="Info_FileRequestRejected" xml:space="preserve">
+        <value>{0} rejected your file send request.</value>
+    </data>
 </root>

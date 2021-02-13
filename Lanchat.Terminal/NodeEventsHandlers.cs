@@ -20,10 +20,13 @@ namespace Lanchat.Terminal
             node.NetworkInput.MessageReceived += OnMessageReceived;
             node.NetworkInput.PrivateMessageReceived += OnPrivateMessageReceived;
             node.NetworkInput.PongReceived += OnPongReceived;
-            node.FilesExchange.FileExchangeRequestReceived += OnFilesExchangeRequestReceived;
-            node.FilesExchange.FileReceived += OnFilesReceived;
+            
+            node.FilesExchange.FileReceived += OnFileReceived;
             node.FilesExchange.FileExchangeError += OnFileExchangeError;
-
+            node.FilesExchange.FileExchangeRequestReceived += OnFilesExchangeRequestReceived;
+            node.FilesExchange.FileExchangeRequestAccepted += OnFileExchangeRequestAccepted;
+            node.FilesExchange.FileExchangeRequestRejected += OnFileExchangeRequestRejected;
+            
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
             node.HardDisconnect += OnHardDisconnected;
@@ -103,7 +106,7 @@ namespace Lanchat.Terminal
             Ui.Log.Add(string.Format(Resources.Info_FileRequest, node.Nickname, e.FileName));
         }
 
-        private void OnFilesReceived(object sender, FileTransferRequest e)
+        private void OnFileReceived(object sender, FileTransferRequest e)
         {
             Ui.Log.Add(string.Format(Resources.Info_FileReceived, node.Nickname, Path.GetFullPath(e.FilePath)));
         }
@@ -111,6 +114,16 @@ namespace Lanchat.Terminal
         private void OnFileExchangeError(object sender, Exception e)
         {
             Ui.Log.Add(string.Format(Resources.Info_FileExchangeError, e.Message));
+        }
+
+        private void OnFileExchangeRequestAccepted(object sender, EventArgs e)
+        {
+            Ui.Log.Add(string.Format(Resources.Info_FileRequestAccepted, node.Nickname));
+        }
+        
+        private void OnFileExchangeRequestRejected(object sender, EventArgs e)
+        {
+            Ui.Log.Add(string.Format(Resources.Info_FileRequestRejected, node.Nickname));
         }
     }
 }

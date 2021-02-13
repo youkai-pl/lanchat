@@ -119,4 +119,10 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="Info_FileExchangeError" xml:space="preserve">
         <value>Błąd wymiany plików: {0}</value>
     </data>
+    <data name="Info_FileRequestAccepted" xml:space="preserve">
+        <value>{0} zaakceptował twój plik. Jest on wysyłany.</value>
+    </data>
+    <data name="Info_FileRequestRejected" xml:space="preserve">
+        <value>{0} odrzucił twój plik.</value>
+    </data>
 </root>
