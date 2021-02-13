@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Net.Sockets;
 using Lanchat.Core;
 using Lanchat.Core.FilesTransfer;
@@ -99,12 +100,12 @@ namespace Lanchat.Terminal
 
         private void OnFilesExchangeRequestReceived(object sender, FileTransferRequest e)
         {
-            Ui.Log.Add(string.Format(Resources.Info_FileRequest, node.Nickname));
+            Ui.Log.Add(string.Format(Resources.Info_FileRequest, node.Nickname, e.FileName));
         }
 
         private void OnFilesReceived(object sender, FileTransferRequest e)
         {
-            Ui.Log.Add(string.Format(Resources.Info_FileReceived, node.Nickname, e.FilePath));
+            Ui.Log.Add(string.Format(Resources.Info_FileReceived, node.Nickname, Path.GetFullPath(e.FilePath)));
         }
 
         private void OnFileExchangeError(object sender, Exception e)

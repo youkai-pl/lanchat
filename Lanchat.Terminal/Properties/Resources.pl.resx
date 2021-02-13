@@ -111,7 +111,7 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
 4. Plik konfiguracyjny znajduje się w {0}</value>
     </data>
     <data name="Info_FileRequest" xml:space="preserve">
-        <value>{0} chce wysłać ci plik (/accept | /reject)</value>
+        <value>{0} chce wysłać ci plik {1} (/accept | /reject)</value>
     </data>
     <data name="Info_FileReceived" xml:space="preserve">
         <value>Plik od {0} zapisany w {1}</value>
