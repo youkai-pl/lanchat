@@ -12,15 +12,15 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network
 {
-    internal class BroadcastService
+    internal class Broadcast
     {
         private readonly IPEndPoint endPoint;
         private readonly UdpClient udpClient;
         private readonly string uniqueId;
 
-        internal EventHandler<Broadcast> BroadcastReceived;
+        internal EventHandler<Models.Broadcast> BroadcastReceived;
 
-        internal BroadcastService()
+        internal Broadcast()
         {
             uniqueId = Guid.NewGuid().ToString();
             endPoint = new IPEndPoint(IPAddress.Broadcast, CoreConfig.BroadcastPort);
@@ -38,7 +38,7 @@ namespace Lanchat.Core.Network
                     var recvBuffer = udpClient.Receive(ref from);
                     try
                     {
-                        var broadcast = JsonSerializer.Deserialize<Broadcast>(Encoding.UTF8.GetString(recvBuffer));
+                        var broadcast = JsonSerializer.Deserialize<Models.Broadcast>(Encoding.UTF8.GetString(recvBuffer));
                         if (broadcast != null && broadcast.Guid != uniqueId)
                         {
                             broadcast.IpAddress = from.Address;
@@ -57,7 +57,7 @@ namespace Lanchat.Core.Network
             {
                 while (true)
                 {
-                    var json = JsonSerializer.Serialize(new Broadcast
+                    var json = JsonSerializer.Serialize(new Models.Broadcast
                     {
                         Guid = uniqueId,
                         Nickname = CoreConfig.Nickname

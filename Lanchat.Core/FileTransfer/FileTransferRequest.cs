@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Lanchat.Core.FilesTransfer
+namespace Lanchat.Core.FileTransfer
 {
     public class FileTransferRequest
     {

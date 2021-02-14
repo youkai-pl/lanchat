@@ -1,6 +1,7 @@
 using System;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
+using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core
 {

@@ -1,6 +1,6 @@
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core.Network
+namespace Lanchat.Core.NetworkIO
 {
     internal interface INetworkOutput
     {

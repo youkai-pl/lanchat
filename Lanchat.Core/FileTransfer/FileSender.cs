@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
-using Lanchat.Core.Network;
+using Lanchat.Core.NetworkIO;
 
-namespace Lanchat.Core.FilesTransfer
+namespace Lanchat.Core.FileTransfer
 {
     public class FileSender
     {

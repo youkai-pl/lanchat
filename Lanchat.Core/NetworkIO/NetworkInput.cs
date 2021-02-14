@@ -6,7 +6,7 @@ using System.Text.Json;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core.Network
+namespace Lanchat.Core.NetworkIO
 {
     internal class NetworkInput
     {

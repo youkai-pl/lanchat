@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core.Network
+namespace Lanchat.Core.NetworkIO
 {
     /// <summary>
     ///     Sending and receiving data using this class.

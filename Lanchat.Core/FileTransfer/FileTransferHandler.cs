@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core.FilesTransfer
+namespace Lanchat.Core.FileTransfer
 {
     public class FileTransferHandler
     {

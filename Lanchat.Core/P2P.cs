@@ -7,13 +7,14 @@ using System.Net.Sockets;
 using System.Timers;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
+using Broadcast = Lanchat.Core.Network.Broadcast;
 
 namespace Lanchat.Core
 {
     public class P2P
     {
-        private readonly BroadcastService broadcastService;
-        private readonly List<Broadcast> detectedNodes;
+        private readonly Broadcast broadcast;
+        private readonly List<Models.Broadcast> detectedNodes;
         private readonly List<Node> outgoingConnections;
         private readonly Server server;
 
@@ -23,7 +24,7 @@ namespace Lanchat.Core
         public P2P()
         {
             outgoingConnections = new List<Node>();
-            detectedNodes = new List<Broadcast>();
+            detectedNodes = new List<Models.Broadcast>();
 
             server = CoreConfig.UseIPv6
                 ? new Server(IPAddress.IPv6Any, CoreConfig.ServerPort)
@@ -33,8 +34,8 @@ namespace Lanchat.Core
 
             CoreConfig.PropertyChanged += CoreConfigOnPropertyChanged;
 
-            broadcastService = new BroadcastService();
-            broadcastService.BroadcastReceived += BroadcastReceived;
+            broadcast = new Broadcast();
+            broadcast.BroadcastReceived += BroadcastReceived;
         }
 
         /// <summary>
@@ -54,11 +55,11 @@ namespace Lanchat.Core
         /// <summary>
         ///     List of detected nodes.
         /// </summary>
-        public List<Broadcast> DetectedNodes
+        public List<Models.Broadcast> DetectedNodes
         {
             get
             {
-                var list = new List<Broadcast>();
+                var list = new List<Models.Broadcast>();
                 detectedNodes.ForEach(x =>
                 {
                     if (!Nodes.Any(y => Equals(y.Endpoint.Address, x.IpAddress))) list.Add(x);
@@ -89,17 +90,17 @@ namespace Lanchat.Core
         /// <summary>
         ///     New node detected in network.
         /// </summary>
-        public event EventHandler<Broadcast> NodeDetected;
+        public event EventHandler<Models.Broadcast> NodeDetected;
 
         /// <summary>
         ///     Detected node has changed its nickname.
         /// </summary>
-        public event EventHandler<Broadcast> DetectedNodeChanged;
+        public event EventHandler<Models.Broadcast> DetectedNodeChanged;
 
         /// <summary>
         ///     Detected node doesn't send broadcasts.
         /// </summary>
-        public event EventHandler<Broadcast> DetectedNodeDisappeared;
+        public event EventHandler<Models.Broadcast> DetectedNodeDisappeared;
 
         /// <summary>
         ///     Start server.
@@ -114,7 +115,7 @@ namespace Lanchat.Core
         /// </summary>
         public void StartBroadcast()
         {
-            broadcastService.Start();
+            broadcast.Start();
         }
 
         /// <summary>
@@ -211,7 +212,7 @@ namespace Lanchat.Core
         }
 
         // UDP broadcast received
-        private void BroadcastReceived(object sender, Broadcast e)
+        private void BroadcastReceived(object sender, Models.Broadcast e)
         {
             var alreadyDetected = detectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
             if (alreadyDetected == null)
