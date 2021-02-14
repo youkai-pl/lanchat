@@ -260,5 +260,11 @@ namespace Lanchat.Terminal.Properties {
                 return ResourceManager.GetString("_FileTransferInProgress", resourceCulture);
             }
         }
+        
+        internal static string _NoFileReceiveRequet {
+            get {
+                return ResourceManager.GetString("_NoFileReceiveRequet", resourceCulture);
+            }
+        }
     }
 }

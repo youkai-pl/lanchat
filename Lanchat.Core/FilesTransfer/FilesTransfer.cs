@@ -29,6 +29,7 @@ namespace Lanchat.Core.FilesTransfer
 
         public void AcceptRequest()
         {
+            if (CurrentReceiveRequest == null) throw new InvalidOperationException("No receive request");
             CurrentReceiveRequest.Accepted = true;
             writeFileStream = new FileStream(CurrentReceiveRequest.FileName, FileMode.Append);
             node.NetworkOutput.SendFileExchangeAccept();
@@ -36,6 +37,7 @@ namespace Lanchat.Core.FilesTransfer
 
         public void RejectRequest()
         {
+            if (CurrentReceiveRequest == null) throw new InvalidOperationException("No receive request");
             CurrentReceiveRequest = null;
             node.NetworkOutput.SendFileExchangeReject();
         }

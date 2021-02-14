@@ -253,4 +253,7 @@ Try /help &lt;command&gt; for detailed help.
     <data name="_FileTransferInProgress" xml:space="preserve">
         <value>Cannot send multiple files at once.</value>
     </data>
+    <data name="_NoFileReceiveRequet" xml:space="preserve">
+        <value>No awaiting file transfer requests</value>
+    </data>
 </root>

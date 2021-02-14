@@ -131,4 +131,7 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="_FileTransferInProgress" xml:space="preserve">
         <value>Nie można wysyłać wielu plików jednocześnie.</value>
     </data>
+    <data name="_NoFileReceiveRequet" xml:space="preserve">
+        <value>Brak próśb odebranie pliku</value>
+    </data>
 </root>

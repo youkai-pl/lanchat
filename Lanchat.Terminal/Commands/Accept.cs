@@ -1,3 +1,4 @@
+using System;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -17,7 +18,14 @@ namespace Lanchat.Terminal.Commands
                 return;
             }
 
-            node.FilesExchange.AcceptRequest();
+            try
+            {
+                node.FilesExchange.AcceptRequest();
+            }
+            catch (InvalidOperationException)
+            {
+                Ui.Log.Add(Resources._NoFileReceiveRequet);
+            }
         }
     }
 }
