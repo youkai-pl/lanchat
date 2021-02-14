@@ -69,7 +69,7 @@ namespace Lanchat.Core.FilesTransfer
 
             try
             {
-                var data = filePart.Data;
+                var data = node.Encryption.Decrypt(filePart.Data);
                 writeFileStream.Write(data, 0, data.Length);
                 if (!filePart.Last) return;
                 FileReceived?.Invoke(this, CurrentReceiveRequest);
@@ -121,7 +121,7 @@ namespace Lanchat.Core.FilesTransfer
                 {
                     var part = new FilePart
                     {
-                        Data = buffer.Take(bytesRead).ToArray()
+                        Data = node.Encryption.Encrypt(buffer.Take(bytesRead).ToArray())
                     };
 
                     if (bytesRead < chunkSize) part.Last = true;
