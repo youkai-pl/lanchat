@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network
@@ -66,36 +67,37 @@ namespace Lanchat.Core.Network
 
         internal string Encrypt(string text)
         {
-            var encryptor = remoteAes.CreateEncryptor();
-            using var msEncrypt = new MemoryStream();
-            using var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
-            using (var swEncrypt = new StreamWriter(csEncrypt))
-            {
-                swEncrypt.Write(text);
-            }
-
-            var encrypted = msEncrypt.ToArray();
+            var encrypted = Encrypt(Encoding.UTF8.GetBytes(text));
             return Convert.ToBase64String(encrypted);
         }
 
         internal string Decrypt(string text)
         {
             var encryptedBytes = Convert.FromBase64String(text);
-            try
-            {
-                var decryptor = localAes.CreateDecryptor();
-                using var msDecrypt = new MemoryStream(encryptedBytes);
-                using var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read);
-                using var srDecrypt = new StreamReader(csDecrypt);
-                var plaintext = srDecrypt.ReadToEnd();
-                return plaintext;
-            }
-            catch (Exception e)
-            {
-                if (e is not CryptographicException && e is not FormatException) throw;
-                return null;
-            }
+            var decrypted = Encoding.UTF8.GetString(Decrypt(encryptedBytes));
+            return decrypted;
         }
+
+
+        internal byte[] Encrypt(byte[] data)
+        {
+            using var memoryStream = new MemoryStream();
+            using var cryptoStream =
+                new CryptoStream(memoryStream, remoteAes.CreateEncryptor(), CryptoStreamMode.Write);
+            cryptoStream.Write(data, 0, data.Length);
+            cryptoStream.Close();
+            return memoryStream.ToArray();
+        }
+
+        internal byte[] Decrypt(byte[] data)
+        {
+            using var memoryStream = new MemoryStream();
+            using var cryptoStream = new CryptoStream(memoryStream, localAes.CreateDecryptor(), CryptoStreamMode.Write);
+            cryptoStream.Write(data, 0, data.Length);
+            cryptoStream.Close();
+            return memoryStream.ToArray();
+        }
+
 
         private string RsaEncrypt(byte[] bytes)
         {
