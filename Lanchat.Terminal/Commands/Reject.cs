@@ -20,7 +20,7 @@ namespace Lanchat.Terminal.Commands
 
             try
             {
-                node.FilesTransfer.RejectRequest();
+                node.FileReceiver.RejectRequest();
             }
             catch (InvalidOperationException)
             {

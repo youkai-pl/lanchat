@@ -21,12 +21,14 @@ namespace Lanchat.Terminal
             node.NetworkInput.PrivateMessageReceived += OnPrivateMessageReceived;
             node.NetworkInput.PongReceived += OnPongReceived;
             
-            node.FilesTransfer.FileReceived += OnFileReceived;
-            node.FilesTransfer.FileExchangeError += OnFileTransferError;
-            node.FilesTransfer.FileExchangeRequestReceived += OnFilesTransferRequestReceived;
-            node.FilesTransfer.FileExchangeRequestAccepted += OnFileTransferRequestAccepted;
-            node.FilesTransfer.FileExchangeRequestRejected += OnFileTransferRequestRejected;
+            node.FileReceiver.FileReceived += OnFileReceived;
+            node.FileReceiver.FileExchangeError += OnFileTransferError;
+            node.FileReceiver.FileExchangeRequestReceived += OnFileTransferHandlerRequestReceived;
             
+            node.FileSender.FileExchangeRequestAccepted += OnFileTransferHandlerRequestAccepted;
+            node.FileSender.FileExchangeRequestRejected += OnFileTransferHandlerRequestRejected;
+            node.FileSender.FileExchangeError += OnFileTransferError;
+
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
             node.HardDisconnect += OnHardDisconnected;
@@ -101,7 +103,7 @@ namespace Lanchat.Terminal
                 Ui.Log.Add(string.Format(Resources._Ping, node.Nickname, e.Value.Milliseconds));
         }
 
-        private void OnFilesTransferRequestReceived(object sender, FileTransferRequest e)
+        private void OnFileTransferHandlerRequestReceived(object sender, FileTransferRequest e)
         {
             Ui.Log.Add(string.Format(Resources._FileRequest, node.Nickname, e.FileName));
         }
@@ -116,12 +118,12 @@ namespace Lanchat.Terminal
             Ui.Log.Add(string.Format(Resources._FileExchangeError, e.Message));
         }
 
-        private void OnFileTransferRequestAccepted(object sender, EventArgs e)
+        private void OnFileTransferHandlerRequestAccepted(object sender, EventArgs e)
         {
             Ui.Log.Add(string.Format(Resources._FileRequestAccepted, node.Nickname));
         }
         
-        private void OnFileTransferRequestRejected(object sender, EventArgs e)
+        private void OnFileTransferHandlerRequestRejected(object sender, EventArgs e)
         {
             Ui.Log.Add(string.Format(Resources._FileRequestRejected, node.Nickname));
         }

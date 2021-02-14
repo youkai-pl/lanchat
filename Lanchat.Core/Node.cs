@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Lanchat.Core.Extensions;
+using Lanchat.Core.FilesTransfer;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 
@@ -14,7 +15,11 @@ namespace Lanchat.Core
     public class Node : IDisposable, INotifyPropertyChanged
     {
         internal readonly Encryption.Encryption Encryption;
-        public readonly FilesTransfer.FilesTransfer FilesTransfer;
+        public readonly FileReceiver FileReceiver;
+        public readonly FileSender FileSender;
+
+        public readonly FileTransferHandler FileTransferHandler;
+
         private readonly IPEndPoint firstEndPoint;
         internal readonly INetworkElement NetworkElement;
 
@@ -39,7 +44,10 @@ namespace Lanchat.Core
             NetworkOutput = new NetworkOutput(this);
             NetworkInput = new NetworkInput(this);
             Encryption = new Encryption.Encryption();
-            FilesTransfer = new FilesTransfer.FilesTransfer(NetworkOutput, Encryption);
+
+            FileReceiver = new FileReceiver(NetworkOutput, Encryption);
+            FileSender = new FileSender(NetworkOutput, Encryption);
+            FileTransferHandler = new FileTransferHandler(FileReceiver, FileSender);
 
             networkElement.Disconnected += OnDisconnected;
             networkElement.DataReceived += NetworkInput.ProcessReceivedData;

@@ -22,7 +22,7 @@ namespace Lanchat.Terminal.Commands
 
             try
             {
-                node.FilesTransfer.CreateSendRequest(args[1]);
+                node.FileSender.CreateSendRequest(args[1]);
             }
             catch (Exception e)
             {

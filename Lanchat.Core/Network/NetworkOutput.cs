@@ -21,6 +21,12 @@ namespace Lanchat.Core.Network
             serializerOptions = CoreConfig.JsonSerializerOptions;
         }
 
+        public void SendData(DataTypes dataType, object content = null)
+        {
+            var data = new Wrapper {Type = dataType, Data = content};
+            node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
+        }
+
         /// <summary>
         ///     Send message.
         /// </summary>
@@ -92,12 +98,6 @@ namespace Lanchat.Core.Network
         internal void SendPong()
         {
             SendData(DataTypes.Pong);
-        }
-
-        public void SendData(DataTypes dataType, object content = null)
-        {
-            var data = new Wrapper {Type = dataType, Data = content};
-            node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
     }
 }

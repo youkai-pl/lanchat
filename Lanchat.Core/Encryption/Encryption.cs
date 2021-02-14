@@ -21,6 +21,26 @@ namespace Lanchat.Core.Encryption
             remoteAes = Aes.Create();
         }
 
+
+        public byte[] Encrypt(byte[] data)
+        {
+            using var memoryStream = new MemoryStream();
+            using var cryptoStream =
+                new CryptoStream(memoryStream, remoteAes.CreateEncryptor(), CryptoStreamMode.Write);
+            cryptoStream.Write(data, 0, data.Length);
+            cryptoStream.Close();
+            return memoryStream.ToArray();
+        }
+
+        public byte[] Decrypt(byte[] data)
+        {
+            using var memoryStream = new MemoryStream();
+            using var cryptoStream = new CryptoStream(memoryStream, localAes.CreateDecryptor(), CryptoStreamMode.Write);
+            cryptoStream.Write(data, 0, data.Length);
+            cryptoStream.Close();
+            return memoryStream.ToArray();
+        }
+
         public void Dispose()
         {
             localAes?.Dispose();
@@ -76,26 +96,6 @@ namespace Lanchat.Core.Encryption
             var encryptedBytes = Convert.FromBase64String(text);
             var decrypted = Encoding.UTF8.GetString(Decrypt(encryptedBytes));
             return decrypted;
-        }
-
-
-        public byte[] Encrypt(byte[] data)
-        {
-            using var memoryStream = new MemoryStream();
-            using var cryptoStream =
-                new CryptoStream(memoryStream, remoteAes.CreateEncryptor(), CryptoStreamMode.Write);
-            cryptoStream.Write(data, 0, data.Length);
-            cryptoStream.Close();
-            return memoryStream.ToArray();
-        }
-
-        public byte[] Decrypt(byte[] data)
-        {
-            using var memoryStream = new MemoryStream();
-            using var cryptoStream = new CryptoStream(memoryStream, localAes.CreateDecryptor(), CryptoStreamMode.Write);
-            cryptoStream.Write(data, 0, data.Length);
-            cryptoStream.Close();
-            return memoryStream.ToArray();
         }
 
 

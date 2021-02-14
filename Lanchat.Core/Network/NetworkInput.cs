@@ -130,12 +130,12 @@ namespace Lanchat.Core.Network
 
                         case DataTypes.FilePart:
                             var binary = JsonSerializer.Deserialize<FilePart>(content);
-                            node.FilesTransfer.HandleReceivedFilePart(binary);
+                            node.FileReceiver.HandleReceivedFilePart(binary);
                             break;
 
                         case DataTypes.FileExchangeRequest:
                             var request = JsonSerializer.Deserialize<FileTransferStatus>(content, serializerOptions);
-                            node.FilesTransfer.HandleFileExchangeRequest(request);
+                            node.FileTransferHandler.HandleFileExchangeRequest(request);
                             break;
 
                         default:
