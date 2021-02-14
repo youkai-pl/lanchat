@@ -50,6 +50,19 @@ namespace Lanchat.Core.Encryption
             GC.SuppressFinalize(this);
         }
 
+        public string Encrypt(string text)
+        {
+            var encrypted = Encrypt(Encoding.UTF8.GetBytes(text));
+            return Convert.ToBase64String(encrypted);
+        }
+
+        public string Decrypt(string text)
+        {
+            var encryptedBytes = Convert.FromBase64String(text);
+            var decrypted = Encoding.UTF8.GetString(Decrypt(encryptedBytes));
+            return decrypted;
+        }
+
         internal PublicKey ExportPublicKey()
         {
             var parameters = localRsa.ExportParameters(false);
@@ -83,19 +96,6 @@ namespace Lanchat.Core.Encryption
         {
             remoteAes.Key = RsaDecrypt(keyInfo.AesKey);
             remoteAes.IV = RsaDecrypt(keyInfo.AesIv);
-        }
-
-        public string Encrypt(string text)
-        {
-            var encrypted = Encrypt(Encoding.UTF8.GetBytes(text));
-            return Convert.ToBase64String(encrypted);
-        }
-
-        public string Decrypt(string text)
-        {
-            var encryptedBytes = Convert.FromBase64String(text);
-            var decrypted = Encoding.UTF8.GetString(Decrypt(encryptedBytes));
-            return decrypted;
         }
 
 

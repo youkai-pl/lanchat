@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
@@ -10,7 +9,7 @@ namespace Lanchat.Core.Network
     /// <summary>
     ///     Sending and receiving data using this class.
     /// </summary>
-    public class NetworkOutput : INetworkOutput
+    internal class NetworkOutput : INetworkOutput
     {
         private readonly Node node;
         private readonly JsonSerializerOptions serializerOptions;
@@ -27,8 +26,8 @@ namespace Lanchat.Core.Network
             var data = new Wrapper {Type = dataType, Data = content};
             node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
-        
-        private void SendInernalData(DataTypes dataType, object content = null)
+
+        private void SendDataBeforeActivation(DataTypes dataType, object content = null)
         {
             var data = new Wrapper {Type = dataType, Data = content};
             node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
@@ -43,13 +42,13 @@ namespace Lanchat.Core.Network
                 PublicKey = node.Encryption.ExportPublicKey()
             };
 
-            SendInernalData(DataTypes.Handshake, handshake);
+            SendDataBeforeActivation(DataTypes.Handshake, handshake);
         }
 
         internal void SendKey()
         {
             var keyInfo = node.Encryption.ExportAesKey();
-            SendInernalData(DataTypes.KeyInfo, keyInfo);
+            SendDataBeforeActivation(DataTypes.KeyInfo, keyInfo);
         }
 
         internal void SendNodesList(IEnumerable<IPAddress> list)
@@ -60,17 +59,17 @@ namespace Lanchat.Core.Network
 
         internal void SendNicknameUpdate(string nickname)
         {
-            SendInernalData(DataTypes.NicknameUpdate, nickname);
+            SendDataBeforeActivation(DataTypes.NicknameUpdate, nickname);
         }
 
         internal void SendGoodbye()
         {
-            SendInernalData(DataTypes.Goodbye);
+            SendDataBeforeActivation(DataTypes.Goodbye);
         }
 
         internal void SendStatusUpdate(Status status)
         {
-            SendInernalData(DataTypes.StatusUpdate, status);
+            SendDataBeforeActivation(DataTypes.StatusUpdate, status);
         }
     }
 }

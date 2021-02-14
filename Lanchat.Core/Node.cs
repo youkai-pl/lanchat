@@ -14,21 +14,19 @@ namespace Lanchat.Core
 {
     public class Node : IDisposable, INotifyPropertyChanged
     {
-        internal readonly Encryption.Encryption Encryption;
+        public readonly Messaging Messaging;
         public readonly FileReceiver FileReceiver;
         public readonly FileSender FileSender;
         public readonly Echo Echo;
+        
+        internal readonly INetworkElement NetworkElement;
+        internal readonly NetworkInput NetworkInput;
+        internal readonly NetworkOutput NetworkOutput;
+        internal readonly Encryption.Encryption Encryption;
         internal readonly FileTransferHandler FileTransferHandler;
 
-        public readonly Messaging Messaging;
-        
         private readonly IPEndPoint firstEndPoint;
-        internal readonly INetworkElement NetworkElement;
-
-        public readonly NetworkInput NetworkInput;
-        public readonly NetworkOutput NetworkOutput;
         private string nickname;
-
         private string previousNickname;
         private Status status;
         private bool underReconnecting;
@@ -50,7 +48,7 @@ namespace Lanchat.Core
             FileSender = new FileSender(NetworkOutput, Encryption);
             FileTransferHandler = new FileTransferHandler(FileReceiver, FileSender);
             Messaging = new Messaging(NetworkOutput, Encryption);
-            
+
             networkElement.Disconnected += OnDisconnected;
             networkElement.DataReceived += NetworkInput.ProcessReceivedData;
             networkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
@@ -104,7 +102,7 @@ namespace Lanchat.Core
                 OnPropertyChanged();
             }
         }
-        
+
         /// <summary>
         ///     Nickname before last change.
         /// </summary>

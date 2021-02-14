@@ -9,20 +9,20 @@ namespace Lanchat.Core
         private readonly INetworkOutput networkOutput;
         private DateTime? pingSendTime;
 
-        /// <summary>
-        ///     Last ping value.
-        /// </summary>
-        public TimeSpan? LastPing { get; internal set; }  
-        
-        /// <summary>
-        ///     Ping pong.
-        /// </summary>
-        public event EventHandler<TimeSpan?> PongReceived;
-        
         internal Echo(INetworkOutput networkOutput)
         {
             this.networkOutput = networkOutput;
         }
+
+        /// <summary>
+        ///     Last ping value.
+        /// </summary>
+        public TimeSpan? LastPing { get; internal set; }
+
+        /// <summary>
+        ///     Ping pong.
+        /// </summary>
+        public event EventHandler<TimeSpan?> PongReceived;
 
         /// <summary>
         ///     Send ping.

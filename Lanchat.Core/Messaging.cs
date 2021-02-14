@@ -8,8 +8,8 @@ namespace Lanchat.Core
 {
     public class Messaging
     {
-        private readonly INetworkOutput networkOutput;
         private readonly IStringEncryption encryption;
+        private readonly INetworkOutput networkOutput;
 
         internal Messaging(INetworkOutput networkOutput, IStringEncryption encryption)
         {
@@ -21,12 +21,12 @@ namespace Lanchat.Core
         ///     Message received.
         /// </summary>
         public event EventHandler<string> MessageReceived;
-        
+
         /// <summary>
         ///     Private message received.
         /// </summary>
         public event EventHandler<string> PrivateMessageReceived;
-        
+
         /// <summary>
         ///     Send message.
         /// </summary>
@@ -49,7 +49,7 @@ namespace Lanchat.Core
         {
             var decryptedMessage = encryption.Decrypt(content);
             if (decryptedMessage == null) return;
-            MessageReceived?.Invoke(this, decryptedMessage.Truncate(CoreConfig.MaxMessageLenght)); 
+            MessageReceived?.Invoke(this, decryptedMessage.Truncate(CoreConfig.MaxMessageLenght));
         }
 
         internal void HandlePrivateMessage(string content)

@@ -8,7 +8,7 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Network
 {
-    public class NetworkInput
+    internal class NetworkInput
     {
         private readonly Node node;
         private readonly JsonSerializerOptions serializerOptions;
@@ -20,7 +20,6 @@ namespace Lanchat.Core.Network
             this.node = node;
             serializerOptions = CoreConfig.JsonSerializerOptions;
         }
-        
 
         internal event EventHandler<Handshake> HandshakeReceived;
         internal event EventHandler<KeyInfo> KeyInfoReceived;
