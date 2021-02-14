@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using Lanchat.Core.Network;
 using NetCoreServer;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Network
 {
-    public class Server : TcpServer
+    internal class Server : TcpServer
     {
         /// <summary>
         ///     Create server.
         /// </summary>
         /// <param name="address">Listening IP</param>
         /// <param name="port">Listening port</param>
-        public Server(IPAddress address, int port) : base(address, port)
+        internal Server(IPAddress address, int port) : base(address, port)
         {
             OptionDualMode = true;
             IncomingConnections = new List<Node>();
@@ -24,26 +23,12 @@ namespace Lanchat.Core
         /// <summary>
         ///     List of incoming connections.
         /// </summary>
-        public List<Node> IncomingConnections { get; }
-
-        /// <summary>
-        ///     Send message for all clients.
-        /// </summary>
-        /// <param name="message"></param>
-        public void BroadcastMessage(string message)
-        {
-            IncomingConnections.ForEach(x => x.Messaging.SendMessage(message));
-        }
-
-        /// <summary>
-        ///     Server returned error.
-        /// </summary>
-        public event EventHandler<SocketError> ServerErrored;
+        internal List<Node> IncomingConnections { get; }
 
         /// <summary>
         ///     New client connected. After receiving this handlers for client events can be created.
         /// </summary>
-        public event EventHandler<Node> SessionCreated;
+        internal event EventHandler<Node> SessionCreated;
 
         protected override void OnStarted()
         {
@@ -84,7 +69,6 @@ namespace Lanchat.Core
 
         protected override void OnError(SocketError error)
         {
-            ServerErrored?.Invoke(this, error);
             Trace.WriteLine($"Server errored: {error}");
         }
     }
