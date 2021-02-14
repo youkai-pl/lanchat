@@ -44,7 +44,7 @@ namespace Lanchat.Core.FilesTransfer
                 Parts = fileInfo.Length / ChunkSize
             };
 
-            networkOutput.SendData(
+            networkOutput.SendUserData(
                 DataTypes.FileExchangeRequest,
                 new FileTransferStatus
                 {
@@ -71,14 +71,14 @@ namespace Lanchat.Core.FilesTransfer
                     };
 
                     if (bytesRead < ChunkSize) part.Last = true;
-                    networkOutput.SendData(DataTypes.FilePart, part);
+                    networkOutput.SendUserData(DataTypes.FilePart, part);
                     Request.PartsTransferred++;
                 }
             }
             catch (Exception e)
             {
                 FileExchangeError?.Invoke(this, e);
-                networkOutput.SendData(
+                networkOutput.SendUserData(
                     DataTypes.FileExchangeRequest,
                     new FileTransferStatus
                     {

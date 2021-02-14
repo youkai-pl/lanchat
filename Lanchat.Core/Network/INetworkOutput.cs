@@ -4,6 +4,7 @@ namespace Lanchat.Core.Network
 {
     internal interface INetworkOutput
     {
-        void SendData(DataTypes dataType, object content = null);
+        void SendUserData(DataTypes dataType, object content = null);
+        void SendSystemData(DataTypes dataType, object content = null);
     }
 }

@@ -177,7 +177,7 @@ namespace Lanchat.Core
         /// </summary>
         public void Disconnect()
         {
-            NetworkOutput.SendGoodbye();
+            NetworkOutput.SendSystemData(DataTypes.Goodbye);
             Dispose();
         }
 
@@ -215,7 +215,7 @@ namespace Lanchat.Core
             Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
             Encryption.ImportPublicKey(handshake.PublicKey);
             Status = handshake.Status;
-            NetworkOutput.SendKey();
+            NetworkOutput.SendSystemData(DataTypes.KeyInfo, Encryption.ExportAesKey());
         }
 
         private void OnKeyInfoReceived(object sender, KeyInfo e)
@@ -227,7 +227,14 @@ namespace Lanchat.Core
 
         private void SendHandshakeAndWait()
         {
-            NetworkOutput.SendHandshake();
+            var handshake = new Handshake
+            {
+                Nickname = CoreConfig.Nickname,
+                Status = CoreConfig.Status,
+                PublicKey = Encryption.ExportPublicKey()
+            };
+
+            NetworkOutput.SendSystemData(DataTypes.Handshake, handshake);
 
             // Check is connection established successful after timeout.
             Task.Delay(5000).ContinueWith(_ =>

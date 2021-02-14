@@ -72,11 +72,11 @@ namespace Lanchat.Core
             switch (e.PropertyName)
             {
                 case "Nickname":
-                    Nodes.ForEach(x => x.NetworkOutput.SendNicknameUpdate(CoreConfig.Nickname));
+                    Nodes.ForEach(x => x.NetworkOutput.SendUserData(DataTypes.NicknameUpdate, CoreConfig.Nickname));
                     break;
 
                 case "Status":
-                    Nodes.ForEach(x => x.NetworkOutput.SendStatusUpdate(CoreConfig.Status));
+                    Nodes.ForEach(x => x.NetworkOutput.SendUserData(DataTypes.StatusUpdate, CoreConfig.Status));
                     break;
             }
         }
@@ -165,7 +165,8 @@ namespace Lanchat.Core
         {
             var node = (Node) sender;
             var nodesList = Nodes.Where(x => x.Id != node.Id).Select(x => x.Endpoint.Address).ToList();
-            node.NetworkOutput.SendNodesList(nodesList);
+            var stringList = nodesList.Select(x => x.ToString());
+            node.NetworkOutput.SendUserData(DataTypes.NodesList, stringList);
         }
 
         // Send new node event after new session and wait for nodes list

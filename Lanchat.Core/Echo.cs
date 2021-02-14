@@ -30,12 +30,12 @@ namespace Lanchat.Core
         public void SendPing()
         {
             pingSendTime = DateTime.Now;
-            networkOutput.SendData(DataTypes.Ping);
+            networkOutput.SendUserData(DataTypes.Ping);
         }
 
         internal void HandlePing()
         {
-            networkOutput.SendData(DataTypes.Pong);
+            networkOutput.SendUserData(DataTypes.Pong);
         }
 
         internal void HandlePong()
