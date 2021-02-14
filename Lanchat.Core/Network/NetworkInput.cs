@@ -42,6 +42,7 @@ namespace Lanchat.Core.Network
 
         internal void ProcessReceivedData(object sender, string dataString)
         {
+            // TODO: MEMORY LEAK!!!
             if (dataString.StartsWith("{") && dataString.EndsWith("}"))
             {
                 buffer = dataString;

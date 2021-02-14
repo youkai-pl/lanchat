@@ -9,6 +9,7 @@ namespace Lanchat.Core.FilesTransfer
 {
     public class FilesExchange
     {
+        private const int ChunkSize = 1024 * 1024;
         private readonly Node node;
 
         private FileStream writeFileStream;
@@ -43,17 +44,19 @@ namespace Lanchat.Core.FilesTransfer
         {
             try
             {
-                using var md5 = MD5.Create();
-                using var stream = File.OpenRead(path);
+                var fileInfo = new FileInfo(path);
+
                 CurrentSendRequest = new FileTransferRequest
                 {
-                    FilePath = path
+                    FilePath = path,
+                    Parts = fileInfo.Length / ChunkSize
                 };
 
                 return new FileTransferStatus
                 {
                     FileName = CurrentSendRequest.FileName,
-                    RequestStatus = RequestStatus.Sending
+                    RequestStatus = RequestStatus.Sending,
+                    Parts = CurrentSendRequest.Parts
                 };
             }
             catch (Exception e)
@@ -71,6 +74,7 @@ namespace Lanchat.Core.FilesTransfer
             {
                 var data = node.Encryption.Decrypt(filePart.Data);
                 writeFileStream.Write(data, 0, data.Length);
+                CurrentReceiveRequest.PartsTransferred++;
                 if (!filePart.Last) return;
                 FileReceived?.Invoke(this, CurrentReceiveRequest);
                 writeFileStream.Dispose();
@@ -98,7 +102,8 @@ namespace Lanchat.Core.FilesTransfer
                 case RequestStatus.Sending:
                     CurrentReceiveRequest = new FileTransferRequest
                     {
-                        FilePath = MakeUnique(request.FileName)
+                        FilePath = MakeUnique(request.FileName),
+                        Parts = request.Parts
                     };
                     FileExchangeRequestReceived?.Invoke(this, CurrentReceiveRequest);
                     break;
@@ -113,8 +118,7 @@ namespace Lanchat.Core.FilesTransfer
         {
             try
             {
-                const int chunkSize = 1024 * 1024;
-                var buffer = new byte[chunkSize];
+                var buffer = new byte[ChunkSize];
                 int bytesRead;
                 using var file = File.OpenRead(CurrentSendRequest.FilePath);
                 while ((bytesRead = file.Read(buffer, 0, buffer.Length)) > 0)
@@ -124,9 +128,10 @@ namespace Lanchat.Core.FilesTransfer
                         Data = node.Encryption.Encrypt(buffer.Take(bytesRead).ToArray())
                     };
 
-                    if (bytesRead < chunkSize) part.Last = true;
+                    if (bytesRead < ChunkSize) part.Last = true;
 
                     node.NetworkOutput.SendData(DataTypes.FilePart, part);
+                    CurrentSendRequest.PartsTransferred++;
                 }
             }
             catch (Exception e)
