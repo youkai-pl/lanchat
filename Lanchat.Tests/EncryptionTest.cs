@@ -1,5 +1,4 @@
 using Lanchat.Core.Encryption;
-using Lanchat.Core.Network;
 using NUnit.Framework;
 
 namespace Lanchat.Tests

@@ -24,7 +24,7 @@ namespace Lanchat.Terminal.Commands
             }
             catch (InvalidOperationException)
             {
-                Ui.Log.Add(Resources._NoFileReceiveRequet);
+                Ui.Log.Add(Resources._NoFileReceiveRequest);
             }
         }
     }

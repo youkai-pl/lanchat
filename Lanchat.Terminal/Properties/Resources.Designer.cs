@@ -261,7 +261,7 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string _NoFileReceiveRequet {
+        internal static string _NoFileReceiveRequest {
             get {
                 return ResourceManager.GetString("_NoFileReceiveRequet", resourceCulture);
             }

@@ -4,9 +4,9 @@ using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
-    public class Reject : ICommand
+    public class Cancel : ICommand
     {
-        public string Alias { get; set; } = "reject";
+        public string Alias { get; set; } = "cancel";
         public int ArgsCount { get; set; } = 1;
 
         public void Execute(string[] args)
@@ -20,7 +20,7 @@ namespace Lanchat.Terminal.Commands
 
             try
             {
-                node.FilesTransfer.RejectRequest();
+                node.FilesTransfer.CancelReceive();
             }
             catch (InvalidOperationException)
             {

@@ -68,12 +68,30 @@ namespace Lanchat.Core.FilesTransfer
         }
 
         /// <summary>
+        ///  Cancel current receive request.
+        /// </summary>
+        public void CancelReceive()
+        {
+            if (CurrentReceiveRequest == null) throw new InvalidOperationException("No receive request");
+            networkOutput.SendData(
+                DataTypes.FileExchangeRequest,
+                new FileTransferStatus
+                {
+                    RequestStatus = RequestStatus.Canceled
+                });
+
+            File.Delete(CurrentReceiveRequest.FilePath);
+            CurrentReceiveRequest = null;
+            writeFileStream.Dispose();
+        }
+
+        /// <summary>
         ///     Send file exchange request.
         /// </summary>
         /// <param name="path">File path</param>
         public void CreateSendRequest(string path)
         {
-            if (CurrentSendRequest != null) throw new InvalidOperationException("File transfer in progress.");
+            if (CurrentSendRequest != null) throw new InvalidOperationException("File transfer in progress");
 
             var fileInfo = new FileInfo(path);
 
@@ -91,25 +109,6 @@ namespace Lanchat.Core.FilesTransfer
                     RequestStatus = RequestStatus.Sending,
                     Parts = CurrentSendRequest.Parts
                 });
-        }
-
-        internal void HandleReceivedFilePart(FilePart filePart)
-        {
-            if (!CurrentReceiveRequest.Accepted) return;
-
-            try
-            {
-                var data = encryption.Decrypt(filePart.Data);
-                writeFileStream.Write(data, 0, data.Length);
-                CurrentReceiveRequest.PartsTransferred++;
-                if (!filePart.Last) return;
-                FileReceived?.Invoke(this, CurrentReceiveRequest);
-                writeFileStream.Dispose();
-            }
-            catch (Exception e)
-            {
-                FileExchangeError?.Invoke(this, e);
-            }
         }
 
         internal void HandleFileExchangeRequest(FileTransferStatus request)
@@ -138,14 +137,44 @@ namespace Lanchat.Core.FilesTransfer
                 case RequestStatus.Errored:
                     if (CurrentReceiveRequest != null)
                     {
+                        writeFileStream.Dispose();
+                        File.Delete(CurrentReceiveRequest.FilePath);
                         CurrentReceiveRequest = null;
-                        FileExchangeError?.Invoke(this, new Exception("File transfer cancelled by sending site"));
+                        FileExchangeError?.Invoke(this, new Exception("File transfer cancelled by sender"));
+                    }
+                    break;
+
+                case RequestStatus.Canceled:
+                    if (CurrentSendRequest != null)
+                    {
+                        CurrentSendRequest = null;
+                        FileExchangeError?.Invoke(this, new Exception("File transfer cancelled by receiver"));
                     }
                     break;
                 
                 default:
                     Trace.Write($"Node received file exchange request of unknown type.");
                     break;
+            }
+        }
+
+        internal void HandleReceivedFilePart(FilePart filePart)
+        {
+            if (CurrentReceiveRequest == null) return;
+            if (!CurrentReceiveRequest.Accepted) return;
+
+            try
+            {
+                var data = encryption.Decrypt(filePart.Data);
+                writeFileStream.Write(data, 0, data.Length);
+                CurrentReceiveRequest.PartsTransferred++;
+                if (!filePart.Last) return;
+                FileReceived?.Invoke(this, CurrentReceiveRequest);
+                writeFileStream.Dispose();
+            }
+            catch (Exception e)
+            {
+                FileExchangeError?.Invoke(this, e);
             }
         }
 
@@ -156,7 +185,7 @@ namespace Lanchat.Core.FilesTransfer
                 var buffer = new byte[ChunkSize];
                 int bytesRead;
                 using var file = File.OpenRead(CurrentSendRequest.FilePath);
-                while ((bytesRead = file.Read(buffer, 0, buffer.Length)) > 0)
+                while ((bytesRead = file.Read(buffer, 0, buffer.Length)) > 0 && CurrentSendRequest != null)
                 {
                     var part = new FilePart
                     {
@@ -164,7 +193,6 @@ namespace Lanchat.Core.FilesTransfer
                     };
 
                     if (bytesRead < ChunkSize) part.Last = true;
-
                     networkOutput.SendData(DataTypes.FilePart, part);
                     CurrentSendRequest.PartsTransferred++;
                 }
