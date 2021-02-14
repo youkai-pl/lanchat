@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Lanchat.Tests
 {
-    public class EncryptionTest
+    public class EncryptionTests
     {
         private Encryptor encryptor;
 
