@@ -13,7 +13,7 @@ using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core
 {
-    public class Node : IDisposable, INotifyPropertyChanged
+    public class Node : IDisposable, INotifyPropertyChanged, INodeState
     {
         public readonly Messaging Messaging;
         public readonly FileReceiver FileReceiver;
@@ -41,7 +41,7 @@ namespace Lanchat.Core
         {
             NetworkElement = networkElement;
             firstEndPoint = networkElement.Endpoint;
-            NetworkOutput = new NetworkOutput(this);
+            NetworkOutput = new NetworkOutput(NetworkElement, this);
             NetworkInput = new NetworkInput(this);
             Encryption = new Encryption.Encryption();
             Echo = new Echo(NetworkOutput);

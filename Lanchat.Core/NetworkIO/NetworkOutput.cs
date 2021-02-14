@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Lanchat.Core.Models;
+using Lanchat.Core.Network;
 
 namespace Lanchat.Core.NetworkIO
 {
@@ -8,25 +9,27 @@ namespace Lanchat.Core.NetworkIO
     /// </summary>
     internal class NetworkOutput : INetworkOutput
     {
-        private readonly Node node;
+        private readonly INetworkElement networkElement;
+        private readonly INodeState nodeState;
         private readonly JsonSerializerOptions serializerOptions;
 
-        internal NetworkOutput(Node node)
+        internal NetworkOutput(INetworkElement networkElement, INodeState nodeState )
         {
-            this.node = node;
+            this.networkElement = networkElement;
+            this.nodeState = nodeState;
             serializerOptions = CoreConfig.JsonSerializerOptions;
         }
 
         public void SendUserData(DataTypes dataType, object content = null)
         {
-            if (!node.Ready) return;
+            if (!nodeState.Ready) return;
             SendSystemData(dataType, content);
         }
 
         public void SendSystemData(DataTypes dataType, object content = null)
         {
             var data = new Wrapper {Type = dataType, Data = content};
-            node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
+            networkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
     }
 }
