@@ -50,16 +50,6 @@ namespace Lanchat.Core.Network
             SendData(DataTypes.Ping);
         }
 
-        /// <summary>
-        ///     Send file exchange request.
-        /// </summary>
-        /// <param name="path">File path</param>
-        public void SendFile(string path)
-        {
-            var request = node.FilesExchange.CreateSendRequest(path);
-            if (request != null) SendData(DataTypes.FileExchangeRequest, request);
-        }
-
         internal void SendFileExchangeAccept()
         {
             SendData(DataTypes.FileExchangeRequest, new FileTransferStatus

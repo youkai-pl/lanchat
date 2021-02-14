@@ -250,4 +250,7 @@ Try /help &lt;command&gt; for detailed help.
     <data name="_CannotAccessFile" xml:space="preserve">
         <value>Cannot access {0}. File name or permissions may be wrong.</value>
     </data>
+    <data name="_FileTransferInProgress" xml:space="preserve">
+        <value>Cannot send multiple files at once.</value>
+    </data>
 </root>

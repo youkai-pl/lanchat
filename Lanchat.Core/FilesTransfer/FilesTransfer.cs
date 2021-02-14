@@ -40,8 +40,14 @@ namespace Lanchat.Core.FilesTransfer
             node.NetworkOutput.SendFileExchangeReject();
         }
 
-        internal FileTransferStatus CreateSendRequest(string path)
+        /// <summary>
+        ///     Send file exchange request.
+        /// </summary>
+        /// <param name="path">File path</param>
+        public void CreateSendRequest(string path)
         {
+            if (CurrentSendRequest != null) throw new InvalidOperationException("File transfer in progress.");
+
             var fileInfo = new FileInfo(path);
 
             CurrentSendRequest = new FileTransferRequest
@@ -50,12 +56,14 @@ namespace Lanchat.Core.FilesTransfer
                 Parts = fileInfo.Length / ChunkSize
             };
 
-            return new FileTransferStatus
-            {
-                FileName = CurrentSendRequest.FileName,
-                RequestStatus = RequestStatus.Sending,
-                Parts = CurrentSendRequest.Parts
-            };
+            node.NetworkOutput.SendData(
+                DataTypes.FileExchangeRequest,
+                new FileTransferStatus
+                {
+                    FileName = CurrentSendRequest.FileName,
+                    RequestStatus = RequestStatus.Sending,
+                    Parts = CurrentSendRequest.Parts
+                });
         }
 
         internal void HandleReceivedFilePart(FilePart filePart)

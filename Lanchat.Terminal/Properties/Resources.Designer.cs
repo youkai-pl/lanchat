@@ -254,5 +254,11 @@ namespace Lanchat.Terminal.Properties {
                 return ResourceManager.GetString("_CannotAccessFile", resourceCulture);
             }
         }
+        
+        internal static string _FileTransferInProgress {
+            get {
+                return ResourceManager.GetString("_FileTransferInProgress", resourceCulture);
+            }
+        }
     }
 }

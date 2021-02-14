@@ -22,17 +22,23 @@ namespace Lanchat.Terminal.Commands
 
             try
             {
-                node.NetworkOutput.SendFile(args[1]);
+                node.FilesExchange.CreateSendRequest(args[1]);
             }
             catch (Exception e)
             {
-                if (e is FileNotFoundException ||
-                    e is UnauthorizedAccessException ||
-                    e is SecurityException ||
-                    e is PathTooLongException ||
-                    e is ArgumentException)
+                switch (e)
                 {
-                    Ui.Log.Add(string.Format(Resources._CannotAccessFile, args[1]));
+                    case FileNotFoundException:
+                    case UnauthorizedAccessException:
+                    case SecurityException:
+                    case PathTooLongException:
+                    case ArgumentException:
+                        Ui.Log.Add(string.Format(Resources._CannotAccessFile, args[1]));
+                        break;
+                    
+                    case InvalidOperationException:
+                        Ui.Log.Add(Resources._FileTransferInProgress);
+                        break;
                 }
             }
         }
