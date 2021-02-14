@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace Lanchat.Tests
 {
-    public class MessagingTests
+    public class MessagesReceiveTests
     {
         private FakeNetworkOutput fakeNetworkOutput;
         private Messaging messaging;
@@ -14,10 +14,10 @@ namespace Lanchat.Tests
         public void Setup()
         {
             CoreConfig.MaxMessageLenght = 5;
-            fakeNetworkOutput = new FakeNetworkOutput();
             encryptor = new Encryptor();
             encryptor.ImportPublicKey(encryptor.ExportPublicKey());
             encryptor.ImportAesKey(encryptor.ExportAesKey());
+            fakeNetworkOutput = new FakeNetworkOutput(encryptor);
             messaging = new Messaging(fakeNetworkOutput, encryptor);
         }
 
