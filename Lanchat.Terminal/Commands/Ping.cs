@@ -17,7 +17,7 @@ namespace Lanchat.Terminal.Commands
                 return;
             }
 
-            node.NetworkOutput.SendPing();
+            node.Echo.SendPing();
         }
     }
 }

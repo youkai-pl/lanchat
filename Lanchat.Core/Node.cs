@@ -17,6 +17,7 @@ namespace Lanchat.Core
         internal readonly Encryption.Encryption Encryption;
         public readonly FileReceiver FileReceiver;
         public readonly FileSender FileSender;
+        public readonly Echo Echo;
         internal readonly FileTransferHandler FileTransferHandler;
 
         public readonly Messaging Messaging;
@@ -28,7 +29,6 @@ namespace Lanchat.Core
         public readonly NetworkOutput NetworkOutput;
         private string nickname;
 
-        internal DateTime? PingSendTime;
         private string previousNickname;
         private Status status;
         private bool underReconnecting;
@@ -45,11 +45,10 @@ namespace Lanchat.Core
             NetworkOutput = new NetworkOutput(this);
             NetworkInput = new NetworkInput(this);
             Encryption = new Encryption.Encryption();
-
+            Echo = new Echo(NetworkOutput);
             FileReceiver = new FileReceiver(NetworkOutput, Encryption);
             FileSender = new FileSender(NetworkOutput, Encryption);
             FileTransferHandler = new FileTransferHandler(FileReceiver, FileSender);
-
             Messaging = new Messaging(NetworkOutput, Encryption);
             
             networkElement.Disconnected += OnDisconnected;
@@ -105,12 +104,7 @@ namespace Lanchat.Core
                 OnPropertyChanged();
             }
         }
-
-        /// <summary>
-        ///     Last ping value.
-        /// </summary>
-        public TimeSpan? Ping { get; internal set; }
-
+        
         /// <summary>
         ///     Nickname before last change.
         /// </summary>

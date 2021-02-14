@@ -34,15 +34,6 @@ namespace Lanchat.Core.Network
             node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
 
-        /// <summary>
-        ///     Send ping.
-        /// </summary>
-        public void SendPing()
-        {
-            node.PingSendTime = DateTime.Now;
-            SendData(DataTypes.Ping);
-        }
-
         internal void SendHandshake()
         {
             var handshake = new Handshake
@@ -80,11 +71,6 @@ namespace Lanchat.Core.Network
         internal void SendStatusUpdate(Status status)
         {
             SendInernalData(DataTypes.StatusUpdate, status);
-        }
-
-        internal void SendPong()
-        {
-            SendInernalData(DataTypes.Pong);
         }
     }
 }
