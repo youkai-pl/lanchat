@@ -1,12 +1,15 @@
 using Lanchat.Core;
 using Lanchat.Core.Encryption;
+using Lanchat.Core.NetworkIO;
+using Lanchat.Tests.Mock;
 using NUnit.Framework;
 
 namespace Lanchat.Tests
 {
     public class MessagesSendTests
     {
-        private FakeNetworkOutput fakeNetworkOutput;
+        private NetworkOutput networkOutput;
+        private NetworkElement networkElement;
         private Messaging messaging;
         private Encryptor encryptor;
 
@@ -17,8 +20,9 @@ namespace Lanchat.Tests
             encryptor = new Encryptor();
             encryptor.ImportPublicKey(encryptor.ExportPublicKey());
             encryptor.ImportAesKey(encryptor.ExportAesKey());
-            fakeNetworkOutput = new FakeNetworkOutput(encryptor);
-            messaging = new Messaging(fakeNetworkOutput, encryptor);
+            networkElement = new NetworkElement();
+            networkOutput = new NetworkOutput(networkElement, new NodeState());
+            messaging = new Messaging(networkOutput, encryptor);
         }
 
         [Test]
@@ -26,7 +30,7 @@ namespace Lanchat.Tests
         {
             var testMessage = "test";
             messaging.SendMessage(testMessage);
-            Assert.AreEqual(testMessage, fakeNetworkOutput.ReceivedMessage);
+            Assert.AreEqual(testMessage, networkElement.ReceivedMessage);
         }
         
         [Test]
@@ -34,7 +38,7 @@ namespace Lanchat.Tests
         {
             var testMessage = "test";
             messaging.SendPrivateMessage(testMessage);
-            Assert.AreEqual(testMessage, fakeNetworkOutput.ReceivedMessage);
+            Assert.AreEqual(testMessage, networkElement.ReceivedMessage);
         }
         
         [Test]
@@ -42,7 +46,7 @@ namespace Lanchat.Tests
         {
             var testMessage = "1234567890";
             messaging.SendMessage(testMessage);
-            Assert.AreEqual("12345...", fakeNetworkOutput.ReceivedMessage);
+            Assert.AreEqual("12345...", networkElement.ReceivedMessage);
         }
         
         [Test]
@@ -50,7 +54,7 @@ namespace Lanchat.Tests
         {
             var testMessage = "1234567890";
             messaging.SendPrivateMessage(testMessage);
-            Assert.AreEqual("12345...", fakeNetworkOutput.ReceivedMessage);
+            Assert.AreEqual("12345...", networkElement.ReceivedMessage);
         }
     }
 }
