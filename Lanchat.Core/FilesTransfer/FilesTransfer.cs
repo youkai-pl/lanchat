@@ -13,12 +13,19 @@ namespace Lanchat.Core.FilesTransfer
 
         private FileStream writeFileStream;
 
-        public FilesExchange(Node node)
+        internal FilesExchange(Node node)
         {
             this.node = node;
         }
 
+        /// <summary>
+        ///    Outgoing file request. 
+        /// </summary>
         public FileTransferRequest CurrentSendRequest { get; set; }
+
+        /// <summary>
+        ///     Incoming file request.  
+        /// </summary>
         public FileTransferRequest CurrentReceiveRequest { get; set; }
 
         public event EventHandler<FileTransferRequest> FileReceived;
@@ -27,6 +34,10 @@ namespace Lanchat.Core.FilesTransfer
         public event EventHandler FileExchangeRequestRejected;
         public event EventHandler<Exception> FileExchangeError;
 
+        /// <summary>
+        ///     Accept incoming file request.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">No awaiting request</exception>
         public void AcceptRequest()
         {
             if (CurrentReceiveRequest == null) throw new InvalidOperationException("No receive request");
@@ -35,6 +46,10 @@ namespace Lanchat.Core.FilesTransfer
             node.NetworkOutput.SendFileExchangeAccept();
         }
 
+        /// <summary>
+        ///     Reject incoming file request.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">No awaiting request</exception>
         public void RejectRequest()
         {
             if (CurrentReceiveRequest == null) throw new InvalidOperationException("No receive request");
@@ -110,6 +125,14 @@ namespace Lanchat.Core.FilesTransfer
                     FileExchangeRequestReceived?.Invoke(this, CurrentReceiveRequest);
                     break;
 
+                case RequestStatus.Errored:
+                    if (CurrentReceiveRequest != null)
+                    {
+                        CurrentReceiveRequest = null;
+                        FileExchangeError?.Invoke(this, new Exception("File transfer cancelled by sending site"));
+                    }
+                    break;
+                
                 default:
                     Trace.Write($"Node {node.Id} received file exchange request of unknown type.");
                     break;
@@ -139,6 +162,12 @@ namespace Lanchat.Core.FilesTransfer
             catch (Exception e)
             {
                 FileExchangeError?.Invoke(this, e);
+                node.NetworkOutput.SendData(
+                    DataTypes.FileExchangeRequest,
+                    new FileTransferStatus
+                    {
+                        RequestStatus = RequestStatus.Errored
+                    });
             }
         }
 

@@ -11,6 +11,7 @@ namespace Lanchat.Core.Models
     {
         Sending,
         Accepted,
-        Rejected
+        Rejected,
+        Errored
     }
 }

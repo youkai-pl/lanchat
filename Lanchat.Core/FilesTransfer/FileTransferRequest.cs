@@ -4,7 +4,7 @@ namespace Lanchat.Core.FilesTransfer
 {
     public class FileTransferRequest
     {
-        public bool Accepted { get; internal set; }
+        internal bool Accepted { get; set; }
         public string FilePath { get; internal init; }
         public string FileName => Path.GetFileName(FilePath);
         public long Parts { get; internal init; }
