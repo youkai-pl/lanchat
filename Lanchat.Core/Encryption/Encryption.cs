@@ -4,9 +4,9 @@ using System.Security.Cryptography;
 using System.Text;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core.Network
+namespace Lanchat.Core.Encryption
 {
-    public class Encryption : IDisposable
+    public class Encryption : IDisposable, IBytesEncryption
     {
         private readonly Aes localAes;
         private readonly RSA localRsa;
@@ -79,7 +79,7 @@ namespace Lanchat.Core.Network
         }
 
 
-        internal byte[] Encrypt(byte[] data)
+        public byte[] Encrypt(byte[] data)
         {
             using var memoryStream = new MemoryStream();
             using var cryptoStream =
@@ -89,7 +89,7 @@ namespace Lanchat.Core.Network
             return memoryStream.ToArray();
         }
 
-        internal byte[] Decrypt(byte[] data)
+        public byte[] Decrypt(byte[] data)
         {
             using var memoryStream = new MemoryStream();
             using var cryptoStream = new CryptoStream(memoryStream, localAes.CreateDecryptor(), CryptoStreamMode.Write);

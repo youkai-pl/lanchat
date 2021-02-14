@@ -10,7 +10,7 @@ namespace Lanchat.Core.Network
     /// <summary>
     ///     Sending and receiving data using this class.
     /// </summary>
-    public class NetworkOutput
+    public class NetworkOutput : INetworkOutput
     {
         private readonly Node node;
         private readonly JsonSerializerOptions serializerOptions;
@@ -48,22 +48,6 @@ namespace Lanchat.Core.Network
         {
             node.PingSendTime = DateTime.Now;
             SendData(DataTypes.Ping);
-        }
-
-        internal void SendFileExchangeAccept()
-        {
-            SendData(DataTypes.FileExchangeRequest, new FileTransferStatus
-            {
-                RequestStatus = RequestStatus.Accepted
-            });
-        }
-        
-        internal void SendFileExchangeReject()
-        {
-            SendData(DataTypes.FileExchangeRequest, new FileTransferStatus
-            {
-                RequestStatus = RequestStatus.Rejected
-            });
         }
 
         internal void SendHandshake()
@@ -110,7 +94,7 @@ namespace Lanchat.Core.Network
             SendData(DataTypes.Pong);
         }
 
-        internal void SendData(DataTypes dataType, object content = null)
+        public void SendData(DataTypes dataType, object content = null)
         {
             var data = new Wrapper {Type = dataType, Data = content};
             node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));

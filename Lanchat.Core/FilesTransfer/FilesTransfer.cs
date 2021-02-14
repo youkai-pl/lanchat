@@ -2,20 +2,24 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
+using Lanchat.Core.Network;
 
 namespace Lanchat.Core.FilesTransfer
 {
-    public class FilesExchange
+    public class FilesTransfer
     {
         private const int ChunkSize = 1024 * 1024;
-        private readonly Node node;
+        private readonly INetworkOutput networkOutput;
+        private readonly IBytesEncryption encryption;
 
         private FileStream writeFileStream;
 
-        internal FilesExchange(Node node)
+        internal FilesTransfer(INetworkOutput networkOutput, IBytesEncryption encryption)
         {
-            this.node = node;
+            this.networkOutput = networkOutput;
+            this.encryption = encryption;
         }
 
         /// <summary>
@@ -43,7 +47,10 @@ namespace Lanchat.Core.FilesTransfer
             if (CurrentReceiveRequest == null) throw new InvalidOperationException("No receive request");
             CurrentReceiveRequest.Accepted = true;
             writeFileStream = new FileStream(CurrentReceiveRequest.FileName, FileMode.Append);
-            node.NetworkOutput.SendFileExchangeAccept();
+            networkOutput.SendData(DataTypes.FileExchangeRequest, new FileTransferStatus
+            {
+                RequestStatus = RequestStatus.Accepted
+            });
         }
 
         /// <summary>
@@ -54,7 +61,10 @@ namespace Lanchat.Core.FilesTransfer
         {
             if (CurrentReceiveRequest == null) throw new InvalidOperationException("No receive request");
             CurrentReceiveRequest = null;
-            node.NetworkOutput.SendFileExchangeReject();
+            networkOutput.SendData(DataTypes.FileExchangeRequest, new FileTransferStatus
+            {
+                RequestStatus = RequestStatus.Rejected
+            });
         }
 
         /// <summary>
@@ -73,7 +83,7 @@ namespace Lanchat.Core.FilesTransfer
                 Parts = fileInfo.Length / ChunkSize
             };
 
-            node.NetworkOutput.SendData(
+            networkOutput.SendData(
                 DataTypes.FileExchangeRequest,
                 new FileTransferStatus
                 {
@@ -89,7 +99,7 @@ namespace Lanchat.Core.FilesTransfer
 
             try
             {
-                var data = node.Encryption.Decrypt(filePart.Data);
+                var data = encryption.Decrypt(filePart.Data);
                 writeFileStream.Write(data, 0, data.Length);
                 CurrentReceiveRequest.PartsTransferred++;
                 if (!filePart.Last) return;
@@ -134,7 +144,7 @@ namespace Lanchat.Core.FilesTransfer
                     break;
                 
                 default:
-                    Trace.Write($"Node {node.Id} received file exchange request of unknown type.");
+                    Trace.Write($"Node received file exchange request of unknown type.");
                     break;
             }
         }
@@ -150,19 +160,19 @@ namespace Lanchat.Core.FilesTransfer
                 {
                     var part = new FilePart
                     {
-                        Data = node.Encryption.Encrypt(buffer.Take(bytesRead).ToArray())
+                        Data = encryption.Encrypt(buffer.Take(bytesRead).ToArray())
                     };
 
                     if (bytesRead < ChunkSize) part.Last = true;
 
-                    node.NetworkOutput.SendData(DataTypes.FilePart, part);
+                    networkOutput.SendData(DataTypes.FilePart, part);
                     CurrentSendRequest.PartsTransferred++;
                 }
             }
             catch (Exception e)
             {
                 FileExchangeError?.Invoke(this, e);
-                node.NetworkOutput.SendData(
+                networkOutput.SendData(
                     DataTypes.FileExchangeRequest,
                     new FileTransferStatus
                     {
