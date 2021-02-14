@@ -6,14 +6,14 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Encryption
 {
-    public class Encryption : IDisposable, IBytesEncryption, IStringEncryption
+    public class Encryptor : IDisposable, IBytesEncryption, IStringEncryption
     {
         private readonly Aes localAes;
         private readonly RSA localRsa;
         private readonly Aes remoteAes;
         private readonly RSA remoteRsa;
 
-        public Encryption()
+        public Encryptor()
         {
             localRsa = RSA.Create(2048);
             remoteRsa = RSA.Create();

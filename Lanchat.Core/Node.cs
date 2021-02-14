@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
@@ -23,7 +24,6 @@ namespace Lanchat.Core
         internal readonly INetworkElement NetworkElement;
         internal readonly NetworkInput NetworkInput;
         internal readonly NetworkOutput NetworkOutput;
-        internal readonly Encryption.Encryption Encryption;
         internal readonly FileTransferHandler FileTransferHandler;
 
         private readonly IPEndPoint firstEndPoint;
@@ -31,6 +31,7 @@ namespace Lanchat.Core
         private string previousNickname;
         private Status status;
         private bool underReconnecting;
+        private readonly Encryptor encryptor;
 
         /// <summary>
         ///     Initialize node.
@@ -43,12 +44,12 @@ namespace Lanchat.Core
             firstEndPoint = networkElement.Endpoint;
             NetworkOutput = new NetworkOutput(NetworkElement, this);
             NetworkInput = new NetworkInput(this);
-            Encryption = new Encryption.Encryption();
+            encryptor = new Encryptor();
             Echo = new Echo(NetworkOutput);
-            FileReceiver = new FileReceiver(NetworkOutput, Encryption);
-            FileSender = new FileSender(NetworkOutput, Encryption);
+            FileReceiver = new FileReceiver(NetworkOutput, encryptor);
+            FileSender = new FileSender(NetworkOutput, encryptor);
             FileTransferHandler = new FileTransferHandler(FileReceiver, FileSender);
-            Messaging = new Messaging(NetworkOutput, Encryption);
+            Messaging = new Messaging(NetworkOutput, encryptor);
 
             networkElement.Disconnected += OnDisconnected;
             networkElement.DataReceived += NetworkInput.ProcessReceivedData;
@@ -139,7 +140,7 @@ namespace Lanchat.Core
         public void Dispose()
         {
             NetworkElement.Close();
-            Encryption.Dispose();
+            encryptor.Dispose();
             GC.SuppressFinalize(this);
         }
 
@@ -214,14 +215,14 @@ namespace Lanchat.Core
         private void OnHandshakeReceived(object sender, Handshake handshake)
         {
             Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
-            Encryption.ImportPublicKey(handshake.PublicKey);
+            encryptor.ImportPublicKey(handshake.PublicKey);
             Status = handshake.Status;
-            NetworkOutput.SendSystemData(DataTypes.KeyInfo, Encryption.ExportAesKey());
+            NetworkOutput.SendSystemData(DataTypes.KeyInfo, encryptor.ExportAesKey());
         }
 
         private void OnKeyInfoReceived(object sender, KeyInfo e)
         {
-            Encryption.ImportAesKey(e);
+            encryptor.ImportAesKey(e);
             Ready = true;
             Connected?.Invoke(this, EventArgs.Empty);
         }
@@ -232,7 +233,7 @@ namespace Lanchat.Core
             {
                 Nickname = CoreConfig.Nickname,
                 Status = CoreConfig.Status,
-                PublicKey = Encryption.ExportPublicKey()
+                PublicKey = encryptor.ExportPublicKey()
             };
 
             NetworkOutput.SendSystemData(DataTypes.Handshake, handshake);
