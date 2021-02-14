@@ -32,12 +32,12 @@ namespace Lanchat.Terminal.Commands
             }
             else
             {
-                Ui.Log.Add(Resources.Info_IncorrectValues);
+                Ui.Log.Add(Resources._IncorrectValues);
                 return;
             }
 
             Program.Config.AddBlocked(ipAddress);
-            Ui.Log.Add(string.Format(Resources.Info_Blocked, ipAddress));
+            Ui.Log.Add(string.Format(Resources._Blocked, ipAddress));
         }
     }
 }

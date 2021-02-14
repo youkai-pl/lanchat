@@ -21,11 +21,11 @@ namespace Lanchat.Terminal.Commands
             if (correct)
             {
                 Program.Config.RemoveBlocked(parsedIp);
-                Ui.Log.Add(string.Format(Resources.Info_Unblocked, parsedIp));
+                Ui.Log.Add(string.Format(Resources._Unblocked, parsedIp));
             }
             else
             {
-                Ui.Log.Add(Resources.Info_IncorrectValues);
+                Ui.Log.Add(Resources._IncorrectValues);
             }
         }
     }

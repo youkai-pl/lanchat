@@ -47,31 +47,31 @@ namespace Lanchat.Terminal
                         Status.DoNotDisturb => "dnd",
                         _ => ""
                     };
-                    Ui.Log.Add(string.Format(Resources.Info_StatusChange, node.Nickname, status));
+                    Ui.Log.Add(string.Format(Resources._StatusChange, node.Nickname, status));
                     break;
 
                 case "Nickname":
                     if (!node.Ready) return;
-                    Ui.Log.Add(string.Format(Resources.Info_NicknameChanged, node.PreviousNickname, node.Nickname));
+                    Ui.Log.Add(string.Format(Resources._NicknameChanged, node.PreviousNickname, node.Nickname));
                     break;
             }
         }
 
         private void OnConnected(object sender, EventArgs e)
         {
-            Ui.Log.Add(string.Format(Resources.Info_Connected, node.Nickname));
+            Ui.Log.Add(string.Format(Resources._Connected, node.Nickname));
             Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
         private void OnDisconnected(object sender, EventArgs e)
         {
-            Ui.Log.Add(string.Format(Resources.Info_Reconnecting, node.Nickname));
+            Ui.Log.Add(string.Format(Resources._Reconnecting, node.Nickname));
             Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
         private void OnHardDisconnected(object sender, EventArgs e)
         {
-            Ui.Log.Add(string.Format(Resources.Info_Disconnected, node.Nickname));
+            Ui.Log.Add(string.Format(Resources._Disconnected, node.Nickname));
             Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
@@ -87,43 +87,43 @@ namespace Lanchat.Terminal
 
         private void OnSocketErrored(object sender, SocketError e)
         {
-            Ui.Log.Add(string.Format(Resources.Info_ConnectionError, node.Endpoint.Address, e));
+            Ui.Log.Add(string.Format(Resources._ConnectionError, node.Endpoint.Address, e));
         }
 
         private void OnCannotConnect(object sender, EventArgs e)
         {
-            Ui.Log.Add(string.Format(Resources.Info_CannotConnect, node.Endpoint));
+            Ui.Log.Add(string.Format(Resources._CannotConnect, node.Endpoint));
         }
 
         private void OnPongReceived(object sender, TimeSpan? e)
         {
             if (e != null)
-                Ui.Log.Add(string.Format(Resources.Info_Ping, node.Nickname, e.Value.Milliseconds));
+                Ui.Log.Add(string.Format(Resources._Ping, node.Nickname, e.Value.Milliseconds));
         }
 
         private void OnFilesExchangeRequestReceived(object sender, FileTransferRequest e)
         {
-            Ui.Log.Add(string.Format(Resources.Info_FileRequest, node.Nickname, e.FileName));
+            Ui.Log.Add(string.Format(Resources._FileRequest, node.Nickname, e.FileName));
         }
 
         private void OnFileReceived(object sender, FileTransferRequest e)
         {
-            Ui.Log.Add(string.Format(Resources.Info_FileReceived, node.Nickname, Path.GetFullPath(e.FilePath)));
+            Ui.Log.Add(string.Format(Resources._FileReceived, node.Nickname, Path.GetFullPath(e.FilePath)));
         }
 
         private void OnFileExchangeError(object sender, Exception e)
         {
-            Ui.Log.Add(string.Format(Resources.Info_FileExchangeError, e.Message));
+            Ui.Log.Add(string.Format(Resources._FileExchangeError, e.Message));
         }
 
         private void OnFileExchangeRequestAccepted(object sender, EventArgs e)
         {
-            Ui.Log.Add(string.Format(Resources.Info_FileRequestAccepted, node.Nickname));
+            Ui.Log.Add(string.Format(Resources._FileRequestAccepted, node.Nickname));
         }
         
         private void OnFileExchangeRequestRejected(object sender, EventArgs e)
         {
-            Ui.Log.Add(string.Format(Resources.Info_FileRequestRejected, node.Nickname));
+            Ui.Log.Add(string.Format(Resources._FileRequestRejected, node.Nickname));
         }
     }
 }

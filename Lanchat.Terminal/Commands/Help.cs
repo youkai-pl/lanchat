@@ -18,7 +18,7 @@ namespace Lanchat.Terminal.Commands
             else
             {
                 var commandHelp = Resources.ResourceManager.GetString($"Help_{args[0]}", CultureInfo.CurrentCulture);
-                Ui.Log.Add(commandHelp ?? Resources.Info_ManualNotFound);
+                Ui.Log.Add(commandHelp ?? Resources._ManualNotFound);
             }
         }
     }

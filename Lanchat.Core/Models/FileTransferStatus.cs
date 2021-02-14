@@ -4,7 +4,7 @@ namespace Lanchat.Core.Models
     {
         public RequestStatus RequestStatus { get; init; }
         public string FileName { get; init; }
-        public long Parts { get; set; }
+        public long Parts { get; init; }
     }
 
     public enum RequestStatus

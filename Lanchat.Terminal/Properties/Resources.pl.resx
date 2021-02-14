@@ -28,58 +28,58 @@ exit      ping         help
 Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     </value>
     </data>
-    <data name="Info_Connected" xml:space="preserve">
+    <data name="_Connected" xml:space="preserve">
         <value>Połączono z {0}</value>
     </data>
-    <data name="Info_ConnectionError" xml:space="preserve">
+    <data name="_ConnectionError" xml:space="preserve">
         <value>Błąd połączenia: {0} / {1}</value>
     </data>
-    <data name="Info_Disconnected" xml:space="preserve">
+    <data name="_Disconnected" xml:space="preserve">
         <value>Rozłączono z {0}</value>
     </data>
-    <data name="Info_IncorrectValues" xml:space="preserve">
+    <data name="_IncorrectValues" xml:space="preserve">
         <value>Nieprawidłowa wartość</value>
     </data>
-    <data name="Info_ManualNotFound" xml:space="preserve">
+    <data name="_ManualNotFound" xml:space="preserve">
         <value>Pomoc nie została znaleziona</value>
     </data>
-    <data name="Info_NicknameChanged" xml:space="preserve">
+    <data name="_NicknameChanged" xml:space="preserve">
         <value>{0} zmienił nick na {1}</value>
     </data>
-    <data name="Info_NotFound" xml:space="preserve">
-        <value>Nie znaleziono</value>
+    <data name="_UserNotFound" xml:space="preserve">
+        <value>Nie znaleziono użytkownika</value>
     </data>
-    <data name="Info_PortBusy" xml:space="preserve">
+    <data name="_PortBusy" xml:space="preserve">
         <value>Port zajęty, nie można uruchomić serwera. Spróbuj zmienić port w pliku konfiguracyjnym.</value>
     </data>
-    <data name="Info_Reconnecting" xml:space="preserve">
+    <data name="_Reconnecting" xml:space="preserve">
         <value>Rozłączono z {0}.  Trwa ponowne łączenie.</value>
     </data>
-    <data name="Info_SelfNicknameChanged" xml:space="preserve">
+    <data name="_SelfNicknameChanged" xml:space="preserve">
         <value>Nick został zmieniony</value>
     </data>
-    <data name="Info_Unblocked" xml:space="preserve">
+    <data name="_Unblocked" xml:space="preserve">
         <value>{0} został odblokowany</value>
     </data>
-    <data name="Info_WrongNickname" xml:space="preserve">
+    <data name="_WrongNickname" xml:space="preserve">
         <value>Nick musi być krótszy niż 20 znaków i nie może być pusty</value>
     </data>
-    <data name="Info_ConnectionAttempt" xml:space="preserve">
+    <data name="_ConnectionAttempt" xml:space="preserve">
         <value>Łączenie z {0}</value>
     </data>
-    <data name="Info_CannotConnect" xml:space="preserve">
+    <data name="_CannotConnect" xml:space="preserve">
         <value>Nie można połączyć z {0}</value>
     </data>
-    <data name="Info_BlockedList" xml:space="preserve">
+    <data name="_BlockedList" xml:space="preserve">
         <value>Zablokowane adresy IP</value>
     </data>
-    <data name="Info_Blocked" xml:space="preserve">
+    <data name="_Blocked" xml:space="preserve">
         <value>{0} został zablokowany</value>
     </data>
-    <data name="Info_StatusChange" xml:space="preserve">
+    <data name="_StatusChange" xml:space="preserve">
         <value>{0} jest {1}</value>
     </data>
-    <data name="Info_Ping" xml:space="preserve">
+    <data name="_Ping" xml:space="preserve">
         <value>Ping do {0} wynosi {1}ms</value>
     </data>
     <data name="Help_block" xml:space="preserve">
@@ -103,26 +103,29 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="Help_unblock" xml:space="preserve">
         <value>Składnia: /unblock &lt;ip&gt;</value>
     </data>
-    <data name="Ui_FirstRunMessage" xml:space="preserve">
+    <data name="_FirstRunMessage" xml:space="preserve">
         <value>Szybka instrukcja:
 1. Pomoc jest dostępna pod komendą /help
 2. Aby połączyć się z innym użytkownikiem użyj komedny /connect &lt;adres ip&gt;
 3. Możesz zobaczyć adresy dostępnych w sieci osób przy pomocy komendy /list
 4. Plik konfiguracyjny znajduje się w {0}</value>
     </data>
-    <data name="Info_FileRequest" xml:space="preserve">
+    <data name="_FileRequest" xml:space="preserve">
         <value>{0} chce wysłać ci plik {1} (/accept | /reject)</value>
     </data>
-    <data name="Info_FileReceived" xml:space="preserve">
+    <data name="_FileReceived" xml:space="preserve">
         <value>Plik od {0} zapisany w {1}</value>
     </data>
-    <data name="Info_FileExchangeError" xml:space="preserve">
+    <data name="_FileExchangeError" xml:space="preserve">
         <value>Błąd wymiany plików: {0}</value>
     </data>
-    <data name="Info_FileRequestAccepted" xml:space="preserve">
+    <data name="_FileRequestAccepted" xml:space="preserve">
         <value>{0} zaakceptował twój plik. Jest on wysyłany.</value>
     </data>
-    <data name="Info_FileRequestRejected" xml:space="preserve">
+    <data name="_FileRequestRejected" xml:space="preserve">
         <value>{0} odrzucił twój plik.</value>
+    </data>
+    <data name="_CannotAccessFile" xml:space="preserve">
+        <value>Nie można uzyskać dostępu do {0}. Nazwa pliku lub uprawnienia dostępu mogą być błędne</value>
     </data>
 </root>

@@ -45,9 +45,9 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Ui_Logo {
+        internal static string _Logo {
             get {
-                return ResourceManager.GetString("Ui_Logo", resourceCulture);
+                return ResourceManager.GetString("_Logo", resourceCulture);
             }
         }
         
@@ -63,27 +63,27 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Ui_WindowTitle {
+        internal static string _WindowTitle {
             get {
-                return ResourceManager.GetString("Ui_WindowTitle", resourceCulture);
+                return ResourceManager.GetString("_WindowTitle", resourceCulture);
             }
         }
         
-        internal static string Info_ConnectionAttempt {
+        internal static string _ConnectionAttempt {
             get {
-                return ResourceManager.GetString("Info_ConnectionAttempt", resourceCulture);
+                return ResourceManager.GetString("_ConnectionAttempt", resourceCulture);
             }
         }
         
-        internal static string Info_IncorrectValues {
+        internal static string _IncorrectValues {
             get {
-                return ResourceManager.GetString("Info_IncorrectValues", resourceCulture);
+                return ResourceManager.GetString("_IncorrectValues", resourceCulture);
             }
         }
         
-        internal static string Info_ManualNotFound {
+        internal static string _ManualNotFound {
             get {
-                return ResourceManager.GetString("Info_ManualNotFound", resourceCulture);
+                return ResourceManager.GetString("_ManualNotFound", resourceCulture);
             }
         }
         
@@ -93,15 +93,15 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Info_WrongNickname {
+        internal static string _WrongNickname {
             get {
-                return ResourceManager.GetString("Info_WrongNickname", resourceCulture);
+                return ResourceManager.GetString("_WrongNickname", resourceCulture);
             }
         }
         
-        internal static string Info_SelfNicknameChanged {
+        internal static string _SelfNicknameChanged {
             get {
-                return ResourceManager.GetString("Info_SelfNicknameChanged", resourceCulture);
+                return ResourceManager.GetString("_SelfNicknameChanged", resourceCulture);
             }
         }
         
@@ -123,57 +123,57 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Info_NotFound {
+        internal static string _UserNotFound {
             get {
-                return ResourceManager.GetString("Info_NotFound", resourceCulture);
+                return ResourceManager.GetString("_UserNotFound", resourceCulture);
             }
         }
         
-        internal static string Info_Blocked {
+        internal static string _Blocked {
             get {
-                return ResourceManager.GetString("Info_Blocked", resourceCulture);
+                return ResourceManager.GetString("_Blocked", resourceCulture);
             }
         }
         
-        internal static string Info_Unblocked {
+        internal static string _Unblocked {
             get {
-                return ResourceManager.GetString("Info_Unblocked", resourceCulture);
+                return ResourceManager.GetString("_Unblocked", resourceCulture);
             }
         }
         
-        internal static string Info_BlockedList {
+        internal static string _BlockedList {
             get {
-                return ResourceManager.GetString("Info_BlockedList", resourceCulture);
+                return ResourceManager.GetString("_BlockedList", resourceCulture);
             }
         }
         
-        internal static string Info_Disconnected {
+        internal static string _Disconnected {
             get {
-                return ResourceManager.GetString("Info_Disconnected", resourceCulture);
+                return ResourceManager.GetString("_Disconnected", resourceCulture);
             }
         }
         
-        internal static string Info_Reconnecting {
+        internal static string _Reconnecting {
             get {
-                return ResourceManager.GetString("Info_Reconnecting", resourceCulture);
+                return ResourceManager.GetString("_Reconnecting", resourceCulture);
             }
         }
         
-        internal static string Info_Connected {
+        internal static string _Connected {
             get {
-                return ResourceManager.GetString("Info_Connected", resourceCulture);
+                return ResourceManager.GetString("_Connected", resourceCulture);
             }
         }
         
-        internal static string Info_ConnectionError {
+        internal static string _ConnectionError {
             get {
-                return ResourceManager.GetString("Info_ConnectionError", resourceCulture);
+                return ResourceManager.GetString("_ConnectionError", resourceCulture);
             }
         }
         
-        internal static string Info_NicknameChanged {
+        internal static string _NicknameChanged {
             get {
-                return ResourceManager.GetString("Info_NicknameChanged", resourceCulture);
+                return ResourceManager.GetString("_NicknameChanged", resourceCulture);
             }
         }
         
@@ -183,15 +183,15 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Info_PortBusy {
+        internal static string _PortBusy {
             get {
-                return ResourceManager.GetString("Info_PortBusy", resourceCulture);
+                return ResourceManager.GetString("_PortBusy", resourceCulture);
             }
         }
         
-        internal static string Info_CannotConnect {
+        internal static string _CannotConnect {
             get {
-                return ResourceManager.GetString("Info_CannotConnect", resourceCulture);
+                return ResourceManager.GetString("_CannotConnect", resourceCulture);
             }
         }
         
@@ -201,51 +201,57 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Info_StatusChange {
+        internal static string _StatusChange {
             get {
-                return ResourceManager.GetString("Info_StatusChange", resourceCulture);
+                return ResourceManager.GetString("_StatusChange", resourceCulture);
             }
         }
         
-        internal static string Info_Ping {
+        internal static string _Ping {
             get {
-                return ResourceManager.GetString("Info_Ping", resourceCulture);
+                return ResourceManager.GetString("_Ping", resourceCulture);
             }
         }
         
-        internal static string Ui_FirstRunMessage {
+        internal static string _FirstRunMessage {
             get {
-                return ResourceManager.GetString("Ui_FirstRunMessage", resourceCulture);
+                return ResourceManager.GetString("_FirstRunMessage", resourceCulture);
             }
         }
         
-        internal static string Info_FileRequest {
+        internal static string _FileRequest {
             get {
-                return ResourceManager.GetString("Info_FileRequest", resourceCulture);
+                return ResourceManager.GetString("_FileRequest", resourceCulture);
             }
         }
         
-        internal static string Info_FileReceived {
+        internal static string _FileReceived {
             get {
-                return ResourceManager.GetString("Info_FileReceived", resourceCulture);
+                return ResourceManager.GetString("_FileReceived", resourceCulture);
             }
         }
         
-        internal static string Info_FileExchangeError {
+        internal static string _FileExchangeError {
             get {
-                return ResourceManager.GetString("Info_FileExchangeError", resourceCulture);
+                return ResourceManager.GetString("_FileExchangeError", resourceCulture);
             }
         }
         
-        internal static string Info_FileRequestAccepted {
+        internal static string _FileRequestAccepted {
             get {
-                return ResourceManager.GetString("Info_FileRequestAccepted", resourceCulture);
+                return ResourceManager.GetString("_FileRequestAccepted", resourceCulture);
             }
         }
         
-        internal static string Info_FileRequestRejected {
+        internal static string _FileRequestRejected {
             get {
-                return ResourceManager.GetString("Info_FileRequestRejected", resourceCulture);
+                return ResourceManager.GetString("_FileRequestRejected", resourceCulture);
+            }
+        }
+        
+        internal static string _CannotAccessFile {
+            get {
+                return ResourceManager.GetString("_CannotAccessFile", resourceCulture);
             }
         }
     }

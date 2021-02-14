@@ -14,7 +14,7 @@ namespace Lanchat.Terminal.Commands
             if (node != null)
                 node.Disconnect();
             else
-                Ui.Log.Add(Resources.Info_NotFound);
+                Ui.Log.Add(Resources._UserNotFound);
         }
     }
 }

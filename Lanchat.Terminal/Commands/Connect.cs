@@ -33,16 +33,16 @@ namespace Lanchat.Terminal.Commands
                 var port = 0;
                 if (args.Length > 1) port = Parse(args[1]);
                 if (port == 0) port = CoreConfig.ServerPort;
-                Ui.Log.Add(string.Format(Resources.Info_ConnectionAttempt, addressArgument));
+                Ui.Log.Add(string.Format(Resources._ConnectionAttempt, addressArgument));
                 Program.Network.Connect(ipAddress, port);
             }
             catch (FormatException)
             {
-                Ui.Log.Add(Resources.Info_IncorrectValues);
+                Ui.Log.Add(Resources._IncorrectValues);
             }
             catch (SocketException)
             {
-                Ui.Log.Add(Resources.Info_IncorrectValues);
+                Ui.Log.Add(Resources._IncorrectValues);
             }
             catch (ArgumentException e)
             {

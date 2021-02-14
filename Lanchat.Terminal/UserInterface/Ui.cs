@@ -142,10 +142,10 @@ namespace Lanchat.Terminal.UserInterface
             ConsoleManager.Setup();
             ConsoleManager.Resize(new Size(100, 30));
             ConsoleManager.Content = dockPanel;
-            Console.Title = Resources.Ui_WindowTitle;
-            Log.Add(Resources.Ui_Logo);
+            Console.Title = Resources._WindowTitle;
+            Log.Add(Resources._Logo);
 
-            if (Program.Config.Fresh) Log.Add(string.Format(Resources.Ui_FirstRunMessage, Config.ConfigPath));
+            if (Program.Config.Fresh) Log.Add(string.Format(Resources._FirstRunMessage, Config.ConfigPath));
 
             // Clock updates
             new Thread(() =>

@@ -122,7 +122,7 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
-    <data name="Ui_Logo" xml:space="preserve">
+    <data name="_Logo" xml:space="preserve">
     <value>   ___ _                       _           _      ___  
   / __(_)_ __ _ __   ___   ___| |__   __ _| |_   / _ \ 
  / /  | | '__| '_ \ / _ \ / __| '_ \ / _` | __| | (_) |
@@ -150,25 +150,25 @@ exit      ping         help
 Try /help &lt;command&gt; for detailed help.
     </value>
     </data>
-    <data name="Ui_WindowTitle" xml:space="preserve">
+    <data name="_WindowTitle" xml:space="preserve">
     <value>Lanchat</value>
   </data>
-    <data name="Info_ConnectionAttempt" xml:space="preserve">
+    <data name="_ConnectionAttempt" xml:space="preserve">
         <value>Attempting connect to {0}</value>
     </data>
-    <data name="Info_IncorrectValues" xml:space="preserve">
+    <data name="_IncorrectValues" xml:space="preserve">
     <value>Incorrect values</value>
   </data>
-    <data name="Info_ManualNotFound" xml:space="preserve">
+    <data name="_ManualNotFound" xml:space="preserve">
     <value>Manual not found</value>
   </data>
     <data name="Help_nick" xml:space="preserve">
     <value>Syntax: /nick &lt;new_nick&gt;</value>
   </data>
-    <data name="Info_WrongNickname" xml:space="preserve">
+    <data name="_WrongNickname" xml:space="preserve">
     <value>Nick must be shorter than 20 characters and cannot be blank</value>
   </data>
-    <data name="Info_SelfNicknameChanged" xml:space="preserve">
+    <data name="_SelfNicknameChanged" xml:space="preserve">
     <value>Nickname changed</value>
   </data>
     <data name="Help_disconnect" xml:space="preserve">
@@ -180,71 +180,74 @@ Try /help &lt;command&gt; for detailed help.
     <data name="Help_unblock" xml:space="preserve">
         <value>Syntax: /unblock &lt;ip&gt;</value>
     </data>
-    <data name="Info_NotFound" xml:space="preserve">
-        <value>Not found</value>
+    <data name="_UserNotFound" xml:space="preserve">
+        <value>User not found</value>
     </data>
-    <data name="Info_Blocked" xml:space="preserve">
+    <data name="_Blocked" xml:space="preserve">
         <value>{0} blocked</value>
     </data>
-    <data name="Info_Unblocked" xml:space="preserve">
+    <data name="_Unblocked" xml:space="preserve">
         <value>{0} unblocked</value>
     </data>
-    <data name="Info_BlockedList" xml:space="preserve">
+    <data name="_BlockedList" xml:space="preserve">
         <value>Blocked IP addresses</value>
     </data>
-    <data name="Info_Disconnected" xml:space="preserve">
+    <data name="_Disconnected" xml:space="preserve">
         <value>{0} disconnected</value>
     </data>
-    <data name="Info_Reconnecting" xml:space="preserve">
+    <data name="_Reconnecting" xml:space="preserve">
         <value>{0} disconnected. Trying reconnect</value>
     </data>
-    <data name="Info_Connected" xml:space="preserve">
+    <data name="_Connected" xml:space="preserve">
         <value>{0} connected</value>
     </data>
-    <data name="Info_ConnectionError" xml:space="preserve">
+    <data name="_ConnectionError" xml:space="preserve">
         <value>Connection error: {0} / {1}</value>
     </data>
-    <data name="Info_NicknameChanged" xml:space="preserve">
+    <data name="_NicknameChanged" xml:space="preserve">
         <value>{0} is now {1}</value>
     </data>
     <data name="Help_m" xml:space="preserve">
         <value>Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
     </data>
-    <data name="Info_PortBusy" xml:space="preserve">
+    <data name="_PortBusy" xml:space="preserve">
         <value>Port busy. Cannot start server. Try to change port in config.</value>
     </data>
-    <data name="Info_CannotConnect" xml:space="preserve">
+    <data name="_CannotConnect" xml:space="preserve">
         <value>Cannot connect with {0}</value>
     </data>
     <data name="Help_ping" xml:space="preserve">
         <value>Syntax: /ping &lt;short id&gt;</value>
     </data>
-    <data name="Info_StatusChange" xml:space="preserve">
+    <data name="_StatusChange" xml:space="preserve">
         <value>{0} is {1}</value>
     </data>
-    <data name="Info_Ping" xml:space="preserve">
+    <data name="_Ping" xml:space="preserve">
         <value>Ping to {0} is {1}ms</value>
     </data>
-    <data name="Ui_FirstRunMessage" xml:space="preserve">
+    <data name="_FirstRunMessage" xml:space="preserve">
         <value>Quickstart guide:
 1. Help is available under /help command.
 2. Connect with other users witch /connect &lt;ip&gt;
 3. You can see detected users addresses by calling /list
 4. Config file can be found in {0}</value>
     </data>
-    <data name="Info_FileRequest" xml:space="preserve">
+    <data name="_FileRequest" xml:space="preserve">
         <value>{0} wants to send you a file {1} (/accept | /reject)</value>
     </data>
-    <data name="Info_FileReceived" xml:space="preserve">
+    <data name="_FileReceived" xml:space="preserve">
         <value>File from {0} saved to {1}</value>
     </data>
-    <data name="Info_FileExchangeError" xml:space="preserve">
+    <data name="_FileExchangeError" xml:space="preserve">
         <value>File exchange error: {0}</value>
     </data>
-    <data name="Info_FileRequestAccepted" xml:space="preserve">
+    <data name="_FileRequestAccepted" xml:space="preserve">
         <value>{0} accepted your request. File is sending.</value>
     </data>
-    <data name="Info_FileRequestRejected" xml:space="preserve">
+    <data name="_FileRequestRejected" xml:space="preserve">
         <value>{0} rejected your file send request.</value>
+    </data>
+    <data name="_CannotAccessFile" xml:space="preserve">
+        <value>Cannot access {0}. File name or permissions may be wrong.</value>
     </data>
 </root>

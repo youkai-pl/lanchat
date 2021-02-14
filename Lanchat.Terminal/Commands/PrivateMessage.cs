@@ -14,7 +14,7 @@ namespace Lanchat.Terminal.Commands
             var node = Program.Network.Nodes.Find(x => x.ShortId == args[0]);
             if (node == null)
             {
-                Ui.Log.Add(Resources.Info_NotFound);
+                Ui.Log.Add(Resources._UserNotFound);
                 return;
             }
 

@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FilesTransfer
@@ -37,33 +36,26 @@ namespace Lanchat.Core.FilesTransfer
 
         public void RejectRequest()
         {
+            CurrentReceiveRequest = null;
             node.NetworkOutput.SendFileExchangeReject();
         }
 
         internal FileTransferStatus CreateSendRequest(string path)
         {
-            try
-            {
-                var fileInfo = new FileInfo(path);
+            var fileInfo = new FileInfo(path);
 
-                CurrentSendRequest = new FileTransferRequest
-                {
-                    FilePath = path,
-                    Parts = fileInfo.Length / ChunkSize
-                };
-
-                return new FileTransferStatus
-                {
-                    FileName = CurrentSendRequest.FileName,
-                    RequestStatus = RequestStatus.Sending,
-                    Parts = CurrentSendRequest.Parts
-                };
-            }
-            catch (Exception e)
+            CurrentSendRequest = new FileTransferRequest
             {
-                FileExchangeError?.Invoke(this, e);
-                return null;
-            }
+                FilePath = path,
+                Parts = fileInfo.Length / ChunkSize
+            };
+
+            return new FileTransferStatus
+            {
+                FileName = CurrentSendRequest.FileName,
+                RequestStatus = RequestStatus.Sending,
+                Parts = CurrentSendRequest.Parts
+            };
         }
 
         internal void HandleReceivedFilePart(FilePart filePart)
