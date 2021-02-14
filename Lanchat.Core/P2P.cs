@@ -123,7 +123,7 @@ namespace Lanchat.Core
         /// <param name="message">Message content.</param>
         public void BroadcastMessage(string message)
         {
-            Nodes.ForEach(x => x.NetworkOutput.SendMessage(message));
+            Nodes.ForEach(x => x.Messaging.SendMessage(message));
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Encryption
 {
-    public class Encryption : IDisposable, IBytesEncryption
+    public class Encryption : IDisposable, IBytesEncryption, IStringEncryption
     {
         private readonly Aes localAes;
         private readonly RSA localRsa;
@@ -85,13 +85,13 @@ namespace Lanchat.Core.Encryption
             remoteAes.IV = RsaDecrypt(keyInfo.AesIv);
         }
 
-        internal string Encrypt(string text)
+        public string Encrypt(string text)
         {
             var encrypted = Encrypt(Encoding.UTF8.GetBytes(text));
             return Convert.ToBase64String(encrypted);
         }
 
-        internal string Decrypt(string text)
+        public string Decrypt(string text)
         {
             var encryptedBytes = Convert.FromBase64String(text);
             var decrypted = Encoding.UTF8.GetString(Decrypt(encryptedBytes));

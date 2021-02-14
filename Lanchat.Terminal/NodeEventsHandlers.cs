@@ -17,8 +17,8 @@ namespace Lanchat.Terminal
         public NodeEventsHandlers(Node node)
         {
             this.node = node;
-            node.NetworkInput.MessageReceived += OnMessageReceived;
-            node.NetworkInput.PrivateMessageReceived += OnPrivateMessageReceived;
+            node.Messaging.MessageReceived += OnMessageReceived;
+            node.Messaging.PrivateMessageReceived += OnPrivateMessageReceived;
             node.NetworkInput.PongReceived += OnPongReceived;
             
             node.FileReceiver.FileReceived += OnFileReceived;

@@ -17,9 +17,10 @@ namespace Lanchat.Core
         internal readonly Encryption.Encryption Encryption;
         public readonly FileReceiver FileReceiver;
         public readonly FileSender FileSender;
+        internal readonly FileTransferHandler FileTransferHandler;
 
-        public readonly FileTransferHandler FileTransferHandler;
-
+        public readonly Messaging Messaging;
+        
         private readonly IPEndPoint firstEndPoint;
         internal readonly INetworkElement NetworkElement;
 
@@ -49,6 +50,8 @@ namespace Lanchat.Core
             FileSender = new FileSender(NetworkOutput, Encryption);
             FileTransferHandler = new FileTransferHandler(FileReceiver, FileSender);
 
+            Messaging = new Messaging(NetworkOutput, Encryption);
+            
             networkElement.Disconnected += OnDisconnected;
             networkElement.DataReceived += NetworkInput.ProcessReceivedData;
             networkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);

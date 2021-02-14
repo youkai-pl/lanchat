@@ -20,16 +20,7 @@ namespace Lanchat.Core.Network
             this.node = node;
             serializerOptions = CoreConfig.JsonSerializerOptions;
         }
-
-        /// <summary>
-        ///     Message received.
-        /// </summary>
-        public event EventHandler<string> MessageReceived;
-
-        /// <summary>
-        ///     Private message received.
-        /// </summary>
-        public event EventHandler<string> PrivateMessageReceived;
+        
 
         /// <summary>
         ///     Ping pong.
@@ -70,16 +61,11 @@ namespace Lanchat.Core.Network
                     switch (json.Type)
                     {
                         case DataTypes.Message:
-                            var decryptedMessage = node.Encryption.Decrypt(content);
-                            if (decryptedMessage == null) return;
-                            MessageReceived?.Invoke(this, decryptedMessage.Truncate(CoreConfig.MaxMessageLenght));
+                            node.Messaging.HandleMessage(content);
                             break;
 
                         case DataTypes.PrivateMessage:
-                            var decryptedPrivateMessage = node.Encryption.Decrypt(content);
-                            if (decryptedPrivateMessage == null) return;
-                            PrivateMessageReceived?.Invoke(this,
-                                decryptedPrivateMessage.Truncate(CoreConfig.MaxMessageLenght));
+                            node.Messaging.HandlePrivateMessage(content);
                             break;
 
                         case DataTypes.Handshake:

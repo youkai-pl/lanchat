@@ -23,28 +23,15 @@ namespace Lanchat.Core.Network
 
         public void SendData(DataTypes dataType, object content = null)
         {
+            if (!node.Ready) return;
             var data = new Wrapper {Type = dataType, Data = content};
             node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
-
-        /// <summary>
-        ///     Send message.
-        /// </summary>
-        /// <param name="content">Message content.</param>
-        public void SendMessage(string content)
+        
+        private void SendInernalData(DataTypes dataType, object content = null)
         {
-            if (!node.Ready) return;
-            SendData(DataTypes.Message, node.Encryption.Encrypt(content));
-        }
-
-        /// <summary>
-        ///     Send private message.
-        /// </summary>
-        /// <param name="content">Message content.</param>
-        public void SendPrivateMessage(string content)
-        {
-            if (!node.Ready) return;
-            SendData(DataTypes.PrivateMessage, node.Encryption.Encrypt(content));
+            var data = new Wrapper {Type = dataType, Data = content};
+            node.NetworkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
 
         /// <summary>
@@ -65,13 +52,13 @@ namespace Lanchat.Core.Network
                 PublicKey = node.Encryption.ExportPublicKey()
             };
 
-            SendData(DataTypes.Handshake, handshake);
+            SendInernalData(DataTypes.Handshake, handshake);
         }
 
         internal void SendKey()
         {
             var keyInfo = node.Encryption.ExportAesKey();
-            SendData(DataTypes.KeyInfo, keyInfo);
+            SendInernalData(DataTypes.KeyInfo, keyInfo);
         }
 
         internal void SendNodesList(IEnumerable<IPAddress> list)
@@ -82,22 +69,22 @@ namespace Lanchat.Core.Network
 
         internal void SendNicknameUpdate(string nickname)
         {
-            SendData(DataTypes.NicknameUpdate, nickname);
+            SendInernalData(DataTypes.NicknameUpdate, nickname);
         }
 
         internal void SendGoodbye()
         {
-            SendData(DataTypes.Goodbye);
+            SendInernalData(DataTypes.Goodbye);
         }
 
         internal void SendStatusUpdate(Status status)
         {
-            SendData(DataTypes.StatusUpdate, status);
+            SendInernalData(DataTypes.StatusUpdate, status);
         }
 
         internal void SendPong()
         {
-            SendData(DataTypes.Pong);
+            SendInernalData(DataTypes.Pong);
         }
     }
 }

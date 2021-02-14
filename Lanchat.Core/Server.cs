@@ -32,7 +32,7 @@ namespace Lanchat.Core
         /// <param name="message"></param>
         public void BroadcastMessage(string message)
         {
-            IncomingConnections.ForEach(x => x.NetworkOutput.SendMessage(message));
+            IncomingConnections.ForEach(x => x.Messaging.SendMessage(message));
         }
 
         /// <summary>
