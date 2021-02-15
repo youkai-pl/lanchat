@@ -48,9 +48,9 @@ namespace Lanchat.Core.FileTransfer
         }
 
         public IEnumerable<DataTypes> HandledDataTypes { get; } = new[] {DataTypes.FileTransferRequest};
-        public void Handle(Wrapper data)
+        public void Handle(DataTypes type, string data)
         {
-            var request = JsonSerializer.Deserialize<FileTransferStatus>(data.Data.ToString(), CoreConfig.JsonSerializerOptions);
+            var request = JsonSerializer.Deserialize<FileTransferStatus>(data, CoreConfig.JsonSerializerOptions);
             HandleFileExchangeRequest(request);
         }
     }

@@ -36,15 +36,15 @@ namespace Lanchat.Core
 
         public IEnumerable<DataTypes> HandledDataTypes { get; } = new[] {DataTypes.Ping, DataTypes.Pong};
 
-        public void Handle(Wrapper data)
+        public void Handle(DataTypes type, string data)
         {
-            if (data.Type == DataTypes.Ping)
+            if (type == DataTypes.Ping)
             {
                 networkOutput.SendUserData(DataTypes.Pong);
                 return;
             }
 
-            if (data.Type == DataTypes.Pong)
+            if (type == DataTypes.Pong)
             {
                 if (pingSendTime == null) return;
                 LastPing = DateTime.Now - pingSendTime;

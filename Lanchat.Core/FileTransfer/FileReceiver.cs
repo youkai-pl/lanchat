@@ -134,9 +134,9 @@ namespace Lanchat.Core.FileTransfer
             DataTypes.FilePart
         };
         
-        public void Handle(Wrapper data)
+        public void Handle(DataTypes type, string data)
         {
-            var binary = JsonSerializer.Deserialize<FilePart>(data.Data.ToString());
+            var binary = JsonSerializer.Deserialize<FilePart>(data);
             HandleReceivedFilePart(binary);
         }
     }

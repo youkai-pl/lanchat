@@ -57,7 +57,7 @@ namespace Lanchat.Core.NetworkIO
                     
                     if (handler != null)
                     {
-                        handler.Handle(json);
+                        handler.Handle(json.Type, json.Data.ToString());
                     }
                     else
                     {

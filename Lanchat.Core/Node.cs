@@ -252,17 +252,17 @@ namespace Lanchat.Core
             DataTypes.NicknameUpdate
         };
         
-        public void Handle(Wrapper data)
+        public void Handle(DataTypes type, string data)
         {
-            if (data.Type == DataTypes.Goodbye)
+            if (type == DataTypes.Goodbye)
             {
                 NetworkElement.EnableReconnecting = false;
                 return;
             }
 
-            if (data.Type == DataTypes.KeyInfo)
+            if (type == DataTypes.KeyInfo)
             {
-                var keyInfo = JsonSerializer.Deserialize<KeyInfo>(data.Data.ToString(), CoreConfig.JsonSerializerOptions);
+                var keyInfo = JsonSerializer.Deserialize<KeyInfo>(data, CoreConfig.JsonSerializerOptions);
                 if (keyInfo == null)
                 {
                     return;
@@ -274,9 +274,9 @@ namespace Lanchat.Core
                 return;
             }
 
-            if (data.Type == DataTypes.NodesList)
+            if (type == DataTypes.NodesList)
             {
-                var stringList = JsonSerializer.Deserialize<List<string>>(data.Data.ToString());
+                var stringList = JsonSerializer.Deserialize<List<string>>(data);
                 var list = new List<IPAddress>();
 
                 // Convert strings to ip addresses.
@@ -289,9 +289,9 @@ namespace Lanchat.Core
                 return;
             }
 
-            if (data.Type == DataTypes.Handshake)
+            if (type == DataTypes.Handshake)
             {
-                var handshake = JsonSerializer.Deserialize<Handshake>(data.Data.ToString(), CoreConfig.JsonSerializerOptions);
+                var handshake = JsonSerializer.Deserialize<Handshake>(data, CoreConfig.JsonSerializerOptions);
                 if (handshake == null)
                 {
                     return;
@@ -304,15 +304,15 @@ namespace Lanchat.Core
                 return;
             }
 
-            if (data.Type == DataTypes.StatusUpdate)
+            if (type == DataTypes.StatusUpdate)
             {
-                if (Enum.TryParse<Status>(data.Data.ToString(), out var newStatus)) Status = newStatus;
+                if (Enum.TryParse<Status>(data, out var newStatus)) Status = newStatus;
                 return;
             }
 
-            if (data.Type == DataTypes.NicknameUpdate)
+            if (type == DataTypes.NicknameUpdate)
             {
-                var newNickname = data.Data.ToString();
+                var newNickname = data;
                 Nickname = newNickname.Truncate(CoreConfig.MaxNicknameLenght);
             }
         }
