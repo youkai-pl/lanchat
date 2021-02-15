@@ -9,24 +9,18 @@ namespace Lanchat.Core.NetworkIO
 {
     internal class NetworkInput
     {
-        private readonly Node node;
-        private readonly List<IApiHandler> apiHandlers = new();
+        public readonly List<IApiHandler> ApiHandlers = new();
+        private readonly INodeState nodeState;
         private readonly JsonSerializerOptions serializerOptions;
 
         private string buffer = string.Empty;
 
-        internal NetworkInput(Node node)
+        internal NetworkInput(INodeState nodeState)
         {
-            this.node = node;
+            this.nodeState = nodeState;
             serializerOptions = CoreConfig.JsonSerializerOptions;
-
-            apiHandlers.Add(node.NodeApiHandlers);
-            apiHandlers.Add(node.Messaging);
-            apiHandlers.Add(node.Echo);
-            apiHandlers.Add(node.FileTransferHandler);
-            apiHandlers.Add(node.FileReceiver);
         }
-        
+
         internal void ProcessReceivedData(object sender, string dataString)
         {
             // TODO: MEMORY LEAK!!!
@@ -46,23 +40,19 @@ namespace Lanchat.Core.NetworkIO
                     var json = JsonSerializer.Deserialize<Wrapper>(item, serializerOptions);
 
                     // If node isn't ready ignore every messages except handshake and key info.
-                    if (!node.Ready && json.Type != DataTypes.Handshake && json.Type != DataTypes.KeyInfo) return;
+                    if (!nodeState.Ready && json.Type != DataTypes.Handshake && json.Type != DataTypes.KeyInfo) return;
 
                     // Ignore handshake and key info is node was set as ready before.
-                    if (node.Ready && (json.Type == DataTypes.Handshake || json.Type == DataTypes.KeyInfo)) return;
+                    if (nodeState.Ready && (json.Type == DataTypes.Handshake || json.Type == DataTypes.KeyInfo)) return;
 
-                    Trace.WriteLine($"Node {node.Id} received {json.Type}");
+                    Trace.WriteLine($"Node {nodeState.Id} received {json.Type}");
 
-                    var handler = apiHandlers.FirstOrDefault(x => x.HandledDataTypes.Contains(json.Type));
-                    
+                    var handler = ApiHandlers.FirstOrDefault(x => x.HandledDataTypes.Contains(json.Type));
+
                     if (handler != null)
-                    {
                         handler.Handle(json.Type, json.Data.ToString());
-                    }
                     else
-                    {
-                        Trace.WriteLine($"Node {node.Id} received data of unknown type.");
-                    }
+                        Trace.WriteLine($"Node {nodeState.Id} received data of unknown type.");
                 }
 
                 // Input errors catching.

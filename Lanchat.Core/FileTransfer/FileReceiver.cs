@@ -26,6 +26,17 @@ namespace Lanchat.Core.FileTransfer
         /// </summary>
         public FileTransferRequest Request { get; set; }
 
+        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
+        {
+            DataTypes.FilePart
+        };
+
+        public void Handle(DataTypes type, string data)
+        {
+            var binary = JsonSerializer.Deserialize<FilePart>(data);
+            HandleReceivedFilePart(binary);
+        }
+
         public event EventHandler<FileTransferRequest> FileReceived;
         public event EventHandler<Exception> FileExchangeError;
         public event EventHandler<FileTransferRequest> FileExchangeRequestReceived;
@@ -127,17 +138,6 @@ namespace Lanchat.Core.FileTransfer
                     return file;
                 file = $"{fileName}({i}){fileExt}";
             }
-        }
-
-        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
-        {
-            DataTypes.FilePart
-        };
-        
-        public void Handle(DataTypes type, string data)
-        {
-            var binary = JsonSerializer.Deserialize<FilePart>(data);
-            HandleReceivedFilePart(binary);
         }
     }
 }

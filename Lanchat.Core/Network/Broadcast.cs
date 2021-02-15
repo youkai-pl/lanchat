@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Lanchat.Core.Extensions;
-using Lanchat.Core.Models;
 
 // ReSharper disable FunctionNeverReturns
 
@@ -38,7 +37,8 @@ namespace Lanchat.Core.Network
                     var recvBuffer = udpClient.Receive(ref from);
                     try
                     {
-                        var broadcast = JsonSerializer.Deserialize<Models.Broadcast>(Encoding.UTF8.GetString(recvBuffer));
+                        var broadcast =
+                            JsonSerializer.Deserialize<Models.Broadcast>(Encoding.UTF8.GetString(recvBuffer));
                         if (broadcast != null && broadcast.Guid != uniqueId)
                         {
                             broadcast.IpAddress = from.Address;

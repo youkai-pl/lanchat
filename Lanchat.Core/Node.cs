@@ -4,11 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Lanchat.Core.Encryption;
-using Lanchat.Core.Extensions;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
@@ -19,22 +16,19 @@ namespace Lanchat.Core
     public class Node : IDisposable, INotifyPropertyChanged, INodeState
     {
         public readonly Messaging Messaging;
+        public readonly Echo Echo;
         public readonly FileReceiver FileReceiver;
         public readonly FileSender FileSender;
-        public readonly Echo Echo;
         
-        internal readonly INetworkElement NetworkElement;
-        internal readonly NetworkInput NetworkInput;
-        internal readonly NetworkOutput NetworkOutput;
-        internal readonly FileTransferHandler FileTransferHandler;
         internal readonly Encryptor Encryptor;
-        internal readonly IApiHandler NodeApiHandlers;
-        
-        private readonly IPEndPoint firstEndPoint;
+        internal readonly INetworkElement NetworkElement;
+        internal readonly NetworkOutput NetworkOutput;
+
         private string nickname;
         private string previousNickname;
         private Status status;
         private bool underReconnecting;
+        private readonly IPEndPoint firstEndPoint;
 
         /// <summary>
         ///     Initialize node.
@@ -47,18 +41,22 @@ namespace Lanchat.Core
             firstEndPoint = networkElement.Endpoint;
             NetworkOutput = new NetworkOutput(NetworkElement, this);
             Encryptor = new Encryptor();
-            NodeApiHandlers = new NodeApiHandlers(this);
             Messaging = new Messaging(NetworkOutput, Encryptor);
-            NetworkInput = new NetworkInput(this);
             Echo = new Echo(NetworkOutput);
             FileReceiver = new FileReceiver(NetworkOutput, Encryptor);
             FileSender = new FileSender(NetworkOutput, Encryptor);
-            FileTransferHandler = new FileTransferHandler(FileReceiver, FileSender);
+
+            var networkInput = new NetworkInput(this);
+            networkInput.ApiHandlers.Add(new NodeApiHandlers(this));
+            networkInput.ApiHandlers.Add(Messaging);
+            networkInput.ApiHandlers.Add(new FileTransferHandler(FileReceiver, FileSender));
+            networkInput.ApiHandlers.Add(FileReceiver);
+            networkInput.ApiHandlers.Add(Echo);
 
             networkElement.Disconnected += OnDisconnected;
-            networkElement.DataReceived += NetworkInput.ProcessReceivedData;
+            networkElement.DataReceived += networkInput.ProcessReceivedData;
             networkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
-            
+
             if (sendHandshake)
                 SendHandshakeAndWait();
             else
@@ -87,11 +85,6 @@ namespace Lanchat.Core
         }
 
         /// <summary>
-        ///     ID of TCP client or session.
-        /// </summary>
-        public Guid Id => NetworkElement.Id;
-
-        /// <summary>
         ///     Node nickname.
         /// </summary>
         public string Nickname
@@ -110,11 +103,6 @@ namespace Lanchat.Core
         ///     Nickname before last change.
         /// </summary>
         public string PreviousNickname => $"{previousNickname}#{ShortId}";
-
-        /// <summary>
-        ///     Node ready. If set to false node won't send or receive messages.
-        /// </summary>
-        public bool Ready { get; internal set; }
 
         /// <summary>
         ///     Short ID.
@@ -144,6 +132,16 @@ namespace Lanchat.Core
             Encryptor.Dispose();
             GC.SuppressFinalize(this);
         }
+
+        /// <summary>
+        ///     ID of TCP client or session.
+        /// </summary>
+        public Guid Id => NetworkElement.Id;
+
+        /// <summary>
+        ///     Node ready. If set to false node won't send or receive messages.
+        /// </summary>
+        public bool Ready { get; internal set; }
 
         /// <summary>
         ///     Invoked for properties like nickname or status.
@@ -177,7 +175,7 @@ namespace Lanchat.Core
 
         internal event EventHandler<List<IPAddress>> NodesListReceived;
 
-        
+
         /// <summary>
         ///     Disconnect from node.
         /// </summary>
@@ -234,17 +232,17 @@ namespace Lanchat.Core
             });
         }
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        internal virtual void OnConnected()
+        internal void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);
         }
 
-        internal virtual void OnNodesListReceived(List<IPAddress> e)
+        internal void OnNodesListReceived(List<IPAddress> e)
         {
             NodesListReceived?.Invoke(this, e);
         }

@@ -26,6 +26,7 @@ namespace Lanchat.Core
             DataTypes.Handshake,
             DataTypes.NicknameUpdate
         };
+
         public void Handle(DataTypes type, string data)
         {
             if (type == DataTypes.Goodbye)
@@ -37,11 +38,8 @@ namespace Lanchat.Core
             if (type == DataTypes.KeyInfo)
             {
                 var keyInfo = JsonSerializer.Deserialize<KeyInfo>(data, CoreConfig.JsonSerializerOptions);
-                if (keyInfo == null)
-                {
-                    return;
-                }
-            
+                if (keyInfo == null) return;
+
                 node.Encryptor.ImportAesKey(keyInfo);
                 node.Ready = true;
                 node.OnConnected();
@@ -58,7 +56,7 @@ namespace Lanchat.Core
                 {
                     if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
                 });
-                
+
                 node.OnNodesListReceived(list);
                 return;
             }
@@ -66,11 +64,8 @@ namespace Lanchat.Core
             if (type == DataTypes.Handshake)
             {
                 var handshake = JsonSerializer.Deserialize<Handshake>(data, CoreConfig.JsonSerializerOptions);
-                if (handshake == null)
-                {
-                    return;
-                }
-            
+                if (handshake == null) return;
+
                 node.Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
                 node.Encryptor.ImportPublicKey(handshake.PublicKey);
                 node.Status = handshake.Status;

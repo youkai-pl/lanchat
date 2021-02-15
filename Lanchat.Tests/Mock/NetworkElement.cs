@@ -9,6 +9,7 @@ namespace Lanchat.Tests.Mock
     {
         public NetworkElement()
         {
+            
         }
         
         public IPEndPoint Endpoint { get; }

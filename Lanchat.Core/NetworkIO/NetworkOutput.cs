@@ -13,7 +13,7 @@ namespace Lanchat.Core.NetworkIO
         private readonly INodeState nodeState;
         private readonly JsonSerializerOptions serializerOptions;
 
-        internal NetworkOutput(INetworkElement networkElement, INodeState nodeState )
+        internal NetworkOutput(INetworkElement networkElement, INodeState nodeState)
         {
             this.networkElement = networkElement;
             this.nodeState = nodeState;

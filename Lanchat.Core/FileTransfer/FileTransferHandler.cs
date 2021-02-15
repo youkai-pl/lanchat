@@ -17,6 +17,14 @@ namespace Lanchat.Core.FileTransfer
             this.fileSender = fileSender;
         }
 
+        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[] {DataTypes.FileTransferRequest};
+
+        public void Handle(DataTypes type, string data)
+        {
+            var request = JsonSerializer.Deserialize<FileTransferStatus>(data, CoreConfig.JsonSerializerOptions);
+            HandleFileExchangeRequest(request);
+        }
+
         private void HandleFileExchangeRequest(FileTransferStatus request)
         {
             switch (request.RequestStatus)
@@ -45,13 +53,6 @@ namespace Lanchat.Core.FileTransfer
                     Trace.Write("Node received file exchange request of unknown type.");
                     break;
             }
-        }
-
-        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[] {DataTypes.FileTransferRequest};
-        public void Handle(DataTypes type, string data)
-        {
-            var request = JsonSerializer.Deserialize<FileTransferStatus>(data, CoreConfig.JsonSerializerOptions);
-            HandleFileExchangeRequest(request);
         }
     }
 }
