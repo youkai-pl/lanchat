@@ -5,18 +5,16 @@ using Lanchat.Core.Network;
 
 namespace Lanchat.Tests.Mock
 {
-    public class NetworkElement : INetworkElement
+    public class NetworkMock : INetworkElement
     {
-        public NetworkElement()
-        {
-            
-        }
-        
         public IPEndPoint Endpoint { get; }
         public Guid Id { get; }
         public bool EnableReconnecting { get; set; }
+
         public void SendAsync(string text)
-        { }
+        {
+            DataReceived?.Invoke(this, text);
+        }
 
         public void Close()
         { }
