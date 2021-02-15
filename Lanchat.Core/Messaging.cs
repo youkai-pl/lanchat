@@ -23,26 +23,7 @@ namespace Lanchat.Core
             DataTypes.Message,
             DataTypes.PrivateMessage
         };
-
-        public void Handle(DataTypes type, string data)
-        {
-            if (type == DataTypes.Message)
-            {
-                var decryptedMessage = encryption.Decrypt(data);
-                if (decryptedMessage == null) return;
-                MessageReceived?.Invoke(this, decryptedMessage.Truncate(CoreConfig.MaxMessageLenght));
-                return;
-            }
-
-            if (type == DataTypes.PrivateMessage)
-            {
-                var decryptedPrivateMessage = encryption.Decrypt(data);
-                if (decryptedPrivateMessage == null) return;
-                PrivateMessageReceived?.Invoke(this,
-                    decryptedPrivateMessage.Truncate(CoreConfig.MaxMessageLenght));
-            }
-        }
-
+        
         /// <summary>
         ///     Message received.
         /// </summary>
@@ -69,6 +50,23 @@ namespace Lanchat.Core
         public void SendPrivateMessage(string content)
         {
             networkOutput.SendUserData(DataTypes.PrivateMessage, encryption.Encrypt(content));
+        }
+        
+        public void Handle(DataTypes type, string data)
+        {
+            var decryptedMessage = encryption.Decrypt(data);
+            if (decryptedMessage == null) return;
+
+            switch (type)
+            {
+                case DataTypes.Message:
+                    MessageReceived?.Invoke(this, decryptedMessage.Truncate(CoreConfig.MaxMessageLenght));
+                    break;
+                
+                case DataTypes.PrivateMessage:
+                    PrivateMessageReceived?.Invoke(this, decryptedMessage.Truncate(CoreConfig.MaxMessageLenght));
+                    break;
+            }
         }
     }
 }

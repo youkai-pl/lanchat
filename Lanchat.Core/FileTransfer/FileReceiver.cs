@@ -98,7 +98,7 @@ namespace Lanchat.Core.FileTransfer
             FileExchangeRequestReceived?.Invoke(this, Request);
         }
 
-        internal void HandleReceivedFilePart(FilePart filePart)
+        private void HandleReceivedFilePart(FilePart filePart)
         {
             if (Request == null) return;
             if (!Request.Accepted) return;

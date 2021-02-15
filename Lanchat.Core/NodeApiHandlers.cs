@@ -8,11 +8,11 @@ using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core
 {
-    public class NodeApiHandlers : IApiHandler
+    internal class NodeApiHandlers : IApiHandler
     {
         private readonly Node node;
 
-        public NodeApiHandlers(Node node)
+        internal NodeApiHandlers(Node node)
         {
             this.node = node;
         }
@@ -29,60 +29,62 @@ namespace Lanchat.Core
 
         public void Handle(DataTypes type, string data)
         {
-            if (type == DataTypes.Goodbye)
+            switch (type)
             {
-                node.NetworkElement.EnableReconnecting = false;
-                return;
-            }
-
-            if (type == DataTypes.KeyInfo)
-            {
-                var keyInfo = JsonSerializer.Deserialize<KeyInfo>(data, CoreConfig.JsonSerializerOptions);
-                if (keyInfo == null) return;
-
-                node.Encryptor.ImportAesKey(keyInfo);
-                node.Ready = true;
-                node.OnConnected();
-                return;
-            }
-
-            if (type == DataTypes.NodesList)
-            {
-                var stringList = JsonSerializer.Deserialize<List<string>>(data);
-                var list = new List<IPAddress>();
-
-                // Convert strings to ip addresses.
-                stringList?.ForEach(x =>
+                case DataTypes.Goodbye:
+                    node.NetworkElement.EnableReconnecting = false;
+                    break;
+                
+                case DataTypes.KeyInfo:
                 {
-                    if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
-                });
+                    var keyInfo = JsonSerializer.Deserialize<KeyInfo>(data, CoreConfig.JsonSerializerOptions);
+                    if (keyInfo == null) return;
 
-                node.OnNodesListReceived(list);
-                return;
-            }
+                    node.Encryptor.ImportAesKey(keyInfo);
+                    node.Ready = true;
+                    node.OnConnected();
+                    break;
+                }
+                
+                case DataTypes.NodesList:
+                {
+                    var stringList = JsonSerializer.Deserialize<List<string>>(data);
+                    var list = new List<IPAddress>();
 
-            if (type == DataTypes.Handshake)
-            {
-                var handshake = JsonSerializer.Deserialize<Handshake>(data, CoreConfig.JsonSerializerOptions);
-                if (handshake == null) return;
+                    // Convert strings to ip addresses.
+                    stringList?.ForEach(x =>
+                    {
+                        if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
+                    });
 
-                node.Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
-                node.Encryptor.ImportPublicKey(handshake.PublicKey);
-                node.Status = handshake.Status;
-                node.NetworkOutput.SendSystemData(DataTypes.KeyInfo, node.Encryptor.ExportAesKey());
-                return;
-            }
+                    node.OnNodesListReceived(list);
+                    break;
+                }
+                
+                case DataTypes.Handshake:
+                {
+                    var handshake = JsonSerializer.Deserialize<Handshake>(data, CoreConfig.JsonSerializerOptions);
+                    if (handshake == null) return;
 
-            if (type == DataTypes.StatusUpdate)
-            {
-                if (Enum.TryParse<Status>(data, out var newStatus)) node.Status = newStatus;
-                return;
-            }
-
-            if (type == DataTypes.NicknameUpdate)
-            {
-                var newNickname = data;
-                node.Nickname = newNickname.Truncate(CoreConfig.MaxNicknameLenght);
+                    node.Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
+                    node.Encryptor.ImportPublicKey(handshake.PublicKey);
+                    node.Status = handshake.Status;
+                    node.NetworkOutput.SendSystemData(DataTypes.KeyInfo, node.Encryptor.ExportAesKey());
+                    break;
+                }
+                
+                case DataTypes.StatusUpdate:
+                {
+                    if (Enum.TryParse<Status>(data, out var newStatus)) node.Status = newStatus;
+                    break;
+                }
+               
+                case DataTypes.NicknameUpdate:
+                {
+                    var newNickname = data;
+                    node.Nickname = newNickname.Truncate(CoreConfig.MaxNicknameLenght);
+                    break;
+                }
             }
         }
     }

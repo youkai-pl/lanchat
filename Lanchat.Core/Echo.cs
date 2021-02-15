@@ -19,30 +19,13 @@ namespace Lanchat.Core
         ///     Last ping value.
         /// </summary>
         public TimeSpan? LastPing { get; internal set; }
-
-        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[] {DataTypes.Ping, DataTypes.Pong};
-
-        public void Handle(DataTypes type, string data)
-        {
-            if (type == DataTypes.Ping)
-            {
-                networkOutput.SendUserData(DataTypes.Pong);
-                return;
-            }
-
-            if (type == DataTypes.Pong)
-            {
-                if (pingSendTime == null) return;
-                LastPing = DateTime.Now - pingSendTime;
-                pingSendTime = null;
-                PongReceived?.Invoke(this, LastPing);
-            }
-        }
-
+        
         /// <summary>
         ///     Ping pong.
         /// </summary>
         public event EventHandler<TimeSpan?> PongReceived;
+
+        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[] {DataTypes.Ping, DataTypes.Pong};
 
         /// <summary>
         ///     Send ping.
@@ -51,6 +34,23 @@ namespace Lanchat.Core
         {
             pingSendTime = DateTime.Now;
             networkOutput.SendUserData(DataTypes.Ping);
+        }
+        
+        public void Handle(DataTypes type, string data)
+        {
+            switch (type)
+            {
+                case DataTypes.Ping:
+                    networkOutput.SendUserData(DataTypes.Pong);
+                    return;
+                
+                case DataTypes.Pong:
+                    if (pingSendTime == null) return;
+                    LastPing = DateTime.Now - pingSendTime;
+                    pingSendTime = null;
+                    PongReceived?.Invoke(this, LastPing);
+                    break;
+            }
         }
     }
 }

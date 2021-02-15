@@ -22,7 +22,7 @@ namespace Lanchat.Core
         
         internal readonly Encryptor Encryptor;
         internal readonly INetworkElement NetworkElement;
-        internal readonly NetworkOutput NetworkOutput;
+        internal readonly INetworkOutput NetworkOutput;
 
         private string nickname;
         private string previousNickname;
