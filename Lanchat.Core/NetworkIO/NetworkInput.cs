@@ -20,7 +20,7 @@ namespace Lanchat.Core.NetworkIO
             this.node = node;
             serializerOptions = CoreConfig.JsonSerializerOptions;
 
-            apiHandlers.Add(node);
+            apiHandlers.Add(node.NodeApiHandlers);
             apiHandlers.Add(node.Messaging);
             apiHandlers.Add(node.Echo);
             apiHandlers.Add(node.FileTransferHandler);

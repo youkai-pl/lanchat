@@ -16,7 +16,7 @@ using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core
 {
-    public class Node : IDisposable, INotifyPropertyChanged, INodeState, IApiHandler
+    public class Node : IDisposable, INotifyPropertyChanged, INodeState
     {
         public readonly Messaging Messaging;
         public readonly FileReceiver FileReceiver;
@@ -28,7 +28,8 @@ namespace Lanchat.Core
         internal readonly NetworkOutput NetworkOutput;
         internal readonly FileTransferHandler FileTransferHandler;
         internal readonly Encryptor Encryptor;
-
+        internal readonly IApiHandler NodeApiHandlers;
+        
         private readonly IPEndPoint firstEndPoint;
         private string nickname;
         private string previousNickname;
@@ -46,6 +47,7 @@ namespace Lanchat.Core
             firstEndPoint = networkElement.Endpoint;
             NetworkOutput = new NetworkOutput(NetworkElement, this);
             Encryptor = new Encryptor();
+            NodeApiHandlers = new NodeApiHandlers(this);
             Messaging = new Messaging(NetworkOutput, Encryptor);
             NetworkInput = new NetworkInput(this);
             Echo = new Echo(NetworkOutput);
@@ -242,79 +244,9 @@ namespace Lanchat.Core
             Connected?.Invoke(this, EventArgs.Empty);
         }
 
-        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
+        internal virtual void OnNodesListReceived(List<IPAddress> e)
         {
-            DataTypes.Goodbye,
-            DataTypes.KeyInfo,
-            DataTypes.NodesList,
-            DataTypes.StatusUpdate,
-            DataTypes.Handshake,
-            DataTypes.NicknameUpdate
-        };
-        
-        public void Handle(DataTypes type, string data)
-        {
-            if (type == DataTypes.Goodbye)
-            {
-                NetworkElement.EnableReconnecting = false;
-                return;
-            }
-
-            if (type == DataTypes.KeyInfo)
-            {
-                var keyInfo = JsonSerializer.Deserialize<KeyInfo>(data, CoreConfig.JsonSerializerOptions);
-                if (keyInfo == null)
-                {
-                    return;
-                }
-            
-                Encryptor.ImportAesKey(keyInfo);
-                Ready = true;
-                OnConnected();
-                return;
-            }
-
-            if (type == DataTypes.NodesList)
-            {
-                var stringList = JsonSerializer.Deserialize<List<string>>(data);
-                var list = new List<IPAddress>();
-
-                // Convert strings to ip addresses.
-                stringList?.ForEach(x =>
-                {
-                    if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
-                });
-                
-                NodesListReceived?.Invoke(this, list);
-                return;
-            }
-
-            if (type == DataTypes.Handshake)
-            {
-                var handshake = JsonSerializer.Deserialize<Handshake>(data, CoreConfig.JsonSerializerOptions);
-                if (handshake == null)
-                {
-                    return;
-                }
-            
-                Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
-                Encryptor.ImportPublicKey(handshake.PublicKey);
-                Status = handshake.Status;
-                NetworkOutput.SendSystemData(DataTypes.KeyInfo, Encryptor.ExportAesKey());
-                return;
-            }
-
-            if (type == DataTypes.StatusUpdate)
-            {
-                if (Enum.TryParse<Status>(data, out var newStatus)) Status = newStatus;
-                return;
-            }
-
-            if (type == DataTypes.NicknameUpdate)
-            {
-                var newNickname = data;
-                Nickname = newNickname.Truncate(CoreConfig.MaxNicknameLenght);
-            }
+            NodesListReceived?.Invoke(this, e);
         }
     }
 }
