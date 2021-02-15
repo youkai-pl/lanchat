@@ -7,6 +7,10 @@ namespace Lanchat.Tests.Mock
 {
     public class NetworkElement : INetworkElement
     {
+        public NetworkElement()
+        {
+        }
+        
         public IPEndPoint Endpoint { get; }
         public Guid Id { get; }
         public bool EnableReconnecting { get; set; }

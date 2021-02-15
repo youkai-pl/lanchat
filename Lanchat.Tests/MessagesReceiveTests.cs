@@ -1,5 +1,6 @@
 using Lanchat.Core;
 using Lanchat.Core.Encryption;
+using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 using Lanchat.Tests.Mock;
 using NUnit.Framework;
@@ -30,10 +31,8 @@ namespace Lanchat.Tests
         {
             var testMessage = "test";
             var eventResult = string.Empty;
-
             messaging.MessageReceived += (_, s) => { eventResult = s; };
-
-            messaging.HandleMessage(encryptor.Encrypt(testMessage));
+            messaging.Handle(DataTypes.Message, encryptor.Encrypt(testMessage));
             Assert.AreEqual(testMessage, eventResult);
         }
 
@@ -42,10 +41,8 @@ namespace Lanchat.Tests
         {
             var testMessage = "test";
             var eventResult = string.Empty;
-
             messaging.PrivateMessageReceived += (_, s) => { eventResult = s; };
-
-            messaging.HandlePrivateMessage(encryptor.Encrypt(testMessage));
+            messaging.Handle(DataTypes.PrivateMessage, encryptor.Encrypt(testMessage));
             Assert.AreEqual(testMessage, eventResult);
         }
 
@@ -54,10 +51,8 @@ namespace Lanchat.Tests
         {
             var testMessage = "1234567890";
             var eventResult = string.Empty;
-
             messaging.MessageReceived += (_, s) => { eventResult = s; };
-
-            messaging.HandleMessage(encryptor.Encrypt(testMessage));
+            messaging.Handle(DataTypes.Message, encryptor.Encrypt(testMessage));
             Assert.AreEqual("12345...", eventResult);
         }
 
@@ -66,9 +61,8 @@ namespace Lanchat.Tests
         {
             var testMessage = "1234567890";
             var eventResult = string.Empty;
-
             messaging.PrivateMessageReceived += (_, s) => { eventResult = s; };
-            messaging.HandlePrivateMessage(encryptor.Encrypt(testMessage));
+            messaging.Handle(DataTypes.PrivateMessage, encryptor.Encrypt(testMessage));
             Assert.AreEqual("12345...", eventResult);
         }
     }
