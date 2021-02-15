@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -97,8 +98,7 @@ namespace Lanchat.Core.Encryption
             remoteAes.Key = RsaDecrypt(keyInfo.AesKey);
             remoteAes.IV = RsaDecrypt(keyInfo.AesIv);
         }
-
-
+        
         private string RsaEncrypt(byte[] bytes)
         {
             var encryptedBytes = remoteRsa.Encrypt(bytes, RSAEncryptionPadding.Pkcs1);

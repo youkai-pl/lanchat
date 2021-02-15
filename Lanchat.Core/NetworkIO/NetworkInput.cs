@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net;
+using System.Linq;
 using System.Text.Json;
-using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.NetworkIO
@@ -11,6 +10,7 @@ namespace Lanchat.Core.NetworkIO
     internal class NetworkInput
     {
         private readonly Node node;
+        private readonly List<IApiHandler> apiHandlers = new();
         private readonly JsonSerializerOptions serializerOptions;
 
         private string buffer = string.Empty;
@@ -19,12 +19,20 @@ namespace Lanchat.Core.NetworkIO
         {
             this.node = node;
             serializerOptions = CoreConfig.JsonSerializerOptions;
+
+            apiHandlers.Add(new MessageHandler(node.Messaging));
+            apiHandlers.Add(new HandshakeHandler(node));
+            apiHandlers.Add(new KeyInfoHandler(node));
+            apiHandlers.Add(new NodesListHandler(node));
+            apiHandlers.Add(new NicknameUpdateHandler(node));
+            apiHandlers.Add(new GoodbyeHandler(node.NetworkElement));
+            apiHandlers.Add(new StatusUpdateHandler(node));
+            apiHandlers.Add(new PingHandler(node.Echo));
+            apiHandlers.Add(new PongHandler(node.Echo));
+            apiHandlers.Add(new FilePartHandler(node.FileReceiver));
+            apiHandlers.Add(new FileExchangeRequestHandler(node.FileTransferHandler));
         }
-
-        internal event EventHandler<Handshake> HandshakeReceived;
-        internal event EventHandler<KeyInfo> KeyInfoReceived;
-        internal event EventHandler<List<IPAddress>> NodesListReceived;
-
+        
         internal void ProcessReceivedData(object sender, string dataString)
         {
             // TODO: MEMORY LEAK!!!
@@ -52,72 +60,15 @@ namespace Lanchat.Core.NetworkIO
 
                     Trace.WriteLine($"Node {node.Id} received {json.Type}");
 
-                    switch (json.Type)
+                    var handler = apiHandlers.FirstOrDefault(x => x.DataType == json.Type);
+                    
+                    if (handler != null)
                     {
-                        case DataTypes.Message:
-                            node.Messaging.HandleMessage(content);
-                            break;
-
-                        case DataTypes.PrivateMessage:
-                            node.Messaging.HandlePrivateMessage(content);
-                            break;
-
-                        case DataTypes.Handshake:
-                            var handshake = JsonSerializer.Deserialize<Handshake>(content, serializerOptions);
-                            HandshakeReceived?.Invoke(this, handshake);
-                            break;
-
-                        case DataTypes.KeyInfo:
-                            var keyInfo = JsonSerializer.Deserialize<KeyInfo>(content);
-                            KeyInfoReceived?.Invoke(this, keyInfo);
-                            break;
-
-                        case DataTypes.NodesList:
-                            var stringList = JsonSerializer.Deserialize<List<string>>(content);
-                            var list = new List<IPAddress>();
-
-                            // Convert strings to ip addresses.
-                            stringList.ForEach(x =>
-                            {
-                                if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
-                            });
-
-                            NodesListReceived?.Invoke(this, list);
-                            break;
-
-                        case DataTypes.NicknameUpdate:
-                            node.Nickname = content.Truncate(CoreConfig.MaxNicknameLenght);
-                            break;
-
-                        case DataTypes.Goodbye:
-                            node.NetworkElement.EnableReconnecting = false;
-                            break;
-
-                        case DataTypes.StatusUpdate:
-                            if (Enum.TryParse<Status>(content, out var status)) node.Status = status;
-                            break;
-
-                        case DataTypes.Ping:
-                            node.Echo.HandlePing();
-                            break;
-
-                        case DataTypes.Pong:
-                            node.Echo.HandlePong();
-                            break;
-
-                        case DataTypes.FilePart:
-                            var binary = JsonSerializer.Deserialize<FilePart>(content);
-                            node.FileReceiver.HandleReceivedFilePart(binary);
-                            break;
-
-                        case DataTypes.FileExchangeRequest:
-                            var request = JsonSerializer.Deserialize<FileTransferStatus>(content, serializerOptions);
-                            node.FileTransferHandler.HandleFileExchangeRequest(request);
-                            break;
-
-                        default:
-                            Trace.WriteLine($"Node {node.Id} received data of unknown type.");
-                            break;
+                        handler.Handle(content);
+                    }
+                    else
+                    {
+                        Trace.WriteLine($"Node {node.Id} received data of unknown type.");
                     }
                 }
 

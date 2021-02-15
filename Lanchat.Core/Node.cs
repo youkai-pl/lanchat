@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
@@ -25,13 +26,13 @@ namespace Lanchat.Core
         internal readonly NetworkInput NetworkInput;
         internal readonly NetworkOutput NetworkOutput;
         internal readonly FileTransferHandler FileTransferHandler;
+        internal readonly Encryptor Encryptor;
 
         private readonly IPEndPoint firstEndPoint;
         private string nickname;
         private string previousNickname;
         private Status status;
         private bool underReconnecting;
-        private readonly Encryptor encryptor;
 
         /// <summary>
         ///     Initialize node.
@@ -43,21 +44,18 @@ namespace Lanchat.Core
             NetworkElement = networkElement;
             firstEndPoint = networkElement.Endpoint;
             NetworkOutput = new NetworkOutput(NetworkElement, this);
+            Encryptor = new Encryptor();
+            Messaging = new Messaging(NetworkOutput, Encryptor);
             NetworkInput = new NetworkInput(this);
-            encryptor = new Encryptor();
             Echo = new Echo(NetworkOutput);
-            FileReceiver = new FileReceiver(NetworkOutput, encryptor);
-            FileSender = new FileSender(NetworkOutput, encryptor);
+            FileReceiver = new FileReceiver(NetworkOutput, Encryptor);
+            FileSender = new FileSender(NetworkOutput, Encryptor);
             FileTransferHandler = new FileTransferHandler(FileReceiver, FileSender);
-            Messaging = new Messaging(NetworkOutput, encryptor);
 
             networkElement.Disconnected += OnDisconnected;
             networkElement.DataReceived += NetworkInput.ProcessReceivedData;
             networkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
-
-            NetworkInput.HandshakeReceived += OnHandshakeReceived;
-            NetworkInput.KeyInfoReceived += OnKeyInfoReceived;
-
+            
             if (sendHandshake)
                 SendHandshakeAndWait();
             else
@@ -113,7 +111,7 @@ namespace Lanchat.Core
         /// <summary>
         ///     Node ready. If set to false node won't send or receive messages.
         /// </summary>
-        public bool Ready { get; private set; }
+        public bool Ready { get; internal set; }
 
         /// <summary>
         ///     Short ID.
@@ -140,7 +138,7 @@ namespace Lanchat.Core
         public void Dispose()
         {
             NetworkElement.Close();
-            encryptor.Dispose();
+            Encryptor.Dispose();
             GC.SuppressFinalize(this);
         }
 
@@ -174,6 +172,9 @@ namespace Lanchat.Core
         /// </summary>
         public event EventHandler<SocketError> SocketErrored;
 
+        internal event EventHandler<List<IPAddress>> NodesListReceived;
+
+        
         /// <summary>
         ///     Disconnect from node.
         /// </summary>
@@ -212,17 +213,9 @@ namespace Lanchat.Core
             Ready = false;
         }
 
-        private void OnHandshakeReceived(object sender, Handshake handshake)
-        {
-            Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
-            encryptor.ImportPublicKey(handshake.PublicKey);
-            Status = handshake.Status;
-            NetworkOutput.SendSystemData(DataTypes.KeyInfo, encryptor.ExportAesKey());
-        }
-
         private void OnKeyInfoReceived(object sender, KeyInfo e)
         {
-            encryptor.ImportAesKey(e);
+            Encryptor.ImportAesKey(e);
             Ready = true;
             Connected?.Invoke(this, EventArgs.Empty);
         }
@@ -233,7 +226,7 @@ namespace Lanchat.Core
             {
                 Nickname = CoreConfig.Nickname,
                 Status = CoreConfig.Status,
-                PublicKey = encryptor.ExportPublicKey()
+                PublicKey = Encryptor.ExportPublicKey()
             };
 
             NetworkOutput.SendSystemData(DataTypes.Handshake, handshake);
@@ -248,6 +241,16 @@ namespace Lanchat.Core
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        internal virtual void OnConnected()
+        {
+            Connected?.Invoke(this, EventArgs.Empty);
+        }
+
+        internal virtual void OnNodesListReceived(List<IPAddress> e)
+        {
+            NodesListReceived?.Invoke(this, e);
         }
     }
 }

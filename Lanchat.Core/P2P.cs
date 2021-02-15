@@ -156,7 +156,7 @@ namespace Lanchat.Core
             node.Connected += OnConnected;
             node.HardDisconnect += OnHardDisconnect;
             node.CannotConnect += OnCannotConnect;
-            node.NetworkInput.NodesListReceived += OnNodesListReceived;
+            node.NodesListReceived += OnNodesListReceived;
             ConnectionCreated?.Invoke(this, node);
             client.ConnectAsync();
         }
@@ -174,7 +174,7 @@ namespace Lanchat.Core
         private void OnSessionCreated(object sender, Node node)
         {
             ConnectionCreated?.Invoke(this, node);
-            node.NetworkInput.NodesListReceived += OnNodesListReceived;
+            node.NodesListReceived += OnNodesListReceived;
             node.Connected += OnConnected;
         }
 
