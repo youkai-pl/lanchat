@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core.FileTransfer
 {
-    public class FileReceiver
+    public class FileReceiver : IApiHandler
     {
         private readonly IBytesEncryption encryption;
         private readonly INetworkOutput networkOutput;
@@ -37,7 +39,7 @@ namespace Lanchat.Core.FileTransfer
             if (Request == null) throw new InvalidOperationException("No receive request");
             Request.Accepted = true;
             writeFileStream = new FileStream(Request.FileName, FileMode.Append);
-            networkOutput.SendUserData(DataTypes.FileExchangeRequest, new FileTransferStatus
+            networkOutput.SendUserData(DataTypes.FileTransferRequest, new FileTransferStatus
             {
                 RequestStatus = RequestStatus.Accepted
             });
@@ -51,7 +53,7 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request == null) throw new InvalidOperationException("No receive request");
             Request = null;
-            networkOutput.SendUserData(DataTypes.FileExchangeRequest, new FileTransferStatus
+            networkOutput.SendUserData(DataTypes.FileTransferRequest, new FileTransferStatus
             {
                 RequestStatus = RequestStatus.Rejected
             });
@@ -64,7 +66,7 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request == null) throw new InvalidOperationException("No receive request");
             networkOutput.SendUserData(
-                DataTypes.FileExchangeRequest,
+                DataTypes.FileTransferRequest,
                 new FileTransferStatus
                 {
                     RequestStatus = RequestStatus.Canceled
@@ -125,6 +127,17 @@ namespace Lanchat.Core.FileTransfer
                     return file;
                 file = $"{fileName}({i}){fileExt}";
             }
+        }
+
+        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
+        {
+            DataTypes.FilePart
+        };
+        
+        public void Handle(Wrapper data)
+        {
+            var binary = JsonSerializer.Deserialize<FilePart>(data.Data.ToString());
+            HandleReceivedFilePart(binary);
         }
     }
 }

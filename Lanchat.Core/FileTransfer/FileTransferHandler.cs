@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.Json;
 using Lanchat.Core.Models;
+using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core.FileTransfer
 {
-    public class FileTransferHandler
+    public class FileTransferHandler : IApiHandler
     {
         private readonly FileReceiver fileReceiver;
         private readonly FileSender fileSender;
@@ -14,7 +17,7 @@ namespace Lanchat.Core.FileTransfer
             this.fileSender = fileSender;
         }
 
-        internal void HandleFileExchangeRequest(FileTransferStatus request)
+        private void HandleFileExchangeRequest(FileTransferStatus request)
         {
             switch (request.RequestStatus)
             {
@@ -42,6 +45,13 @@ namespace Lanchat.Core.FileTransfer
                     Trace.Write("Node received file exchange request of unknown type.");
                     break;
             }
+        }
+
+        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[] {DataTypes.FileTransferRequest};
+        public void Handle(Wrapper data)
+        {
+            var request = JsonSerializer.Deserialize<FileTransferStatus>(data.Data.ToString(), CoreConfig.JsonSerializerOptions);
+            HandleFileExchangeRequest(request);
         }
     }
 }

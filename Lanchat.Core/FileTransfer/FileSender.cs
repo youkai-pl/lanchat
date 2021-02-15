@@ -45,7 +45,7 @@ namespace Lanchat.Core.FileTransfer
             };
 
             networkOutput.SendUserData(
-                DataTypes.FileExchangeRequest,
+                DataTypes.FileTransferRequest,
                 new FileTransferStatus
                 {
                     FileName = Request.FileName,
@@ -79,7 +79,7 @@ namespace Lanchat.Core.FileTransfer
             {
                 FileExchangeError?.Invoke(this, e);
                 networkOutput.SendUserData(
-                    DataTypes.FileExchangeRequest,
+                    DataTypes.FileTransferRequest,
                     new FileTransferStatus
                     {
                         RequestStatus = RequestStatus.Errored

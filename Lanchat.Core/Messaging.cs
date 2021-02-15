@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
@@ -6,7 +7,7 @@ using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core
 {
-    public class Messaging
+    public class Messaging : IApiHandler
     {
         private readonly IStringEncryption encryption;
         private readonly INetworkOutput networkOutput;
@@ -44,20 +45,30 @@ namespace Lanchat.Core
         {
             networkOutput.SendUserData(DataTypes.PrivateMessage, encryption.Encrypt(content));
         }
-
-        internal void HandleMessage(string content)
+        
+        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
         {
-            var decryptedMessage = encryption.Decrypt(content);
-            if (decryptedMessage == null) return;
-            MessageReceived?.Invoke(this, decryptedMessage.Truncate(CoreConfig.MaxMessageLenght));
-        }
+            DataTypes.Message, 
+            DataTypes.PrivateMessage
+        };
 
-        internal void HandlePrivateMessage(string content)
+        public void Handle(Wrapper data)
         {
-            var decryptedPrivateMessage = encryption.Decrypt(content);
-            if (decryptedPrivateMessage == null) return;
-            PrivateMessageReceived?.Invoke(this,
-                decryptedPrivateMessage.Truncate(CoreConfig.MaxMessageLenght));
+            if (data.Type == DataTypes.Message)
+            {
+                var decryptedMessage = encryption.Decrypt(data.Data.ToString());
+                if (decryptedMessage == null) return;
+                MessageReceived?.Invoke(this, decryptedMessage.Truncate(CoreConfig.MaxMessageLenght));
+                return;
+            }
+
+            if (data.Type == DataTypes.PrivateMessage)
+            {
+                var decryptedPrivateMessage = encryption.Decrypt(data.Data.ToString());
+                if (decryptedPrivateMessage == null) return;
+                PrivateMessageReceived?.Invoke(this,
+                    decryptedPrivateMessage.Truncate(CoreConfig.MaxMessageLenght));
+            }
         }
     }
 }

@@ -20,17 +20,11 @@ namespace Lanchat.Core.NetworkIO
             this.node = node;
             serializerOptions = CoreConfig.JsonSerializerOptions;
 
-            apiHandlers.Add(new MessageHandler(node.Messaging));
-            apiHandlers.Add(new HandshakeHandler(node));
-            apiHandlers.Add(new KeyInfoHandler(node));
-            apiHandlers.Add(new NodesListHandler(node));
-            apiHandlers.Add(new NicknameUpdateHandler(node));
-            apiHandlers.Add(new GoodbyeHandler(node.NetworkElement));
-            apiHandlers.Add(new StatusUpdateHandler(node));
-            apiHandlers.Add(new PingHandler(node.Echo));
-            apiHandlers.Add(new PongHandler(node.Echo));
-            apiHandlers.Add(new FilePartHandler(node.FileReceiver));
-            apiHandlers.Add(new FileExchangeRequestHandler(node.FileTransferHandler));
+            apiHandlers.Add(node);
+            apiHandlers.Add(node.Messaging);
+            apiHandlers.Add(node.Echo);
+            apiHandlers.Add(node.FileTransferHandler);
+            apiHandlers.Add(node.FileReceiver);
         }
         
         internal void ProcessReceivedData(object sender, string dataString)
@@ -50,7 +44,6 @@ namespace Lanchat.Core.NetworkIO
                 try
                 {
                     var json = JsonSerializer.Deserialize<Wrapper>(item, serializerOptions);
-                    var content = json.Data?.ToString();
 
                     // If node isn't ready ignore every messages except handshake and key info.
                     if (!node.Ready && json.Type != DataTypes.Handshake && json.Type != DataTypes.KeyInfo) return;
@@ -60,11 +53,11 @@ namespace Lanchat.Core.NetworkIO
 
                     Trace.WriteLine($"Node {node.Id} received {json.Type}");
 
-                    var handler = apiHandlers.FirstOrDefault(x => x.DataType == json.Type);
+                    var handler = apiHandlers.FirstOrDefault(x => x.HandledDataTypes.Contains(json.Type));
                     
                     if (handler != null)
                     {
-                        handler.Handle(content);
+                        handler.Handle(json);
                     }
                     else
                     {

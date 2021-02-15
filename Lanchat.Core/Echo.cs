@@ -1,11 +1,11 @@
 using System;
+using System.Collections.Generic;
 using Lanchat.Core.Models;
-using Lanchat.Core.Network;
 using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core
 {
-    public class Echo
+    public class Echo : IApiHandler
     {
         private readonly INetworkOutput networkOutput;
         private DateTime? pingSendTime;
@@ -34,17 +34,23 @@ namespace Lanchat.Core
             networkOutput.SendUserData(DataTypes.Ping);
         }
 
-        internal void HandlePing()
-        {
-            networkOutput.SendUserData(DataTypes.Pong);
-        }
+        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[] {DataTypes.Ping, DataTypes.Pong};
 
-        internal void HandlePong()
+        public void Handle(Wrapper data)
         {
-            if (pingSendTime == null) return;
-            LastPing = DateTime.Now - pingSendTime;
-            pingSendTime = null;
-            PongReceived?.Invoke(this, LastPing);
+            if (data.Type == DataTypes.Ping)
+            {
+                networkOutput.SendUserData(DataTypes.Pong);
+                return;
+            }
+
+            if (data.Type == DataTypes.Pong)
+            {
+                if (pingSendTime == null) return;
+                LastPing = DateTime.Now - pingSendTime;
+                pingSendTime = null;
+                PongReceived?.Invoke(this, LastPing);
+            }
         }
     }
 }
