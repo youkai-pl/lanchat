@@ -81,5 +81,19 @@ namespace Lanchat.Tests
             messaging.SendPrivateMessage(testMessage);
             Assert.AreEqual("12345...", receivedMessage);
         }
+
+        [Test]
+        public void WeirdText()
+        {
+            CoreConfig.MaxMessageLenght = 150;
+            var testMessage = "ẗ̴̝̱̦̝͉͉̬̩̙́̎e̷̡̧̡̢̮̩͓̯̞̼̖̜̥̭̣̙͕̲̳̰̱̾̈͗̉̈́͐́̿̿̕ş̵̡̣̣̳̺̘̲̦͕̣̹̯̰̘̟̰͕̗̰̦͍̩̩̱̩͖̖͍̈́̊͆̾̀̄̾͐̈̈̍̃̔̉̋̐̔͒̒̍̎̇̏͌̑̚͜t̴͙̭̠͇̹̫͇̗̥̗͍̀̒̈́́͑̈́̃͌̽̈́̏̈̉͘̕̚͜͝ͅͅ";
+            var receivedMessage = string.Empty;
+            
+            messaging.MessageReceived += (_, s) => { receivedMessage = s; };
+            networkMock.DataReceived += (sender, s) => networkInput.ProcessReceivedData(sender, s);
+
+            messaging.SendMessage(testMessage);
+            Assert.AreEqual(testMessage, receivedMessage);
+        }
     }
 }
