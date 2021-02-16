@@ -146,6 +146,7 @@ list      nickname     m
 block     unblock      blocked
 afk       dnd          online
 exit      ping         help
+send      accept       reject
             
 Try /help &lt;command&gt; for detailed help.
     </value>
@@ -253,7 +254,16 @@ Try /help &lt;command&gt; for detailed help.
     <data name="_FileTransferInProgress" xml:space="preserve">
         <value>Cannot send multiple files at once.</value>
     </data>
-    <data name="_NoFileReceiveRequet" xml:space="preserve">
+    <data name="_NoFileReceiveRequest" xml:space="preserve">
         <value>No awaiting file transfer requests</value>
+    </data>
+    <data name="Help_send" xml:space="preserve">
+        <value>Syntax: /send &lt;short id&gt; &lt;file path&gt;</value>
+    </data>
+    <data name="Help_accept" xml:space="preserve">
+        <value>Syntax: /accept &lt;short id&gt;</value>
+    </data>
+    <data name="Help_reject" xml:space="preserve">
+        <value>Syntax: /reject &lt;short id&gt;</value>
     </data>
 </root>

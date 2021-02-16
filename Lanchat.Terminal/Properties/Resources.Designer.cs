@@ -263,7 +263,25 @@ namespace Lanchat.Terminal.Properties {
         
         internal static string _NoFileReceiveRequest {
             get {
-                return ResourceManager.GetString("_NoFileReceiveRequet", resourceCulture);
+                return ResourceManager.GetString("_NoFileReceiveRequest", resourceCulture);
+            }
+        }
+        
+        internal static string Help_send {
+            get {
+                return ResourceManager.GetString("Help_send", resourceCulture);
+            }
+        }
+        
+        internal static string Help_accept {
+            get {
+                return ResourceManager.GetString("Help_accept", resourceCulture);
+            }
+        }
+        
+        internal static string Help_reject {
+            get {
+                return ResourceManager.GetString("Help_reject", resourceCulture);
             }
         }
     }

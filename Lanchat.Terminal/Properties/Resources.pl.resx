@@ -131,7 +131,16 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="_FileTransferInProgress" xml:space="preserve">
         <value>Nie można wysyłać wielu plików jednocześnie.</value>
     </data>
-    <data name="_NoFileReceiveRequet" xml:space="preserve">
+    <data name="_NoFileReceiveRequest" xml:space="preserve">
         <value>Brak próśb odebranie pliku</value>
+    </data>
+    <data name="Help_send" xml:space="preserve">
+        <value>Składnia: /send &lt;krótkie id&gt; &lt;ścieżka do pliku&gt;</value>
+    </data>
+    <data name="Help_accept" xml:space="preserve">
+        <value>Składnia: /accept &lt;krótkie id&gt;</value>
+    </data>
+    <data name="Help_reject" xml:space="preserve">
+        <value>Składnia: /reject &lt;krótkie id&gt;</value>
     </data>
 </root>
