@@ -113,6 +113,7 @@ namespace Lanchat.Core.FileTransfer
             }
             catch (Exception e)
             {
+                CancelReceive();
                 FileExchangeError?.Invoke(this, e);
             }
         }

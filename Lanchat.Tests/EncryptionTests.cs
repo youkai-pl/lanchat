@@ -1,4 +1,7 @@
+using System;
+using System.Security.Cryptography;
 using Lanchat.Core.Encryption;
+using Lanchat.Core.Models;
 using NUnit.Framework;
 
 namespace Lanchat.Tests
@@ -31,6 +34,32 @@ namespace Lanchat.Tests
             var encryptedBytes = encryptor.Encrypt(testBytes);
             var decryptedBytes = encryptor.Decrypt(encryptedBytes);
             Assert.AreEqual(testBytes, decryptedBytes);
+        }
+
+        [Test]
+        public void ImportInvalidRsa()
+        {
+            Assert.Catch<InvalidKeyImportException>(() =>
+            {
+                encryptor.ImportPublicKey(new PublicKey
+                {
+                    RsaExponent = "random data",
+                    RsaModulus = "random data"
+                });
+            });
+        }
+
+        [Test]
+        public void ImportInvalidAes()
+        {
+            Assert.Catch<InvalidKeyImportException>(() =>
+            {
+                encryptor.ImportAesKey(new KeyInfo()
+                {
+                    AesIv = "random data",
+                    AesKey = "random data"
+                });
+            });
         }
     }
 }

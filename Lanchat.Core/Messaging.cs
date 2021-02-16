@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
@@ -54,19 +55,22 @@ namespace Lanchat.Core
         
         public void Handle(DataTypes type, object data)
         {
-            var decryptedMessage = encryption.Decrypt((string)data);
-            if (decryptedMessage == null) return;
-
-            switch (type)
+            try
             {
-                case DataTypes.Message:
-                    MessageReceived?.Invoke(this, decryptedMessage.Truncate(CoreConfig.MaxMessageLenght));
-                    break;
+                var decryptedMessage = encryption.Decrypt((string)data);
+                switch (type)
+                {
+                    case DataTypes.Message:
+                        MessageReceived?.Invoke(this, decryptedMessage.Truncate(CoreConfig.MaxMessageLenght));
+                        break;
                 
-                case DataTypes.PrivateMessage:
-                    PrivateMessageReceived?.Invoke(this, decryptedMessage.Truncate(CoreConfig.MaxMessageLenght));
-                    break;
+                    case DataTypes.PrivateMessage:
+                        PrivateMessageReceived?.Invoke(this, decryptedMessage.Truncate(CoreConfig.MaxMessageLenght));
+                        break;
+                }
             }
+            catch (CryptographicException)
+            { }
         }
     }
 }

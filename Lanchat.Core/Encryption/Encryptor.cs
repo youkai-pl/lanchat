@@ -73,16 +73,6 @@ namespace Lanchat.Core.Encryption
             };
         }
 
-        internal void ImportPublicKey(PublicKey publicKey)
-        {
-            var parameters = new RSAParameters
-            {
-                Modulus = Convert.FromBase64String(publicKey.RsaModulus),
-                Exponent = Convert.FromBase64String(publicKey.RsaExponent)
-            };
-            remoteRsa.ImportParameters(parameters);
-        }
-
         internal KeyInfo ExportAesKey()
         {
             return new()
@@ -92,10 +82,38 @@ namespace Lanchat.Core.Encryption
             };
         }
 
+        internal void ImportPublicKey(PublicKey publicKey)
+        {
+            try
+            {
+                var parameters = new RSAParameters
+                {
+                    Modulus = Convert.FromBase64String(publicKey.RsaModulus),
+                    Exponent = Convert.FromBase64String(publicKey.RsaExponent)
+                };
+
+                remoteRsa.ImportParameters(parameters);
+
+                // Test imported keys
+                remoteRsa.Encrypt(new byte[] {0x10}, RSAEncryptionPadding.Pkcs1);
+            }
+            catch(Exception e)
+            {
+                throw new InvalidKeyImportException("Cannot import RSA public key", e);
+            }
+        }
+
         internal void ImportAesKey(KeyInfo keyInfo)
         {
-            remoteAes.Key = RsaDecrypt(keyInfo.AesKey);
-            remoteAes.IV = RsaDecrypt(keyInfo.AesIv);
+            try
+            {
+                remoteAes.Key = RsaDecrypt(keyInfo.AesKey);
+                remoteAes.IV = RsaDecrypt(keyInfo.AesIv);
+            }
+            catch(Exception e)
+            {
+                throw new InvalidKeyImportException("Cannot import AES key", e);
+            }
         }
 
         private string RsaEncrypt(byte[] bytes)
