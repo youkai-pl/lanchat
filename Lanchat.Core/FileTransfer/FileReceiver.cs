@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
@@ -31,9 +30,9 @@ namespace Lanchat.Core.FileTransfer
             DataTypes.FilePart
         };
 
-        public void Handle(DataTypes type, string data)
+        public void Handle(DataTypes type, object data)
         {
-            var binary = JsonSerializer.Deserialize<FilePart>(data);
+            var binary = (FilePart)data;
             HandleReceivedFilePart(binary);
         }
 

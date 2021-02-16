@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using Lanchat.Core.Models;
 
@@ -45,12 +46,26 @@ namespace Lanchat.Core.NetworkIO
                     // Ignore handshake and key info is node was set as ready before.
                     if (nodeState.Ready && (json.Type == DataTypes.Handshake || json.Type == DataTypes.KeyInfo)) return;
 
+
+                    var assemblyQualifiedName =
+                        Assembly.CreateQualifiedName("Lanchat.Core", $"Lanchat.Core.Models.{json.Type.ToString()}");
+                    var type = Type.GetType(assemblyQualifiedName);
+
+                    var data = type == null
+                        ? json.Data.ToString()
+                        : JsonSerializer.Deserialize(json.Data.ToString(), type, serializerOptions);
+
+                    if (json.Type == DataTypes.NodesList)
+                    {
+                        data = JsonSerializer.Deserialize(json.Data.ToString(), typeof(List<string>), serializerOptions);
+                    }
+
                     Trace.WriteLine($"Node {nodeState.Id} received {json.Type}");
 
                     var handler = ApiHandlers.FirstOrDefault(x => x.HandledDataTypes.Contains(json.Type));
 
                     if (handler != null)
-                        handler.Handle(json.Type, json.Data.ToString());
+                        handler.Handle(json.Type, data);
                     else
                         Trace.WriteLine($"Node {nodeState.Id} received data of unknown type.");
                 }

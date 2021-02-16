@@ -36,7 +36,7 @@ namespace Lanchat.Core
             networkOutput.SendUserData(DataTypes.Ping);
         }
         
-        public void Handle(DataTypes type, string data)
+        public void Handle(DataTypes type, object data)
         {
             switch (type)
             {

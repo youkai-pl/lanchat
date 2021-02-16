@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Text.Json;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
@@ -27,7 +26,7 @@ namespace Lanchat.Core
             DataTypes.NicknameUpdate
         };
 
-        public void Handle(DataTypes type, string data)
+        public void Handle(DataTypes type, object data)
         {
             switch (type)
             {
@@ -37,7 +36,7 @@ namespace Lanchat.Core
                 
                 case DataTypes.KeyInfo:
                 {
-                    var keyInfo = JsonSerializer.Deserialize<KeyInfo>(data, CoreConfig.JsonSerializerOptions);
+                    var keyInfo = (KeyInfo) data;
                     if (keyInfo == null) return;
 
                     node.Encryptor.ImportAesKey(keyInfo);
@@ -48,7 +47,7 @@ namespace Lanchat.Core
                 
                 case DataTypes.NodesList:
                 {
-                    var stringList = JsonSerializer.Deserialize<List<string>>(data);
+                    var stringList = (List<string>)data;
                     var list = new List<IPAddress>();
 
                     // Convert strings to ip addresses.
@@ -63,7 +62,7 @@ namespace Lanchat.Core
                 
                 case DataTypes.Handshake:
                 {
-                    var handshake = JsonSerializer.Deserialize<Handshake>(data, CoreConfig.JsonSerializerOptions);
+                    var handshake = (Handshake)data;
                     if (handshake == null) return;
 
                     node.Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
@@ -75,13 +74,13 @@ namespace Lanchat.Core
                 
                 case DataTypes.StatusUpdate:
                 {
-                    if (Enum.TryParse<Status>(data, out var newStatus)) node.Status = newStatus;
+                    if (Enum.TryParse<Status>(data.ToString(), out var newStatus)) node.Status = newStatus;
                     break;
                 }
                
                 case DataTypes.NicknameUpdate:
                 {
-                    var newNickname = data;
+                    var newNickname = data.ToString();
                     node.Nickname = newNickname.Truncate(CoreConfig.MaxNicknameLenght);
                     break;
                 }

@@ -6,6 +6,6 @@ namespace Lanchat.Core.NetworkIO
     public interface IApiHandler
     {
         IEnumerable<DataTypes> HandledDataTypes { get; }
-        void Handle(DataTypes type, string data);
+        void Handle(DataTypes type, object data);
     }
 }

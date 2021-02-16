@@ -52,9 +52,9 @@ namespace Lanchat.Core
             networkOutput.SendUserData(DataTypes.PrivateMessage, encryption.Encrypt(content));
         }
         
-        public void Handle(DataTypes type, string data)
+        public void Handle(DataTypes type, object data)
         {
-            var decryptedMessage = encryption.Decrypt(data);
+            var decryptedMessage = encryption.Decrypt((string)data);
             if (decryptedMessage == null) return;
 
             switch (type)

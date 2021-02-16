@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text.Json;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 
@@ -19,9 +18,9 @@ namespace Lanchat.Core.FileTransfer
 
         public IEnumerable<DataTypes> HandledDataTypes { get; } = new[] {DataTypes.FileTransferRequest};
 
-        public void Handle(DataTypes type, string data)
+        public void Handle(DataTypes type, object data)
         {
-            var request = JsonSerializer.Deserialize<FileTransferStatus>(data, CoreConfig.JsonSerializerOptions);
+            var request = (FileTransferStatus)data;
             HandleFileExchangeRequest(request);
         }
 
