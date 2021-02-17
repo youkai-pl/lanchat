@@ -11,7 +11,7 @@ namespace Lanchat.Core
 {
     public class P2P
     {
-        public Broadcasting Broadcasting { get; private set; }
+        public Broadcasting Broadcasting { get; }
         private readonly List<Node> outgoingConnections;
         private readonly Server server;
 

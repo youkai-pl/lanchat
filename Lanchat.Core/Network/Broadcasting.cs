@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -22,7 +21,7 @@ namespace Lanchat.Core.Network
         private readonly UdpClient udpClient;
         private readonly string uniqueId;
         public List<Broadcast> DetectedNodes { get; } = new();
-        
+
         /// <summary>
         ///     New node detected in network.
         /// </summary>
@@ -32,7 +31,7 @@ namespace Lanchat.Core.Network
         ///     Detected node doesn't send broadcasts.
         /// </summary>
         public event EventHandler<Broadcast> DetectedNodeDisappeared;
-        
+
         internal Broadcasting()
         {
             uniqueId = Guid.NewGuid().ToString();
@@ -51,8 +50,7 @@ namespace Lanchat.Core.Network
                     var recvBuffer = udpClient.Receive(ref from);
                     try
                     {
-                        var broadcast =
-                            JsonSerializer.Deserialize<Broadcast>(Encoding.UTF8.GetString(recvBuffer));
+                        var broadcast = JsonSerializer.Deserialize<Broadcast>(Encoding.UTF8.GetString(recvBuffer));
                         if (broadcast != null && broadcast.Guid != uniqueId)
                         {
                             broadcast.IpAddress = from.Address;
@@ -62,7 +60,14 @@ namespace Lanchat.Core.Network
                     }
                     catch (Exception e)
                     {
-                        if (e is not JsonException) throw;
+                        if (e is JsonException ||
+                            e is ArgumentException ||
+                            e is NotSupportedException)
+                        {
+                            return;
+                        }
+
+                        throw;
                     }
                 }
             });
@@ -83,7 +88,7 @@ namespace Lanchat.Core.Network
                 }
             });
         }
-        
+
         // UDP broadcast received
         private void BroadcastReceived(Broadcast e)
         {

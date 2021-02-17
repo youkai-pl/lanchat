@@ -1,6 +1,5 @@
 using Lanchat.Core;
 using Lanchat.Core.Encryption;
-using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 using Lanchat.Tests.Mock;
 using NUnit.Framework;
