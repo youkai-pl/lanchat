@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -15,13 +16,23 @@ using Timer = System.Timers.Timer;
 
 namespace Lanchat.Core.Network
 {
-    internal class Broadcasting
+    public class Broadcasting
     {
         private readonly IPEndPoint endPoint;
         private readonly UdpClient udpClient;
         private readonly string uniqueId;
-        internal List<Broadcast> DetectedNodes { get; } = new();
+        public List<Broadcast> DetectedNodes { get; } = new();
+        
+        /// <summary>
+        ///     New node detected in network.
+        /// </summary>
+        public event EventHandler<Broadcast> NodeDetected;
 
+        /// <summary>
+        ///     Detected node doesn't send broadcasts.
+        /// </summary>
+        public event EventHandler<Broadcast> DetectedNodeDisappeared;
+        
         internal Broadcasting()
         {
             uniqueId = Guid.NewGuid().ToString();
@@ -80,6 +91,7 @@ namespace Lanchat.Core.Network
             if (alreadyDetected == null)
             {
                 DetectedNodes.Add(e);
+                NodeDetected?.Invoke(this, e);
                 e.Active = true;
 
                 var timer = new Timer
@@ -97,6 +109,7 @@ namespace Lanchat.Core.Network
                     else
                     {
                         timer.Dispose();
+                        DetectedNodeDisappeared?.Invoke(this, e);
                         DetectedNodes.Remove(e);
                     }
                 };
@@ -104,7 +117,6 @@ namespace Lanchat.Core.Network
             else
             {
                 alreadyDetected.Active = true;
-                if (alreadyDetected.Nickname == e.Nickname) return;
                 alreadyDetected.Nickname = e.Nickname;
             }
         }

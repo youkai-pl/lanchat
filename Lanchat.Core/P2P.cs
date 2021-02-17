@@ -11,7 +11,7 @@ namespace Lanchat.Core
 {
     public class P2P
     {
-        private readonly Broadcasting broadcasting;
+        public Broadcasting Broadcasting { get; private set; }
         private readonly List<Node> outgoingConnections;
         private readonly Server server;
 
@@ -30,7 +30,7 @@ namespace Lanchat.Core
 
             CoreConfig.PropertyChanged += CoreConfigOnPropertyChanged;
 
-            broadcasting = new Broadcasting();
+            Broadcasting = new Broadcasting();
         }
 
         /// <summary>
@@ -44,22 +44,6 @@ namespace Lanchat.Core
                 nodes.AddRange(outgoingConnections);
                 nodes.AddRange(server.IncomingConnections);
                 return nodes.Where(x => x.Ready).ToList();
-            }
-        }
-
-        /// <summary>
-        ///     List of detected nodes.
-        /// </summary>
-        public List<Broadcast> DetectedNodes
-        {
-            get
-            {
-                var list = new List<Broadcast>();
-                broadcasting.DetectedNodes.ForEach(x =>
-                {
-                    if (!Nodes.Any(y => Equals(y.Endpoint.Address, x.IpAddress))) list.Add(x);
-                });
-                return list;
             }
         }
 
@@ -95,7 +79,7 @@ namespace Lanchat.Core
         /// </summary>
         public void StartBroadcast()
         {
-            broadcasting.Start();
+            Broadcasting.Start();
         }
 
         /// <summary>
