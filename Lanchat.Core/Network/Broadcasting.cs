@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -6,20 +8,21 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Lanchat.Core.Extensions;
+using Lanchat.Core.Models;
+using Timer = System.Timers.Timer;
 
 // ReSharper disable FunctionNeverReturns
 
 namespace Lanchat.Core.Network
 {
-    internal class Broadcast
+    internal class Broadcasting
     {
         private readonly IPEndPoint endPoint;
         private readonly UdpClient udpClient;
         private readonly string uniqueId;
+        internal List<Broadcast> DetectedNodes { get; } = new();
 
-        internal EventHandler<Models.Broadcast> BroadcastReceived;
-
-        internal Broadcast()
+        internal Broadcasting()
         {
             uniqueId = Guid.NewGuid().ToString();
             endPoint = new IPEndPoint(IPAddress.Broadcast, CoreConfig.BroadcastPort);
@@ -38,12 +41,12 @@ namespace Lanchat.Core.Network
                     try
                     {
                         var broadcast =
-                            JsonSerializer.Deserialize<Models.Broadcast>(Encoding.UTF8.GetString(recvBuffer));
+                            JsonSerializer.Deserialize<Broadcast>(Encoding.UTF8.GetString(recvBuffer));
                         if (broadcast != null && broadcast.Guid != uniqueId)
                         {
                             broadcast.IpAddress = from.Address;
                             broadcast.Nickname = broadcast.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
-                            BroadcastReceived?.Invoke(this, broadcast);
+                            BroadcastReceived(broadcast);
                         }
                     }
                     catch (Exception e)
@@ -57,7 +60,7 @@ namespace Lanchat.Core.Network
             {
                 while (true)
                 {
-                    var json = JsonSerializer.Serialize(new Models.Broadcast
+                    var json = JsonSerializer.Serialize(new Broadcast
                     {
                         Guid = uniqueId,
                         Nickname = CoreConfig.Nickname
@@ -68,6 +71,42 @@ namespace Lanchat.Core.Network
                     Thread.Sleep(2000);
                 }
             });
+        }
+        
+        // UDP broadcast received
+        private void BroadcastReceived(Broadcast e)
+        {
+            var alreadyDetected = DetectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
+            if (alreadyDetected == null)
+            {
+                DetectedNodes.Add(e);
+                e.Active = true;
+
+                var timer = new Timer
+                {
+                    Interval = 2500,
+                    Enabled = true
+                };
+
+                timer.Elapsed += (_, _) =>
+                {
+                    if (e.Active)
+                    {
+                        e.Active = false;
+                    }
+                    else
+                    {
+                        timer.Dispose();
+                        DetectedNodes.Remove(e);
+                    }
+                };
+            }
+            else
+            {
+                alreadyDetected.Active = true;
+                if (alreadyDetected.Nickname == e.Nickname) return;
+                alreadyDetected.Nickname = e.Nickname;
+            }
         }
     }
 }

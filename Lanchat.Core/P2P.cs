@@ -4,17 +4,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Timers;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
-using Broadcast = Lanchat.Core.Network.Broadcast;
 
 namespace Lanchat.Core
 {
     public class P2P
     {
-        private readonly Broadcast broadcast;
-        private readonly List<Models.Broadcast> detectedNodes;
+        private readonly Broadcasting broadcasting;
         private readonly List<Node> outgoingConnections;
         private readonly Server server;
 
@@ -24,7 +21,6 @@ namespace Lanchat.Core
         public P2P()
         {
             outgoingConnections = new List<Node>();
-            detectedNodes = new List<Models.Broadcast>();
 
             server = CoreConfig.UseIPv6
                 ? new Server(IPAddress.IPv6Any, CoreConfig.ServerPort)
@@ -34,8 +30,7 @@ namespace Lanchat.Core
 
             CoreConfig.PropertyChanged += CoreConfigOnPropertyChanged;
 
-            broadcast = new Broadcast();
-            broadcast.BroadcastReceived += BroadcastReceived;
+            broadcasting = new Broadcasting();
         }
 
         /// <summary>
@@ -55,12 +50,12 @@ namespace Lanchat.Core
         /// <summary>
         ///     List of detected nodes.
         /// </summary>
-        public List<Models.Broadcast> DetectedNodes
+        public List<Broadcast> DetectedNodes
         {
             get
             {
-                var list = new List<Models.Broadcast>();
-                detectedNodes.ForEach(x =>
+                var list = new List<Broadcast>();
+                broadcasting.DetectedNodes.ForEach(x =>
                 {
                     if (!Nodes.Any(y => Equals(y.Endpoint.Address, x.IpAddress))) list.Add(x);
                 });
@@ -88,21 +83,6 @@ namespace Lanchat.Core
         public event EventHandler<Node> ConnectionCreated;
 
         /// <summary>
-        ///     New node detected in network.
-        /// </summary>
-        public event EventHandler<Models.Broadcast> NodeDetected;
-
-        /// <summary>
-        ///     Detected node has changed its nickname.
-        /// </summary>
-        public event EventHandler<Models.Broadcast> DetectedNodeChanged;
-
-        /// <summary>
-        ///     Detected node doesn't send broadcasts.
-        /// </summary>
-        public event EventHandler<Models.Broadcast> DetectedNodeDisappeared;
-
-        /// <summary>
         ///     Start server.
         /// </summary>
         public void StartServer()
@@ -115,7 +95,7 @@ namespace Lanchat.Core
         /// </summary>
         public void StartBroadcast()
         {
-            broadcast.Start();
+            broadcasting.Start();
         }
 
         /// <summary>
@@ -209,45 +189,6 @@ namespace Lanchat.Core
                     if (e is not ArgumentException) throw;
                 }
             });
-        }
-
-        // UDP broadcast received
-        private void BroadcastReceived(object sender, Models.Broadcast e)
-        {
-            var alreadyDetected = detectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
-            if (alreadyDetected == null)
-            {
-                detectedNodes.Add(e);
-                e.Active = true;
-                NodeDetected?.Invoke(this, e);
-
-                var timer = new Timer
-                {
-                    Interval = 2500,
-                    Enabled = true
-                };
-
-                timer.Elapsed += (_, _) =>
-                {
-                    if (e.Active)
-                    {
-                        e.Active = false;
-                    }
-                    else
-                    {
-                        timer.Dispose();
-                        DetectedNodeDisappeared?.Invoke(this, e);
-                        detectedNodes.Remove(e);
-                    }
-                };
-            }
-            else
-            {
-                alreadyDetected.Active = true;
-                if (alreadyDetected.Nickname == e.Nickname) return;
-                alreadyDetected.Nickname = e.Nickname;
-                DetectedNodeChanged?.Invoke(this, alreadyDetected);
-            }
         }
     }
 }

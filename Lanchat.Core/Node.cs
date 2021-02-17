@@ -49,9 +49,9 @@ namespace Lanchat.Core
             var networkInput = new NetworkInput(this);
             networkInput.ApiHandlers.Add(new NodeApiHandlers(this));
             networkInput.ApiHandlers.Add(Messaging);
-            networkInput.ApiHandlers.Add(new FileTransferHandler(FileReceiver, FileSender));
             networkInput.ApiHandlers.Add(FileReceiver);
             networkInput.ApiHandlers.Add(Echo);
+            networkInput.ApiHandlers.Add(new FileTransferHandler(FileReceiver, FileSender));
 
             networkElement.Disconnected += OnDisconnected;
             networkElement.DataReceived += networkInput.ProcessReceivedData;
