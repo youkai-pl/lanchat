@@ -14,7 +14,8 @@ namespace Lanchat.Core.NetworkIO
         private readonly INodeState nodeState;
         private readonly JsonSerializerOptions serializerOptions;
 
-        private string buffer = string.Empty;
+        private string buffer;
+        private string currentJson;
 
         internal NetworkInput(INodeState nodeState)
         {
@@ -24,18 +25,15 @@ namespace Lanchat.Core.NetworkIO
 
         internal void ProcessReceivedData(object sender, string dataString)
         {
-            // TODO: MEMORY LEAK!!!
-            if (dataString.StartsWith("{") && dataString.EndsWith("}"))
-            {
-                buffer = dataString;
-            }
-            else
-            {
-                buffer += dataString;
-                if (!(buffer.StartsWith("{") && buffer.EndsWith("}"))) return;
-            }
+            buffer += dataString;
+            var index = buffer.LastIndexOf("}", StringComparison.Ordinal);
+            if (index < 0) return;
+            currentJson = buffer.Substring(0, index + 1);
+            buffer = buffer.Substring(index + 1);
 
-            foreach (var item in buffer.Replace("}{", "}|{").Split('|'))
+            Trace.WriteLine(buffer.Length);
+
+            foreach (var item in currentJson.Replace("}{", "}|{").Split('|'))
                 try
                 {
                     var json = JsonSerializer.Deserialize<Wrapper>(item, serializerOptions);
@@ -57,7 +55,8 @@ namespace Lanchat.Core.NetworkIO
 
                     if (json.Type == DataTypes.NodesList)
                     {
-                        data = JsonSerializer.Deserialize(json.Data.ToString(), typeof(List<string>), serializerOptions);
+                        data = JsonSerializer.Deserialize(json.Data.ToString(), typeof(List<string>),
+                            serializerOptions);
                     }
 
                     Trace.WriteLine($"Node {nodeState.Id} received {json.Type}");
@@ -77,8 +76,6 @@ namespace Lanchat.Core.NetworkIO
                         ex is not ArgumentNullException &&
                         ex is not NullReferenceException) throw;
                 }
-
-            buffer = string.Empty;
         }
     }
 }

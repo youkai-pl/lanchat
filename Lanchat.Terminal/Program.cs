@@ -54,8 +54,8 @@ namespace Lanchat.Terminal
             // Connect with localhost
             if (args.Contains("--loopback") || args.Contains("-l")) Network.Connect(IPAddress.Loopback);
 
-            var newVersion = UpdateChecker.CheckUpdates();
-            if (newVersion != null) Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
+            //var newVersion = UpdateChecker.CheckUpdates();
+            //if (newVersion != null) Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
 
             LoggingService.CleanLogs();
         }
