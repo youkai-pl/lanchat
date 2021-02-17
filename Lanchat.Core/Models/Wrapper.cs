@@ -19,6 +19,6 @@
         Ping,
         Pong,
         FilePart,
-        FileTransferRequest
+        FileTransferStatus
     }
 }

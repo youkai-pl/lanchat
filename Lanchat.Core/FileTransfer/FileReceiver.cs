@@ -49,7 +49,7 @@ namespace Lanchat.Core.FileTransfer
             if (Request == null) throw new InvalidOperationException("No receive request");
             Request.Accepted = true;
             writeFileStream = new FileStream(Request.FileName, FileMode.Append);
-            networkOutput.SendUserData(DataTypes.FileTransferRequest, new FileTransferStatus
+            networkOutput.SendUserData(DataTypes.FileTransferStatus, new FileTransferStatus
             {
                 RequestStatus = RequestStatus.Accepted
             });
@@ -63,7 +63,7 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request == null) throw new InvalidOperationException("No receive request");
             Request = null;
-            networkOutput.SendUserData(DataTypes.FileTransferRequest, new FileTransferStatus
+            networkOutput.SendUserData(DataTypes.FileTransferStatus, new FileTransferStatus
             {
                 RequestStatus = RequestStatus.Rejected
             });
@@ -76,7 +76,7 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request == null) throw new InvalidOperationException("No receive request");
             networkOutput.SendUserData(
-                DataTypes.FileTransferRequest,
+                DataTypes.FileTransferStatus,
                 new FileTransferStatus
                 {
                     RequestStatus = RequestStatus.Canceled

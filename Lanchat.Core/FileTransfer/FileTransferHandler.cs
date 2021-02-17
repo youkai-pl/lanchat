@@ -16,7 +16,7 @@ namespace Lanchat.Core.FileTransfer
             this.fileSender = fileSender;
         }
 
-        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[] {DataTypes.FileTransferRequest};
+        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[] {DataTypes.FileTransferStatus};
 
         public void Handle(DataTypes type, object data)
         {
