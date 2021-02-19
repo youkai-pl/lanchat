@@ -18,6 +18,7 @@ namespace Lanchat.Terminal.UserInterface
         private static TextBox _input;
         internal static LogPanel Log { get; private set; }
         internal static TextBlock NodesCount { get; private set; }
+        internal static TextBlock DetectedCount { get; private set; }
         internal static TextBlock PromptIndicator { get; private set; }
         internal static VerticalScrollPanel ScrollPanel { get; private set; }
         internal static TextBlock StatusBar { get; private set; }
@@ -41,6 +42,12 @@ namespace Lanchat.Terminal.UserInterface
             };
 
             NodesCount = new TextBlock
+            {
+                Text = "0",
+                Color = ConsoleColor.Gray
+            };
+
+            DetectedCount = new TextBlock
             {
                 Text = "0",
                 Color = ConsoleColor.Gray
@@ -126,6 +133,8 @@ namespace Lanchat.Terminal.UserInterface
                                     new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
                                     new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
                                     NodesCount,
+                                    new TextBlock {Text = "/"},
+                                    DetectedCount,
                                     new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan},
                                     new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
                                     Status,

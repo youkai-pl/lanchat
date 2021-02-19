@@ -34,7 +34,18 @@ namespace Lanchat.Terminal
                 if (!args.Contains("--no-server") && !args.Contains("-n")) Network.StartServer();
 
                 // Start broadcast service
-                if (!args.Contains("--no-udp") && !args.Contains("-b")) Network.StartBroadcast();
+                if (!args.Contains("--no-udp") && !args.Contains("-b"))
+                {
+                    Network.StartBroadcast();
+                    Network.Broadcasting.NodeDetected += (_, _) =>
+                    {
+                        Ui.DetectedCount.Text = Network.Broadcasting.DetectedNodes.Count.ToString();
+                    };
+                    Network.Broadcasting.DetectedNodeDisappeared += (_, _) =>
+                    {
+                        Ui.DetectedCount.Text = Network.Broadcasting.DetectedNodes.Count.ToString();
+                    };
+                }
             }
             catch (SocketException e)
             {
