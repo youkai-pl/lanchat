@@ -30,9 +30,7 @@ namespace Lanchat.Core.NetworkIO
             if (index < 0) return;
             currentJson = buffer.Substring(0, index + 1);
             buffer = buffer.Substring(index + 1);
-
-            Trace.WriteLine(buffer.Length);
-
+            
             foreach (var item in currentJson.Replace("}{", "}|{").Split('|'))
                 try
                 {
