@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -20,7 +20,7 @@ namespace Lanchat.Core.Network
         private readonly IPEndPoint endPoint;
         private readonly UdpClient udpClient;
         private readonly string uniqueId;
-        public List<Broadcast> DetectedNodes { get; } = new();
+        public ObservableCollection<Broadcast> DetectedNodes { get; } = new();
 
         /// <summary>
         ///     New node detected in network.

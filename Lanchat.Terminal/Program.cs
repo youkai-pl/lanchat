@@ -37,11 +37,7 @@ namespace Lanchat.Terminal
                 if (!args.Contains("--no-udp") && !args.Contains("-b"))
                 {
                     Network.StartBroadcast();
-                    Network.Broadcasting.NodeDetected += (_, _) =>
-                    {
-                        Ui.DetectedCount.Text = Network.Broadcasting.DetectedNodes.Count.ToString();
-                    };
-                    Network.Broadcasting.DetectedNodeDisappeared += (_, _) =>
+                    Network.Broadcasting.DetectedNodes.CollectionChanged += (_, _) =>
                     {
                         Ui.DetectedCount.Text = Network.Broadcasting.DetectedNodes.Count.ToString();
                     };
@@ -65,8 +61,8 @@ namespace Lanchat.Terminal
             // Connect with localhost
             if (args.Contains("--loopback") || args.Contains("-l")) Network.Connect(IPAddress.Loopback);
 
-            //var newVersion = UpdateChecker.CheckUpdates();
-            //if (newVersion != null) Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
+            var newVersion = UpdateChecker.CheckUpdates();
+            if (newVersion != null) Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
 
             LoggingService.CleanLogs();
         }

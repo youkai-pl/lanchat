@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ConsoleGUI.Controls;
 using Lanchat.Core.Models;
 using Lanchat.Terminal.UserInterface;
@@ -44,7 +45,7 @@ namespace Lanchat.Terminal.Commands
                 Ui.Log.AddCustomTextBlock(line);
             });
 
-            Program.Network.Broadcasting.DetectedNodes.ForEach(x =>
+            Program.Network.Broadcasting.DetectedNodes.ToList().ForEach(x =>
             {
                 var line = new[]
                 {
