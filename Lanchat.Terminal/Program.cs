@@ -53,16 +53,20 @@ namespace Lanchat.Terminal
 
             // Show logs in console
             if (args.Contains("--debug") || args.Contains("-d") || Debugger.IsAttached)
+            {
                 Trace.Listeners.Add(new TerminalTraceListener());
+            }
+            else
+            {
+                var newVersion = UpdateChecker.CheckUpdates();
+                if (newVersion != null) Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
+            }
 
             // Save logs to file
             LoggingService.StartLogging();
 
             // Connect with localhost
             if (args.Contains("--loopback") || args.Contains("-l")) Network.Connect(IPAddress.Loopback);
-
-            var newVersion = UpdateChecker.CheckUpdates();
-            if (newVersion != null) Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
 
             LoggingService.CleanLogs();
         }
