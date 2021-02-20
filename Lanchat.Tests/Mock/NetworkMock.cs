@@ -10,6 +10,7 @@ namespace Lanchat.Tests.Mock
         public IPEndPoint Endpoint { get; }
         public Guid Id { get; }
         public bool EnableReconnecting { get; set; }
+        public bool IsSession { get; }
 
         public void SendAsync(string text)
         {

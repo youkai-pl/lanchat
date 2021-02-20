@@ -29,7 +29,6 @@ namespace Lanchat.Core.NetworkIO
 
         public void SendSystemData(DataTypes dataType, object content = null)
         {
-            Trace.WriteLine($"-------------{dataType}-----------------");
             var data = new Wrapper {Type = dataType, Data = content};
             networkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }

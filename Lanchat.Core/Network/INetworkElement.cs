@@ -54,5 +54,10 @@ namespace Lanchat.Core.Network
         ///     Network element received data.
         /// </summary>
         event EventHandler<string> DataReceived;
+        
+        /// <summary>
+        ///     Network element is server session.
+        /// </summary>
+        bool IsSession { get; }
     }
 }

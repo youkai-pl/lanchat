@@ -29,16 +29,13 @@ namespace Lanchat.Core
         private Status status;
         private bool underReconnecting;
         private readonly IPEndPoint firstEndPoint;
-        internal readonly bool SendHandshake;
 
         /// <summary>
         ///     Initialize node.
         /// </summary>
         /// <param name="networkElement">TCP client or session.</param>
-        /// <param name="sendHandshake">Send handshake immediately</param>
-        public Node(INetworkElement networkElement, bool sendHandshake)
+        public Node(INetworkElement networkElement)
         {
-            SendHandshake = sendHandshake;
             NetworkElement = networkElement;
             firstEndPoint = networkElement.Endpoint;
             NetworkOutput = new NetworkOutput(NetworkElement, this);
@@ -55,14 +52,20 @@ namespace Lanchat.Core
             networkInput.ApiHandlers.Add(Echo);
             networkInput.ApiHandlers.Add(new FileTransferHandler(FileReceiver, FileSender));
 
-            networkElement.Disconnected += OnDisconnected;
-            networkElement.DataReceived += networkInput.ProcessReceivedData;
-            networkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
+            NetworkElement.Disconnected += OnDisconnected;
+            NetworkElement.DataReceived += networkInput.ProcessReceivedData;
+            NetworkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
-            if (SendHandshake)
+            if (NetworkElement.IsSession)
             {
                 SendHandshakeAndWait();
             }
+            
+            // Check is connection established successful after timeout.
+            Task.Delay(5000).ContinueWith(_ =>
+            {
+                if (!Ready && !underReconnecting) NetworkElement.Close();
+            });
         }
 
         /// <summary>
@@ -220,12 +223,6 @@ namespace Lanchat.Core
             };
 
             NetworkOutput.SendSystemData(DataTypes.Handshake, handshake);
-
-            // Check is connection established successful after timeout.
-            Task.Delay(5000).ContinueWith(_ =>
-            {
-                if (!Ready && !underReconnecting) NetworkElement.Close();
-            });
         }
 
         private void OnPropertyChanged(string propertyName = null)

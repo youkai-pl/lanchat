@@ -76,7 +76,7 @@ namespace Lanchat.Core
 
                     node.Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
 
-                    if (!node.SendHandshake)
+                    if (!node.NetworkElement.IsSession)
                     {
                         node.SendHandshakeAndWait();
                     }

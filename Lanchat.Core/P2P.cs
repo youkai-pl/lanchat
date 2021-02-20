@@ -114,7 +114,7 @@ namespace Lanchat.Core
                 throw new ArgumentException("Illegal IP address. Cannot connect");
 
             var client = new Client(ipAddress, port.Value);
-            var node = new Node(client, false);
+            var node = new Node(client);
 
             outgoingConnections.Add(node);
             node.Connected += OnConnected;

@@ -49,7 +49,7 @@ namespace Lanchat.Core.Network
                 }
                 else
                 {
-                    var node = new Node(session, true);
+                    var node = new Node(session);
                     IncomingConnections.Add(node);
                     node.HardDisconnect += OnHardDisconnected;
                     SessionCreated?.Invoke(this, node);
