@@ -24,9 +24,10 @@ namespace Lanchat.Core.FileTransfer
         /// </summary>
         public FileTransferRequest Request { get; set; }
 
-        public event EventHandler<Exception> FileExchangeError;
-        public event EventHandler FileExchangeRequestAccepted;
-        public event EventHandler FileExchangeRequestRejected;
+        public event EventHandler<Exception> FileTransferError;
+        public event EventHandler FileTransferRequestAccepted;
+        public event EventHandler FileTransferRequestRejected;
+        public event EventHandler FileTransferFinished;
 
         /// <summary>
         ///     Send file exchange request.
@@ -56,7 +57,7 @@ namespace Lanchat.Core.FileTransfer
 
         internal void SendFile()
         {
-            FileExchangeRequestAccepted?.Invoke(this, EventArgs.Empty);
+            FileTransferRequestAccepted?.Invoke(this, EventArgs.Empty);
 
             try
             {
@@ -74,10 +75,11 @@ namespace Lanchat.Core.FileTransfer
                     networkOutput.SendUserData(DataTypes.FilePart, part);
                     Request.PartsTransferred++;
                 }
+                FileTransferFinished?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {
-                FileExchangeError?.Invoke(this, e);
+                FileTransferError?.Invoke(this, e);
                 networkOutput.SendUserData(
                     DataTypes.FileTransferStatus,
                     new FileTransferStatus
@@ -89,7 +91,7 @@ namespace Lanchat.Core.FileTransfer
 
         internal void HandleReject()
         {
-            FileExchangeRequestRejected?.Invoke(this, EventArgs.Empty);
+            FileTransferRequestRejected?.Invoke(this, EventArgs.Empty);
             Request = null;
         }
 
@@ -97,7 +99,7 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request == null) return;
             Request = null;
-            FileExchangeError?.Invoke(this, new Exception("File transfer cancelled by receiver"));
+            FileTransferError?.Invoke(this, new Exception("File transfer cancelled by receiver"));
         }
     }
 }

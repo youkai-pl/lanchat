@@ -24,6 +24,10 @@ namespace Lanchat.Terminal.UserInterface
         internal static TextBlock StatusBar { get; private set; }
         internal static TextBlock Status { get; private set; }
 
+        internal static TextBlock FileTransferStatus { get; private set; }
+
+        internal static FileTransferProgressMonitor FileTransferProgressMonitor { get; } = new();
+
         public static void Start()
         {
             Log = new LogPanel();
@@ -56,6 +60,12 @@ namespace Lanchat.Terminal.UserInterface
             PromptIndicator = new TextBlock
             {
                 Text = $"[{Program.Config.Nickname}] "
+            };
+
+            FileTransferStatus = new TextBlock
+            {
+                Text = FileTransferProgressMonitor.Text,
+                Color = ConsoleColor.Gray
             };
 
             ScrollPanel = new VerticalScrollPanel
@@ -138,7 +148,10 @@ namespace Lanchat.Terminal.UserInterface
                                     new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan},
                                     new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
                                     Status,
-                                    new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan}
+                                    new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
+                                    new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
+                                    FileTransferStatus,
+                                    new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan}
                                 }
                             }
                         }
@@ -146,6 +159,11 @@ namespace Lanchat.Terminal.UserInterface
                 }
             };
 
+            FileTransferProgressMonitor.PropertyChanged += (_, _) =>
+            {
+                FileTransferStatus.Text = FileTransferProgressMonitor.Text;
+            };
+            
             // Start console UI 
             ConsoleManager.Console = new SimplifiedConsole();
             ConsoleManager.Setup();

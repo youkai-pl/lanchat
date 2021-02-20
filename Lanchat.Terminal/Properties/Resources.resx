@@ -268,4 +268,7 @@ Try /help &lt;command&gt; for detailed help.
     <data name="Help_reject" xml:space="preserve">
         <value>Syntax: /reject &lt;short id&gt;</value>
     </data>
+    <data name="_FileTransferFinished" xml:space="preserve">
+        <value>File transfer with {0} finished.</value>
+    </data>
 </root>

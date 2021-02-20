@@ -143,4 +143,7 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="Help_reject" xml:space="preserve">
         <value>Składnia: /reject &lt;krótkie id&gt;</value>
     </data>
+    <data name="_FileTransferFinished" xml:space="preserve">
+        <value>Wymiania plików z {0} zakończona</value>
+    </data>
 </root>

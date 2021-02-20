@@ -36,9 +36,10 @@ namespace Lanchat.Core.FileTransfer
             HandleReceivedFilePart(binary);
         }
 
-        public event EventHandler<FileTransferRequest> FileReceived;
-        public event EventHandler<Exception> FileExchangeError;
-        public event EventHandler<FileTransferRequest> FileExchangeRequestReceived;
+        public event EventHandler<FileTransferRequest> FileTransferFinished;
+        public event EventHandler<Exception> FileTransferError;
+        public event EventHandler<FileTransferRequest> FileTransferRequestReceived;
+        public event EventHandler FileTransferStarted; 
 
         /// <summary>
         ///     Accept incoming file request.
@@ -53,6 +54,7 @@ namespace Lanchat.Core.FileTransfer
             {
                 RequestStatus = RequestStatus.Accepted
             });
+            FileTransferStarted?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -83,6 +85,7 @@ namespace Lanchat.Core.FileTransfer
                 });
 
             File.Delete(Request.FilePath);
+            FileTransferError?.Invoke(this, new Exception("File transfer cancelled by user"));
             Request = null;
             writeFileStream.Dispose();
         }
@@ -94,7 +97,7 @@ namespace Lanchat.Core.FileTransfer
                 FilePath = MakeUnique(request.FileName),
                 Parts = request.Parts
             };
-            FileExchangeRequestReceived?.Invoke(this, Request);
+            FileTransferRequestReceived?.Invoke(this, Request);
         }
 
         private void HandleReceivedFilePart(FilePart filePart)
@@ -108,13 +111,13 @@ namespace Lanchat.Core.FileTransfer
                 writeFileStream.Write(data, 0, data.Length);
                 Request.PartsTransferred++;
                 if (!filePart.Last) return;
-                FileReceived?.Invoke(this, Request);
+                FileTransferFinished?.Invoke(this, Request);
                 writeFileStream.Dispose();
             }
             catch (Exception e)
             {
                 CancelReceive();
-                FileExchangeError?.Invoke(this, e);
+                FileTransferError?.Invoke(this, e);
             }
         }
 
@@ -124,7 +127,7 @@ namespace Lanchat.Core.FileTransfer
             writeFileStream.Dispose();
             File.Delete(Request.FilePath);
             Request = null;
-            FileExchangeError?.Invoke(this, new Exception("File transfer cancelled by sender"));
+            FileTransferError?.Invoke(this, new Exception("File transfer cancelled by sender"));
         }
 
         private static string MakeUnique(string file)
