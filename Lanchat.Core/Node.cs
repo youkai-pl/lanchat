@@ -19,7 +19,7 @@ namespace Lanchat.Core
         public readonly Echo Echo;
         public readonly FileReceiver FileReceiver;
         public readonly FileSender FileSender;
-        
+
         internal readonly Encryptor Encryptor;
         internal readonly INetworkElement NetworkElement;
         internal readonly INetworkOutput NetworkOutput;
@@ -29,6 +29,7 @@ namespace Lanchat.Core
         private Status status;
         private bool underReconnecting;
         private readonly IPEndPoint firstEndPoint;
+        internal readonly bool SendHandshake;
 
         /// <summary>
         ///     Initialize node.
@@ -37,6 +38,7 @@ namespace Lanchat.Core
         /// <param name="sendHandshake">Send handshake immediately</param>
         public Node(INetworkElement networkElement, bool sendHandshake)
         {
+            SendHandshake = sendHandshake;
             NetworkElement = networkElement;
             firstEndPoint = networkElement.Endpoint;
             NetworkOutput = new NetworkOutput(NetworkElement, this);
@@ -57,10 +59,10 @@ namespace Lanchat.Core
             networkElement.DataReceived += networkInput.ProcessReceivedData;
             networkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
-            if (sendHandshake)
+            if (SendHandshake)
+            {
                 SendHandshakeAndWait();
-            else
-                networkElement.Connected += OnConnected;
+            }
         }
 
         /// <summary>
@@ -186,12 +188,6 @@ namespace Lanchat.Core
         }
 
         // Network elements events.
-
-        private void OnConnected(object sender, EventArgs e)
-        {
-            SendHandshakeAndWait();
-        }
-
         private void OnDisconnected(object sender, bool hardDisconnect)
         {
             underReconnecting = !hardDisconnect;
@@ -214,7 +210,7 @@ namespace Lanchat.Core
             Ready = false;
         }
 
-        private void SendHandshakeAndWait()
+        internal void SendHandshakeAndWait()
         {
             var handshake = new Handshake
             {

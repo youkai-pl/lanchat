@@ -76,6 +76,11 @@ namespace Lanchat.Core
 
                     node.Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
 
+                    if (!node.SendHandshake)
+                    {
+                        node.SendHandshakeAndWait();
+                    }
+                    
                     try
                     {
                         node.Encryptor.ImportPublicKey(handshake.PublicKey);
