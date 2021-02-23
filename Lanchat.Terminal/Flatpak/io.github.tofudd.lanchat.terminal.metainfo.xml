@@ -21,10 +21,11 @@
     </provides>
     <screenshots>
         <screenshot type="default">
-            <image>https://i.imgur.com/KZ9jFWW.png</image>
+            <image>https://user-images.githubusercontent.com/20731856/108912793-65e25300-7629-11eb-804e-e62361b94edb.png</image>
         </screenshot>
     </screenshots>
     <releases>
+        <release version="2.6.0" date="2021-02-23"/>
         <release version="2.5.2" date="2021-01-22"/>
         <release version="2.5.1" date="2021-01-20"/>
         <release version="2.5.0" date="2021-01-19"/>
