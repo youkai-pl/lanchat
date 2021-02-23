@@ -43,7 +43,7 @@ namespace Lanchat.Core
         private string nickname;
         private string previousNickname;
         private Status status;
-        private bool underReconnecting;
+
 
         /// <summary>
         ///     Initialize node.
@@ -74,9 +74,14 @@ namespace Lanchat.Core
             // Check is connection established successful after timeout.
             Task.Delay(5000).ContinueWith(_ =>
             {
-                if (!Ready && !underReconnecting) NetworkElement.Close();
+                if (!Ready && !UnderReconnecting) NetworkElement.Close();
             });
         }
+
+        /// <summary>
+        ///     Node is under reconnecting.
+        /// </summary>
+        public bool UnderReconnecting { get; private set; }
 
         /// <summary>
         ///     Node nickname.
@@ -179,7 +184,7 @@ namespace Lanchat.Core
         // Network elements events.
         private void OnDisconnected(object sender, bool hardDisconnect)
         {
-            underReconnecting = !hardDisconnect;
+            UnderReconnecting = !hardDisconnect;
 
             // Raise event only if node was ready before.
             if (hardDisconnect && !Ready)

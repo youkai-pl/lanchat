@@ -29,11 +29,11 @@ namespace Lanchat.Core.System
             {
                 case DataTypes.Handshake:
                 {
-                    if(handshakeReceived) return;
-                    
+                    if (handshakeReceived && !node.UnderReconnecting) return;
+
                     var handshake = (Handshake) data;
                     if (handshake == null) return;
-                  
+
                     node.Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
 
                     if (!node.NetworkElement.IsSession)
@@ -55,15 +55,15 @@ namespace Lanchat.Core.System
 
                     break;
                 }
-                
+
                 case DataTypes.KeyInfo:
                 {
-                    if(node.Ready) return;
-                    if(!handshakeReceived) return;
-                    
+                    if (node.Ready) return;
+                    if (!handshakeReceived) return;
+
                     var keyInfo = (KeyInfo) data;
                     if (keyInfo == null) return;
-                    
+
                     try
                     {
                         node.Encryptor.ImportAesKey(keyInfo);
