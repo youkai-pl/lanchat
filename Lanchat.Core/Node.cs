@@ -44,6 +44,7 @@ namespace Lanchat.Core
             FileSender = new FileSender(NetworkOutput, Encryptor);
 
             var networkInput = new NetworkInput(this);
+            networkInput.ApiHandlers.Add(new ConnectionInitialization(this));
             networkInput.ApiHandlers.Add(new NodeApiHandlers(this));
             networkInput.ApiHandlers.Add(Messaging);
             networkInput.ApiHandlers.Add(FileReceiver);
@@ -175,7 +176,7 @@ namespace Lanchat.Core
             // Raise event only if node was ready before.
             if (hardDisconnect && !Ready)
             {
-                Trace.WriteLine($"Cannot connect {Id} / {NetworkElement .Endpoint}");
+                Trace.WriteLine($"Cannot connect {Id}");
                 CannotConnect?.Invoke(this, EventArgs.Empty);
             }
             else if (hardDisconnect && Ready)

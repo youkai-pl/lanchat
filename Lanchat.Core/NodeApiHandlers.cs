@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using Lanchat.Core.Encryption;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
@@ -20,10 +19,8 @@ namespace Lanchat.Core
         public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
         {
             DataTypes.Goodbye,
-            DataTypes.KeyInfo,
             DataTypes.NodesList,
             DataTypes.StatusUpdate,
-            DataTypes.Handshake,
             DataTypes.NicknameUpdate
         };
 
@@ -34,25 +31,6 @@ namespace Lanchat.Core
                 case DataTypes.Goodbye:
                     node.NetworkElement.EnableReconnecting = false;
                     break;
-
-                case DataTypes.KeyInfo:
-                {
-                    var keyInfo = (KeyInfo) data;
-                    if (keyInfo == null) return;
-
-                    try
-                    {
-                        node.Encryptor.ImportAesKey(keyInfo);
-                        node.Ready = true;
-                        node.OnConnected();
-                    }
-                    catch (InvalidKeyImportException)
-                    {
-                        node.Dispose();
-                    }
-
-                    break;
-                }
 
                 case DataTypes.NodesList:
                 {
@@ -66,32 +44,6 @@ namespace Lanchat.Core
                     });
 
                     node.OnNodesListReceived(list);
-                    break;
-                }
-
-                case DataTypes.Handshake:
-                {
-                    var handshake = (Handshake) data;
-                    if (handshake == null) return;
-
-                    node.Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
-
-                    if (!node.NetworkElement.IsSession)
-                    {
-                        node.SendHandshakeAndWait();
-                    }
-                    
-                    try
-                    {
-                        node.Encryptor.ImportPublicKey(handshake.PublicKey);
-                        node.Status = handshake.Status;
-                        node.NetworkOutput.SendSystemData(DataTypes.KeyInfo, node.Encryptor.ExportAesKey());
-                    }
-                    catch (InvalidKeyImportException)
-                    {
-                        node.Dispose();
-                    }
-
                     break;
                 }
 
