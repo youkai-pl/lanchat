@@ -1,5 +1,6 @@
 using System;
 using Lanchat.Core;
+using Lanchat.Core.Connection;
 
 namespace Lanchat.Tests.Mock
 {

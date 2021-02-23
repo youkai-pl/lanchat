@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Lanchat.Core.Chat;
 using Lanchat.Core.Connection;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
@@ -60,7 +61,7 @@ namespace Lanchat.Core
             NetworkInput = new NetworkInput(this);
             NetworkInput.ApiHandlers.Add(new ConnectionInitialization(this));
             NetworkInput.ApiHandlers.Add(new NodeApiHandlers(this));
-            NetworkInput.ApiHandlers.Add(Messaging);
+            NetworkInput.ApiHandlers.Add(new MessagingApiHandlers(Messaging));
             NetworkInput.ApiHandlers.Add(FileReceiver);
             NetworkInput.ApiHandlers.Add(new FileTransferHandler(FileReceiver, FileSender));
 

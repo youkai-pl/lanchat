@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
+using Lanchat.Core.Connection;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 
