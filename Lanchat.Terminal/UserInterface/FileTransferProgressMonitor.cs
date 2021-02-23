@@ -6,8 +6,9 @@ namespace Lanchat.Terminal.UserInterface
     public class FileTransferProgressMonitor : INotifyPropertyChanged
     {
         private int fileTransfersInProgress;
+        private long progress;
 
-        public string Text => $"File transfers: {fileTransfersInProgress}";
+        public string Text => $"File transfers: {progress}% / {fileTransfersInProgress} ";
 
         internal void ObserveNodeTransfers(FileReceiver fileReceiver, FileSender fileSender)
         {
@@ -16,26 +17,39 @@ namespace Lanchat.Terminal.UserInterface
                 if (fileReceiver.Request != null)
                 {
                     fileTransfersInProgress++;
+                    fileReceiver.Request.PropertyChanged += (_, _) =>
+                    {
+                        progress = fileReceiver.Request.Progress;
+                        OnPropertyChanged();
+                    };
                 }
                 else
                 {
+                    progress = 0;
                     fileTransfersInProgress--;
                 }
-                OnPropertyChanged(nameof(Text));
+
+                OnPropertyChanged();
             };
-            
+
             fileSender.PropertyChanged += (_, _) =>
             {
                 if (fileSender.Request != null)
                 {
                     fileTransfersInProgress++;
+                    fileSender.Request.PropertyChanged += (_, _) =>
+                    {
+                        progress = fileSender.Request.Progress;
+                        OnPropertyChanged();
+                    };
                 }
                 else
                 {
+                    progress = 0;
                     fileTransfersInProgress--;
                 }
-                
-                OnPropertyChanged(nameof(Text));
+
+                OnPropertyChanged();
             };
         }
 

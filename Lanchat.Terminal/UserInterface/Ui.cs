@@ -149,7 +149,7 @@ namespace Lanchat.Terminal.UserInterface
                                     new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
                                     Status,
                                     new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
-                                    new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
+                                    new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
                                     FileTransferStatus,
                                     new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan}
                                 }
