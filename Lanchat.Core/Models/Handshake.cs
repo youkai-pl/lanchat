@@ -1,9 +1,17 @@
-﻿namespace Lanchat.Core.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Lanchat.Core.Models
 {
     public class Handshake
     {
-        public string Nickname { get; set; }
-        public Status Status { get; set; }
-        public PublicKey PublicKey { get; set; }
+        [Required]
+        [MaxLength(20)]
+        public string Nickname { get; init; }
+        
+        [Required]
+        public Status Status { get; init; }
+        
+        [Required]
+        public PublicKey PublicKey { get; init; }
     }
 }

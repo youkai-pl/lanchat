@@ -1,0 +1,146 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Help" xml:space="preserve">
+        <value>Parametry uruchamiania:
+--debug (-d)      Wyświetlanie logów     
+--loopback (-l)   Łączenie z localhostem po starcie
+--no-server (-n)  Uruchamianie bez serwera
+--no-udp (-b)     Uruchamianie bez rozgłaszania
+        
+Polecenia:
+connect   disconnect
+list      nickname     m
+block     unblock      blocked
+afk       dnd          online
+exit      ping         help
+            
+Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
+    </value>
+    </data>
+    <data name="_Connected" xml:space="preserve">
+        <value>Połączono z {0}</value>
+    </data>
+    <data name="_ConnectionError" xml:space="preserve">
+        <value>Błąd połączenia: {0} / {1}</value>
+    </data>
+    <data name="_Disconnected" xml:space="preserve">
+        <value>Rozłączono z {0}</value>
+    </data>
+    <data name="_IncorrectValues" xml:space="preserve">
+        <value>Nieprawidłowa wartość</value>
+    </data>
+    <data name="_ManualNotFound" xml:space="preserve">
+        <value>Pomoc nie została znaleziona</value>
+    </data>
+    <data name="_NicknameChanged" xml:space="preserve">
+        <value>{0} zmienił nick na {1}</value>
+    </data>
+    <data name="_UserNotFound" xml:space="preserve">
+        <value>Nie znaleziono użytkownika</value>
+    </data>
+    <data name="_PortBusy" xml:space="preserve">
+        <value>Port zajęty, nie można uruchomić serwera. Spróbuj zmienić port w pliku konfiguracyjnym.</value>
+    </data>
+    <data name="_Reconnecting" xml:space="preserve">
+        <value>Rozłączono z {0}.  Trwa ponowne łączenie.</value>
+    </data>
+    <data name="_SelfNicknameChanged" xml:space="preserve">
+        <value>Nick został zmieniony</value>
+    </data>
+    <data name="_Unblocked" xml:space="preserve">
+        <value>{0} został odblokowany</value>
+    </data>
+    <data name="_WrongNickname" xml:space="preserve">
+        <value>Nick musi być krótszy niż 20 znaków i nie może być pusty</value>
+    </data>
+    <data name="_ConnectionAttempt" xml:space="preserve">
+        <value>Łączenie z {0}</value>
+    </data>
+    <data name="_CannotConnect" xml:space="preserve">
+        <value>Nie można połączyć z {0}</value>
+    </data>
+    <data name="_BlockedList" xml:space="preserve">
+        <value>Zablokowane adresy IP</value>
+    </data>
+    <data name="_Blocked" xml:space="preserve">
+        <value>{0} został zablokowany</value>
+    </data>
+    <data name="_StatusChange" xml:space="preserve">
+        <value>{0} jest {1}</value>
+    </data>
+    <data name="Help_block" xml:space="preserve">
+        <value>Składnia: /block &lt;ip | krótkie id&gt;</value>
+    </data>
+    <data name="Help_connect" xml:space="preserve">
+        <value>Składnia: /connect &lt;ip&gt; &lt;port&gt;</value>
+    </data>
+    <data name="Help_disconnect" xml:space="preserve">
+        <value>Składnia: /disconnect &lt;krótkie id&gt;</value>
+    </data>
+    <data name="Help_m" xml:space="preserve">
+        <value>Składnia: /m &lt;krótkie id&gt; &lt;wiadomość&gt;</value>
+    </data>
+    <data name="Help_nick" xml:space="preserve">
+        <value>Składnia: /nick &lt;nowy nick&gt;</value>
+    </data>
+    <data name="Help_ping" xml:space="preserve">
+        <value>Składnia: /ping &lt;krótkie id&gt;</value>
+    </data>
+    <data name="Help_unblock" xml:space="preserve">
+        <value>Składnia: /unblock &lt;ip&gt;</value>
+    </data>
+    <data name="_FirstRunMessage" xml:space="preserve">
+        <value>Szybka instrukcja:
+1. Pomoc jest dostępna pod komendą /help
+2. Aby połączyć się z innym użytkownikiem użyj komedny /connect &lt;adres ip&gt;
+3. Możesz zobaczyć adresy dostępnych w sieci osób przy pomocy komendy /list
+4. Plik konfiguracyjny znajduje się w {0}</value>
+    </data>
+    <data name="_FileRequest" xml:space="preserve">
+        <value>{0} chce wysłać ci plik {1} (/accept | /reject)</value>
+    </data>
+    <data name="_FileReceived" xml:space="preserve">
+        <value>Plik od {0} zapisany w {1}</value>
+    </data>
+    <data name="_FileExchangeError" xml:space="preserve">
+        <value>Błąd wymiany plików: {0}</value>
+    </data>
+    <data name="_FileRequestAccepted" xml:space="preserve">
+        <value>{0} zaakceptował twój plik. Jest on wysyłany.</value>
+    </data>
+    <data name="_FileRequestRejected" xml:space="preserve">
+        <value>{0} odrzucił twój plik.</value>
+    </data>
+    <data name="_CannotAccessFile" xml:space="preserve">
+        <value>Nie można uzyskać dostępu do {0}. Nazwa pliku lub uprawnienia dostępu mogą być błędne</value>
+    </data>
+    <data name="_FileTransferInProgress" xml:space="preserve">
+        <value>Nie można wysyłać wielu plików jednocześnie.</value>
+    </data>
+    <data name="_NoFileReceiveRequest" xml:space="preserve">
+        <value>Brak próśb odebranie pliku</value>
+    </data>
+    <data name="Help_send" xml:space="preserve">
+        <value>Składnia: /send &lt;krótkie id&gt; &lt;ścieżka do pliku&gt;</value>
+    </data>
+    <data name="Help_accept" xml:space="preserve">
+        <value>Składnia: /accept &lt;krótkie id&gt;</value>
+    </data>
+    <data name="Help_reject" xml:space="preserve">
+        <value>Składnia: /reject &lt;krótkie id&gt;</value>
+    </data>
+    <data name="_FileTransferFinished" xml:space="preserve">
+        <value>Wymiania plików z {0} zakończona</value>
+    </data>
+</root>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ConsoleGUI.Controls;
 using Lanchat.Core.Models;
 using Lanchat.Terminal.UserInterface;
@@ -44,12 +45,12 @@ namespace Lanchat.Terminal.Commands
                 Ui.Log.AddCustomTextBlock(line);
             });
 
-            Program.Network.DetectedNodes.ForEach(x =>
+            Program.Network.Broadcasting.DetectedNodes.ToList().ForEach(x =>
             {
                 var line = new[]
                 {
                     new TextBlock {Text = $"{x.Nickname} - {x.IpAddress}(", Color = ConsoleColor.White},
-                    new TextBlock {Text = "Detected", Color = ConsoleColor.DarkCyan},
+                    new TextBlock {Text = "LAN", Color = ConsoleColor.DarkCyan},
                     new TextBlock {Text = ")", Color = ConsoleColor.White}
                 };
 

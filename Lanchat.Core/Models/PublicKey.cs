@@ -2,7 +2,7 @@
 {
     public class PublicKey
     {
-        public string RsaModulus { get; set; }
-        public string RsaExponent { get; set; }
+        public byte[] RsaModulus { get; set; }
+        public byte[] RsaExponent { get; set; }
     }
 }

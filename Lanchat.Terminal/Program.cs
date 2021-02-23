@@ -1,5 +1,5 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -19,26 +19,9 @@ namespace Lanchat.Terminal
         {
             Config = Config.Load();
 
-            // Initialize server mode
-            if (args.Contains("--server") || args.Contains("-s"))
-            {
-                Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
-                LoggingService.StartLogging();
-
-                if (Config.UseIPv6)
-                {
-                    var server = new Server(IPAddress.IPv6Any, CoreConfig.ServerPort);
-                    server.Start(); 
-                }
-                else
-                {
-                    var server = new Server(IPAddress.Any, CoreConfig.ServerPort);
-                    server.Start();
-                }
-                
-                LoggingService.CleanLogs();
-                while (true) Console.ReadKey();
-            }
+            // Load resources
+            if (Config.Language != null) CultureInfo.CurrentCulture = new CultureInfo(Config.Language);
+            Resources.Culture = CultureInfo.CurrentCulture;
 
             // Initialize p2p mode and ui
             try
@@ -51,28 +34,39 @@ namespace Lanchat.Terminal
                 if (!args.Contains("--no-server") && !args.Contains("-n")) Network.StartServer();
 
                 // Start broadcast service
-                if (!args.Contains("--no-udp") && !args.Contains("-b")) Network.StartBroadcast();
+                if (!args.Contains("--no-udp") && !args.Contains("-b"))
+                {
+                    Network.StartBroadcast();
+                    Network.Broadcasting.DetectedNodes.CollectionChanged += (_, _) =>
+                    {
+                        Ui.DetectedCount.Text = Network.Broadcasting.DetectedNodes.Count.ToString();
+                    };
+                }
             }
             catch (SocketException e)
             {
                 if (e.SocketErrorCode == SocketError.AddressAlreadyInUse)
-                    Ui.Log.Add(Resources.Info_PortBusy);
+                    Ui.Log.Add(Resources._PortBusy);
                 else
                     throw;
             }
 
             // Show logs in console
             if (args.Contains("--debug") || args.Contains("-d") || Debugger.IsAttached)
+            {
                 Trace.Listeners.Add(new TerminalTraceListener());
+            }
+            else
+            {
+                var newVersion = UpdateChecker.CheckUpdates();
+                if (newVersion != null) Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
+            }
 
             // Save logs to file
             LoggingService.StartLogging();
 
             // Connect with localhost
             if (args.Contains("--loopback") || args.Contains("-l")) Network.Connect(IPAddress.Loopback);
-
-            var newVersion = UpdateChecker.CheckUpdates();
-            if (newVersion != null) Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
 
             LoggingService.CleanLogs();
         }

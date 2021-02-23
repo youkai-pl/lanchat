@@ -1,82 +1,87 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Net;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Lanchat.Core.Extensions;
+using Lanchat.Core.Chat;
+using Lanchat.Core.Encryption;
+using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
+using Lanchat.Core.NetworkIO;
+using Lanchat.Core.System;
 
 namespace Lanchat.Core
 {
-    public class Node : IDisposable, INotifyPropertyChanged
+    public class Node : IDisposable, INotifyPropertyChanged, INodeState
     {
-        internal readonly Encryption Encryption;
+        internal readonly Encryptor Encryptor;
 
-        private readonly IPEndPoint firstEndPoint;
-        internal readonly INetworkElement NetworkElement;
-        public readonly NetworkInput NetworkInput;
-        public readonly NetworkOutput NetworkOutput;
+        /// <summary>
+        ///     File sending.
+        /// </summary>
+        public readonly FileReceiver FileReceiver;
+
+        /// <summary>
+        ///     File receiving.
+        /// </summary>
+        public readonly FileSender FileSender;
+
+        /// <summary>
+        ///     Messages sending and receiving.
+        /// </summary>
+        public readonly Messaging Messaging;
+
+        /// <summary>
+        ///     TCP session.
+        /// </summary>
+        public readonly INetworkElement NetworkElement;
+
+        internal readonly NetworkInput NetworkInput;
+        internal readonly INetworkOutput NetworkOutput;
+
         private string nickname;
-
-        internal DateTime? PingSendTime;
         private string previousNickname;
         private Status status;
-        private bool underReconnecting;
+
 
         /// <summary>
         ///     Initialize node.
         /// </summary>
         /// <param name="networkElement">TCP client or session.</param>
-        /// <param name="sendHandshake">Send handshake immediately</param>
-        public Node(INetworkElement networkElement, bool sendHandshake)
+        public Node(INetworkElement networkElement)
         {
             NetworkElement = networkElement;
-            firstEndPoint = networkElement.Endpoint;
-            NetworkOutput = new NetworkOutput(this);
+            NetworkOutput = new NetworkOutput(NetworkElement, this);
+            Encryptor = new Encryptor();
+            Messaging = new Messaging(NetworkOutput, Encryptor);
+            FileReceiver = new FileReceiver(NetworkOutput, Encryptor);
+            FileSender = new FileSender(NetworkOutput, Encryptor);
+
             NetworkInput = new NetworkInput(this);
-            Encryption = new Encryption();
+            NetworkInput.ApiHandlers.Add(new InitializationApiHandlers(this));
+            NetworkInput.ApiHandlers.Add(new NodeApiHandlers(this));
+            NetworkInput.ApiHandlers.Add(new MessagingApiHandlers(Messaging));
+            NetworkInput.ApiHandlers.Add(FileReceiver);
+            NetworkInput.ApiHandlers.Add(new FileTransferHandler(FileReceiver, FileSender));
 
-            networkElement.Disconnected += OnDisconnected;
-            networkElement.DataReceived += NetworkInput.ProcessReceivedData;
-            networkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
+            NetworkElement.Disconnected += OnDisconnected;
+            NetworkElement.DataReceived += NetworkInput.ProcessReceivedData;
+            NetworkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
-            NetworkInput.HandshakeReceived += OnHandshakeReceived;
-            NetworkInput.KeyInfoReceived += OnKeyInfoReceived;
+            if (NetworkElement.IsSession) SendHandshakeAndWait();
 
-            if (sendHandshake)
-                SendHandshakeAndWait();
-            else
-                networkElement.Connected += OnConnected;
-        }
-
-        /// <summary>
-        ///     IP address of node.
-        /// </summary>
-        public IPEndPoint Endpoint
-        {
-            get
+            // Check is connection established successful after timeout.
+            Task.Delay(5000).ContinueWith(_ =>
             {
-                // Return endpoint from network element.
-                try
-                {
-                    return NetworkElement.Endpoint;
-                }
-
-                // Or from local variable if network element is disposed.
-                catch (ObjectDisposedException)
-                {
-                    return firstEndPoint;
-                }
-            }
+                if (!Ready && !UnderReconnecting) NetworkElement.Close();
+            });
         }
 
         /// <summary>
-        ///     ID of TCP client or session.
+        ///     Node is under reconnecting.
         /// </summary>
-        public Guid Id => NetworkElement.Id;
+        public bool UnderReconnecting { get; private set; }
 
         /// <summary>
         ///     Node nickname.
@@ -94,19 +99,9 @@ namespace Lanchat.Core
         }
 
         /// <summary>
-        ///     Last ping value.
-        /// </summary>
-        public TimeSpan? Ping { get; internal set; }
-
-        /// <summary>
         ///     Nickname before last change.
         /// </summary>
         public string PreviousNickname => $"{previousNickname}#{ShortId}";
-
-        /// <summary>
-        ///     Node ready. If set to false node won't send or receive messages.
-        /// </summary>
-        public bool Ready { get; private set; }
 
         /// <summary>
         ///     Short ID.
@@ -133,9 +128,19 @@ namespace Lanchat.Core
         public void Dispose()
         {
             NetworkElement.Close();
-            Encryption.Dispose();
+            Encryptor.Dispose();
             GC.SuppressFinalize(this);
         }
+
+        /// <summary>
+        ///     ID of TCP client or session.
+        /// </summary>
+        public Guid Id => NetworkElement.Id;
+
+        /// <summary>
+        ///     Node ready. If set to false node won't send or receive messages.
+        /// </summary>
+        public bool Ready { get; internal set; }
 
         /// <summary>
         ///     Invoked for properties like nickname or status.
@@ -172,25 +177,19 @@ namespace Lanchat.Core
         /// </summary>
         public void Disconnect()
         {
-            NetworkOutput.SendGoodbye();
+            NetworkOutput.SendSystemData(DataTypes.Goodbye);
             Dispose();
         }
 
         // Network elements events.
-
-        private void OnConnected(object sender, EventArgs e)
-        {
-            SendHandshakeAndWait();
-        }
-
         private void OnDisconnected(object sender, bool hardDisconnect)
         {
-            underReconnecting = !hardDisconnect;
+            UnderReconnecting = !hardDisconnect;
 
             // Raise event only if node was ready before.
             if (hardDisconnect && !Ready)
             {
-                Trace.WriteLine($"Cannot connect {Id} / {Endpoint}");
+                Trace.WriteLine($"Cannot connect {Id}");
                 CannotConnect?.Invoke(this, EventArgs.Empty);
             }
             else if (hardDisconnect && Ready)
@@ -205,35 +204,26 @@ namespace Lanchat.Core
             Ready = false;
         }
 
-        private void OnHandshakeReceived(object sender, Handshake handshake)
+        internal void SendHandshakeAndWait()
         {
-            Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
-            Encryption.ImportPublicKey(handshake.PublicKey);
-            Status = handshake.Status;
-            NetworkOutput.SendKey();
-        }
-
-        private void OnKeyInfoReceived(object sender, KeyInfo e)
-        {
-            Encryption.ImportAesKey(e);
-            Ready = true;
-            Connected?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void SendHandshakeAndWait()
-        {
-            NetworkOutput.SendHandshake();
-
-            // Check is connection established successful after timeout.
-            Task.Delay(5000).ContinueWith(_ =>
+            var handshake = new Handshake
             {
-                if (!Ready && !underReconnecting) NetworkElement.Close();
-            });
+                Nickname = CoreConfig.Nickname,
+                Status = CoreConfig.Status,
+                PublicKey = Encryptor.ExportPublicKey()
+            };
+
+            NetworkOutput.SendSystemData(DataTypes.Handshake, handshake);
         }
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        internal void OnConnected()
+        {
+            Connected?.Invoke(this, EventArgs.Empty);
         }
     }
 }

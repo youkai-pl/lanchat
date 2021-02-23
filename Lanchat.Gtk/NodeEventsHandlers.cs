@@ -15,8 +15,8 @@ namespace Lanchat.Gtk
         {
             this.mainWindow = mainWindow;
             this.node = node;
-            node.NetworkInput.MessageReceived += OnMessageReceived;
-            node.NetworkInput.PrivateMessageReceived += OnPrivateMessageReceived;
+            node.Messaging.MessageReceived += OnMessageReceived;
+            node.Messaging.PrivateMessageReceived += OnPrivateMessageReceived;
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
             node.HardDisconnect += OnHardDisconnected;

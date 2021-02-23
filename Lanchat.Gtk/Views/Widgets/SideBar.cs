@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
 using Gtk;
 using Lanchat.Core.Models;
@@ -17,9 +18,8 @@ namespace Lanchat.Gtk.Views.Widgets
             connectedList = mainWindow.ConnectedList;
             onlineList = mainWindow.OnlineList;
 
-            Program.Network.NodeDetected += NetworkOnNodeDetected;
-            Program.Network.DetectedNodeChanged += NetworkOnDetectedNodeChanged;
-            Program.Network.DetectedNodeDisappeared += NetworkOnDetectedNodeDisappeared;
+            Program.Network.Broadcasting.NodeDetected += NetworkOnNodeDetected;
+            Program.Network.Broadcasting.DetectedNodeDisappeared += NetworkOnDetectedNodeDisappeared;
         }
 
         private void NetworkOnNodeDetected(object sender, Broadcast e)
@@ -37,18 +37,24 @@ namespace Lanchat.Gtk.Views.Widgets
                 });
                 onlineList.ShowAll();
             });
+            
+            e.PropertyChanged += EOnPropertyChanged;
         }
 
-        private void NetworkOnDetectedNodeChanged(object sender, Broadcast e)
+        private void EOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if(e.PropertyName != "Nickname") return;
+
+            var broadcast = (Broadcast) sender;
+            
             Application.Invoke(delegate
             {
-                var row = (ListBoxRow) onlineList.Children.FirstOrDefault(x => x.Name == $"{e.Guid}-ol");
+                var row = (ListBoxRow) onlineList.Children.FirstOrDefault(x => x.Name == $"{broadcast.Guid}-ol");
                 var label = (Label) row?.Child;
-                if (label != null) label.Text = e.Nickname;
+                if (label != null) label.Text = broadcast.Nickname;
             });
         }
-
+        
         private void NetworkOnDetectedNodeDisappeared(object sender, Broadcast e)
         {
             Application.Invoke(delegate

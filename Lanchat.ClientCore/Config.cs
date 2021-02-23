@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Lanchat.Core;
 
 namespace Lanchat.ClientCore
@@ -17,6 +18,7 @@ namespace Lanchat.ClientCore
         private static List<string> _blockedAddresses;
         private static bool _automaticConnecting;
         private static bool _useIPv6;
+        private static string _language;
 
         public List<string> BlockedAddresses
         {
@@ -71,7 +73,7 @@ namespace Lanchat.ClientCore
                 Save();
             }
         }
-        
+
         public bool UseIPv6
         {
             get => _useIPv6;
@@ -82,6 +84,18 @@ namespace Lanchat.ClientCore
                 Save();
             }
         }
+
+        public string Language
+        {
+            get => _language;
+            set
+            {
+                _language = value;
+                Save();
+            }
+        }
+
+        [JsonIgnore] public bool Fresh { get; set; }
 
         public static string ConfigPath { get; private set; }
         public static string DataPath { get; private set; }
@@ -135,7 +149,10 @@ namespace Lanchat.ClientCore
             }
             catch (Exception e)
             {
-                if (!(e is FileNotFoundException) && !(e is DirectoryNotFoundException) && !(e is JsonException)) throw;
+                if (!(e is FileNotFoundException) &&
+                    !(e is DirectoryNotFoundException) &&
+                    !(e is JsonException)) throw;
+
                 config = new Config
                 {
                     Port = 3645,
@@ -143,7 +160,9 @@ namespace Lanchat.ClientCore
                     BlockedAddresses = new List<string>(),
                     Nickname = NicknamesGenerator.GimmeNickname(),
                     AutomaticConnecting = true,
-                    UseIPv6 = false
+                    UseIPv6 = false,
+                    Language = "default",
+                    Fresh = true
                 };
                 config.Save();
             }

@@ -68,7 +68,7 @@ namespace Lanchat.Core
         ///     Enable automatic connecting to nodes from received list.
         /// </summary>
         public static bool AutomaticConnecting { get; set; } = true;
-        
+
         /// <summary>
         ///     Use IPv6 instead IPv4.
         /// </summary>

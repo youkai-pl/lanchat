@@ -7,6 +7,7 @@ using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
 using ConsoleGUI.Input;
 using ConsoleGUI.Space;
+using Lanchat.ClientCore;
 using Lanchat.Terminal.Properties;
 
 namespace Lanchat.Terminal.UserInterface
@@ -17,10 +18,15 @@ namespace Lanchat.Terminal.UserInterface
         private static TextBox _input;
         internal static LogPanel Log { get; private set; }
         internal static TextBlock NodesCount { get; private set; }
+        internal static TextBlock DetectedCount { get; private set; }
         internal static TextBlock PromptIndicator { get; private set; }
         internal static VerticalScrollPanel ScrollPanel { get; private set; }
         internal static TextBlock StatusBar { get; private set; }
         internal static TextBlock Status { get; private set; }
+
+        internal static TextBlock FileTransferStatus { get; private set; }
+
+        internal static FileTransferProgressMonitor FileTransferProgressMonitor { get; } = new();
 
         public static void Start()
         {
@@ -45,9 +51,21 @@ namespace Lanchat.Terminal.UserInterface
                 Color = ConsoleColor.Gray
             };
 
+            DetectedCount = new TextBlock
+            {
+                Text = "0",
+                Color = ConsoleColor.Gray
+            };
+
             PromptIndicator = new TextBlock
             {
                 Text = $"[{Program.Config.Nickname}] "
+            };
+
+            FileTransferStatus = new TextBlock
+            {
+                Text = FileTransferProgressMonitor.Text,
+                Color = ConsoleColor.Gray
             };
 
             ScrollPanel = new VerticalScrollPanel
@@ -125,10 +143,15 @@ namespace Lanchat.Terminal.UserInterface
                                     new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
                                     new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
                                     NodesCount,
+                                    new TextBlock {Text = "/"},
+                                    DetectedCount,
                                     new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan},
                                     new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
                                     Status,
-                                    new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan}
+                                    new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
+                                    new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
+                                    FileTransferStatus,
+                                    new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan}
                                 }
                             }
                         }
@@ -136,13 +159,20 @@ namespace Lanchat.Terminal.UserInterface
                 }
             };
 
+            FileTransferProgressMonitor.PropertyChanged += (_, _) =>
+            {
+                FileTransferStatus.Text = FileTransferProgressMonitor.Text;
+            };
+            
             // Start console UI 
             ConsoleManager.Console = new SimplifiedConsole();
             ConsoleManager.Setup();
             ConsoleManager.Resize(new Size(100, 30));
             ConsoleManager.Content = dockPanel;
-            Console.Title = Resources.Ui_WindowTitle;
-            Log.Add(Resources.Ui_HelloMessage);
+            Console.Title = Resources._WindowTitle;
+            Log.Add(Resources._Logo);
+
+            if (Program.Config.Fresh) Log.Add(string.Format(Resources._FirstRunMessage, Config.ConfigPath));
 
             // Clock updates
             new Thread(() =>

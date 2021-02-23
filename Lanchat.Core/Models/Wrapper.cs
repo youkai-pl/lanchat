@@ -1,6 +1,6 @@
 ﻿namespace Lanchat.Core.Models
 {
-    internal class Wrapper
+    public class Wrapper
     {
         public DataTypes Type { get; set; }
         public object Data { get; set; }
@@ -16,7 +16,7 @@
         Goodbye,
         PrivateMessage,
         StatusUpdate,
-        Ping,
-        Pong
+        FilePart,
+        FileTransferControl
     }
 }

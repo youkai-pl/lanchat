@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Input;
@@ -26,9 +27,12 @@ namespace Lanchat.Terminal.UserInterface
             commands.Add(new List());
             commands.Add(new Nick());
             commands.Add(new Online());
-            commands.Add(new Ping());
             commands.Add(new PrivateMessage());
             commands.Add(new Unblock());
+            commands.Add(new SendFile());
+            commands.Add(new Accept());
+            commands.Add(new Reject());
+            commands.Add(new Cancel());
 
             this.input = input;
         }
@@ -62,7 +66,7 @@ namespace Lanchat.Terminal.UserInterface
 
             if (args.Length < command?.ArgsCount)
             {
-                var help = Resources.ResourceManager.GetString($"Help_{commandAlias}");
+                var help = Resources.ResourceManager.GetString($"Help_{commandAlias}", CultureInfo.CurrentCulture);
                 if (help != null) Ui.Log.Add(help);
                 return;
             }

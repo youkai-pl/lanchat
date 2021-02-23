@@ -10,7 +10,7 @@ namespace Lanchat.Terminal.Commands
 
         public void Execute(string[] _)
         {
-            Ui.Log.Add($"{Resources.Info_BlockedList} {Program.Config.BlockedAddresses.Count}");
+            Ui.Log.Add($"{Resources._BlockedList} {Program.Config.BlockedAddresses.Count}");
             Program.Config.BlockedAddresses.ForEach(x => Ui.Log.Add($"{x}"));
         }
     }

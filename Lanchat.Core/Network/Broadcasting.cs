@@ -1,4 +1,6 @@
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -7,20 +9,30 @@ using System.Threading;
 using System.Threading.Tasks;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
+using Timer = System.Timers.Timer;
 
 // ReSharper disable FunctionNeverReturns
 
 namespace Lanchat.Core.Network
 {
-    internal class BroadcastService
+    public class Broadcasting
     {
         private readonly IPEndPoint endPoint;
         private readonly UdpClient udpClient;
         private readonly string uniqueId;
+        public ObservableCollection<Broadcast> DetectedNodes { get; } = new();
 
-        internal EventHandler<Broadcast> BroadcastReceived;
+        /// <summary>
+        ///     New node detected in network.
+        /// </summary>
+        public event EventHandler<Broadcast> NodeDetected;
 
-        internal BroadcastService()
+        /// <summary>
+        ///     Detected node doesn't send broadcasts.
+        /// </summary>
+        public event EventHandler<Broadcast> DetectedNodeDisappeared;
+
+        internal Broadcasting()
         {
             uniqueId = Guid.NewGuid().ToString();
             endPoint = new IPEndPoint(IPAddress.Broadcast, CoreConfig.BroadcastPort);
@@ -43,12 +55,19 @@ namespace Lanchat.Core.Network
                         {
                             broadcast.IpAddress = from.Address;
                             broadcast.Nickname = broadcast.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
-                            BroadcastReceived?.Invoke(this, broadcast);
+                            BroadcastReceived(broadcast);
                         }
                     }
                     catch (Exception e)
                     {
-                        if (e is not JsonException) throw;
+                        if (e is JsonException ||
+                            e is ArgumentException ||
+                            e is NotSupportedException)
+                        {
+                            return;
+                        }
+
+                        throw;
                     }
                 }
             });
@@ -68,6 +87,43 @@ namespace Lanchat.Core.Network
                     Thread.Sleep(2000);
                 }
             });
+        }
+
+        // UDP broadcast received
+        private void BroadcastReceived(Broadcast e)
+        {
+            var alreadyDetected = DetectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
+            if (alreadyDetected == null)
+            {
+                DetectedNodes.Add(e);
+                NodeDetected?.Invoke(this, e);
+                e.Active = true;
+
+                var timer = new Timer
+                {
+                    Interval = 2500,
+                    Enabled = true
+                };
+
+                timer.Elapsed += (_, _) =>
+                {
+                    if (e.Active)
+                    {
+                        e.Active = false;
+                    }
+                    else
+                    {
+                        timer.Dispose();
+                        DetectedNodeDisappeared?.Invoke(this, e);
+                        DetectedNodes.Remove(e);
+                    }
+                };
+            }
+            else
+            {
+                alreadyDetected.Active = true;
+                alreadyDetected.Nickname = e.Nickname;
+            }
         }
     }
 }
