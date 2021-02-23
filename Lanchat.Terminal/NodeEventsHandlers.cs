@@ -19,7 +19,6 @@ namespace Lanchat.Terminal
             this.node = node;
             node.Messaging.MessageReceived += OnMessageReceived;
             node.Messaging.PrivateMessageReceived += OnPrivateMessageReceived;
-            node.Echo.PongReceived += OnPongReceived;
             
             node.FileReceiver.FileTransferFinished += OnFileTransferFinished;
             node.FileReceiver.FileTransferError += OnFileTransferError;
@@ -99,13 +98,7 @@ namespace Lanchat.Terminal
         {
             Ui.Log.Add(string.Format(Resources._CannotConnect, node.Id));
         }
-
-        private void OnPongReceived(object sender, TimeSpan? e)
-        {
-            if (e != null)
-                Ui.Log.Add(string.Format(Resources._Ping, node.Nickname, e.Value.Milliseconds));
-        }
-
+        
         private void OnFileTransferHandlerRequestReceived(object sender, FileTransferRequest e)
         {
             Ui.Log.Add(string.Format(Resources._FileRequest, node.Nickname, e.FileName));

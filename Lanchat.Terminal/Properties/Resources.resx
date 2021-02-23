@@ -147,7 +147,7 @@ connect   disconnect
 list      nickname     m
 block     unblock      blocked
 afk       dnd          online
-exit      ping         help
+exit      help
 send      accept       reject
             
 Try /help &lt;command&gt; for detailed help.
@@ -224,9 +224,6 @@ Try /help &lt;command&gt; for detailed help.
     </data>
     <data name="_StatusChange" xml:space="preserve">
         <value>{0} is {1}</value>
-    </data>
-    <data name="_Ping" xml:space="preserve">
-        <value>Ping to {0} is {1}ms</value>
     </data>
     <data name="_FirstRunMessage" xml:space="preserve">
         <value>Quickstart guide:

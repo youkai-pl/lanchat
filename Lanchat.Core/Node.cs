@@ -14,11 +14,6 @@ namespace Lanchat.Core
 {
     public class Node : IDisposable, INotifyPropertyChanged, INodeState
     {
-        /// <summary>
-        ///     Ping pong.
-        /// </summary>
-        public readonly Echo Echo;
-
         internal readonly Encryptor Encryptor;
 
         /// <summary>
@@ -59,7 +54,6 @@ namespace Lanchat.Core
             NetworkOutput = new NetworkOutput(NetworkElement, this);
             Encryptor = new Encryptor();
             Messaging = new Messaging(NetworkOutput, Encryptor);
-            Echo = new Echo(NetworkOutput);
             FileReceiver = new FileReceiver(NetworkOutput, Encryptor);
             FileSender = new FileSender(NetworkOutput, Encryptor);
 
@@ -68,7 +62,6 @@ namespace Lanchat.Core
             NetworkInput.ApiHandlers.Add(new NodeApiHandlers(this));
             NetworkInput.ApiHandlers.Add(Messaging);
             NetworkInput.ApiHandlers.Add(FileReceiver);
-            NetworkInput.ApiHandlers.Add(Echo);
             NetworkInput.ApiHandlers.Add(new FileTransferHandler(FileReceiver, FileSender));
 
             NetworkElement.Disconnected += OnDisconnected;

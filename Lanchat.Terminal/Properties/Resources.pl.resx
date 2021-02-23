@@ -79,9 +79,6 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="_StatusChange" xml:space="preserve">
         <value>{0} jest {1}</value>
     </data>
-    <data name="_Ping" xml:space="preserve">
-        <value>Ping do {0} wynosi {1}ms</value>
-    </data>
     <data name="Help_block" xml:space="preserve">
         <value>Składnia: /block &lt;ip | krótkie id&gt;</value>
     </data>

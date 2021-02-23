@@ -16,8 +16,6 @@
         Goodbye,
         PrivateMessage,
         StatusUpdate,
-        Ping,
-        Pong,
         FilePart,
         FileTransferStatus
     }

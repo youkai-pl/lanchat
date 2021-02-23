@@ -207,12 +207,6 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string _Ping {
-            get {
-                return ResourceManager.GetString("_Ping", resourceCulture);
-            }
-        }
-        
         internal static string _FirstRunMessage {
             get {
                 return ResourceManager.GetString("_FirstRunMessage", resourceCulture);

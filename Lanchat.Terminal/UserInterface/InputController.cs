@@ -27,7 +27,6 @@ namespace Lanchat.Terminal.UserInterface
             commands.Add(new List());
             commands.Add(new Nick());
             commands.Add(new Online());
-            commands.Add(new Ping());
             commands.Add(new PrivateMessage());
             commands.Add(new Unblock());
             commands.Add(new SendFile());
