@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -30,18 +31,20 @@ namespace Lanchat.Core.NetworkIO
             if (index < 0) return;
             currentJson = buffer.Substring(0, index + 1);
             buffer = buffer.Substring(index + 1);
-            
+
             foreach (var item in currentJson.Replace("}{", "}|{").Split('|'))
                 try
                 {
                     var json = JsonSerializer.Deserialize<Wrapper>(item, serializerOptions);
 
+                    if (json == null)
+                    {
+                        Trace.WriteLine($"Node {nodeState.Id} received empty data.");
+                        return;
+                    }
+
                     // If node isn't ready ignore every messages except handshake and key info.
                     if (!nodeState.Ready && json.Type != DataTypes.Handshake && json.Type != DataTypes.KeyInfo) return;
-
-                    // Ignore handshake and key info is node was set as ready before.
-                    if (nodeState.Ready && (json.Type == DataTypes.Handshake || json.Type == DataTypes.KeyInfo)) return;
-
 
                     var assemblyQualifiedName =
                         Assembly.CreateQualifiedName("Lanchat.Core", $"Lanchat.Core.Models.{json.Type.ToString()}");
@@ -49,22 +52,29 @@ namespace Lanchat.Core.NetworkIO
 
                     var data = type == null
                         ? json.Data.ToString()
-                        : JsonSerializer.Deserialize(json.Data.ToString(), type, serializerOptions);
+                        : JsonSerializer.Deserialize(json.Data.ToString() ?? string.Empty, type, serializerOptions);
 
                     if (json.Type == DataTypes.NodesList)
                     {
-                        data = JsonSerializer.Deserialize(json.Data.ToString(), typeof(List<string>),
+                        data = JsonSerializer.Deserialize(json.Data.ToString() ?? string.Empty, typeof(List<string>),
                             serializerOptions);
                     }
 
-                    Trace.WriteLine($"Node {nodeState.Id} received {json.Type}");
-
                     var handler = ApiHandlers.FirstOrDefault(x => x.HandledDataTypes.Contains(json.Type));
-
-                    if (handler != null)
-                        handler.Handle(json.Type, data);
-                    else
+                    if (handler == null)
+                    {
                         Trace.WriteLine($"Node {nodeState.Id} received data of unknown type.");
+                        return;
+                    }
+
+                    if (data == null)
+                    {
+                        Handle(json, handler, data);
+                    }
+                    else if (Validate(data))
+                    {
+                        Handle(json, handler, data);
+                    }
                 }
 
                 // Input errors catching.
@@ -74,6 +84,25 @@ namespace Lanchat.Core.NetworkIO
                         ex is not ArgumentNullException &&
                         ex is not NullReferenceException) throw;
                 }
+        }
+        
+        private bool Validate(object data)
+        {
+            var results = new List<ValidationResult>();
+            if (Validator.TryValidateObject(data, new ValidationContext(data), results, true)) return true;
+            
+            foreach (var e in results)
+            {
+                Trace.WriteLine($"Node {nodeState.Id} received invalid data: {e}");
+            }
+
+            return false;
+        }
+        
+        private void Handle(Wrapper json, IApiHandler handler, object data)
+        {
+            Trace.WriteLine($"Node {nodeState.Id} received {json.Type}");
+            handler.Handle(json.Type, data);
         }
     }
 }

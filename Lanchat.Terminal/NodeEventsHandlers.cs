@@ -92,12 +92,12 @@ namespace Lanchat.Terminal
 
         private void OnSocketErrored(object sender, SocketError e)
         {
-            Ui.Log.Add(string.Format(Resources._ConnectionError, node.NetworkElement.Endpoint.Address, e));
+            Ui.Log.Add(string.Format(Resources._ConnectionError, node.Id, e));
         }
 
         private void OnCannotConnect(object sender, EventArgs e)
         {
-            Ui.Log.Add(string.Format(Resources._CannotConnect, node.NetworkElement.Endpoint));
+            Ui.Log.Add(string.Format(Resources._CannotConnect, node.Id));
         }
 
         private void OnPongReceived(object sender, TimeSpan? e)

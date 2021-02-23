@@ -28,6 +28,8 @@ namespace Lanchat.Core
             {
                 case DataTypes.Handshake:
                 {
+                    if(handshakeReceived) return;
+                    
                     var handshake = (Handshake) data;
                     if (handshake == null) return;
 
@@ -55,7 +57,9 @@ namespace Lanchat.Core
                 
                 case DataTypes.KeyInfo:
                 {
-                    if(handshakeReceived == false) return;
+                    if(node.Ready) return;
+                    if(!handshakeReceived) return;
+                    
                     var keyInfo = (KeyInfo) data;
                     if (keyInfo == null) return;
                     

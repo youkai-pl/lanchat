@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
