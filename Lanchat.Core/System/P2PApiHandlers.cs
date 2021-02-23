@@ -4,7 +4,7 @@ using System.Net;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 
-namespace Lanchat.Core.Connection
+namespace Lanchat.Core.System
 {
     internal class P2PApiHandlers : IApiHandler
     {

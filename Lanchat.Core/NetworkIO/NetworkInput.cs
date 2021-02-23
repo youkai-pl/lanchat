@@ -5,8 +5,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
-using Lanchat.Core.Connection;
 using Lanchat.Core.Models;
+using Lanchat.Core.System;
 
 namespace Lanchat.Core.NetworkIO
 {

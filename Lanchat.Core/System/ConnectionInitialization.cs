@@ -4,14 +4,14 @@ using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 
-namespace Lanchat.Core.Connection
+namespace Lanchat.Core.System
 {
-    public class ConnectionInitialization : IApiHandler
+    internal class ConnectionInitialization : IApiHandler
     {
         private readonly Node node;
         private bool handshakeReceived;
 
-        public ConnectionInitialization(Node node)
+        internal ConnectionInitialization(Node node)
         {
             this.node = node;
         }

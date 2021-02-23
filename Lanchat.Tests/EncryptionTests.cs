@@ -1,5 +1,3 @@
-using System;
-using System.Security.Cryptography;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
 using NUnit.Framework;

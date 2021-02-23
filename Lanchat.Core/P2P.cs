@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using Lanchat.Core.Connection;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
+using Lanchat.Core.System;
 
 namespace Lanchat.Core
 {

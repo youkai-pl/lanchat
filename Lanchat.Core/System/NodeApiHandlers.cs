@@ -4,7 +4,7 @@ using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 
-namespace Lanchat.Core.Connection
+namespace Lanchat.Core.System
 {
     internal class NodeApiHandlers : IApiHandler
     {

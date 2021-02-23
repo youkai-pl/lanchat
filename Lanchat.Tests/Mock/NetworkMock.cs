@@ -7,10 +7,10 @@ namespace Lanchat.Tests.Mock
 {
     public class NetworkMock : INetworkElement
     {
-        public IPEndPoint Endpoint { get; }
-        public Guid Id { get; }
+        public IPEndPoint Endpoint { get; } = new(IPAddress.Loopback, 1234);
+        public Guid Id { get; } = Guid.NewGuid();
         public bool EnableReconnecting { get; set; }
-        public bool IsSession { get; }
+        public bool IsSession { get; } = false;
 
         public void SendAsync(string text)
         {

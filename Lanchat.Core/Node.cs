@@ -4,12 +4,12 @@ using System.Diagnostics;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Lanchat.Core.Chat;
-using Lanchat.Core.Connection;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 using Lanchat.Core.NetworkIO;
+using Lanchat.Core.System;
 
 namespace Lanchat.Core
 {
