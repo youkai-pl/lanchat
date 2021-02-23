@@ -6,12 +6,12 @@ namespace Lanchat.Core.Models
     {
         [Required]
         [MaxLength(20)]
-        public string Nickname { get; set; }
+        public string Nickname { get; init; }
         
         [Required]
-        public Status Status { get; set; }
+        public Status Status { get; init; }
         
         [Required]
-        public PublicKey PublicKey { get; set; }
+        public PublicKey PublicKey { get; init; }
     }
 }

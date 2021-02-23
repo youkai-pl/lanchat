@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
@@ -6,12 +7,12 @@ using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core.System
 {
-    internal class ConnectionInitialization : IApiHandler
+    internal class InitializationApiHandlers : IApiHandler
     {
         private readonly Node node;
         private bool handshakeReceived;
 
-        internal ConnectionInitialization(Node node)
+        internal InitializationApiHandlers(Node node)
         {
             this.node = node;
         }
@@ -32,7 +33,7 @@ namespace Lanchat.Core.System
                     
                     var handshake = (Handshake) data;
                     if (handshake == null) return;
-
+                  
                     node.Nickname = handshake.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
 
                     if (!node.NetworkElement.IsSession)

@@ -59,7 +59,7 @@ namespace Lanchat.Core
             FileSender = new FileSender(NetworkOutput, Encryptor);
 
             NetworkInput = new NetworkInput(this);
-            NetworkInput.ApiHandlers.Add(new ConnectionInitialization(this));
+            NetworkInput.ApiHandlers.Add(new InitializationApiHandlers(this));
             NetworkInput.ApiHandlers.Add(new NodeApiHandlers(this));
             NetworkInput.ApiHandlers.Add(new MessagingApiHandlers(Messaging));
             NetworkInput.ApiHandlers.Add(FileReceiver);

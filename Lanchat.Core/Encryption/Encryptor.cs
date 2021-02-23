@@ -68,8 +68,8 @@ namespace Lanchat.Core.Encryption
             var parameters = localRsa.ExportParameters(false);
             return new PublicKey
             {
-                RsaModulus = Convert.ToBase64String(parameters.Modulus),
-                RsaExponent = Convert.ToBase64String(parameters.Exponent)
+                RsaModulus = parameters.Modulus,
+                RsaExponent = parameters.Exponent
             };
         }
 
@@ -88,8 +88,8 @@ namespace Lanchat.Core.Encryption
             {
                 var parameters = new RSAParameters
                 {
-                    Modulus = Convert.FromBase64String(publicKey.RsaModulus),
-                    Exponent = Convert.FromBase64String(publicKey.RsaExponent)
+                    Modulus = publicKey.RsaModulus,
+                    Exponent = publicKey.RsaExponent
                 };
 
                 remoteRsa.ImportParameters(parameters);
@@ -116,15 +116,14 @@ namespace Lanchat.Core.Encryption
             }
         }
 
-        private string RsaEncrypt(byte[] bytes)
+        private byte[] RsaEncrypt(byte[] bytes)
         {
             var encryptedBytes = remoteRsa.Encrypt(bytes, RSAEncryptionPadding.Pkcs1);
-            return Convert.ToBase64String(encryptedBytes);
+            return encryptedBytes;
         }
 
-        private byte[] RsaDecrypt(string text)
+        private byte[] RsaDecrypt(byte[] encryptedBytes)
         {
-            var encryptedBytes = Convert.FromBase64String(text);
             return localRsa.Decrypt(encryptedBytes, RSAEncryptionPadding.Pkcs1);
         }
     }

@@ -41,8 +41,8 @@ namespace Lanchat.Tests
             {
                 encryptor.ImportPublicKey(new PublicKey
                 {
-                    RsaExponent = "random data",
-                    RsaModulus = "random data"
+                    RsaExponent = new byte[] {0x10},
+                    RsaModulus = new byte[] {0x10}
                 });
             });
         }
@@ -54,8 +54,8 @@ namespace Lanchat.Tests
             {
                 encryptor.ImportAesKey(new KeyInfo()
                 {
-                    AesIv = "random data",
-                    AesKey = "random data"
+                    AesIv = new byte[] {0x10},
+                    AesKey = new byte[] {0x10}
                 });
             });
         }
