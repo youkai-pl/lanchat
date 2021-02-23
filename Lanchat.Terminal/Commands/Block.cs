@@ -22,12 +22,12 @@ namespace Lanchat.Terminal.Commands
             if (args[0].Length == 4)
             {
                 var node = Program.Network.Nodes.Find(x => x.ShortId == args[0]);
-                ipAddress = node?.Endpoint.Address;
+                ipAddress = node?.NetworkElement.Endpoint.Address;
                 node?.Disconnect();
             }
             else if (IPAddress.TryParse(args[0], out ipAddress))
             {
-                var node = Program.Network.Nodes.Find(x => Equals(x.Endpoint.Address, ipAddress));
+                var node = Program.Network.Nodes.Find(x => Equals(x.NetworkElement.Endpoint.Address, ipAddress));
                 node?.Disconnect();
             }
             else

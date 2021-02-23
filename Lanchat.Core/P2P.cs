@@ -105,7 +105,7 @@ namespace Lanchat.Core
             if (CoreConfig.BlockedAddresses.Contains(ipAddress)) throw new ArgumentException("Node blocked");
 
             // Throw if node already connected
-            if (Nodes.Any(x => x.Endpoint.Address.Equals(ipAddress)))
+            if (Nodes.Any(x => x.NetworkElement.Endpoint.Address.Equals(ipAddress)))
                 throw new ArgumentException("Already connected to this node");
 
             // Throw if local address
@@ -129,7 +129,7 @@ namespace Lanchat.Core
         private void OnConnected(object sender, EventArgs e)
         {
             var node = (Node) sender;
-            var nodesList = Nodes.Where(x => x.Id != node.Id).Select(x => x.Endpoint.Address).ToList();
+            var nodesList = Nodes.Where(x => x.Id != node.Id).Select(x => x.NetworkElement.Endpoint.Address).ToList();
             var stringList = nodesList.Select(x => x.ToString());
             node.NetworkOutput.SendUserData(DataTypes.NodesList, stringList);
         }

@@ -21,14 +21,13 @@ namespace Lanchat.Core
         public readonly FileSender FileSender;
 
         internal readonly Encryptor Encryptor;
-        internal readonly INetworkElement NetworkElement;
+        public readonly INetworkElement NetworkElement;
         internal readonly INetworkOutput NetworkOutput;
 
         private string nickname;
         private string previousNickname;
         private Status status;
         private bool underReconnecting;
-        private readonly IPEndPoint firstEndPoint;
 
         /// <summary>
         ///     Initialize node.
@@ -37,7 +36,6 @@ namespace Lanchat.Core
         public Node(INetworkElement networkElement)
         {
             NetworkElement = networkElement;
-            firstEndPoint = networkElement.Endpoint;
             NetworkOutput = new NetworkOutput(NetworkElement, this);
             Encryptor = new Encryptor();
             Messaging = new Messaging(NetworkOutput, Encryptor);
@@ -66,27 +64,6 @@ namespace Lanchat.Core
             {
                 if (!Ready && !underReconnecting) NetworkElement.Close();
             });
-        }
-
-        /// <summary>
-        ///     IP address of node.
-        /// </summary>
-        public IPEndPoint Endpoint
-        {
-            get
-            {
-                // Return endpoint from network element.
-                try
-                {
-                    return NetworkElement.Endpoint;
-                }
-
-                // Or from local variable if network element is disposed.
-                catch (ObjectDisposedException)
-                {
-                    return firstEndPoint;
-                }
-            }
         }
 
         /// <summary>
@@ -198,7 +175,7 @@ namespace Lanchat.Core
             // Raise event only if node was ready before.
             if (hardDisconnect && !Ready)
             {
-                Trace.WriteLine($"Cannot connect {Id} / {Endpoint}");
+                Trace.WriteLine($"Cannot connect {Id} / {NetworkElement .Endpoint}");
                 CannotConnect?.Invoke(this, EventArgs.Empty);
             }
             else if (hardDisconnect && Ready)
