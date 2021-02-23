@@ -23,6 +23,7 @@ namespace Lanchat.Core
         internal readonly Encryptor Encryptor;
         public readonly INetworkElement NetworkElement;
         internal readonly INetworkOutput NetworkOutput;
+        internal readonly NetworkInput NetworkInput;
 
         private string nickname;
         private string previousNickname;
@@ -43,16 +44,16 @@ namespace Lanchat.Core
             FileReceiver = new FileReceiver(NetworkOutput, Encryptor);
             FileSender = new FileSender(NetworkOutput, Encryptor);
 
-            var networkInput = new NetworkInput(this);
-            networkInput.ApiHandlers.Add(new ConnectionInitialization(this));
-            networkInput.ApiHandlers.Add(new NodeApiHandlers(this));
-            networkInput.ApiHandlers.Add(Messaging);
-            networkInput.ApiHandlers.Add(FileReceiver);
-            networkInput.ApiHandlers.Add(Echo);
-            networkInput.ApiHandlers.Add(new FileTransferHandler(FileReceiver, FileSender));
+            NetworkInput = new NetworkInput(this);
+            NetworkInput.ApiHandlers.Add(new ConnectionInitialization(this));
+            NetworkInput.ApiHandlers.Add(new NodeApiHandlers(this));
+            NetworkInput.ApiHandlers.Add(Messaging);
+            NetworkInput.ApiHandlers.Add(FileReceiver);
+            NetworkInput.ApiHandlers.Add(Echo);
+            NetworkInput.ApiHandlers.Add(new FileTransferHandler(FileReceiver, FileSender));
 
             NetworkElement.Disconnected += OnDisconnected;
-            NetworkElement.DataReceived += networkInput.ProcessReceivedData;
+            NetworkElement.DataReceived += NetworkInput.ProcessReceivedData;
             NetworkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
             if (NetworkElement.IsSession)
@@ -156,9 +157,6 @@ namespace Lanchat.Core
         /// </summary>
         public event EventHandler<SocketError> SocketErrored;
 
-        internal event EventHandler<List<IPAddress>> NodesListReceived;
-
-
         /// <summary>
         ///     Disconnect from node.
         /// </summary>
@@ -211,11 +209,6 @@ namespace Lanchat.Core
         internal void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);
-        }
-
-        internal void OnNodesListReceived(List<IPAddress> e)
-        {
-            NodesListReceived?.Invoke(this, e);
         }
     }
 }

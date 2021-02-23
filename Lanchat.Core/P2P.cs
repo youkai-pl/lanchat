@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
+using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core
 {
-    public class P2P
+    public class P2P : IApiHandler
     {
         public Broadcasting Broadcasting { get; }
         private readonly List<Node> outgoingConnections;
@@ -115,12 +117,11 @@ namespace Lanchat.Core
 
             var client = new Client(ipAddress, port.Value);
             var node = new Node(client);
-
+            node.NetworkInput.ApiHandlers.Add(this);
             outgoingConnections.Add(node);
             node.Connected += OnConnected;
             node.HardDisconnect += OnHardDisconnect;
             node.CannotConnect += OnCannotConnect;
-            node.NodesListReceived += OnNodesListReceived;
             ConnectionCreated?.Invoke(this, node);
             client.ConnectAsync();
         }
@@ -138,7 +139,7 @@ namespace Lanchat.Core
         private void OnSessionCreated(object sender, Node node)
         {
             ConnectionCreated?.Invoke(this, node);
-            node.NodesListReceived += OnNodesListReceived;
+            node.NetworkInput.ApiHandlers.Add(this);
             node.Connected += OnConnected;
         }
 
@@ -158,9 +159,22 @@ namespace Lanchat.Core
             node.Dispose();
         }
 
-        // Try connect to every node from list
-        private void OnNodesListReceived(object sender, List<IPAddress> list)
+        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
         {
+            DataTypes.NodesList
+        };
+        
+        public void Handle(DataTypes type, object data)
+        {
+            var stringList = (List<string>) data;
+            var list = new List<IPAddress>();
+            
+            // Convert strings to ip addresses.
+            stringList?.ForEach(x =>
+            {
+                if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
+            });
+            
             if (!CoreConfig.AutomaticConnecting) return;
             list.ForEach(x =>
             {

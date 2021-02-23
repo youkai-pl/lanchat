@@ -19,7 +19,6 @@ namespace Lanchat.Core
         public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
         {
             DataTypes.Goodbye,
-            DataTypes.NodesList,
             DataTypes.StatusUpdate,
             DataTypes.NicknameUpdate
         };
@@ -31,21 +30,6 @@ namespace Lanchat.Core
                 case DataTypes.Goodbye:
                     node.NetworkElement.EnableReconnecting = false;
                     break;
-
-                case DataTypes.NodesList:
-                {
-                    var stringList = (List<string>) data;
-                    var list = new List<IPAddress>();
-
-                    // Convert strings to ip addresses.
-                    stringList?.ForEach(x =>
-                    {
-                        if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
-                    });
-
-                    node.OnNodesListReceived(list);
-                    break;
-                }
 
                 case DataTypes.StatusUpdate:
                 {
