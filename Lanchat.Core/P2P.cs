@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Lanchat.Core.Connection;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
-using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core
 {
-    public class P2P : IApiHandler
+    public class P2P
     {
-        public Broadcasting Broadcasting { get; }
-        private readonly List<Node> outgoingConnections;
+        internal readonly List<Node> OutgoingConnections = new();
+        private readonly P2PInternalHandlers p2PInternalHandlers;
         private readonly Server server;
 
         /// <summary>
@@ -22,18 +21,23 @@ namespace Lanchat.Core
         /// </summary>
         public P2P()
         {
-            outgoingConnections = new List<Node>();
+            p2PInternalHandlers = new P2PInternalHandlers(this);
 
             server = CoreConfig.UseIPv6
                 ? new Server(IPAddress.IPv6Any, CoreConfig.ServerPort)
                 : new Server(IPAddress.Any, CoreConfig.ServerPort);
 
-            server.SessionCreated += OnSessionCreated;
+            server.SessionCreated += p2PInternalHandlers.OnSessionCreated;
 
             CoreConfig.PropertyChanged += CoreConfigOnPropertyChanged;
 
             Broadcasting = new Broadcasting();
         }
+
+        /// <summary>
+        ///     Detecting nodes in network.
+        /// </summary>
+        public Broadcasting Broadcasting { get; }
 
         /// <summary>
         ///     List of connected nodes.
@@ -43,23 +47,9 @@ namespace Lanchat.Core
             get
             {
                 var nodes = new List<Node>();
-                nodes.AddRange(outgoingConnections);
+                nodes.AddRange(OutgoingConnections);
                 nodes.AddRange(server.IncomingConnections);
                 return nodes.Where(x => x.Ready).ToList();
-            }
-        }
-
-        private void CoreConfigOnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "Nickname":
-                    Nodes.ForEach(x => x.NetworkOutput.SendUserData(DataTypes.NicknameUpdate, CoreConfig.Nickname));
-                    break;
-
-                case "Status":
-                    Nodes.ForEach(x => x.NetworkOutput.SendUserData(DataTypes.StatusUpdate, CoreConfig.Status));
-                    break;
             }
         }
 
@@ -117,76 +107,32 @@ namespace Lanchat.Core
 
             var client = new Client(ipAddress, port.Value);
             var node = new Node(client);
-            node.NetworkInput.ApiHandlers.Add(this);
-            outgoingConnections.Add(node);
-            node.Connected += OnConnected;
-            node.HardDisconnect += OnHardDisconnect;
-            node.CannotConnect += OnCannotConnect;
+            node.NetworkInput.ApiHandlers.Add(new P2PApiHandlers(this));
+            OutgoingConnections.Add(node);
+            node.Connected += p2PInternalHandlers.OnConnected;
+            node.HardDisconnect += p2PInternalHandlers.OnHardDisconnect;
+            node.CannotConnect += p2PInternalHandlers.OnCannotConnect;
             ConnectionCreated?.Invoke(this, node);
             client.ConnectAsync();
         }
 
-        // Exchange nodes list
-        private void OnConnected(object sender, EventArgs e)
+        internal void OnConnectionCreated(Node e)
         {
-            var node = (Node) sender;
-            var nodesList = Nodes.Where(x => x.Id != node.Id).Select(x => x.NetworkElement.Endpoint.Address).ToList();
-            var stringList = nodesList.Select(x => x.ToString());
-            node.NetworkOutput.SendUserData(DataTypes.NodesList, stringList);
+            ConnectionCreated?.Invoke(this, e);
         }
 
-        // Send new node event after new session and wait for nodes list
-        private void OnSessionCreated(object sender, Node node)
+        private void CoreConfigOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            ConnectionCreated?.Invoke(this, node);
-            node.NetworkInput.ApiHandlers.Add(this);
-            node.Connected += OnConnected;
-        }
-
-        // Dispose node after hard disconnection
-        private void OnHardDisconnect(object sender, EventArgs e)
-        {
-            var node = (Node) sender;
-            outgoingConnections.Remove(node);
-            node.Dispose();
-        }
-
-        // Dispose when connection cannot be established
-        private void OnCannotConnect(object sender, EventArgs e)
-        {
-            var node = (Node) sender;
-            outgoingConnections.Remove(node);
-            node.Dispose();
-        }
-
-        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
-        {
-            DataTypes.NodesList
-        };
-        
-        public void Handle(DataTypes type, object data)
-        {
-            var stringList = (List<string>) data;
-            var list = new List<IPAddress>();
-            
-            // Convert strings to ip addresses.
-            stringList?.ForEach(x =>
+            switch (e.PropertyName)
             {
-                if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
-            });
-            
-            if (!CoreConfig.AutomaticConnecting) return;
-            list.ForEach(x =>
-            {
-                try
-                {
-                    Connect(x);
-                }
-                catch (Exception e)
-                {
-                    if (e is not ArgumentException) throw;
-                }
-            });
+                case "Nickname":
+                    Nodes.ForEach(x => x.NetworkOutput.SendUserData(DataTypes.NicknameUpdate, CoreConfig.Nickname));
+                    break;
+
+                case "Status":
+                    Nodes.ForEach(x => x.NetworkOutput.SendUserData(DataTypes.StatusUpdate, CoreConfig.Status));
+                    break;
+            }
         }
     }
 }

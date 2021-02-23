@@ -2,7 +2,7 @@ using System;
 
 namespace Lanchat.Core
 {
-    public interface INodeState
+    internal interface INodeState
     {
         bool Ready { get; }
         Guid Id { get; }

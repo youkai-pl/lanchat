@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Lanchat.Core.Connection;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
@@ -15,15 +14,35 @@ namespace Lanchat.Core
 {
     public class Node : IDisposable, INotifyPropertyChanged, INodeState
     {
-        public readonly Messaging Messaging;
+        /// <summary>
+        ///     Ping pong.
+        /// </summary>
         public readonly Echo Echo;
-        public readonly FileReceiver FileReceiver;
-        public readonly FileSender FileSender;
 
         internal readonly Encryptor Encryptor;
+
+        /// <summary>
+        ///     File sending.
+        /// </summary>
+        public readonly FileReceiver FileReceiver;
+
+        /// <summary>
+        ///     File receiving.
+        /// </summary>
+        public readonly FileSender FileSender;
+
+        /// <summary>
+        ///     Messages sending and receiving.
+        /// </summary>
+        public readonly Messaging Messaging;
+
+        /// <summary>
+        ///     TCP session.
+        /// </summary>
         public readonly INetworkElement NetworkElement;
-        internal readonly INetworkOutput NetworkOutput;
+
         internal readonly NetworkInput NetworkInput;
+        internal readonly INetworkOutput NetworkOutput;
 
         private string nickname;
         private string previousNickname;
@@ -56,11 +75,8 @@ namespace Lanchat.Core
             NetworkElement.DataReceived += NetworkInput.ProcessReceivedData;
             NetworkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
-            if (NetworkElement.IsSession)
-            {
-                SendHandshakeAndWait();
-            }
-            
+            if (NetworkElement.IsSession) SendHandshakeAndWait();
+
             // Check is connection established successful after timeout.
             Task.Delay(5000).ContinueWith(_ =>
             {

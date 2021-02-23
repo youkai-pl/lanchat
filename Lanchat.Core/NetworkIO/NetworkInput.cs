@@ -67,13 +67,15 @@ namespace Lanchat.Core.NetworkIO
                         return;
                     }
 
+                    Trace.WriteLine($"Node {nodeState.Id} received {json.Type}");
+
                     if (data == null)
                     {
-                        Handle(json, handler, data);
+                        handler.Handle(json.Type);
                     }
                     else if (Validate(data))
                     {
-                        Handle(json, handler, data);
+                        handler.Handle(json.Type, data);
                     }
                 }
 
@@ -97,12 +99,6 @@ namespace Lanchat.Core.NetworkIO
             }
 
             return false;
-        }
-        
-        private void Handle(Wrapper json, IApiHandler handler, object data)
-        {
-            Trace.WriteLine($"Node {nodeState.Id} received {json.Type}");
-            handler.Handle(json.Type, data);
         }
     }
 }

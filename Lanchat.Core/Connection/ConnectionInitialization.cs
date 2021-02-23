@@ -4,7 +4,7 @@ using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Connection
 {
     public class ConnectionInitialization : IApiHandler
     {
