@@ -11,46 +11,37 @@ namespace Lanchat.Terminal.UserInterface
 
         internal void ObserveNodeTransfers(FileReceiver fileReceiver, FileSender fileSender)
         {
-            fileSender.FileTransferRequestAccepted += (_, _) =>
+            fileReceiver.PropertyChanged += (_, _) =>
             {
-                fileTransfersInProgress++;
-                OnPropertyChanged();
-            };
-
-            fileSender.FileTransferFinished += (_, _) =>
-            {
-                fileTransfersInProgress--;
-                OnPropertyChanged();
-            };
-
-            fileSender.FileTransferError += (_, _) =>
-            {
-                fileTransfersInProgress--;
-                OnPropertyChanged();
+                if (fileReceiver.Request != null)
+                {
+                    fileTransfersInProgress++;
+                }
+                else
+                {
+                    fileTransfersInProgress--;
+                }
+                OnPropertyChanged(nameof(Text));
             };
             
-            fileReceiver.FileTransferStarted += (_, _) =>
+            fileSender.PropertyChanged += (_, _) =>
             {
-                fileTransfersInProgress++;
-                OnPropertyChanged();
-            };
-            
-            fileReceiver.FileTransferFinished += (_, _) =>
-            {
-                fileTransfersInProgress--;
-                OnPropertyChanged();
-            };
-            
-            fileReceiver.FileTransferError += (_, _) =>
-            {
-                fileTransfersInProgress--;
-                OnPropertyChanged();
+                if (fileSender.Request != null)
+                {
+                    fileTransfersInProgress++;
+                }
+                else
+                {
+                    fileTransfersInProgress--;
+                }
+                
+                OnPropertyChanged(nameof(Text));
             };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged(string propertyName = null)
+        private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

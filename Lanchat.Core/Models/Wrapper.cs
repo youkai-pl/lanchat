@@ -17,6 +17,6 @@
         PrivateMessage,
         StatusUpdate,
         FilePart,
-        FileTransferStatus
+        FileTransferControl
     }
 }

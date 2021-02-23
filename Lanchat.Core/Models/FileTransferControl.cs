@@ -1,6 +1,6 @@
 namespace Lanchat.Core.Models
 {
-    public class FileTransferStatus
+    public class FileTransferControl
     {
         public RequestStatus RequestStatus { get; init; }
         public string FileName { get; init; }

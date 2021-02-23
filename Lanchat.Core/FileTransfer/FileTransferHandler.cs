@@ -16,15 +16,15 @@ namespace Lanchat.Core.FileTransfer
             this.fileSender = fileSender;
         }
 
-        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[] {DataTypes.FileTransferStatus};
+        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[] {DataTypes.FileTransferControl};
 
         public void Handle(DataTypes type, object data)
         {
-            var request = (FileTransferStatus)data;
+            var request = (FileTransferControl)data;
             HandleFileExchangeRequest(request);
         }
 
-        private void HandleFileExchangeRequest(FileTransferStatus request)
+        private void HandleFileExchangeRequest(FileTransferControl request)
         {
             switch (request.RequestStatus)
             {

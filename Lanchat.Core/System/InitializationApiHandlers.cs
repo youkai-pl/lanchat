@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
