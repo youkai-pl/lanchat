@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -20,7 +21,15 @@ namespace Lanchat.Terminal
             Config = Config.Load();
 
             // Load resources
-            if (Config.Language != null) CultureInfo.CurrentCulture = new CultureInfo(Config.Language);
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo(Config.Language);
+            }
+            catch
+            {
+                Trace.WriteLine($"Cannot load translation. Using default.");
+            }
+            
             Resources.Culture = CultureInfo.CurrentCulture;
 
             // Initialize p2p mode and ui
