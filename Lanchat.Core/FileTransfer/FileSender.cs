@@ -53,7 +53,7 @@ namespace Lanchat.Core.FileTransfer
             Request = new FileTransferRequest
             {
                 FilePath = path,
-                Parts = fileInfo.Length / ChunkSize
+                Parts = (fileInfo.Length + ChunkSize - 1) / ChunkSize
             };
 
             networkOutput.SendUserData(
