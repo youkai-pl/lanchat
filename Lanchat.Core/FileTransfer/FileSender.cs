@@ -48,7 +48,7 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request != null) throw new InvalidOperationException("File transfer in progress");
 
-            var fileInfo = new FileInfo(path);
+            var fileInfo = new FileInfo(Path.Combine(path));
 
             Request = new FileTransferRequest
             {
