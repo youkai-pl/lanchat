@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using Lanchat.Core.FileTransfer;
+using Lanchat.Terminal.Properties;
 
 namespace Lanchat.Terminal.UserInterface
 {
@@ -7,8 +8,8 @@ namespace Lanchat.Terminal.UserInterface
     {
         private int fileTransfersInProgress;
         private long progress;
-
-        public string Text => $"File transfers: {progress}% / {fileTransfersInProgress} ";
+        
+        public string Text => string.Format(Resources._FileTransfer, progress, fileTransfersInProgress);
 
         internal void ObserveNodeTransfers(FileReceiver fileReceiver, FileSender fileSender)
         {

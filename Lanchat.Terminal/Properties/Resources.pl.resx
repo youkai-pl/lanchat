@@ -23,7 +23,8 @@ connect   disconnect
 list      nickname     m
 block     unblock      blocked
 afk       dnd          online
-exit      ping         help
+exit      help
+send      accept       reject
             
 Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     </value>
@@ -142,5 +143,8 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     </data>
     <data name="_FileTransferFinished" xml:space="preserve">
         <value>Wymiania plików z {0} zakończona</value>
+    </data>
+    <data name="_FileTransfer" xml:space="preserve">
+        <value>Wymiana plików: {0}% / {1}</value>
     </data>
 </root>
