@@ -40,12 +40,14 @@ stages:
           command: 'publish'
           publishWebProjects: false
           projects: 'Lanchat.Terminal/Lanchat.Terminal.csproj'
+          modifyOutputPath: false
           arguments: '-c Release -p:PublishSingleFile=true --self-contained true -r win-x86 -o $(Build.ArtifactStagingDirectory)/Terminal/win-x86'
       - task: DotNetCoreCLI@2
         inputs:
           command: 'publish'
           publishWebProjects: false
           projects: 'Lanchat.Terminal/Lanchat.Terminal.csproj'
+          modifyOutputPath: false
           arguments: '-c Release -p:PublishSingleFile=true --self-contained true -r win-x64 -o $(Build.ArtifactStagingDirectory)/Terminal/win-x64'
       - task: PublishBuildArtifacts@1
         inputs:
