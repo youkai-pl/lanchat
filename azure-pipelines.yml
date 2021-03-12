@@ -4,19 +4,34 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-steps:
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '**/*.csproj'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: '**/*Tests.csproj'
+stages:
+  - stage: Build and test
+    jobs:
+    - job: Build
+      steps:
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'build'
+          projects: '**/*.csproj'
+    - job: Test
+      steps:
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'test'
+          projects: '**/*Tests.csproj'
     
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '.'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+  - stage: Publish core package
+    jobs:
+      - job: Pack
+        steps:
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: 'pack'
+            packagesToPack: 'Lanchat.Core/Lanchat.Core.csproj'
+            packDirectory: '$(Build.ArtifactStagingDirectory)/Core'
+            versioningScheme: 'off'
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)/Core'
+            ArtifactName: 'Core'
+            publishLocation: 'Container'
