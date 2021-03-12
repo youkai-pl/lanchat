@@ -5,7 +5,7 @@ pool:
   vmImage: 'windows-latest'
 
 stages:
-  - stage: Build and test
+  - stage: Test
     jobs:
     - job: Build
       steps:
@@ -20,7 +20,7 @@ stages:
           command: 'test'
           projects: '**/*Tests.csproj'
     
-  - stage: Publish core package
+  - stage: PublishNuget
     jobs:
       - job: Pack
         steps:
