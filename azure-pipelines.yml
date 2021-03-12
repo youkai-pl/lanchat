@@ -4,34 +4,42 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-stages:
-  - stage: Test
-    jobs:
-    - job: Build
-      steps:
+jobs:
+  - job: Test
+    steps:
       - task: DotNetCoreCLI@2
         inputs:
           command: 'build'
           projects: '**/*.csproj'
-    - job: Test
-      steps:
       - task: DotNetCoreCLI@2
         inputs:
           command: 'test'
           projects: '**/*Tests.csproj'
-    
-  - stage: PublishNuget
-    jobs:
-      - job: Pack
-        steps:
-        - task: DotNetCoreCLI@2
-          inputs:
-            command: 'pack'
-            packagesToPack: 'Lanchat.Core/Lanchat.Core.csproj'
-            packDirectory: '$(Build.ArtifactStagingDirectory)/Core'
-            versioningScheme: 'off'
-        - task: PublishBuildArtifacts@1
-          inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)/Core'
-            ArtifactName: 'Core'
-            publishLocation: 'Container'
+
+  - job: PackCore
+    steps:
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'pack'
+          packagesToPack: 'Lanchat.Core/Lanchat.Core.csproj'
+          packDirectory: '$(Build.ArtifactStagingDirectory)/Core'
+          versioningScheme: 'off'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/Core'
+          ArtifactName: 'Core'
+          publishLocation: 'Container'
+
+  - job: PackTerminal
+    steps:
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: 'Lanchat.Terminal/Lanchat.Terminal.csproj'
+        arguments: '-c Release -p:PublishSingleFile=true --self-contained true -r win-x86 -o $(Build.ArtifactStagingDirectory)/Terminal'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/Terminal'
+        ArtifactName: 'Terminal'
+        publishLocation: 'Container'
