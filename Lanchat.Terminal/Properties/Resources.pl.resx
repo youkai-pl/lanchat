@@ -144,4 +144,7 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="_FileTransferFinished" xml:space="preserve">
         <value>Wymiania plików z {0} zakończona</value>
     </data>
+    <data name="_FileTransfer" xml:space="preserve">
+        <value>Wymiana plików: {0}% / {1}</value>
+    </data>
 </root>
