@@ -94,7 +94,7 @@ namespace Lanchat.Core
                 if (value == nickname) return;
                 previousNickname = nickname;
                 nickname = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Nickname));
             }
         }
 
@@ -118,7 +118,7 @@ namespace Lanchat.Core
             {
                 if (value == status) return;
                 status = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Status));
             }
         }
 
