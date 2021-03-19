@@ -8,6 +8,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using Lanchat.Core;
 using Lanchat.Core.Models;
+using Syroot.Windows.IO;
 
 namespace Lanchat.ClientCore
 {
@@ -45,7 +46,7 @@ namespace Lanchat.ClientCore
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                path =  Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE") ?? string.Empty); 
+                path = new KnownFolder(KnownFolderType.Downloads).Path;
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
