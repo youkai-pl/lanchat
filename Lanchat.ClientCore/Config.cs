@@ -22,8 +22,13 @@ namespace Lanchat.ClientCore
         private static bool _automaticConnecting;
         private static bool _useIPv6;
         private static string _language;
+        private static string _configPath;
+        private static string _dataPath;
         private int maxMessageLenght;
         private int maxNicknameLenght;
+        private bool fresh;
+        private Status status;
+        private string filesDownloadDirectory;
 
         public Config()
         {
@@ -46,10 +51,24 @@ namespace Lanchat.ClientCore
             }
         }
 
-        [JsonIgnore] public bool Fresh { get; set; }
+        [JsonIgnore]
+        public bool Fresh
+        {
+            get => fresh;
+            set => fresh = value;
+        }
 
-        public static string ConfigPath { get; private set; }
-        public static string DataPath { get; private set; }
+        public static string ConfigPath
+        {
+            get => _configPath;
+            private set => _configPath = value;
+        }
+
+        public static string DataPath
+        {
+            get => _dataPath;
+            private set => _dataPath = value;
+        }
 
         [JsonIgnore]
         public List<IPAddress> BlockedAddresses
@@ -58,7 +77,11 @@ namespace Lanchat.ClientCore
             set { BlockedAddressesList = value.Select(x => x.ToString()).ToList(); }
         }
 
-        public Status Status { get; set; }
+        public Status Status
+        {
+            get => status;
+            set => status = value;
+        }
 
         public int ServerPort
         {
@@ -107,6 +130,16 @@ namespace Lanchat.ClientCore
             {
                 _automaticConnecting = value;
                 OnPropertyChanged(nameof(AutomaticConnecting));
+            }
+        }
+
+        public string ReceivedFilesDirectory
+        {
+            get => filesDownloadDirectory;
+            set
+            {
+                filesDownloadDirectory = value;
+                OnPropertyChanged(nameof(ReceivedFilesDirectory));
             }
         }
 
@@ -206,7 +239,7 @@ namespace Lanchat.ClientCore
             }
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

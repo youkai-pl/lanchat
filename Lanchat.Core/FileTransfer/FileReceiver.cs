@@ -11,15 +11,17 @@ namespace Lanchat.Core.FileTransfer
     public class FileReceiver : IApiHandler, INotifyPropertyChanged
     {
         private readonly IBytesEncryption encryption;
+        private readonly IConfig config;
         private readonly INetworkOutput networkOutput;
         private FileTransferRequest fileTransferRequest;
 
         private FileStream writeFileStream;
 
-        internal FileReceiver(INetworkOutput networkOutput, IBytesEncryption encryption)
+        internal FileReceiver(INetworkOutput networkOutput, IBytesEncryption encryption, IConfig config)
         {
             this.networkOutput = networkOutput;
             this.encryption = encryption;
+            this.config = config;
         }
 
         /// <summary>
@@ -59,7 +61,7 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request == null) throw new InvalidOperationException("No receive request");
             Request.Accepted = true;
-            writeFileStream = new FileStream(Request.FileName, FileMode.Append);
+            writeFileStream = new FileStream(Request.FilePath , FileMode.Append);
             networkOutput.SendUserData(DataTypes.FileTransferControl, new FileTransferControl
             {
                 RequestStatus = RequestStatus.Accepted
@@ -103,7 +105,7 @@ namespace Lanchat.Core.FileTransfer
         {
             Request = new FileTransferRequest
             {
-                FilePath = MakeUnique(request.FileName),
+                FilePath = MakeUnique(Path.Combine(config.ReceivedFilesDirectory, request.FileName)),
                 Parts = request.Parts
             };
             FileTransferRequestReceived?.Invoke(this, Request);

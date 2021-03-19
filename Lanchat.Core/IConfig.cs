@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
-using System.Text.Json;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core
@@ -52,5 +51,10 @@ namespace Lanchat.Core
         ///     Enable automatic connecting to nodes from received list.
         /// </summary>
         bool AutomaticConnecting { get; set; }
+        
+        /// <summary>
+        ///     Files download directory.
+        /// </summary>
+        string ReceivedFilesDirectory { get; set; }
     }
 }

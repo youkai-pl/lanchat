@@ -57,7 +57,7 @@ namespace Lanchat.Core
             NetworkOutput = new NetworkOutput(NetworkElement, this);
             Encryptor = new Encryptor();
             Messaging = new Messaging(NetworkOutput, Encryptor);
-            FileReceiver = new FileReceiver(NetworkOutput, Encryptor);
+            FileReceiver = new FileReceiver(NetworkOutput, Encryptor, config);
             FileSender = new FileSender(NetworkOutput, Encryptor);
 
             NetworkInput = new NetworkInput(this);

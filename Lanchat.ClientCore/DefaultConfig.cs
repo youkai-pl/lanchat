@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using Lanchat.Core;
 using Lanchat.Core.Models;
 
@@ -19,6 +23,7 @@ namespace Lanchat.ClientCore
         public int MaxMessageLenght { get; set; } = 1500;
         public int MaxNicknameLenght { get; set; } = 20;
         public bool AutomaticConnecting { get; set; } = true;
+        public string ReceivedFilesDirectory { get; set; } = GetDownloadsDirectory();
 
         public Config GetDefaultConfig()
         {
@@ -27,6 +32,31 @@ namespace Lanchat.ClientCore
             config.Language = "default";
             config.Fresh = true;
             return config;
+        }
+
+        private static string GetDownloadsDirectory()
+        {
+            var path = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
+            
+            if (path != null)
+            {
+                return path;
+            }
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                path =  Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE") ?? string.Empty); 
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                path = Environment.GetEnvironmentVariable("HOME") + "/Downloads";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                path = Environment.GetEnvironmentVariable("HOME") + "/Downloads";
+            }
+
+            return path;
         }
         
         private static void CopyPropertiesTo<T, TU>(T source, TU dest)
