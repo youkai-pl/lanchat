@@ -7,10 +7,12 @@ namespace Lanchat.Core.System
     internal class P2PInternalHandlers
     {
         private readonly P2P network;
+        private readonly IConfig config;
 
-        internal P2PInternalHandlers(P2P network)
+        internal P2PInternalHandlers(P2P network, IConfig config)
         {
             this.network = network;
+            this.config = config;
         }
 
         // Dispose node after hard disconnection
@@ -43,7 +45,7 @@ namespace Lanchat.Core.System
         internal void OnSessionCreated(object sender, Node node)
         {
             network.OnConnectionCreated(node);
-            node.NetworkInput.ApiHandlers.Add(new P2PApiHandlers(network));
+            node.NetworkInput.ApiHandlers.Add(new P2PApiHandlers(network, config));
             node.Connected += OnConnected;
         }
     }

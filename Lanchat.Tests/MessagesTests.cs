@@ -1,3 +1,4 @@
+using Lanchat.ClientCore;
 using Lanchat.Core;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
@@ -14,11 +15,12 @@ namespace Lanchat.Tests
         private NetworkMock networkMock;
         private Messaging messaging;
         private Encryptor encryptor;
+        private IConfig config;
 
         [SetUp]
         public void Setup()
         {
-            CoreConfig.MaxMessageLenght = 5;
+            config = new Config {MaxMessageLenght = 5};
             var nodeState = new NodeState();
 
             encryptor = new Encryptor();
@@ -28,7 +30,7 @@ namespace Lanchat.Tests
             networkOutput = new NetworkOutput(networkMock, nodeState);
             messaging = new Messaging(networkOutput, encryptor);
             networkInput = new NetworkInput(nodeState);
-            networkInput.ApiHandlers.Add(new MessagingApiHandlers(messaging));
+            networkInput.ApiHandlers.Add(new MessagingApiHandlers(messaging, config));
         }
 
         [Test]
@@ -86,7 +88,7 @@ namespace Lanchat.Tests
         [Test]
         public void WeirdText()
         {
-            CoreConfig.MaxMessageLenght = 150;
+            config.MaxMessageLenght = 150;
             var testMessage = "ẗ̴̝̱̦̝͉͉̬̩̙́̎e̷̡̧̡̢̮̩͓̯̞̼̖̜̥̭̣̙͕̲̳̰̱̾̈͗̉̈́͐́̿̿̕ş̵̡̣̣̳̺̘̲̦͕̣̹̯̰̘̟̰͕̗̰̦͍̩̩̱̩͖̖͍̈́̊͆̾̀̄̾͐̈̈̍̃̔̉̋̐̔͒̒̍̎̇̏͌̑̚͜t̴͙̭̠͇̹̫͇̗̥̗͍̀̒̈́́͑̈́̃͌̽̈́̏̈̉͘̕̚͜͝ͅͅ";
             var receivedMessage = string.Empty;
             

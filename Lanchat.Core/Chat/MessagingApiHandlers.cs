@@ -9,9 +9,11 @@ namespace Lanchat.Core.Chat
     internal class MessagingApiHandlers : IApiHandler
     {
         private readonly Messaging messaging;
+        private readonly IConfig config;
 
-        internal MessagingApiHandlers(Messaging messaging)
+        internal MessagingApiHandlers(Messaging messaging, IConfig config)
         {
+            this.config = config;
             this.messaging = messaging;
         }
 
@@ -29,11 +31,11 @@ namespace Lanchat.Core.Chat
                 switch (type)
                 {
                     case DataTypes.Message:
-                        messaging.OnMessageReceived(decryptedMessage.Truncate(CoreConfig.MaxMessageLenght));
+                        messaging.OnMessageReceived(decryptedMessage.Truncate(config.MaxMessageLenght));
                         break;
 
                     case DataTypes.PrivateMessage:
-                        messaging.OnPrivateMessageReceived(decryptedMessage.Truncate(CoreConfig.MaxMessageLenght));
+                        messaging.OnPrivateMessageReceived(decryptedMessage.Truncate(config.MaxMessageLenght));
                         break;
                 }
             }

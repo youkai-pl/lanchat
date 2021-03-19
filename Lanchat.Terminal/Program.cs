@@ -35,7 +35,7 @@ namespace Lanchat.Terminal
             try
             {
                 Ui.Start();
-                Network = new P2P();
+                Network = new P2P(Config);
                 Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
 
                 // Initialize server

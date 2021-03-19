@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Lanchat.Core.Models;
 using Lanchat.Core.System;
 
@@ -22,7 +23,13 @@ namespace Lanchat.Core.NetworkIO
         internal NetworkInput(INodeState nodeState)
         {
             this.nodeState = nodeState;
-            serializerOptions = CoreConfig.JsonSerializerOptions;
+            serializerOptions = new JsonSerializerOptions
+            {
+                Converters =
+                {
+                    new JsonStringEnumConverter()
+                }
+            };
         }
 
         internal void ProcessReceivedData(object sender, string dataString)
@@ -88,12 +95,12 @@ namespace Lanchat.Core.NetworkIO
                         ex is not NullReferenceException) throw;
                 }
         }
-        
+
         private bool Validate(object data)
         {
             var results = new List<ValidationResult>();
             if (Validator.TryValidateObject(data, new ValidationContext(data), results, true)) return true;
-            
+
             foreach (var e in results)
             {
                 Trace.WriteLine($"Node {nodeState.Id} received invalid data: {e}");

@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Lanchat.Core;
+using Lanchat.Core.Models;
 
 namespace Lanchat.ClientCore
 {
-    public class Config
+    public class Config : IConfig
     {
         private static int _port;
         private static int _broadcastPort;
@@ -20,24 +23,33 @@ namespace Lanchat.ClientCore
         private static bool _useIPv6;
         private static string _language;
 
-        public List<string> BlockedAddresses
+        public Config()
         {
-            get => _blockedAddresses;
-            set
-            {
-                _blockedAddresses = value;
-                CoreConfig.BlockedAddresses = _blockedAddresses.Select(IPAddress.Parse).ToList();
-            }
+            PropertyChanged += (_, _) => { Save(); };
         }
 
-        public int Port
+        public List<string> BlockedAddressesList
+        {
+            get => _blockedAddresses;
+            set { _blockedAddresses = value.Select(x => x.ToString()).ToList(); }
+        }
+
+        [JsonIgnore]
+        public List<IPAddress> BlockedAddresses
+        {
+            get => BlockedAddressesList.Select(IPAddress.Parse).ToList();
+            set { BlockedAddressesList = value.Select(x => x.ToString()).ToList(); }
+        }
+
+        public Status Status { get; set; }
+
+        public int ServerPort
         {
             get => _port;
             set
             {
                 _port = value;
-                CoreConfig.ServerPort = value;
-                Save();
+                OnPropertyChanged(nameof(ServerPort));
             }
         }
 
@@ -47,8 +59,7 @@ namespace Lanchat.ClientCore
             set
             {
                 _broadcastPort = value;
-                CoreConfig.BroadcastPort = value;
-                Save();
+                OnPropertyChanged(nameof(BroadcastPort));
             }
         }
 
@@ -58,10 +69,11 @@ namespace Lanchat.ClientCore
             set
             {
                 _nickname = value;
-                CoreConfig.Nickname = value;
-                Save();
+                OnPropertyChanged(nameof(Nickname));
             }
         }
+
+        public int MaxNicknameLenght { get; set; }
 
         public bool AutomaticConnecting
         {
@@ -69,8 +81,7 @@ namespace Lanchat.ClientCore
             set
             {
                 _automaticConnecting = value;
-                CoreConfig.AutomaticConnecting = value;
-                Save();
+                OnPropertyChanged(nameof(AutomaticConnecting));
             }
         }
 
@@ -80,10 +91,11 @@ namespace Lanchat.ClientCore
             set
             {
                 _useIPv6 = value;
-                CoreConfig.UseIPv6 = value;
-                Save();
+                OnPropertyChanged(nameof(UseIPv6));
             }
         }
+
+        public int MaxMessageLenght { get; set; }
 
         public string Language
         {
@@ -91,7 +103,7 @@ namespace Lanchat.ClientCore
             set
             {
                 _language = value;
-                Save();
+                OnPropertyChanged(nameof(Language));
             }
         }
 
@@ -103,16 +115,16 @@ namespace Lanchat.ClientCore
         public void AddBlocked(IPAddress ipAddress)
         {
             var ipString = ipAddress.ToString();
-            if (BlockedAddresses.Contains(ipString)) return;
-            BlockedAddresses.Add(ipString);
-            CoreConfig.BlockedAddresses.Add(ipAddress);
+            if (BlockedAddressesList.Contains(ipString)) return;
+            BlockedAddressesList.Add(ipString);
+            BlockedAddresses.Add(ipAddress);
             Save();
         }
 
         public void RemoveBlocked(IPAddress ipAddress)
         {
-            BlockedAddresses.Remove(ipAddress.ToString());
-            CoreConfig.BlockedAddresses.Remove(ipAddress);
+            BlockedAddressesList.Remove(ipAddress.ToString());
+            BlockedAddresses.Remove(ipAddress);
             Save();
         }
 
@@ -155,14 +167,15 @@ namespace Lanchat.ClientCore
 
                 config = new Config
                 {
-                    Port = 3645,
+                    ServerPort = 3645,
                     BroadcastPort = 3646,
-                    BlockedAddresses = new List<string>(),
+                    BlockedAddresses = new List<IPAddress>(),
                     Nickname = NicknamesGenerator.GimmeNickname(),
                     AutomaticConnecting = true,
                     UseIPv6 = false,
                     Language = "default",
-                    Fresh = true
+                    Fresh = true,
+                    Status = Status.Online
                 };
                 config.Save();
             }
@@ -177,12 +190,21 @@ namespace Lanchat.ClientCore
                 var configFileDirectory = Path.GetDirectoryName(ConfigPath);
                 if (!Directory.Exists(configFileDirectory)) Directory.CreateDirectory(configFileDirectory!);
                 File.WriteAllText(ConfigPath,
-                    JsonSerializer.Serialize(this, new JsonSerializerOptions {WriteIndented = true}));
+                    JsonSerializer.Serialize(this,
+                        new JsonSerializerOptions
+                            {WriteIndented = true, Converters = {new JsonStringEnumConverter()}}));
             }
             catch (Exception e)
             {
                 if (!(e is DirectoryNotFoundException) && !(e is UnauthorizedAccessException)) throw;
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -9,10 +9,12 @@ namespace Lanchat.Core.System
     internal class NodeApiHandlers : IApiHandler
     {
         private readonly Node node;
+        private readonly IConfig config;
 
-        internal NodeApiHandlers(Node node)
+        internal NodeApiHandlers(Node node, IConfig config)
         {
             this.node = node;
+            this.config = config;
         }
 
         public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
@@ -39,7 +41,7 @@ namespace Lanchat.Core.System
                 case DataTypes.NicknameUpdate:
                 {
                     var newNickname = data.ToString();
-                    node.Nickname = newNickname.Truncate(CoreConfig.MaxNicknameLenght);
+                    node.Nickname = newNickname.Truncate(config.MaxNicknameLenght);
                     break;
                 }
             }

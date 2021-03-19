@@ -9,13 +9,17 @@ namespace Lanchat.Core.Network
 {
     internal class Server : TcpServer
     {
+        private readonly IConfig config;
+
         /// <summary>
         ///     Create server.
         /// </summary>
         /// <param name="address">Listening IP</param>
         /// <param name="port">Listening port</param>
-        internal Server(IPAddress address, int port) : base(address, port)
+        /// <param name="config">Lanchat config.</param>
+        internal Server(IPAddress address, int port, IConfig config) : base(address, port)
         {
+            this.config = config;
             OptionDualMode = true;
             IncomingConnections = new List<Node>();
         }
@@ -42,14 +46,14 @@ namespace Lanchat.Core.Network
 
             session.Connected += (_, _) =>
             {
-                if (CoreConfig.BlockedAddresses.Contains(session.Endpoint.Address))
+                if (config.BlockedAddresses.Contains(session.Endpoint.Address))
                 {
                     Trace.WriteLine($"Connection from {session.Endpoint.Address} blocked");
                     session.Close();
                 }
                 else
                 {
-                    var node = new Node(session);
+                    var node = new Node(session, config);
                     IncomingConnections.Add(node);
                     node.HardDisconnect += OnHardDisconnected;
                     SessionCreated?.Invoke(this, node);

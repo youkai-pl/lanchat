@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 using Lanchat.Core.System;
@@ -18,7 +19,13 @@ namespace Lanchat.Core.NetworkIO
         {
             this.networkElement = networkElement;
             this.nodeState = nodeState;
-            serializerOptions = CoreConfig.JsonSerializerOptions;
+            serializerOptions = new JsonSerializerOptions
+            {
+                Converters =
+                {
+                    new JsonStringEnumConverter()
+                }
+            };
         }
 
         public void SendUserData(DataTypes dataType, object content = null)

@@ -9,10 +9,12 @@ namespace Lanchat.Core.System
     internal class P2PApiHandlers : IApiHandler
     {
         private readonly P2P network;
+        private readonly IConfig config;
 
-        internal P2PApiHandlers(P2P network)
+        internal P2PApiHandlers(P2P network, IConfig config)
         {
             this.network = network;
+            this.config = config;
         }
         
         public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
@@ -31,7 +33,7 @@ namespace Lanchat.Core.System
                 if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
             });
             
-            if (!CoreConfig.AutomaticConnecting) return;
+            if (!config.AutomaticConnecting) return;
             list.ForEach(x =>
             {
                 try

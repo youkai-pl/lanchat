@@ -43,14 +43,16 @@ namespace Lanchat.Core
         private string nickname;
         private string previousNickname;
         private Status status;
-
+        private readonly IConfig config;
 
         /// <summary>
         ///     Initialize node.
         /// </summary>
         /// <param name="networkElement">TCP client or session.</param>
-        public Node(INetworkElement networkElement)
+        /// <param name="config">Lanchat config.</param>
+        public Node(INetworkElement networkElement, IConfig config)
         {
+            this.config = config;
             NetworkElement = networkElement;
             NetworkOutput = new NetworkOutput(NetworkElement, this);
             Encryptor = new Encryptor();
@@ -59,9 +61,9 @@ namespace Lanchat.Core
             FileSender = new FileSender(NetworkOutput, Encryptor);
 
             NetworkInput = new NetworkInput(this);
-            NetworkInput.ApiHandlers.Add(new InitializationApiHandlers(this));
-            NetworkInput.ApiHandlers.Add(new NodeApiHandlers(this));
-            NetworkInput.ApiHandlers.Add(new MessagingApiHandlers(Messaging));
+            NetworkInput.ApiHandlers.Add(new InitializationApiHandlers(this, config));
+            NetworkInput.ApiHandlers.Add(new NodeApiHandlers(this, config));
+            NetworkInput.ApiHandlers.Add(new MessagingApiHandlers(Messaging, config));
             NetworkInput.ApiHandlers.Add(FileReceiver);
             NetworkInput.ApiHandlers.Add(new FileTransferHandler(FileReceiver, FileSender));
 
@@ -208,8 +210,8 @@ namespace Lanchat.Core
         {
             var handshake = new Handshake
             {
-                Nickname = CoreConfig.Nickname,
-                Status = CoreConfig.Status,
+                Nickname = config.Nickname,
+                Status = config.Status,
                 PublicKey = Encryptor.ExportPublicKey()
             };
 

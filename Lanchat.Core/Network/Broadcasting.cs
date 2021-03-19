@@ -17,9 +17,11 @@ namespace Lanchat.Core.Network
 {
     public class Broadcasting
     {
+        private readonly IConfig config;
         private readonly IPEndPoint endPoint;
         private readonly UdpClient udpClient;
         private readonly string uniqueId;
+        
         public ObservableCollection<Broadcast> DetectedNodes { get; } = new();
 
         /// <summary>
@@ -32,16 +34,17 @@ namespace Lanchat.Core.Network
         /// </summary>
         public event EventHandler<Broadcast> DetectedNodeDisappeared;
 
-        internal Broadcasting()
+        internal Broadcasting(IConfig config)
         {
+            this.config = config;
             uniqueId = Guid.NewGuid().ToString();
-            endPoint = new IPEndPoint(IPAddress.Broadcast, CoreConfig.BroadcastPort);
+            endPoint = new IPEndPoint(IPAddress.Broadcast, config.BroadcastPort);
             udpClient = new UdpClient();
         }
 
         internal void Start()
         {
-            udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, CoreConfig.BroadcastPort));
+            udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, config.BroadcastPort));
             var from = new IPEndPoint(0, 0);
             Task.Run(() =>
             {
@@ -54,7 +57,7 @@ namespace Lanchat.Core.Network
                         if (broadcast != null && broadcast.Guid != uniqueId)
                         {
                             broadcast.IpAddress = from.Address;
-                            broadcast.Nickname = broadcast.Nickname.Truncate(CoreConfig.MaxNicknameLenght);
+                            broadcast.Nickname = broadcast.Nickname.Truncate(config.MaxNicknameLenght);
                             BroadcastReceived(broadcast);
                         }
                     }
@@ -79,7 +82,7 @@ namespace Lanchat.Core.Network
                     var json = JsonSerializer.Serialize(new Broadcast
                     {
                         Guid = uniqueId,
-                        Nickname = CoreConfig.Nickname
+                        Nickname = config.Nickname
                     });
 
                     var data = Encoding.UTF8.GetBytes(json);

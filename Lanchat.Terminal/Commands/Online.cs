@@ -11,7 +11,7 @@ namespace Lanchat.Terminal.Commands
 
         public void Execute(string[] _)
         {
-            CoreConfig.Status = Status.Online;
+            Program.Config.Status = Status.Online;
             Ui.Status.Text = "Online";
         }
     }
