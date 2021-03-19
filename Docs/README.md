@@ -2,7 +2,7 @@
 
 Encrypted, P2P, local network chat. 
 
-[API documentation](https://github.com/tofudd/lanchat/blob/master/Docs/API.md)
+[Documentation](https://github.com/tofudd/lanchat/wiki)
 
 ## Get Lanchat
 

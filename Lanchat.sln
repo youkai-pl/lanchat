@@ -6,11 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BF31E0ED-CF80-43B3-8D9E-EA3124B41056}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		azure-pipelines.yml = azure-pipelines.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{4A81DEED-94C6-424D-93D6-65CB8C0C0F81}"
 	ProjectSection(SolutionItems) = preProject
-		Docs\API.md = Docs\API.md
 		Docs\README.md = Docs\README.md
 		LICENSE = LICENSE
 	EndProjectSection
@@ -18,8 +18,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lanchat.Core", "Lanchat.Core\Lanchat.Core.csproj", "{AA294C4F-B22C-4203-A706-F07CB153BD5F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lanchat.Terminal", "Lanchat.Terminal\Lanchat.Terminal.csproj", "{3F4D450D-F8D2-43D1-9CC1-1B376957743C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lanchat.Gtk", "Lanchat.Gtk\Lanchat.Gtk.csproj", "{9CED36F2-C092-4DE9-A3AE-9C9E52AAC02C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lanchat.ClientCore", "Lanchat.ClientCore\Lanchat.ClientCore.csproj", "{FB1A7A28-00AD-4D59-B141-A127181714D0}"
 EndProject
@@ -39,10 +37,6 @@ Global
 		{3F4D450D-F8D2-43D1-9CC1-1B376957743C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F4D450D-F8D2-43D1-9CC1-1B376957743C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F4D450D-F8D2-43D1-9CC1-1B376957743C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9CED36F2-C092-4DE9-A3AE-9C9E52AAC02C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9CED36F2-C092-4DE9-A3AE-9C9E52AAC02C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9CED36F2-C092-4DE9-A3AE-9C9E52AAC02C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9CED36F2-C092-4DE9-A3AE-9C9E52AAC02C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB1A7A28-00AD-4D59-B141-A127181714D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FB1A7A28-00AD-4D59-B141-A127181714D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB1A7A28-00AD-4D59-B141-A127181714D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
