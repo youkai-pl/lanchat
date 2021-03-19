@@ -22,6 +22,8 @@ namespace Lanchat.ClientCore
         private static bool _automaticConnecting;
         private static bool _useIPv6;
         private static string _language;
+        private int maxMessageLenght;
+        private int maxNicknameLenght;
 
         public Config()
         {
@@ -33,6 +35,21 @@ namespace Lanchat.ClientCore
             get => _blockedAddresses;
             set { _blockedAddresses = value.Select(x => x.ToString()).ToList(); }
         }
+
+        public string Language
+        {
+            get => _language;
+            set
+            {
+                _language = value;
+                OnPropertyChanged(nameof(Language));
+            }
+        }
+
+        [JsonIgnore] public bool Fresh { get; set; }
+
+        public static string ConfigPath { get; private set; }
+        public static string DataPath { get; private set; }
 
         [JsonIgnore]
         public List<IPAddress> BlockedAddresses
@@ -73,7 +90,15 @@ namespace Lanchat.ClientCore
             }
         }
 
-        public int MaxNicknameLenght { get; set; }
+        public int MaxNicknameLenght
+        {
+            get => maxNicknameLenght;
+            set
+            {
+                maxNicknameLenght = value;
+                OnPropertyChanged(nameof(MaxNicknameLenght));
+            }
+        }
 
         public bool AutomaticConnecting
         {
@@ -95,22 +120,17 @@ namespace Lanchat.ClientCore
             }
         }
 
-        public int MaxMessageLenght { get; set; }
-
-        public string Language
+        public int MaxMessageLenght
         {
-            get => _language;
+            get => maxMessageLenght;
             set
             {
-                _language = value;
-                OnPropertyChanged(nameof(Language));
+                maxMessageLenght = value;
+                OnPropertyChanged(nameof(MaxMessageLenght));
             }
         }
 
-        [JsonIgnore] public bool Fresh { get; set; }
-
-        public static string ConfigPath { get; private set; }
-        public static string DataPath { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public void AddBlocked(IPAddress ipAddress)
         {
@@ -157,7 +177,7 @@ namespace Lanchat.ClientCore
                     ConfigPath = $"{DataPath}/config.json";
                 }
 
-                config = JsonSerializer.Deserialize<Config>(File.ReadAllText(ConfigPath));
+                config = JsonSerializer.Deserialize<Config>(File.ReadAllText(ConfigPath), JsonSerializerOptions);
             }
             catch (Exception e)
             {
@@ -165,18 +185,7 @@ namespace Lanchat.ClientCore
                     !(e is DirectoryNotFoundException) &&
                     !(e is JsonException)) throw;
 
-                config = new Config
-                {
-                    ServerPort = 3645,
-                    BroadcastPort = 3646,
-                    BlockedAddresses = new List<IPAddress>(),
-                    Nickname = NicknamesGenerator.GimmeNickname(),
-                    AutomaticConnecting = true,
-                    UseIPv6 = false,
-                    Language = "default",
-                    Fresh = true,
-                    Status = Status.Online
-                };
+                config = new DefaultConfig().GetDefaultConfig();
                 config.Save();
             }
 
@@ -189,10 +198,7 @@ namespace Lanchat.ClientCore
             {
                 var configFileDirectory = Path.GetDirectoryName(ConfigPath);
                 if (!Directory.Exists(configFileDirectory)) Directory.CreateDirectory(configFileDirectory!);
-                File.WriteAllText(ConfigPath,
-                    JsonSerializer.Serialize(this,
-                        new JsonSerializerOptions
-                            {WriteIndented = true, Converters = {new JsonStringEnumConverter()}}));
+                File.WriteAllText(ConfigPath, JsonSerializer.Serialize(this, JsonSerializerOptions));
             }
             catch (Exception e)
             {
@@ -200,11 +206,19 @@ namespace Lanchat.ClientCore
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private static JsonSerializerOptions JsonSerializerOptions =>
+            new()
+            {
+                WriteIndented = true,
+                Converters =
+                {
+                    new JsonStringEnumConverter()
+                }
+            };
     }
 }

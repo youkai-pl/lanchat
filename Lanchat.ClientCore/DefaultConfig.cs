@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Net;
 using Lanchat.Core;
 using Lanchat.Core.Models;
 
 namespace Lanchat.ClientCore
 {
-    public abstract class DefaultConfig : IConfig
+    public class DefaultConfig : IConfig
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public string Nickname { get; set; } = NicknamesGenerator.GimmeNickname();
@@ -18,5 +19,33 @@ namespace Lanchat.ClientCore
         public int MaxMessageLenght { get; set; } = 1500;
         public int MaxNicknameLenght { get; set; } = 20;
         public bool AutomaticConnecting { get; set; } = true;
+
+        public Config GetDefaultConfig()
+        {
+            var config = new Config();
+            CopyPropertiesTo(this, config);
+            config.Language = "default";
+            config.Fresh = true;
+            return config;
+        }
+        
+        private static void CopyPropertiesTo<T, TU>(T source, TU dest)
+        {
+            var sourceProps = typeof (T).GetProperties().Where(x => x.CanRead).ToList();
+            var destProps = typeof(TU).GetProperties()
+                .Where(x => x.CanWrite)
+                .ToList();
+
+            foreach (var sourceProp in sourceProps)
+            {
+                if (destProps.All(x => x.Name != sourceProp.Name)) continue;
+                {
+                    var p = destProps.First(x => x.Name == sourceProp.Name);
+                    if(p.CanWrite) {
+                        p.SetValue(dest, sourceProp.GetValue(source, null), null);
+                    }
+                }
+            }
+        }
     }
 }
