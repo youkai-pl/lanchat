@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
@@ -36,7 +38,7 @@ namespace Lanchat.Core.NetworkIO
 
         public void SendSystemData(DataTypes dataType, object content = null)
         {
-            var data = new Wrapper {Type = dataType, Data = content};
+            var data = new Dictionary<string, string> {{dataType.ToString(), JsonSerializer.Serialize(content, serializerOptions)}};
             networkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
     }

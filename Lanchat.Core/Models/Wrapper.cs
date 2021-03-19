@@ -4,6 +4,8 @@
     {
         public DataTypes Type { get; set; }
         public object Data { get; set; }
+        
+        
     }
 
     public enum DataTypes

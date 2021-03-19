@@ -43,8 +43,11 @@ namespace Lanchat.Core.NetworkIO
             foreach (var item in currentJson.Replace("}{", "}|{").Split('|'))
                 try
                 {
-                    var json = JsonSerializer.Deserialize<Wrapper>(item, serializerOptions);
-
+                    var json = JsonSerializer.Deserialize<Dictionary<string, string>>(item, serializerOptions);
+                    var jsonType = json.Keys.First();
+                    var jsonValue = json.Values.First();
+                    var parsedType = Enum.Parse<DataTypes>(jsonType);
+                    
                     if (json == null)
                     {
                         Trace.WriteLine($"Node {nodeState.Id} received empty data.");
@@ -52,38 +55,38 @@ namespace Lanchat.Core.NetworkIO
                     }
 
                     // If node isn't ready ignore every messages except handshake and key info.
-                    if (!nodeState.Ready && json.Type != DataTypes.Handshake && json.Type != DataTypes.KeyInfo) return;
+                    if (!nodeState.Ready && parsedType != DataTypes.Handshake && parsedType != DataTypes.KeyInfo) return;
 
                     var assemblyQualifiedName =
-                        Assembly.CreateQualifiedName("Lanchat.Core", $"Lanchat.Core.Models.{json.Type.ToString()}");
+                        Assembly.CreateQualifiedName("Lanchat.Core", $"Lanchat.Core.Models.{jsonType}");
                     var type = Type.GetType(assemblyQualifiedName);
 
                     var data = type == null
-                        ? json.Data.ToString()
-                        : JsonSerializer.Deserialize(json.Data.ToString() ?? string.Empty, type, serializerOptions);
+                        ? jsonValue
+                        : JsonSerializer.Deserialize(jsonValue ?? string.Empty, type, serializerOptions);
 
-                    if (json.Type == DataTypes.NodesList)
+                    if (parsedType == DataTypes.NodesList)
                     {
-                        data = JsonSerializer.Deserialize(json.Data.ToString() ?? string.Empty, typeof(List<string>),
+                        data = JsonSerializer.Deserialize(jsonValue ?? string.Empty, typeof(List<string>),
                             serializerOptions);
                     }
 
-                    var handler = ApiHandlers.FirstOrDefault(x => x.HandledDataTypes.Contains(json.Type));
+                    var handler = ApiHandlers.FirstOrDefault(x => x.HandledDataTypes.Contains(parsedType));
                     if (handler == null)
                     {
                         Trace.WriteLine($"Node {nodeState.Id} received data of unknown type.");
                         return;
                     }
 
-                    Trace.WriteLine($"Node {nodeState.Id} received {json.Type}");
+                    Trace.WriteLine($"Node {nodeState.Id} received {parsedType}");
 
                     if (data == null)
                     {
-                        handler.Handle(json.Type);
+                        handler.Handle(parsedType);
                     }
                     else if (Validate(data))
                     {
-                        handler.Handle(json.Type, data);
+                        handler.Handle(parsedType, data);
                     }
                 }
 
