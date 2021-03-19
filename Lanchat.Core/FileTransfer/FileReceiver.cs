@@ -38,12 +38,12 @@ namespace Lanchat.Core.FileTransfer
             }
         }
 
-        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
+        public IEnumerable<Type> HandledDataTypes { get; } = new[]
         {
-            DataTypes.FilePart
+            typeof(FilePart)
         };
 
-        public void Handle(DataTypes type, object data)
+        public void Handle(Type type, object data)
         {
             var binary = (FilePart) data;
             HandleReceivedFilePart(binary);
@@ -62,7 +62,7 @@ namespace Lanchat.Core.FileTransfer
             if (Request == null) throw new InvalidOperationException("No receive request");
             Request.Accepted = true;
             writeFileStream = new FileStream(Request.FilePath , FileMode.Append);
-            networkOutput.SendUserData(DataTypes.FileTransferControl, new FileTransferControl
+            networkOutput.SendUserData(new FileTransferControl
             {
                 RequestStatus = RequestStatus.Accepted
             });
@@ -76,7 +76,7 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request == null) throw new InvalidOperationException("No receive request");
             Request = null;
-            networkOutput.SendUserData(DataTypes.FileTransferControl, new FileTransferControl
+            networkOutput.SendUserData(new FileTransferControl
             {
                 RequestStatus = RequestStatus.Rejected
             });
@@ -89,7 +89,6 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request == null) throw new InvalidOperationException("No receive request");
             networkOutput.SendUserData(
-                DataTypes.FileTransferControl,
                 new FileTransferControl
                 {
                     RequestStatus = RequestStatus.Canceled

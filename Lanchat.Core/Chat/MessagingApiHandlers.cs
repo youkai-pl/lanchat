@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using Lanchat.Core.Extensions;
@@ -17,26 +18,27 @@ namespace Lanchat.Core.Chat
             this.messaging = messaging;
         }
 
-        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
+        public IEnumerable<Type> HandledDataTypes { get; } = new[]
         {
-            DataTypes.Message,
-            DataTypes.PrivateMessage
+            typeof(Message),
+            typeof(PrivateMessage)
         };
 
-        public void Handle(DataTypes type, object data)
+        public void Handle(Type type, object data)
         {
             try
             {
-                var decryptedMessage = messaging.Encryption.Decrypt((string) data);
-                switch (type)
+                if (type == typeof(Message))
                 {
-                    case DataTypes.Message:
-                        messaging.OnMessageReceived(decryptedMessage.Truncate(config.MaxMessageLenght));
-                        break;
-
-                    case DataTypes.PrivateMessage:
-                        messaging.OnPrivateMessageReceived(decryptedMessage.Truncate(config.MaxMessageLenght));
-                        break;
+                    var message = (Message) data;
+                    var decryptedMessage = messaging.Encryption.Decrypt(message.Content);
+                    messaging.OnMessageReceived(decryptedMessage.Truncate(config.MaxMessageLenght));
+                }
+                else if (type == typeof(PrivateMessage))
+                {
+                    var message = (PrivateMessage) data;
+                    var decryptedMessage = messaging.Encryption.Decrypt(message.Content);
+                    messaging.OnPrivateMessageReceived(decryptedMessage.Truncate(config.MaxMessageLenght));
                 }
             }
             catch (CryptographicException)

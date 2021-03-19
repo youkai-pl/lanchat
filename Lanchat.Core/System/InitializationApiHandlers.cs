@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Extensions;
@@ -18,17 +19,16 @@ namespace Lanchat.Core.System
             this.config = config;
         }
 
-        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
+        public IEnumerable<Type> HandledDataTypes { get; } = new[]
         {
-            DataTypes.Handshake,
-            DataTypes.KeyInfo
+            typeof(Handshake),
+            typeof(KeyInfo)
         };
 
-        public void Handle(DataTypes type, object data)
+        public void Handle(Type type, object data)
         {
-            switch (type)
-            {
-                case DataTypes.Handshake:
+            
+                if(type == typeof(Handshake))
                 {
                     if (handshakeReceived && !node.UnderReconnecting) return;
 
@@ -46,18 +46,16 @@ namespace Lanchat.Core.System
                     {
                         node.Encryptor.ImportPublicKey(handshake.PublicKey);
                         node.Status = handshake.Status;
-                        node.NetworkOutput.SendSystemData(DataTypes.KeyInfo, node.Encryptor.ExportAesKey());
+                        node.NetworkOutput.SendSystemData(node.Encryptor.ExportAesKey());
                         handshakeReceived = true;
                     }
                     catch (InvalidKeyImportException)
                     {
                         node.Dispose();
                     }
-
-                    break;
                 }
 
-                case DataTypes.KeyInfo:
+                else if (type == typeof(KeyInfo))
                 {
                     if (node.Ready) return;
                     if (!handshakeReceived) return;
@@ -75,10 +73,7 @@ namespace Lanchat.Core.System
                     {
                         node.Dispose();
                     }
-
-                    break;
                 }
-            }
         }
     }
 }

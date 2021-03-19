@@ -38,7 +38,7 @@ namespace Lanchat.Core.System
             var nodesList = network.Nodes.Where(x => x.Id != node.Id).Select(x => x.NetworkElement.Endpoint.Address)
                 .ToList();
             var stringList = nodesList.Select(x => x.ToString());
-            node.NetworkOutput.SendUserData(DataTypes.NodesList, stringList);
+            node.NetworkOutput.SendUserData(stringList);
         }
 
         // Send new node event after new session and wait for nodes list

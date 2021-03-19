@@ -17,12 +17,12 @@ namespace Lanchat.Core.System
             this.config = config;
         }
         
-        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
+        public IEnumerable<Type> HandledDataTypes { get; } = new[]
         {
-            DataTypes.NodesList
+            typeof(List<string>)
         };
         
-        public void Handle(DataTypes type, object data)
+        public void Handle(Type type, object data)
         {
             var stringList = (List<string>) data;
             var list = new List<IPAddress>();

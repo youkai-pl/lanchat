@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Lanchat.Core.Models;
@@ -16,11 +17,11 @@ namespace Lanchat.Core.FileTransfer
             this.fileSender = fileSender;
         }
 
-        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[] {DataTypes.FileTransferControl};
+        public IEnumerable<Type> HandledDataTypes { get; } = new[] {typeof(FileTransferControl)};
 
-        public void Handle(DataTypes type, object data)
+        public void Handle(Type type, object data)
         {
-            var request = (FileTransferControl)data;
+            var request = (FileTransferControl) data;
             HandleFileExchangeRequest(request);
         }
 

@@ -17,33 +17,30 @@ namespace Lanchat.Core.System
             this.config = config;
         }
 
-        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
+        public IEnumerable<Type> HandledDataTypes { get; } = new[]
         {
-            DataTypes.Goodbye,
-            DataTypes.StatusUpdate,
-            DataTypes.NicknameUpdate
+            typeof(Goodbye),
+            typeof(StatusUpdate),
+            typeof(NicknameUpdate)
         };
 
-        public void Handle(DataTypes type, object data)
+        public void Handle(Type type, object data)
         {
-            switch (type)
+            if (type == typeof(Goodbye))
             {
-                case DataTypes.Goodbye:
-                    node.NetworkElement.EnableReconnecting = false;
-                    break;
+                node.NetworkElement.EnableReconnecting = false;
+            }
 
-                case DataTypes.StatusUpdate:
-                {
-                    if (Enum.TryParse<Status>(data.ToString(), out var newStatus)) node.Status = newStatus;
-                    break;
-                }
+            else if (type == typeof(StatusUpdate))
+            {
+                var status = (StatusUpdate) data;
+                node.Status = status.NewStatus;
+            }
 
-                case DataTypes.NicknameUpdate:
-                {
-                    var newNickname = data.ToString();
-                    node.Nickname = newNickname.Truncate(config.MaxNicknameLenght);
-                    break;
-                }
+            else if (type == typeof(NicknameUpdate))
+            {
+                var newNickname = (NicknameUpdate) data;
+                node.Nickname = newNickname.NewNickname.Truncate(config.MaxNicknameLenght);
             }
         }
     }

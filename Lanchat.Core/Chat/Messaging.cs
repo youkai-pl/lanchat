@@ -32,7 +32,7 @@ namespace Lanchat.Core.Chat
         /// <param name="content">Message content.</param>
         public void SendMessage(string content)
         {
-            networkOutput.SendUserData(DataTypes.Message, Encryption.Encrypt(content));
+            networkOutput.SendUserData(new Message {Content = Encryption.Encrypt(content)});
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Lanchat.Core.Chat
         /// <param name="content">Message content.</param>
         public void SendPrivateMessage(string content)
         {
-            networkOutput.SendUserData(DataTypes.PrivateMessage, Encryption.Encrypt(content));
+            networkOutput.SendUserData(new PrivateMessage {Content = Encryption.Encrypt(content)});
         }
 
         internal void OnMessageReceived(string e)

@@ -30,15 +30,15 @@ namespace Lanchat.Core.NetworkIO
             };
         }
 
-        public void SendUserData(DataTypes dataType, object content = null)
+        public void SendUserData(object content)
         {
             if (!nodeState.Ready) return;
-            SendSystemData(dataType, content);
+            SendSystemData(content);
         }
 
-        public void SendSystemData(DataTypes dataType, object content = null)
+        public void SendSystemData(object content)
         {
-            var data = new Dictionary<string, string> {{dataType.ToString(), JsonSerializer.Serialize(content, serializerOptions)}};
+            var data = new Dictionary<string, string> {{content.GetType().Name, JsonSerializer.Serialize(content, serializerOptions)}};
             networkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
         }
     }

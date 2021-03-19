@@ -179,7 +179,7 @@ namespace Lanchat.Core
         /// </summary>
         public void Disconnect()
         {
-            NetworkOutput.SendSystemData(DataTypes.Goodbye);
+            NetworkOutput.SendSystemData(new Goodbye());
             Dispose();
         }
 
@@ -215,7 +215,7 @@ namespace Lanchat.Core
                 PublicKey = Encryptor.ExportPublicKey()
             };
 
-            NetworkOutput.SendSystemData(DataTypes.Handshake, handshake);
+            NetworkOutput.SendSystemData(handshake);
         }
 
         private void OnPropertyChanged(string propertyName = null)
