@@ -42,9 +42,9 @@ namespace Lanchat.Core.NetworkIO
             foreach (var item in currentJson.Replace("}{", "}|{").Split('|'))
                 try
                 {
-                    var json = JsonSerializer.Deserialize<Dictionary<string, string>>(item, serializerOptions);
+                    var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(item, serializerOptions);
                     var jsonType = json.Keys.First();
-                    var jsonValue = json.Values.First();
+                    var jsonValue = json.Values.First().ToString();
                     
                     if (json == null)
                     {
