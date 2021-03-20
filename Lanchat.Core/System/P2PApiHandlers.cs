@@ -19,12 +19,12 @@ namespace Lanchat.Core.System
         
         public IEnumerable<Type> HandledDataTypes { get; } = new[]
         {
-            typeof(List<string>)
+            typeof(NodesList)
         };
         
         public void Handle(Type type, object data)
         {
-            var stringList = (List<string>) data;
+            var stringList = (NodesList) data;
             var list = new List<IPAddress>();
             
             // Convert strings to ip addresses.

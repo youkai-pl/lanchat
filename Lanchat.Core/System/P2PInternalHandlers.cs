@@ -35,10 +35,10 @@ namespace Lanchat.Core.System
         internal void OnConnected(object sender, EventArgs e)
         {
             var node = (Node) sender;
-            var nodesList = network.Nodes.Where(x => x.Id != node.Id).Select(x => x.NetworkElement.Endpoint.Address)
-                .ToList();
-            var stringList = nodesList.Select(x => x.ToString());
-            node.NetworkOutput.SendUserData(stringList);
+            var nodesList = new NodesList();
+            nodesList.AddRange(network.Nodes.Where(x => x.Id != node.Id)
+                .Select(x => x.NetworkElement.Endpoint.Address.ToString()));
+            node.NetworkOutput.SendUserData(nodesList);
         }
 
         // Send new node event after new session and wait for nodes list

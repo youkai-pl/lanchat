@@ -63,12 +63,6 @@ namespace Lanchat.Core.NetworkIO
                         ? jsonValue
                         : JsonSerializer.Deserialize(jsonValue ?? string.Empty, type, serializerOptions);
 
-                    if (jsonType == "NodesList")
-                    {
-                        data = JsonSerializer.Deserialize(jsonValue ?? string.Empty, typeof(List<string>),
-                            serializerOptions);
-                    }
-
                     var handler = ApiHandlers.FirstOrDefault(x => x.HandledDataTypes.Contains(type));
                     if (handler == null)
                     {
