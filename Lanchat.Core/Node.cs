@@ -179,7 +179,10 @@ namespace Lanchat.Core
         /// </summary>
         public void Disconnect()
         {
-            NetworkOutput.SendSystemData(new Goodbye());
+            NetworkOutput.SendSystemData(new ConnectionControl
+            {
+                Status = ConnectionControlStatus.RemoteClose
+            });
             Dispose();
         }
 

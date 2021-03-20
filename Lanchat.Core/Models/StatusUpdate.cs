@@ -4,4 +4,11 @@ namespace Lanchat.Core.Models
     {
         public Status NewStatus { get; set; }
     }
+    
+    public enum Status
+    {
+        Online,
+        AwayFromKeyboard,
+        DoNotDisturb
+    }
 }

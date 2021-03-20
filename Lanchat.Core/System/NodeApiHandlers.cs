@@ -19,16 +19,22 @@ namespace Lanchat.Core.System
 
         public IEnumerable<Type> HandledDataTypes { get; } = new[]
         {
-            typeof(Goodbye),
+            typeof(ConnectionControlStatus),
             typeof(StatusUpdate),
             typeof(NicknameUpdate)
         };
 
         public void Handle(Type type, object data)
         {
-            if (type == typeof(Goodbye))
+            if (type == typeof(ConnectionControlStatus))
             {
-                node.NetworkElement.EnableReconnecting = false;
+                var connectionControl = (ConnectionControl) data;
+                switch (connectionControl.Status)
+                {
+                    case ConnectionControlStatus.RemoteClose:
+                        node.NetworkElement.EnableReconnecting = false;
+                        break;
+                }
             }
 
             else if (type == typeof(StatusUpdate))
