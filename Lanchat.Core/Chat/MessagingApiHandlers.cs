@@ -21,24 +21,23 @@ namespace Lanchat.Core.Chat
         public IEnumerable<Type> HandledDataTypes { get; } = new[]
         {
             typeof(Message),
-            typeof(PrivateMessage)
         };
 
         public void Handle(Type type, object data)
         {
+            var message = (Message) data;
+
             try
             {
-                if (type == typeof(Message))
+                if (message.Private)
                 {
-                    var message = (Message) data;
-                    var decryptedMessage = messaging.Encryption.Decrypt(message.Content);
-                    messaging.OnMessageReceived(decryptedMessage.Truncate(config.MaxMessageLenght));
-                }
-                else if (type == typeof(PrivateMessage))
-                {
-                    var message = (PrivateMessage) data;
                     var decryptedMessage = messaging.Encryption.Decrypt(message.Content);
                     messaging.OnPrivateMessageReceived(decryptedMessage.Truncate(config.MaxMessageLenght));
+                }
+                else
+                {
+                    var decryptedMessage = messaging.Encryption.Decrypt(message.Content);
+                    messaging.OnMessageReceived(decryptedMessage.Truncate(config.MaxMessageLenght));
                 }
             }
             catch (CryptographicException)

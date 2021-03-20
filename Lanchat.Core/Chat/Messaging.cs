@@ -41,7 +41,11 @@ namespace Lanchat.Core.Chat
         /// <param name="content">Message content.</param>
         public void SendPrivateMessage(string content)
         {
-            networkOutput.SendUserData(new PrivateMessage {Content = Encryption.Encrypt(content)});
+            networkOutput.SendUserData(new Message
+            {
+                Content = Encryption.Encrypt(content),
+                Private = true
+            });
         }
 
         internal void OnMessageReceived(string e)
