@@ -5,12 +5,12 @@ using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core.Chat
 {
-    internal class MessagingApiHandlers : ApiHandler<Message>
+    internal class MessageHandler : ApiHandler<Message>
     {
         private readonly IConfig config;
         private readonly Messaging messaging;
 
-        internal MessagingApiHandlers(Messaging messaging, IConfig config)
+        internal MessageHandler(Messaging messaging, IConfig config)
         {
             this.config = config;
             this.messaging = messaging;

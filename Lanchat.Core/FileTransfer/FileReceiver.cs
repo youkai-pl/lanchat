@@ -14,7 +14,6 @@ namespace Lanchat.Core.FileTransfer
     {
         private readonly IConfig config;
         internal readonly IBytesEncryption Encryption;
-        internal readonly FileReceiverHandler FileReceiverHandler;
         private readonly INetworkOutput networkOutput;
         private FileTransferRequest fileTransferRequest;
         internal FileStream WriteFileStream;
@@ -24,7 +23,6 @@ namespace Lanchat.Core.FileTransfer
             this.networkOutput = networkOutput;
             this.config = config;
             Encryption = encryption;
-            FileReceiverHandler = new FileReceiverHandler(this);
         }
 
         /// <summary>

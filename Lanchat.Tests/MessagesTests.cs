@@ -33,7 +33,7 @@ namespace Lanchat.Tests
             networkOutput = new NetworkOutput(networkMock, nodeState);
             messaging = new Messaging(networkOutput, encryptor);
             networkInput = new NetworkInput(nodeState);
-            networkInput.ApiHandlers.Add(new MessagingApiHandlers(messaging, config));
+            networkInput.ApiHandlers.Add(new MessageHandler(messaging, config));
         }
 
         [Test]

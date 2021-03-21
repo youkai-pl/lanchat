@@ -58,9 +58,9 @@ namespace Lanchat.Core
             NetworkInput.ApiHandlers.Add(new ConnectionControlHandler(this));
             NetworkInput.ApiHandlers.Add(new StatusUpdateHandler(this));
             NetworkInput.ApiHandlers.Add(new NicknameUpdateHandler(this, config));
-            NetworkInput.ApiHandlers.Add(new MessagingApiHandlers(Messaging, config));
-            NetworkInput.ApiHandlers.Add(FileReceiver.FileReceiverHandler);
-            NetworkInput.ApiHandlers.Add(new FileTransferHandler(FileReceiver, FileSender));
+            NetworkInput.ApiHandlers.Add(new MessageHandler(Messaging, config));
+            NetworkInput.ApiHandlers.Add(new FilePartHandler(FileReceiver));
+            NetworkInput.ApiHandlers.Add(new FileTransferControlHandler(FileReceiver, FileSender));
 
             NetworkElement.Disconnected += OnDisconnected;
             NetworkElement.DataReceived += NetworkInput.ProcessReceivedData;

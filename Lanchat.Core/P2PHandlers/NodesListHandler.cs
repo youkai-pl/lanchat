@@ -6,12 +6,12 @@ using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core.P2PHandlers
 {
-    internal class P2PApiHandlers : ApiHandler<NodesList>
+    internal class NodesListHandler : ApiHandler<NodesList>
     {
         private readonly IConfig config;
         private readonly P2P network;
 
-        internal P2PApiHandlers(P2P network, IConfig config)
+        internal NodesListHandler(P2P network, IConfig config)
         {
             this.network = network;
             this.config = config;
