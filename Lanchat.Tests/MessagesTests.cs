@@ -1,4 +1,3 @@
-using Lanchat.ClientCore;
 using Lanchat.Core;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
@@ -20,7 +19,11 @@ namespace Lanchat.Tests
         [SetUp]
         public void Setup()
         {
-            config = new Config {MaxMessageLenght = 5};
+            config = new ConfigMock
+            {
+                MaxMessageLenght = 5
+            };
+            
             var nodeState = new NodeState();
 
             encryptor = new Encryptor();

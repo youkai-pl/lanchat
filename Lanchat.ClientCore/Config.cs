@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,8 +23,6 @@ namespace Lanchat.ClientCore
         private static bool _automaticConnecting;
         private static bool _useIPv6;
         private static string _language;
-        private static string _configPath;
-        private static string _dataPath;
         private int maxMessageLenght;
         private int maxNicknameLenght;
         private bool fresh;
@@ -58,17 +57,8 @@ namespace Lanchat.ClientCore
             set => fresh = value;
         }
 
-        public static string ConfigPath
-        {
-            get => _configPath;
-            private set => _configPath = value;
-        }
-
-        public static string DataPath
-        {
-            get => _dataPath;
-            private set => _dataPath = value;
-        }
+        public static string ConfigPath { get; set; }
+        public static string DataPath { get; set; }
 
         [JsonIgnore]
         public List<IPAddress> BlockedAddresses
@@ -235,7 +225,16 @@ namespace Lanchat.ClientCore
             }
             catch (Exception e)
             {
-                if (!(e is DirectoryNotFoundException) && !(e is UnauthorizedAccessException)) throw;
+                if (e is DirectoryNotFoundException ||
+                    e is UnauthorizedAccessException ||
+                    e is ArgumentNullException)
+                {
+                    Trace.WriteLine("Cannot save config");
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
 
