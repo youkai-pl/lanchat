@@ -49,7 +49,10 @@ namespace Lanchat.ClientCore
                     e is DirectoryNotFoundException ||
                     e is JsonException)
                 {
-                    _config = new DefaultConfig().GetDefaultConfig();
+                    _config = new Config
+                    {
+                        Fresh = true
+                    };
                     Save();
                 }
                 else
@@ -58,7 +61,12 @@ namespace Lanchat.ClientCore
                 }
             }
 
-            _config ??= new DefaultConfig().GetDefaultConfig();
+            _config ??= new Config
+            {
+                Fresh = true
+            };
+            
+            Save();
             _config.PropertyChanged += (_, _) => { Save(); };
             return _config;
         }

@@ -11,17 +11,17 @@ namespace Lanchat.ClientCore
 {
     public class Config : IConfig
     {
-        private static int _port;
-        private static int _broadcastPort;
-        private static string _nickname;
-        private static List<string> _blockedAddresses;
-        private static bool _automaticConnecting;
-        private static bool _useIPv6;
-        private static string _language;
-        private int maxMessageLenght;
-        private int maxNicknameLenght;
-        private Status status;
-        private string filesDownloadDirectory;
+        private static int _port = 3645;
+        private static int _broadcastPort = 3646;
+        private static string _nickname = ConfigValues.GetNickname();
+        private static List<string> _blockedAddresses = new();
+        private static bool _automaticConnecting = true;
+        private static bool _useIPv6 = false;
+        private static string _language = "default";
+        private int maxMessageLenght = 1500;
+        private int maxNicknameLenght = 20;
+        private Status status = Status.Online;
+        private string filesDownloadDirectory = ConfigValues.GetDownloadsDirectory();
         
         [JsonIgnore] public bool Fresh { get; set; }
 

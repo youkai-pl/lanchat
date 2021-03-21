@@ -1,0 +1,64 @@
+using System;
+using System.Runtime.InteropServices;
+using Syroot.Windows.IO;
+
+namespace Lanchat.ClientCore
+{
+    public static class ConfigValues
+    {
+        public static string GetDownloadsDirectory()
+        {
+            var path = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
+            
+            if (path != null)
+            {
+                return path;
+            }
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                path = new KnownFolder(KnownFolderType.Downloads).Path;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                path = Environment.GetEnvironmentVariable("HOME") + "/Downloads";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                path = Environment.GetEnvironmentVariable("HOME") + "/Downloads";
+            }
+
+            return path;
+        }
+        
+        public static string GetNickname()
+        {
+            var random = new Random();
+            return Nicknames[random.Next(0, Nicknames.Length)];
+        }
+        
+        private static readonly string[] Nicknames =
+        {
+            "Reimu",
+            "Marisa",
+            "Alice",
+            "Patchouli",
+            "Cirno",
+            "Sakuya",
+            "Flandre",
+            "Youmu",
+            "Ran",
+            "Yukari",
+            "Reisen",
+            "Kaguya",
+            "Mokou",
+            "Eirin",
+            "Sanae",
+            "Suwako",
+            "Utsuho",
+            "Koishi",
+            "Byakuren",
+            "Seiga"
+        };
+    }
+}
