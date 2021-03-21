@@ -172,7 +172,7 @@ namespace Lanchat.Terminal.UserInterface
             Console.Title = Resources._WindowTitle;
             Log.Add(Resources._Logo);
 
-            if (Program.Config.Fresh) Log.Add(string.Format(Resources._FirstRunMessage, Config.ConfigPath));
+            if (Program.Config.Fresh) Log.Add(string.Format(Resources._FirstRunMessage, ConfigManager.ConfigPath));
 
             // Clock updates
             new Thread(() =>

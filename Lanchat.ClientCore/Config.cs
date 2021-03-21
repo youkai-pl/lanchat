@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using Lanchat.Core;
 using Lanchat.Core.Models;
@@ -25,13 +20,16 @@ namespace Lanchat.ClientCore
         private static string _language;
         private int maxMessageLenght;
         private int maxNicknameLenght;
-        private bool fresh;
         private Status status;
         private string filesDownloadDirectory;
+        
+        [JsonIgnore] public bool Fresh { get; set; }
 
-        public Config()
+        [JsonIgnore]
+        public List<IPAddress> BlockedAddresses
         {
-            PropertyChanged += (_, _) => { Save(); };
+            get => BlockedAddressesList.Select(IPAddress.Parse).ToList();
+            set { BlockedAddressesList = value.Select(x => x.ToString()).ToList(); }
         }
 
         public List<string> BlockedAddressesList
@@ -50,27 +48,14 @@ namespace Lanchat.ClientCore
             }
         }
 
-        [JsonIgnore]
-        public bool Fresh
-        {
-            get => fresh;
-            set => fresh = value;
-        }
-
-        public static string ConfigPath { get; set; }
-        public static string DataPath { get; set; }
-
-        [JsonIgnore]
-        public List<IPAddress> BlockedAddresses
-        {
-            get => BlockedAddressesList.Select(IPAddress.Parse).ToList();
-            set { BlockedAddressesList = value.Select(x => x.ToString()).ToList(); }
-        }
-
         public Status Status
         {
             get => status;
-            set => status = value;
+            set
+            {
+                status = value;
+                OnPropertyChanged(nameof(Status));
+            }
         }
 
         public int ServerPort
@@ -161,96 +146,19 @@ namespace Lanchat.ClientCore
             if (BlockedAddressesList.Contains(ipString)) return;
             BlockedAddressesList.Add(ipString);
             BlockedAddresses.Add(ipAddress);
-            Save();
+            OnPropertyChanged(nameof(BlockedAddressesList));
         }
 
         public void RemoveBlocked(IPAddress ipAddress)
         {
             BlockedAddressesList.Remove(ipAddress.ToString());
             BlockedAddresses.Remove(ipAddress);
-            Save();
-        }
-
-        public static Config Load()
-        {
-            Config config;
-            try
-            {
-                var xdgConfigHome = Environment.GetEnvironmentVariable("XDG_CONFIG_HOME");
-                var xdgDataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
-
-                if (xdgDataHome != null && xdgConfigHome != null)
-                {
-                    DataPath = xdgDataHome;
-                    ConfigPath = $"{xdgConfigHome}/config.json";
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    DataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Lanchat2";
-                    ConfigPath = $"{DataPath}/config.json";
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    DataPath = Environment.GetEnvironmentVariable("HOME") + "/.Lancaht2";
-                    ConfigPath = $"{DataPath}/config.json";
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    DataPath = Environment.GetEnvironmentVariable("HOME") + "/Library/Preferences/.Lancaht2";
-                    ConfigPath = $"{DataPath}/config.json";
-                }
-
-                config = JsonSerializer.Deserialize<Config>(File.ReadAllText(ConfigPath), JsonSerializerOptions);
-            }
-            catch (Exception e)
-            {
-                if (!(e is FileNotFoundException) &&
-                    !(e is DirectoryNotFoundException) &&
-                    !(e is JsonException)) throw;
-
-                config = new DefaultConfig().GetDefaultConfig();
-                config.Save();
-            }
-
-            return config;
-        }
-
-        private void Save()
-        {
-            try
-            {
-                var configFileDirectory = Path.GetDirectoryName(ConfigPath);
-                if (!Directory.Exists(configFileDirectory)) Directory.CreateDirectory(configFileDirectory!);
-                File.WriteAllText(ConfigPath, JsonSerializer.Serialize(this, JsonSerializerOptions));
-            }
-            catch (Exception e)
-            {
-                if (e is DirectoryNotFoundException ||
-                    e is UnauthorizedAccessException ||
-                    e is ArgumentNullException)
-                {
-                    Trace.WriteLine("Cannot save config");
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            OnPropertyChanged(nameof(BlockedAddressesList));
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        private static JsonSerializerOptions JsonSerializerOptions =>
-            new()
-            {
-                WriteIndented = true,
-                Converters =
-                {
-                    new JsonStringEnumConverter()
-                }
-            };
     }
 }

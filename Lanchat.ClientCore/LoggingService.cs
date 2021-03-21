@@ -15,7 +15,7 @@ namespace Lanchat.ClientCore
                 if (eventArgs.Exception.Source != "System.Console") Trace.WriteLine(eventArgs.Exception);
             };
 
-            Trace.Listeners.Add(new FileTraceListener($"{Config.DataPath}/{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log"));
+            Trace.Listeners.Add(new FileTraceListener($"{ConfigManager.DataPath}/{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log"));
             Trace.IndentSize = 11;
             Trace.AutoFlush = true;
             Trace.WriteLine("Logging started");
@@ -23,7 +23,7 @@ namespace Lanchat.ClientCore
 
         public static void CleanLogs()
         {
-            foreach (var fi in new DirectoryInfo(Config.DataPath)
+            foreach (var fi in new DirectoryInfo(ConfigManager.DataPath)
                 .GetFiles("*.log")
                 .OrderByDescending(x => x.LastWriteTime)
                 .Skip(5))
