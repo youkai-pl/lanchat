@@ -4,12 +4,12 @@ using System.Net;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 
-namespace Lanchat.Core.Handlers
+namespace Lanchat.Core.P2PHandlers
 {
     internal class P2PApiHandlers : ApiHandler<NodesList>
     {
-        private readonly P2P network;
         private readonly IConfig config;
+        private readonly P2P network;
 
         internal P2PApiHandlers(P2P network, IConfig config)
         {

@@ -4,6 +4,5 @@ namespace Lanchat.Core.Models
 {
     public class NodesList : List<string>
     {
-        
     }
 }

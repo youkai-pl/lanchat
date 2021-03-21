@@ -1,6 +1,6 @@
 using System;
 
-namespace Lanchat.Core.Handlers
+namespace Lanchat.Core.NodeHandlers
 {
     internal interface INodeState
     {

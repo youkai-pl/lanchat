@@ -3,12 +3,12 @@ using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 
-namespace Lanchat.Core.Handlers
+namespace Lanchat.Core.NodeHandlers
 {
     internal class HandshakeHandler : ApiHandler<Handshake>
     {
-        private readonly Node node;
         private readonly IConfig config;
+        private readonly Node node;
 
         internal HandshakeHandler(Node node, IConfig config)
         {
@@ -24,10 +24,7 @@ namespace Lanchat.Core.Handlers
 
             node.Nickname = handshake.Nickname.Truncate(config.MaxNicknameLenght);
 
-            if (!node.NetworkElement.IsSession)
-            {
-                node.SendHandshakeAndWait();
-            }
+            if (!node.NetworkElement.IsSession) node.SendHandshakeAndWait();
 
             try
             {

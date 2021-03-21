@@ -2,9 +2,9 @@ using System;
 
 namespace Lanchat.Core.Extensions
 {
-    public static class StringExtensions
+    internal static class StringExtensions
     {
-        public static string Truncate(this string str, int maxLength)
+        internal static string Truncate(this string str, int maxLength)
         {
             str = str.Trim();
             if (string.IsNullOrWhiteSpace(str)) throw new ArgumentNullException(str);

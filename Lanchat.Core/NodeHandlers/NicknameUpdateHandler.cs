@@ -2,12 +2,12 @@ using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 
-namespace Lanchat.Core.Handlers
+namespace Lanchat.Core.NodeHandlers
 {
     internal class NicknameUpdateHandler : ApiHandler<NicknameUpdate>
     {
-        private readonly Node node;
         private readonly IConfig config;
+        private readonly Node node;
 
         internal NicknameUpdateHandler(Node node, IConfig config)
         {

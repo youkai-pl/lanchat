@@ -25,6 +25,11 @@ namespace Lanchat.Core.Network
         bool EnableReconnecting { get; set; }
 
         /// <summary>
+        ///     Network element is server session.
+        /// </summary>
+        bool IsSession { get; }
+
+        /// <summary>
         ///     Send data.
         /// </summary>
         /// <param name="text">Content.</param>
@@ -54,10 +59,5 @@ namespace Lanchat.Core.Network
         ///     Network element received data.
         /// </summary>
         event EventHandler<string> DataReceived;
-        
-        /// <summary>
-        ///     Network element is server session.
-        /// </summary>
-        bool IsSession { get; }
     }
 }

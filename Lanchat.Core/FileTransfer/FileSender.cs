@@ -35,6 +35,7 @@ namespace Lanchat.Core.FileTransfer
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<Exception> FileTransferError;
         public event EventHandler FileTransferRequestAccepted;
         public event EventHandler FileTransferRequestRejected;
@@ -112,8 +113,6 @@ namespace Lanchat.Core.FileTransfer
             Request = null;
             FileTransferError?.Invoke(this, new Exception("File transfer cancelled by receiver"));
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName = null)
         {

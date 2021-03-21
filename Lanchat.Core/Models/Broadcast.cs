@@ -8,7 +8,7 @@ namespace Lanchat.Core.Models
     public class Broadcast : INotifyPropertyChanged
     {
         private string nickname;
-        
+
         public string Guid { get; set; }
 
         public string Nickname
@@ -24,8 +24,9 @@ namespace Lanchat.Core.Models
 
         [JsonIgnore] public IPAddress IpAddress { get; set; }
         [JsonIgnore] public bool Active { get; set; }
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
+
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

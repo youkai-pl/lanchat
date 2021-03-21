@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using Lanchat.Core;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 using static System.Int32;

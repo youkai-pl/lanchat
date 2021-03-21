@@ -51,7 +51,7 @@ namespace Lanchat.Core
         ///     Enable automatic connecting to nodes from received list.
         /// </summary>
         bool AutomaticConnecting { get; set; }
-        
+
         /// <summary>
         ///     Files download directory.
         /// </summary>

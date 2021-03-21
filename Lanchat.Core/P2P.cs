@@ -4,15 +4,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using Lanchat.Core.Handlers;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
+using Lanchat.Core.P2PHandlers;
 
 namespace Lanchat.Core
 {
     public class P2P
     {
-        public readonly IConfig Config;
+        private readonly IConfig config;
         internal readonly List<Node> OutgoingConnections = new();
         private readonly P2PInternalHandlers p2PInternalHandlers;
         private readonly Server server;
@@ -22,18 +22,18 @@ namespace Lanchat.Core
         /// </summary>
         public P2P(IConfig config)
         {
-            Config = config;
-            p2PInternalHandlers = new P2PInternalHandlers(this, Config);
+            this.config = config;
+            p2PInternalHandlers = new P2PInternalHandlers(this, this.config);
 
-            server = Config.UseIPv6
-                ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config)
-                : new Server(IPAddress.Any, Config.ServerPort, Config);
+            server = this.config.UseIPv6
+                ? new Server(IPAddress.IPv6Any, this.config.ServerPort, this.config)
+                : new Server(IPAddress.Any, this.config.ServerPort, this.config);
 
             server.SessionCreated += p2PInternalHandlers.OnSessionCreated;
 
-            Config.PropertyChanged += CoreConfigOnPropertyChanged;
+            this.config.PropertyChanged += CoreConfigOnPropertyChanged;
 
-            Broadcasting = new Broadcasting(Config);
+            Broadcasting = new Broadcasting(this.config);
         }
 
         /// <summary>
@@ -93,10 +93,10 @@ namespace Lanchat.Core
         public void Connect(IPAddress ipAddress, int? port = null)
         {
             // Use port from config if it's null
-            port ??= Config.ServerPort;
+            port ??= config.ServerPort;
 
             // Throw if node is blocked
-            if (Config.BlockedAddresses.Contains(ipAddress)) throw new ArgumentException("Node blocked");
+            if (config.BlockedAddresses.Contains(ipAddress)) throw new ArgumentException("Node blocked");
 
             // Throw if node already connected
             if (Nodes.Any(x => x.NetworkElement.Endpoint.Address.Equals(ipAddress)))
@@ -108,8 +108,8 @@ namespace Lanchat.Core
                 throw new ArgumentException("Illegal IP address. Cannot connect");
 
             var client = new Client(ipAddress, port.Value);
-            var node = new Node(client, Config);
-            node.NetworkInput.ApiHandlers.Add(new P2PApiHandlers(this, Config));
+            var node = new Node(client, config);
+            node.NetworkInput.ApiHandlers.Add(new P2PApiHandlers(this, config));
             OutgoingConnections.Add(node);
             node.Connected += p2PInternalHandlers.OnConnected;
             node.HardDisconnect += p2PInternalHandlers.OnHardDisconnect;
@@ -128,11 +128,12 @@ namespace Lanchat.Core
             switch (e.PropertyName)
             {
                 case "Nickname":
-                    Nodes.ForEach(x => x.NetworkOutput.SendUserData(new NicknameUpdate{NewNickname = Config.Nickname}));
+                    Nodes.ForEach(x =>
+                        x.NetworkOutput.SendUserData(new NicknameUpdate {NewNickname = config.Nickname}));
                     break;
 
                 case "Status":
-                    Nodes.ForEach(x => x.NetworkOutput.SendUserData(new StatusUpdate {NewStatus = Config.Status}));
+                    Nodes.ForEach(x => x.NetworkOutput.SendUserData(new StatusUpdate {NewStatus = config.Status}));
                     break;
             }
         }

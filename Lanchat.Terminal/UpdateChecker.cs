@@ -2,7 +2,6 @@ using System;
 using System.Net.Http;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Lanchat.Terminal.Properties;
 
 namespace Lanchat.Terminal
 {

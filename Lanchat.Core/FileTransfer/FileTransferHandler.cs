@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
@@ -16,7 +14,7 @@ namespace Lanchat.Core.FileTransfer
             this.fileReceiver = fileReceiver;
             this.fileSender = fileSender;
         }
-        
+
         protected override void Handle(FileTransferControl request)
         {
             switch (request.RequestStatus)

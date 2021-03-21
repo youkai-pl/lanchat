@@ -1,6 +1,6 @@
 namespace Lanchat.Core.Encryption
 {
-    public interface IBytesEncryption
+    internal interface IBytesEncryption
     {
         byte[] Encrypt(byte[] data);
         byte[] Decrypt(byte[] data);

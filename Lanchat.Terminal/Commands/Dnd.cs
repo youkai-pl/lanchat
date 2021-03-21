@@ -1,4 +1,3 @@
-using Lanchat.Core;
 using Lanchat.Core.Models;
 using Lanchat.Terminal.UserInterface;
 

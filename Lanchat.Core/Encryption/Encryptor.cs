@@ -6,21 +6,20 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Encryption
 {
-    public class Encryptor : IDisposable, IBytesEncryption, IStringEncryption
+    internal class Encryptor : IDisposable, IBytesEncryption, IStringEncryption
     {
         private readonly Aes localAes;
         private readonly RSA localRsa;
         private readonly Aes remoteAes;
         private readonly RSA remoteRsa;
 
-        public Encryptor()
+        internal Encryptor()
         {
             localRsa = RSA.Create(2048);
             remoteRsa = RSA.Create();
             localAes = Aes.Create();
             remoteAes = Aes.Create();
         }
-
 
         public byte[] Encrypt(byte[] data)
         {
@@ -41,15 +40,6 @@ namespace Lanchat.Core.Encryption
             return memoryStream.ToArray();
         }
 
-        public void Dispose()
-        {
-            localAes?.Dispose();
-            localRsa?.Dispose();
-            remoteAes?.Dispose();
-            remoteRsa?.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
         public string Encrypt(string text)
         {
             var encrypted = Encrypt(Encoding.UTF8.GetBytes(text));
@@ -63,6 +53,15 @@ namespace Lanchat.Core.Encryption
             return decrypted;
         }
 
+        public void Dispose()
+        {
+            localAes?.Dispose();
+            localRsa?.Dispose();
+            remoteAes?.Dispose();
+            remoteRsa?.Dispose();
+            GC.SuppressFinalize(this);
+        }
+        
         internal PublicKey ExportPublicKey()
         {
             var parameters = localRsa.ExportParameters(false);
@@ -97,7 +96,7 @@ namespace Lanchat.Core.Encryption
                 // Test imported keys
                 remoteRsa.Encrypt(new byte[] {0x10}, RSAEncryptionPadding.Pkcs1);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new InvalidKeyImportException("Cannot import RSA public key", e);
             }
@@ -110,7 +109,7 @@ namespace Lanchat.Core.Encryption
                 remoteAes.Key = RsaDecrypt(keyInfo.AesKey);
                 remoteAes.IV = RsaDecrypt(keyInfo.AesIv);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new InvalidKeyImportException("Cannot import AES key", e);
             }

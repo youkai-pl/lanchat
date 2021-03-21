@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Lanchat.Core.Handlers;
+using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Core.NetworkIO
 {
@@ -43,10 +43,10 @@ namespace Lanchat.Core.NetworkIO
                 try
                 {
                     var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(item, serializerOptions);
-                    var jsonType = json.Keys.First();
-                    var jsonValue = json.Values.First().ToString();
-                    
-                    if (json == null)
+                    var jsonType = json?.Keys.First();
+                    var jsonValue = json?.Values.First().ToString();
+
+                    if (jsonType == null || jsonValue == null)
                     {
                         Trace.WriteLine($"Node {nodeState.Id} received empty data.");
                         return;
@@ -61,24 +61,20 @@ namespace Lanchat.Core.NetworkIO
 
                     var data = type == null
                         ? jsonValue
-                        : JsonSerializer.Deserialize(jsonValue ?? string.Empty, type, serializerOptions);
+                        : JsonSerializer.Deserialize(jsonValue, type, serializerOptions);
 
                     var handler = ApiHandlers.FirstOrDefault(x => x.HandledType == type);
+
                     if (handler == null)
                     {
                         Trace.WriteLine($"Node {nodeState.Id} received data of unknown type.");
                         return;
                     }
 
-                    Trace.WriteLine($"Node {nodeState.Id} received {jsonType}");
-
-                    if (data == null)
-                    {
-                        handler.Handle(type);
-                    }
-                    else if (Validate(data))
+                    if (Validate(data))
                     {
                         handler.Handle(data);
+                        Trace.WriteLine($"Node {nodeState.Id} received {jsonType}");
                     }
                 }
 
@@ -96,10 +92,7 @@ namespace Lanchat.Core.NetworkIO
             var results = new List<ValidationResult>();
             if (Validator.TryValidateObject(data, new ValidationContext(data), results, true)) return true;
 
-            foreach (var e in results)
-            {
-                Trace.WriteLine($"Node {nodeState.Id} received invalid data: {e}");
-            }
+            foreach (var e in results) Trace.WriteLine($"Node {nodeState.Id} received invalid data: {e}");
 
             return false;
         }

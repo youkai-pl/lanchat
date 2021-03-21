@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
-using Lanchat.Core.Handlers;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 using Lanchat.Core.NetworkIO;
+using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Core
 {
     public class Node : IDisposable, INotifyPropertyChanged, INodeState
     {
+        private readonly IConfig config;
         internal readonly Encryptor Encryptor;
 
         /// <summary>
@@ -40,12 +41,11 @@ namespace Lanchat.Core
         internal readonly NetworkInput NetworkInput;
         internal readonly INetworkOutput NetworkOutput;
 
+        internal bool HandshakeReceived;
+
         private string nickname;
         private string previousNickname;
         private Status status;
-        private readonly IConfig config;
-
-        internal bool HandshakeReceived;
 
         /// <summary>
         ///     Initialize node.

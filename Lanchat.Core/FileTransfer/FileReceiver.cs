@@ -9,11 +9,10 @@ namespace Lanchat.Core.FileTransfer
 {
     public class FileReceiver : ApiHandler<FilePart>, INotifyPropertyChanged
     {
-        private readonly IBytesEncryption encryption;
         private readonly IConfig config;
+        private readonly IBytesEncryption encryption;
         private readonly INetworkOutput networkOutput;
         private FileTransferRequest fileTransferRequest;
-
         private FileStream writeFileStream;
 
         internal FileReceiver(INetworkOutput networkOutput, IBytesEncryption encryption, IConfig config)
@@ -37,11 +36,7 @@ namespace Lanchat.Core.FileTransfer
             }
         }
 
-        protected override void Handle(FilePart binary)
-        {
-            HandleReceivedFilePart(binary);
-        }
-
+        public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<FileTransferRequest> FileTransferFinished;
         public event EventHandler<Exception> FileTransferError;
         public event EventHandler<FileTransferRequest> FileTransferRequestReceived;
@@ -112,7 +107,7 @@ namespace Lanchat.Core.FileTransfer
             FileTransferError?.Invoke(this, new Exception("File transfer cancelled by sender"));
         }
 
-        private void HandleReceivedFilePart(FilePart filePart)
+        protected override void Handle(FilePart filePart)
         {
             if (Request == null) return;
             if (!Request.Accepted) return;
@@ -146,8 +141,6 @@ namespace Lanchat.Core.FileTransfer
                 file = $"{fileName}({i}){fileExt}";
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName = null)
         {

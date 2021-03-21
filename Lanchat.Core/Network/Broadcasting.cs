@@ -21,18 +21,6 @@ namespace Lanchat.Core.Network
         private readonly IPEndPoint endPoint;
         private readonly UdpClient udpClient;
         private readonly string uniqueId;
-        
-        public ObservableCollection<Broadcast> DetectedNodes { get; } = new();
-
-        /// <summary>
-        ///     New node detected in network.
-        /// </summary>
-        public event EventHandler<Broadcast> NodeDetected;
-
-        /// <summary>
-        ///     Detected node doesn't send broadcasts.
-        /// </summary>
-        public event EventHandler<Broadcast> DetectedNodeDisappeared;
 
         internal Broadcasting(IConfig config)
         {
@@ -41,6 +29,8 @@ namespace Lanchat.Core.Network
             endPoint = new IPEndPoint(IPAddress.Broadcast, config.BroadcastPort);
             udpClient = new UdpClient();
         }
+
+        public ObservableCollection<Broadcast> DetectedNodes { get; } = new();
 
         internal void Start()
         {
@@ -66,9 +56,7 @@ namespace Lanchat.Core.Network
                         if (e is JsonException ||
                             e is ArgumentException ||
                             e is NotSupportedException)
-                        {
                             return;
-                        }
 
                         throw;
                     }
@@ -99,7 +87,6 @@ namespace Lanchat.Core.Network
             if (alreadyDetected == null)
             {
                 DetectedNodes.Add(e);
-                NodeDetected?.Invoke(this, e);
                 e.Active = true;
 
                 var timer = new Timer
@@ -117,7 +104,6 @@ namespace Lanchat.Core.Network
                     else
                     {
                         timer.Dispose();
-                        DetectedNodeDisappeared?.Invoke(this, e);
                         DetectedNodes.Remove(e);
                     }
                 };

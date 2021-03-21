@@ -1,4 +1,3 @@
-using System;
 using System.Security.Cryptography;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
@@ -8,8 +7,8 @@ namespace Lanchat.Core.Chat
 {
     internal class MessagingApiHandlers : ApiHandler<Message>
     {
-        private readonly Messaging messaging;
         private readonly IConfig config;
+        private readonly Messaging messaging;
 
         internal MessagingApiHandlers(Messaging messaging, IConfig config)
         {

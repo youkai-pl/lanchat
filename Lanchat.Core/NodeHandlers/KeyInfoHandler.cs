@@ -2,7 +2,7 @@ using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 
-namespace Lanchat.Core.Handlers
+namespace Lanchat.Core.NodeHandlers
 {
     internal class KeyInfoHandler : ApiHandler<KeyInfo>
     {

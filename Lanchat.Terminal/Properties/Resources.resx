@@ -122,6 +122,7 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
+    <!-- ReSharper disable once NotOverriddenInSpecificCulture -->
     <data name="_Logo" xml:space="preserve">
         <value>
     __                     __          __ 
