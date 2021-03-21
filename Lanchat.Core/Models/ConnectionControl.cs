@@ -1,11 +1,11 @@
 namespace Lanchat.Core.Models
 {
-    public class ConnectionControl
+    internal class ConnectionControl
     {
         public ConnectionControlStatus Status { get; set; }
     }
 
-    public enum ConnectionControlStatus
+    internal enum ConnectionControlStatus
     {
         RemoteClose
     }

@@ -8,13 +8,13 @@ using TcpClient = NetCoreServer.TcpClient;
 
 namespace Lanchat.Core.Network
 {
-    public class Client : TcpClient, INetworkElement
+    internal class Client : TcpClient, INetworkElement
     {
         private bool hardDisconnect;
         private bool isReconnecting;
         private int reconnectingCount;
 
-        public Client(IPAddress address, int port) : base(address, port)
+        internal Client(IPAddress address, int port) : base(address, port)
         {
             EnableReconnecting = true;
         }

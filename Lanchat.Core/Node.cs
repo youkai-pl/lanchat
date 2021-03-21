@@ -13,46 +13,36 @@ using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Core
 {
+    /// <summary>
+    ///     Connected user.
+    /// </summary>
     public class Node : IDisposable, INotifyPropertyChanged, INodeState
     {
         private readonly IConfig config;
+
         internal readonly Encryptor Encryptor;
 
-        /// <summary>
-        ///     File sending.
-        /// </summary>
+        /// <see cref="FileReceiver" />
         public readonly FileReceiver FileReceiver;
 
-        /// <summary>
-        ///     File receiving.
-        /// </summary>
+        /// <see cref="FileSender" />
         public readonly FileSender FileSender;
 
-        /// <summary>
-        ///     Messages sending and receiving.
-        /// </summary>
+        /// <see cref="Messaging" />
         public readonly Messaging Messaging;
 
-        /// <summary>
-        ///     TCP session.
-        /// </summary>
+        /// <see cref="INetworkElement" />
         public readonly INetworkElement NetworkElement;
 
         internal readonly NetworkInput NetworkInput;
         internal readonly INetworkOutput NetworkOutput;
 
         internal bool HandshakeReceived;
-
         private string nickname;
         private string previousNickname;
         private Status status;
 
-        /// <summary>
-        ///     Initialize node.
-        /// </summary>
-        /// <param name="networkElement">TCP client or session.</param>
-        /// <param name="config">Lanchat config.</param>
-        public Node(INetworkElement networkElement, IConfig config)
+        internal Node(INetworkElement networkElement, IConfig config)
         {
             this.config = config;
             NetworkElement = networkElement;
@@ -69,7 +59,7 @@ namespace Lanchat.Core
             NetworkInput.ApiHandlers.Add(new StatusUpdateHandler(this));
             NetworkInput.ApiHandlers.Add(new NicknameUpdateHandler(this, config));
             NetworkInput.ApiHandlers.Add(new MessagingApiHandlers(Messaging, config));
-            NetworkInput.ApiHandlers.Add(FileReceiver);
+            NetworkInput.ApiHandlers.Add(FileReceiver.FileReceiverHandler);
             NetworkInput.ApiHandlers.Add(new FileTransferHandler(FileReceiver, FileSender));
 
             NetworkElement.Disconnected += OnDisconnected;
@@ -91,7 +81,7 @@ namespace Lanchat.Core
         public bool UnderReconnecting { get; private set; }
 
         /// <summary>
-        ///     Node nickname.
+        ///     Node user nickname.
         /// </summary>
         public string Nickname
         {
@@ -116,7 +106,7 @@ namespace Lanchat.Core
         public string ShortId => Id.GetHashCode().ToString().Substring(1, 4);
 
         /// <summary>
-        ///     User status.
+        ///     Node user status.
         /// </summary>
         public Status Status
         {
@@ -130,7 +120,7 @@ namespace Lanchat.Core
         }
 
         /// <summary>
-        ///     Close connection with node and dispose.
+        ///     Dispose node. For safe disconnect use <see cref="Disconnect" /> instead.
         /// </summary>
         public void Dispose()
         {
@@ -155,7 +145,7 @@ namespace Lanchat.Core
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        ///     Node successful connected and ready.
+        ///     Node successful connected and ready to data exchange.
         /// </summary>
         public event EventHandler Connected;
 
@@ -170,12 +160,12 @@ namespace Lanchat.Core
         public event EventHandler HardDisconnect;
 
         /// <summary>
-        ///     Raise when connection try failed.
+        ///     Raise when connection attempt failed.
         /// </summary>
         public event EventHandler CannotConnect;
 
         /// <summary>
-        ///     TCP session or client for this node returned error.
+        ///     TCP session or client returned error.
         /// </summary>
         public event EventHandler<SocketError> SocketErrored;
 

@@ -7,19 +7,24 @@ using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core.FileTransfer
 {
-    public class FileReceiver : ApiHandler<FilePart>, INotifyPropertyChanged
+    /// <summary>
+    ///     File receiving.
+    /// </summary>
+    public class FileReceiver : INotifyPropertyChanged
     {
         private readonly IConfig config;
-        private readonly IBytesEncryption encryption;
+        internal readonly IBytesEncryption Encryption;
+        internal readonly FileReceiverHandler FileReceiverHandler;
         private readonly INetworkOutput networkOutput;
         private FileTransferRequest fileTransferRequest;
-        private FileStream writeFileStream;
+        internal FileStream WriteFileStream;
 
         internal FileReceiver(INetworkOutput networkOutput, IBytesEncryption encryption, IConfig config)
         {
             this.networkOutput = networkOutput;
-            this.encryption = encryption;
             this.config = config;
+            Encryption = encryption;
+            FileReceiverHandler = new FileReceiverHandler(this);
         }
 
         /// <summary>
@@ -28,7 +33,7 @@ namespace Lanchat.Core.FileTransfer
         public FileTransferRequest Request
         {
             get => fileTransferRequest;
-            private set
+            internal set
             {
                 if (fileTransferRequest == value) return;
                 fileTransferRequest = value;
@@ -36,9 +41,24 @@ namespace Lanchat.Core.FileTransfer
             }
         }
 
+        /// <summary>
+        ///     Raised on <see cref="Request" /> property changed.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        ///     File transfer finished.
+        /// </summary>
         public event EventHandler<FileTransferRequest> FileTransferFinished;
+
+        /// <summary>
+        ///     File transfer errored.
+        /// </summary>
         public event EventHandler<Exception> FileTransferError;
+
+        /// <summary>
+        ///     File receive request received.
+        /// </summary>
         public event EventHandler<FileTransferRequest> FileTransferRequestReceived;
 
         /// <summary>
@@ -49,7 +69,7 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request == null) throw new InvalidOperationException("No receive request");
             Request.Accepted = true;
-            writeFileStream = new FileStream(Request.FilePath, FileMode.Append);
+            WriteFileStream = new FileStream(Request.FilePath, FileMode.Append);
             networkOutput.SendUserData(new FileTransferControl
             {
                 RequestStatus = RequestStatus.Accepted
@@ -85,7 +105,7 @@ namespace Lanchat.Core.FileTransfer
             File.Delete(Request.FilePath);
             FileTransferError?.Invoke(this, new Exception("File transfer cancelled by user"));
             Request = null;
-            writeFileStream.Dispose();
+            WriteFileStream.Dispose();
         }
 
         internal void HandleReceiveRequest(FileTransferControl request)
@@ -101,32 +121,10 @@ namespace Lanchat.Core.FileTransfer
         internal void HandleSenderError()
         {
             if (Request == null) return;
-            writeFileStream.Dispose();
+            WriteFileStream.Dispose();
             File.Delete(Request.FilePath);
             Request = null;
-            FileTransferError?.Invoke(this, new Exception("File transfer cancelled by sender"));
-        }
-
-        protected override void Handle(FilePart filePart)
-        {
-            if (Request == null) return;
-            if (!Request.Accepted) return;
-
-            try
-            {
-                var data = encryption.Decrypt(filePart.Data);
-                writeFileStream.Write(data, 0, data.Length);
-                Request.PartsTransferred++;
-                if (!filePart.Last) return;
-                FileTransferFinished?.Invoke(this, Request);
-                writeFileStream.Dispose();
-                Request = null;
-            }
-            catch (Exception e)
-            {
-                CancelReceive();
-                FileTransferError?.Invoke(this, e);
-            }
+            OnFileTransferError(new Exception("File transfer cancelled by sender"));
         }
 
         private static string MakeUnique(string file)
@@ -145,6 +143,16 @@ namespace Lanchat.Core.FileTransfer
         private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        internal void OnFileTransferFinished(FileTransferRequest e)
+        {
+            FileTransferFinished?.Invoke(this, e);
+        }
+
+        internal void OnFileTransferError(Exception e)
+        {
+            FileTransferError?.Invoke(this, e);
         }
     }
 }

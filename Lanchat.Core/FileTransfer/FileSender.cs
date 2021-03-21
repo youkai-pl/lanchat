@@ -8,6 +8,9 @@ using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core.FileTransfer
 {
+    /// <summary>
+    ///     File sending.
+    /// </summary>
     public class FileSender : INotifyPropertyChanged
     {
         private const int ChunkSize = 1024 * 1024;
@@ -35,10 +38,29 @@ namespace Lanchat.Core.FileTransfer
             }
         }
 
+        /// <summary>
+        ///     Raised on <see cref="Request" /> property changed.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        ///     File send returned error.
+        /// </summary>
         public event EventHandler<Exception> FileTransferError;
+
+        /// <summary>
+        ///     File send request accepted. File transfer in progress.
+        /// </summary>
         public event EventHandler FileTransferRequestAccepted;
+
+        /// <summary>
+        ///     File send request accepted.
+        /// </summary>
         public event EventHandler FileTransferRequestRejected;
+
+        /// <summary>
+        ///     File transfer finished.
+        /// </summary>
         public event EventHandler FileTransferFinished;
 
         /// <summary>

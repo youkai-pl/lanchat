@@ -4,7 +4,7 @@ using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core.FileTransfer
 {
-    public class FileTransferHandler : ApiHandler<FileTransferControl>
+    internal class FileTransferHandler : ApiHandler<FileTransferControl>
     {
         private readonly FileReceiver fileReceiver;
         private readonly FileSender fileSender;

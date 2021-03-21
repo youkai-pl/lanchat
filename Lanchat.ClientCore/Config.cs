@@ -16,7 +16,7 @@ namespace Lanchat.ClientCore
         private static string _nickname = ConfigValues.GetNickname();
         private static List<string> _blockedAddresses = new();
         private static bool _automaticConnecting = true;
-        private static bool _useIPv6 = false;
+        private static bool _useIPv6;
         private static string _language = "default";
         private int maxMessageLenght = 1500;
         private int maxNicknameLenght = 20;

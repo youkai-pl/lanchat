@@ -4,9 +4,9 @@ using Syroot.Windows.IO;
 
 namespace Lanchat.ClientCore
 {
-    public static class ConfigValues
+    internal static class ConfigValues
     {
-        public static string GetDownloadsDirectory()
+        internal static string GetDownloadsDirectory()
         {
             var path = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
             
@@ -31,7 +31,7 @@ namespace Lanchat.ClientCore
             return path;
         }
         
-        public static string GetNickname()
+        internal static string GetNickname()
         {
             var random = new Random();
             return Nicknames[random.Next(0, Nicknames.Length)];

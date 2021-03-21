@@ -2,7 +2,7 @@
 
 namespace Lanchat.Core.Models
 {
-    public class Handshake
+    internal class Handshake
     {
         [Required] [MaxLength(20)] public string Nickname { get; init; }
 

@@ -15,6 +15,9 @@ using Timer = System.Timers.Timer;
 
 namespace Lanchat.Core.Network
 {
+    /// <summary>
+    ///     Detecting nodes by UDP broadcasts.
+    /// </summary>
     public class Broadcasting
     {
         private readonly IConfig config;
@@ -30,6 +33,9 @@ namespace Lanchat.Core.Network
             udpClient = new UdpClient();
         }
 
+        /// <summary>
+        ///     Detected nodes.
+        /// </summary>
         public ObservableCollection<Broadcast> DetectedNodes { get; } = new();
 
         internal void Start()

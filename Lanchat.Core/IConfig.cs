@@ -5,6 +5,9 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core
 {
+    /// <summary>
+    ///     Lanchat.Core configuration.
+    /// </summary>
     public interface IConfig : INotifyPropertyChanged
     {
         /// <summary>

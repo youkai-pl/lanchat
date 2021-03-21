@@ -5,6 +5,9 @@ using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core.Chat
 {
+    /// <summary>
+    ///     Basic chat features.
+    /// </summary>
     public class Messaging
     {
         internal readonly IStringEncryption Encryption;

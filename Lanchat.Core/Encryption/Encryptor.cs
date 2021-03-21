@@ -40,6 +40,15 @@ namespace Lanchat.Core.Encryption
             return memoryStream.ToArray();
         }
 
+        public void Dispose()
+        {
+            localAes?.Dispose();
+            localRsa?.Dispose();
+            remoteAes?.Dispose();
+            remoteRsa?.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
         public string Encrypt(string text)
         {
             var encrypted = Encrypt(Encoding.UTF8.GetBytes(text));
@@ -53,15 +62,6 @@ namespace Lanchat.Core.Encryption
             return decrypted;
         }
 
-        public void Dispose()
-        {
-            localAes?.Dispose();
-            localRsa?.Dispose();
-            remoteAes?.Dispose();
-            remoteRsa?.Dispose();
-            GC.SuppressFinalize(this);
-        }
-        
         internal PublicKey ExportPublicKey()
         {
             var parameters = localRsa.ExportParameters(false);

@@ -10,6 +10,9 @@ using Lanchat.Core.P2PHandlers;
 
 namespace Lanchat.Core
 {
+    /// <summary>
+    ///     Main class representing network in P2P mode.
+    /// </summary>
     public class P2P
     {
         private readonly IConfig config;
@@ -18,7 +21,7 @@ namespace Lanchat.Core
         private readonly Server server;
 
         /// <summary>
-        ///     Initialize p2p mode.
+        ///     Initialize P2P mode.
         /// </summary>
         public P2P(IConfig config)
         {
@@ -30,15 +33,11 @@ namespace Lanchat.Core
                 : new Server(IPAddress.Any, this.config.ServerPort, this.config);
 
             server.SessionCreated += p2PInternalHandlers.OnSessionCreated;
-
             this.config.PropertyChanged += CoreConfigOnPropertyChanged;
-
             Broadcasting = new Broadcasting(this.config);
         }
 
-        /// <summary>
-        ///     Detecting nodes in network.
-        /// </summary>
+        /// <see cref="Lanchat.Core.Network.Broadcasting" />
         public Broadcasting Broadcasting { get; }
 
         /// <summary>
@@ -69,7 +68,7 @@ namespace Lanchat.Core
         }
 
         /// <summary>
-        ///     Start broadcasting.
+        ///     Start broadcasting presence.
         /// </summary>
         public void StartBroadcast()
         {
