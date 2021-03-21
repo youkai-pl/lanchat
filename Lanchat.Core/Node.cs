@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
+using Lanchat.Core.Handlers;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 using Lanchat.Core.NetworkIO;
-using Lanchat.Core.System;
 
 namespace Lanchat.Core
 {
@@ -45,6 +45,8 @@ namespace Lanchat.Core
         private Status status;
         private readonly IConfig config;
 
+        internal bool HandshakeReceived;
+
         /// <summary>
         ///     Initialize node.
         /// </summary>
@@ -61,8 +63,11 @@ namespace Lanchat.Core
             FileSender = new FileSender(NetworkOutput, Encryptor);
 
             NetworkInput = new NetworkInput(this);
-            NetworkInput.ApiHandlers.Add(new InitializationApiHandlers(this, config));
-            NetworkInput.ApiHandlers.Add(new NodeApiHandlers(this, config));
+            NetworkInput.ApiHandlers.Add(new HandshakeHandler(this, config));
+            NetworkInput.ApiHandlers.Add(new KeyInfoHandler(this));
+            NetworkInput.ApiHandlers.Add(new ConnectionControlHandler(this));
+            NetworkInput.ApiHandlers.Add(new StatusUpdateHandler(this));
+            NetworkInput.ApiHandlers.Add(new NicknameUpdateHandler(this, config));
             NetworkInput.ApiHandlers.Add(new MessagingApiHandlers(Messaging, config));
             NetworkInput.ApiHandlers.Add(FileReceiver);
             NetworkInput.ApiHandlers.Add(new FileTransferHandler(FileReceiver, FileSender));

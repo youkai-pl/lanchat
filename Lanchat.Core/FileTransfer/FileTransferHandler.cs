@@ -6,7 +6,7 @@ using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core.FileTransfer
 {
-    public class FileTransferHandler : IApiHandler
+    public class FileTransferHandler : ApiHandler<FileTransferControl>
     {
         private readonly FileReceiver fileReceiver;
         private readonly FileSender fileSender;
@@ -16,16 +16,8 @@ namespace Lanchat.Core.FileTransfer
             this.fileReceiver = fileReceiver;
             this.fileSender = fileSender;
         }
-
-        public IEnumerable<Type> HandledDataTypes { get; } = new[] {typeof(FileTransferControl)};
-
-        public void Handle(Type type, object data)
-        {
-            var request = (FileTransferControl) data;
-            HandleFileExchangeRequest(request);
-        }
-
-        private void HandleFileExchangeRequest(FileTransferControl request)
+        
+        protected override void Handle(FileTransferControl request)
         {
             switch (request.RequestStatus)
             {

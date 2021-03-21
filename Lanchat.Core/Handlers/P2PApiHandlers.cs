@@ -4,9 +4,9 @@ using System.Net;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 
-namespace Lanchat.Core.System
+namespace Lanchat.Core.Handlers
 {
-    internal class P2PApiHandlers : IApiHandler
+    internal class P2PApiHandlers : ApiHandler<NodesList>
     {
         private readonly P2P network;
         private readonly IConfig config;
@@ -16,23 +16,17 @@ namespace Lanchat.Core.System
             this.network = network;
             this.config = config;
         }
-        
-        public IEnumerable<Type> HandledDataTypes { get; } = new[]
+
+        protected override void Handle(NodesList stringList)
         {
-            typeof(NodesList)
-        };
-        
-        public void Handle(Type type, object data)
-        {
-            var stringList = (NodesList) data;
             var list = new List<IPAddress>();
-            
+
             // Convert strings to ip addresses.
             stringList?.ForEach(x =>
             {
                 if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
             });
-            
+
             if (!config.AutomaticConnecting) return;
             list.ForEach(x =>
             {

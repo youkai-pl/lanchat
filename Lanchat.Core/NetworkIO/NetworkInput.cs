@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Lanchat.Core.System;
+using Lanchat.Core.Handlers;
 
 namespace Lanchat.Core.NetworkIO
 {
@@ -63,7 +63,7 @@ namespace Lanchat.Core.NetworkIO
                         ? jsonValue
                         : JsonSerializer.Deserialize(jsonValue ?? string.Empty, type, serializerOptions);
 
-                    var handler = ApiHandlers.FirstOrDefault(x => x.HandledDataTypes.Contains(type));
+                    var handler = ApiHandlers.FirstOrDefault(x => x.HandledType == type);
                     if (handler == null)
                     {
                         Trace.WriteLine($"Node {nodeState.Id} received data of unknown type.");
@@ -78,7 +78,7 @@ namespace Lanchat.Core.NetworkIO
                     }
                     else if (Validate(data))
                     {
-                        handler.Handle(type, data);
+                        handler.Handle(data);
                     }
                 }
 

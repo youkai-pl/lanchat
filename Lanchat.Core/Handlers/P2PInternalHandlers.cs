@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core.System
+namespace Lanchat.Core.Handlers
 {
     internal class P2PInternalHandlers
     {

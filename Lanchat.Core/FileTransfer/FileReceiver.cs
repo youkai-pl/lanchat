@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using Lanchat.Core.Encryption;
@@ -8,7 +7,7 @@ using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core.FileTransfer
 {
-    public class FileReceiver : IApiHandler, INotifyPropertyChanged
+    public class FileReceiver : ApiHandler<FilePart>, INotifyPropertyChanged
     {
         private readonly IBytesEncryption encryption;
         private readonly IConfig config;
@@ -38,14 +37,8 @@ namespace Lanchat.Core.FileTransfer
             }
         }
 
-        public IEnumerable<Type> HandledDataTypes { get; } = new[]
+        protected override void Handle(FilePart binary)
         {
-            typeof(FilePart)
-        };
-
-        public void Handle(Type type, object data)
-        {
-            var binary = (FilePart) data;
             HandleReceivedFilePart(binary);
         }
 
@@ -61,7 +54,7 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request == null) throw new InvalidOperationException("No receive request");
             Request.Accepted = true;
-            writeFileStream = new FileStream(Request.FilePath , FileMode.Append);
+            writeFileStream = new FileStream(Request.FilePath, FileMode.Append);
             networkOutput.SendUserData(new FileTransferControl
             {
                 RequestStatus = RequestStatus.Accepted

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
@@ -7,7 +6,7 @@ using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core.Chat
 {
-    internal class MessagingApiHandlers : IApiHandler
+    internal class MessagingApiHandlers : ApiHandler<Message>
     {
         private readonly Messaging messaging;
         private readonly IConfig config;
@@ -18,15 +17,8 @@ namespace Lanchat.Core.Chat
             this.messaging = messaging;
         }
 
-        public IEnumerable<Type> HandledDataTypes { get; } = new[]
+        protected override void Handle(Message message)
         {
-            typeof(Message),
-        };
-
-        public void Handle(Type type, object data)
-        {
-            var message = (Message) data;
-
             try
             {
                 if (message.Private)
