@@ -11,6 +11,7 @@ namespace Lanchat.Core.NodeHandlers
         internal HandshakeHandler(Node node)
         {
             this.node = node;
+            Privileged = true;
         }
 
         protected override void Handle(Handshake handshake)

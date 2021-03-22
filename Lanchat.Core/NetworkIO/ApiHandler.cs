@@ -14,6 +14,11 @@ namespace Lanchat.Core.NetworkIO
         public Type HandledType { get; } = typeof(T);
 
         /// <summary>
+        ///     If handler is privileged it will process data even if node is unready.
+        /// </summary>
+        public bool Privileged { get; set; }
+
+        /// <summary>
         ///     Handle unconverted object.
         /// </summary>
         /// <param name="data">Unconverted object.</param>

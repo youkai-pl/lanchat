@@ -5,17 +5,20 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Lanchat.Core.Extensions;
+using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Core.NetworkIO
 {
     internal class Resolver
     {
+        private readonly INodeState nodeState;
         internal readonly List<IApiHandler> Handlers = new();
         internal readonly List<Type> Models = new();
         private readonly JsonSerializerOptions serializerOptions;
 
-        public Resolver()
+        public Resolver(INodeState nodeState)
         {
+            this.nodeState = nodeState;
             serializerOptions = new JsonSerializerOptions
             {
                 Converters =
@@ -43,6 +46,12 @@ namespace Lanchat.Core.NetworkIO
                 return;
             }
 
+            if (!nodeState.Ready && handler.Privileged == false)
+            {
+                Trace.WriteLine("Node isn't ready.");
+                return;
+            }
+            
             if (!ModelValidator.Validate(data))
             {
                 Trace.WriteLine("Received invalid data.");

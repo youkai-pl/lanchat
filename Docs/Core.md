@@ -5,6 +5,7 @@
 
 - [ApiHandler\`1](#T-Lanchat-Core-NetworkIO-ApiHandler`1 'Lanchat.Core.NetworkIO.ApiHandler`1')
   - [HandledType](#P-Lanchat-Core-NetworkIO-ApiHandler`1-HandledType 'Lanchat.Core.NetworkIO.ApiHandler`1.HandledType')
+  - [Privileged](#P-Lanchat-Core-NetworkIO-ApiHandler`1-Privileged 'Lanchat.Core.NetworkIO.ApiHandler`1.Privileged')
   - [Handle(data)](#M-Lanchat-Core-NetworkIO-ApiHandler`1-Handle-System-Object- 'Lanchat.Core.NetworkIO.ApiHandler`1.Handle(System.Object)')
   - [Handle(data)](#M-Lanchat-Core-NetworkIO-ApiHandler`1-Handle-`0- 'Lanchat.Core.NetworkIO.ApiHandler`1.Handle(`0)')
 - [Broadcast](#T-Lanchat-Core-Models-Broadcast 'Lanchat.Core.Models.Broadcast')
@@ -101,6 +102,13 @@ Inherit this class for create custom API handler.
 ##### Summary
 
 Type of handled model.
+
+<a name='P-Lanchat-Core-NetworkIO-ApiHandler`1-Privileged'></a>
+### Privileged `property`
+
+##### Summary
+
+If handler is privileged it will process data even if node is unready.
 
 <a name='M-Lanchat-Core-NetworkIO-ApiHandler`1-Handle-System-Object-'></a>
 ### Handle(data) `method`

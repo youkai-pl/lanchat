@@ -26,7 +26,7 @@ namespace Lanchat.Tests
             networkMock = new NetworkMock();
             networkOutput = new NetworkOutput(networkMock, nodeState);
             messaging = new Messaging(networkOutput, encryptor);
-            resolver = new Resolver();
+            resolver = new Resolver(nodeState);
             resolver.Handlers.Add(new MessageHandler(messaging));
             resolver.Models.Add(typeof(Message));
             networkInput = new NetworkInput(nodeState, resolver);

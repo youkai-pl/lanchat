@@ -11,6 +11,7 @@ namespace Lanchat.Core.NodeHandlers
         internal KeyInfoHandler(Node node)
         {
             this.node = node;
+            Privileged = true;
         }
 
         protected override void Handle(KeyInfo keyInfo)

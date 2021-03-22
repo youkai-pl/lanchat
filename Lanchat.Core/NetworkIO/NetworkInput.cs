@@ -55,10 +55,7 @@ namespace Lanchat.Core.NetworkIO
                         Trace.WriteLine($"Node {nodeState.Id} received empty data.");
                         return;
                     }
-
-                    // If node isn't ready ignore every messages except handshake and key info.
-                    if (!nodeState.Ready && jsonType != "Handshake" && jsonType != "KeyInfo") return;
-
+                    
                     Trace.WriteLine($"Node {nodeState.Id} received {jsonType}");
                     resolver.Handle(jsonType, jsonValue);
                 }
