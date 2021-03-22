@@ -53,7 +53,7 @@ namespace Lanchat.Core
             FileSender = new FileSender(NetworkOutput, Encryptor);
 
             Resolver = new Resolver(this);
-            var networkInput = new NetworkInput(this, Resolver);
+            var networkInput = new NetworkInput(Resolver);
             Resolver.Handlers.Add(new HandshakeHandler(this));
             Resolver.Handlers.Add(new KeyInfoHandler(this));
             Resolver.Handlers.Add(new ConnectionControlHandler(this));

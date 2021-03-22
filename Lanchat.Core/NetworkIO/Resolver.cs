@@ -28,8 +28,18 @@ namespace Lanchat.Core.NetworkIO
             };
         }
 
-        internal void Handle(string jsonType, string jsonValue)
+        internal void Handle(string item)
         {
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(item, serializerOptions);
+            var jsonType = json?.Keys.First();
+            var jsonValue = json?.Values.First().ToString();
+
+            if (jsonType == null || jsonValue == null)
+            {
+                Trace.WriteLine($"Node {nodeState.Id} received empty data.");
+                return;
+            }
+            
             var type = Models.FirstOrDefault(x => x.Name == jsonType);
 
             if (type == null)

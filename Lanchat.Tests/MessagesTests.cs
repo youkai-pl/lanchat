@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
@@ -30,7 +31,7 @@ namespace Lanchat.Tests
             resolver = new Resolver(nodeState);
             resolver.Handlers.Add(new MessageHandler(messaging));
             resolver.Models.Add(typeof(Message));
-            networkInput = new NetworkInput(nodeState, resolver);
+            networkInput = new NetworkInput(resolver);
         }
 
         [Test]
@@ -50,13 +51,12 @@ namespace Lanchat.Tests
         public void TooLongMessageSend()
         {
             var testMessage = new string('a', 2000);
-            var receivedMessage = string.Empty;
-
-            messaging.MessageReceived += (_, s) => { receivedMessage = s; };
-            networkMock.DataReceived += (sender, s) => networkInput.ProcessReceivedData(sender, s);
-
-            messaging.SendMessage(testMessage);
-            Assert.AreEqual(string.Empty, receivedMessage);
+            
+            Assert.Catch<ValidationException>(() =>
+            {
+                networkMock.DataReceived += (sender, s) => networkInput.ProcessReceivedData(sender, s);
+                messaging.SendMessage(testMessage);
+            });
         }
         
 

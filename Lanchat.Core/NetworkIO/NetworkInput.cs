@@ -1,34 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Core.NetworkIO
 {
     internal class NetworkInput
     {
-        private readonly INodeState nodeState;
-        private readonly JsonSerializerOptions serializerOptions;
         private readonly Resolver resolver;
         private string buffer;
         private string currentJson;
 
-        internal NetworkInput(INodeState nodeState, Resolver resolver)
+        internal NetworkInput(Resolver resolver)
         {
-            this.nodeState = nodeState;
-            serializerOptions = new JsonSerializerOptions
-            {
-                Converters =
-                {
-                    new JsonStringEnumConverter()
-                }
-            };
             this.resolver = resolver;
-            
+
             resolver.Models.AddRange(Assembly
                 .GetExecutingAssembly()
                 .GetTypes()
@@ -44,19 +31,10 @@ namespace Lanchat.Core.NetworkIO
             buffer = buffer.Substring(index + 1);
 
             foreach (var item in currentJson.Replace("}{", "}|{").Split('|'))
+            {
                 try
                 {
-                    var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(item, serializerOptions);
-                    var jsonType = json?.Keys.First();
-                    var jsonValue = json?.Values.First().ToString();
-
-                    if (jsonType == null || jsonValue == null)
-                    {
-                        Trace.WriteLine($"Node {nodeState.Id} received empty data.");
-                        return;
-                    }
-                    
-                    resolver.Handle(jsonType, jsonValue);
+                    resolver.Handle(item);
                 }
 
                 // Input errors catching.
@@ -64,8 +42,12 @@ namespace Lanchat.Core.NetworkIO
                 {
                     if (ex is not JsonException &&
                         ex is not ArgumentNullException &&
-                        ex is not NullReferenceException) throw;
+                        ex is not InvalidOperationException &&
+                        ex is not ArgumentException &&
+                        ex is not NullReferenceException &&
+                        ex is not ValidationException) throw;
                 }
+            }
         }
     }
 }
