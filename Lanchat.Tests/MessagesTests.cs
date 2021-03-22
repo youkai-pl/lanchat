@@ -4,6 +4,7 @@ using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 using Lanchat.Tests.Mock;
 using NUnit.Framework;
+using MessageHandler = Lanchat.Core.Chat.MessageHandler;
 
 namespace Lanchat.Tests
 {
