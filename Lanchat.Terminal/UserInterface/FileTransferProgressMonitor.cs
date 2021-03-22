@@ -8,8 +8,10 @@ namespace Lanchat.Terminal.UserInterface
     {
         private int fileTransfersInProgress;
         private long progress;
-        
+
         public string Text => string.Format(Resources._FileTransfer, progress, fileTransfersInProgress);
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         internal void ObserveNodeTransfers(FileReceiver fileReceiver, FileSender fileSender)
         {
@@ -53,8 +55,6 @@ namespace Lanchat.Terminal.UserInterface
                 OnPropertyChanged();
             };
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName = null)
         {

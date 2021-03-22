@@ -6,8 +6,8 @@ namespace Lanchat.Terminal.Commands
 {
     public class Unblock : ICommand
     {
-        public string Alias { get; set; } = "unblock";
-        public int ArgsCount { get; set; } = 1;
+        public string Alias { get; } = "unblock";
+        public int ArgsCount { get; } = 1;
 
         public void Execute(string[] args)
         {

@@ -14,8 +14,10 @@ namespace Lanchat.Terminal.UserInterface
 {
     public static class Ui
     {
-        private static TextBlock _clock;
         private static TextBox _input;
+        private static TextBlock _clock;
+        private static TextBlock _fileTransferStatus;
+        
         internal static LogPanel Log { get; private set; }
         internal static TextBlock NodesCount { get; private set; }
         internal static TextBlock DetectedCount { get; private set; }
@@ -23,9 +25,6 @@ namespace Lanchat.Terminal.UserInterface
         internal static VerticalScrollPanel ScrollPanel { get; private set; }
         internal static TextBlock StatusBar { get; private set; }
         internal static TextBlock Status { get; private set; }
-
-        internal static TextBlock FileTransferStatus { get; private set; }
-
         internal static FileTransferProgressMonitor FileTransferProgressMonitor { get; } = new();
 
         public static void Start()
@@ -62,7 +61,7 @@ namespace Lanchat.Terminal.UserInterface
                 Text = $"[{Program.Config.Nickname}] "
             };
 
-            FileTransferStatus = new TextBlock
+            _fileTransferStatus = new TextBlock
             {
                 Text = FileTransferProgressMonitor.Text,
                 Color = ConsoleColor.Gray
@@ -150,7 +149,7 @@ namespace Lanchat.Terminal.UserInterface
                                     Status,
                                     new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
                                     new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
-                                    FileTransferStatus,
+                                    _fileTransferStatus,
                                     new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan}
                                 }
                             }
@@ -161,9 +160,9 @@ namespace Lanchat.Terminal.UserInterface
 
             FileTransferProgressMonitor.PropertyChanged += (_, _) =>
             {
-                FileTransferStatus.Text = FileTransferProgressMonitor.Text;
+                _fileTransferStatus.Text = FileTransferProgressMonitor.Text;
             };
-            
+
             // Start console UI 
             ConsoleManager.Console = new SimplifiedConsole();
             ConsoleManager.Setup();

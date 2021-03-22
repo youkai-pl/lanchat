@@ -18,20 +18,14 @@ namespace Lanchat.ClientCore
         private static bool _automaticConnecting = true;
         private static bool _useIPv6;
         private static string _language = "default";
+        private string filesDownloadDirectory = ConfigValues.GetDownloadsDirectory();
         private int maxMessageLenght = 1500;
         private int maxNicknameLenght = 20;
         private Status status = Status.Online;
-        private string filesDownloadDirectory = ConfigValues.GetDownloadsDirectory();
-        
+
         [JsonIgnore] public bool Fresh { get; set; }
 
-        [JsonIgnore]
-        public List<IPAddress> BlockedAddresses
-        {
-            get => BlockedAddressesList.Select(IPAddress.Parse).ToList();
-            set { BlockedAddressesList = value.Select(x => x.ToString()).ToList(); }
-        }
-
+        // ReSharper disable once CA1822
         public List<string> BlockedAddressesList
         {
             get => _blockedAddresses;
@@ -46,6 +40,13 @@ namespace Lanchat.ClientCore
                 _language = value;
                 OnPropertyChanged(nameof(Language));
             }
+        }
+
+        [JsonIgnore]
+        public List<IPAddress> BlockedAddresses
+        {
+            get => BlockedAddressesList.Select(IPAddress.Parse).ToList();
+            set { BlockedAddressesList = value.Select(x => x.ToString()).ToList(); }
         }
 
         public Status Status

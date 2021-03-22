@@ -52,7 +52,7 @@ namespace Lanchat.Tests
         {
             Assert.Catch<InvalidKeyImportException>(() =>
             {
-                encryptor.ImportAesKey(new KeyInfo()
+                encryptor.ImportAesKey(new KeyInfo
                 {
                     AesIv = new byte[] {0x10},
                     AesKey = new byte[] {0x10}

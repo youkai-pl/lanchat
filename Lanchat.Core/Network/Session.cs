@@ -15,7 +15,6 @@ namespace Lanchat.Core.Network
 
         public IPEndPoint Endpoint => (IPEndPoint) Socket.RemoteEndPoint;
         public bool EnableReconnecting { get; set; }
-        public event EventHandler Connected;
         public event EventHandler<bool> Disconnected;
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
@@ -31,6 +30,8 @@ namespace Lanchat.Core.Network
             Disconnect();
             Dispose();
         }
+
+        public event EventHandler Connected;
 
         protected override void OnConnected()
         {

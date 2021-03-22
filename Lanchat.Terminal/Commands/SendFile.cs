@@ -8,8 +8,8 @@ namespace Lanchat.Terminal.Commands
 {
     public class SendFile : ICommand
     {
-        public string Alias { get; set; } = "send";
-        public int ArgsCount { get; set; } = 2;
+        public string Alias { get; } = "send";
+        public int ArgsCount { get; } = 2;
 
         public void Execute(string[] args)
         {
@@ -35,7 +35,7 @@ namespace Lanchat.Terminal.Commands
                     case ArgumentException:
                         Ui.Log.Add(string.Format(Resources._CannotAccessFile, args[1]));
                         break;
-                    
+
                     case InvalidOperationException:
                         Ui.Log.Add(Resources._FileTransferInProgress);
                         break;

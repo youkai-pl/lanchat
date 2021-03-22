@@ -193,11 +193,11 @@ namespace Lanchat.Core
                     Trace.WriteLine($"Cannot connect {Id}");
                     CannotConnect?.Invoke(this, EventArgs.Empty);
                     break;
-                
+
                 case true when Ready:
                     HardDisconnect?.Invoke(this, EventArgs.Empty);
                     break;
-                
+
                 case false when Ready:
                     Disconnected?.Invoke(this, EventArgs.Empty);
                     break;

@@ -15,7 +15,8 @@ namespace Lanchat.ClientCore
                 if (eventArgs.Exception.Source != "System.Console") Trace.WriteLine(eventArgs.Exception);
             };
 
-            Trace.Listeners.Add(new FileTraceListener($"{ConfigManager.DataPath}/{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log"));
+            Trace.Listeners.Add(
+                new FileTraceListener($"{ConfigManager.DataPath}/{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log"));
             Trace.IndentSize = 11;
             Trace.AutoFlush = true;
             Trace.WriteLine("Logging started");

@@ -13,6 +13,16 @@ namespace Lanchat.ClientCore
         public static string ConfigPath { get; private set; }
         public static string DataPath { get; private set; }
 
+        private static JsonSerializerOptions JsonSerializerOptions =>
+            new()
+            {
+                WriteIndented = true,
+                Converters =
+                {
+                    new JsonStringEnumConverter()
+                }
+            };
+
         public static Config Load()
         {
             try
@@ -65,7 +75,7 @@ namespace Lanchat.ClientCore
             {
                 Fresh = true
             };
-            
+
             Save();
             _config.PropertyChanged += (_, _) => { Save(); };
             return _config;
@@ -84,24 +94,10 @@ namespace Lanchat.ClientCore
                 if (e is DirectoryNotFoundException ||
                     e is UnauthorizedAccessException ||
                     e is ArgumentNullException)
-                {
                     Trace.WriteLine("Cannot save config");
-                }
                 else
-                {
                     throw;
-                }
             }
         }
-
-        private static JsonSerializerOptions JsonSerializerOptions =>
-            new()
-            {
-                WriteIndented = true,
-                Converters =
-                {
-                    new JsonStringEnumConverter()
-                }
-            };
     }
 }

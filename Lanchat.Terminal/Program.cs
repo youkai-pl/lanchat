@@ -26,9 +26,9 @@ namespace Lanchat.Terminal
             }
             catch
             {
-                Trace.WriteLine($"Cannot load translation. Using default.");
+                Trace.WriteLine("Cannot load translation. Using default.");
             }
-            
+
             Resources.Culture = CultureInfo.CurrentCulture;
 
             // Initialize p2p mode and ui

@@ -9,12 +9,12 @@ namespace Lanchat.Tests
 {
     public class MessagesSendTests
     {
-        private NetworkOutput networkOutput;
+        private IConfig config;
+        private Encryptor encryptor;
+        private Messaging messaging;
         private NetworkInput networkInput;
         private NetworkMock networkMock;
-        private Messaging messaging;
-        private Encryptor encryptor;
-        private IConfig config;
+        private NetworkOutput networkOutput;
 
         [SetUp]
         public void Setup()
@@ -23,7 +23,7 @@ namespace Lanchat.Tests
             {
                 MaxMessageLenght = 5
             };
-            
+
             var nodeState = new NodeState();
 
             encryptor = new Encryptor();
@@ -41,7 +41,7 @@ namespace Lanchat.Tests
         {
             var testMessage = "test";
             var receivedMessage = string.Empty;
-            
+
             messaging.MessageReceived += (_, s) => { receivedMessage = s; };
             networkMock.DataReceived += (sender, s) => networkInput.ProcessReceivedData(sender, s);
 
@@ -54,7 +54,7 @@ namespace Lanchat.Tests
         {
             var testMessage = "test";
             var receivedMessage = string.Empty;
-            
+
             messaging.PrivateMessageReceived += (_, s) => { receivedMessage = s; };
             networkMock.DataReceived += (sender, s) => networkInput.ProcessReceivedData(sender, s);
 
@@ -70,7 +70,7 @@ namespace Lanchat.Tests
 
             messaging.MessageReceived += (_, s) => { receivedMessage = s; };
             networkMock.DataReceived += (sender, s) => networkInput.ProcessReceivedData(sender, s);
-            
+
             messaging.SendMessage(testMessage);
             Assert.AreEqual("12345...", receivedMessage);
         }
@@ -83,7 +83,7 @@ namespace Lanchat.Tests
 
             messaging.PrivateMessageReceived += (_, s) => { receivedMessage = s; };
             networkMock.DataReceived += (sender, s) => networkInput.ProcessReceivedData(sender, s);
-            
+
             messaging.SendPrivateMessage(testMessage);
             Assert.AreEqual("12345...", receivedMessage);
         }
@@ -92,9 +92,10 @@ namespace Lanchat.Tests
         public void WeirdText()
         {
             config.MaxMessageLenght = 150;
-            var testMessage = "ẗ̴̝̱̦̝͉͉̬̩̙́̎e̷̡̧̡̢̮̩͓̯̞̼̖̜̥̭̣̙͕̲̳̰̱̾̈͗̉̈́͐́̿̿̕ş̵̡̣̣̳̺̘̲̦͕̣̹̯̰̘̟̰͕̗̰̦͍̩̩̱̩͖̖͍̈́̊͆̾̀̄̾͐̈̈̍̃̔̉̋̐̔͒̒̍̎̇̏͌̑̚͜t̴͙̭̠͇̹̫͇̗̥̗͍̀̒̈́́͑̈́̃͌̽̈́̏̈̉͘̕̚͜͝ͅͅ";
+            var testMessage =
+                "ẗ̴̝̱̦̝͉͉̬̩̙́̎e̷̡̧̡̢̮̩͓̯̞̼̖̜̥̭̣̙͕̲̳̰̱̾̈͗̉̈́͐́̿̿̕ş̵̡̣̣̳̺̘̲̦͕̣̹̯̰̘̟̰͕̗̰̦͍̩̩̱̩͖̖͍̈́̊͆̾̀̄̾͐̈̈̍̃̔̉̋̐̔͒̒̍̎̇̏͌̑̚͜t̴͙̭̠͇̹̫͇̗̥̗͍̀̒̈́́͑̈́̃͌̽̈́̏̈̉͘̕̚͜͝ͅͅ";
             var receivedMessage = string.Empty;
-            
+
             messaging.MessageReceived += (_, s) => { receivedMessage = s; };
             networkMock.DataReceived += (sender, s) => networkInput.ProcessReceivedData(sender, s);
 

@@ -8,8 +8,8 @@ namespace Lanchat.Terminal.Commands
 {
     public class List : ICommand
     {
-        public string Alias { get; set; } = "list";
-        public int ArgsCount { get; set; }
+        public string Alias { get; } = "list";
+        public int ArgsCount { get; } = 0;
 
         public void Execute(string[] _)
         {
@@ -17,6 +17,7 @@ namespace Lanchat.Terminal.Commands
             {
                 var status = new TextBlock();
 
+                // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
                 switch (x.Status)
                 {
                     case Status.Online:
