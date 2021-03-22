@@ -43,16 +43,6 @@ namespace Lanchat.Core
         bool UseIPv6 { get; set; }
 
         /// <summary>
-        ///     Max message lenght. Longer incoming messages will be trimmed.
-        /// </summary>
-        int MaxMessageLenght { get; set; }
-
-        /// <summary>
-        ///     Max nickname lenght. Longer nicknames will be trimmed.
-        /// </summary>
-        int MaxNicknameLenght { get; set; }
-
-        /// <summary>
         ///     Enable automatic connecting to nodes from received list.
         /// </summary>
         bool AutomaticConnecting { get; set; }

@@ -19,8 +19,6 @@ namespace Lanchat.ClientCore
         private static bool _useIPv6;
         private static string _language = "default";
         private string filesDownloadDirectory = ConfigValues.GetDownloadsDirectory();
-        private int maxMessageLenght = 1500;
-        private int maxNicknameLenght = 20;
         private Status status = Status.Online;
 
         [JsonIgnore] public bool Fresh { get; set; }
@@ -89,16 +87,6 @@ namespace Lanchat.ClientCore
             }
         }
 
-        public int MaxNicknameLenght
-        {
-            get => maxNicknameLenght;
-            set
-            {
-                maxNicknameLenght = value;
-                OnPropertyChanged(nameof(MaxNicknameLenght));
-            }
-        }
-
         public bool AutomaticConnecting
         {
             get => _automaticConnecting;
@@ -126,16 +114,6 @@ namespace Lanchat.ClientCore
             {
                 _useIPv6 = value;
                 OnPropertyChanged(nameof(UseIPv6));
-            }
-        }
-
-        public int MaxMessageLenght
-        {
-            get => maxMessageLenght;
-            set
-            {
-                maxMessageLenght = value;
-                OnPropertyChanged(nameof(MaxMessageLenght));
             }
         }
 

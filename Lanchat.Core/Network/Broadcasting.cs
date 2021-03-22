@@ -50,10 +50,14 @@ namespace Lanchat.Core.Network
                     try
                     {
                         var broadcast = JsonSerializer.Deserialize<Broadcast>(Encoding.UTF8.GetString(recvBuffer));
+                        if (!ModelValidator.Validate(broadcast))
+                        {
+                            return;
+                        }
+                        
                         if (broadcast != null && broadcast.Guid != uniqueId)
                         {
                             broadcast.IpAddress = from.Address;
-                            broadcast.Nickname = broadcast.Nickname.Truncate(config.MaxNicknameLenght);
                             BroadcastReceived(broadcast);
                         }
                     }

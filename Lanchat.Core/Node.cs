@@ -53,12 +53,12 @@ namespace Lanchat.Core
             FileSender = new FileSender(NetworkOutput, Encryptor);
 
             NetworkInput = new NetworkInput(this);
-            NetworkInput.ApiHandlers.Add(new HandshakeHandler(this, config));
+            NetworkInput.ApiHandlers.Add(new HandshakeHandler(this));
             NetworkInput.ApiHandlers.Add(new KeyInfoHandler(this));
             NetworkInput.ApiHandlers.Add(new ConnectionControlHandler(this));
             NetworkInput.ApiHandlers.Add(new StatusUpdateHandler(this));
-            NetworkInput.ApiHandlers.Add(new NicknameUpdateHandler(this, config));
-            NetworkInput.ApiHandlers.Add(new MessageHandler(Messaging, config));
+            NetworkInput.ApiHandlers.Add(new NicknameUpdateHandler(this));
+            NetworkInput.ApiHandlers.Add(new MessageHandler(Messaging));
             NetworkInput.ApiHandlers.Add(new FilePartHandler(FileReceiver));
             NetworkInput.ApiHandlers.Add(new FileTransferControlHandler(FileReceiver, FileSender));
 

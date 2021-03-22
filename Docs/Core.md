@@ -32,8 +32,6 @@
   - [AutomaticConnecting](#P-Lanchat-Core-IConfig-AutomaticConnecting 'Lanchat.Core.IConfig.AutomaticConnecting')
   - [BlockedAddresses](#P-Lanchat-Core-IConfig-BlockedAddresses 'Lanchat.Core.IConfig.BlockedAddresses')
   - [BroadcastPort](#P-Lanchat-Core-IConfig-BroadcastPort 'Lanchat.Core.IConfig.BroadcastPort')
-  - [MaxMessageLenght](#P-Lanchat-Core-IConfig-MaxMessageLenght 'Lanchat.Core.IConfig.MaxMessageLenght')
-  - [MaxNicknameLenght](#P-Lanchat-Core-IConfig-MaxNicknameLenght 'Lanchat.Core.IConfig.MaxNicknameLenght')
   - [Nickname](#P-Lanchat-Core-IConfig-Nickname 'Lanchat.Core.IConfig.Nickname')
   - [ReceivedFilesDirectory](#P-Lanchat-Core-IConfig-ReceivedFilesDirectory 'Lanchat.Core.IConfig.ReceivedFilesDirectory')
   - [ServerPort](#P-Lanchat-Core-IConfig-ServerPort 'Lanchat.Core.IConfig.ServerPort')
@@ -358,20 +356,6 @@ Blocked IP addresses.
 ##### Summary
 
 Broadcast port.
-
-<a name='P-Lanchat-Core-IConfig-MaxMessageLenght'></a>
-### MaxMessageLenght `property`
-
-##### Summary
-
-Max message lenght. Longer incoming messages will be trimmed.
-
-<a name='P-Lanchat-Core-IConfig-MaxNicknameLenght'></a>
-### MaxNicknameLenght `property`
-
-##### Summary
-
-Max nickname lenght. Longer nicknames will be trimmed.
 
 <a name='P-Lanchat-Core-IConfig-Nickname'></a>
 ### Nickname `property`

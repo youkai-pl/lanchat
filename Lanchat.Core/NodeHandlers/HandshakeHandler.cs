@@ -1,5 +1,4 @@
 using Lanchat.Core.Encryption;
-using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 
@@ -7,22 +6,17 @@ namespace Lanchat.Core.NodeHandlers
 {
     internal class HandshakeHandler : ApiHandler<Handshake>
     {
-        private readonly IConfig config;
         private readonly Node node;
 
-        internal HandshakeHandler(Node node, IConfig config)
+        internal HandshakeHandler(Node node)
         {
             this.node = node;
-            this.config = config;
         }
 
         protected override void Handle(Handshake handshake)
         {
             if (node.HandshakeReceived && !node.UnderReconnecting) return;
-
-            if (handshake == null) return;
-
-            node.Nickname = handshake.Nickname.Truncate(config.MaxNicknameLenght);
+            node.Nickname = handshake.Nickname;
 
             if (!node.NetworkElement.IsSession) node.SendHandshakeAndWait();
 

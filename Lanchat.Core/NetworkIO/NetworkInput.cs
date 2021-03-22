@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Lanchat.Core.Extensions;
 using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Core.NetworkIO
@@ -71,7 +71,7 @@ namespace Lanchat.Core.NetworkIO
                         return;
                     }
 
-                    if (!Validate(data)) continue;
+                    if (!ModelValidator.Validate(data)) continue;
                     handler.Handle(data);
                     Trace.WriteLine($"Node {nodeState.Id} received {jsonType}");
                 }
@@ -83,16 +83,6 @@ namespace Lanchat.Core.NetworkIO
                         ex is not ArgumentNullException &&
                         ex is not NullReferenceException) throw;
                 }
-        }
-
-        private bool Validate(object data)
-        {
-            var results = new List<ValidationResult>();
-            if (Validator.TryValidateObject(data, new ValidationContext(data), results, true)) return true;
-
-            foreach (var e in results) Trace.WriteLine($"Node {nodeState.Id} received invalid data: {e}");
-
-            return false;
         }
     }
 }

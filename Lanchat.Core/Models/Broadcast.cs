@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
@@ -14,11 +15,14 @@ namespace Lanchat.Core.Models
         /// <summary>
         ///     Guid for ignoring own broadcasts.
         /// </summary>
+        [Required]
         public string Guid { get; set; }
 
         /// <summary>
         ///     Node nickname.
         /// </summary>
+        [Required]
+        [MaxLength(20)]
         public string Nickname
         {
             get => nickname;
