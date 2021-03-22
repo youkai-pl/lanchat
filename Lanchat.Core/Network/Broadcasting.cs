@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -7,7 +8,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Timer = System.Timers.Timer;
 
@@ -50,12 +50,9 @@ namespace Lanchat.Core.Network
                     try
                     {
                         var broadcast = JsonSerializer.Deserialize<Broadcast>(Encoding.UTF8.GetString(recvBuffer));
-                        if (!ModelValidator.Validate(broadcast))
-                        {
-                            return;
-                        }
+                        Validator.ValidateObject(broadcast!, new ValidationContext(broadcast), true);
                         
-                        if (broadcast != null && broadcast.Guid != uniqueId)
+                        if (broadcast.Guid != uniqueId)
                         {
                             broadcast.IpAddress = from.Address;
                             BroadcastReceived(broadcast);
@@ -63,12 +60,10 @@ namespace Lanchat.Core.Network
                     }
                     catch (Exception e)
                     {
-                        if (e is JsonException ||
-                            e is ArgumentException ||
-                            e is NotSupportedException)
-                            return;
-
-                        throw;
+                        if (e is not JsonException && 
+                            e is not ArgumentException &&
+                            e is not NotSupportedException &&
+                            e is not ValidationException) throw;
                     }
                 }
             });
