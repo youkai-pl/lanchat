@@ -108,7 +108,7 @@ namespace Lanchat.Core
 
             var client = new Client(ipAddress, port.Value);
             var node = new Node(client, config);
-            node.NetworkInput.ApiHandlers.Add(new NodesListHandler(this, config));
+            node.Resolver.Handlers.Add(new NodesListHandler(this, config));
             OutgoingConnections.Add(node);
             node.Connected += p2PInternalHandlers.OnConnected;
             node.HardDisconnect += p2PInternalHandlers.OnHardDisconnect;

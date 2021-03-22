@@ -1,5 +1,6 @@
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
+using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 using Lanchat.Tests.Mock;
 using NUnit.Framework;
@@ -13,6 +14,7 @@ namespace Lanchat.Tests
         private NetworkInput networkInput;
         private NetworkMock networkMock;
         private NetworkOutput networkOutput;
+        private Resolver resolver;
 
         [SetUp]
         public void Setup()
@@ -24,8 +26,10 @@ namespace Lanchat.Tests
             networkMock = new NetworkMock();
             networkOutput = new NetworkOutput(networkMock, nodeState);
             messaging = new Messaging(networkOutput, encryptor);
-            networkInput = new NetworkInput(nodeState);
-            networkInput.ApiHandlers.Add(new MessageHandler(messaging));
+            resolver = new Resolver();
+            resolver.Handlers.Add(new MessageHandler(messaging));
+            resolver.Models.Add(typeof(Message));
+            networkInput = new NetworkInput(nodeState, resolver);
         }
 
         [Test]

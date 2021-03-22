@@ -34,8 +34,8 @@ namespace Lanchat.Core
         /// <see cref="INetworkElement" />
         public readonly INetworkElement NetworkElement;
 
-        internal readonly NetworkInput NetworkInput;
         internal readonly INetworkOutput NetworkOutput;
+        internal readonly Resolver Resolver;
 
         internal bool HandshakeReceived;
         private string nickname;
@@ -52,18 +52,19 @@ namespace Lanchat.Core
             FileReceiver = new FileReceiver(NetworkOutput, Encryptor, config);
             FileSender = new FileSender(NetworkOutput, Encryptor);
 
-            NetworkInput = new NetworkInput(this);
-            NetworkInput.ApiHandlers.Add(new HandshakeHandler(this));
-            NetworkInput.ApiHandlers.Add(new KeyInfoHandler(this));
-            NetworkInput.ApiHandlers.Add(new ConnectionControlHandler(this));
-            NetworkInput.ApiHandlers.Add(new StatusUpdateHandler(this));
-            NetworkInput.ApiHandlers.Add(new NicknameUpdateHandler(this));
-            NetworkInput.ApiHandlers.Add(new MessageHandler(Messaging));
-            NetworkInput.ApiHandlers.Add(new FilePartHandler(FileReceiver));
-            NetworkInput.ApiHandlers.Add(new FileTransferControlHandler(FileReceiver, FileSender));
+            Resolver = new Resolver();
+            var networkInput = new NetworkInput(this, Resolver);
+            Resolver.Handlers.Add(new HandshakeHandler(this));
+            Resolver.Handlers.Add(new KeyInfoHandler(this));
+            Resolver.Handlers.Add(new ConnectionControlHandler(this));
+            Resolver.Handlers.Add(new StatusUpdateHandler(this));
+            Resolver.Handlers.Add(new NicknameUpdateHandler(this));
+            Resolver.Handlers.Add(new MessageHandler(Messaging));
+            Resolver.Handlers.Add(new FilePartHandler(FileReceiver));
+            Resolver.Handlers.Add(new FileTransferControlHandler(FileReceiver, FileSender));
 
             NetworkElement.Disconnected += OnDisconnected;
-            NetworkElement.DataReceived += NetworkInput.ProcessReceivedData;
+            NetworkElement.DataReceived += networkInput.ProcessReceivedData;
             NetworkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
             if (NetworkElement.IsSession) SendHandshakeAndWait();
