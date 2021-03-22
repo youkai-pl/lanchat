@@ -56,7 +56,6 @@ namespace Lanchat.Core.NetworkIO
                         return;
                     }
                     
-                    Trace.WriteLine($"Node {nodeState.Id} received {jsonType}");
                     resolver.Handle(jsonType, jsonValue);
                 }
 

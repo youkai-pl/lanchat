@@ -34,7 +34,7 @@ namespace Lanchat.Core.NetworkIO
             
             if (type == null)
             {
-                Trace.WriteLine("Received data of unknown type.");
+                Trace.WriteLine($"{nodeState.Id} received data of unknown type.");
                 return;
             }
             
@@ -42,22 +42,23 @@ namespace Lanchat.Core.NetworkIO
             var handler = Handlers.FirstOrDefault(x => x.HandledType == type);
             if (handler == null)
             {
-                Trace.WriteLine("No handler for received data.");
+                Trace.WriteLine($" {nodeState.Id} has no handler for received data.");
                 return;
             }
 
             if (!nodeState.Ready && handler.Privileged == false)
             {
-                Trace.WriteLine("Node isn't ready.");
+                Trace.WriteLine($"Node {nodeState.Id} isn't ready.");
                 return;
             }
             
             if (!ModelValidator.Validate(data))
             {
-                Trace.WriteLine("Received invalid data.");
+                Trace.WriteLine($"{nodeState.Id} received invalid data.");
                 return;
             }
 
+            Trace.WriteLine($"Node {nodeState.Id} received {jsonType}");
             handler.Handle(data);
         }
     }
