@@ -44,7 +44,6 @@ namespace Lanchat.Core.NetworkIO
                         ex is not ArgumentNullException &&
                         ex is not InvalidOperationException &&
                         ex is not ArgumentException &&
-                        ex is not NullReferenceException &&
                         ex is not ValidationException) throw;
                 }
             }

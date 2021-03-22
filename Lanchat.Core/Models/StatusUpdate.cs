@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Lanchat.Core.Models
 {
     internal class StatusUpdate
     {
-        public Status NewStatus { get; init; }
+        [Required] public Status NewStatus { get; init; }
     }
 
     /// <summary>

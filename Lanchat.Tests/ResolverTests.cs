@@ -47,10 +47,16 @@ namespace Lanchat.Tests
         }
 
         [Test]
-        public void InvalidData()
+        public void InvalidModel()
         {
             var data = new Dictionary<string, object> {{"Message", new Message {Content = null}}};
             Assert.Catch<ValidationException>(() => { resolver.Handle(JsonSerializer.Serialize(data)); });
+        }
+        
+        [Test]
+        public void InvalidJson()
+        {
+            Assert.Catch<JsonException>(() => { resolver.Handle("not a json"); });
         }
     }
 }
