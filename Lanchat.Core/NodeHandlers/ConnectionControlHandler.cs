@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 
@@ -18,6 +19,10 @@ namespace Lanchat.Core.NodeHandlers
             {
                 case ConnectionControlStatus.RemoteClose:
                     node.NetworkElement.EnableReconnecting = false;
+                    break;
+                
+                default:
+                    Trace.WriteLine("Invalid status received");
                     break;
             }
         }

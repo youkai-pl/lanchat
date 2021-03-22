@@ -186,19 +186,21 @@ namespace Lanchat.Core
         {
             UnderReconnecting = !hardDisconnect;
 
-            // Raise event only if node was ready before.
-            if (hardDisconnect && !Ready)
+            switch (hardDisconnect)
             {
-                Trace.WriteLine($"Cannot connect {Id}");
-                CannotConnect?.Invoke(this, EventArgs.Empty);
-            }
-            else if (hardDisconnect && Ready)
-            {
-                HardDisconnect?.Invoke(this, EventArgs.Empty);
-            }
-            else if (Ready)
-            {
-                Disconnected?.Invoke(this, EventArgs.Empty);
+                // Raise event only if node was ready before.
+                case true when !Ready:
+                    Trace.WriteLine($"Cannot connect {Id}");
+                    CannotConnect?.Invoke(this, EventArgs.Empty);
+                    break;
+                
+                case true when Ready:
+                    HardDisconnect?.Invoke(this, EventArgs.Empty);
+                    break;
+                
+                case false when Ready:
+                    Disconnected?.Invoke(this, EventArgs.Empty);
+                    break;
             }
 
             Ready = false;

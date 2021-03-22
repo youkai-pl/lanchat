@@ -2,7 +2,7 @@ namespace Lanchat.Core.Models
 {
     internal class StatusUpdate
     {
-        public Status NewStatus { get; set; }
+        public Status NewStatus { get; init; }
     }
 
     /// <summary>

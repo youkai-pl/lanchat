@@ -20,7 +20,6 @@ namespace Lanchat.Core.Network
         }
 
         public bool EnableReconnecting { get; set; }
-        public event EventHandler Connected;
         public event EventHandler<bool> Disconnected;
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
@@ -43,7 +42,6 @@ namespace Lanchat.Core.Network
         protected override void OnConnected()
         {
             isReconnecting = false;
-            Connected?.Invoke(this, EventArgs.Empty);
             Trace.WriteLine($"Client {Id} connected");
         }
 

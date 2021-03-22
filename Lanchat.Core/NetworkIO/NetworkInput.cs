@@ -71,11 +71,9 @@ namespace Lanchat.Core.NetworkIO
                         return;
                     }
 
-                    if (Validate(data))
-                    {
-                        handler.Handle(data);
-                        Trace.WriteLine($"Node {nodeState.Id} received {jsonType}");
-                    }
+                    if (!Validate(data)) continue;
+                    handler.Handle(data);
+                    Trace.WriteLine($"Node {nodeState.Id} received {jsonType}");
                 }
 
                 // Input errors catching.

@@ -22,6 +22,7 @@ namespace Lanchat.Core.Network
         /// <summary>
         ///     Enable automatic reconnecting (only for client side).
         /// </summary>
+        // ReSharper disable once UnusedMemberInSuper.Global
         bool EnableReconnecting { get; set; }
 
         /// <summary>
@@ -39,11 +40,6 @@ namespace Lanchat.Core.Network
         ///     Close client or session.
         /// </summary>
         void Close();
-
-        /// <summary>
-        ///     Network element connected.
-        /// </summary>
-        event EventHandler Connected;
 
         /// <summary>
         ///     Network element disconnected.
