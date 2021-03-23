@@ -36,7 +36,7 @@ namespace Lanchat.Terminal
             node.CannotConnect += OnCannotConnect;
             node.PropertyChanged += OnPropertyChanged;
 
-            Ui.FileTransferProgressMonitor.ObserveNodeTransfers(node.FileReceiver, node.FileSender);
+            Ui.BottomBar.FileTransferProgressMonitor.ObserveNodeTransfers(node.FileReceiver, node.FileSender);
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -64,19 +64,19 @@ namespace Lanchat.Terminal
         private void OnConnected(object sender, EventArgs e)
         {
             Ui.Log.Add(string.Format(Resources._Connected, node.Nickname));
-            Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
+            Ui.BottomBar.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
         private void OnDisconnected(object sender, EventArgs e)
         {
             Ui.Log.Add(string.Format(Resources._Reconnecting, node.Nickname));
-            Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
+            Ui.BottomBar.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
         private void OnHardDisconnected(object sender, EventArgs e)
         {
             Ui.Log.Add(string.Format(Resources._Disconnected, node.Nickname));
-            Ui.NodesCount.Text = Program.Network.Nodes.Count.ToString();
+            Ui.BottomBar.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
         private void OnMessageReceived(object sender, string e)

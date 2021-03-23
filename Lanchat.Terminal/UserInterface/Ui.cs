@@ -15,58 +15,25 @@ namespace Lanchat.Terminal.UserInterface
     public static class Ui
     {
         private static TextBox _input;
-        private static TextBlock _clock;
-        private static TextBlock _fileTransferStatus;
-        
+        internal static BottomBar BottomBar { get; private set; }
+
         internal static LogPanel Log { get; private set; }
-        internal static TextBlock NodesCount { get; private set; }
-        internal static TextBlock DetectedCount { get; private set; }
         internal static TextBlock PromptIndicator { get; private set; }
         internal static VerticalScrollPanel ScrollPanel { get; private set; }
         internal static TextBlock StatusBar { get; private set; }
-        internal static TextBlock Status { get; private set; }
-        internal static FileTransferProgressMonitor FileTransferProgressMonitor { get; } = new();
 
         public static void Start()
         {
             Log = new LogPanel();
+            BottomBar = new BottomBar();
 
             _input = new TextBox();
-
-            _clock = new TextBlock
-            {
-                Color = ConsoleColor.Gray
-            };
-
-            Status = new TextBlock
-            {
-                Text = "Online",
-                Color = ConsoleColor.Gray
-            };
-
-            NodesCount = new TextBlock
-            {
-                Text = "0",
-                Color = ConsoleColor.Gray
-            };
-
-            DetectedCount = new TextBlock
-            {
-                Text = "0",
-                Color = ConsoleColor.Gray
-            };
 
             PromptIndicator = new TextBlock
             {
                 Text = $"[{Program.Config.Nickname}] "
             };
-
-            _fileTransferStatus = new TextBlock
-            {
-                Text = FileTransferProgressMonitor.Text,
-                Color = ConsoleColor.Gray
-            };
-
+            
             ScrollPanel = new VerticalScrollPanel
             {
                 Content = Log,
@@ -127,40 +94,8 @@ namespace Lanchat.Terminal.UserInterface
                     },
 
                     // Bottom bar
-                    FillingControl = new Boundary
-                    {
-                        MaxHeight = 1,
-                        Content = new Background
-                        {
-                            Color = ConsoleColor.DarkBlue,
-                            Content = new HorizontalStackPanel
-                            {
-                                Children = new IControl[]
-                                {
-                                    new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
-                                    _clock,
-                                    new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
-                                    new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
-                                    NodesCount,
-                                    new TextBlock {Text = "/"},
-                                    DetectedCount,
-                                    new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan},
-                                    new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
-                                    Status,
-                                    new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
-                                    new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
-                                    _fileTransferStatus,
-                                    new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan}
-                                }
-                            }
-                        }
-                    }
+                    FillingControl = BottomBar
                 }
-            };
-
-            FileTransferProgressMonitor.PropertyChanged += (_, _) =>
-            {
-                _fileTransferStatus.Text = FileTransferProgressMonitor.Text;
             };
 
             // Start console UI 
@@ -173,13 +108,13 @@ namespace Lanchat.Terminal.UserInterface
 
             if (Program.Config.Fresh) Log.Add(string.Format(Resources._FirstRunMessage, ConfigManager.ConfigPath));
 
-            // Clock updates
+            // Main UI loop
             new Thread(() =>
             {
                 while (true)
                 {
                     Thread.Sleep(10);
-                    _clock.Text = DateTime.Now.ToString("HH:mm");
+                    BottomBar.Clock.Text = DateTime.Now.ToString("HH:mm");
                     ConsoleManager.ReadInput(new IInputListener[]
                     {
                         new InputController(_input),
@@ -191,6 +126,11 @@ namespace Lanchat.Terminal.UserInterface
 
                 // ReSharper disable once FunctionNeverReturns
             }).Start();
+        }
+
+        public static void SetupNetworkEvents()
+        {
+            BottomBar.SetupEvents();
         }
     }
 }

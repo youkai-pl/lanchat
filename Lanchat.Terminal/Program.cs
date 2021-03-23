@@ -45,10 +45,6 @@ namespace Lanchat.Terminal
                 if (!args.Contains("--no-udp") && !args.Contains("-b"))
                 {
                     Network.StartBroadcast();
-                    Network.Broadcasting.DetectedNodes.CollectionChanged += (_, _) =>
-                    {
-                        Ui.DetectedCount.Text = Network.Broadcasting.DetectedNodes.Count.ToString();
-                    };
                 }
             }
             catch (SocketException e)
@@ -59,6 +55,8 @@ namespace Lanchat.Terminal
                     throw;
             }
 
+            Ui.SetupNetworkEvents();
+            
             // Show logs in console
             if (args.Contains("--debug") || args.Contains("-d") || Debugger.IsAttached)
             {
