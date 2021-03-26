@@ -37,7 +37,7 @@ namespace Lanchat.Core.NetworkIO
         public void SendSystemData(object content)
         {
             var data = new Dictionary<string, object> {{content.GetType().Name, content}};
-            networkElement.SendAsync(JsonSerializer.Serialize(data, serializerOptions));
+            networkElement.Send(JsonSerializer.Serialize(data, serializerOptions));
         }
     }
 }

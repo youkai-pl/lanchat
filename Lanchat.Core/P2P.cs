@@ -33,7 +33,7 @@ namespace Lanchat.Core
                 : new Server(IPAddress.Any, this.config.ServerPort, this.config);
 
             server.SessionCreated += p2PInternalHandlers.OnSessionCreated;
-            this.config.PropertyChanged += CoreConfigOnPropertyChanged;
+            this.config.PropertyChanged += ConfigOnPropertyChanged;
             Broadcasting = new Broadcasting(this.config);
         }
 
@@ -122,7 +122,7 @@ namespace Lanchat.Core
             ConnectionCreated?.Invoke(this, e);
         }
 
-        private void CoreConfigOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ConfigOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {

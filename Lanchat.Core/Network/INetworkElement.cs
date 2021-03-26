@@ -23,7 +23,7 @@ namespace Lanchat.Core.Network
         ///     Send data.
         /// </summary>
         /// <param name="text">Content.</param>
-        void SendAsync(string text);
+        void Send(string text);
 
         /// <summary>
         ///     Close client or session.

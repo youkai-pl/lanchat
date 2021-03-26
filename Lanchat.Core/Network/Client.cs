@@ -18,7 +18,7 @@ namespace Lanchat.Core.Network
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
 
-        public new void SendAsync(string text)
+        public new void Send(string text)
         {
             base.SendAsync(text);
         }

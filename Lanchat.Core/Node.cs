@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Lanchat.Core.Chat;
@@ -35,9 +36,9 @@ namespace Lanchat.Core
 
         internal readonly INetworkOutput NetworkOutput;
         internal readonly Resolver Resolver;
+        internal readonly bool IsSession;
 
         internal bool HandshakeReceived;
-        internal bool IsSession;
         private string nickname;
         private string previousNickname;
         private Status status;
@@ -176,9 +177,10 @@ namespace Lanchat.Core
             Dispose();
         }
 
-        // Network elements events.
         private void OnDisconnected(object sender, EventArgs _)
         {
+            NetworkElement.Disconnected -= OnDisconnected;
+            
             if (Ready)
             {
                 Disconnected?.Invoke(this, EventArgs.Empty);

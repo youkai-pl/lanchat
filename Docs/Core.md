@@ -42,7 +42,7 @@
   - [Endpoint](#P-Lanchat-Core-Network-INetworkElement-Endpoint 'Lanchat.Core.Network.INetworkElement.Endpoint')
   - [Id](#P-Lanchat-Core-Network-INetworkElement-Id 'Lanchat.Core.Network.INetworkElement.Id')
   - [Close()](#M-Lanchat-Core-Network-INetworkElement-Close 'Lanchat.Core.Network.INetworkElement.Close')
-  - [SendAsync(text)](#M-Lanchat-Core-Network-INetworkElement-SendAsync-System-String- 'Lanchat.Core.Network.INetworkElement.SendAsync(System.String)')
+  - [Send(text)](#M-Lanchat-Core-Network-INetworkElement-Send-System-String- 'Lanchat.Core.Network.INetworkElement.Send(System.String)')
 - [Messaging](#T-Lanchat-Core-Chat-Messaging 'Lanchat.Core.Chat.Messaging')
   - [SendMessage(content)](#M-Lanchat-Core-Chat-Messaging-SendMessage-System-String- 'Lanchat.Core.Chat.Messaging.SendMessage(System.String)')
   - [SendPrivateMessage(content)](#M-Lanchat-Core-Chat-Messaging-SendPrivateMessage-System-String- 'Lanchat.Core.Chat.Messaging.SendPrivateMessage(System.String)')
@@ -433,8 +433,8 @@ Close client or session.
 
 This method has no parameters.
 
-<a name='M-Lanchat-Core-Network-INetworkElement-SendAsync-System-String-'></a>
-### SendAsync(text) `method`
+<a name='M-Lanchat-Core-Network-INetworkElement-Send-System-String-'></a>
+### Send(text) `method`
 
 ##### Summary
 

@@ -22,7 +22,6 @@ namespace Lanchat.Core.P2PHandlers
             node.Dispose();
         }
 
-        // Exchange nodes list
         internal void OnConnected(object sender, EventArgs e)
         {
             var node = (Node) sender;
@@ -32,7 +31,6 @@ namespace Lanchat.Core.P2PHandlers
             node.NetworkOutput.SendUserData(nodesList);
         }
 
-        // Send new node event after new session and wait for nodes list
         internal void OnSessionCreated(object sender, Node node)
         {
             network.OnConnectionCreated(node);
