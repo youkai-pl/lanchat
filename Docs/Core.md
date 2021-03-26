@@ -39,7 +39,6 @@
   - [Status](#P-Lanchat-Core-IConfig-Status 'Lanchat.Core.IConfig.Status')
   - [UseIPv6](#P-Lanchat-Core-IConfig-UseIPv6 'Lanchat.Core.IConfig.UseIPv6')
 - [INetworkElement](#T-Lanchat-Core-Network-INetworkElement 'Lanchat.Core.Network.INetworkElement')
-  - [EnableReconnecting](#P-Lanchat-Core-Network-INetworkElement-EnableReconnecting 'Lanchat.Core.Network.INetworkElement.EnableReconnecting')
   - [Endpoint](#P-Lanchat-Core-Network-INetworkElement-Endpoint 'Lanchat.Core.Network.INetworkElement.Endpoint')
   - [Id](#P-Lanchat-Core-Network-INetworkElement-Id 'Lanchat.Core.Network.INetworkElement.Id')
   - [IsSession](#P-Lanchat-Core-Network-INetworkElement-IsSession 'Lanchat.Core.Network.INetworkElement.IsSession')
@@ -60,7 +59,6 @@
   - [Ready](#P-Lanchat-Core-Node-Ready 'Lanchat.Core.Node.Ready')
   - [ShortId](#P-Lanchat-Core-Node-ShortId 'Lanchat.Core.Node.ShortId')
   - [Status](#P-Lanchat-Core-Node-Status 'Lanchat.Core.Node.Status')
-  - [UnderReconnecting](#P-Lanchat-Core-Node-UnderReconnecting 'Lanchat.Core.Node.UnderReconnecting')
   - [Disconnect()](#M-Lanchat-Core-Node-Disconnect 'Lanchat.Core.Node.Disconnect')
   - [Dispose()](#M-Lanchat-Core-Node-Dispose 'Lanchat.Core.Node.Dispose')
 - [P2P](#T-Lanchat-Core-P2P 'Lanchat.Core.P2P')
@@ -411,13 +409,6 @@ Lanchat.Core.Network
 
 Common TCP client and session stuff.
 
-<a name='P-Lanchat-Core-Network-INetworkElement-EnableReconnecting'></a>
-### EnableReconnecting `property`
-
-##### Summary
-
-Enable automatic reconnecting (only for client side).
-
 <a name='P-Lanchat-Core-Network-INetworkElement-Endpoint'></a>
 ### Endpoint `property`
 
@@ -575,13 +566,6 @@ Short ID.
 ##### Summary
 
 Node user status.
-
-<a name='P-Lanchat-Core-Node-UnderReconnecting'></a>
-### UnderReconnecting `property`
-
-##### Summary
-
-Node is under reconnecting.
 
 <a name='M-Lanchat-Core-Node-Disconnect'></a>
 ### Disconnect() `method`

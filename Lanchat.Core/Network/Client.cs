@@ -10,17 +10,11 @@ namespace Lanchat.Core.Network
 {
     internal class Client : TcpClient, INetworkElement
     {
-        private bool hardDisconnect;
-        private bool isReconnecting;
-        private int reconnectingCount;
-
         internal Client(IPAddress address, int port) : base(address, port)
         {
-            EnableReconnecting = true;
         }
 
-        public bool EnableReconnecting { get; set; }
-        public event EventHandler<bool> Disconnected;
+        public event EventHandler Disconnected;
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
         public bool IsSession { get; } = false;
@@ -32,51 +26,25 @@ namespace Lanchat.Core.Network
 
         public void Close()
         {
-            hardDisconnect = true;
             DisconnectAsync();
             while (IsConnected) Thread.Yield();
-
             Dispose();
-        }
-
-        protected override void OnConnected()
-        {
-            isReconnecting = false;
-            Trace.WriteLine($"Client {Id} connected");
         }
 
         protected override void OnDisconnected()
         {
-            // If reconnecting disabled.
-            if (!EnableReconnecting)
-            {
-                Disconnected?.Invoke(this, true);
-                Trace.WriteLine($"Client {Id} disconnected");
-                return;
-            }
+            Disconnected?.Invoke(this, EventArgs.Empty);
+            base.OnDisconnected();
+        }
 
-            // Don't invoke event during reconnecting.
-            if (!isReconnecting) Disconnected?.Invoke(this, false);
-
-            // Stop if reconnect counter is equal 3 or client disconnected caused by local. 
-            if (hardDisconnect || reconnectingCount == 3 || !EnableReconnecting)
-            {
-                Disconnected?.Invoke(this, true);
-                Trace.WriteLine($"Client {Id} disconnected");
-                return;
-            }
-
-            // Try reconnect.
-            Thread.Sleep(1000);
-            isReconnecting = true;
-            reconnectingCount++;
-            Trace.WriteLine($"Client {Id} reconnecting");
-            ConnectAsync();
+        protected override void OnConnected()
+        {
+            Trace.WriteLine($"Client {Id} connected");
+            base.OnConnected();
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            reconnectingCount = 0;
             var message = Encoding.UTF8.GetString(buffer, (int) offset, (int) size);
             DataReceived?.Invoke(this, message);
         }

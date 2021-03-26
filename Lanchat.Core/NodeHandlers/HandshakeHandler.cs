@@ -16,7 +16,7 @@ namespace Lanchat.Core.NodeHandlers
 
         protected override void Handle(Handshake handshake)
         {
-            if (node.HandshakeReceived && !node.UnderReconnecting) return;
+            if (node.HandshakeReceived) return;
             node.Nickname = handshake.Nickname;
 
             if (!node.NetworkElement.IsSession) node.SendHandshakeAndWait();

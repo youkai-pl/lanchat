@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Lanchat.Core.Chat;
@@ -72,14 +71,9 @@ namespace Lanchat.Core
             // Check is connection established successful after timeout.
             Task.Delay(5000).ContinueWith(_ =>
             {
-                if (!Ready && !UnderReconnecting) NetworkElement.Close();
+                if (!Ready) NetworkElement.Close();
             });
         }
-
-        /// <summary>
-        ///     Node is under reconnecting.
-        /// </summary>
-        public bool UnderReconnecting { get; private set; }
 
         /// <summary>
         ///     Node user nickname.
@@ -151,14 +145,9 @@ namespace Lanchat.Core
         public event EventHandler Connected;
 
         /// <summary>
-        ///     Node disconnected. Trying reconnect.
-        /// </summary>
-        public event EventHandler Disconnected;
-
-        /// <summary>
         ///     Node disconnected. Cannot reconnect.
         /// </summary>
-        public event EventHandler HardDisconnect;
+        public event EventHandler Disconnected;
 
         /// <summary>
         ///     Raise when connection attempt failed.
@@ -183,28 +172,16 @@ namespace Lanchat.Core
         }
 
         // Network elements events.
-        private void OnDisconnected(object sender, bool hardDisconnect)
+        private void OnDisconnected(object sender, EventArgs _)
         {
-            UnderReconnecting = !hardDisconnect;
-
-            switch (hardDisconnect)
+            if (Ready)
             {
-                // Raise event only if node was ready before.
-                case true when !Ready:
-                    Trace.WriteLine($"Cannot connect {Id}");
-                    CannotConnect?.Invoke(this, EventArgs.Empty);
-                    break;
-
-                case true when Ready:
-                    HardDisconnect?.Invoke(this, EventArgs.Empty);
-                    break;
-
-                case false when Ready:
-                    Disconnected?.Invoke(this, EventArgs.Empty);
-                    break;
+                Disconnected?.Invoke(this, EventArgs.Empty);
             }
-
-            Ready = false;
+            else
+            {
+                CannotConnect?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         internal void SendHandshakeAndWait()
@@ -218,15 +195,15 @@ namespace Lanchat.Core
 
             NetworkOutput.SendSystemData(handshake);
         }
+        
+        internal void OnConnected()
+        {
+            Connected?.Invoke(this, EventArgs.Empty);
+        }
 
         private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        internal void OnConnected()
-        {
-            Connected?.Invoke(this, EventArgs.Empty);
         }
     }
 }

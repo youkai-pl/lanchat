@@ -30,8 +30,7 @@ namespace Lanchat.Terminal
             node.FileSender.FileTransferError += OnFileTransferError;
 
             node.Connected += OnConnected;
-            node.Disconnected += OnDisconnected;
-            node.HardDisconnect += OnHardDisconnected;
+            node.Disconnected += OnHardDisconnected;
             node.SocketErrored += OnSocketErrored;
             node.CannotConnect += OnCannotConnect;
             node.PropertyChanged += OnPropertyChanged;
@@ -64,12 +63,6 @@ namespace Lanchat.Terminal
         private void OnConnected(object sender, EventArgs e)
         {
             Ui.Log.Add(string.Format(Resources._Connected, node.Nickname));
-            Ui.BottomBar.NodesCount.Text = Program.Network.Nodes.Count.ToString();
-        }
-
-        private void OnDisconnected(object sender, EventArgs e)
-        {
-            Ui.Log.Add(string.Format(Resources._Reconnecting, node.Nickname));
             Ui.BottomBar.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 

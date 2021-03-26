@@ -14,17 +14,8 @@ namespace Lanchat.Core.P2PHandlers
             this.network = network;
             this.config = config;
         }
-
-        // Dispose node after hard disconnection
-        internal void OnHardDisconnect(object sender, EventArgs e)
-        {
-            var node = (Node) sender;
-            network.OutgoingConnections.Remove(node);
-            node.Dispose();
-        }
-
-        // Dispose when connection cannot be established
-        internal void OnCannotConnect(object sender, EventArgs e)
+        
+        internal void CloseNode(object sender, EventArgs e)
         {
             var node = (Node) sender;
             network.OutgoingConnections.Remove(node);

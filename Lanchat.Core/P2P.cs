@@ -111,8 +111,8 @@ namespace Lanchat.Core
             node.Resolver.Handlers.Add(new NodesListHandler(this, config));
             OutgoingConnections.Add(node);
             node.Connected += p2PInternalHandlers.OnConnected;
-            node.HardDisconnect += p2PInternalHandlers.OnHardDisconnect;
-            node.CannotConnect += p2PInternalHandlers.OnCannotConnect;
+            node.Disconnected += p2PInternalHandlers.CloseNode;
+            node.CannotConnect += p2PInternalHandlers.CloseNode;
             ConnectionCreated?.Invoke(this, node);
             client.ConnectAsync();
         }

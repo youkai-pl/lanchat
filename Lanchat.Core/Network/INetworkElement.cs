@@ -20,12 +20,6 @@ namespace Lanchat.Core.Network
         Guid Id { get; }
 
         /// <summary>
-        ///     Enable automatic reconnecting (only for client side).
-        /// </summary>
-        // ReSharper disable once UnusedMemberInSuper.Global
-        bool EnableReconnecting { get; set; }
-
-        /// <summary>
         ///     Network element is server session.
         /// </summary>
         bool IsSession { get; }
@@ -44,7 +38,7 @@ namespace Lanchat.Core.Network
         /// <summary>
         ///     Network element disconnected.
         /// </summary>
-        event EventHandler<bool> Disconnected;
+        event EventHandler Disconnected;
 
         /// <summary>
         ///     Network element socket errored.

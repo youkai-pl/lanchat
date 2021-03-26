@@ -18,7 +18,7 @@ namespace Lanchat.Core.NodeHandlers
             switch (connectionControl.Status)
             {
                 case ConnectionControlStatus.RemoteClose:
-                    node.NetworkElement.EnableReconnecting = false;
+                    node.NetworkElement.Close();
                     break;
 
                 default:
