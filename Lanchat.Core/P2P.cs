@@ -107,7 +107,7 @@ namespace Lanchat.Core
                 throw new ArgumentException("Illegal IP address. Cannot connect");
 
             var client = new Client(ipAddress, port.Value);
-            var node = new Node(client, config);
+            var node = new Node(client, config, false);
             node.Resolver.Handlers.Add(new NodesListHandler(this, config));
             OutgoingConnections.Add(node);
             node.Connected += p2PInternalHandlers.OnConnected;

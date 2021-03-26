@@ -19,7 +19,7 @@ namespace Lanchat.Core.NodeHandlers
             if (node.HandshakeReceived) return;
             node.Nickname = handshake.Nickname;
 
-            if (!node.NetworkElement.IsSession) node.SendHandshakeAndWait();
+            if (!node.IsSession) node.SendHandshake();
 
             try
             {

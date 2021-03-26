@@ -17,7 +17,6 @@ namespace Lanchat.Core.Network
         public event EventHandler Disconnected;
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
-        public bool IsSession { get; } = false;
 
         public new void SendAsync(string text)
         {

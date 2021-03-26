@@ -41,7 +41,6 @@
 - [INetworkElement](#T-Lanchat-Core-Network-INetworkElement 'Lanchat.Core.Network.INetworkElement')
   - [Endpoint](#P-Lanchat-Core-Network-INetworkElement-Endpoint 'Lanchat.Core.Network.INetworkElement.Endpoint')
   - [Id](#P-Lanchat-Core-Network-INetworkElement-Id 'Lanchat.Core.Network.INetworkElement.Id')
-  - [IsSession](#P-Lanchat-Core-Network-INetworkElement-IsSession 'Lanchat.Core.Network.INetworkElement.IsSession')
   - [Close()](#M-Lanchat-Core-Network-INetworkElement-Close 'Lanchat.Core.Network.INetworkElement.Close')
   - [SendAsync(text)](#M-Lanchat-Core-Network-INetworkElement-SendAsync-System-String- 'Lanchat.Core.Network.INetworkElement.SendAsync(System.String)')
 - [Messaging](#T-Lanchat-Core-Chat-Messaging 'Lanchat.Core.Chat.Messaging')
@@ -422,13 +421,6 @@ IP endpoint (address + port).
 ##### Summary
 
 Session or client ID.
-
-<a name='P-Lanchat-Core-Network-INetworkElement-IsSession'></a>
-### IsSession `property`
-
-##### Summary
-
-Network element is server session.
 
 <a name='M-Lanchat-Core-Network-INetworkElement-Close'></a>
 ### Close() `method`

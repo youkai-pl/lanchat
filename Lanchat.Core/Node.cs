@@ -37,13 +37,15 @@ namespace Lanchat.Core
         internal readonly Resolver Resolver;
 
         internal bool HandshakeReceived;
+        internal bool IsSession;
         private string nickname;
         private string previousNickname;
         private Status status;
 
-        internal Node(INetworkElement networkElement, IConfig config)
+        internal Node(INetworkElement networkElement, IConfig config, bool isSession)
         {
             this.config = config;
+            IsSession = isSession;
             NetworkElement = networkElement;
             NetworkOutput = new NetworkOutput(NetworkElement, this);
             Encryptor = new Encryptor();
@@ -66,7 +68,10 @@ namespace Lanchat.Core
             NetworkElement.DataReceived += networkInput.ProcessReceivedData;
             NetworkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
-            if (NetworkElement.IsSession) SendHandshakeAndWait();
+            if (IsSession)
+            {
+                SendHandshake();
+            }
 
             // Check is connection established successful after timeout.
             Task.Delay(5000).ContinueWith(_ =>
@@ -184,7 +189,7 @@ namespace Lanchat.Core
             }
         }
 
-        internal void SendHandshakeAndWait()
+        internal void SendHandshake()
         {
             var handshake = new Handshake
             {

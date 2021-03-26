@@ -20,11 +20,6 @@ namespace Lanchat.Core.Network
         Guid Id { get; }
 
         /// <summary>
-        ///     Network element is server session.
-        /// </summary>
-        bool IsSession { get; }
-
-        /// <summary>
         ///     Send data.
         /// </summary>
         /// <param name="text">Content.</param>
