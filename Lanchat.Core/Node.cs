@@ -27,6 +27,8 @@ namespace Lanchat.Core
         /// <see cref="FileSender" />
         public readonly FileSender FileSender;
 
+        internal readonly bool IsSession;
+
         /// <see cref="Messaging" />
         public readonly Messaging Messaging;
 
@@ -35,7 +37,6 @@ namespace Lanchat.Core
 
         internal readonly INetworkOutput NetworkOutput;
         internal readonly Resolver Resolver;
-        internal readonly bool IsSession;
 
         internal bool HandshakeReceived;
         private string nickname;
@@ -68,10 +69,7 @@ namespace Lanchat.Core
             NetworkElement.DataReceived += networkInput.ProcessReceivedData;
             NetworkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
-            if (IsSession)
-            {
-                SendHandshake();
-            }
+            if (IsSession) SendHandshake();
 
             // Check is connection established successful after timeout.
             Task.Delay(5000).ContinueWith(_ =>
@@ -181,13 +179,9 @@ namespace Lanchat.Core
         private void OnDisconnected(object sender, EventArgs _)
         {
             if (Ready)
-            {
                 Disconnected?.Invoke(this, EventArgs.Empty);
-            }
             else
-            {
                 CannotConnect?.Invoke(this, EventArgs.Empty);
-            }
         }
 
         internal void SendHandshake()
@@ -201,7 +195,7 @@ namespace Lanchat.Core
 
             NetworkOutput.SendSystemData(handshake);
         }
-        
+
         internal void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);

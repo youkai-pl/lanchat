@@ -42,10 +42,7 @@ namespace Lanchat.Terminal
                 if (!args.Contains("--no-server") && !args.Contains("-n")) Network.StartServer();
 
                 // Start broadcast service
-                if (!args.Contains("--no-udp") && !args.Contains("-b"))
-                {
-                    Network.StartBroadcast();
-                }
+                if (!args.Contains("--no-udp") && !args.Contains("-b")) Network.StartBroadcast();
             }
             catch (SocketException e)
             {
@@ -56,7 +53,7 @@ namespace Lanchat.Terminal
             }
 
             Ui.SetupNetworkEvents();
-            
+
             // Show logs in console
             if (args.Contains("--debug") || args.Contains("-d") || Debugger.IsAttached)
             {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
 using System.Threading;
 using ConsoleGUI;
@@ -35,7 +34,7 @@ namespace Lanchat.Terminal.UserInterface
             {
                 Text = $"[{Program.Config.Nickname}] "
             };
-            
+
             ScrollPanel = new VerticalScrollPanel
             {
                 Content = Log,
@@ -43,7 +42,7 @@ namespace Lanchat.Terminal.UserInterface
                 ScrollBarForeground = new Character()
             };
 
-            
+
             var version = Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
             version = version?.Remove(version.Length - 2);
 

@@ -31,7 +31,6 @@ namespace Lanchat.Core.NetworkIO
             buffer = buffer.Substring(index + 1);
 
             foreach (var item in currentJson.Replace("}{", "}|{").Split('|'))
-            {
                 try
                 {
                     resolver.Handle(item);
@@ -46,7 +45,6 @@ namespace Lanchat.Core.NetworkIO
                         ex is not ArgumentException &&
                         ex is not ValidationException) throw;
                 }
-            }
         }
     }
 }

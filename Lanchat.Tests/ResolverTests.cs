@@ -11,8 +11,8 @@ namespace Lanchat.Tests
 {
     public class ResolverTests
     {
-        private Resolver resolver;
         private NodeState nodeState;
+        private Resolver resolver;
 
         [SetUp]
         public void Setup()
@@ -52,7 +52,7 @@ namespace Lanchat.Tests
             var data = new Dictionary<string, object> {{"Message", new Message {Content = null}}};
             Assert.Catch<ValidationException>(() => { resolver.Handle(JsonSerializer.Serialize(data)); });
         }
-        
+
         [Test]
         public void InvalidJson()
         {

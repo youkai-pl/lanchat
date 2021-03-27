@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Threading;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.P2PHandlers
@@ -15,7 +14,7 @@ namespace Lanchat.Core.P2PHandlers
             this.network = network;
             this.config = config;
         }
-        
+
         internal void CloseNode(object sender, EventArgs e)
         {
             var node = (Node) sender;

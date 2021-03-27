@@ -51,7 +51,7 @@ namespace Lanchat.Core.Network
                     {
                         var broadcast = JsonSerializer.Deserialize<Broadcast>(Encoding.UTF8.GetString(recvBuffer));
                         Validator.ValidateObject(broadcast!, new ValidationContext(broadcast), true);
-                        
+
                         if (broadcast.Guid != uniqueId)
                         {
                             broadcast.IpAddress = from.Address;
@@ -60,7 +60,7 @@ namespace Lanchat.Core.Network
                     }
                     catch (Exception e)
                     {
-                        if (e is not JsonException && 
+                        if (e is not JsonException &&
                             e is not ArgumentException &&
                             e is not NotSupportedException &&
                             e is not ValidationException) throw;

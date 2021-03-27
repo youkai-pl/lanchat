@@ -106,7 +106,7 @@ namespace Lanchat.Terminal
         {
             Ui.Log.Add(string.Format(Resources._FileReceived, node.Nickname, Path.GetFullPath(e.FilePath)));
         }
-        
+
         private void OnFileSendFinished(object sender, FileTransferRequest e)
         {
             Ui.Log.Add(string.Format(Resources._FileTransferFinished, node.Nickname));

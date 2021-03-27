@@ -42,7 +42,7 @@ namespace Lanchat.Core.FileTransfer
         ///     File receive request received.
         /// </summary>
         public event EventHandler<FileTransferRequest> FileTransferRequestReceived;
-        
+
         /// <summary>
         ///     File send request accepted. File transfer in progress.
         /// </summary>

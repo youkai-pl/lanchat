@@ -1,7 +1,5 @@
 using System;
-using System.Diagnostics;
 using ConsoleGUI.Controls;
-using Lanchat.Core;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Terminal.Properties;
 
@@ -9,8 +7,8 @@ namespace Lanchat.Terminal.UserInterface
 {
     public class FileTransferMonitor : TextBlock
     {
-        private long totalProgress;
         private long parts;
+        private long totalProgress;
 
         public FileTransferMonitor()
         {
@@ -37,16 +35,13 @@ namespace Lanchat.Terminal.UserInterface
         {
             ResetCounter(e.Request);
         }
-        
+
         private void ResetCounter(FileTransferRequest e)
         {
             totalProgress -= e.Parts;
             parts -= e.Parts;
             Text = $"{totalProgress}/{parts}";
-            if (parts == 0)
-            {
-                Text = string.Format(Resources._NoFileReceiveRequest);
-            }
+            if (parts == 0) Text = string.Format(Resources._NoFileReceiveRequest);
         }
     }
 }

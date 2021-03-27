@@ -11,7 +11,7 @@ namespace Lanchat.Core.Network
     internal class Client : TcpClient, INetworkElement
     {
         private bool disposing;
-        
+
         internal Client(IPAddress address, int port) : base(address, port)
         {
         }
@@ -35,7 +35,7 @@ namespace Lanchat.Core.Network
 
         protected override void OnDisconnected()
         {
-            if(disposing) return;
+            if (disposing) return;
             Disconnected?.Invoke(this, EventArgs.Empty);
         }
 

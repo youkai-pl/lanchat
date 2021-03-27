@@ -89,7 +89,7 @@ namespace Lanchat.Core.FileTransfer
                         OnFileTransferError(new FileTransferException(Request));
                         return;
                     }
-                    
+
                     var part = new FilePart
                     {
                         Data = encryption.Encrypt(buffer.Take(bytesRead).ToArray())

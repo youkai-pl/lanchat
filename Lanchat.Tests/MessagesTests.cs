@@ -5,7 +5,6 @@ using Lanchat.Core.Models;
 using Lanchat.Core.NetworkIO;
 using Lanchat.Tests.Mock;
 using NUnit.Framework;
-using MessageHandler = Lanchat.Core.Chat.MessageHandler;
 
 namespace Lanchat.Tests
 {
@@ -51,14 +50,14 @@ namespace Lanchat.Tests
         public void TooLongMessageSend()
         {
             var testMessage = new string('a', 2000);
-            
+
             Assert.Catch<ValidationException>(() =>
             {
                 networkMock.DataReceived += (sender, s) => networkInput.ProcessReceivedData(sender, s);
                 messaging.SendMessage(testMessage);
             });
         }
-        
+
 
         [Test]
         public void WeirdText()
