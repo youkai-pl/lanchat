@@ -10,6 +10,8 @@ namespace Lanchat.Core.Network
 {
     internal class Client : TcpClient, INetworkElement
     {
+        private bool disposing;
+        
         internal Client(IPAddress address, int port) : base(address, port)
         {
         }
@@ -25,6 +27,7 @@ namespace Lanchat.Core.Network
 
         public void Close()
         {
+            disposing = true;
             DisconnectAsync();
             while (IsConnected) Thread.Yield();
             Dispose();
@@ -32,14 +35,13 @@ namespace Lanchat.Core.Network
 
         protected override void OnDisconnected()
         {
+            if(disposing) return;
             Disconnected?.Invoke(this, EventArgs.Empty);
-            base.OnDisconnected();
         }
 
         protected override void OnConnected()
         {
             Trace.WriteLine($"Client {Id} connected");
-            base.OnConnected();
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
