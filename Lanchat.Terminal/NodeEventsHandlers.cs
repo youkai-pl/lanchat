@@ -35,9 +35,10 @@ namespace Lanchat.Terminal
             node.FileReceiver.FileTransferRequestAccepted += Ui.FileTransferMonitor.OnFileTransferRequestAccepted;
             node.FileReceiver.FileReceiveFinished += Ui.FileTransferMonitor.OnFileReceiveFinished;
             node.FileReceiver.FileTransferError += Ui.FileTransferMonitor.OnFileTransferError;
+            node.Disconnected += Ui.FileTransferMonitor.OnDisconnected;
 
             node.Connected += OnConnected;
-            node.Disconnected += OnHardDisconnected;
+            node.Disconnected += OnDisconnected;
             node.SocketErrored += OnSocketErrored;
             node.CannotConnect += OnCannotConnect;
             node.PropertyChanged += OnPropertyChanged;
@@ -71,7 +72,7 @@ namespace Lanchat.Terminal
             Ui.BottomBar.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
-        private void OnHardDisconnected(object sender, EventArgs e)
+        private void OnDisconnected(object sender, EventArgs e)
         {
             Ui.Log.Add(string.Format(Resources._Disconnected, node.Nickname));
             Ui.BottomBar.NodesCount.Text = Program.Network.Nodes.Count.ToString();

@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using ConsoleGUI.Controls;
+using Lanchat.Core;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Terminal.Properties;
 
@@ -10,7 +11,7 @@ namespace Lanchat.Terminal.UserInterface
     {
         private long totalProgress;
         private long parts;
-        
+
         public FileTransferMonitor()
         {
             Color = ConsoleColor.Gray;
@@ -29,15 +30,33 @@ namespace Lanchat.Terminal.UserInterface
 
         public void OnFileReceiveFinished(object sender, FileTransferRequest e)
         {
-            parts -= e.Parts;
-            totalProgress -= e.Parts;
-            Text = $"{totalProgress}/{parts}";
+            ResetCounter(e);
         }
 
         public void OnFileTransferError(object sender, FileTransferException e)
         {
-            totalProgress -= e.Request.PartsTransferred;
-            parts -= e.Request.Parts;
+            ResetCounter(e.Request);
+        }
+
+        public void OnDisconnected(object sender, EventArgs e)
+        {
+            var node = (Node) sender;
+            
+            if (node.FileReceiver.Request != null)
+            {
+                ResetCounter(node.FileReceiver.Request);
+            }
+        }
+
+        private void ResetCounter(FileTransferRequest e)
+        {
+            totalProgress -= e.Parts;
+            parts -= e.Parts;
+            Text = $"{totalProgress}/{parts}";
+            if (parts == 0)
+            {
+                Text = string.Format(Resources._NoFileReceiveRequest);
+            }
         }
     }
 }

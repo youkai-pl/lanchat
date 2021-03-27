@@ -23,6 +23,8 @@
 - [FileSender](#T-Lanchat-Core-FileTransfer-FileSender 'Lanchat.Core.FileTransfer.FileSender')
   - [Request](#P-Lanchat-Core-FileTransfer-FileSender-Request 'Lanchat.Core.FileTransfer.FileSender.Request')
   - [CreateSendRequest(path)](#M-Lanchat-Core-FileTransfer-FileSender-CreateSendRequest-System-String- 'Lanchat.Core.FileTransfer.FileSender.CreateSendRequest(System.String)')
+- [FileTransferException](#T-Lanchat-Core-FileTransfer-FileTransferException 'Lanchat.Core.FileTransfer.FileTransferException')
+  - [Request](#P-Lanchat-Core-FileTransfer-FileTransferException-Request 'Lanchat.Core.FileTransfer.FileTransferException.Request')
 - [FileTransferRequest](#T-Lanchat-Core-FileTransfer-FileTransferRequest 'Lanchat.Core.FileTransfer.FileTransferRequest')
   - [FileName](#P-Lanchat-Core-FileTransfer-FileTransferRequest-FileName 'Lanchat.Core.FileTransfer.FileTransferRequest.FileName')
   - [FilePath](#P-Lanchat-Core-FileTransfer-FileTransferRequest-FilePath 'Lanchat.Core.FileTransfer.FileTransferRequest.FilePath')
@@ -283,6 +285,24 @@ Send file exchange request.
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | path | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | File path |
+
+<a name='T-Lanchat-Core-FileTransfer-FileTransferException'></a>
+## FileTransferException `type`
+
+##### Namespace
+
+Lanchat.Core.FileTransfer
+
+##### Summary
+
+Throw when file exchange stopped before finish.
+
+<a name='P-Lanchat-Core-FileTransfer-FileTransferException-Request'></a>
+### Request `property`
+
+##### Summary
+
+Request that throws error.
 
 <a name='T-Lanchat-Core-FileTransfer-FileTransferRequest'></a>
 ## FileTransferRequest `type`
