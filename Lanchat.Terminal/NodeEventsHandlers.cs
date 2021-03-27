@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 using Lanchat.Core;
@@ -114,9 +113,9 @@ namespace Lanchat.Terminal
         }
 
         // TODO: Log node id
-        private void OnFileTransferError(object sender, Exception e)
+        private void OnFileTransferError(object sender, FileTransferException e)
         {
-            Ui.Log.Add(string.Format(Resources._FileExchangeError, e.Message));
+            Ui.Log.Add(string.Format(Resources._FileExchangeError));
         }
 
         private void OnFileTransferHandlerRequestAccepted(object sender, FileTransferRequest e)

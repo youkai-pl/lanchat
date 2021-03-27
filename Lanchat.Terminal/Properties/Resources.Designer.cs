@@ -284,11 +284,5 @@ namespace Lanchat.Terminal.Properties {
                 return ResourceManager.GetString("_FileTransferFinished", resourceCulture);
             }
         }
-        
-        internal static string _FileTransfer {
-            get {
-                return ResourceManager.GetString("_FileTransfer", resourceCulture);
-            }
-        }
     }
 }

@@ -31,7 +31,7 @@ namespace Lanchat.Core.FileTransfer
             catch (Exception e)
             {
                 fileReceiver.CancelReceive();
-                fileReceiver.OnFileTransferError(e);
+                fileReceiver.OnFileTransferError();
             }
         }
     }

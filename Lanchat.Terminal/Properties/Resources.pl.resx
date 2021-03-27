@@ -116,7 +116,7 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
         <value>Plik od {0} zapisany w {1}</value>
     </data>
     <data name="_FileExchangeError" xml:space="preserve">
-        <value>Błąd wymiany plików: {0}</value>
+        <value>Błąd wymiany plików.</value>
     </data>
     <data name="_FileRequestAccepted" xml:space="preserve">
         <value>{0} zaakceptował twój plik. Jest on wysyłany.</value>
@@ -131,7 +131,7 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
         <value>Nie można wysyłać wielu plików jednocześnie.</value>
     </data>
     <data name="_NoFileReceiveRequest" xml:space="preserve">
-        <value>Brak próśb odebranie pliku</value>
+        <value>Brak przesyłanych plików.</value>
     </data>
     <data name="Help_send" xml:space="preserve">
         <value>Składnia: /send &lt;krótkie id&gt; &lt;ścieżka do pliku&gt;</value>
@@ -144,8 +144,5 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     </data>
     <data name="_FileTransferFinished" xml:space="preserve">
         <value>Wymiania plików z {0} zakończona</value>
-    </data>
-    <data name="_FileTransfer" xml:space="preserve">
-        <value>Wymiana plików: {0}% / {1}</value>
     </data>
 </root>

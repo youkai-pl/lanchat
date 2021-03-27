@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using ConsoleGUI.Controls;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Terminal.Properties;
@@ -33,11 +34,10 @@ namespace Lanchat.Terminal.UserInterface
             Text = $"{totalProgress}/{parts}";
         }
 
-        public void OnFileTransferError(object sender, Exception e)
+        public void OnFileTransferError(object sender, FileTransferException e)
         {
-            var fileTransfer = (IFileTransfer) sender;
-            totalProgress -= fileTransfer.Request.PartsTransferred;
-            parts -= fileTransfer.Request.Parts;
+            totalProgress -= e.Request.PartsTransferred;
+            parts -= e.Request.Parts;
         }
     }
 }

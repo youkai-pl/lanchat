@@ -9,7 +9,7 @@ namespace Lanchat.Core.FileTransfer
     /// <summary>
     ///     File receiving.
     /// </summary>
-    public class FileReceiver : IFileTransfer
+    public class FileReceiver
     {
         private readonly IConfig config;
         internal readonly IBytesEncryption Encryption;
@@ -36,7 +36,7 @@ namespace Lanchat.Core.FileTransfer
         /// <summary>
         ///     File transfer errored.
         /// </summary>
-        public event EventHandler<Exception> FileTransferError;
+        public event EventHandler<FileTransferException> FileTransferError;
 
         /// <summary>
         ///     File receive request received.
@@ -91,7 +91,7 @@ namespace Lanchat.Core.FileTransfer
                 });
 
             File.Delete(Request.FilePath);
-            FileTransferError?.Invoke(this, new Exception("File transfer cancelled by user"));
+            FileTransferError?.Invoke(this, new FileTransferException(Request));
             Request = null;
             WriteFileStream.Dispose();
         }
@@ -111,8 +111,8 @@ namespace Lanchat.Core.FileTransfer
             if (Request == null) return;
             WriteFileStream.Dispose();
             File.Delete(Request.FilePath);
+            OnFileTransferError();
             Request = null;
-            OnFileTransferError(new Exception("File transfer cancelled by sender"));
         }
 
         private static string MakeUnique(string file)
@@ -133,9 +133,9 @@ namespace Lanchat.Core.FileTransfer
             FileReceiveFinished?.Invoke(this, e);
         }
 
-        internal void OnFileTransferError(Exception e)
+        internal void OnFileTransferError()
         {
-            FileTransferError?.Invoke(this, e);
+            FileTransferError?.Invoke(this, new FileTransferException(Request));
         }
     }
 }

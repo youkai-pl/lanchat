@@ -240,7 +240,7 @@ Try /help &lt;command&gt; for detailed help.
         <value>File from {0} saved to {1}</value>
     </data>
     <data name="_FileExchangeError" xml:space="preserve">
-        <value>File exchange error: {0}</value>
+        <value>File exchange error.</value>
     </data>
     <data name="_FileRequestAccepted" xml:space="preserve">
         <value>{0} accepted your request. File is sending.</value>
@@ -255,7 +255,7 @@ Try /help &lt;command&gt; for detailed help.
         <value>Cannot send multiple files at once.</value>
     </data>
     <data name="_NoFileReceiveRequest" xml:space="preserve">
-        <value>No awaiting file transfer requests</value>
+        <value>No file transfers.</value>
     </data>
     <data name="Help_send" xml:space="preserve">
         <value>Syntax: /send &lt;short id&gt; &lt;file path&gt;</value>
@@ -268,8 +268,5 @@ Try /help &lt;command&gt; for detailed help.
     </data>
     <data name="_FileTransferFinished" xml:space="preserve">
         <value>File transfer with {0} finished.</value>
-    </data>
-    <data name="_FileTransfer" xml:space="preserve">
-        <value>File transfer: {0}% / {1}</value>
     </data>
 </root>

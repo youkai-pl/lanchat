@@ -10,7 +10,7 @@ namespace Lanchat.Core.FileTransfer
     /// <summary>
     ///     File sending.
     /// </summary>
-    public class FileSender : IFileTransfer
+    public class FileSender
     {
         private const int ChunkSize = 1024 * 1024;
         private readonly IBytesEncryption encryption;
@@ -30,7 +30,7 @@ namespace Lanchat.Core.FileTransfer
         /// <summary>
         ///     File send returned error.
         /// </summary>
-        public event EventHandler<Exception> FileTransferError;
+        public event EventHandler<FileTransferException> FileTransferError;
 
         /// <summary>
         ///     File send request accepted. File transfer in progress.
@@ -96,9 +96,9 @@ namespace Lanchat.Core.FileTransfer
                 FileSendFinished?.Invoke(this, Request);
                 Request = null;
             }
-            catch (Exception e)
+            catch 
             {
-                FileTransferError?.Invoke(this, e);
+                FileTransferError?.Invoke(this, new FileTransferException(Request));
                 networkOutput.SendUserData(
                     new FileTransferControl
                     {
@@ -117,7 +117,7 @@ namespace Lanchat.Core.FileTransfer
         internal void HandleCancel()
         {
             if (Request == null) return;
-            FileTransferError?.Invoke(this, new Exception("File transfer cancelled by receiver"));
+            FileTransferError?.Invoke(this, new FileTransferException(Request));
             Request = null;
         }
     }
