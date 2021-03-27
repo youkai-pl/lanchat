@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Lanchat.Core.Chat;
@@ -77,7 +76,7 @@ namespace Lanchat.Core
             // Check is connection established successful after timeout.
             Task.Delay(5000).ContinueWith(_ =>
             {
-                if (!Ready) NetworkElement.Close();
+                if (!Ready) CannotConnect?.Invoke(this, EventArgs.Empty);
             });
         }
 
@@ -179,8 +178,6 @@ namespace Lanchat.Core
 
         private void OnDisconnected(object sender, EventArgs _)
         {
-            NetworkElement.Disconnected -= OnDisconnected;
-            
             if (Ready)
             {
                 Disconnected?.Invoke(this, EventArgs.Empty);
