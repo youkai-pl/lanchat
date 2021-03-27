@@ -16,7 +16,6 @@ namespace Lanchat.Terminal.UserInterface
     {
         private static TextBox _input;
         internal static BottomBar BottomBar { get; private set; }
-
         internal static LogPanel Log { get; private set; }
         internal static TextBlock PromptIndicator { get; private set; }
         internal static VerticalScrollPanel ScrollPanel { get; private set; }
