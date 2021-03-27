@@ -89,12 +89,12 @@ namespace Lanchat.Terminal
 
         private void OnSocketErrored(object sender, SocketError e)
         {
-            Ui.Log.Add(string.Format(Resources._ConnectionError, node.Id, e));
+            Ui.Log.AddError(string.Format(Resources._ConnectionError, node.Id, e));
         }
 
         private void OnCannotConnect(object sender, EventArgs e)
         {
-            Ui.Log.Add(string.Format(Resources._CannotConnect, node.Id));
+            Ui.Log.AddError(string.Format(Resources._CannotConnect, node.NetworkElement.Endpoint.Address));
         }
 
         private void OnFileTransferHandlerRequestReceived(object sender, FileTransferRequest e)
@@ -115,7 +115,7 @@ namespace Lanchat.Terminal
         // TODO: Log node id
         private void OnFileTransferError(object sender, FileTransferException e)
         {
-            Ui.Log.Add(string.Format(Resources._FileExchangeError));
+            Ui.Log.AddError(string.Format(Resources._FileExchangeError));
         }
 
         private void OnFileTransferHandlerRequestAccepted(object sender, FileTransferRequest e)

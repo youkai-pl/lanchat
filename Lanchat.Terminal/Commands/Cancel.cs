@@ -18,11 +18,7 @@ namespace Lanchat.Terminal.Commands
                 return;
             }
 
-            try
-            {
-                node.FileReceiver.CancelReceive();
-            }
-            catch (InvalidOperationException)
+            if (!node.FileReceiver.CancelReceive())
             {
                 Ui.Log.Add(Resources._NoFileReceiveRequest);
             }

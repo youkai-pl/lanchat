@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ConsoleGUI.Controls;
+using ConsoleGUI.Data;
 using ConsoleGUI.UserDefined;
 
 namespace Lanchat.Terminal.UserInterface
@@ -17,7 +18,7 @@ namespace Lanchat.Terminal.UserInterface
             Content = stackPanel;
         }
 
-        public void Add(string text)
+        public void Add(string text, ConsoleColor color = ConsoleColor.White)
         {
             lock (lockUi)
             {
@@ -33,13 +34,18 @@ namespace Lanchat.Terminal.UserInterface
                                 new TextBlock {Text = "-", Color = ConsoleColor.Blue},
                                 new TextBlock {Text = "!"},
                                 new TextBlock {Text = "- ", Color = ConsoleColor.Blue},
-                                new TextBlock {Text = line}
+                                new TextBlock {Text = line, Color = color}
                             }
                         }
                     });
                     Ui.ScrollPanel.Top = int.MaxValue;
                 }
             }
+        }
+
+        public void AddError(string text)
+        {
+            Add(text, ConsoleColor.Red);
         }
 
         public void AddMessage(string text, string nickname = null)
@@ -101,7 +107,6 @@ namespace Lanchat.Terminal.UserInterface
                 new TextBlock {Text = "!"},
                 new TextBlock {Text = "- ", Color = ConsoleColor.Blue}
             };
-
 
             lock (lockUi)
             {

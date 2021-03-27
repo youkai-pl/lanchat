@@ -81,9 +81,9 @@ namespace Lanchat.Core.FileTransfer
         /// <summary>
         ///     Cancel current receive request.
         /// </summary>
-        public void CancelReceive()
+        public bool CancelReceive()
         {
-            if (Request == null) throw new InvalidOperationException("No receive request");
+            if (Request == null) return false;
             networkOutput.SendUserData(
                 new FileTransferControl
                 {
@@ -94,6 +94,7 @@ namespace Lanchat.Core.FileTransfer
             FileTransferError?.Invoke(this, new FileTransferException(Request));
             Request = null;
             WriteFileStream.Dispose();
+            return true;
         }
 
         internal void HandleReceiveRequest(FileTransferControl request)
