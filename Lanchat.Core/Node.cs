@@ -126,6 +126,8 @@ namespace Lanchat.Core
         {
             NetworkElement.Close();
             Encryptor.Dispose();
+            FileSender.Dispose();
+            FileReceiver.CancelReceive();
             GC.SuppressFinalize(this);
         }
 

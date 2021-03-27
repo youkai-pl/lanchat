@@ -37,17 +37,7 @@ namespace Lanchat.Terminal.UserInterface
         {
             ResetCounter(e.Request);
         }
-
-        public void OnDisconnected(object sender, EventArgs e)
-        {
-            var node = (Node) sender;
-            
-            if (node.FileReceiver.Request != null)
-            {
-                ResetCounter(node.FileReceiver.Request);
-            }
-        }
-
+        
         private void ResetCounter(FileTransferRequest e)
         {
             totalProgress -= e.Parts;

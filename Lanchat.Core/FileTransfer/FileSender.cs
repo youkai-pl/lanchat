@@ -15,6 +15,7 @@ namespace Lanchat.Core.FileTransfer
         private const int ChunkSize = 1024 * 1024;
         private readonly IBytesEncryption encryption;
         private readonly INetworkOutput networkOutput;
+        private bool disposing;
 
         internal FileSender(INetworkOutput networkOutput, IBytesEncryption encryption)
         {
@@ -25,7 +26,7 @@ namespace Lanchat.Core.FileTransfer
         /// <summary>
         ///     Outgoing file request.
         /// </summary>
-        public FileTransferRequest Request { get; internal set; }
+        public FileTransferRequest Request { get; private set; }
 
         /// <summary>
         ///     File send returned error.
@@ -81,8 +82,14 @@ namespace Lanchat.Core.FileTransfer
                 var buffer = new byte[ChunkSize];
                 int bytesRead;
                 using var file = File.OpenRead(Request.FilePath);
-                while ((bytesRead = file.Read(buffer, 0, buffer.Length)) > 0 && Request != null)
+                while ((bytesRead = file.Read(buffer, 0, buffer.Length)) > 0)
                 {
+                    if (disposing)
+                    {
+                        OnFileTransferError(new FileTransferException(Request));
+                        return;
+                    }
+                    
                     var part = new FilePart
                     {
                         Data = encryption.Encrypt(buffer.Take(bytesRead).ToArray())
@@ -96,9 +103,9 @@ namespace Lanchat.Core.FileTransfer
                 FileSendFinished?.Invoke(this, Request);
                 Request = null;
             }
-            catch 
+            catch
             {
-                FileTransferError?.Invoke(this, new FileTransferException(Request));
+                OnFileTransferError(new FileTransferException(Request));
                 networkOutput.SendUserData(
                     new FileTransferControl
                     {
@@ -117,8 +124,18 @@ namespace Lanchat.Core.FileTransfer
         internal void HandleCancel()
         {
             if (Request == null) return;
-            FileTransferError?.Invoke(this, new FileTransferException(Request));
+            OnFileTransferError(new FileTransferException(Request));
             Request = null;
+        }
+
+        internal void Dispose()
+        {
+            disposing = true;
+        }
+
+        private void OnFileTransferError(FileTransferException e)
+        {
+            FileTransferError?.Invoke(this, e);
         }
     }
 }

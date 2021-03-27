@@ -35,7 +35,6 @@ namespace Lanchat.Terminal
             node.FileReceiver.FileTransferRequestAccepted += Ui.FileTransferMonitor.OnFileTransferRequestAccepted;
             node.FileReceiver.FileReceiveFinished += Ui.FileTransferMonitor.OnFileReceiveFinished;
             node.FileReceiver.FileTransferError += Ui.FileTransferMonitor.OnFileTransferError;
-            node.Disconnected += Ui.FileTransferMonitor.OnDisconnected;
 
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
