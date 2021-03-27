@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 using Lanchat.Core;
@@ -20,22 +21,27 @@ namespace Lanchat.Terminal
             node.Messaging.MessageReceived += OnMessageReceived;
             node.Messaging.PrivateMessageReceived += OnPrivateMessageReceived;
 
-            node.FileReceiver.FileTransferFinished += OnFileTransferFinished;
+            node.FileReceiver.FileReceiveFinished += OnFileReceiveFinished;
             node.FileReceiver.FileTransferError += OnFileTransferError;
             node.FileReceiver.FileTransferRequestReceived += OnFileTransferHandlerRequestReceived;
 
             node.FileSender.FileTransferRequestAccepted += OnFileTransferHandlerRequestAccepted;
             node.FileSender.FileTransferRequestRejected += OnFileTransferHandlerRequestRejected;
-            node.FileSender.FileTransferFinished += OnFileTransferFinished;
+            node.FileSender.FileSendFinished += OnFileSendFinished;
             node.FileSender.FileTransferError += OnFileTransferError;
+
+            node.FileSender.FileTransferRequestAccepted += Ui.FileTransferMonitor.OnFileTransferRequestAccepted;
+            node.FileSender.FileSendFinished += Ui.FileTransferMonitor.OnFileReceiveFinished;
+            node.FileSender.FileTransferError += Ui.FileTransferMonitor.OnFileTransferError;
+            node.FileReceiver.FileTransferRequestAccepted += Ui.FileTransferMonitor.OnFileTransferRequestAccepted;
+            node.FileReceiver.FileReceiveFinished += Ui.FileTransferMonitor.OnFileReceiveFinished;
+            node.FileReceiver.FileTransferError += Ui.FileTransferMonitor.OnFileTransferError;
 
             node.Connected += OnConnected;
             node.Disconnected += OnHardDisconnected;
             node.SocketErrored += OnSocketErrored;
             node.CannotConnect += OnCannotConnect;
             node.PropertyChanged += OnPropertyChanged;
-
-            Ui.BottomBar.FileTransferProgressMonitor.ObserveNodeTransfers(node.FileReceiver, node.FileSender);
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -97,9 +103,14 @@ namespace Lanchat.Terminal
             Ui.Log.Add(string.Format(Resources._FileRequest, node.Nickname, e.FileName));
         }
 
-        private void OnFileTransferFinished(object sender, FileTransferRequest e)
+        private void OnFileReceiveFinished(object sender, FileTransferRequest e)
         {
             Ui.Log.Add(string.Format(Resources._FileReceived, node.Nickname, Path.GetFullPath(e.FilePath)));
+        }
+        
+        private void OnFileSendFinished(object sender, FileTransferRequest e)
+        {
+            Ui.Log.Add(string.Format(Resources._FileTransferFinished, node.Nickname));
         }
 
         // TODO: Log node id
@@ -108,19 +119,14 @@ namespace Lanchat.Terminal
             Ui.Log.Add(string.Format(Resources._FileExchangeError, e.Message));
         }
 
-        private void OnFileTransferHandlerRequestAccepted(object sender, EventArgs e)
+        private void OnFileTransferHandlerRequestAccepted(object sender, FileTransferRequest e)
         {
             Ui.Log.Add(string.Format(Resources._FileRequestAccepted, node.Nickname));
         }
 
-        private void OnFileTransferHandlerRequestRejected(object sender, EventArgs e)
+        private void OnFileTransferHandlerRequestRejected(object sender, FileTransferRequest e)
         {
             Ui.Log.Add(string.Format(Resources._FileRequestRejected, node.Nickname));
-        }
-
-        private void OnFileTransferFinished(object sender, EventArgs e)
-        {
-            Ui.Log.Add(string.Format(Resources._FileTransferFinished, node.Nickname));
         }
     }
 }

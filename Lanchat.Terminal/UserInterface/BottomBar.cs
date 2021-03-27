@@ -7,7 +7,6 @@ namespace Lanchat.Terminal.UserInterface
     public class BottomBar : Boundary
     {
         private readonly TextBlock detectedCount;
-        private readonly TextBlock fileTransferStatus;
 
         public BottomBar()
         {
@@ -34,12 +33,6 @@ namespace Lanchat.Terminal.UserInterface
                 Color = ConsoleColor.Gray
             };
 
-            fileTransferStatus = new TextBlock
-            {
-                Text = FileTransferProgressMonitor.Text,
-                Color = ConsoleColor.Gray
-            };
-
             MaxHeight = 1;
             Content = new Background
             {
@@ -58,27 +51,21 @@ namespace Lanchat.Terminal.UserInterface
                         new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan},
                         new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
                         Status,
-                        new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
-                        new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
-                        fileTransferStatus,
-                        new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan}
+                        new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan},
+                        new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
+                        Ui.FileTransferMonitor,
+                        new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan}
                     }
                 }
             };
         }
 
         internal TextBlock Status { get; }
-        internal FileTransferProgressMonitor FileTransferProgressMonitor { get; } = new();
         internal TextBlock NodesCount { get; }
         internal TextBlock Clock { get; }
 
         internal void SetupEvents()
         {
-            FileTransferProgressMonitor.PropertyChanged += (_, _) =>
-            {
-                fileTransferStatus.Text = FileTransferProgressMonitor.Text;
-            };
-
             Program.Network.Broadcasting.DetectedNodes.CollectionChanged += (_, _) =>
             {
                 detectedCount.Text = Program.Network.Broadcasting.DetectedNodes.Count.ToString();

@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.IO;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
@@ -10,12 +9,11 @@ namespace Lanchat.Core.FileTransfer
     /// <summary>
     ///     File receiving.
     /// </summary>
-    public class FileReceiver : INotifyPropertyChanged
+    public class FileReceiver : IFileTransfer
     {
         private readonly IConfig config;
         internal readonly IBytesEncryption Encryption;
         private readonly INetworkOutput networkOutput;
-        private FileTransferRequest fileTransferRequest;
         internal FileStream WriteFileStream;
 
         internal FileReceiver(INetworkOutput networkOutput, IBytesEncryption encryption, IConfig config)
@@ -28,26 +26,12 @@ namespace Lanchat.Core.FileTransfer
         /// <summary>
         ///     Incoming file request.
         /// </summary>
-        public FileTransferRequest Request
-        {
-            get => fileTransferRequest;
-            internal set
-            {
-                if (fileTransferRequest == value) return;
-                fileTransferRequest = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        ///     Raised on <see cref="Request" /> property changed.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public FileTransferRequest Request { get; internal set; }
 
         /// <summary>
         ///     File transfer finished.
         /// </summary>
-        public event EventHandler<FileTransferRequest> FileTransferFinished;
+        public event EventHandler<FileTransferRequest> FileReceiveFinished;
 
         /// <summary>
         ///     File transfer errored.
@@ -58,6 +42,11 @@ namespace Lanchat.Core.FileTransfer
         ///     File receive request received.
         /// </summary>
         public event EventHandler<FileTransferRequest> FileTransferRequestReceived;
+        
+        /// <summary>
+        ///     File send request accepted. File transfer in progress.
+        /// </summary>
+        public event EventHandler<FileTransferRequest> FileTransferRequestAccepted;
 
         /// <summary>
         ///     Accept incoming file request.
@@ -72,6 +61,7 @@ namespace Lanchat.Core.FileTransfer
             {
                 RequestStatus = RequestStatus.Accepted
             });
+            FileTransferRequestAccepted?.Invoke(this, Request);
         }
 
         /// <summary>
@@ -138,14 +128,9 @@ namespace Lanchat.Core.FileTransfer
             }
         }
 
-        private void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         internal void OnFileTransferFinished(FileTransferRequest e)
         {
-            FileTransferFinished?.Invoke(this, e);
+            FileReceiveFinished?.Invoke(this, e);
         }
 
         internal void OnFileTransferError(Exception e)

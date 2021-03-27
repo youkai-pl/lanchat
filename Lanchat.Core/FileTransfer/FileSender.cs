@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Lanchat.Core.Encryption;
@@ -11,12 +10,11 @@ namespace Lanchat.Core.FileTransfer
     /// <summary>
     ///     File sending.
     /// </summary>
-    public class FileSender : INotifyPropertyChanged
+    public class FileSender : IFileTransfer
     {
         private const int ChunkSize = 1024 * 1024;
         private readonly IBytesEncryption encryption;
         private readonly INetworkOutput networkOutput;
-        private FileTransferRequest fileTransferRequest;
 
         internal FileSender(INetworkOutput networkOutput, IBytesEncryption encryption)
         {
@@ -27,21 +25,7 @@ namespace Lanchat.Core.FileTransfer
         /// <summary>
         ///     Outgoing file request.
         /// </summary>
-        public FileTransferRequest Request
-        {
-            get => fileTransferRequest;
-            private set
-            {
-                if (fileTransferRequest == value) return;
-                fileTransferRequest = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        ///     Raised on <see cref="Request" /> property changed.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public FileTransferRequest Request { get; internal set; }
 
         /// <summary>
         ///     File send returned error.
@@ -51,17 +35,17 @@ namespace Lanchat.Core.FileTransfer
         /// <summary>
         ///     File send request accepted. File transfer in progress.
         /// </summary>
-        public event EventHandler FileTransferRequestAccepted;
+        public event EventHandler<FileTransferRequest> FileTransferRequestAccepted;
 
         /// <summary>
         ///     File send request accepted.
         /// </summary>
-        public event EventHandler FileTransferRequestRejected;
+        public event EventHandler<FileTransferRequest> FileTransferRequestRejected;
 
         /// <summary>
         ///     File transfer finished.
         /// </summary>
-        public event EventHandler FileTransferFinished;
+        public event EventHandler<FileTransferRequest> FileSendFinished;
 
         /// <summary>
         ///     Send file exchange request.
@@ -90,7 +74,7 @@ namespace Lanchat.Core.FileTransfer
 
         internal void SendFile()
         {
-            FileTransferRequestAccepted?.Invoke(this, EventArgs.Empty);
+            FileTransferRequestAccepted?.Invoke(this, Request);
 
             try
             {
@@ -109,8 +93,8 @@ namespace Lanchat.Core.FileTransfer
                     Request.PartsTransferred++;
                 }
 
+                FileSendFinished?.Invoke(this, Request);
                 Request = null;
-                FileTransferFinished?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {
@@ -120,25 +104,21 @@ namespace Lanchat.Core.FileTransfer
                     {
                         RequestStatus = RequestStatus.Errored
                     });
+                Request = null;
             }
         }
 
         internal void HandleReject()
         {
-            FileTransferRequestRejected?.Invoke(this, EventArgs.Empty);
+            FileTransferRequestRejected?.Invoke(this, Request);
             Request = null;
         }
 
         internal void HandleCancel()
         {
             if (Request == null) return;
-            Request = null;
             FileTransferError?.Invoke(this, new Exception("File transfer cancelled by receiver"));
-        }
-
-        private void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Request = null;
         }
     }
 }

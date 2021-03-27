@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Threading;
 using ConsoleGUI;
@@ -20,10 +21,12 @@ namespace Lanchat.Terminal.UserInterface
         internal static TextBlock PromptIndicator { get; private set; }
         internal static VerticalScrollPanel ScrollPanel { get; private set; }
         internal static TextBlock StatusBar { get; private set; }
+        internal static FileTransferMonitor FileTransferMonitor { get; private set; }
 
         public static void Start()
         {
             Log = new LogPanel();
+            FileTransferMonitor = new FileTransferMonitor();
             BottomBar = new BottomBar();
 
             _input = new TextBox();
@@ -40,6 +43,7 @@ namespace Lanchat.Terminal.UserInterface
                 ScrollBarForeground = new Character()
             };
 
+            
             var version = Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
             version = version?.Remove(version.Length - 2);
 
