@@ -131,7 +131,7 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
         <value>Nie można wysyłać wielu plików jednocześnie.</value>
     </data>
     <data name="_NoFileReceiveRequest" xml:space="preserve">
-        <value>Brak przesyłanych plików.</value>
+        <value>Brak przesyłanych plików</value>
     </data>
     <data name="Help_send" xml:space="preserve">
         <value>Składnia: /send &lt;krótkie id&gt; &lt;ścieżka do pliku&gt;</value>

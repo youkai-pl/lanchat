@@ -47,7 +47,7 @@ namespace Lanchat.Terminal
             catch (SocketException e)
             {
                 if (e.SocketErrorCode == SocketError.AddressAlreadyInUse)
-                    Ui.Log.Add(Resources._PortBusy);
+                    Ui.Log.AddWarning(Resources._PortBusy);
                 else
                     throw;
             }
