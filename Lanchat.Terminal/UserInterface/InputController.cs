@@ -49,7 +49,7 @@ namespace Lanchat.Terminal.UserInterface
                 }
                 else
                 {
-                    Ui.Log.AddMessage(input.Text, Program.Config.Nickname);
+                    Ui.Log.AddMessage(input.Text, Program.Config.Nickname, false);
                     Program.Network.BroadcastMessage(input.Text);
                 }
             }

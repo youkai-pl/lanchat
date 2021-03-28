@@ -11,12 +11,6 @@ namespace Lanchat.Terminal.Commands
 
         public void Execute(string[] args)
         {
-            if (args == null || args.Length < 1)
-            {
-                Ui.Log.Add(Resources.Help_unblock);
-                return;
-            }
-
             var correct = IPAddress.TryParse(args[0], out var parsedIp);
             if (correct)
             {
@@ -25,7 +19,7 @@ namespace Lanchat.Terminal.Commands
             }
             else
             {
-                Ui.Log.Add(Resources._IncorrectValues);
+                Ui.Log.AddError(Resources._IncorrectValues);
             }
         }
     }

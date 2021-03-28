@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using ConsoleGUI.Controls;
-using ConsoleGUI.Data;
 using ConsoleGUI.UserDefined;
 
 namespace Lanchat.Terminal.UserInterface
@@ -20,26 +19,12 @@ namespace Lanchat.Terminal.UserInterface
 
         public void Add(string text, ConsoleColor color = ConsoleColor.White)
         {
-            lock (lockUi)
+            foreach (var line in Prepare(text))
             {
-                foreach (var line in Prepare(text))
+                AddText(new[]
                 {
-                    stackPanel.Add(new WrapPanel
-                    {
-                        Content = new HorizontalStackPanel
-                        {
-                            Children = new[]
-                            {
-                                new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
-                                new TextBlock {Text = "-", Color = ConsoleColor.Blue},
-                                new TextBlock {Text = "!"},
-                                new TextBlock {Text = "- ", Color = ConsoleColor.Blue},
-                                new TextBlock {Text = line, Color = color}
-                            }
-                        }
-                    });
-                    Ui.ScrollPanel.Top = int.MaxValue;
-                }
+                    new TextBlock {Text = line, Color = color}
+                });
             }
         }
 
@@ -47,58 +32,31 @@ namespace Lanchat.Terminal.UserInterface
         {
             Add(text, ConsoleColor.Red);
         }
-
-        public void AddMessage(string text, string nickname = null)
+        
+        public void AddWarning(string text)
         {
-            lock (lockUi)
+            Add(text, ConsoleColor.Yellow);
+        }
+
+        public void AddMessage(string text, string nickname, bool privateMessage)
+        {
+            var color = privateMessage ? ConsoleColor.Magenta : ConsoleColor.White;
+            foreach (var line in Prepare(text))
             {
-                foreach (var line in Prepare(text))
+                AddToLog(new[]
                 {
-                    stackPanel.Add(new WrapPanel
-                    {
-                        Content = new HorizontalStackPanel
-                        {
-                            Children = new[]
-                            {
-                                new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
-                                new TextBlock {Text = "<", Color = ConsoleColor.DarkGray},
-                                new TextBlock {Text = $"{nickname}"},
-                                new TextBlock {Text = "> ", Color = ConsoleColor.DarkGray},
-                                new TextBlock {Text = line}
-                            }
-                        }
-                    });
-                    Ui.ScrollPanel.Top = int.MaxValue;
-                }
+                    new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
+                    new TextBlock {Text = "<", Color = ConsoleColor.DarkGray},
+                    new TextBlock {Text = $"{nickname}", Color = color},
+                    new TextBlock {Text = "> ", Color = ConsoleColor.DarkGray},
+                    new TextBlock {Text = line}
+                });
+
+                Ui.ScrollPanel.Top = int.MaxValue;
             }
         }
 
-        public void AddPrivateMessage(string text, string nickname = null)
-        {
-            lock (lockUi)
-            {
-                foreach (var line in Prepare(text))
-                {
-                    stackPanel.Add(new WrapPanel
-                    {
-                        Content = new HorizontalStackPanel
-                        {
-                            Children = new[]
-                            {
-                                new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
-                                new TextBlock {Text = "<", Color = ConsoleColor.DarkGray},
-                                new TextBlock {Text = $"{nickname}", Color = ConsoleColor.Magenta},
-                                new TextBlock {Text = "> ", Color = ConsoleColor.DarkGray},
-                                new TextBlock {Text = line}
-                            }
-                        }
-                    });
-                    Ui.ScrollPanel.Top = int.MaxValue;
-                }
-            }
-        }
-
-        public void AddCustomTextBlock(IEnumerable<TextBlock> line)
+        public void AddText(IEnumerable<TextBlock> line)
         {
             var children = new[]
             {
@@ -108,17 +66,8 @@ namespace Lanchat.Terminal.UserInterface
                 new TextBlock {Text = "- ", Color = ConsoleColor.Blue}
             };
 
-            lock (lockUi)
-            {
-                stackPanel.Add(new WrapPanel
-                {
-                    Content = new HorizontalStackPanel
-                    {
-                        Children = children.Concat(line)
-                    }
-                });
-                Ui.ScrollPanel.Top = int.MaxValue;
-            }
+            AddToLog(children.Concat(line));
+            Ui.ScrollPanel.Top = int.MaxValue;
         }
 
         private static IEnumerable<string> Prepare(string text)
@@ -129,6 +78,20 @@ namespace Lanchat.Terminal.UserInterface
                 new[] {"\r\n", "\r", "\n"},
                 StringSplitOptions.None
             );
+        }
+
+        private void AddToLog(IEnumerable<TextBlock> textBlocks)
+        {
+            lock (lockUi)
+            {
+                stackPanel.Add(new WrapPanel
+                {
+                    Content = new HorizontalStackPanel
+                    {
+                        Children = textBlocks
+                    }
+                });
+            }
         }
     }
 }

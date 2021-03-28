@@ -32,7 +32,7 @@ namespace Lanchat.Terminal.Commands
             }
             else
             {
-                Ui.Log.Add(Resources._IncorrectValues);
+                Ui.Log.AddError(Resources._IncorrectValues);
                 return;
             }
 

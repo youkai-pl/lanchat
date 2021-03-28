@@ -1,4 +1,3 @@
-using System;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -14,13 +13,13 @@ namespace Lanchat.Terminal.Commands
             var node = Program.Network.Nodes.Find(x => x.ShortId == args[0]);
             if (node == null)
             {
-                Ui.Log.Add(Resources._UserNotFound);
+                Ui.Log.AddError(Resources._UserNotFound);
                 return;
             }
 
             if (!node.FileReceiver.CancelReceive())
             {
-                Ui.Log.Add(Resources._NoFileReceiveRequest);
+                Ui.Log.AddError(Resources._NoFileReceiveRequest);
             }
         }
     }

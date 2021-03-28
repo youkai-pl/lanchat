@@ -43,7 +43,7 @@ namespace Lanchat.Terminal.Commands
                     new TextBlock {Text = ")", Color = ConsoleColor.White}
                 };
 
-                Ui.Log.AddCustomTextBlock(line);
+                Ui.Log.AddText(line);
             });
 
             Program.Network.Broadcasting.DetectedNodes.ToList().ForEach(x =>
@@ -55,7 +55,7 @@ namespace Lanchat.Terminal.Commands
                     new TextBlock {Text = ")", Color = ConsoleColor.White}
                 };
 
-                Ui.Log.AddCustomTextBlock(line);
+                Ui.Log.AddText(line);
             });
         }
     }

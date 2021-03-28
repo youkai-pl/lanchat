@@ -37,15 +37,15 @@ namespace Lanchat.Terminal.Commands
             }
             catch (FormatException)
             {
-                Ui.Log.Add(Resources._IncorrectValues);
+                Ui.Log.AddError(Resources._IncorrectValues);
             }
             catch (SocketException)
             {
-                Ui.Log.Add(Resources._IncorrectValues);
+                Ui.Log.AddError(Resources._IncorrectValues);
             }
             catch (ArgumentException e)
             {
-                Ui.Log.Add(e.Message);
+                Ui.Log.AddError(e.Message);
             }
         }
     }

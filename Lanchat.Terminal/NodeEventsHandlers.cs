@@ -79,12 +79,12 @@ namespace Lanchat.Terminal
 
         private void OnMessageReceived(object sender, string e)
         {
-            Ui.Log.AddMessage(e, node.Nickname);
+            Ui.Log.AddMessage(e, node.Nickname, false);
         }
 
         private void OnPrivateMessageReceived(object sender, string e)
         {
-            Ui.Log.AddPrivateMessage(e, node.Nickname);
+            Ui.Log.AddMessage(e, node.Nickname, true);
         }
 
         private void OnSocketErrored(object sender, SocketError e)

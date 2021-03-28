@@ -13,12 +13,12 @@ namespace Lanchat.Terminal.Commands
             var nickname = args[0].Trim();
             if (nickname.Length >= 20 || string.IsNullOrWhiteSpace(nickname))
             {
-                Ui.Log.Add(Resources._WrongNickname);
+                Ui.Log.AddError(Resources._WrongNickname);
             }
             else
             {
                 Program.Config.Nickname = nickname;
-                Ui.Log.Add(Resources._SelfNicknameChanged);
+                Ui.Log.AddError(Resources._SelfNicknameChanged);
                 Ui.PromptIndicator.Text = $"[{Program.Config.Nickname}] ";
             }
         }
