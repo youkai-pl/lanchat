@@ -83,6 +83,15 @@ namespace Lanchat.Core
         {
             Nodes.ForEach(x => x.Messaging.SendMessage(message));
         }
+        
+        /// <summary>
+        ///     Broadcast data.
+        /// </summary>
+        /// <param name="data"></param>
+        public void BroadcastData(object data)
+        {
+            Nodes.ForEach(x => x.NetworkOutput.SendData(data));
+        }
 
         /// <summary>
         ///     Connect to node.
