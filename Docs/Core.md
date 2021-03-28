@@ -6,7 +6,7 @@
 - [ApiHandler\`1](#T-Lanchat-Core-NetworkIO-ApiHandler`1 'Lanchat.Core.NetworkIO.ApiHandler`1')
   - [HandledType](#P-Lanchat-Core-NetworkIO-ApiHandler`1-HandledType 'Lanchat.Core.NetworkIO.ApiHandler`1.HandledType')
   - [Privileged](#P-Lanchat-Core-NetworkIO-ApiHandler`1-Privileged 'Lanchat.Core.NetworkIO.ApiHandler`1.Privileged')
-  - [Handle(data)](#M-Lanchat-Core-NetworkIO-ApiHandler`1-Handle-System-Object- 'Lanchat.Core.NetworkIO.ApiHandler`1.Handle(System.Object)')
+  - [Handle()](#M-Lanchat-Core-NetworkIO-ApiHandler`1-Handle-System-Object- 'Lanchat.Core.NetworkIO.ApiHandler`1.Handle(System.Object)')
   - [Handle(data)](#M-Lanchat-Core-NetworkIO-ApiHandler`1-Handle-`0- 'Lanchat.Core.NetworkIO.ApiHandler`1.Handle(`0)')
 - [Broadcast](#T-Lanchat-Core-Models-Broadcast 'Lanchat.Core.Models.Broadcast')
   - [Active](#P-Lanchat-Core-Models-Broadcast-Active 'Lanchat.Core.Models.Broadcast.Active')
@@ -31,6 +31,10 @@
   - [Parts](#P-Lanchat-Core-FileTransfer-FileTransferRequest-Parts 'Lanchat.Core.FileTransfer.FileTransferRequest.Parts')
   - [PartsTransferred](#P-Lanchat-Core-FileTransfer-FileTransferRequest-PartsTransferred 'Lanchat.Core.FileTransfer.FileTransferRequest.PartsTransferred')
   - [Progress](#P-Lanchat-Core-FileTransfer-FileTransferRequest-Progress 'Lanchat.Core.FileTransfer.FileTransferRequest.Progress')
+- [IApiHandler](#T-Lanchat-Core-NetworkIO-IApiHandler 'Lanchat.Core.NetworkIO.IApiHandler')
+  - [HandledType](#P-Lanchat-Core-NetworkIO-IApiHandler-HandledType 'Lanchat.Core.NetworkIO.IApiHandler.HandledType')
+  - [Privileged](#P-Lanchat-Core-NetworkIO-IApiHandler-Privileged 'Lanchat.Core.NetworkIO.IApiHandler.Privileged')
+  - [Handle(data)](#M-Lanchat-Core-NetworkIO-IApiHandler-Handle-System-Object- 'Lanchat.Core.NetworkIO.IApiHandler.Handle(System.Object)')
 - [IConfig](#T-Lanchat-Core-IConfig 'Lanchat.Core.IConfig')
   - [AutomaticConnecting](#P-Lanchat-Core-IConfig-AutomaticConnecting 'Lanchat.Core.IConfig.AutomaticConnecting')
   - [BlockedAddresses](#P-Lanchat-Core-IConfig-BlockedAddresses 'Lanchat.Core.IConfig.BlockedAddresses')
@@ -45,15 +49,22 @@
   - [Id](#P-Lanchat-Core-Network-INetworkElement-Id 'Lanchat.Core.Network.INetworkElement.Id')
   - [Close()](#M-Lanchat-Core-Network-INetworkElement-Close 'Lanchat.Core.Network.INetworkElement.Close')
   - [Send(text)](#M-Lanchat-Core-Network-INetworkElement-Send-System-String- 'Lanchat.Core.Network.INetworkElement.Send(System.String)')
+- [INetworkOutput](#T-Lanchat-Core-NetworkIO-INetworkOutput 'Lanchat.Core.NetworkIO.INetworkOutput')
+  - [SendData(content)](#M-Lanchat-Core-NetworkIO-INetworkOutput-SendData-System-Object- 'Lanchat.Core.NetworkIO.INetworkOutput.SendData(System.Object)')
+  - [SendPrivilegedData(content)](#M-Lanchat-Core-NetworkIO-INetworkOutput-SendPrivilegedData-System-Object- 'Lanchat.Core.NetworkIO.INetworkOutput.SendPrivilegedData(System.Object)')
 - [Messaging](#T-Lanchat-Core-Chat-Messaging 'Lanchat.Core.Chat.Messaging')
   - [SendMessage(content)](#M-Lanchat-Core-Chat-Messaging-SendMessage-System-String- 'Lanchat.Core.Chat.Messaging.SendMessage(System.String)')
   - [SendPrivateMessage(content)](#M-Lanchat-Core-Chat-Messaging-SendPrivateMessage-System-String- 'Lanchat.Core.Chat.Messaging.SendPrivateMessage(System.String)')
 - [NetworkOutput](#T-Lanchat-Core-NetworkIO-NetworkOutput 'Lanchat.Core.NetworkIO.NetworkOutput')
+  - [SendData()](#M-Lanchat-Core-NetworkIO-NetworkOutput-SendData-System-Object- 'Lanchat.Core.NetworkIO.NetworkOutput.SendData(System.Object)')
+  - [SendPrivilegedData()](#M-Lanchat-Core-NetworkIO-NetworkOutput-SendPrivilegedData-System-Object- 'Lanchat.Core.NetworkIO.NetworkOutput.SendPrivilegedData(System.Object)')
 - [Node](#T-Lanchat-Core-Node 'Lanchat.Core.Node')
   - [FileReceiver](#F-Lanchat-Core-Node-FileReceiver 'Lanchat.Core.Node.FileReceiver')
   - [FileSender](#F-Lanchat-Core-Node-FileSender 'Lanchat.Core.Node.FileSender')
   - [Messaging](#F-Lanchat-Core-Node-Messaging 'Lanchat.Core.Node.Messaging')
   - [NetworkElement](#F-Lanchat-Core-Node-NetworkElement 'Lanchat.Core.Node.NetworkElement')
+  - [NetworkOutput](#F-Lanchat-Core-Node-NetworkOutput 'Lanchat.Core.Node.NetworkOutput')
+  - [Resolver](#F-Lanchat-Core-Node-Resolver 'Lanchat.Core.Node.Resolver')
   - [Id](#P-Lanchat-Core-Node-Id 'Lanchat.Core.Node.Id')
   - [Nickname](#P-Lanchat-Core-Node-Nickname 'Lanchat.Core.Node.Nickname')
   - [PreviousNickname](#P-Lanchat-Core-Node-PreviousNickname 'Lanchat.Core.Node.PreviousNickname')
@@ -70,6 +81,8 @@
   - [Connect(ipAddress,port)](#M-Lanchat-Core-P2P-Connect-System-Net-IPAddress,System-Nullable{System-Int32}- 'Lanchat.Core.P2P.Connect(System.Net.IPAddress,System.Nullable{System.Int32})')
   - [StartBroadcast()](#M-Lanchat-Core-P2P-StartBroadcast 'Lanchat.Core.P2P.StartBroadcast')
   - [StartServer()](#M-Lanchat-Core-P2P-StartServer 'Lanchat.Core.P2P.StartServer')
+- [Resolver](#T-Lanchat-Core-NetworkIO-Resolver 'Lanchat.Core.NetworkIO.Resolver')
+  - [RegisterHandler(apiHandler)](#M-Lanchat-Core-NetworkIO-Resolver-RegisterHandler-Lanchat-Core-NetworkIO-IApiHandler- 'Lanchat.Core.NetworkIO.Resolver.RegisterHandler(Lanchat.Core.NetworkIO.IApiHandler)')
 - [Server](#T-Lanchat-Core-Network-Server 'Lanchat.Core.Network.Server')
   - [#ctor(address,port,config)](#M-Lanchat-Core-Network-Server-#ctor-System-Net-IPAddress,System-Int32,Lanchat-Core-IConfig- 'Lanchat.Core.Network.Server.#ctor(System.Net.IPAddress,System.Int32,Lanchat.Core.IConfig)')
   - [IncomingConnections](#P-Lanchat-Core-Network-Server-IncomingConnections 'Lanchat.Core.Network.Server.IncomingConnections')
@@ -100,27 +113,25 @@ Inherit this class for create custom API handler.
 
 ##### Summary
 
-Type of handled model.
+*Inherit from parent.*
 
 <a name='P-Lanchat-Core-NetworkIO-ApiHandler`1-Privileged'></a>
 ### Privileged `property`
 
 ##### Summary
 
-If handler is privileged it will process data even if node is unready.
+*Inherit from parent.*
 
 <a name='M-Lanchat-Core-NetworkIO-ApiHandler`1-Handle-System-Object-'></a>
-### Handle(data) `method`
+### Handle() `method`
 
 ##### Summary
 
-Handle unconverted object.
+*Inherit from parent.*
 
 ##### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| data | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Unconverted object. |
+This method has no parameters.
 
 <a name='M-Lanchat-Core-NetworkIO-ApiHandler`1-Handle-`0-'></a>
 ### Handle(data) `method`
@@ -350,6 +361,44 @@ Already transferred parts counter.
 
 Transfer progress in percent.
 
+<a name='T-Lanchat-Core-NetworkIO-IApiHandler'></a>
+## IApiHandler `type`
+
+##### Namespace
+
+Lanchat.Core.NetworkIO
+
+##### Summary
+
+Use [ApiHandler\`1](#T-Lanchat-Core-NetworkIO-ApiHandler`1 'Lanchat.Core.NetworkIO.ApiHandler`1') instead this.
+
+<a name='P-Lanchat-Core-NetworkIO-IApiHandler-HandledType'></a>
+### HandledType `property`
+
+##### Summary
+
+Type of handled model.
+
+<a name='P-Lanchat-Core-NetworkIO-IApiHandler-Privileged'></a>
+### Privileged `property`
+
+##### Summary
+
+If handler is privileged it will process data even if node is unready.
+
+<a name='M-Lanchat-Core-NetworkIO-IApiHandler-Handle-System-Object-'></a>
+### Handle(data) `method`
+
+##### Summary
+
+Object handler.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| data | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | API model object. |
+
 <a name='T-Lanchat-Core-IConfig'></a>
 ## IConfig `type`
 
@@ -466,6 +515,43 @@ Send data.
 | ---- | ---- | ----------- |
 | text | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Content. |
 
+<a name='T-Lanchat-Core-NetworkIO-INetworkOutput'></a>
+## INetworkOutput `type`
+
+##### Namespace
+
+Lanchat.Core.NetworkIO
+
+##### Summary
+
+Send data other of type not belonging to standard Lanchat.Core set.
+
+<a name='M-Lanchat-Core-NetworkIO-INetworkOutput-SendData-System-Object-'></a>
+### SendData(content) `method`
+
+##### Summary
+
+Send data.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| content | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Object to send. |
+
+<a name='M-Lanchat-Core-NetworkIO-INetworkOutput-SendPrivilegedData-System-Object-'></a>
+### SendPrivilegedData(content) `method`
+
+##### Summary
+
+Send the data before marking the node as ready (Handshake, KeyInfo...).
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| content | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Object to send. |
+
 <a name='T-Lanchat-Core-Chat-Messaging'></a>
 ## Messaging `type`
 
@@ -512,7 +598,29 @@ Lanchat.Core.NetworkIO
 
 ##### Summary
 
-Sending and receiving data using this class.
+*Inherit from parent.*
+
+<a name='M-Lanchat-Core-NetworkIO-NetworkOutput-SendData-System-Object-'></a>
+### SendData() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Lanchat-Core-NetworkIO-NetworkOutput-SendPrivilegedData-System-Object-'></a>
+### SendPrivilegedData() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-Lanchat-Core-Node'></a>
 ## Node `type`
@@ -536,6 +644,12 @@ Connected user.
 
 <a name='F-Lanchat-Core-Node-NetworkElement'></a>
 ### NetworkElement `constants`
+
+<a name='F-Lanchat-Core-Node-NetworkOutput'></a>
+### NetworkOutput `constants`
+
+<a name='F-Lanchat-Core-Node-Resolver'></a>
+### Resolver `constants`
 
 <a name='P-Lanchat-Core-Node-Id'></a>
 ### Id `property`
@@ -681,6 +795,30 @@ Start server.
 ##### Parameters
 
 This method has no parameters.
+
+<a name='T-Lanchat-Core-NetworkIO-Resolver'></a>
+## Resolver `type`
+
+##### Namespace
+
+Lanchat.Core.NetworkIO
+
+##### Summary
+
+Class used to handle received data.
+
+<a name='M-Lanchat-Core-NetworkIO-Resolver-RegisterHandler-Lanchat-Core-NetworkIO-IApiHandler-'></a>
+### RegisterHandler(apiHandler) `method`
+
+##### Summary
+
+Add data handler for specific model type.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| apiHandler | [Lanchat.Core.NetworkIO.IApiHandler](#T-Lanchat-Core-NetworkIO-IApiHandler 'Lanchat.Core.NetworkIO.IApiHandler') | ApiHandler object. |
 
 <a name='T-Lanchat-Core-Network-Server'></a>
 ## Server `type`

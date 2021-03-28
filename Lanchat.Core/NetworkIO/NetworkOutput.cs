@@ -6,10 +6,8 @@ using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Core.NetworkIO
 {
-    /// <summary>
-    ///     Sending and receiving data using this class.
-    /// </summary>
-    internal class NetworkOutput : INetworkOutput
+    /// <inheritdoc />
+    public class NetworkOutput : INetworkOutput
     {
         private readonly INetworkElement networkElement;
         private readonly INodeState nodeState;
@@ -28,13 +26,15 @@ namespace Lanchat.Core.NetworkIO
             };
         }
 
-        public void SendUserData(object content)
+        /// <inheritdoc />
+        public void SendData(object content)
         {
             if (!nodeState.Ready) return;
-            SendSystemData(content);
+            SendPrivilegedData(content);
         }
-
-        public void SendSystemData(object content)
+        
+        /// <inheritdoc />
+        public void SendPrivilegedData(object content)
         {
             var data = new Dictionary<string, object> {{content.GetType().Name, content}};
             networkElement.Send(JsonSerializer.Serialize(data, serializerOptions));

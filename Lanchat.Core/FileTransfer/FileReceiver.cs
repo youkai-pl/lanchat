@@ -57,7 +57,7 @@ namespace Lanchat.Core.FileTransfer
             if (Request == null) throw new InvalidOperationException("No receive request");
             Request.Accepted = true;
             WriteFileStream = new FileStream(Request.FilePath, FileMode.Append);
-            networkOutput.SendUserData(new FileTransferControl
+            networkOutput.SendData(new FileTransferControl
             {
                 RequestStatus = RequestStatus.Accepted
             });
@@ -72,7 +72,7 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request == null) throw new InvalidOperationException("No receive request");
             Request = null;
-            networkOutput.SendUserData(new FileTransferControl
+            networkOutput.SendData(new FileTransferControl
             {
                 RequestStatus = RequestStatus.Rejected
             });
@@ -84,7 +84,7 @@ namespace Lanchat.Core.FileTransfer
         public bool CancelReceive()
         {
             if (Request == null) return false;
-            networkOutput.SendUserData(
+            networkOutput.SendData(
                 new FileTransferControl
                 {
                     RequestStatus = RequestStatus.Canceled

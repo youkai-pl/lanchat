@@ -28,7 +28,7 @@ namespace Lanchat.Core.FileTransfer
                 fileReceiver.WriteFileStream.Dispose();
                 fileReceiver.Request = null;
             }
-            catch (Exception e)
+            catch
             {
                 fileReceiver.CancelReceive();
                 fileReceiver.OnFileTransferError();

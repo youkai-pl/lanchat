@@ -35,8 +35,11 @@ namespace Lanchat.Core
         /// <see cref="INetworkElement" />
         public readonly INetworkElement NetworkElement;
 
-        internal readonly INetworkOutput NetworkOutput;
-        internal readonly Resolver Resolver;
+        /// <see cref="Resolver"/>
+        public readonly Resolver Resolver;
+
+        /// <see cref="INetworkOutput"/>
+        public readonly INetworkOutput NetworkOutput;
 
         internal bool HandshakeReceived;
         private string nickname;
@@ -169,7 +172,7 @@ namespace Lanchat.Core
         /// </summary>
         public void Disconnect()
         {
-            NetworkOutput.SendSystemData(new ConnectionControl
+            NetworkOutput.SendPrivilegedData(new ConnectionControl
             {
                 Status = ConnectionControlStatus.RemoteClose
             });
@@ -193,7 +196,7 @@ namespace Lanchat.Core
                 PublicKey = Encryptor.ExportPublicKey()
             };
 
-            NetworkOutput.SendSystemData(handshake);
+            NetworkOutput.SendPrivilegedData(handshake);
         }
 
         internal void OnConnected()

@@ -9,13 +9,17 @@ using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Core.NetworkIO
 {
-    internal class Resolver
+    
+    /// <summary>
+    ///     Class used to handle received data.
+    /// </summary>
+    public class Resolver
     {
         private readonly List<IApiHandler> handlers = new();
         private readonly INodeState nodeState;
         private readonly JsonSerializerOptions serializerOptions;
 
-        public Resolver(INodeState nodeState)
+        internal Resolver(INodeState nodeState)
         {
             this.nodeState = nodeState;
             serializerOptions = new JsonSerializerOptions
@@ -54,7 +58,11 @@ namespace Lanchat.Core.NetworkIO
             handler.Handle(data);
         }
 
-        internal void RegisterHandler(IApiHandler apiHandler)
+        /// <summary>
+        ///     Add data handler for specific model type.
+        /// </summary>
+        /// <param name="apiHandler">ApiHandler object.</param>
+        public void RegisterHandler(IApiHandler apiHandler)
         {
             handlers.Add(apiHandler);
         }

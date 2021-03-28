@@ -28,7 +28,7 @@ namespace Lanchat.Core.P2PHandlers
             var nodesList = new NodesList();
             nodesList.AddRange(network.Nodes.Where(x => x.Id != node.Id)
                 .Select(x => x.NetworkElement.Endpoint.Address.ToString()));
-            node.NetworkOutput.SendUserData(nodesList);
+            node.NetworkOutput.SendData(nodesList);
         }
 
         internal void OnSessionCreated(object sender, Node node)

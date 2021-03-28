@@ -128,11 +128,11 @@ namespace Lanchat.Core
             {
                 case "Nickname":
                     Nodes.ForEach(x =>
-                        x.NetworkOutput.SendUserData(new NicknameUpdate {NewNickname = config.Nickname}));
+                        x.NetworkOutput.SendData(new NicknameUpdate {NewNickname = config.Nickname}));
                     break;
 
                 case "Status":
-                    Nodes.ForEach(x => x.NetworkOutput.SendUserData(new StatusUpdate {NewStatus = config.Status}));
+                    Nodes.ForEach(x => x.NetworkOutput.SendData(new StatusUpdate {NewStatus = config.Status}));
                     break;
             }
         }

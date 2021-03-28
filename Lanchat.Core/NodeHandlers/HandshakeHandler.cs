@@ -25,7 +25,7 @@ namespace Lanchat.Core.NodeHandlers
             {
                 node.Encryptor.ImportPublicKey(handshake.PublicKey);
                 node.Status = handshake.Status;
-                node.NetworkOutput.SendSystemData(node.Encryptor.ExportAesKey());
+                node.NetworkOutput.SendPrivilegedData(node.Encryptor.ExportAesKey());
                 node.HandshakeReceived = true;
             }
             catch (InvalidKeyImportException)

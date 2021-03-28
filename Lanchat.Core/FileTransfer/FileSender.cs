@@ -64,7 +64,7 @@ namespace Lanchat.Core.FileTransfer
                 Parts = (fileInfo.Length + ChunkSize - 1) / ChunkSize
             };
 
-            networkOutput.SendUserData(
+            networkOutput.SendData(
                 new FileTransferControl
                 {
                     FileName = Request.FileName,
@@ -96,7 +96,7 @@ namespace Lanchat.Core.FileTransfer
                     };
 
                     if (bytesRead < ChunkSize) part.Last = true;
-                    networkOutput.SendUserData(part);
+                    networkOutput.SendData(part);
                     Request.PartsTransferred++;
                 }
 
@@ -106,7 +106,7 @@ namespace Lanchat.Core.FileTransfer
             catch
             {
                 OnFileTransferError(new FileTransferException(Request));
-                networkOutput.SendUserData(
+                networkOutput.SendData(
                     new FileTransferControl
                     {
                         RequestStatus = RequestStatus.Errored
