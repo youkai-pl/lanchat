@@ -11,8 +11,7 @@ namespace Lanchat.Core.NetworkIO
 {
     internal class Resolver
     {
-        internal readonly List<IApiHandler> Handlers = new();
-        internal readonly List<Type> Models = new();
+        private readonly List<IApiHandler> handlers = new();
         private readonly INodeState nodeState;
         private readonly JsonSerializerOptions serializerOptions;
 
@@ -40,12 +39,10 @@ namespace Lanchat.Core.NetworkIO
                 return;
             }
 
-            var type = Models.FirstOrDefault(x => x.Name == jsonType);
-
+            var type = handlers.FirstOrDefault(x => x.HandledType.Name == jsonType)?.HandledType;
             if (type == null) throw new ArgumentException($"{nodeState.Id} received data of unknown type.", jsonType);
-
             var data = JsonSerializer.Deserialize(jsonValue, type, serializerOptions);
-            var handler = Handlers.FirstOrDefault(x => x.HandledType == type);
+            var handler = handlers.FirstOrDefault(x => x.HandledType == type);
             if (handler == null)
                 throw new ArgumentException($"{nodeState.Id} has no handler for received data.", jsonType);
 
@@ -55,6 +52,11 @@ namespace Lanchat.Core.NetworkIO
             Validator.ValidateObject(data!, new ValidationContext(data), true);
             Trace.WriteLine($"Node {nodeState.Id} received {jsonType}");
             handler.Handle(data);
+        }
+
+        internal void RegisterHandler(IApiHandler apiHandler)
+        {
+            handlers.Add(apiHandler);
         }
     }
 }

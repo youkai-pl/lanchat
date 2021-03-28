@@ -34,7 +34,7 @@ namespace Lanchat.Core.P2PHandlers
         internal void OnSessionCreated(object sender, Node node)
         {
             network.OnConnectionCreated(node);
-            node.Resolver.Handlers.Add(new NodesListHandler(network, config));
+            node.Resolver.RegisterHandler(new NodesListHandler(network, config));
             node.Connected += OnConnected;
         }
     }

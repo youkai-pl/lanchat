@@ -15,11 +15,6 @@ namespace Lanchat.Core.NetworkIO
         internal NetworkInput(Resolver resolver)
         {
             this.resolver = resolver;
-
-            resolver.Models.AddRange(Assembly
-                .GetExecutingAssembly()
-                .GetTypes()
-                .Where(x => x.Namespace == "Lanchat.Core.Models"));
         }
 
         internal void ProcessReceivedData(object sender, string dataString)

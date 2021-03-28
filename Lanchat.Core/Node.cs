@@ -56,14 +56,14 @@ namespace Lanchat.Core
 
             Resolver = new Resolver(this);
             var networkInput = new NetworkInput(Resolver);
-            Resolver.Handlers.Add(new HandshakeHandler(this));
-            Resolver.Handlers.Add(new KeyInfoHandler(this));
-            Resolver.Handlers.Add(new ConnectionControlHandler(this));
-            Resolver.Handlers.Add(new StatusUpdateHandler(this));
-            Resolver.Handlers.Add(new NicknameUpdateHandler(this));
-            Resolver.Handlers.Add(new MessageHandler(Messaging));
-            Resolver.Handlers.Add(new FilePartHandler(FileReceiver));
-            Resolver.Handlers.Add(new FileTransferControlHandler(FileReceiver, FileSender));
+            Resolver.RegisterHandler(new HandshakeHandler(this));
+            Resolver.RegisterHandler(new KeyInfoHandler(this));
+            Resolver.RegisterHandler(new ConnectionControlHandler(this));
+            Resolver.RegisterHandler(new StatusUpdateHandler(this));
+            Resolver.RegisterHandler(new NicknameUpdateHandler(this));
+            Resolver.RegisterHandler(new MessageHandler(Messaging));
+            Resolver.RegisterHandler(new FilePartHandler(FileReceiver));
+            Resolver.RegisterHandler(new FileTransferControlHandler(FileReceiver, FileSender));
 
             NetworkElement.Disconnected += OnDisconnected;
             NetworkElement.DataReceived += networkInput.ProcessReceivedData;

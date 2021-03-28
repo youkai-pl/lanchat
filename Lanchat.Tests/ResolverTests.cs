@@ -19,9 +19,7 @@ namespace Lanchat.Tests
         {
             nodeState = new NodeState();
             resolver = new Resolver(nodeState);
-            resolver.Models.Add(typeof(Message));
-            resolver.Models.Add(typeof(Handshake));
-            resolver.Handlers.Add(new MessageHandlerMock());
+            resolver.RegisterHandler(new MessageHandlerMock());
         }
 
         [Test]
