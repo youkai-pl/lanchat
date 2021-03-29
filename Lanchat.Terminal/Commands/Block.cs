@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -33,6 +34,12 @@ namespace Lanchat.Terminal.Commands
             else
             {
                 Ui.Log.AddError(Resources._IncorrectValues);
+                return;
+            }
+            
+            if (Program.Config.BlockedAddresses.Any(x => Equals(x, ipAddress)))
+            {
+                Ui.Log.AddError(Resources._AlreadyBlocked);
                 return;
             }
 

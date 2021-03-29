@@ -266,4 +266,7 @@ Try /help &lt;command&gt; for detailed help.
     <data name="_FileTransferFinished" xml:space="preserve">
         <value>File transfer with {0} finished.</value>
     </data>
+    <data name="_AlreadyBlocked" xml:space="preserve">
+        <value>Address already blocked</value>
+    </data>
 </root>

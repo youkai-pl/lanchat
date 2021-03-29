@@ -30,7 +30,7 @@ namespace Lanchat.Core.P2PHandlers
                 .Select(x => x.NetworkElement.Endpoint.Address.ToString()));
             node.NetworkOutput.SendData(nodesList);
 
-            if (!config.SavedAddresses.Contains(node.NetworkElement.Endpoint.Address))
+            if (config.SavedAddresses.Any(x => !Equals(x, node.NetworkElement.Endpoint.Address)))
             {
                 config.SavedAddresses.Add(node.NetworkElement.Endpoint.Address);
             }

@@ -278,5 +278,11 @@ namespace Lanchat.Terminal.Properties {
                 return ResourceManager.GetString("_FileTransferFinished", resourceCulture);
             }
         }
+        
+        internal static string _AlreadyBlocked {
+            get {
+                return ResourceManager.GetString("_AlreadyBlocked", resourceCulture);
+            }
+        }
     }
 }
