@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
+using System.Diagnostics;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
@@ -14,21 +15,15 @@ namespace Lanchat.ClientCore
         private static int _port = 3645;
         private static int _broadcastPort = 3646;
         private static string _nickname = ConfigValues.GetNickname();
-        private static List<string> _blockedAddresses = new();
         private static bool _automaticConnecting = true;
         private static bool _useIPv6;
         private static string _language = "default";
         private string filesDownloadDirectory = ConfigValues.GetDownloadsDirectory();
         private Status status = Status.Online;
+        private ObservableCollection<IPAddress> blockedAddresses = new();
+        private ObservableCollection<IPAddress> savedAddresses = new();
 
         [JsonIgnore] public bool Fresh { get; set; }
-
-        // ReSharper disable once CA1822
-        public List<string> BlockedAddressesList
-        {
-            get => _blockedAddresses;
-            set { _blockedAddresses = value.Select(x => x.ToString()).ToList(); }
-        }
 
         public string Language
         {
@@ -40,11 +35,24 @@ namespace Lanchat.ClientCore
             }
         }
 
-        [JsonIgnore]
-        public List<IPAddress> BlockedAddresses
+        public ObservableCollection<IPAddress> BlockedAddresses
         {
-            get => BlockedAddressesList.Select(IPAddress.Parse).ToList();
-            set { BlockedAddressesList = value.Select(x => x.ToString()).ToList(); }
+            get => blockedAddresses;
+            set
+            {
+                blockedAddresses = value;
+                OnPropertyChanged(nameof(BlockedAddresses));
+            }
+        }
+
+        public ObservableCollection<IPAddress> SavedAddresses
+        {
+            get => savedAddresses;
+            set
+            {
+                savedAddresses = value;
+                OnPropertyChanged(nameof(SavedAddresses));
+            }
         }
 
         public Status Status
@@ -118,22 +126,6 @@ namespace Lanchat.ClientCore
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public void AddBlocked(IPAddress ipAddress)
-        {
-            var ipString = ipAddress.ToString();
-            if (BlockedAddressesList.Contains(ipString)) return;
-            BlockedAddressesList.Add(ipString);
-            BlockedAddresses.Add(ipAddress);
-            OnPropertyChanged(nameof(BlockedAddressesList));
-        }
-
-        public void RemoveBlocked(IPAddress ipAddress)
-        {
-            BlockedAddressesList.Remove(ipAddress.ToString());
-            BlockedAddresses.Remove(ipAddress);
-            OnPropertyChanged(nameof(BlockedAddressesList));
-        }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

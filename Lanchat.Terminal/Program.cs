@@ -36,7 +36,7 @@ namespace Lanchat.Terminal
             {
                 Ui.Start();
                 Network = new P2P(Config);
-                Network.ConnectionCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
+                Network.NodeCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
 
                 // Initialize server
                 if (!args.Contains("--no-server") && !args.Contains("-n")) Network.StartServer();
@@ -70,6 +70,8 @@ namespace Lanchat.Terminal
 
             // Connect with localhost
             if (args.Contains("--loopback") || args.Contains("-l")) Network.Connect(IPAddress.Loopback);
+
+            if (!args.Contains("--no-auto") && !args.Contains("-a")) Network.AutoConnect();
 
             LoggingService.CleanLogs();
         }

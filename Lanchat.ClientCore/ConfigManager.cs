@@ -1,6 +1,8 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -19,7 +21,8 @@ namespace Lanchat.ClientCore
                 WriteIndented = true,
                 Converters =
                 {
-                    new JsonStringEnumConverter()
+                    new JsonStringEnumConverter(),
+                    new IpAddressConverter()
                 }
             };
 
@@ -61,7 +64,9 @@ namespace Lanchat.ClientCore
                 {
                     _config = new Config
                     {
-                        Fresh = true
+                        Fresh = true,
+                        BlockedAddresses = new ObservableCollection<IPAddress>(),
+                        SavedAddresses = new ObservableCollection<IPAddress>()
                     };
                     Save();
                 }
@@ -73,11 +78,15 @@ namespace Lanchat.ClientCore
 
             _config ??= new Config
             {
-                Fresh = true
+                Fresh = true,
+                BlockedAddresses = new ObservableCollection<IPAddress>(),
+                SavedAddresses = new ObservableCollection<IPAddress>()
             };
 
             Save();
             _config.PropertyChanged += (_, _) => { Save(); };
+            _config.BlockedAddresses.CollectionChanged += (_, _) => { Save(); };
+            _config.SavedAddresses.CollectionChanged += (_, _) => { Save(); };
             return _config;
         }
 

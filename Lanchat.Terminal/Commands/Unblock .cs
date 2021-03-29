@@ -14,7 +14,7 @@ namespace Lanchat.Terminal.Commands
             var correct = IPAddress.TryParse(args[0], out var parsedIp);
             if (correct)
             {
-                Program.Config.RemoveBlocked(parsedIp);
+                Program.Config.BlockedAddresses.Remove(parsedIp);
                 Ui.Log.Add(string.Format(Resources._Unblocked, parsedIp));
             }
             else

@@ -1,6 +1,7 @@
 // ReSharper disable UnusedMemberInSuper.Global
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net;
 using Lanchat.Core.Models;
@@ -30,7 +31,9 @@ namespace Lanchat.Core
         /// <summary>
         ///     Blocked IP addresses.
         /// </summary>
-        List<IPAddress> BlockedAddresses { get; set; }
+        ObservableCollection<IPAddress> BlockedAddresses { get; set; }
+        
+        ObservableCollection<IPAddress> SavedAddresses { get; set; }
 
         /// <summary>
         ///     User status.

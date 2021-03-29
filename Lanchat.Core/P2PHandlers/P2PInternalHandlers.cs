@@ -29,11 +29,16 @@ namespace Lanchat.Core.P2PHandlers
             nodesList.AddRange(network.Nodes.Where(x => x.Id != node.Id)
                 .Select(x => x.NetworkElement.Endpoint.Address.ToString()));
             node.NetworkOutput.SendData(nodesList);
+
+            if (!config.SavedAddresses.Contains(node.NetworkElement.Endpoint.Address))
+            {
+                config.SavedAddresses.Add(node.NetworkElement.Endpoint.Address);
+            }
         }
 
         internal void OnSessionCreated(object sender, Node node)
         {
-            network.OnConnectionCreated(node);
+            network.OnNodeCreated(node);
             node.Resolver.RegisterHandler(new NodesListHandler(network, config));
             node.Connected += OnConnected;
         }

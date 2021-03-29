@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 using Lanchat.Core.P2PHandlers;
@@ -57,7 +59,7 @@ namespace Lanchat.Core
         /// <summary>
         ///     New node connected. After receiving this handlers for node events can be created.
         /// </summary>
-        public event EventHandler<Node> ConnectionCreated;
+        public event EventHandler<Node> NodeCreated;
 
         /// <summary>
         ///     Start server.
@@ -75,6 +77,11 @@ namespace Lanchat.Core
             Broadcasting.Start();
         }
 
+        public void AutoConnect()
+        {
+            config.SavedAddresses.ForEach(x => Connect(x));
+        }
+
         /// <summary>
         ///     Send message to all nodes.
         /// </summary>
@@ -83,7 +90,7 @@ namespace Lanchat.Core
         {
             Nodes.ForEach(x => x.Messaging.SendMessage(message));
         }
-        
+
         /// <summary>
         ///     Broadcast data.
         /// </summary>
@@ -122,13 +129,13 @@ namespace Lanchat.Core
             node.Connected += p2PInternalHandlers.OnConnected;
             node.Disconnected += p2PInternalHandlers.CloseNode;
             node.CannotConnect += p2PInternalHandlers.CloseNode;
-            ConnectionCreated?.Invoke(this, node);
+            NodeCreated?.Invoke(this, node);
             client.ConnectAsync();
         }
 
-        internal void OnConnectionCreated(Node e)
+        internal void OnNodeCreated(Node e)
         {
-            ConnectionCreated?.Invoke(this, e);
+            NodeCreated?.Invoke(this, e);
         }
 
         private void ConfigOnPropertyChanged(object sender, PropertyChangedEventArgs e)

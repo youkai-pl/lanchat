@@ -1,4 +1,5 @@
-﻿using Lanchat.Terminal.Properties;
+﻿using Lanchat.Core.Extensions;
+using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
@@ -10,8 +11,8 @@ namespace Lanchat.Terminal.Commands
 
         public void Execute(string[] _)
         {
-            Ui.Log.Add($"{Resources._BlockedList} {Program.Config.BlockedAddresses.Count}");
-            Program.Config.BlockedAddresses.ForEach(x => Ui.Log.Add($"{x}"));
+            Ui.Log.Add($"{Resources._BlockedList} {Program.Config.SavedAddresses.Count}");
+            Program.Config.SavedAddresses.ForEach(x => Ui.Log.Add($"{x}"));
         }
     }
 }
