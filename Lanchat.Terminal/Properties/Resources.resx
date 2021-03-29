@@ -155,8 +155,8 @@ Try /help &lt;command&gt; for detailed help.
     </value>
     </data>
     <data name="_WindowTitle" xml:space="preserve">
-    <value>Lanchat</value>
-  </data>
+        <value>Lanchat</value>
+    </data>
     <data name="_ConnectionAttempt" xml:space="preserve">
         <value>Attempting connect to {0}</value>
     </data>
@@ -198,9 +198,6 @@ Try /help &lt;command&gt; for detailed help.
     </data>
     <data name="_Disconnected" xml:space="preserve">
         <value>{0} disconnected</value>
-    </data>
-    <data name="_Reconnecting" xml:space="preserve">
-        <value>{0} disconnected. Trying reconnect</value>
     </data>
     <data name="_Connected" xml:space="preserve">
         <value>{0} connected</value>

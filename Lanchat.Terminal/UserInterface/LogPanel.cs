@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ConsoleGUI.Controls;
 using ConsoleGUI.UserDefined;
 
@@ -19,9 +18,9 @@ namespace Lanchat.Terminal.UserInterface
 
         public void Add(string text, ConsoleColor color = ConsoleColor.White)
         {
-            foreach (var line in Prepare(text))
+            foreach (var line in SplitLines(text))
             {
-                AddText(new[]
+                AddTextLine(new[]
                 {
                     new TextBlock {Text = line, Color = color}
                 });
@@ -32,7 +31,7 @@ namespace Lanchat.Terminal.UserInterface
         {
             Add(text, ConsoleColor.Red);
         }
-        
+
         public void AddWarning(string text)
         {
             Add(text, ConsoleColor.Yellow);
@@ -41,41 +40,45 @@ namespace Lanchat.Terminal.UserInterface
         public void AddMessage(string text, string nickname, bool privateMessage)
         {
             var color = privateMessage ? ConsoleColor.Magenta : ConsoleColor.White;
-            foreach (var line in Prepare(text))
+            foreach (var line in SplitLines(text))
             {
-                AddToLog(new[]
+                AddToLog(new List<TextBlock>
                 {
-                    new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
-                    new TextBlock {Text = "<", Color = ConsoleColor.DarkGray},
-                    new TextBlock {Text = $"{nickname}", Color = color},
-                    new TextBlock {Text = "> ", Color = ConsoleColor.DarkGray},
-                    new TextBlock {Text = line}
+                    new() {Text = $"{DateTime.Now:HH:mm} "},
+                    new() {Text = "<", Color = ConsoleColor.DarkGray},
+                    new() {Text = $"{nickname}"},
+                    new() {Text = "> ", Color = ConsoleColor.DarkGray},
+                    new() {Text = line, Color = color}
                 });
-
                 Ui.ScrollPanel.Top = int.MaxValue;
             }
         }
 
-        public void AddText(IEnumerable<TextBlock> line)
+        public void AddTextLine(IEnumerable<TextBlock> line)
         {
-            var children = new[]
+            var children = new List<TextBlock>
             {
-                new TextBlock {Text = $"{DateTime.Now:HH:mm} "},
-                new TextBlock {Text = "-", Color = ConsoleColor.Blue},
-                new TextBlock {Text = "!"},
-                new TextBlock {Text = "- ", Color = ConsoleColor.Blue}
+                new() {Text = $"{DateTime.Now:HH:mm} "},
+                new() {Text = "-", Color = ConsoleColor.Blue},
+                new() {Text = "!"},
+                new() {Text = "- ", Color = ConsoleColor.Blue}
             };
-
-            AddToLog(children.Concat(line));
+            children.AddRange(line);
+            AddToLog(children);
             Ui.ScrollPanel.Top = int.MaxValue;
         }
 
-        private static IEnumerable<string> Prepare(string text)
+        private static IEnumerable<string> SplitLines(string text)
         {
-            if (text == null) return new[] {""};
-
-            return text.Split(
-                new[] {"\r\n", "\r", "\n"},
+            if (text == null)
+                return new[]
+                {
+                    ""
+                };
+            return text.Split(new[]
+                {
+                    "\r\n", "\r", "\n"
+                },
                 StringSplitOptions.None
             );
         }

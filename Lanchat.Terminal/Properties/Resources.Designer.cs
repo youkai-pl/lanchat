@@ -153,12 +153,6 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string _Reconnecting {
-            get {
-                return ResourceManager.GetString("_Reconnecting", resourceCulture);
-            }
-        }
-        
         internal static string _Connected {
             get {
                 return ResourceManager.GetString("_Connected", resourceCulture);

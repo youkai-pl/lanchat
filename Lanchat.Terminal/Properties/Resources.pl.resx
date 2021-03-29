@@ -54,9 +54,6 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="_PortBusy" xml:space="preserve">
         <value>Port zajęty, nie można uruchomić serwera. Spróbuj zmienić port w pliku konfiguracyjnym.</value>
     </data>
-    <data name="_Reconnecting" xml:space="preserve">
-        <value>Rozłączono z {0}.  Trwa ponowne łączenie.</value>
-    </data>
     <data name="_SelfNicknameChanged" xml:space="preserve">
         <value>Nick został zmieniony</value>
     </data>
