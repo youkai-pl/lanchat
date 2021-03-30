@@ -18,7 +18,7 @@ namespace Lanchat.Terminal.Commands
             else
             {
                 Program.Config.Nickname = nickname;
-                Ui.Log.AddError(Resources._SelfNicknameChanged);
+                Ui.Log.Add(Resources._SelfNicknameChanged);
                 Ui.PromptIndicator.Text = $"[{Program.Config.Nickname}] ";
             }
         }

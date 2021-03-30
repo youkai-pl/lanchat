@@ -35,11 +35,11 @@ namespace Lanchat.Core
         /// <see cref="INetworkElement" />
         public readonly INetworkElement NetworkElement;
 
-        /// <see cref="Resolver"/>
-        public readonly Resolver Resolver;
-
-        /// <see cref="INetworkOutput"/>
+        /// <see cref="INetworkOutput" />
         public readonly INetworkOutput NetworkOutput;
+
+        /// <see cref="Resolver" />
+        public readonly Resolver Resolver;
 
         internal bool HandshakeReceived;
         private string nickname;
@@ -156,16 +156,13 @@ namespace Lanchat.Core
         ///     Node disconnected. Cannot reconnect.
         /// </summary>
         public event EventHandler Disconnected;
-
-        /// <summary>
-        ///     Raise when connection attempt failed.
-        /// </summary>
-        public event EventHandler CannotConnect;
-
+        
         /// <summary>
         ///     TCP session or client returned error.
         /// </summary>
         public event EventHandler<SocketError> SocketErrored;
+
+        internal event EventHandler CannotConnect;
 
         /// <summary>
         ///     Disconnect from node.

@@ -77,6 +77,7 @@
   - [#ctor()](#M-Lanchat-Core-P2P-#ctor-Lanchat-Core-IConfig- 'Lanchat.Core.P2P.#ctor(Lanchat.Core.IConfig)')
   - [Broadcasting](#P-Lanchat-Core-P2P-Broadcasting 'Lanchat.Core.P2P.Broadcasting')
   - [Nodes](#P-Lanchat-Core-P2P-Nodes 'Lanchat.Core.P2P.Nodes')
+  - [AutoConnect()](#M-Lanchat-Core-P2P-AutoConnect 'Lanchat.Core.P2P.AutoConnect')
   - [BroadcastData(data)](#M-Lanchat-Core-P2P-BroadcastData-System-Object- 'Lanchat.Core.P2P.BroadcastData(System.Object)')
   - [BroadcastMessage(message)](#M-Lanchat-Core-P2P-BroadcastMessage-System-String- 'Lanchat.Core.P2P.BroadcastMessage(System.String)')
   - [Connect(ipAddress,port)](#M-Lanchat-Core-P2P-Connect-System-Net-IPAddress,System-Nullable{System-Int32}- 'Lanchat.Core.P2P.Connect(System.Net.IPAddress,System.Nullable{System.Int32})')
@@ -747,6 +748,17 @@ This constructor has no parameters.
 ##### Summary
 
 List of connected nodes.
+
+<a name='M-Lanchat-Core-P2P-AutoConnect'></a>
+### AutoConnect() `method`
+
+##### Summary
+
+Try connect to saved addresses.
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='M-Lanchat-Core-P2P-BroadcastData-System-Object-'></a>
 ### BroadcastData(data) `method`

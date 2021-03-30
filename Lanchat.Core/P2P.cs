@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
@@ -77,9 +77,12 @@ namespace Lanchat.Core
             Broadcasting.Start();
         }
 
+        /// <summary>
+        ///     Try connect to saved addresses.
+        /// </summary>
         public void AutoConnect()
         {
-            config.SavedAddresses.ForEach(x => Connect(x));
+            config.SavedAddresses.ForEach(async x => await Connect(x));
         }
 
         /// <summary>
@@ -105,8 +108,10 @@ namespace Lanchat.Core
         /// </summary>
         /// <param name="ipAddress">Node IP address.</param>
         /// <param name="port">Node port.</param>
-        public void Connect(IPAddress ipAddress, int? port = null)
+        public async Task<bool> Connect(IPAddress ipAddress, int? port = null)
         {
+            var tcs = new TaskCompletionSource<bool>();
+            
             // Use port from config if it's null
             port ??= config.ServerPort;
 
@@ -118,7 +123,7 @@ namespace Lanchat.Core
                 throw new ArgumentException("Already connected to this node");
 
             // Throw if local address
-            var host = Dns.GetHostEntry(Dns.GetHostName());
+            var host = await Dns.GetHostEntryAsync(Dns.GetHostName());
             if (host.AddressList.Where(ip => ip.AddressFamily == AddressFamily.InterNetwork).Contains(ipAddress))
                 throw new ArgumentException("Illegal IP address. Cannot connect");
 
@@ -129,8 +134,21 @@ namespace Lanchat.Core
             node.Connected += p2PInternalHandlers.OnConnected;
             node.Disconnected += p2PInternalHandlers.CloseNode;
             node.CannotConnect += p2PInternalHandlers.CloseNode;
+
+            node.Connected += (_, _) =>
+            {
+                tcs.TrySetResult(true);
+            };
+            
+            node.CannotConnect += (_, _) =>
+            {
+                tcs.TrySetResult(false);
+            };
+            
             NodeCreated?.Invoke(this, node);
             client.ConnectAsync();
+
+            return tcs.Task.Result;
         }
 
         internal void OnNodeCreated(Node e)

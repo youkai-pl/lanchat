@@ -39,7 +39,6 @@ namespace Lanchat.Terminal
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
             node.SocketErrored += OnSocketErrored;
-            node.CannotConnect += OnCannotConnect;
             node.PropertyChanged += OnPropertyChanged;
         }
 
@@ -91,12 +90,7 @@ namespace Lanchat.Terminal
         {
             Ui.Log.AddError(string.Format(Resources._ConnectionError, node.Id, e));
         }
-
-        private void OnCannotConnect(object sender, EventArgs e)
-        {
-            Ui.Log.AddError(string.Format(Resources._CannotConnect, node.NetworkElement.Endpoint.Address));
-        }
-
+        
         private void OnFileTransferHandlerRequestReceived(object sender, FileTransferRequest e)
         {
             Ui.Log.Add(string.Format(Resources._FileRequest, node.Nickname, e.FileName));
