@@ -10,10 +10,10 @@ namespace Lanchat.Core.Chat
     /// </summary>
     public class Messaging
     {
-        internal readonly IStringEncryption Encryption;
+        internal readonly SymmetricEncryption Encryption;
         private readonly INetworkOutput networkOutput;
 
-        internal Messaging(INetworkOutput networkOutput, IStringEncryption encryption)
+        internal Messaging(INetworkOutput networkOutput, SymmetricEncryption encryption)
         {
             this.networkOutput = networkOutput;
             Encryption = encryption;

@@ -19,7 +19,7 @@ namespace Lanchat.Core.P2P
     {
         private readonly IConfig config;
 
-        internal readonly Encryptor Encryptor;
+        internal readonly PublicKeyEncryption PublicKeyEncryption;
 
         /// <see cref="FileReceiver" />
         public readonly FileReceiver FileReceiver;
@@ -45,17 +45,19 @@ namespace Lanchat.Core.P2P
         private string nickname;
         private string previousNickname;
         private Status status;
-
+        internal readonly SymmetricEncryption SymmetricEncryption;
+        
         internal Node(INetworkElement networkElement, IConfig config, bool isSession)
         {
             this.config = config;
             IsSession = isSession;
             NetworkElement = networkElement;
             NetworkOutput = new NetworkOutput(NetworkElement, this);
-            Encryptor = new Encryptor();
-            Messaging = new Messaging(NetworkOutput, Encryptor);
-            FileReceiver = new FileReceiver(NetworkOutput, Encryptor, config);
-            FileSender = new FileSender(NetworkOutput, Encryptor);
+            PublicKeyEncryption = new PublicKeyEncryption();
+            SymmetricEncryption = new SymmetricEncryption(PublicKeyEncryption);
+            Messaging = new Messaging(NetworkOutput, SymmetricEncryption);
+            FileReceiver = new FileReceiver(NetworkOutput, SymmetricEncryption, config);
+            FileSender = new FileSender(NetworkOutput, SymmetricEncryption);
 
             Resolver = new Resolver(this);
             var networkInput = new NetworkInput(Resolver);
@@ -126,7 +128,7 @@ namespace Lanchat.Core.P2P
         public void Dispose()
         {
             NetworkElement.Close();
-            Encryptor.Dispose();
+            PublicKeyEncryption.Dispose();
             FileSender.Dispose();
             FileReceiver.CancelReceive();
             GC.SuppressFinalize(this);
@@ -190,7 +192,7 @@ namespace Lanchat.Core.P2P
             {
                 Nickname = config.Nickname,
                 Status = config.Status,
-                PublicKey = Encryptor.ExportPublicKey()
+                PublicKey = PublicKeyEncryption.ExportKey()
             };
 
             NetworkOutput.SendPrivilegedData(handshake);

@@ -10,7 +10,7 @@ namespace Lanchat.Tests
 {
     public class MessagesSendTests
     {
-        private Encryptor encryptor;
+        private PublicKeyEncryption publicKeyEncryption;
         private Messaging messaging;
         private NetworkInput networkInput;
         private NetworkMock networkMock;
@@ -21,12 +21,12 @@ namespace Lanchat.Tests
         public void Setup()
         {
             var nodeState = new NodeState();
-            encryptor = new Encryptor();
-            encryptor.ImportPublicKey(encryptor.ExportPublicKey());
-            encryptor.ImportAesKey(encryptor.ExportAesKey());
+            publicKeyEncryption = new PublicKeyEncryption();
+            publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey());
+            publicKeyEncryption.ImportAesKey(publicKeyEncryption.ExportAesKey());
             networkMock = new NetworkMock();
             networkOutput = new NetworkOutput(networkMock, nodeState);
-            messaging = new Messaging(networkOutput, encryptor);
+            messaging = new Messaging(networkOutput, publicKeyEncryption);
             resolver = new Resolver(nodeState);
             resolver.RegisterHandler(new MessageHandler(messaging));
             networkInput = new NetworkInput(resolver);

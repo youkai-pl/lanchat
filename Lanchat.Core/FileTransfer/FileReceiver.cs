@@ -12,11 +12,11 @@ namespace Lanchat.Core.FileTransfer
     public class FileReceiver
     {
         private readonly IConfig config;
-        internal readonly IBytesEncryption Encryption;
+        internal readonly SymmetricEncryption Encryption;
         private readonly INetworkOutput networkOutput;
         internal FileStream WriteFileStream;
 
-        internal FileReceiver(INetworkOutput networkOutput, IBytesEncryption encryption, IConfig config)
+        internal FileReceiver(INetworkOutput networkOutput, SymmetricEncryption encryption, IConfig config)
         {
             this.networkOutput = networkOutput;
             this.config = config;

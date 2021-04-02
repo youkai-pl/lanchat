@@ -6,22 +6,22 @@ namespace Lanchat.Tests
 {
     public class EncryptionTests
     {
-        private Encryptor encryptor;
+        private PublicKeyEncryption publicKeyEncryption;
 
         [SetUp]
         public void Setup()
         {
-            encryptor = new Encryptor();
-            encryptor.ImportPublicKey(encryptor.ExportPublicKey());
-            encryptor.ImportAesKey(encryptor.ExportAesKey());
+            publicKeyEncryption = new PublicKeyEncryption();
+            publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey());
+            publicKeyEncryption.ImportAesKey(publicKeyEncryption.ExportAesKey());
         }
 
         [Test]
         public void StringEncryption()
         {
             var testString = "test";
-            var encryptedString = encryptor.Encrypt(testString);
-            var decryptedString = encryptor.Decrypt(encryptedString);
+            var encryptedString = publicKeyEncryption.Encrypt(testString);
+            var decryptedString = publicKeyEncryption.Decrypt(encryptedString);
             Assert.AreEqual(testString, decryptedString);
         }
 
@@ -29,8 +29,8 @@ namespace Lanchat.Tests
         public void BytesEncryption()
         {
             var testBytes = new byte[] {0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70};
-            var encryptedBytes = encryptor.Encrypt(testBytes);
-            var decryptedBytes = encryptor.Decrypt(encryptedBytes);
+            var encryptedBytes = publicKeyEncryption.Encrypt(testBytes);
+            var decryptedBytes = publicKeyEncryption.Decrypt(encryptedBytes);
             Assert.AreEqual(testBytes, decryptedBytes);
         }
 
@@ -39,7 +39,7 @@ namespace Lanchat.Tests
         {
             Assert.Catch<InvalidKeyImportException>(() =>
             {
-                encryptor.ImportPublicKey(new PublicKey
+                publicKeyEncryption.ImportKey(new PublicKey
                 {
                     RsaExponent = new byte[] {0x10},
                     RsaModulus = new byte[] {0x10}
@@ -52,7 +52,7 @@ namespace Lanchat.Tests
         {
             Assert.Catch<InvalidKeyImportException>(() =>
             {
-                encryptor.ImportAesKey(new KeyInfo
+                publicKeyEncryption.ImportAesKey(new KeyInfo
                 {
                     AesIv = new byte[] {0x10},
                     AesKey = new byte[] {0x10}

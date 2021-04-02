@@ -13,11 +13,11 @@ namespace Lanchat.Core.FileTransfer
     public class FileSender
     {
         private const int ChunkSize = 1024 * 1024;
-        private readonly IBytesEncryption encryption;
+        private readonly SymmetricEncryption encryption;
         private readonly INetworkOutput networkOutput;
         private bool disposing;
 
-        internal FileSender(INetworkOutput networkOutput, IBytesEncryption encryption)
+        internal FileSender(INetworkOutput networkOutput, SymmetricEncryption encryption)
         {
             this.networkOutput = networkOutput;
             this.encryption = encryption;

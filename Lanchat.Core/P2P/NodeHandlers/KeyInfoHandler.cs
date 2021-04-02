@@ -23,7 +23,7 @@ namespace Lanchat.Core.P2P.NodeHandlers
 
             try
             {
-                node.Encryptor.ImportAesKey(keyInfo);
+                node.SymmetricEncryption.ImportKey(keyInfo);
                 node.Ready = true;
                 node.OnConnected();
             }
