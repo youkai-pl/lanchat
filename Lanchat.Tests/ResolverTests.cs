@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
+using Lanchat.Core.API;
 using Lanchat.Core.Models;
-using Lanchat.Core.NetworkIO;
 using Lanchat.Tests.Mock;
 using NUnit.Framework;
 

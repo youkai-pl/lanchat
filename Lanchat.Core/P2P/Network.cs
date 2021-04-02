@@ -8,24 +8,24 @@ using System.Threading.Tasks;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
-using Lanchat.Core.P2PHandlers;
+using Lanchat.Core.P2P.NetworkHandlers;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.P2P
 {
     /// <summary>
     ///     Main class representing network in P2P mode.
     /// </summary>
-    public class P2P
+    public class Network
     {
         private readonly IConfig config;
-        internal readonly List<Node> OutgoingConnections = new();
         private readonly P2PInternalHandlers p2PInternalHandlers;
         private readonly Server server;
+        internal readonly List<Node> OutgoingConnections = new();
 
         /// <summary>
         ///     Initialize P2P mode.
         /// </summary>
-        public P2P(IConfig config)
+        public Network(IConfig config)
         {
             this.config = config;
             p2PInternalHandlers = new P2PInternalHandlers(this, this.config);
@@ -36,11 +36,11 @@ namespace Lanchat.Core
 
             server.SessionCreated += p2PInternalHandlers.OnSessionCreated;
             this.config.PropertyChanged += ConfigOnPropertyChanged;
-            Broadcasting = new Broadcasting(this.config);
+            NodesDetection = new NodesDetection(this.config);
         }
 
-        /// <see cref="Lanchat.Core.Network.Broadcasting" />
-        public Broadcasting Broadcasting { get; }
+        /// <see cref="NodesDetection" />
+        public NodesDetection NodesDetection { get; }
 
         /// <summary>
         ///     List of connected nodes.
@@ -72,9 +72,9 @@ namespace Lanchat.Core
         /// <summary>
         ///     Start broadcasting presence.
         /// </summary>
-        public void StartBroadcast()
+        public void StartNodesDetection()
         {
-            Broadcasting.Start();
+            NodesDetection.Start();
         }
 
         /// <summary>

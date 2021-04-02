@@ -1,10 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection;
 using System.Text.Json;
 
-namespace Lanchat.Core.NetworkIO
+namespace Lanchat.Core.API
 {
     internal class NetworkInput
     {

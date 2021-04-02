@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using Lanchat.Core.API;
 using Lanchat.Core.Models;
-using Lanchat.Core.NetworkIO;
 
-namespace Lanchat.Core.P2PHandlers
+namespace Lanchat.Core.P2P.NetworkHandlers
 {
     internal class NodesListHandler : ApiHandler<NodesList>
     {
         private readonly IConfig config;
-        private readonly P2P network;
+        private readonly Network network;
 
-        internal NodesListHandler(P2P network, IConfig config)
+        internal NodesListHandler(Network network, IConfig config)
         {
             this.network = network;
             this.config = config;

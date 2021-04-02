@@ -5,9 +5,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Lanchat.Core.NodeHandlers;
+using Lanchat.Core.P2P.NodeHandlers;
 
-namespace Lanchat.Core.NetworkIO
+namespace Lanchat.Core.API
 {
     
     /// <summary>

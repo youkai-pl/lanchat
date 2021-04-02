@@ -2,15 +2,15 @@
 using System.ComponentModel;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Lanchat.Core.API;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
-using Lanchat.Core.NetworkIO;
-using Lanchat.Core.NodeHandlers;
+using Lanchat.Core.P2P.NodeHandlers;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.P2P
 {
     /// <summary>
     ///     Connected user.

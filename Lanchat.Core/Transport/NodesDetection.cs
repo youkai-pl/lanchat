@@ -18,14 +18,14 @@ namespace Lanchat.Core.Network
     /// <summary>
     ///     Detecting nodes by UDP broadcasts.
     /// </summary>
-    public class Broadcasting
+    public class NodesDetection
     {
         private readonly IConfig config;
         private readonly IPEndPoint endPoint;
         private readonly UdpClient udpClient;
         private readonly string uniqueId;
 
-        internal Broadcasting(IConfig config)
+        internal NodesDetection(IConfig config)
         {
             this.config = config;
             uniqueId = Guid.NewGuid().ToString();

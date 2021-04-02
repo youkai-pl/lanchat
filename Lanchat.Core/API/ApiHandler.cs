@@ -1,6 +1,6 @@
 using System;
 
-namespace Lanchat.Core.NetworkIO
+namespace Lanchat.Core.API
 {
     /// <summary>
     ///     Inherit this class for create custom API handler.

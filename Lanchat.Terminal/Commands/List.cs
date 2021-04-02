@@ -46,7 +46,7 @@ namespace Lanchat.Terminal.Commands
                 Ui.Log.AddTextLine(line);
             });
 
-            Program.Network.Broadcasting.DetectedNodes.ToList().ForEach(x =>
+            Program.Network.NodesDetection.DetectedNodes.ToList().ForEach(x =>
             {
                 var line = new[]
                 {

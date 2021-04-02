@@ -66,9 +66,9 @@ namespace Lanchat.Terminal.UserInterface
 
         internal void SetupEvents()
         {
-            Program.Network.Broadcasting.DetectedNodes.CollectionChanged += (_, _) =>
+            Program.Network.NodesDetection.DetectedNodes.CollectionChanged += (_, _) =>
             {
-                detectedCount.Text = Program.Network.Broadcasting.DetectedNodes.Count.ToString();
+                detectedCount.Text = Program.Network.NodesDetection.DetectedNodes.Count.ToString();
             };
         }
     }

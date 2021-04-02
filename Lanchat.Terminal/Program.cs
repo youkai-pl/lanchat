@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Sockets;
 using Lanchat.ClientCore;
 using Lanchat.Core;
+using Lanchat.Core.Network;
+using Lanchat.Core.P2P;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -12,7 +14,7 @@ namespace Lanchat.Terminal
 {
     public static class Program
     {
-        public static P2P Network { get; private set; }
+        public static Network Network { get; private set; }
         public static Config Config { get; private set; }
 
         private static void Main(string[] args)
@@ -35,14 +37,14 @@ namespace Lanchat.Terminal
             try
             {
                 Ui.Start();
-                Network = new P2P(Config);
+                Network = new Network(Config);
                 Network.NodeCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
 
                 // Initialize server
                 if (!args.Contains("--no-server") && !args.Contains("-n")) Network.StartServer();
 
                 // Start broadcast service
-                if (!args.Contains("--no-udp") && !args.Contains("-b")) Network.StartBroadcast();
+                if (!args.Contains("--no-udp") && !args.Contains("-b")) Network.StartNodesDetection();
             }
             catch (SocketException e)
             {

@@ -1,4 +1,4 @@
-namespace Lanchat.Core.NetworkIO
+namespace Lanchat.Core.API
 {
     /// <summary>
     ///     Send data other of type not belonging to standard Lanchat.Core set.

@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
+using Lanchat.Core.API;
 using Lanchat.Core.Models;
-using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core.Chat
 {

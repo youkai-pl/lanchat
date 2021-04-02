@@ -1,7 +1,7 @@
+using Lanchat.Core.API;
 using Lanchat.Core.Models;
-using Lanchat.Core.NetworkIO;
 
-namespace Lanchat.Core.NodeHandlers
+namespace Lanchat.Core.P2P.NodeHandlers
 {
     internal class NicknameUpdateHandler : ApiHandler<NicknameUpdate>
     {

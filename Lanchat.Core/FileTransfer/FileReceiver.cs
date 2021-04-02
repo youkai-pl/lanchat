@@ -1,8 +1,8 @@
 using System;
 using System.IO;
+using Lanchat.Core.API;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
-using Lanchat.Core.NetworkIO;
 
 namespace Lanchat.Core.FileTransfer
 {

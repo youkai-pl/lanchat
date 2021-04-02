@@ -2,14 +2,14 @@ using System;
 using System.Linq;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core.P2PHandlers
+namespace Lanchat.Core.P2P.NetworkHandlers
 {
     internal class P2PInternalHandlers
     {
         private readonly IConfig config;
-        private readonly P2P network;
+        private readonly Network network;
 
-        internal P2PInternalHandlers(P2P network, IConfig config)
+        internal P2PInternalHandlers(Network network, IConfig config)
         {
             this.network = network;
             this.config = config;
