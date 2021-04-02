@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
 using NUnit.Framework;
@@ -7,21 +8,23 @@ namespace Lanchat.Tests
     public class EncryptionTests
     {
         private PublicKeyEncryption publicKeyEncryption;
+        private SymmetricEncryption symmetricEncryption;
 
         [SetUp]
         public void Setup()
         {
             publicKeyEncryption = new PublicKeyEncryption();
+            symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
             publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey());
-            publicKeyEncryption.ImportAesKey(publicKeyEncryption.ExportAesKey());
+            symmetricEncryption.ImportKey(symmetricEncryption.ExportKey());
         }
 
         [Test]
         public void StringEncryption()
         {
             var testString = "test";
-            var encryptedString = publicKeyEncryption.Encrypt(testString);
-            var decryptedString = publicKeyEncryption.Decrypt(encryptedString);
+            var encryptedString = symmetricEncryption.Encrypt(testString);
+            var decryptedString = symmetricEncryption.Decrypt(encryptedString);
             Assert.AreEqual(testString, decryptedString);
         }
 
@@ -37,7 +40,7 @@ namespace Lanchat.Tests
         [Test]
         public void ImportInvalidRsa()
         {
-            Assert.Catch<InvalidKeyImportException>(() =>
+            Assert.Catch<CryptographicException>(() =>
             {
                 publicKeyEncryption.ImportKey(new PublicKey
                 {
@@ -50,9 +53,9 @@ namespace Lanchat.Tests
         [Test]
         public void ImportInvalidAes()
         {
-            Assert.Catch<InvalidKeyImportException>(() =>
+            Assert.Catch<CryptographicException>(() =>
             {
-                publicKeyEncryption.ImportAesKey(new KeyInfo
+                symmetricEncryption.ImportKey(new KeyInfo
                 {
                     AesIv = new byte[] {0x10},
                     AesKey = new byte[] {0x10}

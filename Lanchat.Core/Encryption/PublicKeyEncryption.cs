@@ -14,7 +14,7 @@ namespace Lanchat.Core.Encryption
             localRsa = RSA.Create(2048);
             remoteRsa = RSA.Create();
         }
-        
+
         public void Dispose()
         {
             localRsa?.Dispose();
@@ -31,28 +31,21 @@ namespace Lanchat.Core.Encryption
                 RsaExponent = parameters.Exponent
             };
         }
-        
+
         internal void ImportKey(PublicKey publicKey)
         {
-            try
+            var parameters = new RSAParameters
             {
-                var parameters = new RSAParameters
-                {
-                    Modulus = publicKey.RsaModulus,
-                    Exponent = publicKey.RsaExponent
-                };
+                Modulus = publicKey.RsaModulus,
+                Exponent = publicKey.RsaExponent
+            };
 
-                remoteRsa.ImportParameters(parameters);
+            remoteRsa.ImportParameters(parameters);
 
-                // Test imported keys
-                remoteRsa.Encrypt(new byte[] {0x10}, RSAEncryptionPadding.Pkcs1);
-            }
-            catch (Exception e)
-            {
-                throw new InvalidKeyImportException("Cannot import RSA public key", e);
-            }
+            // Test imported keys
+            remoteRsa.Encrypt(new byte[] {0x10}, RSAEncryptionPadding.Pkcs1);
         }
-        
+
         internal byte[] Encrypt(byte[] bytes)
         {
             var encryptedBytes = remoteRsa.Encrypt(bytes, RSAEncryptionPadding.Pkcs1);

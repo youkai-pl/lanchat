@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Lanchat.Core.API;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
@@ -27,8 +28,9 @@ namespace Lanchat.Core.P2P.NodeHandlers
                 node.Ready = true;
                 node.OnConnected();
             }
-            catch (InvalidKeyImportException)
+            catch (CryptographicException)
             {
+                // TODO: Don't dispose self
                 node.Dispose();
             }
         }

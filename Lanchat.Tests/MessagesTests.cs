@@ -11,6 +11,7 @@ namespace Lanchat.Tests
     public class MessagesSendTests
     {
         private PublicKeyEncryption publicKeyEncryption;
+        private SymmetricEncryption symmetricEncryption;
         private Messaging messaging;
         private NetworkInput networkInput;
         private NetworkMock networkMock;
@@ -22,11 +23,12 @@ namespace Lanchat.Tests
         {
             var nodeState = new NodeState();
             publicKeyEncryption = new PublicKeyEncryption();
+            symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
             publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey());
-            publicKeyEncryption.ImportAesKey(publicKeyEncryption.ExportAesKey());
+            symmetricEncryption.ImportKey(symmetricEncryption.ExportKey());
             networkMock = new NetworkMock();
             networkOutput = new NetworkOutput(networkMock, nodeState);
-            messaging = new Messaging(networkOutput, publicKeyEncryption);
+            messaging = new Messaging(networkOutput, symmetricEncryption);
             resolver = new Resolver(nodeState);
             resolver.RegisterHandler(new MessageHandler(messaging));
             networkInput = new NetworkInput(resolver);

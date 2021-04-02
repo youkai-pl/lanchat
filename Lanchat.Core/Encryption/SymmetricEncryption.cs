@@ -6,7 +6,7 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Encryption
 {
-    internal class SymmetricEncryption
+    internal class SymmetricEncryption : IDisposable
     {
         private readonly Aes localAes;
         private readonly Aes remoteAes;
@@ -18,7 +18,7 @@ namespace Lanchat.Core.Encryption
             localAes = Aes.Create();
             remoteAes = Aes.Create();
         }
-        
+
         public byte[] Encrypt(byte[] data)
         {
             using var memoryStream = new MemoryStream();
@@ -37,7 +37,7 @@ namespace Lanchat.Core.Encryption
             cryptoStream.Close();
             return memoryStream.ToArray();
         }
-        
+
         public string Encrypt(string text)
         {
             var encrypted = Encrypt(Encoding.UTF8.GetBytes(text));
@@ -50,7 +50,7 @@ namespace Lanchat.Core.Encryption
             var decrypted = Encoding.UTF8.GetString(Decrypt(encryptedBytes));
             return decrypted;
         }
-        
+
         internal KeyInfo ExportKey()
         {
             return new()
@@ -59,18 +59,17 @@ namespace Lanchat.Core.Encryption
                 AesIv = publicKeyEncryption.Encrypt(localAes.IV)
             };
         }
-        
+
         internal void ImportKey(KeyInfo keyInfo)
         {
-            try
-            {
-                remoteAes.Key = publicKeyEncryption.Decrypt(keyInfo.AesKey);
-                remoteAes.IV = publicKeyEncryption.Decrypt(keyInfo.AesIv);
-            }
-            catch (Exception e)
-            {
-                throw new InvalidKeyImportException("Cannot import AES key", e);
-            }
+            remoteAes.Key = publicKeyEncryption.Decrypt(keyInfo.AesKey);
+            remoteAes.IV = publicKeyEncryption.Decrypt(keyInfo.AesIv);
+        }
+
+        public void Dispose()
+        {
+            localAes?.Dispose();
+            remoteAes?.Dispose();
         }
     }
 }
