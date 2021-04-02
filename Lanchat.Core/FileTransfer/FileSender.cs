@@ -92,7 +92,7 @@ namespace Lanchat.Core.FileTransfer
 
                     var part = new FilePart
                     {
-                        Data = encryption.Encrypt(buffer.Take(bytesRead).ToArray())
+                        Data = encryption.EncryptBytes(buffer.Take(bytesRead).ToArray())
                     };
 
                     if (bytesRead < ChunkSize) part.Last = true;

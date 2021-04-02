@@ -9,17 +9,23 @@ namespace Lanchat.Core.Encryption
     internal class SymmetricEncryption : IDisposable
     {
         private readonly Aes localAes;
-        private readonly Aes remoteAes;
         private readonly PublicKeyEncryption publicKeyEncryption;
+        private readonly Aes remoteAes;
 
-        public SymmetricEncryption(PublicKeyEncryption publicKeyEncryption)
+        internal SymmetricEncryption(PublicKeyEncryption publicKeyEncryption)
         {
             this.publicKeyEncryption = publicKeyEncryption;
             localAes = Aes.Create();
             remoteAes = Aes.Create();
         }
 
-        public byte[] Encrypt(byte[] data)
+        public void Dispose()
+        {
+            localAes?.Dispose();
+            remoteAes?.Dispose();
+        }
+
+        internal byte[] EncryptBytes(byte[] data)
         {
             using var memoryStream = new MemoryStream();
             using var cryptoStream =
@@ -29,26 +35,26 @@ namespace Lanchat.Core.Encryption
             return memoryStream.ToArray();
         }
 
-        public byte[] Decrypt(byte[] data)
+        internal byte[] DecryptBytes(byte[] data)
         {
             using var memoryStream = new MemoryStream();
-            using var cryptoStream = new CryptoStream(memoryStream, localAes.CreateDecryptor(), CryptoStreamMode.Write);
+            using var cryptoStream =
+                new CryptoStream(memoryStream, localAes.CreateDecryptor(), CryptoStreamMode.Write);
             cryptoStream.Write(data, 0, data.Length);
             cryptoStream.Close();
             return memoryStream.ToArray();
         }
 
-        public string Encrypt(string text)
+        internal string EncryptString(string text)
         {
-            var encrypted = Encrypt(Encoding.UTF8.GetBytes(text));
+            var encrypted = EncryptBytes(Encoding.UTF8.GetBytes(text));
             return Convert.ToBase64String(encrypted);
         }
 
-        public string Decrypt(string text)
+        internal string DecryptString(string text)
         {
             var encryptedBytes = Convert.FromBase64String(text);
-            var decrypted = Encoding.UTF8.GetString(Decrypt(encryptedBytes));
-            return decrypted;
+            return Encoding.UTF8.GetString(DecryptBytes(encryptedBytes));
         }
 
         internal KeyInfo ExportKey()
@@ -64,12 +70,6 @@ namespace Lanchat.Core.Encryption
         {
             remoteAes.Key = publicKeyEncryption.Decrypt(keyInfo.AesKey);
             remoteAes.IV = publicKeyEncryption.Decrypt(keyInfo.AesIv);
-        }
-
-        public void Dispose()
-        {
-            localAes?.Dispose();
-            remoteAes?.Dispose();
         }
     }
 }

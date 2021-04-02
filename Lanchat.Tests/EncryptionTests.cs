@@ -23,8 +23,8 @@ namespace Lanchat.Tests
         public void StringEncryption()
         {
             var testString = "test";
-            var encryptedString = symmetricEncryption.Encrypt(testString);
-            var decryptedString = symmetricEncryption.Decrypt(encryptedString);
+            var encryptedString = symmetricEncryption.EncryptString(testString);
+            var decryptedString = symmetricEncryption.DecryptString(encryptedString);
             Assert.AreEqual(testString, decryptedString);
         }
 

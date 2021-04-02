@@ -20,7 +20,7 @@ namespace Lanchat.Core.FileTransfer
 
             try
             {
-                var data = fileReceiver.Encryption.Decrypt(filePart.Data);
+                var data = fileReceiver.Encryption.DecryptBytes(filePart.Data);
                 fileReceiver.WriteFileStream.Write(data, 0, data.Length);
                 fileReceiver.Request.PartsTransferred++;
                 if (!filePart.Last) return;
