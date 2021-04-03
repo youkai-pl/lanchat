@@ -41,12 +41,12 @@
 - [IConfig](#T-Lanchat-Core-IConfig 'Lanchat.Core.IConfig')
   - [BlockedAddresses](#P-Lanchat-Core-IConfig-BlockedAddresses 'Lanchat.Core.IConfig.BlockedAddresses')
   - [BroadcastPort](#P-Lanchat-Core-IConfig-BroadcastPort 'Lanchat.Core.IConfig.BroadcastPort')
+  - [ConnectToReceivedList](#P-Lanchat-Core-IConfig-ConnectToReceivedList 'Lanchat.Core.IConfig.ConnectToReceivedList')
+  - [ConnectToSaved](#P-Lanchat-Core-IConfig-ConnectToSaved 'Lanchat.Core.IConfig.ConnectToSaved')
   - [Nickname](#P-Lanchat-Core-IConfig-Nickname 'Lanchat.Core.IConfig.Nickname')
   - [NodesDetection](#P-Lanchat-Core-IConfig-NodesDetection 'Lanchat.Core.IConfig.NodesDetection')
   - [ReceivedFilesDirectory](#P-Lanchat-Core-IConfig-ReceivedFilesDirectory 'Lanchat.Core.IConfig.ReceivedFilesDirectory')
-  - [ReceivedListConnecting](#P-Lanchat-Core-IConfig-ReceivedListConnecting 'Lanchat.Core.IConfig.ReceivedListConnecting')
   - [SavedAddresses](#P-Lanchat-Core-IConfig-SavedAddresses 'Lanchat.Core.IConfig.SavedAddresses')
-  - [SavedAddressesConnecting](#P-Lanchat-Core-IConfig-SavedAddressesConnecting 'Lanchat.Core.IConfig.SavedAddressesConnecting')
   - [ServerPort](#P-Lanchat-Core-IConfig-ServerPort 'Lanchat.Core.IConfig.ServerPort')
   - [StartServer](#P-Lanchat-Core-IConfig-StartServer 'Lanchat.Core.IConfig.StartServer')
   - [Status](#P-Lanchat-Core-IConfig-Status 'Lanchat.Core.IConfig.Status')
@@ -473,6 +473,20 @@ Blocked IP addresses.
 
 Broadcast port.
 
+<a name='P-Lanchat-Core-IConfig-ConnectToReceivedList'></a>
+### ConnectToReceivedList `property`
+
+##### Summary
+
+Try connecting with nodes from received list.
+
+<a name='P-Lanchat-Core-IConfig-ConnectToSaved'></a>
+### ConnectToSaved `property`
+
+##### Summary
+
+Try connecting with nodes from SavedAddresses
+
 <a name='P-Lanchat-Core-IConfig-Nickname'></a>
 ### Nickname `property`
 
@@ -494,26 +508,12 @@ Use UDP broadcasting to announce self presence and detect other nodes.
 
 Files download directory.
 
-<a name='P-Lanchat-Core-IConfig-ReceivedListConnecting'></a>
-### ReceivedListConnecting `property`
-
-##### Summary
-
-Try connecting with nodes from received list.
-
 <a name='P-Lanchat-Core-IConfig-SavedAddresses'></a>
 ### SavedAddresses `property`
 
 ##### Summary
 
 Addresses of previously connected nodes.
-
-<a name='P-Lanchat-Core-IConfig-SavedAddressesConnecting'></a>
-### SavedAddressesConnecting `property`
-
-##### Summary
-
-Try connecting with nodes from SavedAddresses
 
 <a name='P-Lanchat-Core-IConfig-ServerPort'></a>
 ### ServerPort `property`

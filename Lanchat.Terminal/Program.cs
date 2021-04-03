@@ -37,7 +37,7 @@ namespace Lanchat.Terminal
                 Network = new P2P(Config);
                 Network.NodeCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
 
-                if (args.Contains("--no-saved") || args.Contains("-a")) Config.SavedAddressesConnecting = false;
+                if (args.Contains("--no-saved") || args.Contains("-a")) Config.ConnectToSaved = false;
                 if (args.Contains("--no-udp") || args.Contains("-b")) Config.NodesDetection = false;
                 if (args.Contains("--no-server") || args.Contains("-n")) Config.StartServer = false;
             }

@@ -50,12 +50,12 @@ namespace Lanchat.Core
         /// <summary>
         ///     Try connecting with nodes from received list.
         /// </summary>
-        bool ReceivedListConnecting { get; set; }
+        bool ConnectToReceivedList { get; set; }
         
         /// <summary>
         ///     Try connecting with nodes from SavedAddresses
         /// </summary>
-        bool SavedAddressesConnecting { get; set; }
+        bool ConnectToSaved { get; set; }
         
         /// <summary>
         ///     Use UDP broadcasting to announce self presence and detect other nodes.

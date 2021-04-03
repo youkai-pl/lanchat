@@ -27,7 +27,7 @@ namespace Lanchat.Core.P2PHandlers
                 if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
             });
 
-            if (!config.ReceivedListConnecting) return;
+            if (!config.ConnectToReceivedList) return;
             list.ForEach(x =>
             {
                 try

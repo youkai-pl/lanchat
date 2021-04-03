@@ -81,7 +81,7 @@ namespace Lanchat.Core
             {
                 NodesDetection.Start();
             }
-            if (config.SavedAddressesConnecting)
+            if (config.ConnectToSaved)
             {
                 config.SavedAddresses.ForEach(async x => await Connect(x));
             }

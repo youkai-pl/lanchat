@@ -13,7 +13,7 @@ namespace Lanchat.ClientCore
         private static int _port = 3645;
         private static int _broadcastPort = 3646;
         private static string _nickname = ConfigValues.GetNickname();
-        private static bool _automaticConnecting = true;
+        private static bool _automatic = true;
         private static bool _useIPv6;
         private static string _language = "default";
         private static string _filesDownloadDirectory = ConfigValues.GetDownloadsDirectory();
@@ -22,7 +22,10 @@ namespace Lanchat.ClientCore
         private static ObservableCollection<IPAddress> _savedAddresses = new();
 
         [JsonIgnore] public bool Fresh { get; set; }
-
+        [JsonIgnore] public bool ConnectToSaved { get; set; } = true;
+        [JsonIgnore] public bool NodesDetection { get; set; } = true;
+        [JsonIgnore] public bool StartServer { get; set; } = true;
+        
         public string Language
         {
             get => _language;
@@ -32,7 +35,7 @@ namespace Lanchat.ClientCore
                 OnPropertyChanged(nameof(Language));
             }
         }
-
+        
         public ObservableCollection<IPAddress> BlockedAddresses
         {
             get => _blockedAddresses;
@@ -93,21 +96,15 @@ namespace Lanchat.ClientCore
             }
         }
 
-        public bool ReceivedListConnecting
+        public bool ConnectToReceivedList
         {
-            get => _automaticConnecting;
+            get => _automatic;
             set
             {
-                _automaticConnecting = value;
-                OnPropertyChanged(nameof(ReceivedListConnecting));
+                _automatic = value;
+                OnPropertyChanged(nameof(ConnectToReceivedList));
             }
         }
-
-        public bool SavedAddressesConnecting { get; set; } = true;
-
-        public bool NodesDetection { get; set; } = true;
-
-        public bool StartServer { get; set; } = true;
 
         public string ReceivedFilesDirectory
         {
