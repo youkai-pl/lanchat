@@ -13,7 +13,7 @@ namespace Lanchat.Terminal.Commands
 
         public void Execute(string[] _)
         {
-            Program.Network.Nodes.ForEach(x =>
+            Program.P2P.Nodes.ForEach(x =>
             {
                 var status = new TextBlock();
 
@@ -46,7 +46,7 @@ namespace Lanchat.Terminal.Commands
                 Ui.Log.AddTextLine(line);
             });
 
-            Program.Network.NodesDetection.DetectedNodes.ToList().ForEach(x =>
+            Program.P2P.NodesDetection.DetectedNodes.ToList().ForEach(x =>
             {
                 var line = new[]
                 {

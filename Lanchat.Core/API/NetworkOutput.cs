@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Lanchat.Core.Network;
-using Lanchat.Core.P2P.NodeHandlers;
+using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Core.API
 {

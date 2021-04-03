@@ -6,7 +6,6 @@ using System.Net.Sockets;
 using Lanchat.ClientCore;
 using Lanchat.Core;
 using Lanchat.Core.Network;
-using Lanchat.Core.P2P;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -14,7 +13,7 @@ namespace Lanchat.Terminal
 {
     public static class Program
     {
-        public static Network Network { get; private set; }
+        public static P2P P2P { get; private set; }
         public static Config Config { get; private set; }
 
         private static void Main(string[] args)
@@ -37,14 +36,14 @@ namespace Lanchat.Terminal
             try
             {
                 Ui.Start();
-                Network = new Network(Config);
-                Network.NodeCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
+                P2P = new P2P(Config);
+                P2P.NodeCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
 
                 // Initialize server
-                if (!args.Contains("--no-server") && !args.Contains("-n")) Network.StartServer();
+                if (!args.Contains("--no-server") && !args.Contains("-n")) P2P.StartServer();
 
                 // Start broadcast service
-                if (!args.Contains("--no-udp") && !args.Contains("-b")) Network.StartNodesDetection();
+                if (!args.Contains("--no-udp") && !args.Contains("-b")) P2P.StartNodesDetection();
             }
             catch (SocketException e)
             {
@@ -71,9 +70,9 @@ namespace Lanchat.Terminal
             LoggingService.StartLogging();
 
             // Connect with localhost
-            if (args.Contains("--loopback") || args.Contains("-l")) Network.Connect(IPAddress.Loopback);
+            if (args.Contains("--loopback") || args.Contains("-l")) P2P.Connect(IPAddress.Loopback);
 
-            if (!args.Contains("--no-auto") && !args.Contains("-a")) Network.AutoConnect();
+            if (!args.Contains("--no-auto") && !args.Contains("-a")) P2P.AutoConnect();
 
             LoggingService.CleanLogs();
         }

@@ -36,7 +36,7 @@ namespace Lanchat.Core.Network
         /// <summary>
         ///     Detected nodes.
         /// </summary>
-        public ObservableCollection<Broadcast> DetectedNodes { get; } = new();
+        public ObservableCollection<Announce> DetectedNodes { get; } = new();
 
         internal void Start()
         {
@@ -49,7 +49,7 @@ namespace Lanchat.Core.Network
                     var recvBuffer = udpClient.Receive(ref from);
                     try
                     {
-                        var broadcast = JsonSerializer.Deserialize<Broadcast>(Encoding.UTF8.GetString(recvBuffer));
+                        var broadcast = JsonSerializer.Deserialize<Announce>(Encoding.UTF8.GetString(recvBuffer));
                         Validator.ValidateObject(broadcast!, new ValidationContext(broadcast), true);
 
                         if (broadcast.Guid != uniqueId)
@@ -72,7 +72,7 @@ namespace Lanchat.Core.Network
             {
                 while (true)
                 {
-                    var json = JsonSerializer.Serialize(new Broadcast
+                    var json = JsonSerializer.Serialize(new Announce
                     {
                         Guid = uniqueId,
                         Nickname = config.Nickname
@@ -86,7 +86,7 @@ namespace Lanchat.Core.Network
         }
 
         // UDP broadcast received
-        private void BroadcastReceived(Broadcast e)
+        private void BroadcastReceived(Announce e)
         {
             var alreadyDetected = DetectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
             if (alreadyDetected == null)

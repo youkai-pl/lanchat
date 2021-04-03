@@ -1,5 +1,5 @@
 using System;
-using Lanchat.Core.P2P.NodeHandlers;
+using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Tests.Mock
 {

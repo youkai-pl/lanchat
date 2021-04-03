@@ -2,23 +2,23 @@ using System;
 using System.Linq;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core.P2P.NetworkHandlers
+namespace Lanchat.Core.P2PHandlers
 {
     internal class P2PInternalHandlers
     {
         private readonly IConfig config;
-        private readonly Network network;
+        private readonly P2P p2P;
 
-        internal P2PInternalHandlers(Network network, IConfig config)
+        internal P2PInternalHandlers(P2P p2P, IConfig config)
         {
-            this.network = network;
+            this.p2P = p2P;
             this.config = config;
         }
 
         internal void CloseNode(object sender, EventArgs e)
         {
             var node = (Node) sender;
-            network.OutgoingConnections.Remove(node);
+            p2P.OutgoingConnections.Remove(node);
             node.Dispose();
         }
 
@@ -26,7 +26,7 @@ namespace Lanchat.Core.P2P.NetworkHandlers
         {
             var node = (Node) sender;
             var nodesList = new NodesList();
-            nodesList.AddRange(network.Nodes.Where(x => x.Id != node.Id)
+            nodesList.AddRange(p2P.Nodes.Where(x => x.Id != node.Id)
                 .Select(x => x.NetworkElement.Endpoint.Address.ToString()));
             node.NetworkOutput.SendData(nodesList);
 
@@ -38,8 +38,8 @@ namespace Lanchat.Core.P2P.NetworkHandlers
 
         internal void OnSessionCreated(object sender, Node node)
         {
-            network.OnNodeCreated(node);
-            node.Resolver.RegisterHandler(new NodesListHandler(network, config));
+            p2P.OnNodeCreated(node);
+            node.Resolver.RegisterHandler(new NodesListHandler(p2P, config));
             node.Connected += OnConnected;
         }
     }

@@ -8,7 +8,7 @@ namespace Lanchat.Core.Models
 {
     /// <summary>
     /// </summary>
-    public class Broadcast : INotifyPropertyChanged
+    public class Announce : INotifyPropertyChanged
     {
         private string nickname;
 

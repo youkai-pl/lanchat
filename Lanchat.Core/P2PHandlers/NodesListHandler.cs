@@ -4,16 +4,16 @@ using System.Net;
 using Lanchat.Core.API;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core.P2P.NetworkHandlers
+namespace Lanchat.Core.P2PHandlers
 {
     internal class NodesListHandler : ApiHandler<NodesList>
     {
         private readonly IConfig config;
-        private readonly Network network;
+        private readonly P2P p2P;
 
-        internal NodesListHandler(Network network, IConfig config)
+        internal NodesListHandler(P2P p2P, IConfig config)
         {
-            this.network = network;
+            this.p2P = p2P;
             this.config = config;
         }
 
@@ -32,7 +32,7 @@ namespace Lanchat.Core.P2P.NetworkHandlers
             {
                 try
                 {
-                    network.Connect(x);
+                    p2P.Connect(x);
                 }
                 catch (Exception e)
                 {

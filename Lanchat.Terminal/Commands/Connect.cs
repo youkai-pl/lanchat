@@ -33,7 +33,7 @@ namespace Lanchat.Terminal.Commands
                 if (args.Length > 1) port = Parse(args[1]);
                 if (port == 0) port = Program.Config.ServerPort;
                 Ui.Log.Add(string.Format(Resources._ConnectionAttempt, addressArgument));
-                var result = await Program.Network.Connect(ipAddress, port);
+                var result = await Program.P2P.Connect(ipAddress, port);
                 if (!result)
                 {
                     Ui.Log.AddError(string.Format(Resources._CannotConnect, ipAddress));

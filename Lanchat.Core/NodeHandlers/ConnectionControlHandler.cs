@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Lanchat.Core.API;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core.P2P.NodeHandlers
+namespace Lanchat.Core.NodeHandlers
 {
     internal class ConnectionControlHandler : ApiHandler<ConnectionControl>
     {

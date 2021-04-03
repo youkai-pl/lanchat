@@ -8,9 +8,9 @@ using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
-using Lanchat.Core.P2P.NodeHandlers;
+using Lanchat.Core.NodeHandlers;
 
-namespace Lanchat.Core.P2P
+namespace Lanchat.Core
 {
     /// <summary>
     ///     Connected user.

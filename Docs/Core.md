@@ -3,16 +3,19 @@
 
 ## Contents
 
+- [Announce](#T-Lanchat-Core-Models-Announce 'Lanchat.Core.Models.Announce')
+  - [Active](#P-Lanchat-Core-Models-Announce-Active 'Lanchat.Core.Models.Announce.Active')
+  - [Guid](#P-Lanchat-Core-Models-Announce-Guid 'Lanchat.Core.Models.Announce.Guid')
+  - [IpAddress](#P-Lanchat-Core-Models-Announce-IpAddress 'Lanchat.Core.Models.Announce.IpAddress')
+  - [Nickname](#P-Lanchat-Core-Models-Announce-Nickname 'Lanchat.Core.Models.Announce.Nickname')
 - [ApiHandler\`1](#T-Lanchat-Core-API-ApiHandler`1 'Lanchat.Core.API.ApiHandler`1')
   - [HandledType](#P-Lanchat-Core-API-ApiHandler`1-HandledType 'Lanchat.Core.API.ApiHandler`1.HandledType')
   - [Privileged](#P-Lanchat-Core-API-ApiHandler`1-Privileged 'Lanchat.Core.API.ApiHandler`1.Privileged')
   - [Handle()](#M-Lanchat-Core-API-ApiHandler`1-Handle-System-Object- 'Lanchat.Core.API.ApiHandler`1.Handle(System.Object)')
   - [Handle(data)](#M-Lanchat-Core-API-ApiHandler`1-Handle-`0- 'Lanchat.Core.API.ApiHandler`1.Handle(`0)')
-- [Broadcast](#T-Lanchat-Core-Models-Broadcast 'Lanchat.Core.Models.Broadcast')
-  - [Active](#P-Lanchat-Core-Models-Broadcast-Active 'Lanchat.Core.Models.Broadcast.Active')
-  - [Guid](#P-Lanchat-Core-Models-Broadcast-Guid 'Lanchat.Core.Models.Broadcast.Guid')
-  - [IpAddress](#P-Lanchat-Core-Models-Broadcast-IpAddress 'Lanchat.Core.Models.Broadcast.IpAddress')
-  - [Nickname](#P-Lanchat-Core-Models-Broadcast-Nickname 'Lanchat.Core.Models.Broadcast.Nickname')
+- [Broadcasting](#T-Lanchat-Core-Broadcasting 'Lanchat.Core.Broadcasting')
+  - [SendData(data)](#M-Lanchat-Core-Broadcasting-SendData-System-Object- 'Lanchat.Core.Broadcasting.SendData(System.Object)')
+  - [SendMessage(message)](#M-Lanchat-Core-Broadcasting-SendMessage-System-String- 'Lanchat.Core.Broadcasting.SendMessage(System.String)')
 - [FileReceiver](#T-Lanchat-Core-FileTransfer-FileReceiver 'Lanchat.Core.FileTransfer.FileReceiver')
   - [Request](#P-Lanchat-Core-FileTransfer-FileReceiver-Request 'Lanchat.Core.FileTransfer.FileReceiver.Request')
   - [AcceptRequest()](#M-Lanchat-Core-FileTransfer-FileReceiver-AcceptRequest 'Lanchat.Core.FileTransfer.FileReceiver.AcceptRequest')
@@ -53,36 +56,35 @@
 - [Messaging](#T-Lanchat-Core-Chat-Messaging 'Lanchat.Core.Chat.Messaging')
   - [SendMessage(content)](#M-Lanchat-Core-Chat-Messaging-SendMessage-System-String- 'Lanchat.Core.Chat.Messaging.SendMessage(System.String)')
   - [SendPrivateMessage(content)](#M-Lanchat-Core-Chat-Messaging-SendPrivateMessage-System-String- 'Lanchat.Core.Chat.Messaging.SendPrivateMessage(System.String)')
-- [Network](#T-Lanchat-Core-P2P-Network 'Lanchat.Core.P2P.Network')
-  - [#ctor()](#M-Lanchat-Core-P2P-Network-#ctor-Lanchat-Core-IConfig- 'Lanchat.Core.P2P.Network.#ctor(Lanchat.Core.IConfig)')
-  - [Nodes](#P-Lanchat-Core-P2P-Network-Nodes 'Lanchat.Core.P2P.Network.Nodes')
-  - [NodesDetection](#P-Lanchat-Core-P2P-Network-NodesDetection 'Lanchat.Core.P2P.Network.NodesDetection')
-  - [AutoConnect()](#M-Lanchat-Core-P2P-Network-AutoConnect 'Lanchat.Core.P2P.Network.AutoConnect')
-  - [BroadcastData(data)](#M-Lanchat-Core-P2P-Network-BroadcastData-System-Object- 'Lanchat.Core.P2P.Network.BroadcastData(System.Object)')
-  - [BroadcastMessage(message)](#M-Lanchat-Core-P2P-Network-BroadcastMessage-System-String- 'Lanchat.Core.P2P.Network.BroadcastMessage(System.String)')
-  - [Connect(ipAddress,port)](#M-Lanchat-Core-P2P-Network-Connect-System-Net-IPAddress,System-Nullable{System-Int32}- 'Lanchat.Core.P2P.Network.Connect(System.Net.IPAddress,System.Nullable{System.Int32})')
-  - [StartNodesDetection()](#M-Lanchat-Core-P2P-Network-StartNodesDetection 'Lanchat.Core.P2P.Network.StartNodesDetection')
-  - [StartServer()](#M-Lanchat-Core-P2P-Network-StartServer 'Lanchat.Core.P2P.Network.StartServer')
 - [NetworkOutput](#T-Lanchat-Core-API-NetworkOutput 'Lanchat.Core.API.NetworkOutput')
   - [SendData()](#M-Lanchat-Core-API-NetworkOutput-SendData-System-Object- 'Lanchat.Core.API.NetworkOutput.SendData(System.Object)')
   - [SendPrivilegedData()](#M-Lanchat-Core-API-NetworkOutput-SendPrivilegedData-System-Object- 'Lanchat.Core.API.NetworkOutput.SendPrivilegedData(System.Object)')
-- [Node](#T-Lanchat-Core-P2P-Node 'Lanchat.Core.P2P.Node')
-  - [FileReceiver](#F-Lanchat-Core-P2P-Node-FileReceiver 'Lanchat.Core.P2P.Node.FileReceiver')
-  - [FileSender](#F-Lanchat-Core-P2P-Node-FileSender 'Lanchat.Core.P2P.Node.FileSender')
-  - [Messaging](#F-Lanchat-Core-P2P-Node-Messaging 'Lanchat.Core.P2P.Node.Messaging')
-  - [NetworkElement](#F-Lanchat-Core-P2P-Node-NetworkElement 'Lanchat.Core.P2P.Node.NetworkElement')
-  - [NetworkOutput](#F-Lanchat-Core-P2P-Node-NetworkOutput 'Lanchat.Core.P2P.Node.NetworkOutput')
-  - [Resolver](#F-Lanchat-Core-P2P-Node-Resolver 'Lanchat.Core.P2P.Node.Resolver')
-  - [Id](#P-Lanchat-Core-P2P-Node-Id 'Lanchat.Core.P2P.Node.Id')
-  - [Nickname](#P-Lanchat-Core-P2P-Node-Nickname 'Lanchat.Core.P2P.Node.Nickname')
-  - [PreviousNickname](#P-Lanchat-Core-P2P-Node-PreviousNickname 'Lanchat.Core.P2P.Node.PreviousNickname')
-  - [Ready](#P-Lanchat-Core-P2P-Node-Ready 'Lanchat.Core.P2P.Node.Ready')
-  - [ShortId](#P-Lanchat-Core-P2P-Node-ShortId 'Lanchat.Core.P2P.Node.ShortId')
-  - [Status](#P-Lanchat-Core-P2P-Node-Status 'Lanchat.Core.P2P.Node.Status')
-  - [Disconnect()](#M-Lanchat-Core-P2P-Node-Disconnect 'Lanchat.Core.P2P.Node.Disconnect')
-  - [Dispose()](#M-Lanchat-Core-P2P-Node-Dispose 'Lanchat.Core.P2P.Node.Dispose')
+- [Node](#T-Lanchat-Core-Node 'Lanchat.Core.Node')
+  - [FileReceiver](#F-Lanchat-Core-Node-FileReceiver 'Lanchat.Core.Node.FileReceiver')
+  - [FileSender](#F-Lanchat-Core-Node-FileSender 'Lanchat.Core.Node.FileSender')
+  - [Messaging](#F-Lanchat-Core-Node-Messaging 'Lanchat.Core.Node.Messaging')
+  - [NetworkElement](#F-Lanchat-Core-Node-NetworkElement 'Lanchat.Core.Node.NetworkElement')
+  - [NetworkOutput](#F-Lanchat-Core-Node-NetworkOutput 'Lanchat.Core.Node.NetworkOutput')
+  - [Resolver](#F-Lanchat-Core-Node-Resolver 'Lanchat.Core.Node.Resolver')
+  - [Id](#P-Lanchat-Core-Node-Id 'Lanchat.Core.Node.Id')
+  - [Nickname](#P-Lanchat-Core-Node-Nickname 'Lanchat.Core.Node.Nickname')
+  - [PreviousNickname](#P-Lanchat-Core-Node-PreviousNickname 'Lanchat.Core.Node.PreviousNickname')
+  - [Ready](#P-Lanchat-Core-Node-Ready 'Lanchat.Core.Node.Ready')
+  - [ShortId](#P-Lanchat-Core-Node-ShortId 'Lanchat.Core.Node.ShortId')
+  - [Status](#P-Lanchat-Core-Node-Status 'Lanchat.Core.Node.Status')
+  - [Disconnect()](#M-Lanchat-Core-Node-Disconnect 'Lanchat.Core.Node.Disconnect')
+  - [Dispose()](#M-Lanchat-Core-Node-Dispose 'Lanchat.Core.Node.Dispose')
 - [NodesDetection](#T-Lanchat-Core-Network-NodesDetection 'Lanchat.Core.Network.NodesDetection')
   - [DetectedNodes](#P-Lanchat-Core-Network-NodesDetection-DetectedNodes 'Lanchat.Core.Network.NodesDetection.DetectedNodes')
+- [P2P](#T-Lanchat-Core-P2P 'Lanchat.Core.P2P')
+  - [#ctor()](#M-Lanchat-Core-P2P-#ctor-Lanchat-Core-IConfig- 'Lanchat.Core.P2P.#ctor(Lanchat.Core.IConfig)')
+  - [Broadcasting](#P-Lanchat-Core-P2P-Broadcasting 'Lanchat.Core.P2P.Broadcasting')
+  - [Nodes](#P-Lanchat-Core-P2P-Nodes 'Lanchat.Core.P2P.Nodes')
+  - [NodesDetection](#P-Lanchat-Core-P2P-NodesDetection 'Lanchat.Core.P2P.NodesDetection')
+  - [AutoConnect()](#M-Lanchat-Core-P2P-AutoConnect 'Lanchat.Core.P2P.AutoConnect')
+  - [Connect(ipAddress,port)](#M-Lanchat-Core-P2P-Connect-System-Net-IPAddress,System-Nullable{System-Int32}- 'Lanchat.Core.P2P.Connect(System.Net.IPAddress,System.Nullable{System.Int32})')
+  - [StartNodesDetection()](#M-Lanchat-Core-P2P-StartNodesDetection 'Lanchat.Core.P2P.StartNodesDetection')
+  - [StartServer()](#M-Lanchat-Core-P2P-StartServer 'Lanchat.Core.P2P.StartServer')
 - [Resolver](#T-Lanchat-Core-API-Resolver 'Lanchat.Core.API.Resolver')
   - [RegisterHandler(apiHandler)](#M-Lanchat-Core-API-Resolver-RegisterHandler-Lanchat-Core-API-IApiHandler- 'Lanchat.Core.API.Resolver.RegisterHandler(Lanchat.Core.API.IApiHandler)')
 - [Server](#T-Lanchat-Core-Network-Server 'Lanchat.Core.Network.Server')
@@ -92,6 +94,45 @@
   - [AwayFromKeyboard](#F-Lanchat-Core-Models-Status-AwayFromKeyboard 'Lanchat.Core.Models.Status.AwayFromKeyboard')
   - [DoNotDisturb](#F-Lanchat-Core-Models-Status-DoNotDisturb 'Lanchat.Core.Models.Status.DoNotDisturb')
   - [Online](#F-Lanchat-Core-Models-Status-Online 'Lanchat.Core.Models.Status.Online')
+
+<a name='T-Lanchat-Core-Models-Announce'></a>
+## Announce `type`
+
+##### Namespace
+
+Lanchat.Core.Models
+
+##### Summary
+
+
+
+<a name='P-Lanchat-Core-Models-Announce-Active'></a>
+### Active `property`
+
+##### Summary
+
+Node actively sends broadcasts.
+
+<a name='P-Lanchat-Core-Models-Announce-Guid'></a>
+### Guid `property`
+
+##### Summary
+
+Guid for ignoring own broadcasts.
+
+<a name='P-Lanchat-Core-Models-Announce-IpAddress'></a>
+### IpAddress `property`
+
+##### Summary
+
+Node user nickname.
+
+<a name='P-Lanchat-Core-Models-Announce-Nickname'></a>
+### Nickname `property`
+
+##### Summary
+
+Node nickname.
 
 <a name='T-Lanchat-Core-API-ApiHandler`1'></a>
 ## ApiHandler\`1 `type`
@@ -148,44 +189,42 @@ Handle object converted to required type.
 | ---- | ---- | ----------- |
 | data | [\`0](#T-`0 '`0') | Converted object. |
 
-<a name='T-Lanchat-Core-Models-Broadcast'></a>
-## Broadcast `type`
+<a name='T-Lanchat-Core-Broadcasting'></a>
+## Broadcasting `type`
 
 ##### Namespace
 
-Lanchat.Core.Models
+Lanchat.Core
 
 ##### Summary
 
+Send data to all nodes.
 
-
-<a name='P-Lanchat-Core-Models-Broadcast-Active'></a>
-### Active `property`
-
-##### Summary
-
-Node actively sends broadcasts.
-
-<a name='P-Lanchat-Core-Models-Broadcast-Guid'></a>
-### Guid `property`
+<a name='M-Lanchat-Core-Broadcasting-SendData-System-Object-'></a>
+### SendData(data) `method`
 
 ##### Summary
 
-Guid for ignoring own broadcasts.
+Broadcast data.
 
-<a name='P-Lanchat-Core-Models-Broadcast-IpAddress'></a>
-### IpAddress `property`
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| data | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') |  |
+
+<a name='M-Lanchat-Core-Broadcasting-SendMessage-System-String-'></a>
+### SendMessage(message) `method`
 
 ##### Summary
 
-Node user nickname.
+Broadcast message.
 
-<a name='P-Lanchat-Core-Models-Broadcast-Nickname'></a>
-### Nickname `property`
+##### Parameters
 
-##### Summary
-
-Node nickname.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| message | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Message content. |
 
 <a name='T-Lanchat-Core-FileTransfer-FileReceiver'></a>
 ## FileReceiver `type`
@@ -573,111 +612,6 @@ Send private message.
 | ---- | ---- | ----------- |
 | content | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Message content. |
 
-<a name='T-Lanchat-Core-P2P-Network'></a>
-## Network `type`
-
-##### Namespace
-
-Lanchat.Core.P2P
-
-##### Summary
-
-Main class representing network in P2P mode.
-
-<a name='M-Lanchat-Core-P2P-Network-#ctor-Lanchat-Core-IConfig-'></a>
-### #ctor() `constructor`
-
-##### Summary
-
-Initialize P2P mode.
-
-##### Parameters
-
-This constructor has no parameters.
-
-<a name='P-Lanchat-Core-P2P-Network-Nodes'></a>
-### Nodes `property`
-
-##### Summary
-
-List of connected nodes.
-
-<a name='P-Lanchat-Core-P2P-Network-NodesDetection'></a>
-### NodesDetection `property`
-
-<a name='M-Lanchat-Core-P2P-Network-AutoConnect'></a>
-### AutoConnect() `method`
-
-##### Summary
-
-Try connect to saved addresses.
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-Lanchat-Core-P2P-Network-BroadcastData-System-Object-'></a>
-### BroadcastData(data) `method`
-
-##### Summary
-
-Broadcast data.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| data | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') |  |
-
-<a name='M-Lanchat-Core-P2P-Network-BroadcastMessage-System-String-'></a>
-### BroadcastMessage(message) `method`
-
-##### Summary
-
-Send message to all nodes.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| message | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Message content. |
-
-<a name='M-Lanchat-Core-P2P-Network-Connect-System-Net-IPAddress,System-Nullable{System-Int32}-'></a>
-### Connect(ipAddress,port) `method`
-
-##### Summary
-
-Connect to node.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| ipAddress | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node IP address. |
-| port | [System.Nullable{System.Int32}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Nullable 'System.Nullable{System.Int32}') | Node port. |
-
-<a name='M-Lanchat-Core-P2P-Network-StartNodesDetection'></a>
-### StartNodesDetection() `method`
-
-##### Summary
-
-Start broadcasting presence.
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-Lanchat-Core-P2P-Network-StartServer'></a>
-### StartServer() `method`
-
-##### Summary
-
-Start server.
-
-##### Parameters
-
-This method has no parameters.
-
 <a name='T-Lanchat-Core-API-NetworkOutput'></a>
 ## NetworkOutput `type`
 
@@ -711,78 +645,78 @@ This method has no parameters.
 
 This method has no parameters.
 
-<a name='T-Lanchat-Core-P2P-Node'></a>
+<a name='T-Lanchat-Core-Node'></a>
 ## Node `type`
 
 ##### Namespace
 
-Lanchat.Core.P2P
+Lanchat.Core
 
 ##### Summary
 
 Connected user.
 
-<a name='F-Lanchat-Core-P2P-Node-FileReceiver'></a>
+<a name='F-Lanchat-Core-Node-FileReceiver'></a>
 ### FileReceiver `constants`
 
-<a name='F-Lanchat-Core-P2P-Node-FileSender'></a>
+<a name='F-Lanchat-Core-Node-FileSender'></a>
 ### FileSender `constants`
 
-<a name='F-Lanchat-Core-P2P-Node-Messaging'></a>
+<a name='F-Lanchat-Core-Node-Messaging'></a>
 ### Messaging `constants`
 
-<a name='F-Lanchat-Core-P2P-Node-NetworkElement'></a>
+<a name='F-Lanchat-Core-Node-NetworkElement'></a>
 ### NetworkElement `constants`
 
-<a name='F-Lanchat-Core-P2P-Node-NetworkOutput'></a>
+<a name='F-Lanchat-Core-Node-NetworkOutput'></a>
 ### NetworkOutput `constants`
 
-<a name='F-Lanchat-Core-P2P-Node-Resolver'></a>
+<a name='F-Lanchat-Core-Node-Resolver'></a>
 ### Resolver `constants`
 
-<a name='P-Lanchat-Core-P2P-Node-Id'></a>
+<a name='P-Lanchat-Core-Node-Id'></a>
 ### Id `property`
 
 ##### Summary
 
 ID of TCP client or session.
 
-<a name='P-Lanchat-Core-P2P-Node-Nickname'></a>
+<a name='P-Lanchat-Core-Node-Nickname'></a>
 ### Nickname `property`
 
 ##### Summary
 
 Node user nickname.
 
-<a name='P-Lanchat-Core-P2P-Node-PreviousNickname'></a>
+<a name='P-Lanchat-Core-Node-PreviousNickname'></a>
 ### PreviousNickname `property`
 
 ##### Summary
 
 Nickname before last change.
 
-<a name='P-Lanchat-Core-P2P-Node-Ready'></a>
+<a name='P-Lanchat-Core-Node-Ready'></a>
 ### Ready `property`
 
 ##### Summary
 
 Node ready. If set to false node won't send or receive messages.
 
-<a name='P-Lanchat-Core-P2P-Node-ShortId'></a>
+<a name='P-Lanchat-Core-Node-ShortId'></a>
 ### ShortId `property`
 
 ##### Summary
 
 Short ID.
 
-<a name='P-Lanchat-Core-P2P-Node-Status'></a>
+<a name='P-Lanchat-Core-Node-Status'></a>
 ### Status `property`
 
 ##### Summary
 
 Node user status.
 
-<a name='M-Lanchat-Core-P2P-Node-Disconnect'></a>
+<a name='M-Lanchat-Core-Node-Disconnect'></a>
 ### Disconnect() `method`
 
 ##### Summary
@@ -793,12 +727,12 @@ Disconnect from node.
 
 This method has no parameters.
 
-<a name='M-Lanchat-Core-P2P-Node-Dispose'></a>
+<a name='M-Lanchat-Core-Node-Dispose'></a>
 ### Dispose() `method`
 
 ##### Summary
 
-Dispose node. For safe disconnect use [Disconnect](#M-Lanchat-Core-P2P-Node-Disconnect 'Lanchat.Core.P2P.Node.Disconnect') instead.
+Dispose node. For safe disconnect use [Disconnect](#M-Lanchat-Core-Node-Disconnect 'Lanchat.Core.Node.Disconnect') instead.
 
 ##### Parameters
 
@@ -821,6 +755,92 @@ Detecting nodes by UDP broadcasts.
 ##### Summary
 
 Detected nodes.
+
+<a name='T-Lanchat-Core-P2P'></a>
+## P2P `type`
+
+##### Namespace
+
+Lanchat.Core
+
+##### Summary
+
+Main class representing network in P2P mode.
+
+<a name='M-Lanchat-Core-P2P-#ctor-Lanchat-Core-IConfig-'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initialize P2P mode.
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='P-Lanchat-Core-P2P-Broadcasting'></a>
+### Broadcasting `property`
+
+##### Summary
+
+Send data to all nodes.
+
+<a name='P-Lanchat-Core-P2P-Nodes'></a>
+### Nodes `property`
+
+##### Summary
+
+List of connected nodes.
+
+<a name='P-Lanchat-Core-P2P-NodesDetection'></a>
+### NodesDetection `property`
+
+<a name='M-Lanchat-Core-P2P-AutoConnect'></a>
+### AutoConnect() `method`
+
+##### Summary
+
+Try connect to saved addresses.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Lanchat-Core-P2P-Connect-System-Net-IPAddress,System-Nullable{System-Int32}-'></a>
+### Connect(ipAddress,port) `method`
+
+##### Summary
+
+Connect to node.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| ipAddress | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node IP address. |
+| port | [System.Nullable{System.Int32}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Nullable 'System.Nullable{System.Int32}') | Node port. |
+
+<a name='M-Lanchat-Core-P2P-StartNodesDetection'></a>
+### StartNodesDetection() `method`
+
+##### Summary
+
+Start announcing presence.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Lanchat-Core-P2P-StartServer'></a>
+### StartServer() `method`
+
+##### Summary
+
+Start server.
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-Lanchat-Core-API-Resolver'></a>
 ## Resolver `type`

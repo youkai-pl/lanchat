@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
-using Lanchat.Core.P2P.NetworkHandlers;
+using Lanchat.Core.P2PHandlers;
 
-namespace Lanchat.Core.P2P
+namespace Lanchat.Core
 {
     /// <summary>
     ///     Main class representing network in P2P mode.
     /// </summary>
-    public class Network
+    public class P2P
     {
         private readonly IConfig config;
         private readonly P2PInternalHandlers p2PInternalHandlers;
@@ -25,7 +25,7 @@ namespace Lanchat.Core.P2P
         /// <summary>
         ///     Initialize P2P mode.
         /// </summary>
-        public Network(IConfig config)
+        public P2P(IConfig config)
         {
             this.config = config;
             p2PInternalHandlers = new P2PInternalHandlers(this, this.config);
@@ -37,6 +37,7 @@ namespace Lanchat.Core.P2P
             server.SessionCreated += p2PInternalHandlers.OnSessionCreated;
             this.config.PropertyChanged += ConfigOnPropertyChanged;
             NodesDetection = new NodesDetection(this.config);
+            Broadcasting = new Broadcasting(this);
         }
 
         /// <see cref="NodesDetection" />
@@ -57,6 +58,11 @@ namespace Lanchat.Core.P2P
         }
 
         /// <summary>
+        ///     Send data to all nodes.
+        /// </summary>
+        public Broadcasting Broadcasting { get; }
+        
+        /// <summary>
         ///     New node connected. After receiving this handlers for node events can be created.
         /// </summary>
         public event EventHandler<Node> NodeCreated;
@@ -70,7 +76,7 @@ namespace Lanchat.Core.P2P
         }
 
         /// <summary>
-        ///     Start broadcasting presence.
+        ///     Start announcing presence.
         /// </summary>
         public void StartNodesDetection()
         {
@@ -83,24 +89,6 @@ namespace Lanchat.Core.P2P
         public void AutoConnect()
         {
             config.SavedAddresses.ForEach(async x => await Connect(x));
-        }
-
-        /// <summary>
-        ///     Send message to all nodes.
-        /// </summary>
-        /// <param name="message">Message content.</param>
-        public void BroadcastMessage(string message)
-        {
-            Nodes.ForEach(x => x.Messaging.SendMessage(message));
-        }
-
-        /// <summary>
-        ///     Broadcast data.
-        /// </summary>
-        /// <param name="data"></param>
-        public void BroadcastData(object data)
-        {
-            Nodes.ForEach(x => x.NetworkOutput.SendData(data));
         }
 
         /// <summary>

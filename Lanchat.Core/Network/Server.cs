@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using Lanchat.Core.P2P;
 using NetCoreServer;
 
 namespace Lanchat.Core.Network
