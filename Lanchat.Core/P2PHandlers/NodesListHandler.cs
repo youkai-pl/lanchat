@@ -9,11 +9,11 @@ namespace Lanchat.Core.P2PHandlers
     internal class NodesListHandler : ApiHandler<NodesList>
     {
         private readonly IConfig config;
-        private readonly P2P p2P;
+        private readonly P2P network;
 
-        internal NodesListHandler(P2P p2P, IConfig config)
+        internal NodesListHandler(P2P network, IConfig config)
         {
-            this.p2P = p2P;
+            this.network = network;
             this.config = config;
         }
 
@@ -27,16 +27,15 @@ namespace Lanchat.Core.P2PHandlers
                 if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
             });
 
-            if (!config.AutomaticConnecting) return;
+            if (!config.ReceivedListConnecting) return;
             list.ForEach(x =>
             {
                 try
                 {
-                    p2P.Connect(x);
+                    network.Connect(x).ConfigureAwait(false);
                 }
-                catch (Exception e)
+                catch (ArgumentException)
                 {
-                    if (e is not ArgumentException) throw;
                 }
             });
         }

@@ -10,7 +10,7 @@ namespace Lanchat.Terminal.Commands
 
         public void Execute(string[] args)
         {
-            var node = Program.P2P.Nodes.Find(x => x.ShortId == args[0]);
+            var node = Program.Network.Nodes.Find(x => x.ShortId == args[0]);
             if (node != null)
                 node.Disconnect();
             else

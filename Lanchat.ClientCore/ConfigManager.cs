@@ -78,9 +78,7 @@ namespace Lanchat.ClientCore
 
             _config ??= new Config
             {
-                Fresh = true,
-                BlockedAddresses = new ObservableCollection<IPAddress>(),
-                SavedAddresses = new ObservableCollection<IPAddress>()
+                Fresh = true
             };
 
             Save();

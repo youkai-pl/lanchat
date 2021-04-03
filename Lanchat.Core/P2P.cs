@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -18,7 +19,7 @@ namespace Lanchat.Core
     public class P2P
     {
         private readonly IConfig config;
-        private readonly P2PInternalHandlers p2PInternalHandlers;
+        private readonly P2PInternalHandlers networkInternalHandlers;
         private readonly Server server;
         internal readonly List<Node> OutgoingConnections = new();
 
@@ -28,13 +29,13 @@ namespace Lanchat.Core
         public P2P(IConfig config)
         {
             this.config = config;
-            p2PInternalHandlers = new P2PInternalHandlers(this, this.config);
+            networkInternalHandlers = new P2PInternalHandlers(this, this.config);
 
             server = this.config.UseIPv6
                 ? new Server(IPAddress.IPv6Any, this.config.ServerPort, this.config)
                 : new Server(IPAddress.Any, this.config.ServerPort, this.config);
 
-            server.SessionCreated += p2PInternalHandlers.OnSessionCreated;
+            server.SessionCreated += networkInternalHandlers.OnSessionCreated;
             this.config.PropertyChanged += ConfigOnPropertyChanged;
             NodesDetection = new NodesDetection(this.config);
             Broadcasting = new Broadcasting(this);
@@ -61,7 +62,7 @@ namespace Lanchat.Core
         ///     Send data to all nodes.
         /// </summary>
         public Broadcasting Broadcasting { get; }
-        
+
         /// <summary>
         ///     New node connected. After receiving this handlers for node events can be created.
         /// </summary>
@@ -70,25 +71,20 @@ namespace Lanchat.Core
         /// <summary>
         ///     Start server.
         /// </summary>
-        public void StartServer()
+        public void Start()
         {
-            server.Start();
-        }
-
-        /// <summary>
-        ///     Start announcing presence.
-        /// </summary>
-        public void StartNodesDetection()
-        {
-            NodesDetection.Start();
-        }
-
-        /// <summary>
-        ///     Try connect to saved addresses.
-        /// </summary>
-        public void AutoConnect()
-        {
-            config.SavedAddresses.ForEach(async x => await Connect(x));
+            if (config.StartServer)
+            {
+                server.Start();
+            }
+            if (config.NodesDetection)
+            {
+                NodesDetection.Start();
+            }
+            if (config.SavedAddressesConnecting)
+            {
+                config.SavedAddresses.ForEach(async x => await Connect(x));
+            }
         }
 
         /// <summary>
@@ -99,7 +95,7 @@ namespace Lanchat.Core
         public async Task<bool> Connect(IPAddress ipAddress, int? port = null)
         {
             var tcs = new TaskCompletionSource<bool>();
-            
+
             // Use port from config if it's null
             port ??= config.ServerPort;
 
@@ -119,20 +115,14 @@ namespace Lanchat.Core
             var node = new Node(client, config, false);
             node.Resolver.RegisterHandler(new NodesListHandler(this, config));
             OutgoingConnections.Add(node);
-            node.Connected += p2PInternalHandlers.OnConnected;
-            node.Disconnected += p2PInternalHandlers.CloseNode;
-            node.CannotConnect += p2PInternalHandlers.CloseNode;
+            node.Connected += networkInternalHandlers.OnConnected;
+            node.Disconnected += networkInternalHandlers.CloseNode;
+            node.CannotConnect += networkInternalHandlers.CloseNode;
 
-            node.Connected += (_, _) =>
-            {
-                tcs.TrySetResult(true);
-            };
-            
-            node.CannotConnect += (_, _) =>
-            {
-                tcs.TrySetResult(false);
-            };
-            
+            node.Connected += (_, _) => { tcs.TrySetResult(true); };
+
+            node.CannotConnect += (_, _) => { tcs.TrySetResult(false); };
+
             NodeCreated?.Invoke(this, node);
             client.ConnectAsync();
 

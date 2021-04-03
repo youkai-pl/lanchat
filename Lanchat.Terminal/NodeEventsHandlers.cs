@@ -5,7 +5,6 @@ using System.Net.Sockets;
 using Lanchat.Core;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
-using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -68,13 +67,13 @@ namespace Lanchat.Terminal
         private void OnConnected(object sender, EventArgs e)
         {
             Ui.Log.Add(string.Format(Resources._Connected, node.Nickname));
-            Ui.BottomBar.NodesCount.Text = Program.P2P.Nodes.Count.ToString();
+            Ui.BottomBar.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
         private void OnDisconnected(object sender, EventArgs e)
         {
             Ui.Log.Add(string.Format(Resources._Disconnected, node.Nickname));
-            Ui.BottomBar.NodesCount.Text = Program.P2P.Nodes.Count.ToString();
+            Ui.BottomBar.NodesCount.Text = Program.Network.Nodes.Count.ToString();
         }
 
         private void OnMessageReceived(object sender, string e)

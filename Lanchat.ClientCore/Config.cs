@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
@@ -18,10 +16,10 @@ namespace Lanchat.ClientCore
         private static bool _automaticConnecting = true;
         private static bool _useIPv6;
         private static string _language = "default";
-        private string filesDownloadDirectory = ConfigValues.GetDownloadsDirectory();
-        private Status status = Status.Online;
-        private ObservableCollection<IPAddress> blockedAddresses = new();
-        private ObservableCollection<IPAddress> savedAddresses = new();
+        private static string _filesDownloadDirectory = ConfigValues.GetDownloadsDirectory();
+        private static Status _status = Status.Online;
+        private static ObservableCollection<IPAddress> _blockedAddresses = new();
+        private static ObservableCollection<IPAddress> _savedAddresses = new();
 
         [JsonIgnore] public bool Fresh { get; set; }
 
@@ -37,30 +35,30 @@ namespace Lanchat.ClientCore
 
         public ObservableCollection<IPAddress> BlockedAddresses
         {
-            get => blockedAddresses;
+            get => _blockedAddresses;
             set
             {
-                blockedAddresses = value;
+                _blockedAddresses = value;
                 OnPropertyChanged(nameof(BlockedAddresses));
             }
         }
 
         public ObservableCollection<IPAddress> SavedAddresses
         {
-            get => savedAddresses;
+            get => _savedAddresses;
             set
             {
-                savedAddresses = value;
+                _savedAddresses = value;
                 OnPropertyChanged(nameof(SavedAddresses));
             }
         }
 
         public Status Status
         {
-            get => status;
+            get => _status;
             set
             {
-                status = value;
+                _status = value;
                 OnPropertyChanged(nameof(Status));
             }
         }
@@ -95,22 +93,28 @@ namespace Lanchat.ClientCore
             }
         }
 
-        public bool AutomaticConnecting
+        public bool ReceivedListConnecting
         {
             get => _automaticConnecting;
             set
             {
                 _automaticConnecting = value;
-                OnPropertyChanged(nameof(AutomaticConnecting));
+                OnPropertyChanged(nameof(ReceivedListConnecting));
             }
         }
 
+        public bool SavedAddressesConnecting { get; set; } = true;
+
+        public bool NodesDetection { get; set; } = true;
+
+        public bool StartServer { get; set; } = true;
+
         public string ReceivedFilesDirectory
         {
-            get => filesDownloadDirectory;
+            get => _filesDownloadDirectory;
             set
             {
-                filesDownloadDirectory = value;
+                _filesDownloadDirectory = value;
                 OnPropertyChanged(nameof(ReceivedFilesDirectory));
             }
         }

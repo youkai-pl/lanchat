@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Lanchat.ClientCore
 {
-    public static class LoggingService
+    public static class Logging
     {
         public static void StartLogging()
         {
@@ -22,7 +22,7 @@ namespace Lanchat.ClientCore
             Trace.WriteLine("Logging started");
         }
 
-        public static void CleanLogs()
+        public static void DeleteOldLogs()
         {
             foreach (var fi in new DirectoryInfo(ConfigManager.DataPath)
                 .GetFiles("*.log")

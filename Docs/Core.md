@@ -16,6 +16,8 @@
 - [Broadcasting](#T-Lanchat-Core-Broadcasting 'Lanchat.Core.Broadcasting')
   - [SendData(data)](#M-Lanchat-Core-Broadcasting-SendData-System-Object- 'Lanchat.Core.Broadcasting.SendData(System.Object)')
   - [SendMessage(message)](#M-Lanchat-Core-Broadcasting-SendMessage-System-String- 'Lanchat.Core.Broadcasting.SendMessage(System.String)')
+- [EnumerableExtensions](#T-Lanchat-Core-Extensions-EnumerableExtensions 'Lanchat.Core.Extensions.EnumerableExtensions')
+  - [ForEach\`\`1()](#M-Lanchat-Core-Extensions-EnumerableExtensions-ForEach``1-System-Collections-Generic-IEnumerable{``0},System-Action{``0}- 'Lanchat.Core.Extensions.EnumerableExtensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})')
 - [FileReceiver](#T-Lanchat-Core-FileTransfer-FileReceiver 'Lanchat.Core.FileTransfer.FileReceiver')
   - [Request](#P-Lanchat-Core-FileTransfer-FileReceiver-Request 'Lanchat.Core.FileTransfer.FileReceiver.Request')
   - [AcceptRequest()](#M-Lanchat-Core-FileTransfer-FileReceiver-AcceptRequest 'Lanchat.Core.FileTransfer.FileReceiver.AcceptRequest')
@@ -37,12 +39,16 @@
   - [Privileged](#P-Lanchat-Core-API-IApiHandler-Privileged 'Lanchat.Core.API.IApiHandler.Privileged')
   - [Handle(data)](#M-Lanchat-Core-API-IApiHandler-Handle-System-Object- 'Lanchat.Core.API.IApiHandler.Handle(System.Object)')
 - [IConfig](#T-Lanchat-Core-IConfig 'Lanchat.Core.IConfig')
-  - [AutomaticConnecting](#P-Lanchat-Core-IConfig-AutomaticConnecting 'Lanchat.Core.IConfig.AutomaticConnecting')
   - [BlockedAddresses](#P-Lanchat-Core-IConfig-BlockedAddresses 'Lanchat.Core.IConfig.BlockedAddresses')
   - [BroadcastPort](#P-Lanchat-Core-IConfig-BroadcastPort 'Lanchat.Core.IConfig.BroadcastPort')
   - [Nickname](#P-Lanchat-Core-IConfig-Nickname 'Lanchat.Core.IConfig.Nickname')
+  - [NodesDetection](#P-Lanchat-Core-IConfig-NodesDetection 'Lanchat.Core.IConfig.NodesDetection')
   - [ReceivedFilesDirectory](#P-Lanchat-Core-IConfig-ReceivedFilesDirectory 'Lanchat.Core.IConfig.ReceivedFilesDirectory')
+  - [ReceivedListConnecting](#P-Lanchat-Core-IConfig-ReceivedListConnecting 'Lanchat.Core.IConfig.ReceivedListConnecting')
+  - [SavedAddresses](#P-Lanchat-Core-IConfig-SavedAddresses 'Lanchat.Core.IConfig.SavedAddresses')
+  - [SavedAddressesConnecting](#P-Lanchat-Core-IConfig-SavedAddressesConnecting 'Lanchat.Core.IConfig.SavedAddressesConnecting')
   - [ServerPort](#P-Lanchat-Core-IConfig-ServerPort 'Lanchat.Core.IConfig.ServerPort')
+  - [StartServer](#P-Lanchat-Core-IConfig-StartServer 'Lanchat.Core.IConfig.StartServer')
   - [Status](#P-Lanchat-Core-IConfig-Status 'Lanchat.Core.IConfig.Status')
   - [UseIPv6](#P-Lanchat-Core-IConfig-UseIPv6 'Lanchat.Core.IConfig.UseIPv6')
 - [INetworkElement](#T-Lanchat-Core-Network-INetworkElement 'Lanchat.Core.Network.INetworkElement')
@@ -81,10 +87,8 @@
   - [Broadcasting](#P-Lanchat-Core-P2P-Broadcasting 'Lanchat.Core.P2P.Broadcasting')
   - [Nodes](#P-Lanchat-Core-P2P-Nodes 'Lanchat.Core.P2P.Nodes')
   - [NodesDetection](#P-Lanchat-Core-P2P-NodesDetection 'Lanchat.Core.P2P.NodesDetection')
-  - [AutoConnect()](#M-Lanchat-Core-P2P-AutoConnect 'Lanchat.Core.P2P.AutoConnect')
   - [Connect(ipAddress,port)](#M-Lanchat-Core-P2P-Connect-System-Net-IPAddress,System-Nullable{System-Int32}- 'Lanchat.Core.P2P.Connect(System.Net.IPAddress,System.Nullable{System.Int32})')
-  - [StartNodesDetection()](#M-Lanchat-Core-P2P-StartNodesDetection 'Lanchat.Core.P2P.StartNodesDetection')
-  - [StartServer()](#M-Lanchat-Core-P2P-StartServer 'Lanchat.Core.P2P.StartServer')
+  - [Start()](#M-Lanchat-Core-P2P-Start 'Lanchat.Core.P2P.Start')
 - [Resolver](#T-Lanchat-Core-API-Resolver 'Lanchat.Core.API.Resolver')
   - [RegisterHandler(apiHandler)](#M-Lanchat-Core-API-Resolver-RegisterHandler-Lanchat-Core-API-IApiHandler- 'Lanchat.Core.API.Resolver.RegisterHandler(Lanchat.Core.API.IApiHandler)')
 - [Server](#T-Lanchat-Core-Network-Server 'Lanchat.Core.Network.Server')
@@ -225,6 +229,28 @@ Broadcast message.
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | message | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Message content. |
+
+<a name='T-Lanchat-Core-Extensions-EnumerableExtensions'></a>
+## EnumerableExtensions `type`
+
+##### Namespace
+
+Lanchat.Core.Extensions
+
+##### Summary
+
+Extension methods for Enumerable
+
+<a name='M-Lanchat-Core-Extensions-EnumerableExtensions-ForEach``1-System-Collections-Generic-IEnumerable{``0},System-Action{``0}-'></a>
+### ForEach\`\`1() `method`
+
+##### Summary
+
+ForEach like in Lists
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-Lanchat-Core-FileTransfer-FileReceiver'></a>
 ## FileReceiver `type`
@@ -433,13 +459,6 @@ Lanchat.Core
 
 Lanchat.Core configuration.
 
-<a name='P-Lanchat-Core-IConfig-AutomaticConnecting'></a>
-### AutomaticConnecting `property`
-
-##### Summary
-
-Enable automatic connecting to nodes from received list.
-
 <a name='P-Lanchat-Core-IConfig-BlockedAddresses'></a>
 ### BlockedAddresses `property`
 
@@ -461,6 +480,13 @@ Broadcast port.
 
 User nickname.
 
+<a name='P-Lanchat-Core-IConfig-NodesDetection'></a>
+### NodesDetection `property`
+
+##### Summary
+
+Use UDP broadcasting to announce self presence and detect other nodes.
+
 <a name='P-Lanchat-Core-IConfig-ReceivedFilesDirectory'></a>
 ### ReceivedFilesDirectory `property`
 
@@ -468,12 +494,40 @@ User nickname.
 
 Files download directory.
 
+<a name='P-Lanchat-Core-IConfig-ReceivedListConnecting'></a>
+### ReceivedListConnecting `property`
+
+##### Summary
+
+Try connecting with nodes from received list.
+
+<a name='P-Lanchat-Core-IConfig-SavedAddresses'></a>
+### SavedAddresses `property`
+
+##### Summary
+
+Addresses of previously connected nodes.
+
+<a name='P-Lanchat-Core-IConfig-SavedAddressesConnecting'></a>
+### SavedAddressesConnecting `property`
+
+##### Summary
+
+Try connecting with nodes from SavedAddresses
+
 <a name='P-Lanchat-Core-IConfig-ServerPort'></a>
 ### ServerPort `property`
 
 ##### Summary
 
 Server port.
+
+<a name='P-Lanchat-Core-IConfig-StartServer'></a>
+### StartServer `property`
+
+##### Summary
+
+Disable only in debug mode.
 
 <a name='P-Lanchat-Core-IConfig-Status'></a>
 ### Status `property`
@@ -795,17 +849,6 @@ List of connected nodes.
 <a name='P-Lanchat-Core-P2P-NodesDetection'></a>
 ### NodesDetection `property`
 
-<a name='M-Lanchat-Core-P2P-AutoConnect'></a>
-### AutoConnect() `method`
-
-##### Summary
-
-Try connect to saved addresses.
-
-##### Parameters
-
-This method has no parameters.
-
 <a name='M-Lanchat-Core-P2P-Connect-System-Net-IPAddress,System-Nullable{System-Int32}-'></a>
 ### Connect(ipAddress,port) `method`
 
@@ -820,19 +863,8 @@ Connect to node.
 | ipAddress | [System.Net.IPAddress](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.IPAddress 'System.Net.IPAddress') | Node IP address. |
 | port | [System.Nullable{System.Int32}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Nullable 'System.Nullable{System.Int32}') | Node port. |
 
-<a name='M-Lanchat-Core-P2P-StartNodesDetection'></a>
-### StartNodesDetection() `method`
-
-##### Summary
-
-Start announcing presence.
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-Lanchat-Core-P2P-StartServer'></a>
-### StartServer() `method`
+<a name='M-Lanchat-Core-P2P-Start'></a>
+### Start() `method`
 
 ##### Summary
 

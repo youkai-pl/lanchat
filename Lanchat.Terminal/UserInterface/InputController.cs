@@ -50,7 +50,7 @@ namespace Lanchat.Terminal.UserInterface
                 else
                 {
                     Ui.Log.AddMessage(input.Text, Program.Config.Nickname, false);
-                    Program.P2P.Broadcasting.SendMessage(input.Text);
+                    Program.Network.Broadcasting.SendMessage(input.Text);
                 }
             }
 

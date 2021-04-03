@@ -1,11 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Net.Sockets;
 using Lanchat.ClientCore;
 using Lanchat.Core;
-using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -13,7 +11,7 @@ namespace Lanchat.Terminal
 {
     public static class Program
     {
-        public static P2P P2P { get; private set; }
+        public static P2P Network { get; private set; }
         public static Config Config { get; private set; }
 
         private static void Main(string[] args)
@@ -36,14 +34,12 @@ namespace Lanchat.Terminal
             try
             {
                 Ui.Start();
-                P2P = new P2P(Config);
-                P2P.NodeCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
+                Network = new P2P(Config);
+                Network.NodeCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
 
-                // Initialize server
-                if (!args.Contains("--no-server") && !args.Contains("-n")) P2P.StartServer();
-
-                // Start broadcast service
-                if (!args.Contains("--no-udp") && !args.Contains("-b")) P2P.StartNodesDetection();
+                if (args.Contains("--no-saved") || args.Contains("-a")) Config.SavedAddressesConnecting = false;
+                if (args.Contains("--no-udp") || args.Contains("-b")) Config.NodesDetection = false;
+                if (args.Contains("--no-server") || args.Contains("-n")) Config.StartServer = false;
             }
             catch (SocketException e)
             {
@@ -52,7 +48,7 @@ namespace Lanchat.Terminal
                 else
                     throw;
             }
-
+            
             Ui.SetupNetworkEvents();
 
             // Show logs in console
@@ -60,21 +56,17 @@ namespace Lanchat.Terminal
             {
                 Trace.Listeners.Add(new TerminalTraceListener());
             }
+            
+            // Don't check updates in debug mode
             else
             {
                 var newVersion = UpdateChecker.CheckUpdates();
                 if (newVersion != null) Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
             }
 
-            // Save logs to file
-            LoggingService.StartLogging();
-
-            // Connect with localhost
-            if (args.Contains("--loopback") || args.Contains("-l")) P2P.Connect(IPAddress.Loopback);
-
-            if (!args.Contains("--no-auto") && !args.Contains("-a")) P2P.AutoConnect();
-
-            LoggingService.CleanLogs();
+            Logging.StartLogging();
+            Network.Start();
+            Logging.DeleteOldLogs();
         }
     }
 }

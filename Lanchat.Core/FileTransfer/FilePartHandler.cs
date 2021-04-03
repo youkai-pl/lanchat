@@ -1,4 +1,3 @@
-using System;
 using Lanchat.Core.API;
 using Lanchat.Core.Models;
 

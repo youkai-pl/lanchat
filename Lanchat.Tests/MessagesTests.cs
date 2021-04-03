@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using Lanchat.Core.API;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
-using Lanchat.Core.Models;
 using Lanchat.Tests.Mock;
 using NUnit.Framework;
 

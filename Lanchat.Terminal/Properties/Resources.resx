@@ -154,6 +154,7 @@ send      accept       reject
 Try /help &lt;command&gt; for detailed help.
     </value>
     </data>
+    <!-- ReSharper disable once NotOverriddenInSpecificCulture -->
     <data name="_WindowTitle" xml:space="preserve">
         <value>Lanchat</value>
     </data>
