@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using Lanchat.Core.Models;
 
@@ -7,13 +6,12 @@ namespace Lanchat.Core.P2PHandlers
 {
     internal class P2PInternalHandlers
     {
-        private readonly IConfig config;
         private readonly P2P network;
 
-        internal P2PInternalHandlers(P2P network, IConfig config)
+        internal P2PInternalHandlers(P2P network)
         {
             this.network = network;
-            this.config = config;
+            network.Server.SessionCreated += OnSessionCreated;
         }
 
         internal void CloseNode(object sender, EventArgs e)
@@ -31,16 +29,16 @@ namespace Lanchat.Core.P2PHandlers
                 .Select(x => x.NetworkElement.Endpoint.Address.ToString()));
             node.NetworkOutput.SendData(nodesList);
             
-            if (!config.SavedAddresses.Contains(node.NetworkElement.Endpoint.Address))
+            if (!network.Config.SavedAddresses.Contains(node.NetworkElement.Endpoint.Address))
             {
-                config.SavedAddresses.Add(node.NetworkElement.Endpoint.Address);
+                network.Config.SavedAddresses.Add(node.NetworkElement.Endpoint.Address);
             }
         }
 
-        internal void OnSessionCreated(object sender, Node node)
+        private void OnSessionCreated(object sender, Node node)
         {
             network.OnNodeCreated(node);
-            node.Resolver.RegisterHandler(new NodesListHandler(network, config));
+            node.Resolver.RegisterHandler(new NodesListHandler(network));
             node.Connected += OnConnected;
         }
     }
