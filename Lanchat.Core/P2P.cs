@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
@@ -20,8 +18,8 @@ namespace Lanchat.Core
     {
         private readonly IConfig config;
         private readonly P2PInternalHandlers networkInternalHandlers;
-        private readonly Server server;
         internal readonly List<Node> OutgoingConnections = new();
+        private readonly Server server;
 
         /// <summary>
         ///     Initialize P2P mode.
@@ -73,18 +71,9 @@ namespace Lanchat.Core
         /// </summary>
         public void Start()
         {
-            if (config.StartServer)
-            {
-                server.Start();
-            }
-            if (config.NodesDetection)
-            {
-                NodesDetection.Start();
-            }
-            if (config.ConnectToSaved)
-            {
-                config.SavedAddresses.ForEach(async x => await Connect(x));
-            }
+            if (config.StartServer) server.Start();
+            if (config.NodesDetection) NodesDetection.Start();
+            if (config.ConnectToSaved) config.SavedAddresses.ForEach(async x => await Connect(x));
         }
 
         /// <summary>
@@ -92,61 +81,54 @@ namespace Lanchat.Core
         /// </summary>
         /// <param name="ipAddress">Node IP address.</param>
         /// <param name="port">Node port.</param>
-        public async Task<bool> Connect(IPAddress ipAddress, int? port = null)
+        public Task<bool> Connect(IPAddress ipAddress, int? port = null)
         {
             var tcs = new TaskCompletionSource<bool>();
-
-            // Use port from config if it's null
             port ??= config.ServerPort;
-
-            // Throw if node is blocked
-            if (config.BlockedAddresses.Contains(ipAddress)) throw new ArgumentException("Node blocked");
-
-            // Throw if node already connected
-            if (Nodes.Any(x => x.NetworkElement.Endpoint.Address.Equals(ipAddress)))
-                throw new ArgumentException("Already connected to this node");
-
-            // Throw if local address
-            var host = await Dns.GetHostEntryAsync(Dns.GetHostName());
-            if (host.AddressList.Where(ip => ip.AddressFamily == AddressFamily.InterNetwork).Contains(ipAddress))
-                throw new ArgumentException("Illegal IP address. Cannot connect");
-
+            CheckAddress(ipAddress);
             var client = new Client(ipAddress, port.Value);
             var node = new Node(client, config, false);
             node.Resolver.RegisterHandler(new NodesListHandler(this, config));
             OutgoingConnections.Add(node);
+            SubscribeEvents(node, tcs);
+            OnNodeCreated(node);
+            client.ConnectAsync();
+            return tcs.Task;
+        }
+
+        private void CheckAddress(IPAddress ipAddress)
+        {
+            if (config.BlockedAddresses.Contains(ipAddress)) throw new ArgumentException("Node blocked");
+            if (Nodes.Any(x => x.NetworkElement.Endpoint.Address.Equals(ipAddress)))
+                throw new ArgumentException("Already connected to this node");
+        }
+
+        private void SubscribeEvents(Node node, TaskCompletionSource<bool> tcs)
+        {
+            node.Connected += (_, _) => { tcs.TrySetResult(true); };
+            node.CannotConnect += (_, _) => { tcs.TrySetResult(false); };
             node.Connected += networkInternalHandlers.OnConnected;
             node.Disconnected += networkInternalHandlers.CloseNode;
             node.CannotConnect += networkInternalHandlers.CloseNode;
-
-            node.Connected += (_, _) => { tcs.TrySetResult(true); };
-
-            node.CannotConnect += (_, _) => { tcs.TrySetResult(false); };
-
-            NodeCreated?.Invoke(this, node);
-            client.ConnectAsync();
-
-            return tcs.Task.Result;
         }
-
-        internal void OnNodeCreated(Node e)
-        {
-            NodeCreated?.Invoke(this, e);
-        }
-
+        
         private void ConfigOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
                 case "Nickname":
-                    Nodes.ForEach(x =>
-                        x.NetworkOutput.SendData(new NicknameUpdate {NewNickname = config.Nickname}));
+                    Broadcasting.SendData(new NicknameUpdate {NewNickname = config.Nickname});
                     break;
 
                 case "Status":
-                    Nodes.ForEach(x => x.NetworkOutput.SendData(new StatusUpdate {NewStatus = config.Status}));
+                    Broadcasting.SendData(new StatusUpdate {NewStatus = config.Status});
                     break;
             }
+        }
+        
+        internal void OnNodeCreated(Node e)
+        {
+            NodeCreated?.Invoke(this, e);
         }
     }
 }
