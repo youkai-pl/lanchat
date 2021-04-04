@@ -270,4 +270,7 @@ Try /help &lt;command&gt; for detailed help.
     <data name="_AlreadyBlocked" xml:space="preserve">
         <value>Address already blocked</value>
     </data>
+    <data name="_InvalidCommand" xml:space="preserve">
+        <value>Invalid command</value>
+    </data>
 </root>

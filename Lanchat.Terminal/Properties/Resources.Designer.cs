@@ -284,5 +284,11 @@ namespace Lanchat.Terminal.Properties {
                 return ResourceManager.GetString("_AlreadyBlocked", resourceCulture);
             }
         }
+        
+        internal static string _InvalidCommand {
+            get {
+                return ResourceManager.GetString("_InvalidCommand", resourceCulture);
+            }
+        }
     }
 }

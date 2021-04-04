@@ -145,4 +145,7 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="_AlreadyBlocked" xml:space="preserve">
         <value>Adres jest już zablokowany</value>
     </data>
+    <data name="_InvalidCommand" xml:space="preserve">
+        <value>Nieprawidłowa komenda</value>
+    </data>
 </root>
