@@ -46,7 +46,7 @@ namespace Lanchat.Core
         private string previousNickname;
         private Status status;
         internal readonly SymmetricEncryption SymmetricEncryption;
-        
+
         internal Node(INetworkElement networkElement, IConfig config, bool isSession)
         {
             this.config = config;
@@ -133,6 +133,7 @@ namespace Lanchat.Core
             FileReceiver.CancelReceive();
             GC.SuppressFinalize(this);
         }
+        
 
         /// <summary>
         ///     ID of TCP client or session.
@@ -158,7 +159,7 @@ namespace Lanchat.Core
         ///     Node disconnected. Cannot reconnect.
         /// </summary>
         public event EventHandler Disconnected;
-        
+
         /// <summary>
         ///     TCP session or client returned error.
         /// </summary>

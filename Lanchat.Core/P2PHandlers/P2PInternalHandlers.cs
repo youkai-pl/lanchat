@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Lanchat.Core.Models;
 
@@ -17,8 +18,10 @@ namespace Lanchat.Core.P2PHandlers
         internal void CloseNode(object sender, EventArgs e)
         {
             var node = (Node) sender;
+            var id = node.Id;
             network.OutgoingConnections.Remove(node);
             node.Dispose();
+            Trace.WriteLine($"Node {id} disposed");
         }
 
         internal void OnConnected(object sender, EventArgs e)
