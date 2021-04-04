@@ -79,7 +79,7 @@ namespace Lanchat.Core
             // Check is connection established successful after timeout.
             Task.Delay(5000).ContinueWith(_ =>
             {
-                if (!Ready) CannotConnect?.Invoke(this, EventArgs.Empty);
+                if (!Ready) OnCannotConnect();
             });
         }
 
@@ -183,7 +183,7 @@ namespace Lanchat.Core
             if (Ready)
                 Disconnected?.Invoke(this, EventArgs.Empty);
             else
-                CannotConnect?.Invoke(this, EventArgs.Empty);
+                OnCannotConnect();
         }
 
         internal void SendHandshake()
@@ -206,6 +206,11 @@ namespace Lanchat.Core
         private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        internal void OnCannotConnect()
+        {
+            CannotConnect?.Invoke(this, EventArgs.Empty);
         }
     }
 }

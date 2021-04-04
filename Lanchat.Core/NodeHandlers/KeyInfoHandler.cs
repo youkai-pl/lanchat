@@ -29,8 +29,7 @@ namespace Lanchat.Core.NodeHandlers
             }
             catch (CryptographicException)
             {
-                // TODO: Don't dispose self
-                node.Dispose();
+                node.OnCannotConnect();
             }
         }
     }
