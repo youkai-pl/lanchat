@@ -11,33 +11,37 @@ namespace Lanchat.Core.API
     {
         private readonly INetworkElement networkElement;
         private readonly INodeState nodeState;
-        private readonly JsonSerializerOptions serializerOptions;
+        private static JsonSerializerOptions _serializerOptions = new()
+        {
+            Converters =
+            {
+                new JsonStringEnumConverter()
+            }
+        };
 
         internal NetworkOutput(INetworkElement networkElement, INodeState nodeState)
         {
             this.networkElement = networkElement;
             this.nodeState = nodeState;
-            serializerOptions = new JsonSerializerOptions
-            {
-                Converters =
-                {
-                    new JsonStringEnumConverter()
-                }
-            };
         }
 
         /// <inheritdoc />
         public void SendData(object content)
         {
             if (!nodeState.Ready) return;
-            SendPrivilegedData(content);
+            networkElement.Send(Serialize(content));
         }
         
         /// <inheritdoc />
         public void SendPrivilegedData(object content)
         {
+            networkElement.Send(Serialize(content));
+        }
+
+        internal static string Serialize(object content)
+        {
             var data = new Dictionary<string, object> {{content.GetType().Name, content}};
-            networkElement.Send(JsonSerializer.Serialize(data, serializerOptions));
+            return JsonSerializer.Serialize(data, _serializerOptions);
         }
     }
 }

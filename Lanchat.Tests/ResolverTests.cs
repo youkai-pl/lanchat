@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using Lanchat.Core.API;
@@ -25,30 +24,26 @@ namespace Lanchat.Tests
         [Test]
         public void UnknownModel()
         {
-            var data = new Dictionary<string, object> {{"test", null}};
-            Assert.Catch<ArgumentException>(() => { resolver.Handle(JsonSerializer.Serialize(data)); });
+            Assert.Catch<ArgumentException>(() => { resolver.Handle(NetworkOutput.Serialize(new ModelMock())); });
         }
 
         [Test]
         public void NoHandler()
         {
-            var data = new Dictionary<string, object> {{"Handshake", new Handshake()}};
-            Assert.Catch<ArgumentException>(() => { resolver.Handle(JsonSerializer.Serialize(data)); });
+            Assert.Catch<ArgumentException>(() => { resolver.Handle(NetworkOutput.Serialize(new Handshake())); });
         }
 
         [Test]
         public void NodeNotReady()
         {
-            var data = new Dictionary<string, object> {{"Message", new Message()}};
             nodeState.Ready = false;
-            Assert.Catch<InvalidOperationException>(() => { resolver.Handle(JsonSerializer.Serialize(data)); });
+            Assert.Catch<InvalidOperationException>(() => { resolver.Handle(NetworkOutput.Serialize(new Message())); });
         }
 
         [Test]
         public void InvalidModel()
         {
-            var data = new Dictionary<string, object> {{"Message", new Message {Content = null}}};
-            Assert.Catch<ValidationException>(() => { resolver.Handle(JsonSerializer.Serialize(data)); });
+            Assert.Catch<ValidationException>(() => { resolver.Handle(NetworkOutput.Serialize(new Message())); });
         }
 
         [Test]

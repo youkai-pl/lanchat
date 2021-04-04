@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Text.Json;
 using Lanchat.Core.API;
-using Lanchat.Core.Models;
 using Lanchat.Tests.Mock;
 using NUnit.Framework;
 
@@ -25,7 +22,7 @@ namespace Lanchat.Tests
         [Test]
         public void JsonSplit()
         {
-            var fullString = JsonSerializer.Serialize(new Dictionary<string, object> {{"ModelMock", new ModelMock()}}); 
+            var fullString = NetworkOutput.Serialize(new ModelMock());
             var firstPart = fullString.Substring(0, 10);
             var secondPart = fullString.Substring(10);
             networkInput.ProcessReceivedData(null, firstPart);
