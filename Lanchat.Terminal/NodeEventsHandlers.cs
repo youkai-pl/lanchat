@@ -106,10 +106,9 @@ namespace Lanchat.Terminal
             Ui.Log.Add(string.Format(Resources._FileTransferFinished, node.Nickname));
         }
 
-        // TODO: Log node id
         private void OnFileTransferError(object sender, FileTransferException e)
         {
-            Ui.Log.AddError(string.Format(Resources._FileExchangeError));
+            Ui.Log.AddError(string.Format(Resources._FileTransferError, node.Nickname));
         }
 
         private void OnFileTransferHandlerRequestAccepted(object sender, FileTransferRequest e)

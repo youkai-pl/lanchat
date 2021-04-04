@@ -219,9 +219,9 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string _FileExchangeError {
+        internal static string _FileTransferError {
             get {
-                return ResourceManager.GetString("_FileExchangeError", resourceCulture);
+                return ResourceManager.GetString("_FileTransferError", resourceCulture);
             }
         }
         

@@ -237,8 +237,8 @@ Try /help &lt;command&gt; for detailed help.
     <data name="_FileReceived" xml:space="preserve">
         <value>File from {0} saved to {1}</value>
     </data>
-    <data name="_FileExchangeError" xml:space="preserve">
-        <value>File exchange error.</value>
+    <data name="_FileTransferError" xml:space="preserve">
+        <value>File exchange with {0} errored</value>
     </data>
     <data name="_FileRequestAccepted" xml:space="preserve">
         <value>{0} accepted your request. File is sending.</value>
