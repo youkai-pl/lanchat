@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using Lanchat.Core.API;
 using Lanchat.Core.Models;
 
@@ -15,21 +14,15 @@ namespace Lanchat.Core.Chat
 
         protected override void Handle(Message message)
         {
-            try
+            if (message.Private)
             {
-                if (message.Private)
-                {
-                    var decryptedMessage = messaging.Encryption.DecryptString(message.Content);
-                    messaging.OnPrivateMessageReceived(decryptedMessage);
-                }
-                else
-                {
-                    var decryptedMessage = messaging.Encryption.DecryptString(message.Content);
-                    messaging.OnMessageReceived(decryptedMessage);
-                }
+                var decryptedMessage = messaging.Encryption.DecryptString(message.Content);
+                messaging.OnPrivateMessageReceived(decryptedMessage);
             }
-            catch (CryptographicException)
+            else
             {
+                var decryptedMessage = messaging.Encryption.DecryptString(message.Content);
+                messaging.OnMessageReceived(decryptedMessage);
             }
         }
     }

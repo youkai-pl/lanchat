@@ -34,13 +34,26 @@ namespace Lanchat.Tests
         [Test]
         public void ValidMessageSend()
         {
-            var testMessage = new string('a', 20);
+            const string testMessage = "test message";
             var receivedMessage = string.Empty;
 
             messaging.MessageReceived += (_, s) => { receivedMessage = s; };
             networkMock.DataReceived += (_, s) => resolver.Handle(s);
 
             messaging.SendMessage(testMessage);
+            Assert.AreEqual(testMessage, receivedMessage);
+        }
+        
+        [Test]
+        public void PrivateMessageSend()
+        {
+            const string testMessage = "test message";
+            var receivedMessage = string.Empty;
+
+            messaging.PrivateMessageReceived += (_, s) => { receivedMessage = s; };
+            networkMock.DataReceived += (_, s) => resolver.Handle(s);
+
+            messaging.SendPrivateMessage(testMessage);
             Assert.AreEqual(testMessage, receivedMessage);
         }
 

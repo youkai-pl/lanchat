@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
 using System.Text.Json;
 
 namespace Lanchat.Core.API
@@ -36,7 +37,8 @@ namespace Lanchat.Core.API
                         ex is not ArgumentNullException &&
                         ex is not InvalidOperationException &&
                         ex is not ArgumentException &&
-                        ex is not ValidationException) throw;
+                        ex is not ValidationException && 
+                        ex is not CryptographicException) throw;
                 }
         }
     }
