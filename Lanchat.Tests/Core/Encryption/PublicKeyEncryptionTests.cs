@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
@@ -15,7 +16,7 @@ namespace Lanchat.Tests.Core.Encryption
             publicKeyEncryptionTest = new PublicKeyEncryption();
             publicKeyEncryptionTest.ImportKey(publicKeyEncryptionTest.ExportKey());
         }
-        
+
         [Test]
         public void BytesEncryption()
         {
@@ -36,6 +37,13 @@ namespace Lanchat.Tests.Core.Encryption
                     RsaModulus = new byte[] {0x10}
                 });
             });
+        }
+
+        [Test]
+        public void Dispose()
+        {
+            publicKeyEncryptionTest.Dispose();
+            Assert.Catch<ObjectDisposedException>(() => { publicKeyEncryptionTest.Encrypt(new byte[] {0x10}); });
         }
     }
 }

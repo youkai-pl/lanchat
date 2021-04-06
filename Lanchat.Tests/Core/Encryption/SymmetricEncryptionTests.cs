@@ -28,7 +28,7 @@ namespace Lanchat.Tests.Core.Encryption
             var decryptedString = symmetricEncryption.DecryptString(encryptedString);
             Assert.AreEqual(testString, decryptedString);
         }
-        
+
         [Test]
         public void BytesEncryption()
         {
@@ -37,23 +37,17 @@ namespace Lanchat.Tests.Core.Encryption
             var decryptedBytes = symmetricEncryption.DecryptBytes(encryptedBytes);
             Assert.AreEqual(testBytes, decryptedBytes);
         }
-        
+
         [Test]
         public void InvalidFormat()
         {
-            Assert.Catch<FormatException>(() =>
-            {
-                symmetricEncryption.DecryptString("not a base 64");
-            });
+            Assert.Catch<FormatException>(() => { symmetricEncryption.DecryptString("not a base 64"); });
         }
-        
+
         [Test]
         public void InvalidEncryption()
         {
-            Assert.Catch<CryptographicException>(() =>
-            {
-                symmetricEncryption.DecryptString("bm90IGVuY3J5cHRlZA==");
-            });
+            Assert.Catch<CryptographicException>(() => { symmetricEncryption.DecryptString("bm90IGVuY3J5cHRlZA=="); });
         }
 
         [Test]
@@ -67,6 +61,13 @@ namespace Lanchat.Tests.Core.Encryption
                     AesKey = new byte[] {0x10}
                 });
             });
+        }
+
+        [Test]
+        public void Dispose()
+        {
+            symmetricEncryption.Dispose();
+            Assert.Catch<ObjectDisposedException>(() => { symmetricEncryption.EncryptString("test"); });
         }
     }
 }
