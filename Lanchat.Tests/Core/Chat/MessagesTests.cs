@@ -5,7 +5,7 @@ using Lanchat.Core.Encryption;
 using Lanchat.Tests.Mock;
 using NUnit.Framework;
 
-namespace Lanchat.Tests
+namespace Lanchat.Tests.Core.Chat
 {
     public class MessagesSendTests
     {

@@ -6,7 +6,7 @@ using Lanchat.Core.Models;
 using Lanchat.Tests.Mock;
 using NUnit.Framework;
 
-namespace Lanchat.Tests
+namespace Lanchat.Tests.Core.API
 {
     public class ResolverTests
     {
