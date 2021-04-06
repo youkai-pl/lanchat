@@ -54,7 +54,7 @@ namespace Lanchat.Tests.Core.API
         [Test]
         public void ArgumentNullExceptionCatch()
         {
-            networkInput.ProcessReceivedData(null, "{\"ModelMock\": \"null\"}");
+            networkInput.ProcessReceivedData(null, "{\"Model\": \"null\"}");
         }
         
         [Test]
