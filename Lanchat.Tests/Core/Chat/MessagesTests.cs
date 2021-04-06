@@ -1,6 +1,4 @@
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography;
 using Lanchat.Core.API;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
@@ -18,6 +16,7 @@ namespace Lanchat.Tests.Core.Chat
         private NetworkMock networkMock;
         private NetworkOutput networkOutput;
         private Resolver resolver;
+        private MessageHandler messageHandler;
 
         [SetUp]
         public void Setup()
@@ -30,8 +29,9 @@ namespace Lanchat.Tests.Core.Chat
             networkMock = new NetworkMock();
             networkOutput = new NetworkOutput(networkMock, nodeState);
             messaging = new Messaging(networkOutput, symmetricEncryption);
+            messageHandler = new MessageHandler(messaging);
             resolver = new Resolver(nodeState);
-            resolver.RegisterHandler(new MessageHandler(messaging));
+            resolver.RegisterHandler(messageHandler);
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace Lanchat.Tests.Core.Chat
             messaging.SendMessage(testMessage);
             Assert.AreEqual(testMessage, receivedMessage);
         }
-        
+
         [Test]
         public void PrivateMessageSend()
         {
@@ -75,7 +75,8 @@ namespace Lanchat.Tests.Core.Chat
         [Test]
         public void WeirdText()
         {
-            const string testMessage = "ẗ̴̝̱̦̝͉͉̬̩̙́̎e̷̡̧̡̢̮̩͓̯̞̼̖̜̥̭̣̙͕̲̳̰̱̾̈͗̉̈́͐́̿̿̕ş̵̡̣̣̳̺̘̲̦͕̣̹̯̰̘̟̰͕̗̰̦͍̩̩̱̩͖̖͍̈́̊͆̾̀̄̾͐̈̈̍̃̔̉̋̐̔͒̒̍̎̇̏͌̑̚͜t̴͙̭̠͇̹̫͇̗̥̗͍̀̒̈́́͑̈́̃͌̽̈́̏̈̉͘̕̚͜͝ͅͅ";
+            const string testMessage =
+                "ẗ̴̝̱̦̝͉͉̬̩̙́̎e̷̡̧̡̢̮̩͓̯̞̼̖̜̥̭̣̙͕̲̳̰̱̾̈͗̉̈́͐́̿̿̕ş̵̡̣̣̳̺̘̲̦͕̣̹̯̰̘̟̰͕̗̰̦͍̩̩̱̩͖̖͍̈́̊͆̾̀̄̾͐̈̈̍̃̔̉̋̐̔͒̒̍̎̇̏͌̑̚͜t̴͙̭̠͇̹̫͇̗̥̗͍̀̒̈́́͑̈́̃͌̽̈́̏̈̉͘̕̚͜͝ͅͅ";
             var receivedMessage = string.Empty;
 
             messaging.MessageReceived += (_, s) => { receivedMessage = s; };
@@ -83,6 +84,18 @@ namespace Lanchat.Tests.Core.Chat
 
             messaging.SendMessage(testMessage);
             Assert.AreEqual(testMessage, receivedMessage);
+        }
+
+        [Test]
+        public void InvalidFormat()
+        {
+            messageHandler.Handle(new Message {Content = "not a base64"});
+        }
+
+        [Test]
+        public void InvalidEncryption()
+        {
+            messageHandler.Handle(new Message {Content = "bm90IGVuY3J5cHRlZA=="});
         }
     }
 }

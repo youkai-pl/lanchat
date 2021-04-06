@@ -1,3 +1,5 @@
+using System;
+using System.Security.Cryptography;
 using Lanchat.Core.API;
 using Lanchat.Core.Models;
 
@@ -13,6 +15,20 @@ namespace Lanchat.Core.Chat
         }
 
         protected override void Handle(Message message)
+        {
+            try
+            {
+                DecryptMessageAndRaiseEvent(message);
+            }
+            catch (CryptographicException)
+            {
+            }
+            catch (FormatException)
+            {
+            }
+        }
+
+        private void DecryptMessageAndRaiseEvent(Message message)
         {
             var decryptedMessage = messaging.Encryption.DecryptString(message.Content);
 
