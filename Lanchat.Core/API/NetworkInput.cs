@@ -28,15 +28,20 @@ namespace Lanchat.Core.API
                 {
                     resolver.HandleJson(item);
                 }
-
-                // Input errors catching.
-                catch (Exception ex)
+                catch (JsonException)
                 {
-                    if (ex is not JsonException &&
-                        ex is not ArgumentNullException &&
-                        ex is not InvalidOperationException &&
-                        ex is not ArgumentException &&
-                        ex is not ValidationException) throw;
+                }
+                catch (ArgumentNullException)
+                {
+                }
+                catch (InvalidOperationException)
+                {
+                }
+                catch (ArgumentException)
+                {
+                }
+                catch (ValidationException)
+                {
                 }
         }
     }

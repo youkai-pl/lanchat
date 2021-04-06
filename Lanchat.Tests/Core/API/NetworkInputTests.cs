@@ -16,6 +16,7 @@ namespace Lanchat.Tests.Core.API
             modelHandlerMock = new ModelHandlerMock();
             resolver = new Resolver(new NodeState());
             resolver.RegisterHandler(modelHandlerMock);
+            resolver.RegisterHandler(new ModelWithValidationHandlerMock());
             networkInput = new NetworkInput(resolver);
         }
 
@@ -28,6 +29,36 @@ namespace Lanchat.Tests.Core.API
             networkInput.ProcessReceivedData(null, firstPart);
             networkInput.ProcessReceivedData(null, secondPart);
             Assert.True(modelHandlerMock.Handled);
+        }
+        
+        [Test]
+        public void InvalidOperationExceptionCatch()
+        {
+            networkInput.ProcessReceivedData(null, "{}");
+        }
+        
+        [Test]
+        public void JsonExceptionCatch()
+        {
+            networkInput.ProcessReceivedData(null, "{\"key\": invalid format}");
+        }
+        
+        [Test]
+        public void ArgumentExceptionCatch()
+        {
+            networkInput.ProcessReceivedData(null, "{\"null\": \"null\"}");
+        }
+        
+        [Test]
+        public void ArgumentNullExceptionCatch()
+        {
+            networkInput.ProcessReceivedData(null, "{\"ModelMock\": \"null\"}");
+        }
+        
+        [Test]
+        public void ValidationExceptionCatch()
+        {
+            networkInput.ProcessReceivedData(null, NetworkOutput.Serialize(new ModelWithValidationMock()));
         }
     }
 }

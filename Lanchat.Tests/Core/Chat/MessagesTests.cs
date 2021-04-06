@@ -87,13 +87,13 @@ namespace Lanchat.Tests.Core.Chat
         }
 
         [Test]
-        public void InvalidFormat()
+        public void InvalidFormatCatch()
         {
             messageHandler.Handle(new Message {Content = "not a base64"});
         }
 
         [Test]
-        public void InvalidEncryption()
+        public void InvalidEncryptionCatch()
         {
             messageHandler.Handle(new Message {Content = "bm90IGVuY3J5cHRlZA=="});
         }
