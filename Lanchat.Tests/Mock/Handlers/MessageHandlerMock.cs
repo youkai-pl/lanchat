@@ -1,7 +1,7 @@
 using Lanchat.Core.API;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Tests.Mock
+namespace Lanchat.Tests.Mock.Handlers
 {
     internal class MessageHandlerMock : ApiHandler<Message>
     {

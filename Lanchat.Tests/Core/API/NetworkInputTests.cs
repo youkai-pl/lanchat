@@ -1,5 +1,7 @@
 using Lanchat.Core.API;
 using Lanchat.Tests.Mock;
+using Lanchat.Tests.Mock.Handlers;
+using Lanchat.Tests.Mock.Models;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.API
@@ -23,7 +25,7 @@ namespace Lanchat.Tests.Core.API
         [Test]
         public void JsonSplit()
         {
-            var fullString = NetworkOutput.Serialize(new ModelMock());
+            var fullString = NetworkOutput.Serialize(new Model());
             var firstPart = fullString.Substring(0, 10);
             var secondPart = fullString.Substring(10);
             networkInput.ProcessReceivedData(null, firstPart);
@@ -58,7 +60,7 @@ namespace Lanchat.Tests.Core.API
         [Test]
         public void ValidationExceptionCatch()
         {
-            networkInput.ProcessReceivedData(null, NetworkOutput.Serialize(new ModelWithValidationMock()));
+            networkInput.ProcessReceivedData(null, NetworkOutput.Serialize(new ModelWithValidation()));
         }
     }
 }

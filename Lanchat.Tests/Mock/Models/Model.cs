@@ -1,6 +1,6 @@
-namespace Lanchat.Tests.Mock
+namespace Lanchat.Tests.Mock.Models
 {
-    public class ModelMock
+    public class Model
     {
         public string Property { get; set; }
     }

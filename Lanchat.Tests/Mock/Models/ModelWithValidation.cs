@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Lanchat.Tests.Mock
+namespace Lanchat.Tests.Mock.Models
 {
-    public class ModelWithValidationMock
+    public class ModelWithValidation
     {
         [Required]
         public string Property { get; set; }
