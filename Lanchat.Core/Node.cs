@@ -35,8 +35,8 @@ namespace Lanchat.Core
         /// <see cref="INetworkElement" />
         public readonly INetworkElement NetworkElement;
 
-        /// <see cref="INetworkOutput" />
-        public readonly INetworkOutput NetworkOutput;
+        /// <see cref="NetworkOutput" />
+        public readonly NetworkOutput NetworkOutput;
 
         /// <see cref="Resolver" />
         public readonly Resolver Resolver;

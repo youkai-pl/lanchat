@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
@@ -35,6 +36,24 @@ namespace Lanchat.Tests.Core.Encryption
             var encryptedBytes = symmetricEncryption.EncryptBytes(testBytes);
             var decryptedBytes = symmetricEncryption.DecryptBytes(encryptedBytes);
             Assert.AreEqual(testBytes, decryptedBytes);
+        }
+        
+        [Test]
+        public void InvalidFormat()
+        {
+            Assert.Catch<FormatException>(() =>
+            {
+                symmetricEncryption.DecryptString("not a base 64");
+            });
+        }
+        
+        [Test]
+        public void InvalidEncryption()
+        {
+            Assert.Catch<CryptographicException>(() =>
+            {
+                symmetricEncryption.DecryptString("bm90IGVuY3J5cHRlZA==");
+            });
         }
 
         [Test]

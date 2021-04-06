@@ -11,9 +11,9 @@ namespace Lanchat.Core.Chat
     public class Messaging
     {
         internal readonly SymmetricEncryption Encryption;
-        private readonly INetworkOutput networkOutput;
+        private readonly NetworkOutput networkOutput;
 
-        internal Messaging(INetworkOutput networkOutput, SymmetricEncryption encryption)
+        internal Messaging(NetworkOutput networkOutput, SymmetricEncryption encryption)
         {
             this.networkOutput = networkOutput;
             Encryption = encryption;

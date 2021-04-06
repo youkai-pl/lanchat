@@ -1,7 +1,10 @@
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
 using Lanchat.Core.API;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
+using Lanchat.Core.Models;
 using Lanchat.Tests.Mock;
 using NUnit.Framework;
 
@@ -68,7 +71,6 @@ namespace Lanchat.Tests.Core.Chat
                 messaging.SendMessage(testMessage);
             });
         }
-
 
         [Test]
         public void WeirdText()

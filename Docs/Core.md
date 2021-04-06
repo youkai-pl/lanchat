@@ -56,15 +56,12 @@
   - [Id](#P-Lanchat-Core-Network-INetworkElement-Id 'Lanchat.Core.Network.INetworkElement.Id')
   - [Close()](#M-Lanchat-Core-Network-INetworkElement-Close 'Lanchat.Core.Network.INetworkElement.Close')
   - [Send(text)](#M-Lanchat-Core-Network-INetworkElement-Send-System-String- 'Lanchat.Core.Network.INetworkElement.Send(System.String)')
-- [INetworkOutput](#T-Lanchat-Core-API-INetworkOutput 'Lanchat.Core.API.INetworkOutput')
-  - [SendData(content)](#M-Lanchat-Core-API-INetworkOutput-SendData-System-Object- 'Lanchat.Core.API.INetworkOutput.SendData(System.Object)')
-  - [SendPrivilegedData(content)](#M-Lanchat-Core-API-INetworkOutput-SendPrivilegedData-System-Object- 'Lanchat.Core.API.INetworkOutput.SendPrivilegedData(System.Object)')
 - [Messaging](#T-Lanchat-Core-Chat-Messaging 'Lanchat.Core.Chat.Messaging')
   - [SendMessage(content)](#M-Lanchat-Core-Chat-Messaging-SendMessage-System-String- 'Lanchat.Core.Chat.Messaging.SendMessage(System.String)')
   - [SendPrivateMessage(content)](#M-Lanchat-Core-Chat-Messaging-SendPrivateMessage-System-String- 'Lanchat.Core.Chat.Messaging.SendPrivateMessage(System.String)')
 - [NetworkOutput](#T-Lanchat-Core-API-NetworkOutput 'Lanchat.Core.API.NetworkOutput')
-  - [SendData()](#M-Lanchat-Core-API-NetworkOutput-SendData-System-Object- 'Lanchat.Core.API.NetworkOutput.SendData(System.Object)')
-  - [SendPrivilegedData()](#M-Lanchat-Core-API-NetworkOutput-SendPrivilegedData-System-Object- 'Lanchat.Core.API.NetworkOutput.SendPrivilegedData(System.Object)')
+  - [SendData(content)](#M-Lanchat-Core-API-NetworkOutput-SendData-System-Object- 'Lanchat.Core.API.NetworkOutput.SendData(System.Object)')
+  - [SendPrivilegedData(content)](#M-Lanchat-Core-API-NetworkOutput-SendPrivilegedData-System-Object- 'Lanchat.Core.API.NetworkOutput.SendPrivilegedData(System.Object)')
 - [Node](#T-Lanchat-Core-Node 'Lanchat.Core.Node')
   - [FileReceiver](#F-Lanchat-Core-Node-FileReceiver 'Lanchat.Core.Node.FileReceiver')
   - [FileSender](#F-Lanchat-Core-Node-FileSender 'Lanchat.Core.Node.FileSender')
@@ -592,43 +589,6 @@ Send data.
 | ---- | ---- | ----------- |
 | text | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Content. |
 
-<a name='T-Lanchat-Core-API-INetworkOutput'></a>
-## INetworkOutput `type`
-
-##### Namespace
-
-Lanchat.Core.API
-
-##### Summary
-
-Send data other of type not belonging to standard Lanchat.Core set.
-
-<a name='M-Lanchat-Core-API-INetworkOutput-SendData-System-Object-'></a>
-### SendData(content) `method`
-
-##### Summary
-
-Send data.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| content | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Object to send. |
-
-<a name='M-Lanchat-Core-API-INetworkOutput-SendPrivilegedData-System-Object-'></a>
-### SendPrivilegedData(content) `method`
-
-##### Summary
-
-Send the data before marking the node as ready (Handshake, KeyInfo...).
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| content | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Object to send. |
-
 <a name='T-Lanchat-Core-Chat-Messaging'></a>
 ## Messaging `type`
 
@@ -675,29 +635,33 @@ Lanchat.Core.API
 
 ##### Summary
 
-*Inherit from parent.*
+Send data other of type not belonging to standard Lanchat.Core set.
 
 <a name='M-Lanchat-Core-API-NetworkOutput-SendData-System-Object-'></a>
-### SendData() `method`
+### SendData(content) `method`
 
 ##### Summary
 
-*Inherit from parent.*
+Send data.
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| content | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Object to send. |
 
 <a name='M-Lanchat-Core-API-NetworkOutput-SendPrivilegedData-System-Object-'></a>
-### SendPrivilegedData() `method`
+### SendPrivilegedData(content) `method`
 
 ##### Summary
 
-*Inherit from parent.*
+Send the data before marking the node as ready (Handshake, KeyInfo...).
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| content | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Object to send. |
 
 <a name='T-Lanchat-Core-Node'></a>
 ## Node `type`

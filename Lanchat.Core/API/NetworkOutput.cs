@@ -6,8 +6,10 @@ using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Core.API
 {
-    /// <inheritdoc />
-    public class NetworkOutput : INetworkOutput
+    /// <summary>
+    ///     Send data other of type not belonging to standard Lanchat.Core set.
+    /// </summary>
+    public class NetworkOutput
     {
         private readonly INetworkElement networkElement;
         private readonly INodeState nodeState;
@@ -25,14 +27,20 @@ namespace Lanchat.Core.API
             this.nodeState = nodeState;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        ///     Send data.
+        /// </summary>
+        /// <param name="content">Object to send.</param>
         public void SendData(object content)
         {
             if (!nodeState.Ready) return;
             networkElement.Send(Serialize(content));
         }
         
-        /// <inheritdoc />
+        /// <summary>
+        ///     Send the data before marking the node as ready (Handshake, KeyInfo...).
+        /// </summary>
+        /// <param name="content">Object to send.</param>
         public void SendPrivilegedData(object content)
         {
             networkElement.Send(Serialize(content));

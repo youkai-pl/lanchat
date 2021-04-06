@@ -38,6 +38,7 @@ namespace Lanchat.Core.API
                         ex is not InvalidOperationException &&
                         ex is not ArgumentException &&
                         ex is not ValidationException && 
+                        ex is not FormatException &&
                         ex is not CryptographicException) throw;
                 }
         }
