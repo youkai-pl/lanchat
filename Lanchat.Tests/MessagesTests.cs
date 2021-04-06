@@ -38,7 +38,7 @@ namespace Lanchat.Tests
             var receivedMessage = string.Empty;
 
             messaging.MessageReceived += (_, s) => { receivedMessage = s; };
-            networkMock.DataReceived += (_, s) => resolver.Handle(s);
+            networkMock.DataReceived += (_, s) => resolver.HandleJson(s);
 
             messaging.SendMessage(testMessage);
             Assert.AreEqual(testMessage, receivedMessage);
@@ -51,7 +51,7 @@ namespace Lanchat.Tests
             var receivedMessage = string.Empty;
 
             messaging.PrivateMessageReceived += (_, s) => { receivedMessage = s; };
-            networkMock.DataReceived += (_, s) => resolver.Handle(s);
+            networkMock.DataReceived += (_, s) => resolver.HandleJson(s);
 
             messaging.SendPrivateMessage(testMessage);
             Assert.AreEqual(testMessage, receivedMessage);
@@ -64,7 +64,7 @@ namespace Lanchat.Tests
 
             Assert.Catch<ValidationException>(() =>
             {
-                networkMock.DataReceived += (_, s) => resolver.Handle(s);
+                networkMock.DataReceived += (_, s) => resolver.HandleJson(s);
                 messaging.SendMessage(testMessage);
             });
         }
@@ -77,7 +77,7 @@ namespace Lanchat.Tests
             var receivedMessage = string.Empty;
 
             messaging.MessageReceived += (_, s) => { receivedMessage = s; };
-            networkMock.DataReceived += (_, s) => resolver.Handle(s);
+            networkMock.DataReceived += (_, s) => resolver.HandleJson(s);
 
             messaging.SendMessage(testMessage);
             Assert.AreEqual(testMessage, receivedMessage);

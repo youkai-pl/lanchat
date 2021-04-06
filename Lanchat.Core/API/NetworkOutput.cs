@@ -11,7 +11,7 @@ namespace Lanchat.Core.API
     {
         private readonly INetworkElement networkElement;
         private readonly INodeState nodeState;
-        private static JsonSerializerOptions _serializerOptions = new()
+        private static readonly JsonSerializerOptions SerializerOptions = new()
         {
             Converters =
             {
@@ -41,7 +41,7 @@ namespace Lanchat.Core.API
         internal static string Serialize(object content)
         {
             var data = new Dictionary<string, object> {{content.GetType().Name, content}};
-            return JsonSerializer.Serialize(data, _serializerOptions);
+            return JsonSerializer.Serialize(data, SerializerOptions);
         }
     }
 }

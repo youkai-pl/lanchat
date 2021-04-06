@@ -48,8 +48,7 @@ namespace Lanchat.Core.Encryption
 
         internal byte[] Encrypt(byte[] bytes)
         {
-            var encryptedBytes = remoteRsa.Encrypt(bytes, RSAEncryptionPadding.Pkcs1);
-            return encryptedBytes;
+            return remoteRsa.Encrypt(bytes, RSAEncryptionPadding.Pkcs1);
         }
 
         internal byte[] Decrypt(byte[] encryptedBytes)

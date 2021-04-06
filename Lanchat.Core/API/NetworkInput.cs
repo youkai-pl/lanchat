@@ -27,7 +27,7 @@ namespace Lanchat.Core.API
             foreach (var item in currentJson.Replace("}{", "}|{").Split('|'))
                 try
                 {
-                    resolver.Handle(item);
+                    resolver.HandleJson(item);
                 }
 
                 // Input errors catching.

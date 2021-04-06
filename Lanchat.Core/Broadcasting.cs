@@ -29,7 +29,5 @@ namespace Lanchat.Core
         {
             network.Nodes.ForEach(x => x.NetworkOutput.SendData(data));
         }
-        
-        // TODO: Send encrypted data method
     }
 }
