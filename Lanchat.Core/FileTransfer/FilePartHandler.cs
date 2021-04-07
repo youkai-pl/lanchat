@@ -3,6 +3,7 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
+    // TODO: Refactor
     internal class FilePartHandler : ApiHandler<FilePart>
     {
         private readonly FileReceiver fileReceiver;

@@ -77,8 +77,8 @@
   - [Status](#P-Lanchat-Core-Node-Status 'Lanchat.Core.Node.Status')
   - [Disconnect()](#M-Lanchat-Core-Node-Disconnect 'Lanchat.Core.Node.Disconnect')
   - [Dispose()](#M-Lanchat-Core-Node-Dispose 'Lanchat.Core.Node.Dispose')
-- [NodesDetection](#T-Lanchat-Core-Network-NodesDetection 'Lanchat.Core.Network.NodesDetection')
-  - [DetectedNodes](#P-Lanchat-Core-Network-NodesDetection-DetectedNodes 'Lanchat.Core.Network.NodesDetection.DetectedNodes')
+- [NodesDetector](#T-Lanchat-Core-NodesDetection-NodesDetector 'Lanchat.Core.NodesDetection.NodesDetector')
+  - [DetectedNodes](#P-Lanchat-Core-NodesDetection-NodesDetector-DetectedNodes 'Lanchat.Core.NodesDetection.NodesDetector.DetectedNodes')
 - [P2P](#T-Lanchat-Core-P2P 'Lanchat.Core.P2P')
   - [#ctor()](#M-Lanchat-Core-P2P-#ctor-Lanchat-Core-IConfig- 'Lanchat.Core.P2P.#ctor(Lanchat.Core.IConfig)')
   - [Broadcasting](#P-Lanchat-Core-P2P-Broadcasting 'Lanchat.Core.P2P.Broadcasting')
@@ -756,18 +756,18 @@ Dispose node. For safe disconnect use [Disconnect](#M-Lanchat-Core-Node-Disconne
 
 This method has no parameters.
 
-<a name='T-Lanchat-Core-Network-NodesDetection'></a>
-## NodesDetection `type`
+<a name='T-Lanchat-Core-NodesDetection-NodesDetector'></a>
+## NodesDetector `type`
 
 ##### Namespace
 
-Lanchat.Core.Network
+Lanchat.Core.NodesDetection
 
 ##### Summary
 
 Detecting nodes by UDP broadcasts.
 
-<a name='P-Lanchat-Core-Network-NodesDetection-DetectedNodes'></a>
+<a name='P-Lanchat-Core-NodesDetection-NodesDetector-DetectedNodes'></a>
 ### DetectedNodes `property`
 
 ##### Summary

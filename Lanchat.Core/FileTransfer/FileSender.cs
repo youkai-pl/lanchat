@@ -7,6 +7,7 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
+    // TODO: Refactor
     /// <summary>
     ///     File sending.
     /// </summary>

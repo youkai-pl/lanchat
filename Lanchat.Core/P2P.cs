@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Network;
+using Lanchat.Core.NodesDetection;
 using Lanchat.Core.P2PHandlers;
 
 namespace Lanchat.Core
@@ -31,7 +32,7 @@ namespace Lanchat.Core
                 ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config)
                 : new Server(IPAddress.Any, Config.ServerPort, Config);
 
-            NodesDetection = new NodesDetection(Config);
+            NodesDetection = new NodesDetector(Config);
             Broadcasting = new Broadcasting(this);
 
             networkInternalHandlers = new P2PInternalHandlers(this);
@@ -39,7 +40,7 @@ namespace Lanchat.Core
         }
 
         /// <see cref="NodesDetection" />
-        public NodesDetection NodesDetection { get; }
+        public NodesDetector NodesDetection { get; }
 
         /// <summary>
         ///     List of connected nodes.

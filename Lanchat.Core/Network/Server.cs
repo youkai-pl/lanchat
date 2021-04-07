@@ -7,6 +7,7 @@ using NetCoreServer;
 
 namespace Lanchat.Core.Network
 {
+    // TODO: Refactor
     internal class Server : TcpServer
     {
         private readonly IConfig config;

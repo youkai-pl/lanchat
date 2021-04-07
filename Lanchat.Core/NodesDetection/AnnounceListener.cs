@@ -6,37 +6,35 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
+using Lanchat.Core.API;
 using Lanchat.Core.Models;
-using Timer = System.Timers.Timer;
 
-// ReSharper disable FunctionNeverReturns
-
-namespace Lanchat.Core.Network
+namespace Lanchat.Core.NodesDetection
 {
-    /// <summary>
-    ///     Detecting nodes by UDP broadcasts.
-    /// </summary>
-    public class NodesDetection
+
+    // TODO: Refactor
+    internal class AnnounceListener
     {
-        private readonly IConfig config;
-        private readonly IPEndPoint endPoint;
         private readonly UdpClient udpClient;
+        private readonly IConfig config;
         private readonly string uniqueId;
+        private readonly ObservableCollection<Announce> detectedNodes;
+        private readonly JsonReader jsonReader;
 
-        internal NodesDetection(IConfig config)
+        public AnnounceListener(
+            IConfig config,
+            UdpClient udpClient,
+            string uniqueId,
+            ObservableCollection<Announce> detectedNodes)
         {
+            this.udpClient = udpClient;
             this.config = config;
-            uniqueId = Guid.NewGuid().ToString();
-            endPoint = new IPEndPoint(IPAddress.Broadcast, config.BroadcastPort);
-            udpClient = new UdpClient();
+            this.uniqueId = uniqueId;
+            this.detectedNodes = detectedNodes;
+            jsonReader = new JsonReader();
         }
-
-        /// <summary>
-        ///     Detected nodes.
-        /// </summary>
-        public ObservableCollection<Announce> DetectedNodes { get; } = new();
 
         internal void Start()
         {
@@ -49,7 +47,9 @@ namespace Lanchat.Core.Network
                     var recvBuffer = udpClient.Receive(ref from);
                     try
                     {
-                        var broadcast = JsonSerializer.Deserialize<Announce>(Encoding.UTF8.GetString(recvBuffer));
+                        var broadcast =
+                            jsonReader.DeserializeKnownType<Announce>(Encoding.UTF8.GetString(recvBuffer));
+                        
                         Validator.ValidateObject(broadcast!, new ValidationContext(broadcast), true);
 
                         if (broadcast.Guid != uniqueId)
@@ -67,31 +67,14 @@ namespace Lanchat.Core.Network
                     }
                 }
             });
-
-            Task.Run(() =>
-            {
-                while (true)
-                {
-                    var json = JsonSerializer.Serialize(new Announce
-                    {
-                        Guid = uniqueId,
-                        Nickname = config.Nickname
-                    });
-
-                    var data = Encoding.UTF8.GetBytes(json);
-                    udpClient.Send(data, data.Length, endPoint);
-                    Thread.Sleep(2000);
-                }
-            });
         }
 
-        // UDP broadcast received
         private void BroadcastReceived(Announce e)
         {
-            var alreadyDetected = DetectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
+            var alreadyDetected = detectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
             if (alreadyDetected == null)
             {
-                DetectedNodes.Add(e);
+                detectedNodes.Add(e);
                 e.Active = true;
 
                 var timer = new Timer
@@ -109,7 +92,7 @@ namespace Lanchat.Core.Network
                     else
                     {
                         timer.Dispose();
-                        DetectedNodes.Remove(e);
+                        detectedNodes.Remove(e);
                     }
                 };
             }
