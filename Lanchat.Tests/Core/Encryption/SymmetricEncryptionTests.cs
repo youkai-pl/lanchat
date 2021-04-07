@@ -68,6 +68,7 @@ namespace Lanchat.Tests.Core.Encryption
         {
             symmetricEncryption.Dispose();
             Assert.Catch<ObjectDisposedException>(() => { symmetricEncryption.EncryptString("test"); });
+            Assert.Catch<ObjectDisposedException>(() => { symmetricEncryption.DecryptString("test"); });
         }
     }
 }
