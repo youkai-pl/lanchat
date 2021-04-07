@@ -28,13 +28,14 @@ namespace Lanchat.Core.API
         public void RegisterHandler(IApiHandler apiHandler)
         {
             handlers.Add(apiHandler);
+            jsonReader.KnownModels.Add(apiHandler.HandledType);
         }
 
         internal void HandleJson(string item)
         {
-            var json = jsonReader.DeserializeWrapper(item);
-            var handler = GetHandler(json.Keys.First());
-            var data = jsonReader.DeserializeData(json.Values.First().ToString(), handler.HandledType);
+            var data = jsonReader.Deserialize(item);
+            var handler = GetHandler(data.GetType());
+
             if (!nodeState.Ready && handler.Privileged == false)
                 throw new InvalidOperationException($"{nodeState.Id} must be ready to handle this type of data.");
             Validator.ValidateObject(data!, new ValidationContext(data), true);
@@ -42,11 +43,11 @@ namespace Lanchat.Core.API
             handler.Handle(data);
         }
         
-        private IApiHandler GetHandler(string jsonType)
+        private IApiHandler GetHandler(Type jsonType)
         {
-            var handler = handlers.FirstOrDefault(x => x.HandledType.Name == jsonType);
+            var handler = handlers.FirstOrDefault(x => x.HandledType == jsonType);
             if (handler == null)
-                throw new ArgumentException($"{nodeState.Id} has no handler for received data.", jsonType);
+                throw new ArgumentException($"{nodeState.Id} has no handler for received data.", jsonType.Name);
 
             return handler;
         }

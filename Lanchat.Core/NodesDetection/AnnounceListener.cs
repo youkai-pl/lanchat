@@ -13,7 +13,6 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.NodesDetection
 {
-
     // TODO: Refactor
     internal class AnnounceListener
     {
@@ -47,11 +46,9 @@ namespace Lanchat.Core.NodesDetection
                     var recvBuffer = udpClient.Receive(ref from);
                     try
                     {
-                        var broadcast =
-                            jsonReader.DeserializeKnownType<Announce>(Encoding.UTF8.GetString(recvBuffer));
-                        
+                        var broadcast = jsonReader.Deserialize<Announce>(Encoding.UTF8.GetString(recvBuffer));
                         Validator.ValidateObject(broadcast!, new ValidationContext(broadcast), true);
-
+                        
                         if (broadcast.Guid != uniqueId)
                         {
                             broadcast.IpAddress = from.Address;
