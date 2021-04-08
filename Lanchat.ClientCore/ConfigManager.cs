@@ -1,8 +1,6 @@
 using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -11,7 +9,7 @@ namespace Lanchat.ClientCore
 {
     public static class ConfigManager
     {
-        private static Config _config;
+        public static string DownloadsPath { get; private set; }
         public static string ConfigPath { get; private set; }
         public static string DataPath { get; private set; }
 
@@ -28,82 +26,82 @@ namespace Lanchat.ClientCore
 
         public static Config Load()
         {
+            Config config;
+
             try
             {
-                var xdgConfigHome = Environment.GetEnvironmentVariable("XDG_CONFIG_HOME");
-                var xdgDataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
-
-                if (xdgDataHome != null && xdgConfigHome != null)
-                {
-                    DataPath = xdgDataHome;
-                    ConfigPath = $"{xdgConfigHome}/config.json";
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    DataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Lanchat2";
-                    ConfigPath = $"{DataPath}/config.json";
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    DataPath = Environment.GetEnvironmentVariable("HOME") + "/.Lancaht2";
-                    ConfigPath = $"{DataPath}/config.json";
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    DataPath = Environment.GetEnvironmentVariable("HOME") + "/Library/Preferences/.Lancaht2";
-                    ConfigPath = $"{DataPath}/config.json";
-                }
-
-                _config = JsonSerializer.Deserialize<Config>(File.ReadAllText(ConfigPath), JsonSerializerOptions);
+                GetPaths();
+                config = JsonSerializer.Deserialize<Config>(File.ReadAllText(ConfigPath), JsonSerializerOptions);
             }
             catch (Exception e)
             {
-                if (e is FileNotFoundException ||
-                    e is DirectoryNotFoundException ||
-                    e is JsonException)
-                {
-                    _config = new Config
-                    {
-                        Fresh = true,
-                        BlockedAddresses = new ObservableCollection<IPAddress>(),
-                        SavedAddresses = new ObservableCollection<IPAddress>()
-                    };
-                    Save();
-                }
-                else
-                {
-                    throw;
-                }
+                if (e is not (FileNotFoundException or DirectoryNotFoundException or JsonException)) throw;
+                config = CreateNewConfig();
             }
 
-            _config ??= new Config
-            {
-                Fresh = true
-            };
+            config ??= CreateNewConfig();
 
-            Save();
-            _config.PropertyChanged += (_, _) => { Save(); };
-            _config.BlockedAddresses.CollectionChanged += (_, _) => { Save(); };
-            _config.SavedAddresses.CollectionChanged += (_, _) => { Save(); };
-            return _config;
+            Save(config);
+            config.PropertyChanged += (_, _) => { Save(config); };
+            config.BlockedAddresses.CollectionChanged += (_, _) => { Save(config); };
+            config.SavedAddresses.CollectionChanged += (_, _) => { Save(config); };
+            return config;
         }
 
-        private static void Save()
+        private static Config CreateNewConfig()
+        {
+            return new()
+            {
+                Fresh = true,
+            };
+        }
+
+        private static void GetPaths()
+        {
+            var xdgConfigHome = Environment.GetEnvironmentVariable("XDG_CONFIG_HOME");
+            var xdgDataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
+
+            if (xdgDataHome != null && xdgConfigHome != null)
+            {
+                DataPath = xdgDataHome;
+                ConfigPath = $"{xdgConfigHome}/config.json";
+                DownloadsPath = xdgDataHome;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                DataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Lanchat2";
+                ConfigPath = $"{DataPath}/config.json";
+                DownloadsPath = Environment.GetEnvironmentVariable("%UserProfile%") + "/Downloads";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                var home = Environment.GetEnvironmentVariable("HOME");
+                DataPath =  $"{home}/.Lancaht2";
+                ConfigPath = $"{DataPath}/config.json";
+                DownloadsPath = $"{home}/Downloads";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                var home = Environment.GetEnvironmentVariable("HOME");
+                DataPath = $"{home}/Library/Preferences/.Lancaht2";
+                ConfigPath = $"{DataPath}/config.json";
+                DownloadsPath = $"{home}/Downloads";
+            }
+        }
+
+        private static void Save(Config config)
         {
             try
             {
                 var configFileDirectory = Path.GetDirectoryName(ConfigPath);
                 if (!Directory.Exists(configFileDirectory)) Directory.CreateDirectory(configFileDirectory!);
-                File.WriteAllText(ConfigPath, JsonSerializer.Serialize(_config, JsonSerializerOptions));
+                File.WriteAllText(ConfigPath, JsonSerializer.Serialize(config, JsonSerializerOptions));
             }
             catch (Exception e)
             {
-                if (e is DirectoryNotFoundException ||
-                    e is UnauthorizedAccessException ||
-                    e is ArgumentNullException)
-                    Trace.WriteLine("Cannot save config");
-                else
+                if (e is not (DirectoryNotFoundException or UnauthorizedAccessException or ArgumentNullException))
                     throw;
+                Trace.WriteLine("Cannot save config");
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -12,11 +13,11 @@ namespace Lanchat.ClientCore
     {
         private static int _port = 3645;
         private static int _broadcastPort = 3646;
-        private static string _nickname = ConfigValues.GetNickname();
+        private static string _nickname = Environment.UserName;
         private static bool _automatic = true;
         private static bool _useIPv6;
         private static string _language = "default";
-        private static string _filesDownloadDirectory = ConfigValues.GetDownloadsDirectory();
+        private static string _filesDownloadDirectory = ConfigManager.DownloadsPath;
         private static Status _status = Status.Online;
         private static ObservableCollection<IPAddress> _blockedAddresses = new();
         private static ObservableCollection<IPAddress> _savedAddresses = new();
