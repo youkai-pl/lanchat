@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,14 +14,13 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.NodesDetection
 {
-    // TODO: Refactor
     internal class AnnounceListener
     {
-        private readonly UdpClient udpClient;
         private readonly IConfig config;
-        private readonly string uniqueId;
         private readonly ObservableCollection<Announce> detectedNodes;
         private readonly JsonReader jsonReader;
+        private readonly UdpClient udpClient;
+        private readonly string uniqueId;
 
         public AnnounceListener(
             IConfig config,
@@ -46,58 +46,77 @@ namespace Lanchat.Core.NodesDetection
                     var recvBuffer = udpClient.Receive(ref from);
                     try
                     {
-                        var broadcast = jsonReader.Deserialize<Announce>(Encoding.UTF8.GetString(recvBuffer));
-                        Validator.ValidateObject(broadcast!, new ValidationContext(broadcast), true);
-                        
-                        if (broadcast.Guid != uniqueId)
-                        {
-                            broadcast.IpAddress = from.Address;
-                            BroadcastReceived(broadcast);
-                        }
+                        HandleBroadcast(recvBuffer, from);
                     }
-                    catch (Exception e)
+                    catch (JsonException)
                     {
-                        if (e is not JsonException &&
-                            e is not ArgumentException &&
-                            e is not NotSupportedException &&
-                            e is not ValidationException) throw;
+                    }
+                    catch (InvalidOperationException)
+                    {
                     }
                 }
             });
+        }
+
+        private void HandleBroadcast(byte[] recvBuffer, IPEndPoint from)
+        {
+            var broadcast = jsonReader.Deserialize<Announce>(Encoding.UTF8.GetString(recvBuffer));
+            if (!CheckPreconditions(broadcast)) return;
+            broadcast.IpAddress = from.Address;
+            BroadcastReceived(broadcast);
+        }
+
+        private bool CheckPreconditions(Announce broadcast)
+        {
+            if (!Validator.TryValidateObject(broadcast, new ValidationContext(broadcast), new List<ValidationResult>()))
+            {
+                return false;
+            }
+
+            return broadcast.Guid != uniqueId;
         }
 
         private void BroadcastReceived(Announce e)
         {
             var alreadyDetected = detectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
             if (alreadyDetected == null)
-            {
-                detectedNodes.Add(e);
-                e.Active = true;
-
-                var timer = new Timer
-                {
-                    Interval = 2500,
-                    Enabled = true
-                };
-
-                timer.Elapsed += (_, _) =>
-                {
-                    if (e.Active)
-                    {
-                        e.Active = false;
-                    }
-                    else
-                    {
-                        timer.Dispose();
-                        detectedNodes.Remove(e);
-                    }
-                };
-            }
+                AddNewNode(e);
             else
+                UpdateNode(e, alreadyDetected);
+        }
+
+        private void UpdateNode(Announce newAnnounce, Announce alreadyDetected)
+        {
+            alreadyDetected.Active = true;
+            alreadyDetected.Nickname = newAnnounce.Nickname;
+        }
+
+        private void AddNewNode(Announce newAnnounce)
+        {
+            detectedNodes.Add(newAnnounce);
+            newAnnounce.Active = true;
+            SetupTimer(newAnnounce);
+        }
+
+        private void SetupTimer(Announce newAnnounce)
+        {
+            var timer = new Timer
             {
-                alreadyDetected.Active = true;
-                alreadyDetected.Nickname = e.Nickname;
-            }
+                Interval = 2500,
+                Enabled = true
+            };
+
+            timer.Elapsed += (_, _) =>
+            {
+                if (newAnnounce.Active)
+                {
+                    newAnnounce.Active = false;
+                    return;
+                }
+
+                timer.Dispose();
+                detectedNodes.Remove(newAnnounce);
+            };
         }
     }
 }
