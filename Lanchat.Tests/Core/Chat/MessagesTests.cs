@@ -41,7 +41,7 @@ namespace Lanchat.Tests.Core.Chat
             var receivedMessage = string.Empty;
 
             messaging.MessageReceived += (_, s) => { receivedMessage = s; };
-            networkMock.DataReceived += (_, s) => resolver.HandleJson(s);
+            networkMock.DataReceived += (_, s) => resolver.CallHandler(s);
 
             messaging.SendMessage(testMessage);
             Assert.AreEqual(testMessage, receivedMessage);
@@ -54,22 +54,10 @@ namespace Lanchat.Tests.Core.Chat
             var receivedMessage = string.Empty;
 
             messaging.PrivateMessageReceived += (_, s) => { receivedMessage = s; };
-            networkMock.DataReceived += (_, s) => resolver.HandleJson(s);
+            networkMock.DataReceived += (_, s) => resolver.CallHandler(s);
 
             messaging.SendPrivateMessage(testMessage);
             Assert.AreEqual(testMessage, receivedMessage);
-        }
-
-        [Test]
-        public void TooLongMessageSend()
-        {
-            var testMessage = new string('a', 2000);
-
-            Assert.Catch<ValidationException>(() =>
-            {
-                networkMock.DataReceived += (_, s) => resolver.HandleJson(s);
-                messaging.SendMessage(testMessage);
-            });
         }
 
         [Test]
@@ -80,12 +68,12 @@ namespace Lanchat.Tests.Core.Chat
             var receivedMessage = string.Empty;
 
             messaging.MessageReceived += (_, s) => { receivedMessage = s; };
-            networkMock.DataReceived += (_, s) => resolver.HandleJson(s);
+            networkMock.DataReceived += (_, s) => resolver.CallHandler(s);
 
             messaging.SendMessage(testMessage);
             Assert.AreEqual(testMessage, receivedMessage);
         }
-
+        
         [Test]
         public void InvalidFormatCatch()
         {

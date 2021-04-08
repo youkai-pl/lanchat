@@ -1,6 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
 using Lanchat.Core.API;
 using Lanchat.Core.Models;
 using Lanchat.Tests.Mock;
@@ -12,57 +10,86 @@ namespace Lanchat.Tests.Core.API
 {
     public class ResolverTests
     {
+        private MessageHandlerMock messageHandlerMock;
         private NodeState nodeState;
-        private Resolver resolver;
         private PrivilegedHandler privilegedHandler;
+        private Resolver resolver;
 
         [SetUp]
         public void Setup()
         {
             nodeState = new NodeState();
             resolver = new Resolver(nodeState);
+            messageHandlerMock = new MessageHandlerMock();
             privilegedHandler = new PrivilegedHandler();
-            resolver.RegisterHandler(new MessageHandlerMock());
+            resolver.RegisterHandler(messageHandlerMock);
             resolver.RegisterHandler(privilegedHandler);
         }
 
         [Test]
         public void UnknownModel()
         {
-            Assert.Catch<InvalidOperationException>(() => { resolver.HandleJson(NetworkOutput.Serialize(new Model())); });
+            Assert.Catch<InvalidOperationException>(() =>
+            {
+                resolver.CallHandler(NetworkOutput.Serialize(new Model()));
+            });
         }
 
         [Test]
         public void NoHandler()
         {
-            Assert.Catch<InvalidOperationException>(() => { resolver.HandleJson(NetworkOutput.Serialize(new Handshake())); });
+            Assert.Catch<InvalidOperationException>(() =>
+            {
+                resolver.CallHandler(NetworkOutput.Serialize(new Handshake()));
+            });
         }
 
         [Test]
         public void NodeNotReady()
         {
             nodeState.Ready = false;
-            Assert.Catch<InvalidOperationException>(() => { resolver.HandleJson(NetworkOutput.Serialize(new Message())); });
+            resolver.CallHandler(NetworkOutput.Serialize(new Message()));
+            Assert.IsFalse(messageHandlerMock.Received);
         }
-        
+
         [Test]
         public void PrivilegedHandler()
         {
             nodeState.Ready = false;
-            resolver.HandleJson(NetworkOutput.Serialize(new PrivilegedModel()));
+            resolver.CallHandler(NetworkOutput.Serialize(new PrivilegedModel()));
             Assert.IsTrue(privilegedHandler.Received);
+        }
+
+        [Test]
+        public void ValidModel()
+        {
+            resolver.OnDataReceived(this, NetworkOutput.Serialize(new Message {Content = "test"}));
+            Assert.IsTrue(messageHandlerMock.Received);
         }
 
         [Test]
         public void InvalidModel()
         {
-            Assert.Catch<ValidationException>(() => { resolver.HandleJson(NetworkOutput.Serialize(new Message())); });
+            resolver.OnDataReceived(this, NetworkOutput.Serialize(new Message {Content = null}));
+            Assert.IsFalse(messageHandlerMock.Received);
         }
 
         [Test]
-        public void InvalidJson()
+        public void InvalidOperationExceptionCatch()
         {
-            Assert.Catch<JsonException>(() => { resolver.HandleJson("not a json"); });
+            resolver.OnDataReceived(this, "{}");
+        }
+
+        [Test]
+        public void JsonExceptionCatch()
+        {
+            resolver.OnDataReceived(this, "{\"key\": invalid format}");
+        }
+
+        [Test]
+        public void ValidationExceptionCatch()
+        {
+            resolver.OnDataReceived(this, NetworkOutput.Serialize(new ModelWithValidation()));
         }
     }
 }

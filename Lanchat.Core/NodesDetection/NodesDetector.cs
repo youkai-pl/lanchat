@@ -1,9 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Net;
 using System.Net.Sockets;
-using Lanchat.Core.API;
 using Lanchat.Core.Models;
 
 // ReSharper disable FunctionNeverReturns

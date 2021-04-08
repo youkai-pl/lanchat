@@ -60,7 +60,6 @@ namespace Lanchat.Core
             FileSender = new FileSender(NetworkOutput, SymmetricEncryption);
 
             Resolver = new Resolver(this);
-            var networkInput = new NetworkInput(Resolver);
             Resolver.RegisterHandler(new HandshakeHandler(this));
             Resolver.RegisterHandler(new KeyInfoHandler(this));
             Resolver.RegisterHandler(new ConnectionControlHandler(this));
@@ -71,7 +70,7 @@ namespace Lanchat.Core
             Resolver.RegisterHandler(new FileTransferControlHandler(FileReceiver, FileSender));
 
             NetworkElement.Disconnected += OnDisconnected;
-            NetworkElement.DataReceived += networkInput.ProcessReceivedData;
+            NetworkElement.DataReceived += Resolver.OnDataReceived;
             NetworkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
             if (IsSession) SendHandshake();
