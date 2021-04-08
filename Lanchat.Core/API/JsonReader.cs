@@ -31,19 +31,9 @@ namespace Lanchat.Core.API
         internal object Deserialize(string item)
         {
             var wrapper = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(item, serializerOptions);
-            if (wrapper == null)
-            {
-                throw new ArgumentException(item);
-            }
-
-            var type = KnownModels.First(x => x.Name == wrapper.Keys.First());
-            var serializedContent = wrapper.Values.First().ToString();
-            if (serializedContent == null)
-            {
-                throw new ArgumentException(item);
-            }
-
-            return JsonSerializer.Deserialize(serializedContent, type, serializerOptions);
+            var type = KnownModels.First(x => x.Name == wrapper?.Keys.First());
+            var serializedContent = wrapper?.Values.First().ToString();
+            return JsonSerializer.Deserialize(serializedContent ?? string.Empty, type, serializerOptions);
         }
     }
 }
