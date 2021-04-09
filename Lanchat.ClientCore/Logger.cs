@@ -5,9 +5,14 @@ using System.Linq;
 
 namespace Lanchat.ClientCore
 {
-    public static class Logging
+    public class Logger
     {
-        public static void StartLogging()
+
+        public Logger()
+        {
+        }
+
+        public void StartLogging()
         {
             AppDomain.CurrentDomain.FirstChanceException += (_, eventArgs) =>
             {
@@ -22,7 +27,7 @@ namespace Lanchat.ClientCore
             Trace.WriteLine("Logging started");
         }
 
-        public static void DeleteOldLogs()
+        public void DeleteOldLogs()
         {
             foreach (var fi in new DirectoryInfo(ConfigManager.DataPath)
                 .GetFiles("*.log")

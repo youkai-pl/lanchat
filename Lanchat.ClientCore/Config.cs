@@ -26,7 +26,7 @@ namespace Lanchat.ClientCore
         [JsonIgnore] public bool ConnectToSaved { get; set; } = true;
         [JsonIgnore] public bool NodesDetection { get; set; } = true;
         [JsonIgnore] public bool StartServer { get; set; } = true;
-        
+
         public string Language
         {
             get => _language;
