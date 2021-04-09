@@ -1,32 +1,17 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Abstractions;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Lanchat.ClientCore
 {
-    public class ConfigManager
+    public static class ConfigManager
     {
-        private readonly IFileSystem fileSystem;
-
-        public ConfigManager(IFileSystem fileSystem)
-        {
-            this.fileSystem = fileSystem;
-            SetTestPaths();
-        }
-
-        public ConfigManager()
-        {
-            fileSystem = new FileSystem();
-            SetPaths();
-        }
-
-        public static string DownloadsPath { get; private set; }
-        public static string ConfigPath { get; private set; }
-        public static string DataPath { get; private set; }
+        public static string DownloadsPath { get; set; }
+        public static string ConfigPath { get; set; }
+        public static string DataPath { get; set; }
 
         private static JsonSerializerOptions JsonSerializerOptions =>
             new()
@@ -39,13 +24,18 @@ namespace Lanchat.ClientCore
                 }
             };
 
-        public Config Load()
+        public static Config Load()
         {
+            if (DataPath == null)
+            {
+                SetPaths();
+            }
+
             Config config;
 
             try
             {
-                config = JsonSerializer.Deserialize<Config>(fileSystem.File.ReadAllText(ConfigPath),
+                config = JsonSerializer.Deserialize<Config>(File.ReadAllText(ConfigPath),
                     JsonSerializerOptions);
             }
             catch (Exception e)
@@ -63,14 +53,19 @@ namespace Lanchat.ClientCore
             return config;
         }
 
-        internal void Save(Config config)
+        internal static void Save(Config config)
         {
+            if (DataPath == null)
+            {
+                SetPaths();
+            }
+
             try
             {
-                var configFileDirectory = fileSystem.Path.GetDirectoryName(ConfigPath);
-                if (!fileSystem.Directory.Exists(configFileDirectory))
-                    fileSystem.Directory.CreateDirectory(configFileDirectory!);
-                fileSystem.File.WriteAllText(ConfigPath, JsonSerializer.Serialize(config, JsonSerializerOptions));
+                var configFileDirectory = Path.GetDirectoryName(ConfigPath);
+                if (!Directory.Exists(configFileDirectory))
+                    Directory.CreateDirectory(configFileDirectory!);
+                File.WriteAllText(ConfigPath, JsonSerializer.Serialize(config, JsonSerializerOptions));
             }
             catch (Exception e)
             {
@@ -80,7 +75,7 @@ namespace Lanchat.ClientCore
             }
         }
 
-        internal static Config CreateNewConfig()
+        private static Config CreateNewConfig()
         {
             return new()
             {
@@ -119,13 +114,6 @@ namespace Lanchat.ClientCore
                 ConfigPath = $"{DataPath}/config.json";
                 DownloadsPath = $"{home}/Downloads";
             }
-        }
-
-        private static void SetTestPaths()
-        {
-            DataPath = "data";
-            ConfigPath = "data/config.json";
-            DownloadsPath = "data";
         }
     }
 }

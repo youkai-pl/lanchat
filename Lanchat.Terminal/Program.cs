@@ -16,7 +16,7 @@ namespace Lanchat.Terminal
 
         private static void Main(string[] args)
         {
-            Config = new ConfigManager().Load();
+            Config = ConfigManager.Load();
 
             // Load resources
             try
@@ -64,10 +64,9 @@ namespace Lanchat.Terminal
                 if (newVersion != null) Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
             }
 
-            var logger = new Logger();
-            logger.StartLogging();
+            Logger.StartLogging();
             Network.Start();
-            logger.DeleteOldLogs();
+            Logger.DeleteOldLogs(5);
         }
     }
 }

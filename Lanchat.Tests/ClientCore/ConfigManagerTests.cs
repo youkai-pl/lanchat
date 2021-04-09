@@ -1,66 +1,39 @@
-using System.Collections.Generic;
-using System.IO.Abstractions;
-using System.IO.Abstractions.TestingHelpers;
-using System.Net;
 using Lanchat.ClientCore;
+using Lanchat.Tests.Mock;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.ClientCore
 {
     public class ConfigManagerTests
     {
-        private IFileSystem fileSystem;
-        private ConfigManager configManager;
-
         [SetUp]
         public void Setup()
         {
-            fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {"data", new MockDirectoryData()},
-            });
-            configManager = new ConfigManager(fileSystem);
+            FileOperations.Prepare();
         }
 
         [Test]
         public void CreatingNewConfig()
         {
-            var config = configManager.Load();
+            var config = ConfigManager.Load();
             Assert.IsTrue(config.Fresh);
         }
 
         [Test]
         public void ConfigLoading()
         {
-            configManager.Save(new Config());
-            var config = configManager.Load();
+            ConfigManager.Save(new Config());
+            var config = ConfigManager.Load();
             Assert.IsFalse(config.Fresh);
         }
 
         [Test]
         public void ConfigSaving()
         {
-            var config = ConfigManager.CreateNewConfig();
+            var config = ConfigManager.Load();
             config.Nickname = "test";
-            var loadedConfig = configManager.Load();
+            var loadedConfig = ConfigManager.Load();
             Assert.AreEqual(config.Nickname, loadedConfig.Nickname);
-        }
-
-        [Test]
-        public void AddingToBlockList()
-        {
-            var config = ConfigManager.CreateNewConfig();
-            config.BlockedAddresses.Add(IPAddress.Loopback);
-            Assert.Contains(IPAddress.Loopback, config.BlockedAddresses);
-        }
-
-        [Test]
-        public void RemovingFromBlockList()
-        {
-            var config = ConfigManager.CreateNewConfig();
-            config.BlockedAddresses.Add(IPAddress.Loopback);
-            config.BlockedAddresses.Remove(IPAddress.Loopback);
-            Assert.IsFalse(config.BlockedAddresses.Contains(IPAddress.Loopback));
         }
     }
 }

@@ -11,16 +11,16 @@ namespace Lanchat.ClientCore
 {
     public class Config : IConfig
     {
-        private static int _port = 3645;
-        private static int _broadcastPort = 3646;
-        private static string _nickname = Environment.UserName;
-        private static bool _automatic = true;
-        private static bool _useIPv6;
-        private static string _language = "default";
-        private static string _filesDownloadDirectory = ConfigManager.DownloadsPath;
-        private static Status _status = Status.Online;
-        private static ObservableCollection<IPAddress> _blockedAddresses = new();
-        private static ObservableCollection<IPAddress> _savedAddresses = new();
+        private int port = 3645;
+        private int broadcastPort = 3646;
+        private string nickname = Environment.UserName;
+        private bool automatic = true;
+        private bool useIPv6;
+        private string language = "default";
+        private string filesDownloadDirectory = ConfigManager.DownloadsPath;
+        private Status status = Status.Online;
+        private ObservableCollection<IPAddress> blockedAddresses = new();
+        private ObservableCollection<IPAddress> savedAddresses = new();
 
         [JsonIgnore] public bool Fresh { get; set; }
         [JsonIgnore] public bool ConnectToSaved { get; set; } = true;
@@ -29,100 +29,100 @@ namespace Lanchat.ClientCore
 
         public string Language
         {
-            get => _language;
+            get => language;
             set
             {
-                _language = value;
+                language = value;
                 OnPropertyChanged(nameof(Language));
             }
         }
         
         public ObservableCollection<IPAddress> BlockedAddresses
         {
-            get => _blockedAddresses;
+            get => blockedAddresses;
             set
             {
-                _blockedAddresses = value;
+                blockedAddresses = value;
                 OnPropertyChanged(nameof(BlockedAddresses));
             }
         }
 
         public ObservableCollection<IPAddress> SavedAddresses
         {
-            get => _savedAddresses;
+            get => savedAddresses;
             set
             {
-                _savedAddresses = value;
+                savedAddresses = value;
                 OnPropertyChanged(nameof(SavedAddresses));
             }
         }
 
         public Status Status
         {
-            get => _status;
+            get => status;
             set
             {
-                _status = value;
+                status = value;
                 OnPropertyChanged(nameof(Status));
             }
         }
 
         public int ServerPort
         {
-            get => _port;
+            get => port;
             set
             {
-                _port = value;
+                port = value;
                 OnPropertyChanged(nameof(ServerPort));
             }
         }
 
         public int BroadcastPort
         {
-            get => _broadcastPort;
+            get => broadcastPort;
             set
             {
-                _broadcastPort = value;
+                broadcastPort = value;
                 OnPropertyChanged(nameof(BroadcastPort));
             }
         }
 
         public string Nickname
         {
-            get => _nickname;
+            get => nickname;
             set
             {
-                _nickname = value;
+                nickname = value;
                 OnPropertyChanged(nameof(Nickname));
             }
         }
 
         public bool ConnectToReceivedList
         {
-            get => _automatic;
+            get => automatic;
             set
             {
-                _automatic = value;
+                automatic = value;
                 OnPropertyChanged(nameof(ConnectToReceivedList));
             }
         }
 
         public string ReceivedFilesDirectory
         {
-            get => _filesDownloadDirectory;
+            get => filesDownloadDirectory;
             set
             {
-                _filesDownloadDirectory = value;
+                filesDownloadDirectory = value;
                 OnPropertyChanged(nameof(ReceivedFilesDirectory));
             }
         }
 
         public bool UseIPv6
         {
-            get => _useIPv6;
+            get => useIPv6;
             set
             {
-                _useIPv6 = value;
+                useIPv6 = value;
                 OnPropertyChanged(nameof(UseIPv6));
             }
         }
