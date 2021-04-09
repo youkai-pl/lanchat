@@ -83,6 +83,7 @@ namespace Lanchat.ClientCore
             };
         }
 
+        // TODO: Refactor
         private static void SetPaths()
         {
             var xdgConfigHome = Environment.GetEnvironmentVariable("XDG_CONFIG_HOME");
