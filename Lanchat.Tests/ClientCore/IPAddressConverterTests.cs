@@ -8,6 +8,13 @@ namespace Lanchat.Tests.ClientCore
 {
     public class IpAddressConverterTests
     {
+        private const string SerializedModel = "{\"IpAddress\":\"127.0.0.1\"}";
+
+        private static readonly IpAddressModel Model = new()
+        {
+            IpAddress = IPAddress.Loopback
+        };
+
         private static JsonSerializerOptions JsonSerializerOptions =>
             new()
             {
@@ -16,13 +23,6 @@ namespace Lanchat.Tests.ClientCore
                     new IpAddressConverter()
                 }
             };
-
-        private static readonly IpAddressModel Model = new()
-        {
-            IpAddress = IPAddress.Loopback
-        };
-
-        private const string SerializedModel = "{\"IpAddress\":\"127.0.0.1\"}";
 
         [Test]
         public void Serialize()

@@ -11,21 +11,18 @@ namespace Lanchat.ClientCore
 {
     public class Config : IConfig
     {
-        private int port = 3645;
-        private int broadcastPort = 3646;
-        private string nickname = Environment.UserName;
         private bool automatic = true;
-        private bool useIPv6;
-        private string language = "default";
-        private string filesDownloadDirectory = Storage.DownloadsPath;
-        private Status status = Status.Online;
         private ObservableCollection<IPAddress> blockedAddresses = new();
+        private int broadcastPort = 3646;
+        private string filesDownloadDirectory = Storage.DownloadsPath;
+        private string language = "default";
+        private string nickname = Environment.UserName;
+        private int port = 3645;
         private ObservableCollection<IPAddress> savedAddresses = new();
+        private Status status = Status.Online;
+        private bool useIPv6;
 
         [JsonIgnore] public bool Fresh { get; set; }
-        [JsonIgnore] public bool ConnectToSaved { get; set; } = true;
-        [JsonIgnore] public bool NodesDetection { get; set; } = true;
-        [JsonIgnore] public bool StartServer { get; set; } = true;
 
         public string Language
         {
@@ -36,7 +33,11 @@ namespace Lanchat.ClientCore
                 OnPropertyChanged(nameof(Language));
             }
         }
-        
+
+        [JsonIgnore] public bool ConnectToSaved { get; set; } = true;
+        [JsonIgnore] public bool NodesDetection { get; set; } = true;
+        [JsonIgnore] public bool StartServer { get; set; } = true;
+
         public ObservableCollection<IPAddress> BlockedAddresses
         {
             get => blockedAddresses;

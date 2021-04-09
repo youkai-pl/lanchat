@@ -10,10 +10,7 @@ namespace Lanchat.Tests.Mock
             Storage.DataPath = "data";
             Storage.DownloadsPath = "data";
 
-            foreach (var filePath in Directory.GetFiles(Storage.DataPath))
-            {
-                File.Delete(filePath);
-            }
+            foreach (var filePath in Directory.GetFiles(Storage.DataPath)) File.Delete(filePath);
         }
     }
 }

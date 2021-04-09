@@ -48,7 +48,7 @@ namespace Lanchat.Terminal
                 else
                     throw;
             }
-            
+
             Ui.SetupNetworkEvents();
 
             // Show logs in console
@@ -56,7 +56,7 @@ namespace Lanchat.Terminal
             {
                 Trace.Listeners.Add(new TerminalTraceListener());
             }
-            
+
             // Don't check updates in debug mode
             else
             {
