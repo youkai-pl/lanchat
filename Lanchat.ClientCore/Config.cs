@@ -17,7 +17,7 @@ namespace Lanchat.ClientCore
         private bool automatic = true;
         private bool useIPv6;
         private string language = "default";
-        private string filesDownloadDirectory = ConfigManager.DownloadsPath;
+        private string filesDownloadDirectory = Storage.DownloadsPath;
         private Status status = Status.Online;
         private ObservableCollection<IPAddress> blockedAddresses = new();
         private ObservableCollection<IPAddress> savedAddresses = new();

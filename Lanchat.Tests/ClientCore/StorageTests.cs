@@ -15,24 +15,24 @@ namespace Lanchat.Tests.ClientCore
         [Test]
         public void CreatingNewConfig()
         {
-            var config = ConfigManager.Load();
+            var config = Storage.LoadConfig();
             Assert.IsTrue(config.Fresh);
         }
 
         [Test]
         public void ConfigLoading()
         {
-            ConfigManager.Save(new Config());
-            var config = ConfigManager.Load();
+            Storage.SaveConfig(new Config());
+            var config = Storage.LoadConfig();
             Assert.IsFalse(config.Fresh);
         }
 
         [Test]
         public void ConfigSaving()
         {
-            var config = ConfigManager.Load();
+            var config = Storage.LoadConfig();
             config.Nickname = "test";
-            var loadedConfig = ConfigManager.Load();
+            var loadedConfig = Storage.LoadConfig();
             Assert.AreEqual(config.Nickname, loadedConfig.Nickname);
         }
     }

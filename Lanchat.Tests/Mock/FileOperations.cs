@@ -7,16 +7,13 @@ namespace Lanchat.Tests.Mock
     {
         public static void Prepare()
         {
-            ConfigManager.DataPath = "data";
-            ConfigManager.ConfigPath = "data/config.json";
-            ConfigManager.DownloadsPath = "data";
+            Storage.DataPath = "data";
+            Storage.DownloadsPath = "data";
 
-            if (Directory.Exists(ConfigManager.DataPath))
+            foreach (var filePath in Directory.GetFiles(Storage.DataPath))
             {
-                Directory.Delete(ConfigManager.DataPath, true);
+                File.Delete(filePath);
             }
-
-            Directory.CreateDirectory(ConfigManager.DataPath);
         }
     }
 }

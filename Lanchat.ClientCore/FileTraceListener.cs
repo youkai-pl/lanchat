@@ -11,10 +11,7 @@ namespace Lanchat.ClientCore
 
         public override void WriteLine(string message)
         {
-            if (IndentLevel > 0)
-                base.WriteLine(message);
-            else
-                base.WriteLine(DateTime.Now.ToString("[HH:mm:ss] ") + message);
+            base.WriteLine(DateTime.Now.ToString("[HH:mm:ss] ") + message);
         }
     }
 }

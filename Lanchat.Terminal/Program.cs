@@ -16,7 +16,7 @@ namespace Lanchat.Terminal
 
         private static void Main(string[] args)
         {
-            Config = ConfigManager.Load();
+            Config = Storage.LoadConfig();
 
             // Load resources
             try
