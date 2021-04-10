@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
+using Lanchat.Core.P2PHandlers;
 
 namespace Lanchat.Core
 {
@@ -12,10 +13,12 @@ namespace Lanchat.Core
         internal List<Node> Nodes { get; }
         internal event EventHandler<Node> NodeCreated;
         private readonly IConfig config;
+        private readonly P2P network;
 
-        internal NodesControl(IConfig config)
+        internal NodesControl(IConfig config, P2P network)
         {
             this.config = config;
+            this.network = network;
             Nodes = new List<Node>();
         }
         
@@ -23,6 +26,7 @@ namespace Lanchat.Core
         {
             var node = new Node(networkElement, config);
             Nodes.Add(node);
+            node.Resolver.RegisterHandler(new NodesListHandler(network));
             node.Connected += OnConnected;
             node.CannotConnect += CloseNode;
             node.Disconnected += CloseNode;

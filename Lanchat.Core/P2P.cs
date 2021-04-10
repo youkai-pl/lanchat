@@ -25,7 +25,7 @@ namespace Lanchat.Core
         public P2P(IConfig config)
         {
             Config = config;
-            nodesControl = new NodesControl(config);
+            nodesControl = new NodesControl(config, this);
             nodesControl.NodeCreated += (sender, node) => { NodeCreated?.Invoke(sender, node); };
 
             server = Config.UseIPv6
@@ -77,7 +77,6 @@ namespace Lanchat.Core
             CheckAddress(ipAddress);
             var client = new Client(ipAddress, port.Value);
             var node = nodesControl.CreateNode(client);
-            node.Resolver.RegisterHandler(new NodesListHandler(this));
             SubscribeEvents(node, tcs);
             client.ConnectAsync();
             return tcs.Task;
