@@ -17,9 +17,8 @@ namespace Lanchat.Core
     public class P2P
     {
         internal readonly IConfig Config;
-        private readonly P2PInternalHandlers networkInternalHandlers;
-        internal readonly List<Node> OutgoingConnections = new();
         internal readonly Server Server;
+        private readonly NodesControl nodesControl;
 
         /// <summary>
         ///     Initialize P2P mode.
@@ -27,15 +26,15 @@ namespace Lanchat.Core
         public P2P(IConfig config)
         {
             Config = config;
+            nodesControl = new NodesControl(config);
 
             Server = Config.UseIPv6
-                ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config)
-                : new Server(IPAddress.Any, Config.ServerPort, Config);
+                ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config, nodesControl)
+                : new Server(IPAddress.Any, Config.ServerPort, Config, nodesControl);
 
+            Server.SessionCreated += (sender, node) => { NodeCreated?.Invoke(sender, node); };
             NodesDetection = new NodesDetector(Config);
             Broadcasting = new Broadcasting(this);
-
-            networkInternalHandlers = new P2PInternalHandlers(this);
             _ = new ConfigObserver(this);
         }
 
@@ -47,13 +46,7 @@ namespace Lanchat.Core
         /// </summary>
         public List<Node> Nodes
         {
-            get
-            {
-                var nodes = new List<Node>();
-                nodes.AddRange(OutgoingConnections);
-                nodes.AddRange(Server.IncomingConnections);
-                return nodes.Where(x => x.Ready).ToList();
-            }
+            get { return nodesControl.Nodes.Where(x => x.Ready).ToList(); }
         }
 
         /// <summary>
@@ -88,10 +81,10 @@ namespace Lanchat.Core
             CheckAddress(ipAddress);
             var client = new Client(ipAddress, port.Value);
             var node = new Node(client, Config, false);
+            nodesControl.AddNode(node);
             node.Resolver.RegisterHandler(new NodesListHandler(this));
-            OutgoingConnections.Add(node);
             SubscribeEvents(node, tcs);
-            OnNodeCreated(node);
+            NodeCreated?.Invoke(this, node);
             client.ConnectAsync();
             return tcs.Task;
         }
@@ -104,18 +97,10 @@ namespace Lanchat.Core
                 throw new ArgumentException("Already connected to this node");
         }
 
-        private void SubscribeEvents(Node node, TaskCompletionSource<bool> tcs)
+        private static void SubscribeEvents(Node node, TaskCompletionSource<bool> tcs)
         {
             node.Connected += (_, _) => { tcs.TrySetResult(true); };
             node.CannotConnect += (_, _) => { tcs.TrySetResult(false); };
-            node.Connected += networkInternalHandlers.OnConnected;
-            node.Disconnected += networkInternalHandlers.CloseNode;
-            node.CannotConnect += networkInternalHandlers.CloseNode;
-        }
-
-        internal void OnNodeCreated(Node e)
-        {
-            NodeCreated?.Invoke(this, e);
         }
     }
 }
