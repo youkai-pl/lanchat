@@ -3,9 +3,9 @@ using System.Diagnostics;
 
 namespace Lanchat.ClientCore
 {
-    public class FileTraceListener : TextWriterTraceListener
+    internal class FileTraceListener : TextWriterTraceListener
     {
-        public FileTraceListener(string fileName) : base(fileName)
+        internal FileTraceListener(string fileName) : base(fileName)
         {
         }
 

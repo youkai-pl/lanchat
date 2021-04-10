@@ -9,6 +9,9 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.ClientCore
 {
+    /// <summary>
+    ///     Default IConfig implementation.
+    /// </summary>
     public class Config : IConfig
     {
         private bool automatic = true;
@@ -22,8 +25,15 @@ namespace Lanchat.ClientCore
         private Status status = Status.Online;
         private bool useIPv6;
 
-        [JsonIgnore] public bool Fresh { get; set; }
+        /// <summary>
+        ///     Config could not be loaded and has just been generated.
+        /// </summary>
+        [JsonIgnore]
+        public bool Fresh { get; set; }
 
+        /// <summary>
+        ///     UI language.
+        /// </summary>
         public string Language
         {
             get => language;
@@ -34,10 +44,20 @@ namespace Lanchat.ClientCore
             }
         }
 
-        [JsonIgnore] public bool ConnectToSaved { get; set; } = true;
-        [JsonIgnore] public bool NodesDetection { get; set; } = true;
-        [JsonIgnore] public bool StartServer { get; set; } = true;
 
+        /// <inheritdoc />
+        [JsonIgnore]
+        public bool ConnectToSaved { get; set; } = true;
+
+        /// <inheritdoc />
+        [JsonIgnore]
+        public bool NodesDetection { get; set; } = true;
+
+        /// <inheritdoc />
+        [JsonIgnore]
+        public bool StartServer { get; set; } = true;
+
+        /// <inheritdoc />
         public ObservableCollection<IPAddress> BlockedAddresses
         {
             get => blockedAddresses;
@@ -48,6 +68,7 @@ namespace Lanchat.ClientCore
             }
         }
 
+        /// <inheritdoc />
         public ObservableCollection<IPAddress> SavedAddresses
         {
             get => savedAddresses;
@@ -58,6 +79,7 @@ namespace Lanchat.ClientCore
             }
         }
 
+        /// <inheritdoc />
         public Status Status
         {
             get => status;
@@ -68,6 +90,7 @@ namespace Lanchat.ClientCore
             }
         }
 
+        /// <inheritdoc />
         public int ServerPort
         {
             get => port;
@@ -78,6 +101,7 @@ namespace Lanchat.ClientCore
             }
         }
 
+        /// <inheritdoc />
         public int BroadcastPort
         {
             get => broadcastPort;
@@ -88,6 +112,7 @@ namespace Lanchat.ClientCore
             }
         }
 
+        /// <inheritdoc />
         public string Nickname
         {
             get => nickname;
@@ -98,6 +123,7 @@ namespace Lanchat.ClientCore
             }
         }
 
+        /// <inheritdoc />
         public bool ConnectToReceivedList
         {
             get => automatic;
@@ -108,6 +134,7 @@ namespace Lanchat.ClientCore
             }
         }
 
+        /// <inheritdoc />
         public string ReceivedFilesDirectory
         {
             get => filesDownloadDirectory;
@@ -118,6 +145,7 @@ namespace Lanchat.ClientCore
             }
         }
 
+        /// <inheritdoc />
         public bool UseIPv6
         {
             get => useIPv6;
@@ -128,6 +156,7 @@ namespace Lanchat.ClientCore
             }
         }
 
+        /// <inheritdoc />
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

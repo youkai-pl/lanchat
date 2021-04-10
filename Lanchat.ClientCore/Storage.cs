@@ -7,6 +7,9 @@ using System.Text.Json.Serialization;
 
 namespace Lanchat.ClientCore
 {
+    /// <summary>
+    ///     File system utilities.
+    /// </summary>
     public static class Storage
     {
         static Storage()
@@ -14,9 +17,19 @@ namespace Lanchat.ClientCore
             SetPaths();
         }
 
+        /// <summary>
+        ///     Path of main Lanchat data folder.
+        /// </summary>
         public static string DataPath { get; set; }
 
+        /// <summary>
+        ///     Path of Lanchat config file.
+        /// </summary>
         public static string ConfigPath => DataPath + "/config.json";
+
+        /// <summary>
+        ///     Path of saved files directory.
+        /// </summary>
         public static string DownloadsPath { get; set; }
 
         private static JsonSerializerOptions JsonSerializerOptions => new()
@@ -29,6 +42,12 @@ namespace Lanchat.ClientCore
             }
         };
 
+        /// <summary>
+        ///     Load config from file or create new if it's non present or corrupted.
+        /// </summary>
+        /// <returns>
+        ///     <see cref="Config" />
+        /// </returns>
         public static Config LoadConfig()
         {
             Config config;
@@ -66,6 +85,9 @@ namespace Lanchat.ClientCore
             }
         }
 
+        /// <summary>
+        ///     Check is <see cref="DataPath" /> exists and create if it's not.
+        /// </summary>
         public static void CreateStorageDirectoryIfNotExists()
         {
             try
