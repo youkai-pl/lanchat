@@ -9,22 +9,12 @@ namespace Lanchat.ClientCore
 {
     public static class Storage
     {
-        private static string _dataPath;
-
         static Storage()
         {
             SetPaths();
         }
 
-        public static string DataPath
-        {
-            get => _dataPath;
-            set
-            {
-                _dataPath = value;
-                CreateStorageDirectoryIfNotExists();
-            }
-        }
+        public static string DataPath { get; set; }
 
         public static string ConfigPath => DataPath + "/config.json";
         public static string DownloadsPath { get; set; }
@@ -67,6 +57,7 @@ namespace Lanchat.ClientCore
         {
             try
             {
+                CreateStorageDirectoryIfNotExists();
                 File.WriteAllText(ConfigPath, JsonSerializer.Serialize(config, JsonSerializerOptions));
             }
             catch (Exception e)
@@ -75,11 +66,11 @@ namespace Lanchat.ClientCore
             }
         }
 
-        private static void CreateStorageDirectoryIfNotExists()
+        public static void CreateStorageDirectoryIfNotExists()
         {
             try
             {
-                if (!Directory.Exists(_dataPath)) Directory.CreateDirectory(_dataPath);
+                if (!Directory.Exists(DataPath)) Directory.CreateDirectory(DataPath);
             }
             catch (Exception e)
             {
