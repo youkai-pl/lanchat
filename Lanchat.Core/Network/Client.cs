@@ -16,6 +16,8 @@ namespace Lanchat.Core.Network
         {
         }
 
+        public bool IsSession => false;
+
         public event EventHandler Disconnected;
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;

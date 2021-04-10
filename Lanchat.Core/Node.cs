@@ -48,10 +48,10 @@ namespace Lanchat.Core
         private string previousNickname;
         private Status status;
 
-        internal Node(INetworkElement networkElement, IConfig config, bool isSession)
+        internal Node(INetworkElement networkElement, IConfig config)
         {
             this.config = config;
-            IsSession = isSession;
+            IsSession = networkElement.IsSession;
             NetworkElement = networkElement;
             NetworkOutput = new NetworkOutput(NetworkElement, this);
             PublicKeyEncryption = new PublicKeyEncryption();

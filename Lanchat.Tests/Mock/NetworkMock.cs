@@ -9,6 +9,7 @@ namespace Lanchat.Tests.Mock
     {
         public IPEndPoint Endpoint { get; } = new(IPAddress.Loopback, 1234);
         public Guid Id { get; } = Guid.NewGuid();
+        public bool IsSession => false;
 
         public void Send(string text)
         {

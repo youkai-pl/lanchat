@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -17,8 +16,8 @@ namespace Lanchat.Core
     public class P2P
     {
         internal readonly IConfig Config;
-        internal readonly Server Server;
         private readonly NodesControl nodesControl;
+        private readonly Server server;
 
         /// <summary>
         ///     Initialize P2P mode.
@@ -27,12 +26,12 @@ namespace Lanchat.Core
         {
             Config = config;
             nodesControl = new NodesControl(config);
+            nodesControl.NodeCreated += (sender, node) => { NodeCreated?.Invoke(sender, node); };
 
-            Server = Config.UseIPv6
+            server = Config.UseIPv6
                 ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config, nodesControl)
                 : new Server(IPAddress.Any, Config.ServerPort, Config, nodesControl);
 
-            Server.SessionCreated += (sender, node) => { NodeCreated?.Invoke(sender, node); };
             NodesDetection = new NodesDetector(Config);
             Broadcasting = new Broadcasting(this);
             _ = new ConfigObserver(this);
@@ -44,10 +43,7 @@ namespace Lanchat.Core
         /// <summary>
         ///     List of connected nodes.
         /// </summary>
-        public List<Node> Nodes
-        {
-            get { return nodesControl.Nodes.Where(x => x.Ready).ToList(); }
-        }
+        public List<Node> Nodes => nodesControl.Nodes.Where(x => x.Ready).ToList();
 
         /// <summary>
         ///     Send data to all nodes.
@@ -64,7 +60,7 @@ namespace Lanchat.Core
         /// </summary>
         public void Start()
         {
-            if (Config.StartServer) Server.Start();
+            if (Config.StartServer) server.Start();
             if (Config.NodesDetection) NodesDetection.Start();
             if (Config.ConnectToSaved) Config.SavedAddresses.ForEach(x => Connect(x));
         }
@@ -80,16 +76,13 @@ namespace Lanchat.Core
             port ??= Config.ServerPort;
             CheckAddress(ipAddress);
             var client = new Client(ipAddress, port.Value);
-            var node = new Node(client, Config, false);
-            nodesControl.AddNode(node);
+            var node = nodesControl.CreateNode(client);
             node.Resolver.RegisterHandler(new NodesListHandler(this));
             SubscribeEvents(node, tcs);
-            NodeCreated?.Invoke(this, node);
             client.ConnectAsync();
             return tcs.Task;
         }
 
-        [SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
         private void CheckAddress(IPAddress ipAddress)
         {
             if (Config.BlockedAddresses.Contains(ipAddress)) throw new ArgumentException("Node blocked");
