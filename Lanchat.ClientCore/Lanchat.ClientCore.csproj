@@ -10,6 +10,7 @@
         <RepositoryUrl>https://github.com/tofudd/lanchat</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Description>Utilities for Lanchat.Core config store and logging to file.</Description>
     </PropertyGroup>
 
     <ItemGroup>
