@@ -18,7 +18,7 @@ namespace Lanchat.Core.Network
         ///     Session or client ID.
         /// </summary>
         Guid Id { get; }
-        
+
         /// <summary>
         ///     Network element is server session.
         /// </summary>

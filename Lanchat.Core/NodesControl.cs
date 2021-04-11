@@ -10,8 +10,6 @@ namespace Lanchat.Core
 {
     internal class NodesControl
     {
-        internal List<Node> Nodes { get; }
-        internal event EventHandler<Node> NodeCreated;
         private readonly IConfig config;
         private readonly P2P network;
 
@@ -21,7 +19,10 @@ namespace Lanchat.Core
             this.network = network;
             Nodes = new List<Node>();
         }
-        
+
+        internal List<Node> Nodes { get; }
+        internal event EventHandler<Node> NodeCreated;
+
         internal Node CreateNode(INetworkElement networkElement)
         {
             var node = new Node(networkElement, config);

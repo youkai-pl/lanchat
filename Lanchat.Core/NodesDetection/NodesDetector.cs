@@ -3,8 +3,6 @@ using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using Lanchat.Core.Models;
 
-// ReSharper disable FunctionNeverReturns
-
 namespace Lanchat.Core.NodesDetection
 {
     /// <summary>

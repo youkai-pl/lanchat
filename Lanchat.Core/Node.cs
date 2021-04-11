@@ -76,11 +76,7 @@ namespace Lanchat.Core
 
             if (IsSession) SendHandshake();
 
-            // Check is connection established successful after timeout.
-            Task.Delay(5000).ContinueWith(_ =>
-            {
-                if (!Ready) OnCannotConnect();
-            });
+            CheckIsReadyAfterTimeout();
         }
 
         /// <summary>
@@ -123,19 +119,6 @@ namespace Lanchat.Core
         }
 
         /// <summary>
-        ///     Dispose node. For safe disconnect use <see cref="Disconnect" /> instead.
-        /// </summary>
-        public void Dispose()
-        {
-            NetworkElement.Close();
-            PublicKeyEncryption.Dispose();
-            FileSender.Dispose();
-            FileReceiver.CancelReceive();
-            GC.SuppressFinalize(this);
-        }
-
-
-        /// <summary>
         ///     ID of TCP client or session.
         /// </summary>
         public Guid Id => NetworkElement.Id;
@@ -149,7 +132,7 @@ namespace Lanchat.Core
         ///     Invoked for properties like nickname or status.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-
+        
         /// <summary>
         ///     Node successful connected and ready to data exchange.
         /// </summary>
@@ -178,6 +161,18 @@ namespace Lanchat.Core
             });
             Dispose();
         }
+        
+        /// <summary>
+        ///     Dispose node. For safe disconnect use <see cref="Disconnect" /> instead.
+        /// </summary>
+        public void Dispose()
+        {
+            NetworkElement.Close();
+            PublicKeyEncryption.Dispose();
+            FileSender.Dispose();
+            FileReceiver.CancelReceive();
+            GC.SuppressFinalize(this);
+        }
 
         private void OnDisconnected(object sender, EventArgs _)
         {
@@ -204,14 +199,22 @@ namespace Lanchat.Core
             Connected?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         internal void OnCannotConnect()
         {
             CannotConnect?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void CheckIsReadyAfterTimeout()
+        {
+            Task.Delay(5000).ContinueWith(_ =>
+            {
+                if (!Ready) OnCannotConnect();
+            });
+        }
+
+        private void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

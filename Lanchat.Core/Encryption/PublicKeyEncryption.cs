@@ -41,9 +41,7 @@ namespace Lanchat.Core.Encryption
             };
 
             remoteRsa.ImportParameters(parameters);
-
-            // Test imported keys
-            remoteRsa.Encrypt(new byte[] {0x10}, RSAEncryptionPadding.Pkcs1);
+            TestKeys();
         }
 
         internal byte[] Encrypt(byte[] bytes)
@@ -54,6 +52,11 @@ namespace Lanchat.Core.Encryption
         internal byte[] Decrypt(byte[] encryptedBytes)
         {
             return localRsa.Decrypt(encryptedBytes, RSAEncryptionPadding.Pkcs1);
+        }
+        
+        private void TestKeys()
+        {
+            remoteRsa.Encrypt(new byte[] {0x10}, RSAEncryptionPadding.Pkcs1);
         }
     }
 }

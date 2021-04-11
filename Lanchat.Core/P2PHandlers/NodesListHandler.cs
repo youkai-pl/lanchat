@@ -19,7 +19,7 @@ namespace Lanchat.Core.P2PHandlers
         {
             var list = new List<IPAddress>();
 
-            // Convert strings to ip addresses.
+            // TODO: Use IpAddressConverter instead
             stringList?.ForEach(x =>
             {
                 if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
