@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Net;
 using Lanchat.Core.API;
 using Lanchat.Core.Models;
 
@@ -15,18 +13,10 @@ namespace Lanchat.Core.P2PHandlers
             this.network = network;
         }
 
-        protected override void Handle(NodesList stringList)
+        protected override void Handle(NodesList nodesList)
         {
-            var list = new List<IPAddress>();
-
-            // TODO: Use IpAddressConverter instead
-            stringList?.ForEach(x =>
-            {
-                if (IPAddress.TryParse(x, out var ipAddress)) list.Add(ipAddress);
-            });
-
             if (!network.Config.ConnectToReceivedList) return;
-            list.ForEach(x =>
+            nodesList.ForEach(x =>
             {
                 try
                 {

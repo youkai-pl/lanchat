@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lanchat.Core.API
+namespace Lanchat.Core.Json
 {
     internal class JsonBuffer
     {

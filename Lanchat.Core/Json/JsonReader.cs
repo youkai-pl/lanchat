@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Lanchat.Core.API
+namespace Lanchat.Core.Json
 {
     internal class JsonReader
     {
@@ -17,7 +17,8 @@ namespace Lanchat.Core.API
             {
                 Converters =
                 {
-                    new JsonStringEnumConverter()
+                    new JsonStringEnumConverter(),
+                    new IpAddressConverter()
                 }
             };
         }

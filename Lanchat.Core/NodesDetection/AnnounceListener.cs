@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Timers;
 using Lanchat.Core.API;
+using Lanchat.Core.Json;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.NodesDetection

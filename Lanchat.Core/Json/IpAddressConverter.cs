@@ -3,9 +3,9 @@ using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Lanchat.ClientCore
+namespace Lanchat.Core.Json
 {
-    internal class IpAddressConverter : JsonConverter<IPAddress>
+    public class IpAddressConverter : JsonConverter<IPAddress>
     {
         public override IPAddress Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

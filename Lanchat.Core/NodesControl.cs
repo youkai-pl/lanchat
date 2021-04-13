@@ -52,7 +52,7 @@ namespace Lanchat.Core
             var node = (Node) sender;
             var nodesList = new NodesList();
             nodesList.AddRange(Nodes.Where(x => x.Id != node.Id)
-                .Select(x => x.NetworkElement.Endpoint.Address.ToString()));
+                .Select(x => x.NetworkElement.Endpoint.Address));
             node.NetworkOutput.SendData(nodesList);
 
             if (!config.SavedAddresses.Contains(node.NetworkElement.Endpoint.Address))

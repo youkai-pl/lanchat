@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Lanchat.Core.Json;
 using Lanchat.Core.Network;
 using Lanchat.Core.NodeHandlers;
 
@@ -15,7 +16,8 @@ namespace Lanchat.Core.API
         {
             Converters =
             {
-                new JsonStringEnumConverter()
+                new JsonStringEnumConverter(),
+                new IpAddressConverter()
             }
         };
 
