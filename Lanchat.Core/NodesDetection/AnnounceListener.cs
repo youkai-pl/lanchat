@@ -19,7 +19,7 @@ namespace Lanchat.Core.NodesDetection
     {
         private readonly IConfig config;
         private readonly ObservableCollection<Announce> detectedNodes;
-        private readonly JsonReader jsonReader;
+        private readonly JsonUtils jsonUtils;
         private readonly UdpClient udpClient;
         private readonly string uniqueId;
 
@@ -33,7 +33,7 @@ namespace Lanchat.Core.NodesDetection
             this.config = config;
             this.uniqueId = uniqueId;
             this.detectedNodes = detectedNodes;
-            jsonReader = new JsonReader();
+            jsonUtils = new JsonUtils();
         }
 
         internal void Start()
@@ -61,7 +61,7 @@ namespace Lanchat.Core.NodesDetection
 
         private void HandleBroadcast(byte[] recvBuffer, IPEndPoint from)
         {
-            var broadcast = jsonReader.Deserialize<Announce>(Encoding.UTF8.GetString(recvBuffer));
+            var broadcast = jsonUtils.Deserialize<Announce>(Encoding.UTF8.GetString(recvBuffer));
             if (!CheckPreconditions(broadcast)) return;
             broadcast.IpAddress = from.Address;
             BroadcastReceived(broadcast);

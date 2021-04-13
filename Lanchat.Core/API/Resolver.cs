@@ -16,13 +16,13 @@ namespace Lanchat.Core.API
     {
         private readonly List<IApiHandler> handlers = new();
         private readonly JsonBuffer jsonBuffer;
-        private readonly JsonReader jsonReader;
+        private readonly JsonUtils jsonUtils;
         private readonly INodeState nodeState;
 
         internal Resolver(INodeState nodeState)
         {
             this.nodeState = nodeState;
-            jsonReader = new JsonReader();
+            jsonUtils = new JsonUtils();
             jsonBuffer = new JsonBuffer();
         }
 
@@ -33,7 +33,7 @@ namespace Lanchat.Core.API
         public void RegisterHandler(IApiHandler apiHandler)
         {
             handlers.Add(apiHandler);
-            jsonReader.KnownModels.Add(apiHandler.HandledType);
+            jsonUtils.KnownModels.Add(apiHandler.HandledType);
         }
 
         internal void OnDataReceived(object sender, string item)
@@ -53,7 +53,7 @@ namespace Lanchat.Core.API
 
         internal void CallHandler(string item)
         {
-            var data = jsonReader.Deserialize(item);
+            var data = jsonUtils.Deserialize(item);
             var handler = GetHandler(data.GetType());
             if (!CheckPreconditions(handler, data)) return;
             Trace.WriteLine($"Node {nodeState.Id} received {handler.HandledType.Name}");

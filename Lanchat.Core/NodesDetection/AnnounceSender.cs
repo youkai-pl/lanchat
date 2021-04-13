@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Lanchat.Core.API;
+using Lanchat.Core.Json;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.NodesDetection
@@ -14,6 +15,7 @@ namespace Lanchat.Core.NodesDetection
         private readonly IPEndPoint endPoint;
         private readonly UdpClient udpClient;
         private readonly string uniqueId;
+        private readonly JsonUtils jsonUtils;
         private bool continueSendingAnnouncements = true;
 
         public AnnounceSender(IConfig config, UdpClient udpClient, string uniqueId)
@@ -21,6 +23,7 @@ namespace Lanchat.Core.NodesDetection
             this.udpClient = udpClient;
             this.uniqueId = uniqueId;
             this.config = config;
+            jsonUtils = new JsonUtils();
             endPoint = new IPEndPoint(IPAddress.Broadcast, config.BroadcastPort);
         }
 
@@ -30,7 +33,7 @@ namespace Lanchat.Core.NodesDetection
             {
                 while (continueSendingAnnouncements)
                 {
-                    var json = NetworkOutput.Serialize(new Announce
+                    var json = jsonUtils.Serialize(new Announce
                     {
                         Guid = uniqueId,
                         Nickname = config.Nickname

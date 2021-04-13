@@ -1,5 +1,6 @@
 using System;
 using Lanchat.Core.API;
+using Lanchat.Core.Json;
 using Lanchat.Core.Models;
 using Lanchat.Tests.Mock;
 using Lanchat.Tests.Mock.Handlers;
@@ -14,10 +15,12 @@ namespace Lanchat.Tests.Core.API
         private NodeState nodeState;
         private PrivilegedHandler privilegedHandler;
         private Resolver resolver;
+        private JsonUtils jsonUtils;
 
         [SetUp]
         public void Setup()
         {
+            jsonUtils = new JsonUtils();
             nodeState = new NodeState();
             resolver = new Resolver(nodeState);
             messageHandlerMock = new MessageHandlerMock();
@@ -31,7 +34,7 @@ namespace Lanchat.Tests.Core.API
         {
             Assert.Catch<InvalidOperationException>(() =>
             {
-                resolver.CallHandler(NetworkOutput.Serialize(new Model()));
+                resolver.CallHandler(jsonUtils.Serialize(new Model()));
             });
         }
 
@@ -40,7 +43,7 @@ namespace Lanchat.Tests.Core.API
         {
             Assert.Catch<InvalidOperationException>(() =>
             {
-                resolver.CallHandler(NetworkOutput.Serialize(new Handshake()));
+                resolver.CallHandler(jsonUtils.Serialize(new Handshake()));
             });
         }
 
@@ -48,7 +51,7 @@ namespace Lanchat.Tests.Core.API
         public void NodeNotReady()
         {
             nodeState.Ready = false;
-            resolver.CallHandler(NetworkOutput.Serialize(new Message()));
+            resolver.CallHandler(jsonUtils.Serialize(new Message()));
             Assert.IsFalse(messageHandlerMock.Received);
         }
 
@@ -56,21 +59,21 @@ namespace Lanchat.Tests.Core.API
         public void PrivilegedHandler()
         {
             nodeState.Ready = false;
-            resolver.CallHandler(NetworkOutput.Serialize(new PrivilegedModel()));
+            resolver.CallHandler(jsonUtils.Serialize(new PrivilegedModel()));
             Assert.IsTrue(privilegedHandler.Received);
         }
 
         [Test]
         public void ValidModel()
         {
-            resolver.OnDataReceived(this, NetworkOutput.Serialize(new Message {Content = "test"}));
+            resolver.OnDataReceived(this, jsonUtils.Serialize(new Message {Content = "test"}));
             Assert.IsTrue(messageHandlerMock.Received);
         }
 
         [Test]
         public void InvalidModel()
         {
-            resolver.OnDataReceived(this, NetworkOutput.Serialize(new Message {Content = null}));
+            resolver.OnDataReceived(this, jsonUtils.Serialize(new Message {Content = null}));
             Assert.IsFalse(messageHandlerMock.Received);
         }
 
@@ -89,7 +92,7 @@ namespace Lanchat.Tests.Core.API
         [Test]
         public void ValidationExceptionCatch()
         {
-            resolver.OnDataReceived(this, NetworkOutput.Serialize(new ModelWithValidation()));
+            resolver.OnDataReceived(this, jsonUtils.Serialize(new ModelWithValidation()));
         }
     }
 }

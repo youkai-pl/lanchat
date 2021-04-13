@@ -8,37 +8,37 @@ namespace Lanchat.Tests.Core.API
 {
     public class JsonReaderTests
     {
-        private JsonReader jsonReader;
+        private JsonUtils jsonUtils;
 
         [SetUp]
         public void Setup()
         {
-            jsonReader = new JsonReader();
+            jsonUtils = new JsonUtils();
         }
 
         [Test]
         public void KnownTypeDeserialize()
         {
             var model = new Model {Property = "test"};
-            var serializedModel = NetworkOutput.Serialize(model);
-            var deserializedModel = jsonReader.Deserialize<Model>(serializedModel);
+            var serializedModel = jsonUtils.Serialize(model);
+            var deserializedModel = jsonUtils.Deserialize<Model>(serializedModel);
             Assert.AreEqual(model.Property, deserializedModel.Property);
         }
 
         [Test]
         public void RegisteredTypeDeserialize()
         {
-            jsonReader.KnownModels.Add(typeof(Model));
+            jsonUtils.KnownModels.Add(typeof(Model));
             var model = new Model {Property = "test"};
-            var serializedModel = NetworkOutput.Serialize(model);
-            var deserializedModel = (Model) jsonReader.Deserialize(serializedModel);
+            var serializedModel = jsonUtils.Serialize(model);
+            var deserializedModel = (Model) jsonUtils.Deserialize(serializedModel);
             Assert.AreEqual(model.Property, deserializedModel.Property);
         }
 
         [Test]
         public void NullWrapper()
         {
-            Assert.Catch<InvalidOperationException>(() => jsonReader.Deserialize("{\"key\": \"value\"}"));
+            Assert.Catch<InvalidOperationException>(() => jsonUtils.Deserialize("{\"key\": \"value\"}"));
         }
     }
 }

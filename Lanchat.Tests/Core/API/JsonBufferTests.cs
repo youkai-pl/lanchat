@@ -12,6 +12,7 @@ namespace Lanchat.Tests.Core.API
         private JsonBuffer jsonBuffer;
         private ModelHandlerMock modelHandlerMock;
         private Resolver resolver;
+        private JsonUtils jsonUtils;
 
         [SetUp]
         public void Setup()
@@ -21,12 +22,13 @@ namespace Lanchat.Tests.Core.API
             resolver.RegisterHandler(modelHandlerMock);
             resolver.RegisterHandler(new ModelWithValidationHandlerMock());
             jsonBuffer = new JsonBuffer();
+            jsonUtils = new JsonUtils();
         }
 
         [Test]
         public void JsonSplit()
         {
-            var fullString = NetworkOutput.Serialize(new Model());
+            var fullString = jsonUtils.Serialize(new Model());
             var firstPart = fullString[..10];
             var secondPart = fullString[10..];
             jsonBuffer.AddToBuffer(firstPart);
