@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using Lanchat.Core.API;
 using Lanchat.Core.Models;
 
@@ -16,6 +17,7 @@ namespace Lanchat.Core.P2PHandlers
         protected override void Handle(NodesList nodesList)
         {
             if (!network.Config.ConnectToReceivedList) return;
+            nodesList.RemoveAll(x => x.Equals(IPAddress.Loopback));
             nodesList.ForEach(x =>
             {
                 try
