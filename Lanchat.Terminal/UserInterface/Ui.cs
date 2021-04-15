@@ -39,7 +39,9 @@ namespace Lanchat.Terminal.UserInterface
             {
                 Content = Log,
                 ScrollBarBackground = new Character(),
-                ScrollBarForeground = new Character()
+                ScrollBarForeground = new Character(),
+                ScrollUpKey = ConsoleKey.PageUp,
+                ScrollDownKey = ConsoleKey.PageDown
             };
 
 
