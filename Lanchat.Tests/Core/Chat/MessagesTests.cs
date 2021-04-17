@@ -1,8 +1,7 @@
 using Lanchat.Core.API;
 using Lanchat.Core.Chat;
-using Lanchat.Core.Encryption;
-using Lanchat.Core.Models;
 using Lanchat.Tests.Mock;
+using Lanchat.Tests.Mock.Encryption;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.Chat
@@ -19,11 +18,7 @@ namespace Lanchat.Tests.Core.Chat
         public void Setup()
         {
             var nodeState = new NodeState();
-            var publicKeyEncryption = new PublicKeyEncryption();
-            var symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
-            var modelEncryption = new ModelEncryption(symmetricEncryption);
-            publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey());
-            symmetricEncryption.ImportKey(symmetricEncryption.ExportKey());
+            var modelEncryption = new ModelEncryptionMock();
             networkMock = new NetworkMock();
             networkOutput = new NetworkOutput(networkMock, nodeState, modelEncryption);
             messaging = new Messaging(networkOutput);
@@ -70,18 +65,6 @@ namespace Lanchat.Tests.Core.Chat
 
             messaging.SendMessage(testMessage);
             Assert.AreEqual(testMessage, receivedMessage);
-        }
-
-        [Test]
-        public void InvalidFormatCatch()
-        {
-            messageHandler.Handle(new Message {Content = "not a base64"});
-        }
-
-        [Test]
-        public void InvalidEncryptionCatch()
-        {
-            messageHandler.Handle(new Message {Content = "bm90IGVuY3J5cHRlZA=="});
         }
     }
 }
