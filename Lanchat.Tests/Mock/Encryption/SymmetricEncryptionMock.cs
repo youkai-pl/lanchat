@@ -8,19 +8,23 @@ namespace Lanchat.Tests.Mock.Encryption
     {
         public string EncryptString(string text)
         {
-            return text;
+            var charArray = text.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
         }
 
         public string DecryptString(string text)
         {
-            return text;
+            var charArray = text.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
         }
 
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
-        
+
         public KeyInfo ExportKey()
         {
             return null;
