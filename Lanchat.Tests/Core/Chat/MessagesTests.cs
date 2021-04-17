@@ -13,23 +13,22 @@ namespace Lanchat.Tests.Core.Chat
         private Messaging messaging;
         private NetworkMock networkMock;
         private NetworkOutput networkOutput;
-        private PublicKeyEncryption publicKeyEncryption;
         private Resolver resolver;
-        private SymmetricEncryption symmetricEncryption;
 
         [SetUp]
         public void Setup()
         {
             var nodeState = new NodeState();
-            publicKeyEncryption = new PublicKeyEncryption();
-            symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
+            var publicKeyEncryption = new PublicKeyEncryption();
+            var symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
+            var modelEncryption = new ModelEncryption(symmetricEncryption);
             publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey());
             symmetricEncryption.ImportKey(symmetricEncryption.ExportKey());
             networkMock = new NetworkMock();
-            networkOutput = new NetworkOutput(networkMock, nodeState, symmetricEncryption);
+            networkOutput = new NetworkOutput(networkMock, nodeState, modelEncryption);
             messaging = new Messaging(networkOutput);
             messageHandler = new MessageHandler(messaging);
-            resolver = new Resolver(nodeState, symmetricEncryption);
+            resolver = new Resolver(nodeState, modelEncryption);
             resolver.RegisterHandler(messageHandler);
         }
 

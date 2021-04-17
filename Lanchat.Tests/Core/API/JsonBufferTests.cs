@@ -1,6 +1,7 @@
 using Lanchat.Core.API;
 using Lanchat.Core.Json;
 using Lanchat.Tests.Mock;
+using Lanchat.Tests.Mock.Encryption;
 using Lanchat.Tests.Mock.Handlers;
 using Lanchat.Tests.Mock.Models;
 using NUnit.Framework;
@@ -18,7 +19,7 @@ namespace Lanchat.Tests.Core.API
         public void Setup()
         {
             modelHandlerMock = new ModelHandlerMock();
-            resolver = new Resolver(new NodeState(), new SymmetricEncryptionMock());
+            resolver = new Resolver(new NodeState(), new ModelEncryptionMock());
             resolver.RegisterHandler(modelHandlerMock);
             resolver.RegisterHandler(new ModelWithValidationHandlerMock());
             jsonBuffer = new JsonBuffer();

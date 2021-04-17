@@ -14,14 +14,12 @@ namespace Lanchat.Core.FileTransfer
     public class FileSender
     {
         private const int ChunkSize = 1024 * 1024;
-        private readonly SymmetricEncryption encryption;
         private readonly NetworkOutput networkOutput;
         private bool disposing;
 
-        internal FileSender(NetworkOutput networkOutput, SymmetricEncryption encryption)
+        internal FileSender(NetworkOutput networkOutput)
         {
             this.networkOutput = networkOutput;
-            this.encryption = encryption;
         }
 
         /// <summary>
@@ -93,7 +91,7 @@ namespace Lanchat.Core.FileTransfer
 
                     var part = new FilePart
                     {
-                        Data = encryption.EncryptBytes(buffer.Take(bytesRead).ToArray())
+                        Data = buffer.Take(bytesRead).ToArray()
                     };
 
                     if (bytesRead < ChunkSize) part.Last = true;

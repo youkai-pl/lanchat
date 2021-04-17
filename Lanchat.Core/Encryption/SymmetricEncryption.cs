@@ -1,9 +1,7 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Encryption
@@ -31,30 +29,6 @@ namespace Lanchat.Core.Encryption
             GC.SuppressFinalize(this);
         }
 
-        public byte[] EncryptBytes(byte[] data)
-        {
-            if (disposed) throw new ObjectDisposedException(nameof(SymmetricEncryption));
-
-            using var memoryStream = new MemoryStream();
-            using var cryptoStream =
-                new CryptoStream(memoryStream, remoteAes.CreateEncryptor(), CryptoStreamMode.Write);
-            cryptoStream.Write(data, 0, data.Length);
-            cryptoStream.Close();
-            return memoryStream.ToArray();
-        }
-
-        public byte[] DecryptBytes(byte[] data)
-        {
-            if (disposed) throw new ObjectDisposedException(nameof(SymmetricEncryption));
-
-            using var memoryStream = new MemoryStream();
-            using var cryptoStream =
-                new CryptoStream(memoryStream, localAes.CreateDecryptor(), CryptoStreamMode.Write);
-            cryptoStream.Write(data, 0, data.Length);
-            cryptoStream.Close();
-            return memoryStream.ToArray();
-        }
-
         public string EncryptString(string text)
         {
             var encrypted = EncryptBytes(Encoding.UTF8.GetBytes(text));
@@ -66,8 +40,32 @@ namespace Lanchat.Core.Encryption
             var encryptedBytes = Convert.FromBase64String(text);
             return Encoding.UTF8.GetString(DecryptBytes(encryptedBytes));
         }
+        
+        internal byte[] EncryptBytes(byte[] data)
+        {
+            if (disposed) throw new ObjectDisposedException(nameof(SymmetricEncryption));
 
-        public KeyInfo ExportKey()
+            using var memoryStream = new MemoryStream();
+            using var cryptoStream =
+                new CryptoStream(memoryStream, remoteAes.CreateEncryptor(), CryptoStreamMode.Write);
+            cryptoStream.Write(data, 0, data.Length);
+            cryptoStream.Close();
+            return memoryStream.ToArray();
+        }
+
+        internal byte[] DecryptBytes(byte[] data)
+        {
+            if (disposed) throw new ObjectDisposedException(nameof(SymmetricEncryption));
+
+            using var memoryStream = new MemoryStream();
+            using var cryptoStream =
+                new CryptoStream(memoryStream, localAes.CreateDecryptor(), CryptoStreamMode.Write);
+            cryptoStream.Write(data, 0, data.Length);
+            cryptoStream.Close();
+            return memoryStream.ToArray();
+        }
+
+        internal KeyInfo ExportKey()
         {
             return new()
             {
@@ -76,7 +74,7 @@ namespace Lanchat.Core.Encryption
             };
         }
 
-        public void ImportKey(KeyInfo keyInfo)
+        internal void ImportKey(KeyInfo keyInfo)
         {
             remoteAes.Key = publicKeyEncryption.Decrypt(keyInfo.AesKey);
             remoteAes.IV = publicKeyEncryption.Decrypt(keyInfo.AesIv);

@@ -58,8 +58,8 @@ namespace Lanchat.Core
             var modelEncryption = new ModelEncryption(SymmetricEncryption);
             NetworkOutput = new NetworkOutput(NetworkElement, this, modelEncryption);
             Messaging = new Messaging(NetworkOutput);
-            FileReceiver = new FileReceiver(NetworkOutput, SymmetricEncryption, config);
-            FileSender = new FileSender(NetworkOutput, SymmetricEncryption);
+            FileReceiver = new FileReceiver(NetworkOutput, config);
+            FileSender = new FileSender(NetworkOutput);
 
             Resolver = new Resolver(this, modelEncryption);
             Resolver.RegisterHandler(new HandshakeHandler(this));
