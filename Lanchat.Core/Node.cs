@@ -55,12 +55,13 @@ namespace Lanchat.Core
             NetworkElement = networkElement;
             PublicKeyEncryption = new PublicKeyEncryption();
             SymmetricEncryption = new SymmetricEncryption(PublicKeyEncryption);
-            NetworkOutput = new NetworkOutput(NetworkElement, this, SymmetricEncryption);
+            var modelEncryption = new ModelEncryption(SymmetricEncryption);
+            NetworkOutput = new NetworkOutput(NetworkElement, this, modelEncryption);
             Messaging = new Messaging(NetworkOutput);
             FileReceiver = new FileReceiver(NetworkOutput, SymmetricEncryption, config);
             FileSender = new FileSender(NetworkOutput, SymmetricEncryption);
 
-            Resolver = new Resolver(this, SymmetricEncryption);
+            Resolver = new Resolver(this, modelEncryption);
             Resolver.RegisterHandler(new HandshakeHandler(this));
             Resolver.RegisterHandler(new KeyInfoHandler(this));
             Resolver.RegisterHandler(new ConnectionControlHandler(this));

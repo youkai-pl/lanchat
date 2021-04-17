@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
 using Lanchat.Core.Encryption;
-using Lanchat.Core.Extensions;
 using Lanchat.Core.Json;
 using Lanchat.Core.NodeHandlers;
 
@@ -20,12 +19,12 @@ namespace Lanchat.Core.API
         private readonly JsonBuffer jsonBuffer;
         private readonly JsonUtils jsonUtils;
         private readonly INodeState nodeState;
-        private readonly ISymmetricEncryption symmetricEncryption;
+        private readonly IModelEncryption encryption;
 
-        internal Resolver(INodeState nodeState, ISymmetricEncryption symmetricEncryption)
+        internal Resolver(INodeState nodeState, IModelEncryption encryption)
         {
             this.nodeState = nodeState;
-            this.symmetricEncryption = symmetricEncryption;
+            this.encryption = encryption;
             jsonUtils = new JsonUtils();
             jsonBuffer = new JsonBuffer();
         }
@@ -60,7 +59,7 @@ namespace Lanchat.Core.API
             var data = jsonUtils.Deserialize(item);
             var handler = GetHandler(data.GetType());
             if (!CheckPreconditions(handler, data)) return;
-            symmetricEncryption.DecryptObject(data);
+            encryption.DecryptObject(data);
             Trace.WriteLine($"Node {nodeState.Id} received {handler.HandledType.Name}");
             handler.Handle(data);
         }

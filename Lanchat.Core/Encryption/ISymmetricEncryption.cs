@@ -11,7 +11,5 @@ namespace Lanchat.Core.Encryption
         string DecryptString(string text);
         KeyInfo ExportKey();
         void ImportKey(KeyInfo keyInfo);
-        void EncryptObject(object data);
-        void DecryptObject(object data);
     }
 }

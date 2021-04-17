@@ -67,34 +67,6 @@ namespace Lanchat.Core.Encryption
             return Encoding.UTF8.GetString(DecryptBytes(encryptedBytes));
         }
 
-        public void EncryptObject(object data)
-        {
-            var props = data
-                .GetType()
-                .GetProperties()
-                .Where(prop => Attribute.IsDefined(prop, typeof(EncryptAttribute)));
-
-            props.ForEach(x =>
-            {
-                var value = x.GetValue(data)?.ToString();
-                x.SetValue(data, EncryptString(value), null);
-            });
-        }
-        
-        public void DecryptObject(object data)
-        {
-            var props = data
-                .GetType()
-                .GetProperties()
-                .Where(prop => Attribute.IsDefined(prop, typeof(EncryptAttribute)));
-
-            props.ForEach(x =>
-            {
-                var value = x.GetValue(data)?.ToString();
-                x.SetValue(data, DecryptString(value), null);
-            });
-        }
-        
         public KeyInfo ExportKey()
         {
             return new()

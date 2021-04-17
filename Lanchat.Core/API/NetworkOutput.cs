@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Lanchat.Core.Encryption;
-using Lanchat.Core.Extensions;
+﻿using Lanchat.Core.Encryption;
 using Lanchat.Core.Json;
 using Lanchat.Core.Network;
 using Lanchat.Core.NodeHandlers;
@@ -16,9 +13,9 @@ namespace Lanchat.Core.API
         private readonly INetworkElement networkElement;
         private readonly INodeState nodeState;
         private readonly JsonUtils jsonUtils;
-        private readonly ISymmetricEncryption encryption;
+        private readonly IModelEncryption encryption;
 
-        internal NetworkOutput(INetworkElement networkElement, INodeState nodeState, ISymmetricEncryption encryption)
+        internal NetworkOutput(INetworkElement networkElement, INodeState nodeState, IModelEncryption encryption)
         {
             this.networkElement = networkElement;
             this.nodeState = nodeState;
