@@ -17,16 +17,13 @@ namespace Lanchat.Core
     /// </summary>
     public class Node : IDisposable, INotifyPropertyChanged, INodeState
     {
-        private readonly IConfig config;
 
         /// <see cref="FileReceiver" />
         public readonly FileReceiver FileReceiver;
 
         /// <see cref="FileSender" />
         public readonly FileSender FileSender;
-
-        internal readonly bool IsSession;
-
+        
         /// <see cref="Messaging" />
         public readonly Messaging Messaging;
 
@@ -35,35 +32,35 @@ namespace Lanchat.Core
 
         /// <see cref="NetworkOutput" />
         public readonly NetworkOutput NetworkOutput;
-
-        internal readonly PublicKeyEncryption PublicKeyEncryption;
-
+        
         /// <see cref="Resolver" />
         public readonly Resolver Resolver;
-
-        internal readonly SymmetricEncryption SymmetricEncryption;
-
+        
+        internal readonly bool IsSession;
         internal bool HandshakeReceived;
+        
         private string nickname;
         private string previousNickname;
         private Status status;
+        private readonly IConfig config;
+        private readonly IPublicKeyEncryption publicKeyEncryption;
 
         internal Node(INetworkElement networkElement, IConfig config)
         {
             this.config = config;
             IsSession = networkElement.IsSession;
             NetworkElement = networkElement;
-            PublicKeyEncryption = new PublicKeyEncryption();
-            SymmetricEncryption = new SymmetricEncryption(PublicKeyEncryption);
-            var modelEncryption = new ModelEncryption(SymmetricEncryption);
+            publicKeyEncryption = new PublicKeyEncryption();
+            var symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
+            var modelEncryption = new ModelEncryption(symmetricEncryption);
             NetworkOutput = new NetworkOutput(NetworkElement, this, modelEncryption);
             Messaging = new Messaging(NetworkOutput);
             FileReceiver = new FileReceiver(NetworkOutput, config);
             FileSender = new FileSender(NetworkOutput);
 
             Resolver = new Resolver(this, modelEncryption);
-            Resolver.RegisterHandler(new HandshakeHandler(this));
-            Resolver.RegisterHandler(new KeyInfoHandler(this));
+            Resolver.RegisterHandler(new HandshakeHandler(publicKeyEncryption, symmetricEncryption, this));
+            Resolver.RegisterHandler(new KeyInfoHandler(symmetricEncryption, this));
             Resolver.RegisterHandler(new ConnectionControlHandler(this));
             Resolver.RegisterHandler(new StatusUpdateHandler(this));
             Resolver.RegisterHandler(new NicknameUpdateHandler(this));
@@ -169,9 +166,9 @@ namespace Lanchat.Core
         public void Dispose()
         {
             NetworkElement.Close();
-            PublicKeyEncryption.Dispose();
             FileSender.Dispose();
             FileReceiver.CancelReceive();
+            publicKeyEncryption.Dispose();
             GC.SuppressFinalize(this);
         }
 
@@ -189,7 +186,7 @@ namespace Lanchat.Core
             {
                 Nickname = config.Nickname,
                 Status = config.Status,
-                PublicKey = PublicKeyEncryption.ExportKey()
+                PublicKey = publicKeyEncryption.ExportKey()
             };
 
             NetworkOutput.SendPrivilegedData(handshake);

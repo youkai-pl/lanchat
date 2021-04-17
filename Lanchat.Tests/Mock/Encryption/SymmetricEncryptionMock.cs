@@ -1,5 +1,6 @@
 using System;
 using Lanchat.Core.Encryption;
+using Lanchat.Core.Models;
 
 namespace Lanchat.Tests.Mock.Encryption
 {
@@ -18,6 +19,15 @@ namespace Lanchat.Tests.Mock.Encryption
         public void Dispose()
         {
             GC.SuppressFinalize(this);
+        }
+        
+        public KeyInfo ExportKey()
+        {
+            return null;
+        }
+
+        public void ImportKey(KeyInfo keyInfo)
+        {
         }
     }
 }

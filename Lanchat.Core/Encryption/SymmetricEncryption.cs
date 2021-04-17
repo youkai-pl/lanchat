@@ -9,11 +9,11 @@ namespace Lanchat.Core.Encryption
     internal class SymmetricEncryption : ISymmetricEncryption
     {
         private readonly Aes localAes;
-        private readonly PublicKeyEncryption publicKeyEncryption;
+        private readonly IPublicKeyEncryption publicKeyEncryption;
         private readonly Aes remoteAes;
         private bool disposed;
 
-        internal SymmetricEncryption(PublicKeyEncryption publicKeyEncryption)
+        internal SymmetricEncryption(IPublicKeyEncryption publicKeyEncryption)
         {
             this.publicKeyEncryption = publicKeyEncryption;
             localAes = Aes.Create();
@@ -65,7 +65,7 @@ namespace Lanchat.Core.Encryption
             return memoryStream.ToArray();
         }
 
-        internal KeyInfo ExportKey()
+        public KeyInfo ExportKey()
         {
             return new()
             {
@@ -74,7 +74,7 @@ namespace Lanchat.Core.Encryption
             };
         }
 
-        internal void ImportKey(KeyInfo keyInfo)
+        public void ImportKey(KeyInfo keyInfo)
         {
             remoteAes.Key = publicKeyEncryption.Decrypt(keyInfo.AesKey);
             remoteAes.IV = publicKeyEncryption.Decrypt(keyInfo.AesIv);

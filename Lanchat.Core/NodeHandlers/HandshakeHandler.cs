@@ -1,15 +1,20 @@
 using System.Security.Cryptography;
 using Lanchat.Core.API;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.NodeHandlers
 {
     internal class HandshakeHandler : ApiHandler<Handshake>
     {
+        private readonly IPublicKeyEncryption publicKeyEncryption;
+        private readonly ISymmetricEncryption encryption;
         private readonly Node node;
 
-        internal HandshakeHandler(Node node)
+        internal HandshakeHandler(IPublicKeyEncryption publicKeyEncryption, ISymmetricEncryption encryption, Node node)
         {
+            this.publicKeyEncryption = publicKeyEncryption;
+            this.encryption = encryption;
             this.node = node;
             Privileged = true;
         }
@@ -23,9 +28,9 @@ namespace Lanchat.Core.NodeHandlers
 
             try
             {
-                node.PublicKeyEncryption.ImportKey(handshake.PublicKey);
+                publicKeyEncryption.ImportKey(handshake.PublicKey);
                 node.Status = handshake.Status;
-                node.NetworkOutput.SendPrivilegedData(node.SymmetricEncryption.ExportKey());
+                node.NetworkOutput.SendPrivilegedData(encryption.ExportKey());
                 node.HandshakeReceived = true;
             }
             catch (CryptographicException)

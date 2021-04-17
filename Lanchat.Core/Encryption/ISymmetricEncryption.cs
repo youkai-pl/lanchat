@@ -1,4 +1,5 @@
 using System;
+using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Encryption
 {
@@ -6,5 +7,7 @@ namespace Lanchat.Core.Encryption
     {
         string EncryptString(string text);
         string DecryptString(string text);
+        KeyInfo ExportKey();
+        void ImportKey(KeyInfo keyInfo);
     }
 }

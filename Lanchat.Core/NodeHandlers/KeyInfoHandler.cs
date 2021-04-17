@@ -1,15 +1,18 @@
 using System.Security.Cryptography;
 using Lanchat.Core.API;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.NodeHandlers
 {
     internal class KeyInfoHandler : ApiHandler<KeyInfo>
     {
+        private readonly ISymmetricEncryption encryption;
         private readonly Node node;
 
-        internal KeyInfoHandler(Node node)
+        internal KeyInfoHandler(ISymmetricEncryption encryption, Node node)
         {
+            this.encryption = encryption;
             this.node = node;
             Privileged = true;
         }
@@ -23,7 +26,7 @@ namespace Lanchat.Core.NodeHandlers
 
             try
             {
-                node.SymmetricEncryption.ImportKey(keyInfo);
+                encryption.ImportKey(keyInfo);
                 node.Ready = true;
                 node.OnConnected();
             }
