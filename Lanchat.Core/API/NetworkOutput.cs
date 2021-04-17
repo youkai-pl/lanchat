@@ -16,9 +16,9 @@ namespace Lanchat.Core.API
         private readonly INetworkElement networkElement;
         private readonly INodeState nodeState;
         private readonly JsonUtils jsonUtils;
-        private readonly SymmetricEncryption encryption;
+        private readonly ISymmetricEncryption encryption;
 
-        internal NetworkOutput(INetworkElement networkElement, INodeState nodeState, SymmetricEncryption encryption)
+        internal NetworkOutput(INetworkElement networkElement, INodeState nodeState, ISymmetricEncryption encryption)
         {
             this.networkElement = networkElement;
             this.nodeState = nodeState;
@@ -33,7 +33,7 @@ namespace Lanchat.Core.API
         public void SendData(object content)
         {
             if (!nodeState.Ready) return;
-            EncryptPropertiesWithAttribute(content);
+            encryption.EncryptObject(content);
             networkElement.Send(jsonUtils.Serialize(content));
         }
         
@@ -43,22 +43,8 @@ namespace Lanchat.Core.API
         /// <param name="content">Object to send.</param>
         public void SendPrivilegedData(object content)
         {
-            EncryptPropertiesWithAttribute(content);
+            encryption.EncryptObject(content);
             networkElement.Send(jsonUtils.Serialize(content));
-        }
-        
-        private void EncryptPropertiesWithAttribute(object content)
-        {
-            var props = content
-                .GetType()
-                .GetProperties()
-                .Where(prop => Attribute.IsDefined(prop, typeof(EncryptAttribute)));
-
-            props.ForEach(x =>
-            {
-                var value = x.GetValue(content)?.ToString();
-                x.SetValue(content, encryption.EncryptString(value), null);
-            });
         }
     }
 }

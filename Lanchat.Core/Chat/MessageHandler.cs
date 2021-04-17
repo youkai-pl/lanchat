@@ -9,12 +9,10 @@ namespace Lanchat.Core.Chat
     internal class MessageHandler : ApiHandler<Message>
     {
         private readonly Messaging messaging;
-        private readonly SymmetricEncryption symmetricEncryption;
 
-        internal MessageHandler(Messaging messaging, SymmetricEncryption symmetricEncryption)
+        internal MessageHandler(Messaging messaging)
         {
             this.messaging = messaging;
-            this.symmetricEncryption = symmetricEncryption;
         }
 
         protected override void Handle(Message message)
@@ -33,7 +31,7 @@ namespace Lanchat.Core.Chat
 
         private void DecryptMessageAndRaiseEvent(Message message)
         {
-            var decryptedMessage = symmetricEncryption.DecryptString(message.Content);
+            var decryptedMessage = message.Content;
 
             if (message.Private)
                 messaging.OnPrivateMessageReceived(decryptedMessage);

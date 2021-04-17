@@ -1,12 +1,14 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Lanchat.Core.Extensions;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Encryption
 {
-    internal class SymmetricEncryption : IDisposable
+    internal class SymmetricEncryption : ISymmetricEncryption
     {
         private readonly Aes localAes;
         private readonly PublicKeyEncryption publicKeyEncryption;
@@ -29,7 +31,7 @@ namespace Lanchat.Core.Encryption
             GC.SuppressFinalize(this);
         }
 
-        internal byte[] EncryptBytes(byte[] data)
+        public byte[] EncryptBytes(byte[] data)
         {
             if (disposed) throw new ObjectDisposedException(nameof(SymmetricEncryption));
 
@@ -41,7 +43,7 @@ namespace Lanchat.Core.Encryption
             return memoryStream.ToArray();
         }
 
-        internal byte[] DecryptBytes(byte[] data)
+        public byte[] DecryptBytes(byte[] data)
         {
             if (disposed) throw new ObjectDisposedException(nameof(SymmetricEncryption));
 
@@ -53,19 +55,47 @@ namespace Lanchat.Core.Encryption
             return memoryStream.ToArray();
         }
 
-        internal string EncryptString(string text)
+        public string EncryptString(string text)
         {
             var encrypted = EncryptBytes(Encoding.UTF8.GetBytes(text));
             return Convert.ToBase64String(encrypted);
         }
 
-        internal string DecryptString(string text)
+        public string DecryptString(string text)
         {
             var encryptedBytes = Convert.FromBase64String(text);
             return Encoding.UTF8.GetString(DecryptBytes(encryptedBytes));
         }
 
-        internal KeyInfo ExportKey()
+        public void EncryptObject(object data)
+        {
+            var props = data
+                .GetType()
+                .GetProperties()
+                .Where(prop => Attribute.IsDefined(prop, typeof(EncryptAttribute)));
+
+            props.ForEach(x =>
+            {
+                var value = x.GetValue(data)?.ToString();
+                x.SetValue(data, EncryptString(value), null);
+            });
+        }
+        
+        public void DecryptObject(object data)
+        {
+            var props = data
+                .GetType()
+                .GetProperties()
+                .Where(prop => Attribute.IsDefined(prop, typeof(EncryptAttribute)));
+
+            props.ForEach(x =>
+            {
+                var value = x.GetValue(data)?.ToString();
+                x.SetValue(data, DecryptString(value), null);
+            });
+        }
+        
+        public KeyInfo ExportKey()
         {
             return new()
             {
@@ -74,7 +104,7 @@ namespace Lanchat.Core.Encryption
             };
         }
 
-        internal void ImportKey(KeyInfo keyInfo)
+        public void ImportKey(KeyInfo keyInfo)
         {
             remoteAes.Key = publicKeyEncryption.Decrypt(keyInfo.AesKey);
             remoteAes.IV = publicKeyEncryption.Decrypt(keyInfo.AesIv);

@@ -22,7 +22,7 @@ namespace Lanchat.Tests.Core.API
         {
             jsonUtils = new JsonUtils();
             nodeState = new NodeState();
-            resolver = new Resolver(nodeState);
+            resolver = new Resolver(nodeState, new SymmetricEncryptionMock());
             messageHandlerMock = new MessageHandlerMock();
             privilegedHandler = new PrivilegedHandler();
             resolver.RegisterHandler(messageHandlerMock);

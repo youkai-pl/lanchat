@@ -60,13 +60,13 @@ namespace Lanchat.Core
             FileReceiver = new FileReceiver(NetworkOutput, SymmetricEncryption, config);
             FileSender = new FileSender(NetworkOutput, SymmetricEncryption);
 
-            Resolver = new Resolver(this);
+            Resolver = new Resolver(this, SymmetricEncryption);
             Resolver.RegisterHandler(new HandshakeHandler(this));
             Resolver.RegisterHandler(new KeyInfoHandler(this));
             Resolver.RegisterHandler(new ConnectionControlHandler(this));
             Resolver.RegisterHandler(new StatusUpdateHandler(this));
             Resolver.RegisterHandler(new NicknameUpdateHandler(this));
-            Resolver.RegisterHandler(new MessageHandler(Messaging, SymmetricEncryption));
+            Resolver.RegisterHandler(new MessageHandler(Messaging));
             Resolver.RegisterHandler(new FilePartHandler(FileReceiver));
             Resolver.RegisterHandler(new FileTransferControlHandler(FileReceiver, FileSender));
 

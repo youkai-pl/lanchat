@@ -28,8 +28,8 @@ namespace Lanchat.Tests.Core.Chat
             networkMock = new NetworkMock();
             networkOutput = new NetworkOutput(networkMock, nodeState, symmetricEncryption);
             messaging = new Messaging(networkOutput);
-            messageHandler = new MessageHandler(messaging, symmetricEncryption);
-            resolver = new Resolver(nodeState);
+            messageHandler = new MessageHandler(messaging);
+            resolver = new Resolver(nodeState, symmetricEncryption);
             resolver.RegisterHandler(messageHandler);
         }
 
