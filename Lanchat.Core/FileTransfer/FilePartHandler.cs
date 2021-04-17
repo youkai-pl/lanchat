@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using Lanchat.Core.API;
 using Lanchat.Core.Models;
 
@@ -19,7 +21,8 @@ namespace Lanchat.Core.FileTransfer
 
             try
             {
-                var data = filePart.Data;
+                var base64Data = filePart.Data;
+                var data = Convert.FromBase64String(base64Data);
                 fileReceiver.WriteFileStream.Write(data, 0, data.Length);
                 fileReceiver.Request.PartsTransferred++;
                 if (!filePart.Last) return;

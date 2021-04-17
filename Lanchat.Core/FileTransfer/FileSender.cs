@@ -91,7 +91,7 @@ namespace Lanchat.Core.FileTransfer
 
                     var part = new FilePart
                     {
-                        Data = buffer.Take(bytesRead).ToArray()
+                        Data = Convert.ToBase64String(buffer.Take(bytesRead).ToArray())
                     };
 
                     if (bytesRead < ChunkSize) part.Last = true;
