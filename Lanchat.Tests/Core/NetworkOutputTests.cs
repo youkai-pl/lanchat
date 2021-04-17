@@ -1,4 +1,5 @@
 using Lanchat.Core.API;
+using Lanchat.Core.Encryption;
 using Lanchat.Tests.Mock;
 using Lanchat.Tests.Mock.Models;
 using NUnit.Framework;
@@ -16,7 +17,11 @@ namespace Lanchat.Tests.Core
         {
             networkMock = new NetworkMock();
             nodeState = new NodeState();
-            networkOutput = new NetworkOutput(networkMock, nodeState);
+            var publicKeyEncryption = new PublicKeyEncryption();
+            var symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
+            publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey());
+            symmetricEncryption.ImportKey(symmetricEncryption.ExportKey());
+            networkOutput = new NetworkOutput(networkMock, nodeState, symmetricEncryption);
         }
 
         [Test]

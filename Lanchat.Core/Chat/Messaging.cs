@@ -1,6 +1,5 @@
 using System;
 using Lanchat.Core.API;
-using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Chat
@@ -10,13 +9,11 @@ namespace Lanchat.Core.Chat
     /// </summary>
     public class Messaging
     {
-        internal readonly SymmetricEncryption Encryption;
         private readonly NetworkOutput networkOutput;
 
-        internal Messaging(NetworkOutput networkOutput, SymmetricEncryption encryption)
+        internal Messaging(NetworkOutput networkOutput)
         {
             this.networkOutput = networkOutput;
-            Encryption = encryption;
         }
 
         /// <summary>
@@ -35,7 +32,7 @@ namespace Lanchat.Core.Chat
         /// <param name="content">Message content.</param>
         public void SendMessage(string content)
         {
-            networkOutput.SendData(new Message {Content = Encryption.EncryptString(content)});
+            networkOutput.SendData(new Message {Content = content});
         }
 
         /// <summary>
@@ -46,7 +43,7 @@ namespace Lanchat.Core.Chat
         {
             networkOutput.SendData(new Message
             {
-                Content = Encryption.EncryptString(content),
+                Content = content,
                 Private = true
             });
         }

@@ -26,9 +26,9 @@ namespace Lanchat.Tests.Core.Chat
             publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey());
             symmetricEncryption.ImportKey(symmetricEncryption.ExportKey());
             networkMock = new NetworkMock();
-            networkOutput = new NetworkOutput(networkMock, nodeState);
-            messaging = new Messaging(networkOutput, symmetricEncryption);
-            messageHandler = new MessageHandler(messaging);
+            networkOutput = new NetworkOutput(networkMock, nodeState, symmetricEncryption);
+            messaging = new Messaging(networkOutput);
+            messageHandler = new MessageHandler(messaging, symmetricEncryption);
             resolver = new Resolver(nodeState);
             resolver.RegisterHandler(messageHandler);
         }

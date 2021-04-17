@@ -53,10 +53,10 @@ namespace Lanchat.Core
             this.config = config;
             IsSession = networkElement.IsSession;
             NetworkElement = networkElement;
-            NetworkOutput = new NetworkOutput(NetworkElement, this);
             PublicKeyEncryption = new PublicKeyEncryption();
             SymmetricEncryption = new SymmetricEncryption(PublicKeyEncryption);
-            Messaging = new Messaging(NetworkOutput, SymmetricEncryption);
+            NetworkOutput = new NetworkOutput(NetworkElement, this, SymmetricEncryption);
+            Messaging = new Messaging(NetworkOutput);
             FileReceiver = new FileReceiver(NetworkOutput, SymmetricEncryption, config);
             FileSender = new FileSender(NetworkOutput, SymmetricEncryption);
 
@@ -66,7 +66,7 @@ namespace Lanchat.Core
             Resolver.RegisterHandler(new ConnectionControlHandler(this));
             Resolver.RegisterHandler(new StatusUpdateHandler(this));
             Resolver.RegisterHandler(new NicknameUpdateHandler(this));
-            Resolver.RegisterHandler(new MessageHandler(Messaging));
+            Resolver.RegisterHandler(new MessageHandler(Messaging, SymmetricEncryption));
             Resolver.RegisterHandler(new FilePartHandler(FileReceiver));
             Resolver.RegisterHandler(new FileTransferControlHandler(FileReceiver, FileSender));
 
