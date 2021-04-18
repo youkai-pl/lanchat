@@ -1,9 +1,9 @@
 using System;
 using System.Net;
-using Lanchat.Core.API;
+using Lanchat.Core.Api;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core.NodeHandlers
+namespace Lanchat.Core.ApiHandlers
 {
     internal class NodesListHandler : ApiHandler<NodesList>
     {

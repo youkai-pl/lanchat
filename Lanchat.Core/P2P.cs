@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Lanchat.Core.API;
+using Lanchat.Core.Api;
+using Lanchat.Core.Config;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Network;
+using Lanchat.Core.Node;
 using Lanchat.Core.NodesDetection;
 
 namespace Lanchat.Core
@@ -115,10 +117,10 @@ namespace Lanchat.Core
             }
         }
 
-        private static void SubscribeEvents(Node node, TaskCompletionSource<bool> tcs)
+        private static void SubscribeEvents(NodeImplementation nodeImplementation, TaskCompletionSource<bool> tcs)
         {
-            node.Connected += (_, _) => { tcs.TrySetResult(true); };
-            node.CannotConnect += (_, _) => { tcs.TrySetResult(false); };
+            nodeImplementation.Connected += (_, _) => { tcs.TrySetResult(true); };
+            nodeImplementation.CannotConnect += (_, _) => { tcs.TrySetResult(false); };
         }
     }
 }

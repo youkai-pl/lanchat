@@ -1,7 +1,7 @@
 using System;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Node
 {
     internal interface INodeInternal
     {

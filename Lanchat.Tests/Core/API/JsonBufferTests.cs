@@ -1,4 +1,4 @@
-using Lanchat.Core.API;
+using Lanchat.Core.Api;
 using Lanchat.Core.Json;
 using Lanchat.Tests.Mock;
 using Lanchat.Tests.Mock.Encryption;

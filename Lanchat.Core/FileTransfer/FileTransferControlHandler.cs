@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Lanchat.Core.API;
+using Lanchat.Core.Api;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer

@@ -1,9 +1,9 @@
 using System.Diagnostics;
-using Lanchat.Core.API;
+using Lanchat.Core.Api;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 
-namespace Lanchat.Core.NodeHandlers
+namespace Lanchat.Core.ApiHandlers
 {
     internal class ConnectionControlHandler : ApiHandler<ConnectionControl>
     {

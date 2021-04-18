@@ -1,13 +1,13 @@
 using System;
 using System.ComponentModel;
 using System.Net.Sockets;
-using Lanchat.Core.API;
+using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Node
 {
     /// <summary>
     ///     Connected user.
@@ -56,10 +56,10 @@ namespace Lanchat.Core
         /// <see cref="Lanchat.Core.FileTransfer.FileSender" />
         FileSender FileSender { get; }
         
-        /// <see cref="Lanchat.Core.API.Output" />
+        /// <see cref="Lanchat.Core.Api.Output" />
         IOutput Output { get; }
         
-        /// <see cref="Lanchat.Core.API.Resolver" />
+        /// <see cref="Lanchat.Core.Api.Resolver" />
         Resolver Resolver { get; }
 
         /// <summary>

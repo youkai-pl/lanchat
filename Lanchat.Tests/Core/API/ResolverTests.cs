@@ -1,5 +1,5 @@
 using System;
-using Lanchat.Core.API;
+using Lanchat.Core.Api;
 using Lanchat.Core.Json;
 using Lanchat.Core.Models;
 using Lanchat.Tests.Mock;

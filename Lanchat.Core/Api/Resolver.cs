@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text.Json;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Json;
-using Lanchat.Core.NodeHandlers;
+using Lanchat.Core.Node;
 
-namespace Lanchat.Core.API
+namespace Lanchat.Core.Api
 {
     /// <summary>
     ///     Class used to handle received data.

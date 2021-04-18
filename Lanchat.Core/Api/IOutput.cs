@@ -1,4 +1,4 @@
-namespace Lanchat.Core.API
+namespace Lanchat.Core.Api
 {
     public interface IOutput
     {

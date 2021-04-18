@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Config
 {
     internal class ConfigObserver
     {

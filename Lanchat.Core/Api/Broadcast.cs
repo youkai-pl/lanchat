@@ -1,15 +1,16 @@
 using System.Collections.Generic;
+using Lanchat.Core.Node;
 
-namespace Lanchat.Core.API
+namespace Lanchat.Core.Api
 {
     /// <summary>
     ///     Send data to all nodes.
     /// </summary>
     public class Broadcast
     {
-        private readonly List<Node> nodes;
+        private readonly List<NodeImplementation> nodes;
 
-        internal Broadcast(List<Node> nodes)
+        internal Broadcast(List<NodeImplementation> nodes)
         {
             this.nodes = nodes;
         }

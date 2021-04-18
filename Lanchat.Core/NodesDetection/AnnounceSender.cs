@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Lanchat.Core.Config;
 using Lanchat.Core.Json;
 using Lanchat.Core.Models;
 

@@ -1,8 +1,9 @@
 ﻿using Lanchat.Core.Encryption;
 using Lanchat.Core.Json;
 using Lanchat.Core.Network;
+using Lanchat.Core.Node;
 
-namespace Lanchat.Core.API
+namespace Lanchat.Core.Api
 {
     /// <summary>
     ///     Send data other of type not belonging to standard Lanchat.Core set.

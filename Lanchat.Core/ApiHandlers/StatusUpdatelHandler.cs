@@ -1,7 +1,8 @@
-using Lanchat.Core.API;
+using Lanchat.Core.Api;
 using Lanchat.Core.Models;
+using Lanchat.Core.Node;
 
-namespace Lanchat.Core.NodeHandlers
+namespace Lanchat.Core.ApiHandlers
 {
     internal class StatusUpdateHandler : ApiHandler<StatusUpdate>
     {

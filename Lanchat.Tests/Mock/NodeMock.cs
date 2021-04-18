@@ -1,6 +1,8 @@
 using System;
 using Lanchat.Core;
 using Lanchat.Core.Models;
+using Lanchat.Core.Node;
+
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Lanchat.Tests.Mock

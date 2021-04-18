@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Lanchat.Core.ApiHandlers;
+using Lanchat.Core.Config;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
-using Lanchat.Core.NodeHandlers;
+using Lanchat.Core.Node;
 
 namespace Lanchat.Core
 {
@@ -17,15 +19,15 @@ namespace Lanchat.Core
         {
             this.config = config;
             this.network = network;
-            Nodes = new List<Node>();
+            Nodes = new List<NodeImplementation>();
         }
 
-        internal List<Node> Nodes { get; }
-        internal event EventHandler<Node> NodeCreated;
+        internal List<NodeImplementation> Nodes { get; }
+        internal event EventHandler<NodeImplementation> NodeCreated;
 
-        internal Node CreateNode(INetworkElement networkElement)
+        internal NodeImplementation CreateNode(INetworkElement networkElement)
         {
-            var node = new Node(networkElement, config);
+            var node = new NodeImplementation(networkElement, config);
             Nodes.Add(node);
             node.Resolver.RegisterHandler(new NodesListHandler(network));
             node.Connected += OnConnected;
@@ -37,7 +39,7 @@ namespace Lanchat.Core
 
         private void CloseNode(object sender, EventArgs e)
         {
-            var node = (Node) sender;
+            var node = (NodeImplementation) sender;
             var id = node.Id;
             Nodes.Remove(node);
             node.Connected -= OnConnected;
@@ -49,7 +51,7 @@ namespace Lanchat.Core
 
         private void OnConnected(object sender, EventArgs e)
         {
-            var node = (Node) sender;
+            var node = (NodeImplementation) sender;
             var nodesList = new NodesList();
             nodesList.AddRange(Nodes
                 .Where(x => x.Id != node.Id)

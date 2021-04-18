@@ -1,4 +1,4 @@
-using Lanchat.Core.API;
+using Lanchat.Core.Api;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Tests.Mock.Handlers

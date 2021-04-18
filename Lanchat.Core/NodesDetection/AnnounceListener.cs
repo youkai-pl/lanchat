@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Timers;
+using Lanchat.Core.Config;
 using Lanchat.Core.Json;
 using Lanchat.Core.Models;
 

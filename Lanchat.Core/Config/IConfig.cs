@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Net;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Config
 {
     /// <summary>
     ///     Lanchat.Core configuration.

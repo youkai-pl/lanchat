@@ -1,6 +1,7 @@
 using System;
 using System.IO;
-using Lanchat.Core.API;
+using Lanchat.Core.Api;
+using Lanchat.Core.Config;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer

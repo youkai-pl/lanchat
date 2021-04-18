@@ -2,17 +2,18 @@
 using System.ComponentModel;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Lanchat.Core.API;
+using Lanchat.Core.Api;
+using Lanchat.Core.ApiHandlers;
 using Lanchat.Core.Chat;
+using Lanchat.Core.Config;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
-using Lanchat.Core.NodeHandlers;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Node
 {
-    internal class Node : IDisposable, INodePublic, INodeInternal
+    internal class NodeImplementation : IDisposable, INodePublic, INodeInternal
     {
         private readonly IConfig config;
         private readonly IPublicKeyEncryption publicKeyEncryption;
@@ -20,7 +21,7 @@ namespace Lanchat.Core
         private string previousNickname;
         private Status status;
 
-        internal Node(INetworkElement networkElement, IConfig config)
+        internal NodeImplementation(INetworkElement networkElement, IConfig config)
         {
             this.config = config;
             IsSession = networkElement.IsSession;
