@@ -11,7 +11,7 @@ namespace Lanchat.Tests.Core.Chat
         private MessageHandler messageHandler;
         private Messaging messaging;
         private NetworkMock networkMock;
-        private NetworkOutput networkOutput;
+        private Output output;
         private Resolver resolver;
 
         [SetUp]
@@ -20,8 +20,8 @@ namespace Lanchat.Tests.Core.Chat
             var nodeState = new NodeState();
             var modelEncryption = new ModelEncryptionMock();
             networkMock = new NetworkMock();
-            networkOutput = new NetworkOutput(networkMock, nodeState, modelEncryption);
-            messaging = new Messaging(networkOutput);
+            output = new Output(networkMock, nodeState, modelEncryption);
+            messaging = new Messaging(output);
             messageHandler = new MessageHandler(messaging);
             resolver = new Resolver(nodeState, modelEncryption);
             resolver.RegisterHandler(messageHandler);

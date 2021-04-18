@@ -33,8 +33,8 @@ namespace Lanchat.Core
         /// <see cref="INetworkElement" />
         public readonly INetworkElement NetworkElement;
 
-        /// <see cref="NetworkOutput" />
-        public readonly NetworkOutput NetworkOutput;
+        /// <see cref="Output" />
+        public readonly Output Output;
 
         private readonly IPublicKeyEncryption publicKeyEncryption;
 
@@ -55,10 +55,10 @@ namespace Lanchat.Core
             publicKeyEncryption = new PublicKeyEncryption();
             var symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
             var modelEncryption = new ModelEncryption(symmetricEncryption);
-            NetworkOutput = new NetworkOutput(NetworkElement, this, modelEncryption);
-            Messaging = new Messaging(NetworkOutput);
-            FileReceiver = new FileReceiver(NetworkOutput, config);
-            FileSender = new FileSender(NetworkOutput);
+            Output = new Output(NetworkElement, this, modelEncryption);
+            Messaging = new Messaging(Output);
+            FileReceiver = new FileReceiver(Output, config);
+            FileSender = new FileSender(Output);
 
             Resolver = new Resolver(this, modelEncryption);
             Resolver.RegisterHandler(new HandshakeHandler(publicKeyEncryption, symmetricEncryption, this));
@@ -167,7 +167,7 @@ namespace Lanchat.Core
         /// </summary>
         public void Disconnect()
         {
-            NetworkOutput.SendPrivilegedData(new ConnectionControl
+            Output.SendPrivilegedData(new ConnectionControl
             {
                 Status = ConnectionControlStatus.RemoteClose
             });
@@ -191,7 +191,7 @@ namespace Lanchat.Core
                 PublicKey = publicKeyEncryption.ExportKey()
             };
 
-            NetworkOutput.SendPrivilegedData(handshake);
+            Output.SendPrivilegedData(handshake);
         }
 
         internal void OnConnected()

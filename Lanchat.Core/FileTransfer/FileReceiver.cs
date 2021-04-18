@@ -11,12 +11,12 @@ namespace Lanchat.Core.FileTransfer
     public class FileReceiver
     {
         private readonly IConfig config;
-        private readonly NetworkOutput networkOutput;
+        private readonly Output output;
         internal FileStream WriteFileStream;
 
-        internal FileReceiver(NetworkOutput networkOutput, IConfig config)
+        internal FileReceiver(Output output, IConfig config)
         {
-            this.networkOutput = networkOutput;
+            this.output = output;
             this.config = config;
         }
 
@@ -49,7 +49,7 @@ namespace Lanchat.Core.FileTransfer
             if (Request == null) throw new InvalidOperationException("No receive request");
             Request.Accepted = true;
             WriteFileStream = new FileStream(Request.FilePath, FileMode.Append);
-            networkOutput.SendData(new FileTransferControl
+            output.SendData(new FileTransferControl
             {
                 RequestStatus = RequestStatus.Accepted
             });
@@ -63,7 +63,7 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request == null) throw new InvalidOperationException("No receive request");
             Request = null;
-            networkOutput.SendData(new FileTransferControl
+            output.SendData(new FileTransferControl
             {
                 RequestStatus = RequestStatus.Rejected
             });
@@ -75,7 +75,7 @@ namespace Lanchat.Core.FileTransfer
         public bool CancelReceive()
         {
             if (Request == null) return false;
-            networkOutput.SendData(
+            output.SendData(
                 new FileTransferControl
                 {
                     RequestStatus = RequestStatus.Canceled

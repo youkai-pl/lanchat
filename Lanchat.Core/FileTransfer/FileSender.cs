@@ -12,12 +12,12 @@ namespace Lanchat.Core.FileTransfer
     public class FileSender
     {
         private const int ChunkSize = 1024 * 1024;
-        private readonly NetworkOutput networkOutput;
+        private readonly Output output;
         private bool disposing;
 
-        internal FileSender(NetworkOutput networkOutput)
+        internal FileSender(Output output)
         {
-            this.networkOutput = networkOutput;
+            this.output = output;
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Lanchat.Core.FileTransfer
                 Parts = (fileInfo.Length + ChunkSize - 1) / ChunkSize
             };
 
-            networkOutput.SendData(new FileTransferControl
+            output.SendData(new FileTransferControl
             {
                 FileName = Request.FileName,
                 Parts = Request.Parts,
@@ -92,7 +92,7 @@ namespace Lanchat.Core.FileTransfer
                     };
 
                     if (bytesRead < ChunkSize) part.Last = true;
-                    networkOutput.SendData(part);
+                    output.SendData(part);
                     Request.PartsTransferred++;
                 }
 
@@ -102,7 +102,7 @@ namespace Lanchat.Core.FileTransfer
             catch
             {
                 OnFileTransferError(new FileTransferException(Request));
-                networkOutput.SendData(
+                output.SendData(
                     new FileTransferControl
                     {
                         RequestStatus = RequestStatus.Errored

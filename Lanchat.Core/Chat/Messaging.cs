@@ -9,11 +9,11 @@ namespace Lanchat.Core.Chat
     /// </summary>
     public class Messaging
     {
-        private readonly NetworkOutput networkOutput;
+        private readonly Output output;
 
-        internal Messaging(NetworkOutput networkOutput)
+        internal Messaging(Output output)
         {
-            this.networkOutput = networkOutput;
+            this.output = output;
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Lanchat.Core.Chat
         /// <param name="content">Message content.</param>
         public void SendMessage(string content)
         {
-            networkOutput.SendData(new Message {Content = content});
+            output.SendData(new Message {Content = content});
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Lanchat.Core.Chat
         /// <param name="content">Message content.</param>
         public void SendPrivateMessage(string content)
         {
-            networkOutput.SendData(new Message
+            output.SendData(new Message
             {
                 Content = content,
                 Private = true

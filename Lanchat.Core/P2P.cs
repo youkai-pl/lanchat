@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Lanchat.Core.API;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.Network;
 using Lanchat.Core.NodesDetection;
@@ -32,7 +33,7 @@ namespace Lanchat.Core
                 : new Server(IPAddress.Any, Config.ServerPort, Config, nodesControl);
 
             NodesDetection = new NodesDetector(Config);
-            Broadcasting = new Broadcasting(this);
+            Broadcast = new Broadcast(nodesControl.Nodes);
             _ = new ConfigObserver(this);
         }
 
@@ -47,7 +48,7 @@ namespace Lanchat.Core
         /// <summary>
         ///     Send data to all nodes.
         /// </summary>
-        public Broadcasting Broadcasting { get; }
+        public Broadcast Broadcast { get; }
 
         /// <summary>
         ///     New node connected. After receiving this handlers for node events can be created.

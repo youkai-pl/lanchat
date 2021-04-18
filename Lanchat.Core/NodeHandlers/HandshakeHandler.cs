@@ -30,7 +30,7 @@ namespace Lanchat.Core.NodeHandlers
             {
                 publicKeyEncryption.ImportKey(handshake.PublicKey);
                 node.Status = handshake.Status;
-                node.NetworkOutput.SendPrivilegedData(encryption.ExportKey());
+                node.Output.SendPrivilegedData(encryption.ExportKey());
                 node.HandshakeReceived = true;
             }
             catch (CryptographicException)

@@ -1,15 +1,17 @@
-namespace Lanchat.Core
+using System.Collections.Generic;
+
+namespace Lanchat.Core.API
 {
     /// <summary>
     ///     Send data to all nodes.
     /// </summary>
-    public class Broadcasting
+    public class Broadcast
     {
-        private readonly P2P network;
+        private readonly List<Node> nodes;
 
-        internal Broadcasting(P2P network)
+        internal Broadcast(List<Node> nodes)
         {
-            this.network = network;
+            this.nodes = nodes;
         }
 
         /// <summary>
@@ -18,7 +20,7 @@ namespace Lanchat.Core
         /// <param name="message">Message content.</param>
         public void SendMessage(string message)
         {
-            network.Nodes.ForEach(x => x.Messaging.SendMessage(message));
+            nodes.ForEach(x => x.Messaging.SendMessage(message));
         }
 
         /// <summary>
@@ -27,7 +29,7 @@ namespace Lanchat.Core
         /// <param name="data"></param>
         public void SendData(object data)
         {
-            network.Nodes.ForEach(x => x.NetworkOutput.SendData(data));
+            nodes.ForEach(x => x.Output.SendData(data));
         }
     }
 }

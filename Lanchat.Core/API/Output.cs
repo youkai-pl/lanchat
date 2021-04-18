@@ -8,14 +8,14 @@ namespace Lanchat.Core.API
     /// <summary>
     ///     Send data other of type not belonging to standard Lanchat.Core set.
     /// </summary>
-    public class NetworkOutput
+    public class Output
     {
         private readonly IModelEncryption encryption;
         private readonly JsonUtils jsonUtils;
         private readonly INetworkElement networkElement;
         private readonly INodeState nodeState;
 
-        internal NetworkOutput(INetworkElement networkElement, INodeState nodeState, IModelEncryption encryption)
+        internal Output(INetworkElement networkElement, INodeState nodeState, IModelEncryption encryption)
         {
             this.networkElement = networkElement;
             this.nodeState = nodeState;
