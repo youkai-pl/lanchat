@@ -12,9 +12,9 @@ namespace Lanchat.Terminal
 {
     public class NodeEventsHandlers
     {
-        private readonly Node node;
+        private readonly INodePublic node;
 
-        public NodeEventsHandlers(Node node)
+        public NodeEventsHandlers(INodePublic node)
         {
             this.node = node;
             node.Messaging.MessageReceived += OnMessageReceived;
@@ -37,7 +37,6 @@ namespace Lanchat.Terminal
 
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
-            node.SocketErrored += OnSocketErrored;
             node.PropertyChanged += OnPropertyChanged;
         }
 

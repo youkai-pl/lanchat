@@ -5,16 +5,16 @@ namespace Lanchat.Core.NodeHandlers
 {
     internal class NicknameUpdateHandler : ApiHandler<NicknameUpdate>
     {
-        private readonly INodeInternals nodeInternals;
+        private readonly INodeInternal node;
 
-        internal NicknameUpdateHandler(INodeInternals nodeInternals)
+        internal NicknameUpdateHandler(INodeInternal node)
         {
-            this.nodeInternals = nodeInternals;
+            this.node = node;
         }
 
         protected override void Handle(NicknameUpdate newNickname)
         {
-            nodeInternals.Nickname = newNickname.NewNickname;
+            node.Nickname = newNickname.NewNickname;
         }
     }
 }

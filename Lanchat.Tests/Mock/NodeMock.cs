@@ -5,7 +5,7 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Tests.Mock
 {
-    public class NodeMock : INodeInternals
+    public class NodeMock : INodeInternal
     {
         public bool Ready { get; set; } = true;
         public bool IsSession => false;

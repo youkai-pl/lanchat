@@ -8,23 +8,23 @@ namespace Lanchat.Core.NodeHandlers
     internal class KeyInfoHandler : ApiHandler<KeyInfo>
     {
         private readonly ISymmetricEncryption encryption;
-        private readonly INodeInternals nodeInternals;
+        private readonly INodeInternal node;
 
-        internal KeyInfoHandler(ISymmetricEncryption encryption, INodeInternals nodeInternals)
+        internal KeyInfoHandler(ISymmetricEncryption encryption, INodeInternal node)
         {
             this.encryption = encryption;
-            this.nodeInternals = nodeInternals;
+            this.node = node;
             Privileged = true;
         }
 
         protected override void Handle(KeyInfo keyInfo)
         {
-            if (nodeInternals.Ready)
+            if (node.Ready)
             {
                 return;
             }
 
-            if (!nodeInternals.HandshakeReceived)
+            if (!node.HandshakeReceived)
             {
                 return;
             }
@@ -37,12 +37,12 @@ namespace Lanchat.Core.NodeHandlers
             try
             {
                 encryption.ImportKey(keyInfo);
-                nodeInternals.Ready = true;
-                nodeInternals.OnConnected();
+                node.Ready = true;
+                node.OnConnected();
             }
             catch (CryptographicException)
             {
-                nodeInternals.OnCannotConnect();
+                node.OnCannotConnect();
             }
         }
     }

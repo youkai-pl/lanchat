@@ -3,7 +3,7 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core
 {
-    internal interface INodeInternals
+    internal interface INodeInternal
     {
         string Nickname { set; }
 

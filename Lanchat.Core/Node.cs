@@ -12,36 +12,11 @@ using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Core
 {
-    /// <summary>
-    ///     Connected user.
-    /// </summary>
-    public class Node : IDisposable, INotifyPropertyChanged
+    /// <inheritdoc cref="Lanchat.Core.INodePublic" />
+    public class Node : IDisposable, INodePublic, INodeInternal
     {
         private readonly IConfig config;
-
-        /// <see cref="FileReceiver" />
-        public readonly FileReceiver FileReceiver;
-
-        /// <see cref="FileSender" />
-        public readonly FileSender FileSender;
-
-        internal readonly bool IsSession;
-
-        /// <see cref="Messaging" />
-        public readonly Messaging Messaging;
-
-        /// <see cref="INetworkElement" />
-        public readonly INetworkElement NetworkElement;
-
-        /// <see cref="Output" />
-        public readonly IOutput Output;
-
         private readonly IPublicKeyEncryption publicKeyEncryption;
-
-        /// <see cref="Resolver" />
-        public readonly Resolver Resolver;
-
-        internal bool HandshakeReceived;
         private string nickname;
         private string previousNickname;
         private Status status;
@@ -51,21 +26,20 @@ namespace Lanchat.Core
             this.config = config;
             IsSession = networkElement.IsSession;
             NetworkElement = networkElement;
-            NodeInternals = new NodeInternals(this);
             publicKeyEncryption = new PublicKeyEncryption();
             var symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
             var modelEncryption = new ModelEncryption(symmetricEncryption);
-            Output = new Output(NetworkElement, NodeInternals, modelEncryption);
+            Output = new Output(NetworkElement, this, modelEncryption);
             Messaging = new Messaging(Output);
             FileReceiver = new FileReceiver(Output, config);
             FileSender = new FileSender(Output);
 
-            Resolver = new Resolver(NodeInternals, modelEncryption);
-            Resolver.RegisterHandler(new HandshakeHandler(publicKeyEncryption, symmetricEncryption, Output, NodeInternals));
-            Resolver.RegisterHandler(new KeyInfoHandler(symmetricEncryption, NodeInternals));
+            Resolver = new Resolver(this, modelEncryption);
+            Resolver.RegisterHandler(new HandshakeHandler(publicKeyEncryption, symmetricEncryption, Output, this));
+            Resolver.RegisterHandler(new KeyInfoHandler(symmetricEncryption, this));
             Resolver.RegisterHandler(new ConnectionControlHandler(NetworkElement));
-            Resolver.RegisterHandler(new StatusUpdateHandler(NodeInternals));
-            Resolver.RegisterHandler(new NicknameUpdateHandler(NodeInternals));
+            Resolver.RegisterHandler(new StatusUpdateHandler(this));
+            Resolver.RegisterHandler(new NicknameUpdateHandler(this));
             Resolver.RegisterHandler(new MessageHandler(Messaging));
             Resolver.RegisterHandler(new FilePartHandler(FileReceiver));
             Resolver.RegisterHandler(new FileTransferControlHandler(FileReceiver, FileSender));
@@ -82,15 +56,70 @@ namespace Lanchat.Core
             CheckIsReadyAfterTimeout();
         }
 
-        private INodeInternals NodeInternals { get; }
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            NetworkElement.Close();
+            FileSender.Dispose();
+            FileReceiver.CancelReceive();
+            publicKeyEncryption.Dispose();
+            GC.SuppressFinalize(this);
+        }
 
-        /// <summary>
-        ///     Node user nickname.
-        /// </summary>
+        /// <inheritdoc />
+        public bool IsSession { get; }
+
+        /// <inheritdoc />
+        public bool HandshakeReceived { get; set; }
+
+        /// <inheritdoc />
+        public void SendHandshake()
+        {
+            var handshake = new Handshake
+            {
+                Nickname = config.Nickname,
+                Status = config.Status,
+                PublicKey = publicKeyEncryption.ExportKey()
+            };
+
+            Output.SendPrivilegedData(handshake);
+        }
+
+        /// <inheritdoc />
+        public void OnConnected()
+        {
+            Connected?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <inheritdoc />
+        public void OnCannotConnect()
+        {
+            CannotConnect?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <inheritdoc />
+        public Resolver Resolver { get; }
+
+        /// <inheritdoc />
+        public FileReceiver FileReceiver { get; }
+
+        /// <inheritdoc />
+        public FileSender FileSender { get; }
+
+        /// <inheritdoc />
+        public Messaging Messaging { get; }
+
+        /// <inheritdoc />
+        public INetworkElement NetworkElement { get; }
+
+        /// <inheritdoc />
+        public IOutput Output { get; }
+
+        /// <inheritdoc cref="INodePublic.Nickname" />
         public string Nickname
         {
             get => $"{nickname}#{ShortId}";
-            internal set
+            set
             {
                 if (value == nickname)
                 {
@@ -103,19 +132,13 @@ namespace Lanchat.Core
             }
         }
 
-        /// <summary>
-        ///     Nickname before last change.
-        /// </summary>
+        /// <inheritdoc />
         public string PreviousNickname => $"{previousNickname}#{ShortId}";
 
-        /// <summary>
-        ///     Short ID.
-        /// </summary>
+        /// <inheritdoc />
         public string ShortId => Id.GetHashCode().ToString().Substring(1, 4);
 
-        /// <summary>
-        ///     Node user status.
-        /// </summary>
+        /// <inheritdoc cref="INodePublic.Status" />
         public Status Status
         {
             get => status;
@@ -131,53 +154,25 @@ namespace Lanchat.Core
             }
         }
 
-        /// <summary>
-        ///     Dispose node. For safe disconnect use <see cref="Disconnect" /> instead.
-        /// </summary>
-        public void Dispose()
-        {
-            NetworkElement.Close();
-            FileSender.Dispose();
-            FileReceiver.CancelReceive();
-            publicKeyEncryption.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        ///     ID of TCP client or session.
-        /// </summary>
+        /// <inheritdoc cref="INodePublic.Id" />
         public Guid Id => NetworkElement.Id;
 
-        /// <summary>
-        ///     Node ready. If set to false node won't send or receive messages.
-        /// </summary>
-        public bool Ready { get; internal set; }
+        /// <inheritdoc cref="INodePublic.Ready" />
+        public bool Ready { get; set; }
 
-        /// <summary>
-        ///     Invoked for properties like nickname or status.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        ///     Node successful connected and ready to data exchange.
-        /// </summary>
+        /// <inheritdoc />
         public event EventHandler Connected;
 
-        /// <summary>
-        ///     Node disconnected. Cannot reconnect.
-        /// </summary>
+        /// <inheritdoc />
         public event EventHandler Disconnected;
 
-        /// <summary>
-        ///     TCP session or client returned error.
-        /// </summary>
+        /// <inheritdoc />
         public event EventHandler<SocketError> SocketErrored;
 
-        internal event EventHandler CannotConnect;
+        /// <inheritdoc />
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        ///     Disconnect from node.
-        /// </summary>
+        /// <inheritdoc />
         public void Disconnect()
         {
             Output.SendPrivilegedData(new ConnectionControl
@@ -187,27 +182,7 @@ namespace Lanchat.Core
             Dispose();
         }
 
-        internal void SendHandshake()
-        {
-            var handshake = new Handshake
-            {
-                Nickname = config.Nickname,
-                Status = config.Status,
-                PublicKey = publicKeyEncryption.ExportKey()
-            };
-
-            Output.SendPrivilegedData(handshake);
-        }
-
-        internal void OnConnected()
-        {
-            Connected?.Invoke(this, EventArgs.Empty);
-        }
-
-        internal void OnCannotConnect()
-        {
-            CannotConnect?.Invoke(this, EventArgs.Empty);
-        }
+        internal event EventHandler CannotConnect;
 
         private void OnDisconnected(object sender, EventArgs _)
         {

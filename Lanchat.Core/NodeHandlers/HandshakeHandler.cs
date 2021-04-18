@@ -8,7 +8,7 @@ namespace Lanchat.Core.NodeHandlers
     internal class HandshakeHandler : ApiHandler<Handshake>
     {
         private readonly ISymmetricEncryption encryption;
-        private readonly INodeInternals nodeInternals;
+        private readonly INodeInternal node;
         private readonly IOutput output;
         private readonly IPublicKeyEncryption publicKeyEncryption;
 
@@ -16,39 +16,39 @@ namespace Lanchat.Core.NodeHandlers
             IPublicKeyEncryption publicKeyEncryption,
             ISymmetricEncryption encryption,
             IOutput output,
-            INodeInternals nodeInternals)
+            INodeInternal node)
         {
             this.publicKeyEncryption = publicKeyEncryption;
             this.encryption = encryption;
             this.output = output;
-            this.nodeInternals = nodeInternals;
+            this.node = node;
             Privileged = true;
         }
 
         protected override void Handle(Handshake handshake)
         {
-            if (nodeInternals.HandshakeReceived)
+            if (node.HandshakeReceived)
             {
                 return;
             }
 
-            nodeInternals.Nickname = handshake.Nickname;
+            node.Nickname = handshake.Nickname;
 
-            if (!nodeInternals.IsSession)
+            if (!node.IsSession)
             {
-                nodeInternals.SendHandshake();
+                node.SendHandshake();
             }
 
             try
             {
                 publicKeyEncryption.ImportKey(handshake.PublicKey);
-                nodeInternals.Status = handshake.Status;
+                node.Status = handshake.Status;
                 output.SendPrivilegedData(encryption.ExportKey());
-                nodeInternals.HandshakeReceived = true;
+                node.HandshakeReceived = true;
             }
             catch (CryptographicException)
             {
-                nodeInternals.OnCannotConnect();
+                node.OnCannotConnect();
             }
         }
     }

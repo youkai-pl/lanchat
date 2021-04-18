@@ -44,7 +44,7 @@ namespace Lanchat.Core
         /// <summary>
         ///     List of connected nodes.
         /// </summary>
-        public List<Node> Nodes => nodesControl.Nodes.Where(x => x.Ready).ToList();
+        public List<INodePublic> Nodes => nodesControl.Nodes.Where(x => x.Ready).Cast<INodePublic>().ToList();
 
         /// <summary>
         ///     Send data to all nodes.
@@ -54,7 +54,7 @@ namespace Lanchat.Core
         /// <summary>
         ///     New node connected. After receiving this handlers for node events can be created.
         /// </summary>
-        public event EventHandler<Node> NodeCreated;
+        public event EventHandler<INodePublic> NodeCreated;
 
         /// <summary>
         ///     Start server.

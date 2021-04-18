@@ -12,12 +12,12 @@ namespace Lanchat.Core.API
         private readonly IModelEncryption encryption;
         private readonly JsonUtils jsonUtils;
         private readonly INetworkElement networkElement;
-        private readonly INodeInternals nodeInternals;
+        private readonly INodeInternal node;
 
-        internal Output(INetworkElement networkElement, INodeInternals nodeInternals, IModelEncryption encryption)
+        internal Output(INetworkElement networkElement, INodeInternal node, IModelEncryption encryption)
         {
             this.networkElement = networkElement;
-            this.nodeInternals = nodeInternals;
+            this.node = node;
             this.encryption = encryption;
             jsonUtils = new JsonUtils();
         }
@@ -28,7 +28,7 @@ namespace Lanchat.Core.API
         /// <param name="content">Object to send.</param>
         public void SendData(object content)
         {
-            if (!nodeInternals.Ready)
+            if (!node.Ready)
             {
                 return;
             }
