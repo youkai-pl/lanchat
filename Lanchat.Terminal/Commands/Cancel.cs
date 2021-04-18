@@ -17,7 +17,10 @@ namespace Lanchat.Terminal.Commands
                 return;
             }
 
-            if (!node.FileReceiver.CancelReceive()) Ui.Log.AddError(Resources._NoFileReceiveRequest);
+            if (!node.FileReceiver.CancelReceive())
+            {
+                Ui.Log.AddError(Resources._NoFileReceiveRequest);
+            }
         }
     }
 }

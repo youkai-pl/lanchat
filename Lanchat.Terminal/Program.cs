@@ -34,9 +34,20 @@ namespace Lanchat.Terminal
             Network.NodeCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
             Ui.SetupNetworkEvents();
 
-            if (args.Contains("--no-saved") || args.Contains("-a")) Config.ConnectToSaved = false;
-            if (args.Contains("--no-udp") || args.Contains("-b")) Config.NodesDetection = false;
-            if (args.Contains("--no-server") || args.Contains("-n")) Config.StartServer = false;
+            if (args.Contains("--no-saved") || args.Contains("-a"))
+            {
+                Config.ConnectToSaved = false;
+            }
+
+            if (args.Contains("--no-udp") || args.Contains("-b"))
+            {
+                Config.NodesDetection = false;
+            }
+
+            if (args.Contains("--no-server") || args.Contains("-n"))
+            {
+                Config.StartServer = false;
+            }
 
             if (args.Contains("--debug") || args.Contains("-d") || Debugger.IsAttached)
             {
@@ -45,7 +56,10 @@ namespace Lanchat.Terminal
             else
             {
                 var newVersion = UpdateChecker.CheckUpdates();
-                if (newVersion != null) Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
+                if (newVersion != null)
+                {
+                    Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
+                }
             }
 
             Logger.StartLogging();
@@ -56,7 +70,11 @@ namespace Lanchat.Terminal
             }
             catch (SocketException e)
             {
-                if (e.SocketErrorCode != SocketError.AddressAlreadyInUse) throw;
+                if (e.SocketErrorCode != SocketError.AddressAlreadyInUse)
+                {
+                    throw;
+                }
+
                 Ui.Log.AddWarning(Resources._PortBusy);
             }
 

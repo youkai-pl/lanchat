@@ -29,7 +29,11 @@ namespace Lanchat.Core.API
         /// <param name="content">Object to send.</param>
         public void SendData(object content)
         {
-            if (!nodeState.Ready) return;
+            if (!nodeState.Ready)
+            {
+                return;
+            }
+
             encryption.EncryptObject(content);
             networkElement.Send(jsonUtils.Serialize(content));
         }

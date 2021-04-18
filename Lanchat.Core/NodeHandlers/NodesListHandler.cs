@@ -16,7 +16,11 @@ namespace Lanchat.Core.NodeHandlers
 
         protected override void Handle(NodesList nodesList)
         {
-            if (!network.Config.ConnectToReceivedList) return;
+            if (!network.Config.ConnectToReceivedList)
+            {
+                return;
+            }
+
             nodesList.RemoveAll(x => x.Equals(IPAddress.Loopback));
             nodesList.ForEach(x =>
             {
@@ -25,8 +29,7 @@ namespace Lanchat.Core.NodeHandlers
                     network.Connect(x).ConfigureAwait(false);
                 }
                 catch (ArgumentException)
-                {
-                }
+                { }
             });
         }
     }

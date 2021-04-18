@@ -31,7 +31,6 @@ namespace Lanchat.Tests.Mock.Encryption
         }
 
         public void ImportKey(KeyInfo keyInfo)
-        {
-        }
+        { }
     }
 }

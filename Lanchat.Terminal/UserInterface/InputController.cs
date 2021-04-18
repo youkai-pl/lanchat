@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using ConsoleGUI.Controls;
@@ -12,15 +11,14 @@ namespace Lanchat.Terminal.UserInterface
 {
     public class InputController : IInputListener
     {
-        private readonly TextBox input;
-        private readonly List<ICommand> commands = new();
-
         private static readonly List<string> History = new()
         {
             string.Empty
         };
 
         private static int _currentHistoryItem;
+        private readonly List<ICommand> commands = new();
+        private readonly TextBox input;
 
         public InputController(TextBox input)
         {
@@ -49,7 +47,11 @@ namespace Lanchat.Terminal.UserInterface
         {
             if (inputEvent.Key.Key == ConsoleKey.UpArrow)
             {
-                if (History.Count == _currentHistoryItem + 1) return;
+                if (History.Count == _currentHistoryItem + 1)
+                {
+                    return;
+                }
+
                 _currentHistoryItem++;
                 input.Text = History.ElementAt(_currentHistoryItem);
                 return;
@@ -57,14 +59,21 @@ namespace Lanchat.Terminal.UserInterface
 
             if (inputEvent.Key.Key == ConsoleKey.DownArrow)
             {
-                if (_currentHistoryItem == 0) return;
+                if (_currentHistoryItem == 0)
+                {
+                    return;
+                }
+
                 _currentHistoryItem--;
                 input.Text = History.ElementAt(_currentHistoryItem);
                 return;
             }
 
             History[0] = input.Text;
-            if (inputEvent.Key.Key != ConsoleKey.Enter) return;
+            if (inputEvent.Key.Key != ConsoleKey.Enter)
+            {
+                return;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.Text))
             {
@@ -99,7 +108,11 @@ namespace Lanchat.Terminal.UserInterface
             if (args.Length < command.ArgsCount)
             {
                 var help = Resources.ResourceManager.GetString($"Help_{commandAlias}", CultureInfo.CurrentCulture);
-                if (help != null) Ui.Log.Add(help);
+                if (help != null)
+                {
+                    Ui.Log.Add(help);
+                }
+
                 return;
             }
 

@@ -41,7 +41,10 @@ namespace Lanchat.Terminal.UserInterface
             totalProgress -= e.Parts;
             parts -= e.Parts;
             Text = $"{totalProgress}/{parts}";
-            if (parts == 0) Text = string.Format(Resources._NoFileReceiveRequest);
+            if (parts == 0)
+            {
+                Text = string.Format(Resources._NoFileReceiveRequest);
+            }
         }
     }
 }

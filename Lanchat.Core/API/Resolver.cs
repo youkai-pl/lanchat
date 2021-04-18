@@ -47,18 +47,20 @@ namespace Lanchat.Core.API
                 jsonBuffer.ReadBuffer().ForEach(CallHandler);
             }
             catch (JsonException)
-            {
-            }
+            { }
             catch (InvalidOperationException)
-            {
-            }
+            { }
         }
 
         internal void CallHandler(string item)
         {
             var data = jsonUtils.Deserialize(item);
             var handler = GetHandler(data.GetType());
-            if (!CheckPreconditions(handler, data)) return;
+            if (!CheckPreconditions(handler, data))
+            {
+                return;
+            }
+
             encryption.DecryptObject(data);
             Trace.WriteLine($"Node {nodeState.Id} received {handler.HandledType.Name}");
             handler.Handle(data);

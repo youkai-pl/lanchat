@@ -12,11 +12,11 @@ namespace Lanchat.Tests.Core.API
 {
     public class ResolverTests
     {
+        private JsonUtils jsonUtils;
         private MessageHandlerMock messageHandlerMock;
         private NodeState nodeState;
         private PrivilegedHandler privilegedHandler;
         private Resolver resolver;
-        private JsonUtils jsonUtils;
 
         [SetUp]
         public void Setup()
@@ -33,10 +33,7 @@ namespace Lanchat.Tests.Core.API
         [Test]
         public void UnknownModel()
         {
-            Assert.Catch<InvalidOperationException>(() =>
-            {
-                resolver.CallHandler(jsonUtils.Serialize(new Model()));
-            });
+            Assert.Catch<InvalidOperationException>(() => { resolver.CallHandler(jsonUtils.Serialize(new Model())); });
         }
 
         [Test]

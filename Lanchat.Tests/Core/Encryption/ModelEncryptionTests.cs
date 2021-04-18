@@ -22,11 +22,11 @@ namespace Lanchat.Tests.Core.Encryption
             {
                 Property = "1234"
             };
-            
+
             modelEncryption.EncryptObject(model);
             Assert.AreEqual("4321", model.Property);
         }
-        
+
         [Test]
         public void Decrypt()
         {
@@ -34,7 +34,7 @@ namespace Lanchat.Tests.Core.Encryption
             {
                 Property = "1234"
             };
-            
+
             modelEncryption.EncryptObject(model);
             modelEncryption.DecryptObject(model);
             Assert.AreEqual("1234", model.Property);

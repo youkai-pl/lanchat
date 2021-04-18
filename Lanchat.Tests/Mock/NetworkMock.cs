@@ -17,8 +17,7 @@ namespace Lanchat.Tests.Mock
         }
 
         public void Close()
-        {
-        }
+        { }
 
         public event EventHandler Disconnected;
         public event EventHandler<SocketError> SocketErrored;

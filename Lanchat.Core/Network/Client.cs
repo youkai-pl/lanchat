@@ -13,8 +13,7 @@ namespace Lanchat.Core.Network
         private bool disposing;
 
         internal Client(IPAddress address, int port) : base(address, port)
-        {
-        }
+        { }
 
         public bool IsSession => false;
 
@@ -31,13 +30,21 @@ namespace Lanchat.Core.Network
         {
             disposing = true;
             DisconnectAsync();
-            while (IsConnected) Thread.Yield();
+            while (IsConnected)
+            {
+                Thread.Yield();
+            }
+
             Dispose();
         }
 
         protected override void OnDisconnected()
         {
-            if (disposing) return;
+            if (disposing)
+            {
+                return;
+            }
+
             Disconnected?.Invoke(this, EventArgs.Empty);
         }
 

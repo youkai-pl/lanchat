@@ -6,6 +6,5 @@ namespace Lanchat.Core.Encryption
     ///     String properties with this attribute will be encrypted.
     /// </summary>
     public class EncryptAttribute : Attribute
-    {
-    }
+    { }
 }

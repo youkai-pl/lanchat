@@ -21,10 +21,17 @@ namespace Lanchat.Core.NodeHandlers
 
         protected override void Handle(Handshake handshake)
         {
-            if (node.HandshakeReceived) return;
+            if (node.HandshakeReceived)
+            {
+                return;
+            }
+
             node.Nickname = handshake.Nickname;
 
-            if (!node.IsSession) node.SendHandshake();
+            if (!node.IsSession)
+            {
+                node.SendHandshake();
+            }
 
             try
             {

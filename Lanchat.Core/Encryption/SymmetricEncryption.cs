@@ -58,7 +58,10 @@ namespace Lanchat.Core.Encryption
 
         internal byte[] EncryptBytes(byte[] data)
         {
-            if (disposed) throw new ObjectDisposedException(nameof(SymmetricEncryption));
+            if (disposed)
+            {
+                throw new ObjectDisposedException(nameof(SymmetricEncryption));
+            }
 
             using var memoryStream = new MemoryStream();
             using var cryptoStream =
@@ -70,7 +73,10 @@ namespace Lanchat.Core.Encryption
 
         internal byte[] DecryptBytes(byte[] data)
         {
-            if (disposed) throw new ObjectDisposedException(nameof(SymmetricEncryption));
+            if (disposed)
+            {
+                throw new ObjectDisposedException(nameof(SymmetricEncryption));
+            }
 
             using var memoryStream = new MemoryStream();
             using var cryptoStream =

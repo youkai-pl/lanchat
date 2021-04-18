@@ -46,7 +46,11 @@ namespace Lanchat.Core.FileTransfer
         /// <exception cref="InvalidOperationException">No awaiting request</exception>
         public void AcceptRequest()
         {
-            if (Request == null) throw new InvalidOperationException("No receive request");
+            if (Request == null)
+            {
+                throw new InvalidOperationException("No receive request");
+            }
+
             Request.Accepted = true;
             WriteFileStream = new FileStream(Request.FilePath, FileMode.Append);
             output.SendData(new FileTransferControl
@@ -61,7 +65,11 @@ namespace Lanchat.Core.FileTransfer
         /// <exception cref="InvalidOperationException">No awaiting request</exception>
         public void RejectRequest()
         {
-            if (Request == null) throw new InvalidOperationException("No receive request");
+            if (Request == null)
+            {
+                throw new InvalidOperationException("No receive request");
+            }
+
             Request = null;
             output.SendData(new FileTransferControl
             {
@@ -74,7 +82,11 @@ namespace Lanchat.Core.FileTransfer
         /// </summary>
         public bool CancelReceive()
         {
-            if (Request == null) return false;
+            if (Request == null)
+            {
+                return false;
+            }
+
             output.SendData(
                 new FileTransferControl
                 {
@@ -86,7 +98,7 @@ namespace Lanchat.Core.FileTransfer
             ResetRequest();
             return true;
         }
-        
+
         internal void HandleReceiveRequest(FileTransferControl request)
         {
             Request = new FileTransferRequest
@@ -99,7 +111,11 @@ namespace Lanchat.Core.FileTransfer
 
         internal void HandleSenderError()
         {
-            if (Request == null) return;
+            if (Request == null)
+            {
+                return;
+            }
+
             File.Delete(Request.FilePath);
             OnFileTransferError();
             ResetRequest();
@@ -114,13 +130,13 @@ namespace Lanchat.Core.FileTransfer
         {
             FileTransferError?.Invoke(this, new FileTransferException(Request));
         }
-        
+
         private void ResetRequest()
         {
             Request = null;
             WriteFileStream.Dispose();
         }
-        
+
         private static string GetUniqueFileName(string file)
         {
             var fileName = Path.GetFileNameWithoutExtension(file);
@@ -129,7 +145,10 @@ namespace Lanchat.Core.FileTransfer
             for (var i = 1;; ++i)
             {
                 if (!File.Exists(file))
+                {
                     return file;
+                }
+
                 file = $"{fileName}({i}){fileExt}";
             }
         }

@@ -17,7 +17,11 @@ namespace Lanchat.Core.Json
         internal List<string> ReadBuffer()
         {
             var index = buffer.LastIndexOf("}", StringComparison.Ordinal);
-            if (index < 0) return new List<string>();
+            if (index < 0)
+            {
+                return new List<string>();
+            }
+
             currentJson = buffer[..(index + 1)];
             buffer = buffer[(index + 1)..];
             return currentJson.Replace("}{", "}|{").Split('|').ToList();

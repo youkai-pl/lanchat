@@ -12,7 +12,7 @@ namespace Lanchat.ClientCore
     public static class Logger
     {
         private static FileTraceListener _fileTraceListener;
-        
+
         /// <summary>
         ///     Create log file and start logging.
         /// </summary>
@@ -46,13 +46,17 @@ namespace Lanchat.ClientCore
                 .GetFiles("*.log")
                 .OrderByDescending(x => x.LastWriteTime)
                 .Skip(maxLogsCount))
+            {
                 fi.Delete();
+            }
         }
 
         private static void OnFirstChanceException(object sender, FirstChanceExceptionEventArgs e)
         {
             if (e.Exception.Source != null && e.Exception.Source.StartsWith("Lanchat"))
+            {
                 Trace.WriteLine(e.Exception);
+            }
         }
     }
 }

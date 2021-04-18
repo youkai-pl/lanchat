@@ -19,10 +19,20 @@ namespace Lanchat.Core.NodeHandlers
 
         protected override void Handle(KeyInfo keyInfo)
         {
-            if (node.Ready) return;
-            if (!node.HandshakeReceived) return;
+            if (node.Ready)
+            {
+                return;
+            }
 
-            if (keyInfo == null) return;
+            if (!node.HandshakeReceived)
+            {
+                return;
+            }
+
+            if (keyInfo == null)
+            {
+                return;
+            }
 
             try
             {

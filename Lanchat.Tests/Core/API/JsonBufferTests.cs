@@ -11,9 +11,9 @@ namespace Lanchat.Tests.Core.API
     public class NetworkInputTests
     {
         private JsonBuffer jsonBuffer;
+        private JsonUtils jsonUtils;
         private ModelHandlerMock modelHandlerMock;
         private Resolver resolver;
-        private JsonUtils jsonUtils;
 
         [SetUp]
         public void Setup()

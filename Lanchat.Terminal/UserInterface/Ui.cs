@@ -110,7 +110,10 @@ namespace Lanchat.Terminal.UserInterface
             Console.Title = Resources._WindowTitle;
             Log.Add(Resources._Logo);
 
-            if (Program.Config.Fresh) Log.Add(string.Format(Resources._FirstRunMessage, Storage.ConfigPath));
+            if (Program.Config.Fresh)
+            {
+                Log.Add(string.Format(Resources._FirstRunMessage, Storage.ConfigPath));
+            }
 
             // Main UI loop
             new Thread(() =>

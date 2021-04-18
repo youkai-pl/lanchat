@@ -15,9 +15,13 @@ namespace Lanchat.Core.Chat
         protected override void Handle(Message message)
         {
             if (message.Private)
+            {
                 messaging.OnPrivateMessageReceived(message.Content);
+            }
             else
+            {
                 messaging.OnMessageReceived(message.Content);
+            }
         }
     }
 }

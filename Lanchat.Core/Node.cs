@@ -74,7 +74,10 @@ namespace Lanchat.Core
             NetworkElement.DataReceived += Resolver.OnDataReceived;
             NetworkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
-            if (IsSession) SendHandshake();
+            if (IsSession)
+            {
+                SendHandshake();
+            }
 
             CheckIsReadyAfterTimeout();
         }
@@ -87,7 +90,11 @@ namespace Lanchat.Core
             get => $"{nickname}#{ShortId}";
             set
             {
-                if (value == nickname) return;
+                if (value == nickname)
+                {
+                    return;
+                }
+
                 previousNickname = nickname;
                 nickname = value;
                 OnPropertyChanged(nameof(Nickname));
@@ -112,7 +119,11 @@ namespace Lanchat.Core
             get => status;
             set
             {
-                if (value == status) return;
+                if (value == status)
+                {
+                    return;
+                }
+
                 status = value;
                 OnPropertyChanged(nameof(Status));
             }
@@ -174,14 +185,6 @@ namespace Lanchat.Core
             Dispose();
         }
 
-        private void OnDisconnected(object sender, EventArgs _)
-        {
-            if (Ready)
-                Disconnected?.Invoke(this, EventArgs.Empty);
-            else
-                OnCannotConnect();
-        }
-
         internal void SendHandshake()
         {
             var handshake = new Handshake
@@ -204,11 +207,26 @@ namespace Lanchat.Core
             CannotConnect?.Invoke(this, EventArgs.Empty);
         }
 
+        private void OnDisconnected(object sender, EventArgs _)
+        {
+            if (Ready)
+            {
+                Disconnected?.Invoke(this, EventArgs.Empty);
+            }
+            else
+            {
+                OnCannotConnect();
+            }
+        }
+
         private void CheckIsReadyAfterTimeout()
         {
             Task.Delay(5000).ContinueWith(_ =>
             {
-                if (!Ready) OnCannotConnect();
+                if (!Ready)
+                {
+                    OnCannotConnect();
+                }
             });
         }
 

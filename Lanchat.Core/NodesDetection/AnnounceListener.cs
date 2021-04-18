@@ -49,11 +49,9 @@ namespace Lanchat.Core.NodesDetection
                         HandleBroadcast(recvBuffer, from);
                     }
                     catch (JsonException)
-                    {
-                    }
+                    { }
                     catch (InvalidOperationException)
-                    {
-                    }
+                    { }
                 }
             });
         }
@@ -61,26 +59,38 @@ namespace Lanchat.Core.NodesDetection
         private void HandleBroadcast(byte[] recvBuffer, IPEndPoint from)
         {
             var broadcast = jsonUtils.Deserialize<Announce>(Encoding.UTF8.GetString(recvBuffer));
-            if (!CheckPreconditions(broadcast)) return;
+            if (!CheckPreconditions(broadcast))
+            {
+                return;
+            }
+
             broadcast.IpAddress = from.Address;
             BroadcastReceived(broadcast);
         }
 
         private bool CheckPreconditions(Announce broadcast)
         {
-            if (!Validator.TryValidateObject(broadcast, new ValidationContext(broadcast), new List<ValidationResult>()))
-                return false;
+            if (Validator.TryValidateObject(broadcast,
+                new ValidationContext(broadcast),
+                new List<ValidationResult>()))
+            {
+                return broadcast.Guid != uniqueId;
+            }
 
-            return broadcast.Guid != uniqueId;
+            return false;
         }
 
         private void BroadcastReceived(Announce e)
         {
             var alreadyDetected = detectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
             if (alreadyDetected == null)
+            {
                 AddNewNode(e);
+            }
             else
+            {
                 UpdateNode(e, alreadyDetected);
+            }
         }
 
         private static void UpdateNode(Announce newAnnounce, Announce alreadyDetected)

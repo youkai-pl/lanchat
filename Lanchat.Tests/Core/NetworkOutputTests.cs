@@ -9,8 +9,8 @@ namespace Lanchat.Tests.Core
     public class NetworkOutputTests
     {
         private NetworkMock networkMock;
-        private Output output;
         private NodeState nodeState;
+        private Output output;
 
         [SetUp]
         public void Setup()

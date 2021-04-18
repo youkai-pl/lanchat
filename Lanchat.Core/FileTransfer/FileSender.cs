@@ -52,7 +52,11 @@ namespace Lanchat.Core.FileTransfer
         /// <exception cref="InvalidOperationException">Only one file can be send at same time</exception>
         public void CreateSendRequest(string path)
         {
-            if (Request != null) throw new InvalidOperationException("File transfer already in progress");
+            if (Request != null)
+            {
+                throw new InvalidOperationException("File transfer already in progress");
+            }
+
             var fileInfo = new FileInfo(Path.Combine(path));
 
             Request = new FileTransferRequest
@@ -91,7 +95,11 @@ namespace Lanchat.Core.FileTransfer
                         Data = Convert.ToBase64String(buffer.Take(bytesRead).ToArray())
                     };
 
-                    if (bytesRead < ChunkSize) part.Last = true;
+                    if (bytesRead < ChunkSize)
+                    {
+                        part.Last = true;
+                    }
+
                     output.SendData(part);
                     Request.PartsTransferred++;
                 }
@@ -119,7 +127,11 @@ namespace Lanchat.Core.FileTransfer
 
         internal void HandleCancel()
         {
-            if (Request == null) return;
+            if (Request == null)
+            {
+                return;
+            }
+
             OnFileTransferError(new FileTransferException(Request));
             Request = null;
         }

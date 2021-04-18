@@ -57,7 +57,11 @@ namespace Lanchat.Terminal
                     break;
 
                 case "Nickname":
-                    if (!node.Ready) return;
+                    if (!node.Ready)
+                    {
+                        return;
+                    }
+
                     Ui.Log.Add(string.Format(Resources._NicknameChanged, node.PreviousNickname, node.Nickname));
                     break;
             }

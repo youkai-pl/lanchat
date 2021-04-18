@@ -10,8 +10,7 @@ namespace Lanchat.Core.Network
     internal class Session : TcpSession, INetworkElement
     {
         internal Session(TcpServer server) : base(server)
-        {
-        }
+        { }
 
         public IPEndPoint Endpoint => (IPEndPoint) Socket.RemoteEndPoint;
         public event EventHandler Disconnected;

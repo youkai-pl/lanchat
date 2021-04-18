@@ -26,7 +26,8 @@ namespace Lanchat.Core
         {
             Config = config;
             nodesControl = new NodesControl(config, this);
-            nodesControl.NodeCreated += (sender, node) => { NodeCreated?.Invoke(sender, node); };
+            nodesControl.NodeCreated += (sender, node) =>
+                NodeCreated?.Invoke(sender, node);
 
             server = Config.UseIPv6
                 ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config, nodesControl)
@@ -60,9 +61,18 @@ namespace Lanchat.Core
         /// </summary>
         public void Start()
         {
-            if (Config.StartServer) server.Start();
-            if (Config.NodesDetection) NodesDetection.Start();
+            if (Config.StartServer)
+            {
+                server.Start();
+            }
+
+            if (Config.NodesDetection)
+            {
+                NodesDetection.Start();
+            }
+
             if (Config.ConnectToSaved)
+            {
                 Config.SavedAddresses.ForEach(x =>
                 {
                     try
@@ -70,9 +80,9 @@ namespace Lanchat.Core
                         Connect(x);
                     }
                     catch (ArgumentException)
-                    {
-                    }
+                    { }
                 });
+            }
         }
 
         /// <summary>
@@ -94,9 +104,15 @@ namespace Lanchat.Core
 
         private void CheckAddress(IPAddress ipAddress)
         {
-            if (Config.BlockedAddresses.Contains(ipAddress)) throw new ArgumentException("Node blocked");
+            if (Config.BlockedAddresses.Contains(ipAddress))
+            {
+                throw new ArgumentException("Node blocked");
+            }
+
             if (Nodes.Any(x => x.NetworkElement.Endpoint.Address.Equals(ipAddress)))
+            {
                 throw new ArgumentException("Already connected to this node");
+            }
         }
 
         private static void SubscribeEvents(Node node, TaskCompletionSource<bool> tcs)
