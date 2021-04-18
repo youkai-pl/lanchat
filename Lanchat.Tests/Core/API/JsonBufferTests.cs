@@ -19,7 +19,7 @@ namespace Lanchat.Tests.Core.API
         public void Setup()
         {
             modelHandlerMock = new ModelHandlerMock();
-            resolver = new Resolver(new NodeState(), new ModelEncryptionMock());
+            resolver = new Resolver(new NodeMock(), new ModelEncryptionMock());
             resolver.RegisterHandler(modelHandlerMock);
             resolver.RegisterHandler(new ModelWithValidationHandlerMock());
             jsonBuffer = new JsonBuffer();

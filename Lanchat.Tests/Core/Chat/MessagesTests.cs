@@ -17,7 +17,7 @@ namespace Lanchat.Tests.Core.Chat
         [SetUp]
         public void Setup()
         {
-            var nodeState = new NodeState();
+            var nodeState = new NodeMock();
             var modelEncryption = new ModelEncryptionMock();
             networkMock = new NetworkMock();
             output = new Output(networkMock, nodeState, modelEncryption);

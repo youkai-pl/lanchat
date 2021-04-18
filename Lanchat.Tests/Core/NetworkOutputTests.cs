@@ -9,15 +9,15 @@ namespace Lanchat.Tests.Core
     public class NetworkOutputTests
     {
         private NetworkMock networkMock;
-        private NodeState nodeState;
+        private NodeMock nodeMock;
         private Output output;
 
         [SetUp]
         public void Setup()
         {
             networkMock = new NetworkMock();
-            nodeState = new NodeState();
-            output = new Output(networkMock, nodeState, new ModelEncryptionMock());
+            nodeMock = new NodeMock();
+            output = new Output(networkMock, nodeMock, new ModelEncryptionMock());
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace Lanchat.Tests.Core
         {
             var dataReceived = false;
             networkMock.DataReceived += (_, _) => { dataReceived = true; };
-            nodeState.Ready = false;
+            nodeMock.Ready = false;
             output.SendData(new Model());
             Assert.IsFalse(dataReceived);
         }
@@ -44,7 +44,7 @@ namespace Lanchat.Tests.Core
         {
             var dataReceived = false;
             networkMock.DataReceived += (_, _) => { dataReceived = true; };
-            nodeState.Ready = false;
+            nodeMock.Ready = false;
             output.SendPrivilegedData(new Model());
             Assert.IsTrue(dataReceived);
         }

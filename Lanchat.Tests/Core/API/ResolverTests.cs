@@ -14,7 +14,7 @@ namespace Lanchat.Tests.Core.API
     {
         private JsonUtils jsonUtils;
         private MessageHandlerMock messageHandlerMock;
-        private NodeState nodeState;
+        private NodeMock nodeMock;
         private PrivilegedHandler privilegedHandler;
         private Resolver resolver;
 
@@ -22,8 +22,8 @@ namespace Lanchat.Tests.Core.API
         public void Setup()
         {
             jsonUtils = new JsonUtils();
-            nodeState = new NodeState();
-            resolver = new Resolver(nodeState, new ModelEncryptionMock());
+            nodeMock = new NodeMock();
+            resolver = new Resolver(nodeMock, new ModelEncryptionMock());
             messageHandlerMock = new MessageHandlerMock();
             privilegedHandler = new PrivilegedHandler();
             resolver.RegisterHandler(messageHandlerMock);
@@ -48,7 +48,7 @@ namespace Lanchat.Tests.Core.API
         [Test]
         public void NodeNotReady()
         {
-            nodeState.Ready = false;
+            nodeMock.Ready = false;
             resolver.CallHandler(jsonUtils.Serialize(new Message()));
             Assert.IsFalse(messageHandlerMock.Received);
         }
@@ -56,7 +56,7 @@ namespace Lanchat.Tests.Core.API
         [Test]
         public void PrivilegedHandler()
         {
-            nodeState.Ready = false;
+            nodeMock.Ready = false;
             resolver.CallHandler(jsonUtils.Serialize(new PrivilegedModel()));
             Assert.IsTrue(privilegedHandler.Received);
         }

@@ -1,14 +1,19 @@
 using System;
 using Lanchat.Core;
 using Lanchat.Core.Models;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Lanchat.Tests.Mock
 {
-    public class NodeState : INodeInternals
+    public class NodeMock : INodeInternals
     {
         public bool Ready { get; set; } = true;
-        public bool IsSession { get; }
+        public bool IsSession => false;
         public bool HandshakeReceived { get; set; }
+        public string Nickname { get; set; } = "Nickname";
+        public Status Status { get; set; } = Status.Online;
+        public Guid Id { get; } = Guid.NewGuid();
+        
         public void SendHandshake()
         {
             throw new NotImplementedException();
@@ -24,8 +29,5 @@ namespace Lanchat.Tests.Mock
             throw new NotImplementedException();
         }
 
-        public string Nickname { get; set; }
-        public Status Status { get; set; }
-        public Guid Id { get; } = Guid.NewGuid();
     }
 }
