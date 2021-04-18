@@ -4,7 +4,6 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
-    // TODO: Refactor
     internal class FileTransferControlHandler : ApiHandler<FileTransferControl>
     {
         private readonly FileReceiver fileReceiver;

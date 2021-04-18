@@ -2,12 +2,10 @@ using System;
 using System.IO;
 using System.Linq;
 using Lanchat.Core.API;
-using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
-    // TODO: Refactor
     /// <summary>
     ///     File sending.
     /// </summary>
@@ -35,7 +33,7 @@ namespace Lanchat.Core.FileTransfer
         /// <summary>
         ///     File send request accepted. File transfer in progress.
         /// </summary>
-        public event EventHandler<FileTransferRequest> FileTransferRequestAccepted;
+        public event EventHandler<FileTransferRequest> AcceptedByReceiver;
 
         /// <summary>
         ///     File send request accepted.
@@ -51,10 +49,10 @@ namespace Lanchat.Core.FileTransfer
         ///     Send file exchange request.
         /// </summary>
         /// <param name="path">File path</param>
+        /// <exception cref="InvalidOperationException">Only one file can be send at same time</exception>
         public void CreateSendRequest(string path)
         {
-            if (Request != null) throw new InvalidOperationException("File transfer in progress");
-
+            if (Request != null) throw new InvalidOperationException("File transfer already in progress");
             var fileInfo = new FileInfo(Path.Combine(path));
 
             Request = new FileTransferRequest
@@ -63,18 +61,17 @@ namespace Lanchat.Core.FileTransfer
                 Parts = (fileInfo.Length + ChunkSize - 1) / ChunkSize
             };
 
-            networkOutput.SendData(
-                new FileTransferControl
-                {
-                    FileName = Request.FileName,
-                    RequestStatus = RequestStatus.Sending,
-                    Parts = Request.Parts
-                });
+            networkOutput.SendData(new FileTransferControl
+            {
+                FileName = Request.FileName,
+                Parts = Request.Parts,
+                RequestStatus = RequestStatus.Sending
+            });
         }
 
         internal void SendFile()
         {
-            FileTransferRequestAccepted?.Invoke(this, Request);
+            AcceptedByReceiver?.Invoke(this, Request);
 
             try
             {

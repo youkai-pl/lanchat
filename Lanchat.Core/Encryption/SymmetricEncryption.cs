@@ -40,7 +40,22 @@ namespace Lanchat.Core.Encryption
             var encryptedBytes = Convert.FromBase64String(text);
             return Encoding.UTF8.GetString(DecryptBytes(encryptedBytes));
         }
-        
+
+        public KeyInfo ExportKey()
+        {
+            return new()
+            {
+                AesKey = publicKeyEncryption.Encrypt(localAes.Key),
+                AesIv = publicKeyEncryption.Encrypt(localAes.IV)
+            };
+        }
+
+        public void ImportKey(KeyInfo keyInfo)
+        {
+            remoteAes.Key = publicKeyEncryption.Decrypt(keyInfo.AesKey);
+            remoteAes.IV = publicKeyEncryption.Decrypt(keyInfo.AesIv);
+        }
+
         internal byte[] EncryptBytes(byte[] data)
         {
             if (disposed) throw new ObjectDisposedException(nameof(SymmetricEncryption));
@@ -63,21 +78,6 @@ namespace Lanchat.Core.Encryption
             cryptoStream.Write(data, 0, data.Length);
             cryptoStream.Close();
             return memoryStream.ToArray();
-        }
-
-        public KeyInfo ExportKey()
-        {
-            return new()
-            {
-                AesKey = publicKeyEncryption.Encrypt(localAes.Key),
-                AesIv = publicKeyEncryption.Encrypt(localAes.IV)
-            };
-        }
-
-        public void ImportKey(KeyInfo keyInfo)
-        {
-            remoteAes.Key = publicKeyEncryption.Decrypt(keyInfo.AesKey);
-            remoteAes.IV = publicKeyEncryption.Decrypt(keyInfo.AesIv);
         }
     }
 }

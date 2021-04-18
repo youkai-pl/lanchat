@@ -1,11 +1,9 @@
 using System;
-using System.Diagnostics;
 using Lanchat.Core.API;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
-    // TODO: Refactor
     internal class FilePartHandler : ApiHandler<FilePart>
     {
         private readonly FileReceiver fileReceiver;
@@ -21,20 +19,29 @@ namespace Lanchat.Core.FileTransfer
 
             try
             {
-                var base64Data = filePart.Data;
-                var data = Convert.FromBase64String(base64Data);
-                fileReceiver.WriteFileStream.Write(data, 0, data.Length);
-                fileReceiver.Request.PartsTransferred++;
-                if (!filePart.Last) return;
-                fileReceiver.OnFileTransferFinished(fileReceiver.Request);
-                fileReceiver.WriteFileStream.Dispose();
-                fileReceiver.Request = null;
+                SavePart(filePart);
             }
             catch
             {
                 fileReceiver.CancelReceive();
                 fileReceiver.OnFileTransferError();
             }
+        }
+
+        private void SavePart(FilePart filePart)
+        {
+            var base64Data = filePart.Data;
+            var data = Convert.FromBase64String(base64Data);
+            fileReceiver.WriteFileStream.Write(data, 0, data.Length);
+            fileReceiver.Request.PartsTransferred++;
+            if (filePart.Last) FinishFileSaving();
+        }
+
+        private void FinishFileSaving()
+        {
+            fileReceiver.OnFileTransferFinished(fileReceiver.Request);
+            fileReceiver.WriteFileStream.Dispose();
+            fileReceiver.Request = null;
         }
     }
 }

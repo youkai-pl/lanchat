@@ -24,15 +24,14 @@ namespace Lanchat.Terminal
             node.FileReceiver.FileTransferError += OnFileTransferError;
             node.FileReceiver.FileTransferRequestReceived += OnFileTransferHandlerRequestReceived;
 
-            node.FileSender.FileTransferRequestAccepted += OnFileTransferHandlerRequestAccepted;
+            node.FileSender.AcceptedByReceiver += OnFileTransferHandlerReceiveAcceptedByReceiver;
             node.FileSender.FileTransferRequestRejected += OnFileTransferHandlerRequestRejected;
             node.FileSender.FileSendFinished += OnFileSendFinished;
             node.FileSender.FileTransferError += OnFileTransferError;
 
-            node.FileSender.FileTransferRequestAccepted += Ui.FileTransferMonitor.OnFileTransferRequestAccepted;
+            node.FileSender.AcceptedByReceiver += Ui.FileTransferMonitor.OnAcceptedByReceiver;
             node.FileSender.FileSendFinished += Ui.FileTransferMonitor.OnFileReceiveFinished;
             node.FileSender.FileTransferError += Ui.FileTransferMonitor.OnFileTransferError;
-            node.FileReceiver.FileTransferRequestAccepted += Ui.FileTransferMonitor.OnFileTransferRequestAccepted;
             node.FileReceiver.FileReceiveFinished += Ui.FileTransferMonitor.OnFileReceiveFinished;
             node.FileReceiver.FileTransferError += Ui.FileTransferMonitor.OnFileTransferError;
 
@@ -111,7 +110,7 @@ namespace Lanchat.Terminal
             Ui.Log.AddError(string.Format(Resources._FileTransferError, node.Nickname));
         }
 
-        private void OnFileTransferHandlerRequestAccepted(object sender, FileTransferRequest e)
+        private void OnFileTransferHandlerReceiveAcceptedByReceiver(object sender, FileTransferRequest e)
         {
             Ui.Log.Add(string.Format(Resources._FileRequestAccepted, node.Nickname));
         }

@@ -3,7 +3,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Lanchat.Core.API;
 using Lanchat.Core.Json;
 using Lanchat.Core.Models;
 
@@ -13,9 +12,9 @@ namespace Lanchat.Core.NodesDetection
     {
         private readonly IConfig config;
         private readonly IPEndPoint endPoint;
+        private readonly JsonUtils jsonUtils;
         private readonly UdpClient udpClient;
         private readonly string uniqueId;
-        private readonly JsonUtils jsonUtils;
         private bool continueSendingAnnouncements = true;
 
         public AnnounceSender(IConfig config, UdpClient udpClient, string uniqueId)

@@ -10,10 +10,10 @@ namespace Lanchat.Core.API
     /// </summary>
     public class NetworkOutput
     {
+        private readonly IModelEncryption encryption;
+        private readonly JsonUtils jsonUtils;
         private readonly INetworkElement networkElement;
         private readonly INodeState nodeState;
-        private readonly JsonUtils jsonUtils;
-        private readonly IModelEncryption encryption;
 
         internal NetworkOutput(INetworkElement networkElement, INodeState nodeState, IModelEncryption encryption)
         {
@@ -33,7 +33,7 @@ namespace Lanchat.Core.API
             encryption.EncryptObject(content);
             networkElement.Send(jsonUtils.Serialize(content));
         }
-        
+
         /// <summary>
         ///     Send the data before marking the node as ready (Handshake, KeyInfo...).
         /// </summary>

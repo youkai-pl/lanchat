@@ -7,9 +7,9 @@ namespace Lanchat.Core.NodeHandlers
 {
     internal class HandshakeHandler : ApiHandler<Handshake>
     {
-        private readonly IPublicKeyEncryption publicKeyEncryption;
         private readonly ISymmetricEncryption encryption;
         private readonly Node node;
+        private readonly IPublicKeyEncryption publicKeyEncryption;
 
         internal HandshakeHandler(IPublicKeyEncryption publicKeyEncryption, ISymmetricEncryption encryption, Node node)
         {

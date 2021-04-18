@@ -16,7 +16,7 @@ namespace Lanchat.Terminal.UserInterface
             Text = string.Format(Resources._NoFileReceiveRequest);
         }
 
-        public void OnFileTransferRequestAccepted(object sender, FileTransferRequest e)
+        public void OnAcceptedByReceiver(object sender, FileTransferRequest e)
         {
             parts += e.Parts;
             e.PropertyChanged += (_, _) =>

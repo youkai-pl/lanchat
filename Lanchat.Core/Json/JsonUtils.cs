@@ -36,7 +36,7 @@ namespace Lanchat.Core.Json
             var serializedContent = wrapper?.Values.First().ToString();
             return JsonSerializer.Deserialize(serializedContent ?? string.Empty, type, serializerOptions);
         }
-        
+
         internal string Serialize(object content)
         {
             var data = new Dictionary<string, object> {{content.GetType().Name, content}};

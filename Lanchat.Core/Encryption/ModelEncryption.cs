@@ -24,7 +24,7 @@ namespace Lanchat.Core.Encryption
                 x.SetValue(data, symmetricEncryption.EncryptString(value), null);
             });
         }
-        
+
         public void DecryptObject(object data)
         {
             var props = GetPropertiesWithEncryptAttribute(data);
@@ -34,7 +34,7 @@ namespace Lanchat.Core.Encryption
                 x.SetValue(data, symmetricEncryption.DecryptString(value), null);
             });
         }
-        
+
         private static IEnumerable<PropertyInfo> GetPropertiesWithEncryptAttribute(object data)
         {
             var props = data

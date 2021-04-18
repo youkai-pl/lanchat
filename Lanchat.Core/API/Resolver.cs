@@ -15,11 +15,11 @@ namespace Lanchat.Core.API
     /// </summary>
     public class Resolver
     {
+        private readonly IModelEncryption encryption;
         private readonly List<IApiHandler> handlers = new();
         private readonly JsonBuffer jsonBuffer;
         private readonly JsonUtils jsonUtils;
         private readonly INodeState nodeState;
-        private readonly IModelEncryption encryption;
 
         internal Resolver(INodeState nodeState, IModelEncryption encryption)
         {

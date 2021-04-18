@@ -17,13 +17,16 @@ namespace Lanchat.Core
     /// </summary>
     public class Node : IDisposable, INotifyPropertyChanged, INodeState
     {
+        private readonly IConfig config;
 
         /// <see cref="FileReceiver" />
         public readonly FileReceiver FileReceiver;
 
         /// <see cref="FileSender" />
         public readonly FileSender FileSender;
-        
+
+        internal readonly bool IsSession;
+
         /// <see cref="Messaging" />
         public readonly Messaging Messaging;
 
@@ -32,18 +35,17 @@ namespace Lanchat.Core
 
         /// <see cref="NetworkOutput" />
         public readonly NetworkOutput NetworkOutput;
-        
+
+        private readonly IPublicKeyEncryption publicKeyEncryption;
+
         /// <see cref="Resolver" />
         public readonly Resolver Resolver;
-        
-        internal readonly bool IsSession;
+
         internal bool HandshakeReceived;
-        
+
         private string nickname;
         private string previousNickname;
         private Status status;
-        private readonly IConfig config;
-        private readonly IPublicKeyEncryption publicKeyEncryption;
 
         internal Node(INetworkElement networkElement, IConfig config)
         {
@@ -117,6 +119,18 @@ namespace Lanchat.Core
         }
 
         /// <summary>
+        ///     Dispose node. For safe disconnect use <see cref="Disconnect" /> instead.
+        /// </summary>
+        public void Dispose()
+        {
+            NetworkElement.Close();
+            FileSender.Dispose();
+            FileReceiver.CancelReceive();
+            publicKeyEncryption.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
         ///     ID of TCP client or session.
         /// </summary>
         public Guid Id => NetworkElement.Id;
@@ -130,7 +144,7 @@ namespace Lanchat.Core
         ///     Invoked for properties like nickname or status.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
         /// <summary>
         ///     Node successful connected and ready to data exchange.
         /// </summary>
@@ -158,18 +172,6 @@ namespace Lanchat.Core
                 Status = ConnectionControlStatus.RemoteClose
             });
             Dispose();
-        }
-        
-        /// <summary>
-        ///     Dispose node. For safe disconnect use <see cref="Disconnect" /> instead.
-        /// </summary>
-        public void Dispose()
-        {
-            NetworkElement.Close();
-            FileSender.Dispose();
-            FileReceiver.CancelReceive();
-            publicKeyEncryption.Dispose();
-            GC.SuppressFinalize(this);
         }
 
         private void OnDisconnected(object sender, EventArgs _)

@@ -62,16 +62,17 @@ namespace Lanchat.Core
         {
             if (Config.StartServer) server.Start();
             if (Config.NodesDetection) NodesDetection.Start();
-            if (Config.ConnectToSaved) Config.SavedAddresses.ForEach(x =>
-            {
-                try
+            if (Config.ConnectToSaved)
+                Config.SavedAddresses.ForEach(x =>
                 {
-                    Connect(x);
-                }
-                catch (ArgumentException)
-                {
-                }
-            });
+                    try
+                    {
+                        Connect(x);
+                    }
+                    catch (ArgumentException)
+                    {
+                    }
+                });
         }
 
         /// <summary>

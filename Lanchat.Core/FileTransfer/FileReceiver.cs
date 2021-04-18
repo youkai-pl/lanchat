@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using Lanchat.Core.API;
-using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
@@ -42,11 +41,6 @@ namespace Lanchat.Core.FileTransfer
         public event EventHandler<FileTransferRequest> FileTransferRequestReceived;
 
         /// <summary>
-        ///     File send request accepted. File transfer in progress.
-        /// </summary>
-        public event EventHandler<FileTransferRequest> FileTransferRequestAccepted;
-
-        /// <summary>
         ///     Accept incoming file request.
         /// </summary>
         /// <exception cref="InvalidOperationException">No awaiting request</exception>
@@ -59,7 +53,6 @@ namespace Lanchat.Core.FileTransfer
             {
                 RequestStatus = RequestStatus.Accepted
             });
-            FileTransferRequestAccepted?.Invoke(this, Request);
         }
 
         /// <summary>
@@ -90,16 +83,15 @@ namespace Lanchat.Core.FileTransfer
 
             File.Delete(Request.FilePath);
             FileTransferError?.Invoke(this, new FileTransferException(Request));
-            Request = null;
-            WriteFileStream.Dispose();
+            ResetRequest();
             return true;
         }
-
+        
         internal void HandleReceiveRequest(FileTransferControl request)
         {
             Request = new FileTransferRequest
             {
-                FilePath = MakeUnique(Path.Combine(config.ReceivedFilesDirectory, request.FileName)),
+                FilePath = GetUniqueFileName(Path.Combine(config.ReceivedFilesDirectory, request.FileName)),
                 Parts = request.Parts
             };
             FileTransferRequestReceived?.Invoke(this, Request);
@@ -108,23 +100,9 @@ namespace Lanchat.Core.FileTransfer
         internal void HandleSenderError()
         {
             if (Request == null) return;
-            WriteFileStream.Dispose();
             File.Delete(Request.FilePath);
             OnFileTransferError();
-            Request = null;
-        }
-
-        private static string MakeUnique(string file)
-        {
-            var fileName = Path.GetFileNameWithoutExtension(file);
-            var fileExt = Path.GetExtension(file);
-
-            for (var i = 1;; ++i)
-            {
-                if (!File.Exists(file))
-                    return file;
-                file = $"{fileName}({i}){fileExt}";
-            }
+            ResetRequest();
         }
 
         internal void OnFileTransferFinished(FileTransferRequest e)
@@ -135,6 +113,25 @@ namespace Lanchat.Core.FileTransfer
         internal void OnFileTransferError()
         {
             FileTransferError?.Invoke(this, new FileTransferException(Request));
+        }
+        
+        private void ResetRequest()
+        {
+            Request = null;
+            WriteFileStream.Dispose();
+        }
+        
+        private static string GetUniqueFileName(string file)
+        {
+            var fileName = Path.GetFileNameWithoutExtension(file);
+            var fileExt = Path.GetExtension(file);
+
+            for (var i = 1;; ++i)
+            {
+                if (!File.Exists(file))
+                    return file;
+                file = $"{fileName}({i}){fileExt}";
+            }
         }
     }
 }

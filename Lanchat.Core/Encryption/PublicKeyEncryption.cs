@@ -53,7 +53,7 @@ namespace Lanchat.Core.Encryption
         {
             return localRsa.Decrypt(encryptedBytes, RSAEncryptionPadding.Pkcs1);
         }
-        
+
         private void TestKeys()
         {
             remoteRsa.Encrypt(new byte[] {0x10}, RSAEncryptionPadding.Pkcs1);
