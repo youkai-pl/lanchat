@@ -11,10 +11,10 @@ namespace Lanchat.Core.FileTransfer
     public class FileReceiver
     {
         private readonly IConfig config;
-        private readonly Output output;
+        private readonly IOutput output;
         internal FileStream WriteFileStream;
 
-        internal FileReceiver(Output output, IConfig config)
+        internal FileReceiver(IOutput output, IConfig config)
         {
             this.output = output;
             this.config = config;

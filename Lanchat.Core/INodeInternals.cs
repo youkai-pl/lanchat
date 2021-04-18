@@ -1,0 +1,23 @@
+using Lanchat.Core.Models;
+
+namespace Lanchat.Core
+{
+    internal interface INodeInternals
+    {
+        string Nickname { set; }
+
+        Status Status { set; }
+
+        bool Ready { get; set; }
+
+        bool IsSession { get; }
+
+        bool HandshakeReceived { get; set; }
+
+        void SendHandshake();
+
+        void OnConnected();
+
+        void OnCannotConnect();
+    }
+}

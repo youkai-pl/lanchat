@@ -8,41 +8,47 @@ namespace Lanchat.Core.NodeHandlers
     internal class HandshakeHandler : ApiHandler<Handshake>
     {
         private readonly ISymmetricEncryption encryption;
-        private readonly Node node;
+        private readonly INodeInternals nodeInternals;
+        private readonly IOutput output;
         private readonly IPublicKeyEncryption publicKeyEncryption;
 
-        internal HandshakeHandler(IPublicKeyEncryption publicKeyEncryption, ISymmetricEncryption encryption, Node node)
+        internal HandshakeHandler(
+            IPublicKeyEncryption publicKeyEncryption,
+            ISymmetricEncryption encryption,
+            IOutput output,
+            INodeInternals nodeInternals)
         {
             this.publicKeyEncryption = publicKeyEncryption;
             this.encryption = encryption;
-            this.node = node;
+            this.output = output;
+            this.nodeInternals = nodeInternals;
             Privileged = true;
         }
 
         protected override void Handle(Handshake handshake)
         {
-            if (node.HandshakeReceived)
+            if (nodeInternals.HandshakeReceived)
             {
                 return;
             }
 
-            node.Nickname = handshake.Nickname;
+            nodeInternals.Nickname = handshake.Nickname;
 
-            if (!node.IsSession)
+            if (!nodeInternals.IsSession)
             {
-                node.SendHandshake();
+                nodeInternals.SendHandshake();
             }
 
             try
             {
                 publicKeyEncryption.ImportKey(handshake.PublicKey);
-                node.Status = handshake.Status;
-                node.Output.SendPrivilegedData(encryption.ExportKey());
-                node.HandshakeReceived = true;
+                nodeInternals.Status = handshake.Status;
+                output.SendPrivilegedData(encryption.ExportKey());
+                nodeInternals.HandshakeReceived = true;
             }
             catch (CryptographicException)
             {
-                node.OnCannotConnect();
+                nodeInternals.OnCannotConnect();
             }
         }
     }

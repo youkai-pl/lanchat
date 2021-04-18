@@ -34,7 +34,7 @@ namespace Lanchat.Core
         public readonly INetworkElement NetworkElement;
 
         /// <see cref="Output" />
-        public readonly Output Output;
+        public readonly IOutput Output;
 
         private readonly IPublicKeyEncryption publicKeyEncryption;
 
@@ -42,7 +42,6 @@ namespace Lanchat.Core
         public readonly Resolver Resolver;
 
         internal bool HandshakeReceived;
-
         private string nickname;
         private string previousNickname;
         private Status status;
@@ -52,6 +51,7 @@ namespace Lanchat.Core
             this.config = config;
             IsSession = networkElement.IsSession;
             NetworkElement = networkElement;
+            NodeInternals = new NodeInternals(this);
             publicKeyEncryption = new PublicKeyEncryption();
             var symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
             var modelEncryption = new ModelEncryption(symmetricEncryption);
@@ -61,11 +61,11 @@ namespace Lanchat.Core
             FileSender = new FileSender(Output);
 
             Resolver = new Resolver(this, modelEncryption);
-            Resolver.RegisterHandler(new HandshakeHandler(publicKeyEncryption, symmetricEncryption, this));
-            Resolver.RegisterHandler(new KeyInfoHandler(symmetricEncryption, this));
-            Resolver.RegisterHandler(new ConnectionControlHandler(this));
-            Resolver.RegisterHandler(new StatusUpdateHandler(this));
-            Resolver.RegisterHandler(new NicknameUpdateHandler(this));
+            Resolver.RegisterHandler(new HandshakeHandler(publicKeyEncryption, symmetricEncryption, Output, NodeInternals));
+            Resolver.RegisterHandler(new KeyInfoHandler(symmetricEncryption, NodeInternals));
+            Resolver.RegisterHandler(new ConnectionControlHandler(NetworkElement));
+            Resolver.RegisterHandler(new StatusUpdateHandler(NodeInternals));
+            Resolver.RegisterHandler(new NicknameUpdateHandler(NodeInternals));
             Resolver.RegisterHandler(new MessageHandler(Messaging));
             Resolver.RegisterHandler(new FilePartHandler(FileReceiver));
             Resolver.RegisterHandler(new FileTransferControlHandler(FileReceiver, FileSender));
@@ -82,13 +82,15 @@ namespace Lanchat.Core
             CheckIsReadyAfterTimeout();
         }
 
+        private INodeInternals NodeInternals { get; }
+
         /// <summary>
         ///     Node user nickname.
         /// </summary>
         public string Nickname
         {
             get => $"{nickname}#{ShortId}";
-            set
+            internal set
             {
                 if (value == nickname)
                 {

@@ -9,9 +9,9 @@ namespace Lanchat.Core.Chat
     /// </summary>
     public class Messaging
     {
-        private readonly Output output;
+        private readonly IOutput output;
 
-        internal Messaging(Output output)
+        internal Messaging(IOutput output)
         {
             this.output = output;
         }

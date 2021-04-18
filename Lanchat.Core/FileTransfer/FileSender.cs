@@ -12,10 +12,10 @@ namespace Lanchat.Core.FileTransfer
     public class FileSender
     {
         private const int ChunkSize = 1024 * 1024;
-        private readonly Output output;
+        private readonly IOutput output;
         private bool disposing;
 
-        internal FileSender(Output output)
+        internal FileSender(IOutput output)
         {
             this.output = output;
         }

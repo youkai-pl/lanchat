@@ -8,7 +8,7 @@ namespace Lanchat.Core.API
     /// <summary>
     ///     Send data other of type not belonging to standard Lanchat.Core set.
     /// </summary>
-    public class Output
+    public class Output : IOutput
     {
         private readonly IModelEncryption encryption;
         private readonly JsonUtils jsonUtils;

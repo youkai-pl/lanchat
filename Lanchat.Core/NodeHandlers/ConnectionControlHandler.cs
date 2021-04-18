@@ -1,16 +1,17 @@
 using System.Diagnostics;
 using Lanchat.Core.API;
 using Lanchat.Core.Models;
+using Lanchat.Core.Network;
 
 namespace Lanchat.Core.NodeHandlers
 {
     internal class ConnectionControlHandler : ApiHandler<ConnectionControl>
     {
-        private readonly Node node;
+        private readonly INetworkElement networkElement;
 
-        internal ConnectionControlHandler(Node node)
+        internal ConnectionControlHandler(INetworkElement networkElement)
         {
-            this.node = node;
+            this.networkElement = networkElement;
         }
 
         protected override void Handle(ConnectionControl connectionControl)
@@ -18,7 +19,7 @@ namespace Lanchat.Core.NodeHandlers
             switch (connectionControl.Status)
             {
                 case ConnectionControlStatus.RemoteClose:
-                    node.NetworkElement.Close();
+                    networkElement.Close();
                     break;
 
                 default:

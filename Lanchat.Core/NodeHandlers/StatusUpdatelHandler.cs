@@ -5,16 +5,16 @@ namespace Lanchat.Core.NodeHandlers
 {
     internal class StatusUpdateHandler : ApiHandler<StatusUpdate>
     {
-        private readonly Node node;
+        private readonly INodeInternals nodeInternals;
 
-        internal StatusUpdateHandler(Node node)
+        internal StatusUpdateHandler(INodeInternals nodeInternals)
         {
-            this.node = node;
+            this.nodeInternals = nodeInternals;
         }
 
         protected override void Handle(StatusUpdate status)
         {
-            node.Status = status.NewStatus;
+            nodeInternals.Status = status.NewStatus;
         }
     }
 }
