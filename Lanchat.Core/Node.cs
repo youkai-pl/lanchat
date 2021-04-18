@@ -12,8 +12,7 @@ using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Core
 {
-    /// <inheritdoc cref="Lanchat.Core.INodePublic" />
-    public class Node : IDisposable, INodePublic, INodeInternal
+    internal class Node : IDisposable, INodePublic, INodeInternal
     {
         private readonly IConfig config;
         private readonly IPublicKeyEncryption publicKeyEncryption;
@@ -56,7 +55,6 @@ namespace Lanchat.Core
             CheckIsReadyAfterTimeout();
         }
 
-        /// <inheritdoc />
         public void Dispose()
         {
             NetworkElement.Close();
@@ -66,13 +64,6 @@ namespace Lanchat.Core
             GC.SuppressFinalize(this);
         }
 
-        /// <inheritdoc />
-        public bool IsSession { get; }
-
-        /// <inheritdoc />
-        public bool HandshakeReceived { get; set; }
-
-        /// <inheritdoc />
         public void SendHandshake()
         {
             var handshake = new Handshake
@@ -85,37 +76,25 @@ namespace Lanchat.Core
             Output.SendPrivilegedData(handshake);
         }
 
-        /// <inheritdoc />
         public void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <inheritdoc />
         public void OnCannotConnect()
         {
             CannotConnect?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <inheritdoc />
         public Resolver Resolver { get; }
-
-        /// <inheritdoc />
         public FileReceiver FileReceiver { get; }
-
-        /// <inheritdoc />
         public FileSender FileSender { get; }
-
-        /// <inheritdoc />
         public Messaging Messaging { get; }
-
-        /// <inheritdoc />
         public INetworkElement NetworkElement { get; }
-
-        /// <inheritdoc />
         public IOutput Output { get; }
 
-        /// <inheritdoc cref="INodePublic.Nickname" />
+        public bool IsSession { get; }
+        public bool HandshakeReceived { get; set; }
         public string Nickname
         {
             get => $"{nickname}#{ShortId}";
@@ -132,13 +111,9 @@ namespace Lanchat.Core
             }
         }
 
-        /// <inheritdoc />
         public string PreviousNickname => $"{previousNickname}#{ShortId}";
-
-        /// <inheritdoc />
         public string ShortId => Id.GetHashCode().ToString().Substring(1, 4);
 
-        /// <inheritdoc cref="INodePublic.Status" />
         public Status Status
         {
             get => status;
@@ -154,25 +129,14 @@ namespace Lanchat.Core
             }
         }
 
-        /// <inheritdoc cref="INodePublic.Id" />
         public Guid Id => NetworkElement.Id;
-
-        /// <inheritdoc cref="INodePublic.Ready" />
         public bool Ready { get; set; }
 
-        /// <inheritdoc />
         public event EventHandler Connected;
-
-        /// <inheritdoc />
         public event EventHandler Disconnected;
-
-        /// <inheritdoc />
         public event EventHandler<SocketError> SocketErrored;
-
-        /// <inheritdoc />
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <inheritdoc />
         public void Disconnect()
         {
             Output.SendPrivilegedData(new ConnectionControl

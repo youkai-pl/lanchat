@@ -44,20 +44,20 @@ namespace Lanchat.Core
         /// </summary>
         Status Status { get; }
         
-        /// <see cref="INetworkElement" />
+        /// <see cref="Lanchat.Core.Network.INetworkElement" />
         INetworkElement NetworkElement { get; }
 
-        /// <see cref="Messaging" />
+        /// <see cref="Lanchat.Core.Chat.Messaging" />
         Messaging Messaging { get; }
 
-        /// <see cref="Output" />
-        IOutput Output { get; }
-
-        /// <see cref="FileReceiver" />
+        /// <see cref="Lanchat.Core.FileTransfer.FileReceiver" />
         FileReceiver FileReceiver { get; }
 
-        /// <see cref="FileSender" />
+        /// <see cref="Lanchat.Core.FileTransfer.FileSender" />
         FileSender FileSender { get; }
+        
+        /// <see cref="Lanchat.Core.API.Output" />
+        IOutput Output { get; }
         
         /// <see cref="Lanchat.Core.API.Resolver" />
         Resolver Resolver { get; }
