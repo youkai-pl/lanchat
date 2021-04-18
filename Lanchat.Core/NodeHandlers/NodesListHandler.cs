@@ -3,7 +3,7 @@ using System.Net;
 using Lanchat.Core.API;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core.P2PHandlers
+namespace Lanchat.Core.NodeHandlers
 {
     internal class NodesListHandler : ApiHandler<NodesList>
     {

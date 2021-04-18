@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
-using Lanchat.Core.P2PHandlers;
+using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Core
 {

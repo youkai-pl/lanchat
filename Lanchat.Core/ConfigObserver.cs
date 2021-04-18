@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Core.P2PHandlers
+namespace Lanchat.Core
 {
     internal class ConfigObserver
     {
