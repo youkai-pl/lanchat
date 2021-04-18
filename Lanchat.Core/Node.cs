@@ -15,7 +15,7 @@ namespace Lanchat.Core
     /// <summary>
     ///     Connected user.
     /// </summary>
-    public class Node : IDisposable, INotifyPropertyChanged, INodeState
+    public class Node : IDisposable, INotifyPropertyChanged
     {
         private readonly IConfig config;
 
@@ -55,12 +55,12 @@ namespace Lanchat.Core
             publicKeyEncryption = new PublicKeyEncryption();
             var symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
             var modelEncryption = new ModelEncryption(symmetricEncryption);
-            Output = new Output(NetworkElement, this, modelEncryption);
+            Output = new Output(NetworkElement, NodeInternals, modelEncryption);
             Messaging = new Messaging(Output);
             FileReceiver = new FileReceiver(Output, config);
             FileSender = new FileSender(Output);
 
-            Resolver = new Resolver(this, modelEncryption);
+            Resolver = new Resolver(NodeInternals, modelEncryption);
             Resolver.RegisterHandler(new HandshakeHandler(publicKeyEncryption, symmetricEncryption, Output, NodeInternals));
             Resolver.RegisterHandler(new KeyInfoHandler(symmetricEncryption, NodeInternals));
             Resolver.RegisterHandler(new ConnectionControlHandler(NetworkElement));

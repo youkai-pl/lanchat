@@ -1,3 +1,4 @@
+using System;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core
@@ -7,6 +8,8 @@ namespace Lanchat.Core
         string Nickname { set; }
 
         Status Status { set; }
+        
+        Guid Id { get; }
 
         bool Ready { get; set; }
 

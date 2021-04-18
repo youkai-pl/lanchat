@@ -19,11 +19,11 @@ namespace Lanchat.Core.API
         private readonly List<IApiHandler> handlers = new();
         private readonly JsonBuffer jsonBuffer;
         private readonly JsonUtils jsonUtils;
-        private readonly INodeState nodeState;
+        private readonly INodeInternals nodeInternals;
 
-        internal Resolver(INodeState nodeState, IModelEncryption encryption)
+        internal Resolver(INodeInternals nodeInternals, IModelEncryption encryption)
         {
-            this.nodeState = nodeState;
+            this.nodeInternals = nodeInternals;
             this.encryption = encryption;
             jsonUtils = new JsonUtils();
             jsonBuffer = new JsonBuffer();
@@ -62,21 +62,21 @@ namespace Lanchat.Core.API
             }
 
             encryption.DecryptObject(data);
-            Trace.WriteLine($"Node {nodeState.Id} received {handler.HandledType.Name}");
+            Trace.WriteLine($"Node {nodeInternals.Id} received {handler.HandledType.Name}");
             handler.Handle(data);
         }
 
         private bool CheckPreconditions(IApiHandler handler, object data)
         {
-            if (!nodeState.Ready && handler.Privileged == false)
+            if (!nodeInternals.Ready && handler.Privileged == false)
             {
-                Trace.WriteLine($"{nodeState.Id} must be ready to handle this type of data.");
+                Trace.WriteLine($"{nodeInternals.Id} must be ready to handle this type of data.");
                 return false;
             }
 
             if (!Validator.TryValidateObject(data, new ValidationContext(data), new List<ValidationResult>()))
             {
-                Trace.WriteLine($"Node {nodeState.Id} received invalid json");
+                Trace.WriteLine($"Node {nodeInternals.Id} received invalid json");
                 return false;
             }
 

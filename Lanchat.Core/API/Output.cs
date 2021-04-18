@@ -1,7 +1,6 @@
 ﻿using Lanchat.Core.Encryption;
 using Lanchat.Core.Json;
 using Lanchat.Core.Network;
-using Lanchat.Core.NodeHandlers;
 
 namespace Lanchat.Core.API
 {
@@ -13,12 +12,12 @@ namespace Lanchat.Core.API
         private readonly IModelEncryption encryption;
         private readonly JsonUtils jsonUtils;
         private readonly INetworkElement networkElement;
-        private readonly INodeState nodeState;
+        private readonly INodeInternals nodeInternals;
 
-        internal Output(INetworkElement networkElement, INodeState nodeState, IModelEncryption encryption)
+        internal Output(INetworkElement networkElement, INodeInternals nodeInternals, IModelEncryption encryption)
         {
             this.networkElement = networkElement;
-            this.nodeState = nodeState;
+            this.nodeInternals = nodeInternals;
             this.encryption = encryption;
             jsonUtils = new JsonUtils();
         }
@@ -29,7 +28,7 @@ namespace Lanchat.Core.API
         /// <param name="content">Object to send.</param>
         public void SendData(object content)
         {
-            if (!nodeState.Ready)
+            if (!nodeInternals.Ready)
             {
                 return;
             }

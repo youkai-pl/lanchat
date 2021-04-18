@@ -1,3 +1,4 @@
+using System;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core
@@ -20,6 +21,8 @@ namespace Lanchat.Core
         {
             set => node.Status = value;
         }
+
+        public Guid Id => node.Id;
 
         public bool Ready
         {
