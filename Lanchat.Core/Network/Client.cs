@@ -23,7 +23,7 @@ namespace Lanchat.Core.Network
 
         public new void Send(string text)
         {
-            base.SendAsync(text);
+            base.Send(text);
         }
 
         public void Close()

@@ -13,6 +13,7 @@ using Lanchat.Core.Network;
 
 namespace Lanchat.Core.Node
 {
+    // TODO: Split into smaller classes
     internal class NodeImplementation : IDisposable, INodePublic, INodeInternal
     {
         private readonly IConfig config;
