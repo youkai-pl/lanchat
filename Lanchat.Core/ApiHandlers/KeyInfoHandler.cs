@@ -20,11 +20,6 @@ namespace Lanchat.Core.ApiHandlers
 
         protected override void Handle(KeyInfo keyInfo)
         {
-            if (node.Ready)
-            {
-                return;
-            }
-
             if (keyInfo == null)
             {
                 return;
@@ -34,6 +29,7 @@ namespace Lanchat.Core.ApiHandlers
             {
                 encryption.ImportKey(keyInfo);
                 node.Ready = true;
+                Disable = true;
                 node.OnConnected();
             }
             catch (CryptographicException)

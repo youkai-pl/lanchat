@@ -15,6 +15,9 @@ namespace Lanchat.Core.Api
         public bool Privileged { get; protected init; }
 
         /// <inheritdoc />
+        public bool Disable { get; set; }
+
+        /// <inheritdoc />
         public void Handle(object data)
         {
             Handle((T) data);
@@ -41,6 +44,11 @@ namespace Lanchat.Core.Api
         ///     If handler is privileged it will process data even if node is unready.
         /// </summary>
         public bool Privileged { get; }
+        
+        /// <summary>
+        ///     Disable handler.
+        /// </summary>
+        public bool Disable { get; }
 
         /// <summary>
         ///     Object handler.

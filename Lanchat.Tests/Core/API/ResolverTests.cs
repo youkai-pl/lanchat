@@ -13,10 +13,10 @@ namespace Lanchat.Tests.Core.API
     public class ResolverTests
     {
         private JsonUtils jsonUtils;
-        private MessageHandlerMock messageHandlerMock;
         private NodeMock nodeMock;
-        private PrivilegedHandler privilegedHandler;
         private Resolver resolver;
+        private MessageHandlerMock messageHandlerMock;
+        private PrivilegedHandler privilegedHandler;
 
         [SetUp]
         public void Setup()
@@ -91,6 +91,16 @@ namespace Lanchat.Tests.Core.API
         public void ValidationExceptionCatch()
         {
             resolver.OnDataReceived(this, jsonUtils.Serialize(new ModelWithValidation()));
+        }
+
+        [Test]
+        public void SingleUseHandler()
+        {
+            var handler = new SingleUseHandler();
+            resolver.RegisterHandler(handler);
+            resolver.CallHandler(jsonUtils.Serialize(new Model()));
+            resolver.CallHandler(jsonUtils.Serialize(new Model()));
+            Assert.AreEqual(1, handler.Counter);
         }
     }
 }
