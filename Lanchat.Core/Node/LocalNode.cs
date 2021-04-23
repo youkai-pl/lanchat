@@ -25,7 +25,6 @@ namespace Lanchat.Core.Node
             this.config = config;
             IsSession = networkElement.IsSession;
             NetworkElement = networkElement;
-            Resolver = new Resolver(this);
             PublicKeyEncryption = new PublicKeyEncryption();
             SymmetricEncryption = new SymmetricEncryption(PublicKeyEncryption);
             ModelEncryption = new ModelEncryption(SymmetricEncryption);
@@ -33,7 +32,8 @@ namespace Lanchat.Core.Node
             Messaging = new Messaging(Output);
             FileReceiver = new FileReceiver(Output, config);
             FileSender = new FileSender(Output);
-            
+            Resolver = new Resolver(this);
+
             HandlersSetup.RegisterHandlers(Resolver, this);
             
             NetworkElement.Disconnected += OnDisconnected;
