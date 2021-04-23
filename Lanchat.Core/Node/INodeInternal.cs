@@ -19,6 +19,8 @@ namespace Lanchat.Core.Node
 
         bool HandshakeReceived { get; set; }
         
+        IModelEncryption ModelEncryption { get; }
+        
         void SendHandshake();
 
         void OnConnected();

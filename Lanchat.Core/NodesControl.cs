@@ -19,15 +19,15 @@ namespace Lanchat.Core
         {
             this.config = config;
             this.network = network;
-            Nodes = new List<NodeImplementation>();
+            Nodes = new List<LocalNode>();
         }
 
-        internal List<NodeImplementation> Nodes { get; }
-        internal event EventHandler<NodeImplementation> NodeCreated;
+        internal List<LocalNode> Nodes { get; }
+        internal event EventHandler<LocalNode> NodeCreated;
 
-        internal NodeImplementation CreateNode(INetworkElement networkElement)
+        internal LocalNode CreateNode(INetworkElement networkElement)
         {
-            var node = new NodeImplementation(networkElement, config);
+            var node = new LocalNode(networkElement, config);
             Nodes.Add(node);
             node.Resolver.RegisterHandler(new NodesListHandler(network));
             node.Connected += OnConnected;
@@ -39,7 +39,7 @@ namespace Lanchat.Core
 
         private void CloseNode(object sender, EventArgs e)
         {
-            var node = (NodeImplementation) sender;
+            var node = (LocalNode) sender;
             var id = node.Id;
             Nodes.Remove(node);
             node.Connected -= OnConnected;
@@ -51,7 +51,7 @@ namespace Lanchat.Core
 
         private void OnConnected(object sender, EventArgs e)
         {
-            var node = (NodeImplementation) sender;
+            var node = (LocalNode) sender;
             var nodesList = new NodesList();
             nodesList.AddRange(Nodes
                 .Where(x => x.Id != node.Id)

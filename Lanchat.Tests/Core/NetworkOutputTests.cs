@@ -17,7 +17,7 @@ namespace Lanchat.Tests.Core
         {
             networkMock = new NetworkMock();
             nodeMock = new NodeMock();
-            output = new Output(networkMock, nodeMock, new ModelEncryptionMock());
+            output = new Output(networkMock, nodeMock);
         }
 
         [Test]

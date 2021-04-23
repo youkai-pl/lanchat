@@ -117,10 +117,10 @@ namespace Lanchat.Core
             }
         }
 
-        private static void SubscribeEvents(NodeImplementation nodeImplementation, TaskCompletionSource<bool> tcs)
+        private static void SubscribeEvents(LocalNode node, TaskCompletionSource<bool> tcs)
         {
-            nodeImplementation.Connected += (_, _) => { tcs.TrySetResult(true); };
-            nodeImplementation.CannotConnect += (_, _) => { tcs.TrySetResult(false); };
+            node.Connected += (_, _) => { tcs.TrySetResult(true); };
+            node.CannotConnect += (_, _) => { tcs.TrySetResult(false); };
         }
     }
 }

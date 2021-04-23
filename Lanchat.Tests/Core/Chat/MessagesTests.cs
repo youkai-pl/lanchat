@@ -18,12 +18,11 @@ namespace Lanchat.Tests.Core.Chat
         public void Setup()
         {
             var nodeState = new NodeMock();
-            var modelEncryption = new ModelEncryptionMock();
             networkMock = new NetworkMock();
-            output = new Output(networkMock, nodeState, modelEncryption);
+            output = new Output(networkMock, nodeState);
             messaging = new Messaging(output);
             messageHandler = new MessageHandler(messaging);
-            resolver = new Resolver(nodeState, modelEncryption);
+            resolver = new Resolver(nodeState);
             resolver.RegisterHandler(messageHandler);
         }
 

@@ -7,7 +7,7 @@ namespace Lanchat.Core.Node
 {
     internal static class HandlersSetup
     {
-        internal static void RegisterHandlers(IResolver resolver, NodeImplementation node)
+        internal static void RegisterHandlers(IResolver resolver, LocalNode node)
         {
             resolver.RegisterHandler(new HandshakeHandler(node.PublicKeyEncryption, node.SymmetricEncryption, node.Output, node));
             resolver.RegisterHandler(new KeyInfoHandler(node.SymmetricEncryption, node));

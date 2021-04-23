@@ -21,10 +21,10 @@ namespace Lanchat.Core.Api
         private readonly JsonUtils jsonUtils;
         private readonly INodeInternal node;
 
-        internal Resolver(INodeInternal node, IModelEncryption encryption)
+        internal Resolver(INodeInternal node)
         {
             this.node = node;
-            this.encryption = encryption;
+            encryption = node.ModelEncryption;
             jsonUtils = new JsonUtils();
             jsonBuffer = new JsonBuffer();
         }
@@ -39,7 +39,7 @@ namespace Lanchat.Core.Api
             jsonUtils.KnownModels.Add(apiHandler.HandledType);
         }
 
-        internal void OnDataReceived(object sender, string item)
+        public void OnDataReceived(object sender, string item)
         {
             jsonBuffer.AddToBuffer(item);
             try

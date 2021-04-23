@@ -13,26 +13,26 @@ using Lanchat.Core.Network;
 namespace Lanchat.Core.Node
 {
     // TODO: Split into smaller classes
-    internal class NodeImplementation : IDisposable, INodePublic, INodeInternal
+    internal class LocalNode : IDisposable, INodePublic, INodeInternal
     {
         private readonly IConfig config;
         private string nickname;
         private string previousNickname;
         private Status status;
-
-        internal NodeImplementation(INetworkElement networkElement, IConfig config)
+        
+        internal LocalNode(INetworkElement networkElement, IConfig config)
         {
             this.config = config;
             IsSession = networkElement.IsSession;
             NetworkElement = networkElement;
+            Resolver = new Resolver(this);
             PublicKeyEncryption = new PublicKeyEncryption();
             SymmetricEncryption = new SymmetricEncryption(PublicKeyEncryption);
-            var modelEncryption = new ModelEncryption(SymmetricEncryption);
-            Output = new Output(NetworkElement, this, modelEncryption);
+            ModelEncryption = new ModelEncryption(SymmetricEncryption);
+            Output = new Output(NetworkElement, this);
             Messaging = new Messaging(Output);
             FileReceiver = new FileReceiver(Output, config);
             FileSender = new FileSender(Output);
-            Resolver = new Resolver(this, modelEncryption);
             
             HandlersSetup.RegisterHandlers(Resolver, this);
             
@@ -48,44 +48,13 @@ namespace Lanchat.Core.Node
             CheckIsReadyAfterTimeout();
         }
 
-        public void Dispose()
-        {
-            NetworkElement.Close();
-            FileSender.Dispose();
-            FileReceiver.CancelReceive();
-            PublicKeyEncryption.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
-        public void SendHandshake()
-        {
-            var handshake = new Handshake
-            {
-                Nickname = config.Nickname,
-                Status = config.Status,
-                PublicKey = PublicKeyEncryption.ExportKey()
-            };
-
-            Output.SendPrivilegedData(handshake);
-        }
-
-        public void OnConnected()
-        {
-            Connected?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void OnCannotConnect()
-        {
-            CannotConnect?.Invoke(this, EventArgs.Empty);
-        }
-
-        public Resolver Resolver { get; }
+        public IResolver Resolver { get; }
+        public IModelEncryption ModelEncryption { get; }
         public FileReceiver FileReceiver { get; }
         public FileSender FileSender { get; }
         public Messaging Messaging { get; }
         public INetworkElement NetworkElement { get; }
         public IOutput Output { get; }
-
         public bool IsSession { get; }
         public bool HandshakeReceived { get; set; }
         public string Nickname
@@ -130,6 +99,18 @@ namespace Lanchat.Core.Node
         public event EventHandler<SocketError> SocketErrored;
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public void SendHandshake()
+        {
+            var handshake = new Handshake
+            {
+                Nickname = config.Nickname,
+                Status = config.Status,
+                PublicKey = PublicKeyEncryption.ExportKey()
+            };
+
+            Output.SendPrivilegedData(handshake);
+        }
+        
         public void Disconnect()
         {
             Output.SendPrivilegedData(new ConnectionControl
@@ -138,9 +119,28 @@ namespace Lanchat.Core.Node
             });
             Dispose();
         }
+        
+        public void Dispose()
+        {
+            NetworkElement.Close();
+            FileSender.Dispose();
+            FileReceiver.CancelReceive();
+            PublicKeyEncryption.Dispose();
+            GC.SuppressFinalize(this);
+        }
+        
+        public void OnConnected()
+        {
+            Connected?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void OnCannotConnect()
+        {
+            CannotConnect?.Invoke(this, EventArgs.Empty);
+        }
 
         internal event EventHandler CannotConnect;
-        internal SymmetricEncryption SymmetricEncryption { get; }
+        internal ISymmetricEncryption SymmetricEncryption { get; }
         internal IPublicKeyEncryption PublicKeyEncryption { get; }
         private void OnDisconnected(object sender, EventArgs _)
         {

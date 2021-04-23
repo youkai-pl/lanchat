@@ -7,5 +7,7 @@ namespace Lanchat.Core.Api
         /// </summary>
         /// <param name="apiHandler">ApiHandler object.</param>
         void RegisterHandler(IApiHandler apiHandler);
+
+        void OnDataReceived(object sender, string item);
     }
 }

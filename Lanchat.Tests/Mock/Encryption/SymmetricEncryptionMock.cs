@@ -4,7 +4,7 @@ using Lanchat.Core.Models;
 
 namespace Lanchat.Tests.Mock.Encryption
 {
-    public class SymmetricEncryptionMock : ISymmetricEncryption
+    internal class SymmetricEncryptionMock : ISymmetricEncryption
     {
         public string EncryptString(string text)
         {
