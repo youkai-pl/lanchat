@@ -13,7 +13,7 @@ namespace Lanchat.Core.Api
     /// <summary>
     ///     Class used to handle received data.
     /// </summary>
-    public class Resolver
+    public class Resolver : IResolver
     {
         private readonly IModelEncryption encryption;
         private readonly List<IApiHandler> handlers = new();

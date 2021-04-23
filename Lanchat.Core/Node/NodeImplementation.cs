@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Lanchat.Core.Api;
-using Lanchat.Core.ApiHandlers;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Config;
 using Lanchat.Core.Encryption;
@@ -17,7 +16,6 @@ namespace Lanchat.Core.Node
     internal class NodeImplementation : IDisposable, INodePublic, INodeInternal
     {
         private readonly IConfig config;
-        private readonly IPublicKeyEncryption publicKeyEncryption;
         private string nickname;
         private string previousNickname;
         private Status status;
@@ -27,24 +25,17 @@ namespace Lanchat.Core.Node
             this.config = config;
             IsSession = networkElement.IsSession;
             NetworkElement = networkElement;
-            publicKeyEncryption = new PublicKeyEncryption();
-            var symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
-            var modelEncryption = new ModelEncryption(symmetricEncryption);
+            PublicKeyEncryption = new PublicKeyEncryption();
+            SymmetricEncryption = new SymmetricEncryption(PublicKeyEncryption);
+            var modelEncryption = new ModelEncryption(SymmetricEncryption);
             Output = new Output(NetworkElement, this, modelEncryption);
             Messaging = new Messaging(Output);
             FileReceiver = new FileReceiver(Output, config);
             FileSender = new FileSender(Output);
-
             Resolver = new Resolver(this, modelEncryption);
-            Resolver.RegisterHandler(new HandshakeHandler(publicKeyEncryption, symmetricEncryption, Output, this));
-            Resolver.RegisterHandler(new KeyInfoHandler(symmetricEncryption, this));
-            Resolver.RegisterHandler(new ConnectionControlHandler(NetworkElement));
-            Resolver.RegisterHandler(new StatusUpdateHandler(this));
-            Resolver.RegisterHandler(new NicknameUpdateHandler(this));
-            Resolver.RegisterHandler(new MessageHandler(Messaging));
-            Resolver.RegisterHandler(new FilePartHandler(FileReceiver));
-            Resolver.RegisterHandler(new FileTransferControlHandler(FileReceiver, FileSender));
-
+            
+            HandlersSetup.RegisterHandlers(Resolver, this);
+            
             NetworkElement.Disconnected += OnDisconnected;
             NetworkElement.DataReceived += Resolver.OnDataReceived;
             NetworkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
@@ -62,7 +53,7 @@ namespace Lanchat.Core.Node
             NetworkElement.Close();
             FileSender.Dispose();
             FileReceiver.CancelReceive();
-            publicKeyEncryption.Dispose();
+            PublicKeyEncryption.Dispose();
             GC.SuppressFinalize(this);
         }
 
@@ -72,7 +63,7 @@ namespace Lanchat.Core.Node
             {
                 Nickname = config.Nickname,
                 Status = config.Status,
-                PublicKey = publicKeyEncryption.ExportKey()
+                PublicKey = PublicKeyEncryption.ExportKey()
             };
 
             Output.SendPrivilegedData(handshake);
@@ -149,7 +140,8 @@ namespace Lanchat.Core.Node
         }
 
         internal event EventHandler CannotConnect;
-
+        internal SymmetricEncryption SymmetricEncryption { get; }
+        internal IPublicKeyEncryption PublicKeyEncryption { get; }
         private void OnDisconnected(object sender, EventArgs _)
         {
             if (Ready)

@@ -1,4 +1,6 @@
 using System;
+using Lanchat.Core.Api;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.Node
@@ -16,7 +18,7 @@ namespace Lanchat.Core.Node
         bool IsSession { get; }
 
         bool HandshakeReceived { get; set; }
-
+        
         void SendHandshake();
 
         void OnConnected();
