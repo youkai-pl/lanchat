@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Config;
@@ -12,7 +11,6 @@ using Lanchat.Core.Network;
 
 namespace Lanchat.Core.Node
 {
-    // TODO: Split into smaller classes
     internal class LocalNode : IDisposable, INodePublic, INodeInternal
     {
         private readonly IConfig config;
@@ -36,16 +34,11 @@ namespace Lanchat.Core.Node
 
             HandlersSetup.RegisterHandlers(Resolver, this);
             
-            NetworkElement.Disconnected += OnDisconnected;
             NetworkElement.DataReceived += Resolver.OnDataReceived;
             NetworkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
-            if (IsSession)
-            {
-                SendHandshake();
-            }
-
-            CheckIsReadyAfterTimeout();
+            var connection = new Connection(this);
+            connection.Initialize();
         }
 
         public IResolver Resolver { get; }
@@ -133,6 +126,11 @@ namespace Lanchat.Core.Node
             Connected?.Invoke(this, EventArgs.Empty);
         }
 
+        public void OnDisconnected()
+        {
+            Disconnected?.Invoke(this, EventArgs.Empty);
+        }
+        
         public void OnCannotConnect()
         {
             CannotConnect?.Invoke(this, EventArgs.Empty);
@@ -141,29 +139,7 @@ namespace Lanchat.Core.Node
         internal event EventHandler CannotConnect;
         internal ISymmetricEncryption SymmetricEncryption { get; }
         internal IPublicKeyEncryption PublicKeyEncryption { get; }
-        private void OnDisconnected(object sender, EventArgs _)
-        {
-            if (Ready)
-            {
-                Disconnected?.Invoke(this, EventArgs.Empty);
-            }
-            else
-            {
-                OnCannotConnect();
-            }
-        }
-
-        private void CheckIsReadyAfterTimeout()
-        {
-            Task.Delay(5000).ContinueWith(_ =>
-            {
-                if (!Ready)
-                {
-                    OnCannotConnect();
-                }
-            });
-        }
-
+        
         private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -2,6 +2,7 @@ using System;
 using Lanchat.Core.Api;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
+using Lanchat.Core.Network;
 
 namespace Lanchat.Core.Node
 {
@@ -17,11 +18,15 @@ namespace Lanchat.Core.Node
 
         bool IsSession { get; }
         
+        INetworkElement NetworkElement { get; }
+        
         IModelEncryption ModelEncryption { get; }
         
         void SendHandshake();
 
         void OnConnected();
+
+        void OnDisconnected();
 
         void OnCannotConnect();
     }
