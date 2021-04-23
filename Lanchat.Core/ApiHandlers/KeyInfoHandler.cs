@@ -25,11 +25,6 @@ namespace Lanchat.Core.ApiHandlers
                 return;
             }
 
-            if (!node.HandshakeReceived)
-            {
-                return;
-            }
-
             if (keyInfo == null)
             {
                 return;

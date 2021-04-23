@@ -56,7 +56,6 @@ namespace Lanchat.Core.Node
         public INetworkElement NetworkElement { get; }
         public IOutput Output { get; }
         public bool IsSession { get; }
-        public bool HandshakeReceived { get; set; }
         public string Nickname
         {
             get => $"{nickname}#{ShortId}";

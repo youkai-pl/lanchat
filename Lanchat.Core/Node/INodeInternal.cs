@@ -16,8 +16,6 @@ namespace Lanchat.Core.Node
         bool Ready { get; set; }
 
         bool IsSession { get; }
-
-        bool HandshakeReceived { get; set; }
         
         IModelEncryption ModelEncryption { get; }
         

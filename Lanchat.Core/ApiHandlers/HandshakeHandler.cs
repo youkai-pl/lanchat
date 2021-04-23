@@ -12,6 +12,7 @@ namespace Lanchat.Core.ApiHandlers
         private readonly INodeInternal node;
         private readonly IOutput output;
         private readonly IPublicKeyEncryption publicKeyEncryption;
+        private bool alreadyReceived;
 
         internal HandshakeHandler(
             IPublicKeyEncryption publicKeyEncryption,
@@ -28,7 +29,7 @@ namespace Lanchat.Core.ApiHandlers
 
         protected override void Handle(Handshake handshake)
         {
-            if (node.HandshakeReceived)
+            if (alreadyReceived)
             {
                 return;
             }
@@ -45,7 +46,7 @@ namespace Lanchat.Core.ApiHandlers
                 publicKeyEncryption.ImportKey(handshake.PublicKey);
                 node.Status = handshake.Status;
                 output.SendPrivilegedData(encryption.ExportKey());
-                node.HandshakeReceived = true;
+                alreadyReceived = true;
             }
             catch (CryptographicException)
             {
