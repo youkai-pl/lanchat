@@ -1,5 +1,8 @@
 namespace Lanchat.Core.Api
 {
+    /// <summary>
+    ///     Sending data to specific node.
+    /// </summary>
     public interface IOutput
     {
         /// <summary>

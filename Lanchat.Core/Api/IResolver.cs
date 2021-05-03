@@ -1,5 +1,8 @@
 namespace Lanchat.Core.Api
 {
+    /// <summary>
+    ///     Handling received data.
+    /// </summary>
     public interface IResolver
     {
         /// <summary>
@@ -8,6 +11,10 @@ namespace Lanchat.Core.Api
         /// <param name="apiHandler">ApiHandler object.</param>
         void RegisterHandler(IApiHandler apiHandler);
 
-        void OnDataReceived(object sender, string item);
+        /// <summary>
+        ///     Handle incoming data.
+        /// </summary>
+        /// <param name="item">Json string</param>
+        void CallHandler(string item);
     }
 }

@@ -3,21 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
-using System.Text.Json;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Json;
 using Lanchat.Core.Node;
 
 namespace Lanchat.Core.Api
 {
-    /// <summary>
-    ///     Class used to handle received data.
-    /// </summary>
+    /// <inheritdoc />
     public class Resolver : IResolver
     {
         private readonly IModelEncryption encryption;
         private readonly List<IApiHandler> handlers = new();
-        private readonly JsonBuffer jsonBuffer;
         private readonly JsonUtils jsonUtils;
         private readonly INodeInternal node;
 
@@ -26,33 +22,17 @@ namespace Lanchat.Core.Api
             this.node = node;
             encryption = node.ModelEncryption;
             jsonUtils = new JsonUtils();
-            jsonBuffer = new JsonBuffer();
         }
 
-        /// <summary>
-        ///     Add data handler for specific model type.
-        /// </summary>
-        /// <param name="apiHandler">ApiHandler object.</param>
+        /// <inheritdoc />
         public void RegisterHandler(IApiHandler apiHandler)
         {
             handlers.Add(apiHandler);
             jsonUtils.KnownModels.Add(apiHandler.HandledType);
         }
-
-        public void OnDataReceived(object sender, string item)
-        {
-            jsonBuffer.AddToBuffer(item);
-            try
-            {
-                jsonBuffer.ReadBuffer().ForEach(CallHandler);
-            }
-            catch (JsonException)
-            { }
-            catch (InvalidOperationException)
-            { }
-        }
-
-        internal void CallHandler(string item)
+        
+        /// <inheritdoc />
+        public void CallHandler(string item)
         {
             var data = jsonUtils.Deserialize(item);
             var handler = GetHandler(data.GetType());

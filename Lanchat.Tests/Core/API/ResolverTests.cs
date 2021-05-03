@@ -3,7 +3,6 @@ using Lanchat.Core.Api;
 using Lanchat.Core.Json;
 using Lanchat.Core.Models;
 using Lanchat.Tests.Mock;
-using Lanchat.Tests.Mock.Encryption;
 using Lanchat.Tests.Mock.Handlers;
 using Lanchat.Tests.Mock.Models;
 using NUnit.Framework;
@@ -17,6 +16,7 @@ namespace Lanchat.Tests.Core.API
         private Resolver resolver;
         private MessageHandlerMock messageHandlerMock;
         private PrivilegedHandler privilegedHandler;
+        private Input input;
 
         [SetUp]
         public void Setup()
@@ -24,6 +24,7 @@ namespace Lanchat.Tests.Core.API
             jsonUtils = new JsonUtils();
             nodeMock = new NodeMock();
             resolver = new Resolver(nodeMock);
+            input = new Input(resolver);
             messageHandlerMock = new MessageHandlerMock();
             privilegedHandler = new PrivilegedHandler();
             resolver.RegisterHandler(messageHandlerMock);
@@ -64,33 +65,33 @@ namespace Lanchat.Tests.Core.API
         [Test]
         public void ValidModel()
         {
-            resolver.OnDataReceived(this, jsonUtils.Serialize(new Message {Content = "test"}));
+            input.OnDataReceived(this, jsonUtils.Serialize(new Message {Content = "test"}));
             Assert.IsTrue(messageHandlerMock.Received);
         }
 
         [Test]
         public void InvalidModel()
         {
-            resolver.OnDataReceived(this, jsonUtils.Serialize(new Message {Content = null}));
+            input.OnDataReceived(this, jsonUtils.Serialize(new Message {Content = null}));
             Assert.IsFalse(messageHandlerMock.Received);
         }
 
         [Test]
         public void InvalidOperationExceptionCatch()
         {
-            resolver.OnDataReceived(this, "{}");
+            input.OnDataReceived(this, "{}");
         }
 
         [Test]
         public void JsonExceptionCatch()
         {
-            resolver.OnDataReceived(this, "{\"key\": invalid format}");
+            input.OnDataReceived(this, "{\"key\": invalid format}");
         }
 
         [Test]
         public void ValidationExceptionCatch()
         {
-            resolver.OnDataReceived(this, jsonUtils.Serialize(new ModelWithValidation()));
+            input.OnDataReceived(this, jsonUtils.Serialize(new ModelWithValidation()));
         }
 
         [Test]

@@ -15,7 +15,7 @@ namespace Lanchat.Core.Api
         public bool Privileged { get; protected init; }
 
         /// <inheritdoc />
-        public bool Disable { get; set; }
+        public bool Disable { get; protected set; }
 
         /// <inheritdoc />
         public void Handle(object data)

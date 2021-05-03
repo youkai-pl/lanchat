@@ -31,10 +31,11 @@ namespace Lanchat.Core.Node
             FileReceiver = new FileReceiver(Output, config);
             FileSender = new FileSender(Output);
             Resolver = new Resolver(this);
-
+            var input = new Input(Resolver);
+            
             HandlersSetup.RegisterHandlers(Resolver, this);
             
-            NetworkElement.DataReceived += Resolver.OnDataReceived;
+            NetworkElement.DataReceived += input.OnDataReceived;
             NetworkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
             var connection = new Connection(this);

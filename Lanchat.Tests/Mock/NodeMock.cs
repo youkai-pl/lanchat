@@ -1,7 +1,7 @@
 using System;
-using Lanchat.Core;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
+using Lanchat.Core.Network;
 using Lanchat.Core.Node;
 using Lanchat.Tests.Mock.Encryption;
 
@@ -13,12 +13,13 @@ namespace Lanchat.Tests.Mock
     {
         public NodeMock()
         {
+            NetworkElement = null;
             ModelEncryption = new ModelEncryptionMock();
         }
         
         public bool Ready { get; set; } = true;
         public bool IsSession => false;
-        public bool HandshakeReceived { get; set; }
+        public INetworkElement NetworkElement { get; }
         public string Nickname { get; set; } = "Nickname";
         public Status Status { get; set; } = Status.Online;
         public Guid Id { get; } = Guid.NewGuid();
@@ -30,6 +31,11 @@ namespace Lanchat.Tests.Mock
         }
 
         public void OnConnected()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnDisconnected()
         {
             throw new NotImplementedException();
         }
