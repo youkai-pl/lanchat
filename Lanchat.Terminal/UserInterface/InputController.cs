@@ -84,7 +84,7 @@ namespace Lanchat.Terminal.UserInterface
                 else
                 {
                     Ui.Log.AddMessage(input.Text, Program.Config.Nickname, false);
-                    Program.Network.Broadcast.SendMessage(input.Text);
+                    Program.Network.Broadcast.SendData(input.Text);
                 }
             }
 

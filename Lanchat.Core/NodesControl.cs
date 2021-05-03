@@ -19,11 +19,11 @@ namespace Lanchat.Core
         {
             this.config = config;
             this.network = network;
-            Nodes = new List<LocalNode>();
+            Nodes = new List<INodePublic>();
         }
 
-        internal List<LocalNode> Nodes { get; }
-        internal event EventHandler<LocalNode> NodeCreated;
+        internal List<INodePublic> Nodes { get; }
+        internal event EventHandler<INodePublic> NodeCreated;
 
         internal LocalNode CreateNode(INetworkElement networkElement)
         {
