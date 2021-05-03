@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 using Lanchat.Core.Api;
 using Lanchat.Core.Encryption;
@@ -20,11 +21,6 @@ namespace Lanchat.Core.ApiHandlers
 
         protected override void Handle(KeyInfo keyInfo)
         {
-            if (keyInfo == null)
-            {
-                return;
-            }
-
             try
             {
                 encryption.ImportKey(keyInfo);
@@ -33,6 +29,10 @@ namespace Lanchat.Core.ApiHandlers
                 node.OnConnected();
             }
             catch (CryptographicException)
+            {
+                node.OnCannotConnect();
+            }
+            catch (ArgumentNullException)
             {
                 node.OnCannotConnect();
             }

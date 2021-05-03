@@ -10,6 +10,7 @@ namespace Lanchat.Tests.Mock
         public IPEndPoint Endpoint { get; } = new(IPAddress.Loopback, 1234);
         public Guid Id { get; } = Guid.NewGuid();
         public bool IsSession => false;
+        public bool Closed { get; private set; }
 
         public void Send(string text)
         {
@@ -17,7 +18,9 @@ namespace Lanchat.Tests.Mock
         }
 
         public void Close()
-        { }
+        {
+            Closed = true;
+        }
 
         public event EventHandler Disconnected;
         public event EventHandler<SocketError> SocketErrored;

@@ -22,7 +22,10 @@ namespace Lanchat.Tests.Core.API
         public void Setup()
         {
             jsonUtils = new JsonUtils();
-            nodeMock = new NodeMock();
+            nodeMock = new NodeMock
+            {
+                Ready = true
+            };
             resolver = new Resolver(nodeMock);
             input = new Input(resolver);
             messageHandlerMock = new MessageHandlerMock();

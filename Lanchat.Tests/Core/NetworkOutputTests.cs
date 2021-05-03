@@ -16,7 +16,10 @@ namespace Lanchat.Tests.Core
         public void Setup()
         {
             networkMock = new NetworkMock();
-            nodeMock = new NodeMock();
+            nodeMock = new NodeMock
+            {
+                Ready = true
+            };
             output = new Output(networkMock, nodeMock);
         }
 

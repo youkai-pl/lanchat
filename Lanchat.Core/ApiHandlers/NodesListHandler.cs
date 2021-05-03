@@ -1,22 +1,25 @@
 using System;
 using System.Net;
 using Lanchat.Core.Api;
+using Lanchat.Core.Config;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.ApiHandlers
 {
     internal class NodesListHandler : ApiHandler<NodesList>
     {
-        private readonly P2P network;
+        private readonly IConfig config;
+        private readonly IP2P network;
 
-        internal NodesListHandler(P2P network)
+        internal NodesListHandler(IConfig config, IP2P network)
         {
+            this.config = config;
             this.network = network;
         }
 
         protected override void Handle(NodesList nodesList)
         {
-            if (!network.Config.ConnectToReceivedList)
+            if (!config.ConnectToReceivedList)
             {
                 return;
             }

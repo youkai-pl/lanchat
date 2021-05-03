@@ -27,7 +27,11 @@ namespace Lanchat.Tests.Mock.Encryption
 
         public KeyInfo ExportKey()
         {
-            return null;
+            return new()
+            {
+                AesKey = new byte[] {0x10},
+                AesIv = new byte[] {0x10}
+            };
         }
 
         public void ImportKey(KeyInfo keyInfo)

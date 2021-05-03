@@ -29,7 +29,7 @@ namespace Lanchat.Core
         {
             var node = new LocalNode(networkElement, config);
             Nodes.Add(node);
-            node.Resolver.RegisterHandler(new NodesListHandler(network));
+            node.Resolver.RegisterHandler(new NodesListHandler(config, network));
             node.Connected += OnConnected;
             node.CannotConnect += CloseNode;
             node.Disconnected += CloseNode;

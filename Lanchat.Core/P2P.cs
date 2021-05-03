@@ -15,7 +15,7 @@ namespace Lanchat.Core
     /// <summary>
     ///     Main class representing network in P2P mode.
     /// </summary>
-    public class P2P
+    public class P2P : IP2P
     {
         internal readonly IConfig Config;
         private readonly NodesControl nodesControl;

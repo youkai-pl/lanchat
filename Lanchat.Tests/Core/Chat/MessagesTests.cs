@@ -17,7 +17,10 @@ namespace Lanchat.Tests.Core.Chat
         [SetUp]
         public void Setup()
         {
-            var nodeState = new NodeMock();
+            var nodeState = new NodeMock
+            {
+                Ready = true
+            };
             networkMock = new NetworkMock();
             output = new Output(networkMock, nodeState);
             messaging = new Messaging(output);

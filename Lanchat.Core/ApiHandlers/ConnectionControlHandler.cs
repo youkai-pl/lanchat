@@ -1,7 +1,7 @@
-using System.Diagnostics;
 using Lanchat.Core.Api;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
+// ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 
 namespace Lanchat.Core.ApiHandlers
 {
@@ -20,10 +20,6 @@ namespace Lanchat.Core.ApiHandlers
             {
                 case ConnectionControlStatus.RemoteClose:
                     networkElement.Close();
-                    break;
-
-                default:
-                    Trace.WriteLine("Invalid status received");
                     break;
             }
         }
