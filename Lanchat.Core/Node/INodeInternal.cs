@@ -10,17 +10,17 @@ namespace Lanchat.Core.Node
         string Nickname { set; }
 
         Status Status { set; }
-        
+
         Guid Id { get; }
 
         bool Ready { get; set; }
 
         bool IsSession { get; }
-        
+
         INetworkElement NetworkElement { get; }
-        
+
         IModelEncryption ModelEncryption { get; }
-        
+
         void SendHandshake();
 
         void OnConnected();

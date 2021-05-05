@@ -17,7 +17,7 @@ namespace Lanchat.Core.Node
         private string nickname;
         private string previousNickname;
         private Status status;
-        
+
         internal LocalNode(INetworkElement networkElement, IConfig config)
         {
             this.config = config;
@@ -32,9 +32,9 @@ namespace Lanchat.Core.Node
             FileSender = new FileSender(Output);
             Resolver = new Resolver(this);
             var input = new Input(Resolver);
-            
+
             HandlersSetup.RegisterHandlers(Resolver, this);
-            
+
             NetworkElement.DataReceived += input.OnDataReceived;
             NetworkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
@@ -42,14 +42,25 @@ namespace Lanchat.Core.Node
             connection.Initialize();
         }
 
+        internal ISymmetricEncryption SymmetricEncryption { get; }
+        internal IPublicKeyEncryption PublicKeyEncryption { get; }
+
+        public void Dispose()
+        {
+            NetworkElement.Close();
+            FileSender.Dispose();
+            FileReceiver.CancelReceive();
+            PublicKeyEncryption.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
         public IResolver Resolver { get; }
-        public IModelEncryption ModelEncryption { get; }
         public FileReceiver FileReceiver { get; }
         public FileSender FileSender { get; }
         public Messaging Messaging { get; }
         public INetworkElement NetworkElement { get; }
         public IOutput Output { get; }
-        public bool IsSession { get; }
+
         public string Nickname
         {
             get => $"{nickname}#{ShortId}";
@@ -92,6 +103,18 @@ namespace Lanchat.Core.Node
         public event EventHandler<SocketError> SocketErrored;
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public void Disconnect()
+        {
+            Output.SendPrivilegedData(new ConnectionControl
+            {
+                Status = ConnectionStatus.RemoteDisconnect
+            });
+            Dispose();
+        }
+
+        public IModelEncryption ModelEncryption { get; }
+        public bool IsSession { get; }
+
         public void SendHandshake()
         {
             var handshake = new Handshake
@@ -103,25 +126,7 @@ namespace Lanchat.Core.Node
 
             Output.SendPrivilegedData(handshake);
         }
-        
-        public void Disconnect()
-        {
-            Output.SendPrivilegedData(new ConnectionControl
-            {
-                Status = ConnectionControlStatus.RemoteClose
-            });
-            Dispose();
-        }
-        
-        public void Dispose()
-        {
-            NetworkElement.Close();
-            FileSender.Dispose();
-            FileReceiver.CancelReceive();
-            PublicKeyEncryption.Dispose();
-            GC.SuppressFinalize(this);
-        }
-        
+
         public void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);
@@ -131,16 +136,14 @@ namespace Lanchat.Core.Node
         {
             Disconnected?.Invoke(this, EventArgs.Empty);
         }
-        
+
         public void OnCannotConnect()
         {
             CannotConnect?.Invoke(this, EventArgs.Empty);
         }
 
         internal event EventHandler CannotConnect;
-        internal ISymmetricEncryption SymmetricEncryption { get; }
-        internal IPublicKeyEncryption PublicKeyEncryption { get; }
-        
+
         private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

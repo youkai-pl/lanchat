@@ -1,6 +1,7 @@
 using Lanchat.Core.Api;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
+
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 
 namespace Lanchat.Core.ApiHandlers
@@ -18,7 +19,7 @@ namespace Lanchat.Core.ApiHandlers
         {
             switch (connectionControl.Status)
             {
-                case ConnectionControlStatus.RemoteClose:
+                case ConnectionStatus.RemoteDisconnect:
                     networkElement.Close();
                     break;
             }

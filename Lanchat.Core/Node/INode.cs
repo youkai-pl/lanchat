@@ -33,7 +33,7 @@ namespace Lanchat.Core.Node
         ///     Short ID.
         /// </summary>
         string ShortId { get; }
-        
+
         /// <summary>
         ///     Node ready. If set to false node won't send or receive messages.
         /// </summary>
@@ -43,7 +43,7 @@ namespace Lanchat.Core.Node
         ///     Node user status.
         /// </summary>
         Status Status { get; }
-        
+
         /// <see cref="Lanchat.Core.Network.INetworkElement" />
         INetworkElement NetworkElement { get; }
 
@@ -55,10 +55,10 @@ namespace Lanchat.Core.Node
 
         /// <see cref="Lanchat.Core.FileTransfer.FileSender" />
         FileSender FileSender { get; }
-        
+
         /// <see cref="Lanchat.Core.Api.Output" />
         IOutput Output { get; }
-        
+
         /// <see cref="Lanchat.Core.Api.Resolver" />
         IResolver Resolver { get; }
 
@@ -66,12 +66,12 @@ namespace Lanchat.Core.Node
         ///     Node successful connected and ready to data exchange.
         /// </summary>
         event EventHandler Connected;
-        
+
         /// <summary>
         ///     Node disconnected. Cannot reconnect.
         /// </summary>
         event EventHandler Disconnected;
-        
+
         /// <summary>
         ///     TCP session or client returned error.
         /// </summary>

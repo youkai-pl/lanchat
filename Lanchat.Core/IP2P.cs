@@ -21,7 +21,7 @@ namespace Lanchat.Core
         /// </summary>
         List<INode> Nodes { get; }
 
-        /// <see cref="Lanchat.Core.Api.Broadcast"/>
+        /// <see cref="Lanchat.Core.Api.Broadcast" />
         Broadcast Broadcast { get; }
 
         /// <summary>

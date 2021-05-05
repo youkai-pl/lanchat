@@ -35,6 +35,6 @@ namespace Lanchat.Core.Api
             }
 
             return true;
-        } 
+        }
     }
 }

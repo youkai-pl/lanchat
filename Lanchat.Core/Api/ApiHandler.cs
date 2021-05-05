@@ -44,7 +44,7 @@ namespace Lanchat.Core.Api
         ///     If handler is privileged it will process data even if node is unready.
         /// </summary>
         public bool Privileged { get; }
-        
+
         /// <summary>
         ///     Disable handler.
         /// </summary>

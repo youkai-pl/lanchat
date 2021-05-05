@@ -18,7 +18,7 @@ namespace Lanchat.Core
         internal readonly IConfig Config;
         private readonly NodesControl nodesControl;
         private readonly Server server;
-        
+
         /// <summary>
         ///     Initialize P2P mode
         /// </summary>
@@ -38,19 +38,19 @@ namespace Lanchat.Core
             Broadcast = new Broadcast(nodesControl.Nodes);
             _ = new ConfigObserver(this);
         }
-        
+
         /// <inheritdoc />
         public NodesDetector NodesDetection { get; }
-        
+
         /// <inheritdoc />
         public List<INode> Nodes => nodesControl.Nodes.Where(x => x.Ready).ToList();
-        
+
         /// <inheritdoc />
         public Broadcast Broadcast { get; }
-        
+
         /// <inheritdoc />
         public event EventHandler<INode> NodeCreated;
-        
+
         /// <inheritdoc />
         public void Start()
         {
@@ -69,7 +69,7 @@ namespace Lanchat.Core
                 ConnectToSavedAddresses();
             }
         }
-        
+
         /// <inheritdoc />
         public Task<bool> Connect(IPAddress ipAddress, int? port = null)
         {
@@ -82,7 +82,7 @@ namespace Lanchat.Core
             client.ConnectAsync();
             return tcs.Task;
         }
-        
+
         private void ConnectToSavedAddresses()
         {
             Config.SavedAddresses.ForEach(x =>
@@ -108,7 +108,7 @@ namespace Lanchat.Core
                 throw new ArgumentException("Already connected to this node");
             }
         }
-        
+
         private static void SubscribeEvents(LocalNode node, TaskCompletionSource<bool> tcs)
         {
             node.Connected += (_, _) => { tcs.TrySetResult(true); };

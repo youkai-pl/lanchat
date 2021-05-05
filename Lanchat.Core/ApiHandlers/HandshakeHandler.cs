@@ -27,7 +27,7 @@ namespace Lanchat.Core.ApiHandlers
         }
 
         protected override void Handle(Handshake handshake)
-        { 
+        {
             node.Nickname = handshake.Nickname;
 
             if (!node.IsSession)

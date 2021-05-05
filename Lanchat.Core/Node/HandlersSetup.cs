@@ -9,7 +9,8 @@ namespace Lanchat.Core.Node
     {
         internal static void RegisterHandlers(IResolver resolver, LocalNode node)
         {
-            resolver.RegisterHandler(new HandshakeHandler(node.PublicKeyEncryption, node.SymmetricEncryption, node.Output, node));
+            resolver.RegisterHandler(new HandshakeHandler(node.PublicKeyEncryption, node.SymmetricEncryption,
+                node.Output, node));
             resolver.RegisterHandler(new KeyInfoHandler(node.SymmetricEncryption, node));
             resolver.RegisterHandler(new ConnectionControlHandler(node.NetworkElement));
             resolver.RegisterHandler(new StatusUpdateHandler(node));

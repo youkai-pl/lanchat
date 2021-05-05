@@ -31,7 +31,7 @@ namespace Lanchat.Core.Api
             handlers.Add(apiHandler);
             jsonUtils.KnownModels.Add(apiHandler.HandledType);
         }
-        
+
         /// <inheritdoc />
         public void CallHandler(string item)
         {
@@ -46,7 +46,7 @@ namespace Lanchat.Core.Api
             Trace.WriteLine($"Node {node.Id} received {handler.HandledType.Name}");
             handler.Handle(data);
         }
-        
+
         private IApiHandler GetHandler(Type jsonType)
         {
             return handlers.First(x => x.HandledType == jsonType);

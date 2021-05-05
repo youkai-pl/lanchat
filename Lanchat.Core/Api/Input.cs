@@ -6,15 +6,15 @@ namespace Lanchat.Core.Api
 {
     internal class Input : IInput
     {
-        private readonly IResolver resolver;
         private readonly JsonBuffer jsonBuffer;
+        private readonly IResolver resolver;
 
         public Input(IResolver resolver)
         {
             jsonBuffer = new JsonBuffer();
             this.resolver = resolver;
         }
-        
+
         public void OnDataReceived(object sender, string item)
         {
             jsonBuffer.AddToBuffer(item);

@@ -22,7 +22,7 @@ namespace Lanchat.Tests.Core.ApiHandlers
         {
             var data = new ConnectionControl
             {
-                Status = ConnectionControlStatus.RemoteClose
+                Status = ConnectionStatus.RemoteDisconnect
             };
             connectionControlHandler.Handle(data);
             Assert.IsTrue(networkElement.Closed);

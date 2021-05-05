@@ -28,12 +28,12 @@ namespace Lanchat.Core.Node
                 }
             });
         }
-        
+
         private void OnDisconnected(object sender, EventArgs _)
         {
             if (nodeInternal.Ready)
             {
-               nodeInternal.OnDisconnected();
+                nodeInternal.OnDisconnected();
             }
             else
             {
