@@ -11,7 +11,7 @@ namespace Lanchat.Terminal
 {
     public static class Program
     {
-        public static P2P Network { get; private set; }
+        public static IP2P Network { get; private set; }
         public static Config Config { get; private set; }
 
         private static void Main(string[] args)

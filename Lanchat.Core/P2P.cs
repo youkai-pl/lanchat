@@ -12,16 +12,17 @@ using Lanchat.Core.NodesDetection;
 
 namespace Lanchat.Core
 {
-    
+    /// <inheritdoc />
     public class P2P : IP2P
     {
         internal readonly IConfig Config;
         private readonly NodesControl nodesControl;
         private readonly Server server;
-
+        
         /// <summary>
-        ///     Initialize P2P mode.
+        ///     Initialize P2P mode
         /// </summary>
+        /// <param name="config">Lanchat config</param>
         public P2P(IConfig config)
         {
             Config = config;
@@ -37,28 +38,20 @@ namespace Lanchat.Core
             Broadcast = new Broadcast(nodesControl.Nodes);
             _ = new ConfigObserver(this);
         }
-
-        /// <see cref="NodesDetection" />
+        
+        /// <inheritdoc />
         public NodesDetector NodesDetection { get; }
-
-        /// <summary>
-        ///     List of connected nodes.
-        /// </summary>
-        public List<INode> Nodes => nodesControl.Nodes.Where(x => x.Ready).Cast<INode>().ToList();
-
-        /// <summary>
-        ///     Send data to all nodes.
-        /// </summary>
+        
+        /// <inheritdoc />
+        public List<INode> Nodes => nodesControl.Nodes.Where(x => x.Ready).ToList();
+        
+        /// <inheritdoc />
         public Broadcast Broadcast { get; }
-
-        /// <summary>
-        ///     New node connected. After receiving this handlers for node events can be created.
-        /// </summary>
+        
+        /// <inheritdoc />
         public event EventHandler<INode> NodeCreated;
-
-        /// <summary>
-        ///     Start server.
-        /// </summary>
+        
+        /// <inheritdoc />
         public void Start()
         {
             if (Config.StartServer)
@@ -73,23 +66,11 @@ namespace Lanchat.Core
 
             if (Config.ConnectToSaved)
             {
-                Config.SavedAddresses.ForEach(x =>
-                {
-                    try
-                    {
-                        Connect(x);
-                    }
-                    catch (ArgumentException)
-                    { }
-                });
+                ConnectToSavedAddresses();
             }
         }
-
-        /// <summary>
-        ///     Connect to node.
-        /// </summary>
-        /// <param name="ipAddress">Node IP address.</param>
-        /// <param name="port">Node port.</param>
+        
+        /// <inheritdoc />
         public Task<bool> Connect(IPAddress ipAddress, int? port = null)
         {
             var tcs = new TaskCompletionSource<bool>();
@@ -100,6 +81,19 @@ namespace Lanchat.Core
             SubscribeEvents(node, tcs);
             client.ConnectAsync();
             return tcs.Task;
+        }
+        
+        private void ConnectToSavedAddresses()
+        {
+            Config.SavedAddresses.ForEach(x =>
+            {
+                try
+                {
+                    Connect(x);
+                }
+                catch (ArgumentException)
+                { }
+            });
         }
 
         private void CheckAddress(IPAddress ipAddress)
@@ -114,7 +108,7 @@ namespace Lanchat.Core
                 throw new ArgumentException("Already connected to this node");
             }
         }
-
+        
         private static void SubscribeEvents(LocalNode node, TaskCompletionSource<bool> tcs)
         {
             node.Connected += (_, _) => { tcs.TrySetResult(true); };

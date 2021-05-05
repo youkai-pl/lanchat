@@ -1,5 +1,4 @@
 using System;
-using Lanchat.Core.Api;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;

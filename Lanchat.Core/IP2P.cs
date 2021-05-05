@@ -13,7 +13,7 @@ namespace Lanchat.Core
     /// </summary>
     public interface IP2P
     {
-        /// <see cref="P2P.NodesDetection" />
+        /// <see cref="Lanchat.Core.NodesDetection" />
         NodesDetector NodesDetection { get; }
 
         /// <summary>
@@ -21,9 +21,7 @@ namespace Lanchat.Core
         /// </summary>
         List<INode> Nodes { get; }
 
-        /// <summary>
-        ///     Send data to all nodes.
-        /// </summary>
+        /// <see cref="Lanchat.Core.Api.Broadcast"/>
         Broadcast Broadcast { get; }
 
         /// <summary>
