@@ -25,7 +25,7 @@ namespace Lanchat.Core.ApiHandlers
             {
                 encryption.ImportKey(keyInfo);
                 node.Ready = true;
-                Disable = true;
+                Disabled = true;
                 node.OnConnected();
             }
             catch (CryptographicException)

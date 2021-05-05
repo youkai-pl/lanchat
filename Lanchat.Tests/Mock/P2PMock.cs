@@ -12,9 +12,9 @@ namespace Lanchat.Tests.Mock
     public class P2PMock : IP2P
     {
         public NodesDetector NodesDetection { get; }
-        public List<INodePublic> Nodes { get; }
+        public List<INode> Nodes { get; }
         public Broadcast Broadcast { get; }
-        public event EventHandler<INodePublic> NodeCreated;
+        public event EventHandler<INode> NodeCreated;
 
         public List<IPAddress> Connected { get; } = new();
         

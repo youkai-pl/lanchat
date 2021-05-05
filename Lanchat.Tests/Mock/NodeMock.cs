@@ -12,7 +12,7 @@ using Lanchat.Tests.Mock.Encryption;
 
 namespace Lanchat.Tests.Mock
 {
-    internal class NodeMock : INodeInternal, INodePublic
+    internal class NodeMock : INodeInternal, INode
     {
         public NodeMock(IOutput outputMock = null)
         {

@@ -42,7 +42,7 @@ namespace Lanchat.Tests.Core.ApiHandlers
             handshakeHandler.Handle(handshake);
             
             publicKeyEncryption.Encrypt(new byte[] {0x10});
-            Assert.IsTrue(handshakeHandler.Disable);
+            Assert.IsTrue(handshakeHandler.Disabled);
             Assert.AreEqual(handshake.Status, nodeMock.Status);
             Assert.IsTrue(nodeMock.HandshakeSent);
             Assert.NotNull(outputMock.LastOutput);

@@ -11,7 +11,7 @@ using Lanchat.Core.Network;
 
 namespace Lanchat.Core.Node
 {
-    internal class LocalNode : IDisposable, INodePublic, INodeInternal
+    internal class LocalNode : IDisposable, INode, INodeInternal
     {
         private readonly IConfig config;
         private string nickname;

@@ -9,7 +9,7 @@ namespace Lanchat.Tests.Mock.Handlers
         protected override void Handle(Model data)
         {
             Counter++;
-            Disable = true;
+            Disabled = true;
         }
     }
 }

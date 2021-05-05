@@ -8,6 +8,9 @@ using Lanchat.Core.NodesDetection;
 
 namespace Lanchat.Core
 {
+    /// <summary>
+    ///     Main class representing network in P2P mode.
+    /// </summary>
     public interface IP2P
     {
         /// <see cref="P2P.NodesDetection" />
@@ -16,7 +19,7 @@ namespace Lanchat.Core
         /// <summary>
         ///     List of connected nodes.
         /// </summary>
-        List<INodePublic> Nodes { get; }
+        List<INode> Nodes { get; }
 
         /// <summary>
         ///     Send data to all nodes.
@@ -26,7 +29,7 @@ namespace Lanchat.Core
         /// <summary>
         ///     New node connected. After receiving this handlers for node events can be created.
         /// </summary>
-        event EventHandler<INodePublic> NodeCreated;
+        event EventHandler<INode> NodeCreated;
 
         /// <summary>
         ///     Start server.

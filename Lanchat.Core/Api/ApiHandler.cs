@@ -15,7 +15,7 @@ namespace Lanchat.Core.Api
         public bool Privileged { get; protected init; }
 
         /// <inheritdoc />
-        public bool Disable { get; protected set; }
+        public bool Disabled { get; protected set; }
 
         /// <inheritdoc />
         public void Handle(object data)
@@ -48,7 +48,7 @@ namespace Lanchat.Core.Api
         /// <summary>
         ///     Disable handler.
         /// </summary>
-        public bool Disable { get; }
+        public bool Disabled { get; }
 
         /// <summary>
         ///     Object handler.

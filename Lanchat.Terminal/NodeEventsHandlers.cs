@@ -13,9 +13,9 @@ namespace Lanchat.Terminal
 {
     public class NodeEventsHandlers
     {
-        private readonly INodePublic node;
+        private readonly INode node;
 
-        public NodeEventsHandlers(INodePublic node)
+        public NodeEventsHandlers(INode node)
         {
             this.node = node;
             node.Messaging.MessageReceived += OnMessageReceived;

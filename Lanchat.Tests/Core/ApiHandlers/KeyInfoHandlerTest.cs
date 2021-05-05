@@ -28,7 +28,7 @@ namespace Lanchat.Tests.Core.ApiHandlers
             var keyInfo = symmetricEncryption.ExportKey();
             keyInfoHandler.Handle(keyInfo);
             
-            Assert.IsTrue(keyInfoHandler.Disable);
+            Assert.IsTrue(keyInfoHandler.Disabled);
             Assert.IsTrue(nodeMock.Ready);
             Assert.IsTrue(nodeMock.ConnectedEvent);
         }

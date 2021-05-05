@@ -11,7 +11,7 @@ namespace Lanchat.Tests.Core.Api
     public class BroadcastTests
     {
         private Broadcast broadcast;
-        private readonly List<INodePublic> nodes = new();
+        private readonly List<INode> nodes = new();
         private readonly List<OutputMock> outputMocks = new();
 
         [OneTimeSetUp]

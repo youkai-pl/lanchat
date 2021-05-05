@@ -12,7 +12,7 @@ namespace Lanchat.Core.Node
     /// <summary>
     ///     Connected user.
     /// </summary>
-    public interface INodePublic : INotifyPropertyChanged
+    public interface INode : INotifyPropertyChanged
     {
         /// <summary>
         ///     Node user nickname.
