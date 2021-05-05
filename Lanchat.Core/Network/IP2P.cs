@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Lanchat.Core.Api;
-using Lanchat.Core.Node;
 using Lanchat.Core.NodesDetection;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Network
 {
     /// <summary>
     ///     Main class representing network in P2P mode.

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Json;
-using Lanchat.Core.Node;
+using Lanchat.Core.Network;
 
 namespace Lanchat.Core.Api
 {

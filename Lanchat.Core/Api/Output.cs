@@ -1,7 +1,7 @@
 ﻿using Lanchat.Core.Encryption;
 using Lanchat.Core.Json;
 using Lanchat.Core.Network;
-using Lanchat.Core.Node;
+using Lanchat.Core.Tcp;
 
 namespace Lanchat.Core.Api
 {
@@ -12,12 +12,12 @@ namespace Lanchat.Core.Api
     {
         private readonly IModelEncryption encryption;
         private readonly JsonUtils jsonUtils;
-        private readonly INetworkElement networkElement;
+        private readonly IHost host;
         private readonly INodeInternal node;
 
-        internal Output(INetworkElement networkElement, INodeInternal node)
+        internal Output(IHost host, INodeInternal node)
         {
-            this.networkElement = networkElement;
+            this.host = host;
             this.node = node;
             encryption = node.ModelEncryption;
             jsonUtils = new JsonUtils();
@@ -35,7 +35,7 @@ namespace Lanchat.Core.Api
             }
 
             encryption.EncryptObject(content);
-            networkElement.Send(jsonUtils.Serialize(content));
+            host.Send(jsonUtils.Serialize(content));
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Lanchat.Core.Api
         public void SendPrivilegedData(object content)
         {
             encryption.EncryptObject(content);
-            networkElement.Send(jsonUtils.Serialize(content));
+            host.Send(jsonUtils.Serialize(content));
         }
     }
 }

@@ -5,10 +5,9 @@ using System.Linq;
 using Lanchat.Core.ApiHandlers;
 using Lanchat.Core.Config;
 using Lanchat.Core.Models;
-using Lanchat.Core.Network;
-using Lanchat.Core.Node;
+using Lanchat.Core.Tcp;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Network
 {
     internal class NodesControl
     {
@@ -25,9 +24,9 @@ namespace Lanchat.Core
         internal List<INode> Nodes { get; }
         internal event EventHandler<INode> NodeCreated;
 
-        internal LocalNode CreateNode(INetworkElement networkElement)
+        internal Node CreateNode(IHost host)
         {
-            var node = new LocalNode(networkElement, config);
+            var node = new Node(host, config);
             Nodes.Add(node);
             node.Resolver.RegisterHandler(new NodesListHandler(config, network));
             node.Connected += OnConnected;
@@ -39,7 +38,7 @@ namespace Lanchat.Core
 
         private void CloseNode(object sender, EventArgs e)
         {
-            var node = (LocalNode) sender;
+            var node = (Node) sender;
             var id = node.Id;
             Nodes.Remove(node);
             node.Connected -= OnConnected;
@@ -51,16 +50,16 @@ namespace Lanchat.Core
 
         private void OnConnected(object sender, EventArgs e)
         {
-            var node = (LocalNode) sender;
+            var node = (Node) sender;
             var nodesList = new NodesList();
             nodesList.AddRange(Nodes
                 .Where(x => x.Id != node.Id)
-                .Select(x => x.NetworkElement.Endpoint.Address));
+                .Select(x => x.Host.Endpoint.Address));
             node.Output.SendData(nodesList);
 
-            if (!config.SavedAddresses.Contains(node.NetworkElement.Endpoint.Address))
+            if (!config.SavedAddresses.Contains(node.Host.Endpoint.Address))
             {
-                config.SavedAddresses.Add(node.NetworkElement.Endpoint.Address);
+                config.SavedAddresses.Add(node.Host.Endpoint.Address);
             }
         }
     }

@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 using Lanchat.Core.Api;
 using Lanchat.Core.Config;
 using Lanchat.Core.Extensions;
-using Lanchat.Core.Network;
-using Lanchat.Core.Node;
 using Lanchat.Core.NodesDetection;
+using Lanchat.Core.Tcp;
 
-namespace Lanchat.Core
+namespace Lanchat.Core.Network
 {
     /// <inheritdoc />
     public class P2P : IP2P
@@ -103,13 +102,13 @@ namespace Lanchat.Core
                 throw new ArgumentException("Node blocked");
             }
 
-            if (Nodes.Any(x => x.NetworkElement.Endpoint.Address.Equals(ipAddress)))
+            if (Nodes.Any(x => x.Host.Endpoint.Address.Equals(ipAddress)))
             {
                 throw new ArgumentException("Already connected to this node");
             }
         }
 
-        private static void SubscribeEvents(LocalNode node, TaskCompletionSource<bool> tcs)
+        private static void SubscribeEvents(Node node, TaskCompletionSource<bool> tcs)
         {
             node.Connected += (_, _) => { tcs.TrySetResult(true); };
             node.CannotConnect += (_, _) => { tcs.TrySetResult(false); };

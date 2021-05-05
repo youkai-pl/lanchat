@@ -1,11 +1,11 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
-using Lanchat.Core.Network;
+using Lanchat.Core.Tcp;
 
 namespace Lanchat.Tests.Mock
 {
-    public class NetworkMock : INetworkElement
+    public class NetworkMock : IHost
     {
         public IPEndPoint Endpoint { get; } = new(IPAddress.Loopback, 1234);
         public Guid Id { get; } = Guid.NewGuid();

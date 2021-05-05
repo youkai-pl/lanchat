@@ -5,9 +5,9 @@ using System.Net.Sockets;
 using System.Text;
 using NetCoreServer;
 
-namespace Lanchat.Core.Network
+namespace Lanchat.Core.Tcp
 {
-    internal class Session : TcpSession, INetworkElement
+    internal class Session : TcpSession, IHost
     {
         internal Session(TcpServer server) : base(server)
         { }

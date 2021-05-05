@@ -1,6 +1,6 @@
 using Lanchat.Core.Api;
 using Lanchat.Core.Models;
-using Lanchat.Core.Node;
+using Lanchat.Core.Network;
 
 namespace Lanchat.Core.ApiHandlers
 {

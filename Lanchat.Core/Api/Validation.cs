@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using Lanchat.Core.Node;
+using Lanchat.Core.Network;
 
 namespace Lanchat.Core.Api
 {

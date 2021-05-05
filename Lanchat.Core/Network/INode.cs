@@ -5,9 +5,9 @@ using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
-using Lanchat.Core.Network;
+using Lanchat.Core.Tcp;
 
-namespace Lanchat.Core.Node
+namespace Lanchat.Core.Network
 {
     /// <summary>
     ///     Connected user.
@@ -44,8 +44,8 @@ namespace Lanchat.Core.Node
         /// </summary>
         Status Status { get; }
 
-        /// <see cref="Lanchat.Core.Network.INetworkElement" />
-        INetworkElement NetworkElement { get; }
+        /// <see cref="IHost" />
+        IHost Host { get; }
 
         /// <see cref="Lanchat.Core.Chat.Messaging" />
         Messaging Messaging { get; }

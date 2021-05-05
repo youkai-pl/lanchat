@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Lanchat.Core.Node;
+using Lanchat.Core.Network;
 
 namespace Lanchat.Core.Api
 {

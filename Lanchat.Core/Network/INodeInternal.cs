@@ -1,9 +1,9 @@
 using System;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
-using Lanchat.Core.Network;
+using Lanchat.Core.Tcp;
 
-namespace Lanchat.Core.Node
+namespace Lanchat.Core.Network
 {
     internal interface INodeInternal
     {
@@ -17,7 +17,7 @@ namespace Lanchat.Core.Node
 
         bool IsSession { get; }
 
-        INetworkElement NetworkElement { get; }
+        IHost Host { get; }
 
         IModelEncryption ModelEncryption { get; }
 

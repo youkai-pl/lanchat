@@ -4,7 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Lanchat.Core;
 using Lanchat.Core.Api;
-using Lanchat.Core.Node;
+using Lanchat.Core.Network;
 using Lanchat.Core.NodesDetection;
 
 namespace Lanchat.Tests.Mock

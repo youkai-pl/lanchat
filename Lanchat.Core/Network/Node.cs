@@ -7,26 +7,26 @@ using Lanchat.Core.Config;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
-using Lanchat.Core.Network;
+using Lanchat.Core.Tcp;
 
-namespace Lanchat.Core.Node
+namespace Lanchat.Core.Network
 {
-    internal class LocalNode : IDisposable, INode, INodeInternal
+    internal class Node : IDisposable, INode, INodeInternal
     {
         private readonly IConfig config;
         private string nickname;
         private string previousNickname;
         private Status status;
 
-        internal LocalNode(INetworkElement networkElement, IConfig config)
+        internal Node(IHost host, IConfig config)
         {
             this.config = config;
-            IsSession = networkElement.IsSession;
-            NetworkElement = networkElement;
+            IsSession = host.IsSession;
+            Host = host;
             PublicKeyEncryption = new PublicKeyEncryption();
             SymmetricEncryption = new SymmetricEncryption(PublicKeyEncryption);
             ModelEncryption = new ModelEncryption(SymmetricEncryption);
-            Output = new Output(NetworkElement, this);
+            Output = new Output(Host, this);
             Messaging = new Messaging(Output);
             FileReceiver = new FileReceiver(Output, config);
             FileSender = new FileSender(Output);
@@ -35,8 +35,8 @@ namespace Lanchat.Core.Node
 
             HandlersSetup.RegisterHandlers(Resolver, this);
 
-            NetworkElement.DataReceived += input.OnDataReceived;
-            NetworkElement.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
+            Host.DataReceived += input.OnDataReceived;
+            Host.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
             var connection = new Connection(this);
             connection.Initialize();
@@ -47,7 +47,7 @@ namespace Lanchat.Core.Node
 
         public void Dispose()
         {
-            NetworkElement.Close();
+            Host.Close();
             FileSender.Dispose();
             FileReceiver.CancelReceive();
             PublicKeyEncryption.Dispose();
@@ -58,7 +58,7 @@ namespace Lanchat.Core.Node
         public FileReceiver FileReceiver { get; }
         public FileSender FileSender { get; }
         public Messaging Messaging { get; }
-        public INetworkElement NetworkElement { get; }
+        public IHost Host { get; }
         public IOutput Output { get; }
 
         public string Nickname
@@ -95,7 +95,7 @@ namespace Lanchat.Core.Node
             }
         }
 
-        public Guid Id => NetworkElement.Id;
+        public Guid Id => Host.Id;
         public bool Ready { get; set; }
 
         public event EventHandler Connected;

@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using Lanchat.Core.Models;
+using Lanchat.Core.Network;
 
 namespace Lanchat.Core.Config
 {

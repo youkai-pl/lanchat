@@ -1,12 +1,11 @@
 using Lanchat.Core.Api;
 using Lanchat.Tests.Mock;
-using Lanchat.Tests.Mock.Encryption;
 using Lanchat.Tests.Mock.Models;
 using NUnit.Framework;
 
-namespace Lanchat.Tests.Core
+namespace Lanchat.Tests.Core.Api
 {
-    public class NetworkOutputTests
+    public class OutputTests
     {
         private NetworkMock networkMock;
         private NodeMock nodeMock;

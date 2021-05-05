@@ -7,7 +7,7 @@ using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
-using Lanchat.Core.Node;
+using Lanchat.Core.Tcp;
 using Lanchat.Tests.Mock.Encryption;
 
 namespace Lanchat.Tests.Mock
@@ -16,7 +16,7 @@ namespace Lanchat.Tests.Mock
     {
         public NodeMock(IOutput outputMock = null)
         {
-            NetworkElement = null;
+            Host = null;
             ModelEncryption = new ModelEncryptionMock();
             Output = outputMock;
             Messaging = new Messaging(Output);
@@ -25,7 +25,7 @@ namespace Lanchat.Tests.Mock
         public string ShortId { get; }
         public bool Ready { get; set; }
         public bool IsSession => false;
-        public INetworkElement NetworkElement { get; }
+        public IHost Host { get; }
         public Messaging Messaging { get; }
         public FileReceiver FileReceiver { get; }
         public FileSender FileSender { get; }

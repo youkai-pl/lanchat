@@ -1,6 +1,6 @@
 using Lanchat.Core.Api;
 using Lanchat.Core.Models;
-using Lanchat.Core.Network;
+using Lanchat.Core.Tcp;
 
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 
@@ -8,11 +8,11 @@ namespace Lanchat.Core.ApiHandlers
 {
     internal class ConnectionControlHandler : ApiHandler<ConnectionControl>
     {
-        private readonly INetworkElement networkElement;
+        private readonly IHost host;
 
-        internal ConnectionControlHandler(INetworkElement networkElement)
+        internal ConnectionControlHandler(IHost host)
         {
-            this.networkElement = networkElement;
+            this.host = host;
         }
 
         protected override void Handle(ConnectionControl connectionControl)
@@ -20,7 +20,7 @@ namespace Lanchat.Core.ApiHandlers
             switch (connectionControl.Status)
             {
                 case ConnectionStatus.RemoteDisconnect:
-                    networkElement.Close();
+                    host.Close();
                     break;
             }
         }

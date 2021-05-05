@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading;
 using TcpClient = NetCoreServer.TcpClient;
 
-namespace Lanchat.Core.Network
+namespace Lanchat.Core.Tcp
 {
-    internal class Client : TcpClient, INetworkElement
+    internal class Client : TcpClient, IHost
     {
         private bool disposing;
 

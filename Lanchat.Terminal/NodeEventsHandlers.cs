@@ -2,10 +2,9 @@
 using System.ComponentModel;
 using System.IO;
 using System.Net.Sockets;
-using Lanchat.Core;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
-using Lanchat.Core.Node;
+using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Lanchat.Core.Api;
-using Lanchat.Core.Node;
+using Lanchat.Core.Network;
 using Lanchat.Tests.Mock;
 using Lanchat.Tests.Mock.Models;
 using NUnit.Framework;

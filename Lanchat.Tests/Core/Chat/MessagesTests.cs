@@ -1,7 +1,6 @@
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
 using Lanchat.Tests.Mock;
-using Lanchat.Tests.Mock.Encryption;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.Chat

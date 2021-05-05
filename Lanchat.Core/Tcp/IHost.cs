@@ -2,12 +2,12 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace Lanchat.Core.Network
+namespace Lanchat.Core.Tcp
 {
     /// <summary>
     ///     Common TCP client and session stuff.
     /// </summary>
-    public interface INetworkElement
+    public interface IHost
     {
         /// <summary>
         ///     IP endpoint (address + port).

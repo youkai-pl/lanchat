@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Lanchat.Core.Node
+namespace Lanchat.Core.Network
 {
     internal class Connection
     {
@@ -10,7 +10,7 @@ namespace Lanchat.Core.Node
         internal Connection(INodeInternal nodeInternal)
         {
             this.nodeInternal = nodeInternal;
-            nodeInternal.NetworkElement.Disconnected += OnDisconnected;
+            nodeInternal.Host.Disconnected += OnDisconnected;
         }
 
         internal void Initialize()
