@@ -12,19 +12,19 @@ namespace Lanchat.Core.FileTransfer
     public class FileReceiver
     {
         private readonly IConfig config;
-        private readonly IOutput output;
+        private readonly FileReceivingControl fileReceivingControl;
         internal FileStream WriteFileStream;
 
         internal FileReceiver(IOutput output, IConfig config)
         {
-            this.output = output;
             this.config = config;
+            fileReceivingControl = new FileReceivingControl(output);
         }
 
         /// <summary>
         ///     Incoming file request.
         /// </summary>
-        public FileTransferRequest Request { get; internal set; }
+        public FileTransferRequest Request { get; private set; }
 
         /// <summary>
         ///     File transfer finished.
@@ -49,15 +49,12 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request == null)
             {
-                throw new InvalidOperationException("No receive request");
+                throw new InvalidOperationException("No pending requests ");
             }
 
             Request.Accepted = true;
             WriteFileStream = new FileStream(Request.FilePath, FileMode.Append);
-            output.SendData(new FileTransferControl
-            {
-                RequestStatus = RequestStatus.Accepted
-            });
+            fileReceivingControl.Accept();
         }
 
         /// <summary>
@@ -68,40 +65,42 @@ namespace Lanchat.Core.FileTransfer
         {
             if (Request == null)
             {
-                throw new InvalidOperationException("No receive request");
+                throw new InvalidOperationException("No pending requests ");
             }
 
             Request = null;
-            output.SendData(new FileTransferControl
-            {
-                RequestStatus = RequestStatus.Rejected
-            });
+            fileReceivingControl.Reject();
         }
 
         /// <summary>
         ///     Cancel current receive request.
         /// </summary>
-        public bool CancelReceive()
+        public void CancelReceive()
         {
             if (Request == null)
             {
-                return false;
+                throw new InvalidOperationException("No file transfers in progress");
             }
 
-            output.SendData(
-                new FileTransferControl
-                {
-                    RequestStatus = RequestStatus.Canceled
-                });
-
+            fileReceivingControl.Cancel();
             File.Delete(Request.FilePath);
             FileTransferError?.Invoke(this, new FileTransferException(Request));
             ResetRequest();
-            return true;
+        }
+
+        internal void FinishReceive()
+        {
+            FileReceiveFinished?.Invoke(this, Request);
+            ResetRequest();
         }
 
         internal void HandleReceiveRequest(FileTransferControl request)
         {
+            if (Request != null)
+            {
+                return;
+            }
+            
             Request = new FileTransferRequest
             {
                 FilePath = GetUniqueFileName(Path.Combine(config.ReceivedFilesDirectory, request.FileName)),
@@ -121,12 +120,7 @@ namespace Lanchat.Core.FileTransfer
             OnFileTransferError();
             ResetRequest();
         }
-
-        internal void OnFileTransferFinished(FileTransferRequest e)
-        {
-            FileReceiveFinished?.Invoke(this, e);
-        }
-
+        
         internal void OnFileTransferError()
         {
             FileTransferError?.Invoke(this, new FileTransferException(Request));

@@ -14,10 +14,12 @@ namespace Lanchat.Core.FileTransfer
         private const int ChunkSize = 1024 * 1024;
         private readonly IOutput output;
         private bool disposing;
+        private readonly FileSendingControl fileSendingControl;
 
         internal FileSender(IOutput output)
         {
             this.output = output;
+            fileSendingControl = new FileSendingControl(output);
         }
 
         /// <summary>
@@ -65,12 +67,7 @@ namespace Lanchat.Core.FileTransfer
                 Parts = (fileInfo.Length + ChunkSize - 1) / ChunkSize
             };
 
-            output.SendData(new FileTransferControl
-            {
-                FileName = Request.FileName,
-                Parts = Request.Parts,
-                RequestStatus = RequestStatus.Sending
-            });
+            fileSendingControl.Request(Request);
         }
 
         internal void SendFile()
@@ -95,13 +92,13 @@ namespace Lanchat.Core.FileTransfer
                         Data = Convert.ToBase64String(buffer.Take(bytesRead).ToArray())
                     };
 
-                    if (bytesRead < ChunkSize)
-                    {
-                        part.Last = true;
-                    }
-
                     output.SendData(part);
                     Request.PartsTransferred++;
+
+                    if (bytesRead < ChunkSize)
+                    {
+                        fileSendingControl.Finished();
+                    }
                 }
 
                 FileSendFinished?.Invoke(this, Request);
@@ -110,24 +107,25 @@ namespace Lanchat.Core.FileTransfer
             catch
             {
                 OnFileTransferError(new FileTransferException(Request));
-                output.SendData(
-                    new FileTransferControl
-                    {
-                        RequestStatus = RequestStatus.Errored
-                    });
+                fileSendingControl.Errored();
                 Request = null;
             }
         }
 
         internal void HandleReject()
         {
+            if (Request == null)
+            {
+                return;
+            }
+            
             FileTransferRequestRejected?.Invoke(this, Request);
             Request = null;
         }
 
         internal void HandleCancel()
         {
-            if (Request == null)
+            if (Request == null || Request.Accepted == false)
             {
                 return;
             }

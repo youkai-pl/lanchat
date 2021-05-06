@@ -1,3 +1,4 @@
+using System;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -17,7 +18,11 @@ namespace Lanchat.Terminal.Commands
                 return;
             }
 
-            if (!node.FileReceiver.CancelReceive())
+            try
+            {
+                node.FileReceiver.CancelReceive();
+            }
+            catch (InvalidOperationException)
             {
                 Ui.Log.AddError(Resources._NoFileReceiveRequest);
             }
