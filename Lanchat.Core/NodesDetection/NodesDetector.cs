@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using Lanchat.Core.Config;
 using Lanchat.Core.Models;
+using Lanchat.Core.Udp;
 
 namespace Lanchat.Core.NodesDetection
 {
@@ -17,7 +18,7 @@ namespace Lanchat.Core.NodesDetection
         internal NodesDetector(IConfig config)
         {
             var uniqueId = Guid.NewGuid().ToString();
-            var udpClient = new UdpClient();
+            var udpClient = new UdpClientWrapper();
 
             announceListener = new AnnounceListener(config, udpClient, uniqueId, DetectedNodes);
             announceSender = new AnnounceSender(config, udpClient, uniqueId);

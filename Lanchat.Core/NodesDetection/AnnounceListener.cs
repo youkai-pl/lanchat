@@ -12,6 +12,7 @@ using System.Timers;
 using Lanchat.Core.Config;
 using Lanchat.Core.Json;
 using Lanchat.Core.Models;
+using Lanchat.Core.Udp;
 
 namespace Lanchat.Core.NodesDetection
 {
@@ -20,12 +21,12 @@ namespace Lanchat.Core.NodesDetection
         private readonly IConfig config;
         private readonly ObservableCollection<Announce> detectedNodes;
         private readonly JsonUtils jsonUtils;
-        private readonly UdpClient udpClient;
+        private readonly IUdpClient udpClient;
         private readonly string uniqueId;
 
         public AnnounceListener(
             IConfig config,
-            UdpClient udpClient,
+            IUdpClient udpClient,
             string uniqueId,
             ObservableCollection<Announce> detectedNodes)
         {
@@ -38,7 +39,7 @@ namespace Lanchat.Core.NodesDetection
 
         internal void Start()
         {
-            udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, config.BroadcastPort));
+            udpClient.Bind(new IPEndPoint(IPAddress.Any, config.BroadcastPort));
             var from = new IPEndPoint(0, 0);
             Task.Run(() =>
             {
@@ -57,9 +58,9 @@ namespace Lanchat.Core.NodesDetection
             });
         }
 
-        private void HandleBroadcast(byte[] recvBuffer, IPEndPoint from)
+        private void HandleBroadcast(string json, IPEndPoint from)
         {
-            var broadcast = jsonUtils.Deserialize<Announce>(Encoding.UTF8.GetString(recvBuffer));
+            var broadcast = jsonUtils.Deserialize<Announce>(json);
             if (!CheckPreconditions(broadcast))
             {
                 return;
