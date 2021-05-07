@@ -54,8 +54,8 @@ namespace Lanchat.Core.Network
                 FileReceiver.CancelReceive(true);
             }
             catch (InvalidOperationException)
-            {
-            }
+            { }
+
             PublicKeyEncryption.Dispose();
             GC.SuppressFinalize(this);
         }

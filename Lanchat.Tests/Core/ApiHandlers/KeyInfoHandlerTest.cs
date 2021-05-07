@@ -1,7 +1,7 @@
 using Lanchat.Core.ApiHandlers;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
-using Lanchat.Tests.Mock;
+using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.ApiHandlers
@@ -9,8 +9,8 @@ namespace Lanchat.Tests.Core.ApiHandlers
     public class KeyInfoHandlerTest
     {
         private KeyInfoHandler keyInfoHandler;
-        private SymmetricEncryption symmetricEncryption;
         private NodeMock nodeMock;
+        private SymmetricEncryption symmetricEncryption;
 
         [SetUp]
         public void Setup()
@@ -27,12 +27,12 @@ namespace Lanchat.Tests.Core.ApiHandlers
         {
             var keyInfo = symmetricEncryption.ExportKey();
             keyInfoHandler.Handle(keyInfo);
-            
+
             Assert.IsTrue(keyInfoHandler.Disabled);
             Assert.IsTrue(nodeMock.Ready);
             Assert.IsTrue(nodeMock.ConnectedEvent);
         }
-        
+
         [Test]
         public void InvalidKeyInfo()
         {
@@ -42,16 +42,16 @@ namespace Lanchat.Tests.Core.ApiHandlers
                 AesIv = new byte[] {0x10}
             };
             keyInfoHandler.Handle(keyInfo);
-            
+
             Assert.IsTrue(nodeMock.CannotConnectEvent);
         }
-        
+
         [Test]
         public void BlankKeyInfo()
         {
             var keyInfo = new KeyInfo();
             keyInfoHandler.Handle(keyInfo);
-            
+
             Assert.IsTrue(nodeMock.CannotConnectEvent);
         }
     }

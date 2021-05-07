@@ -38,6 +38,7 @@ namespace Lanchat.Terminal
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
             node.PropertyChanged += OnPropertyChanged;
+            node.SocketErrored += OnSocketErrored;
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)

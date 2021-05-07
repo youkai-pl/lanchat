@@ -10,8 +10,8 @@ namespace Lanchat.Core.FileTransfer
     /// </summary>
     public class FileReceiver
     {
-        private readonly IFileSystem fileSystem;
         private readonly FileReceivingControl fileReceivingControl;
+        private readonly IFileSystem fileSystem;
         internal FileStream WriteFileStream;
 
         internal FileReceiver(IOutput output, IFileSystem fileSystem)
@@ -86,6 +86,7 @@ namespace Lanchat.Core.FileTransfer
             {
                 fileSystem.DeleteIncompleteFile(Request.FilePath);
             }
+
             FileTransferError?.Invoke(this, new FileTransferException(Request));
             ResetRequest();
         }
@@ -96,7 +97,7 @@ namespace Lanchat.Core.FileTransfer
             {
                 return;
             }
-            
+
             FileReceiveFinished?.Invoke(this, Request);
             ResetRequest();
         }
@@ -107,7 +108,7 @@ namespace Lanchat.Core.FileTransfer
             {
                 return;
             }
-            
+
             Request = new FileTransferRequest
             {
                 FilePath = fileSystem.GetFilePath(request.FileName),
@@ -127,7 +128,7 @@ namespace Lanchat.Core.FileTransfer
             OnFileTransferError();
             ResetRequest();
         }
-        
+
         internal void OnFileTransferError()
         {
             FileTransferError?.Invoke(this, new FileTransferException(Request));

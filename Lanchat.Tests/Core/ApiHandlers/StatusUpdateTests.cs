@@ -1,15 +1,15 @@
 using Lanchat.Core.ApiHandlers;
 using Lanchat.Core.Models;
-using Lanchat.Tests.Mock;
+using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.ApiHandlers
 {
     public class StatusUpdateTests
     {
-        private StatusUpdateHandler statusUpdateHandler;
         private NodeMock nodeMock;
-        
+        private StatusUpdateHandler statusUpdateHandler;
+
         [SetUp]
         public void Setup()
         {
@@ -24,7 +24,7 @@ namespace Lanchat.Tests.Core.ApiHandlers
             {
                 NewStatus = Status.AwayFromKeyboard
             };
-            
+
             statusUpdateHandler.Handle(statusUpdate);
             Assert.AreEqual(statusUpdate.NewStatus, nodeMock.Status);
         }

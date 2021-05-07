@@ -11,7 +11,7 @@ namespace Lanchat.Core.FileTransfer
         {
             this.output = output;
         }
-        
+
         internal void Request(FileTransferRequest request)
         {
             output.SendData(new FileTransferControl

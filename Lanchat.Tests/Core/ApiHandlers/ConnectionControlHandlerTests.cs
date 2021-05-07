@@ -1,6 +1,6 @@
 using Lanchat.Core.ApiHandlers;
 using Lanchat.Core.Models;
-using Lanchat.Tests.Mock;
+using Lanchat.Tests.Mock.Tcp;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.ApiHandlers
@@ -8,13 +8,13 @@ namespace Lanchat.Tests.Core.ApiHandlers
     public class ConnectionControlHandlerTests
     {
         private ConnectionControlHandler connectionControlHandler;
-        private NetworkMock networkElement;
-        
+        private HostMock hostElement;
+
         [SetUp]
         public void Setup()
         {
-            networkElement = new NetworkMock();
-            connectionControlHandler = new ConnectionControlHandler(networkElement);
+            hostElement = new HostMock();
+            connectionControlHandler = new ConnectionControlHandler(hostElement);
         }
 
         [Test]
@@ -25,7 +25,7 @@ namespace Lanchat.Tests.Core.ApiHandlers
                 Status = ConnectionStatus.RemoteDisconnect
             };
             connectionControlHandler.Handle(data);
-            Assert.IsTrue(networkElement.Closed);
+            Assert.IsTrue(hostElement.Closed);
         }
     }
 }

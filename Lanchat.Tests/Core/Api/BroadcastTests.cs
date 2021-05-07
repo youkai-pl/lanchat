@@ -2,17 +2,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Lanchat.Core.Api;
 using Lanchat.Core.Network;
-using Lanchat.Tests.Mock;
+using Lanchat.Tests.Mock.Api;
 using Lanchat.Tests.Mock.Models;
+using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.Api
 {
     public class BroadcastTests
     {
-        private Broadcast broadcast;
         private readonly List<INode> nodes = new();
         private readonly List<OutputMock> outputMocks = new();
+        private Broadcast broadcast;
 
         [OneTimeSetUp]
         public void Setup()
@@ -30,7 +31,7 @@ namespace Lanchat.Tests.Core.Api
             broadcast.SendMessage("test");
             Assert.IsTrue(outputMocks.All(x => x.LastOutput != null));
         }
-        
+
         [Test]
         public void SendData()
         {

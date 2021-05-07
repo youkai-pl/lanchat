@@ -1,11 +1,11 @@
 using Lanchat.Core.Api;
 
-namespace Lanchat.Tests.Mock
+namespace Lanchat.Tests.Mock.Api
 {
     public class OutputMock : IOutput
     {
         public string LastOutput { get; private set; }
-        
+
         public void SendData(object content)
         {
             LastOutput = content.ToString();

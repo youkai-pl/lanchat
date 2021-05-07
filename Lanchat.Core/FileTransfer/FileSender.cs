@@ -13,9 +13,9 @@ namespace Lanchat.Core.FileTransfer
     public class FileSender
     {
         private const int ChunkSize = 1024 * 1024;
+        private readonly FileSendingControl fileSendingControl;
         private readonly IOutput output;
         private bool disposing;
-        private readonly FileSendingControl fileSendingControl;
 
         internal FileSender(IOutput output)
         {
@@ -86,7 +86,7 @@ namespace Lanchat.Core.FileTransfer
                         OnFileTransferError(new FileTransferException(Request));
                         return;
                     }
-                    
+
                     var part = new FilePart
                     {
                         Data = Convert.ToBase64String(buffer.Take(file.BytesRead).ToArray())
@@ -95,7 +95,7 @@ namespace Lanchat.Core.FileTransfer
                     output.SendData(part);
                     Request.PartsTransferred++;
                 } while (file.BytesRead > 0);
-                
+
                 FileSendFinished?.Invoke(this, Request);
                 fileSendingControl.Finished();
                 file.Dispose();
@@ -138,7 +138,7 @@ namespace Lanchat.Core.FileTransfer
         {
             FileTransferError?.Invoke(this, e);
         }
-        
+
         private void CatchFileSystemExceptions(Exception e)
         {
             if (e is not (

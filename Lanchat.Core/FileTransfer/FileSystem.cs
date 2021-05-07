@@ -11,7 +11,7 @@ namespace Lanchat.Core.FileTransfer
         {
             this.config = config;
         }
-        
+
         public FileStream OpenWriteStream(string path)
         {
             return new(path, FileMode.Append);
@@ -34,6 +34,7 @@ namespace Lanchat.Core.FileTransfer
                 {
                     return path;
                 }
+
                 path = Path.Combine(config.ReceivedFilesDirectory, $"{fileName}({i}){fileExt}");
             }
         }

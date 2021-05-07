@@ -2,21 +2,21 @@ using System;
 using Lanchat.Core.Api;
 using Lanchat.Core.Json;
 using Lanchat.Core.Models;
-using Lanchat.Tests.Mock;
-using Lanchat.Tests.Mock.Handlers;
+using Lanchat.Tests.Mock.ApiHandlers;
 using Lanchat.Tests.Mock.Models;
+using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.Api
 {
     public class ResolverTests
     {
-        private JsonUtils jsonUtils;
-        private NodeMock nodeMock;
-        private Resolver resolver;
-        private MessageHandlerMock messageHandlerMock;
-        private PrivilegedHandler privilegedHandler;
         private Input input;
+        private JsonUtils jsonUtils;
+        private MessageHandlerMock messageHandlerMock;
+        private NodeMock nodeMock;
+        private PrivilegedHandler privilegedHandler;
+        private Resolver resolver;
 
         [SetUp]
         public void Setup()

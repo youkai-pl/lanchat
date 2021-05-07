@@ -11,8 +11,8 @@ namespace Lanchat.Core.Api
     public class Output : IOutput
     {
         private readonly IModelEncryption encryption;
-        private readonly JsonUtils jsonUtils;
         private readonly IHost host;
+        private readonly JsonUtils jsonUtils;
         private readonly INodeInternal node;
 
         internal Output(IHost host, INodeInternal node)

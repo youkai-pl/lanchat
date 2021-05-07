@@ -1,8 +1,8 @@
 using Lanchat.Core.Api;
 using Lanchat.Core.Json;
-using Lanchat.Tests.Mock;
-using Lanchat.Tests.Mock.Handlers;
+using Lanchat.Tests.Mock.ApiHandlers;
 using Lanchat.Tests.Mock.Models;
+using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.Api
@@ -18,7 +18,7 @@ namespace Lanchat.Tests.Core.Api
         public void Setup()
         {
             modelHandlerMock = new ModelHandlerMock();
-            resolver = new Resolver(new NodeMock{Ready = true});
+            resolver = new Resolver(new NodeMock {Ready = true});
             resolver.RegisterHandler(modelHandlerMock);
             resolver.RegisterHandler(new ModelWithValidationHandlerMock());
             jsonBuffer = new JsonBuffer();

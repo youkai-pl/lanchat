@@ -4,7 +4,7 @@ using System.Net;
 using Lanchat.Core.Config;
 using Lanchat.Core.Models;
 
-namespace Lanchat.Tests.Mock
+namespace Lanchat.Tests.Mock.Config
 {
     public class ConfigMock : IConfig
     {

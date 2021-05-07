@@ -1,12 +1,12 @@
 using Lanchat.Core.ApiHandlers;
 using Lanchat.Core.Models;
-using Lanchat.Tests.Mock;
+using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.ApiHandlers
 {
     public class NicknameUpdateHandlerTests
-    
+
     {
         private NicknameUpdateHandler nicknameUpdateHandler;
         private NodeMock nodeMock;
@@ -25,7 +25,7 @@ namespace Lanchat.Tests.Core.ApiHandlers
             {
                 NewNickname = "new-nickname"
             };
-            
+
             nicknameUpdateHandler.Handle(nicknameUpdate);
             Assert.AreEqual(nicknameUpdate.NewNickname, nodeMock.Nickname);
         }

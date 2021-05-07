@@ -1,7 +1,7 @@
 using Lanchat.Core.Api;
 using Lanchat.Tests.Mock.Models;
 
-namespace Lanchat.Tests.Mock.Handlers
+namespace Lanchat.Tests.Mock.ApiHandlers
 {
     public class ModelWithValidationHandlerMock : ApiHandler<ModelWithValidation>
     {

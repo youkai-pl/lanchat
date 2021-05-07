@@ -26,7 +26,7 @@ namespace Lanchat.Core.FileTransfer
             {
                 SavePart(filePart);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 CatchFileSystemExceptions(e);
             }
@@ -39,7 +39,7 @@ namespace Lanchat.Core.FileTransfer
             fileReceiver.WriteFileStream.Write(data);
             fileReceiver.Request.PartsTransferred++;
         }
-        
+
         private void CatchFileSystemExceptions(Exception e)
         {
             if (e is not (

@@ -1,8 +1,9 @@
 using Lanchat.Core.ApiHandlers;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
-using Lanchat.Tests.Mock;
+using Lanchat.Tests.Mock.Api;
 using Lanchat.Tests.Mock.Encryption;
+using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.ApiHandlers
@@ -10,11 +11,11 @@ namespace Lanchat.Tests.Core.ApiHandlers
     public class HandshakeHandlerTests
     {
         private HandshakeHandler handshakeHandler;
+        private NodeMock nodeMock;
+        private OutputMock outputMock;
         private PublicKeyEncryption publicKeyEncryption;
         private SymmetricEncryptionMock symmetricEncryptionMock;
-        private OutputMock outputMock;
-        private NodeMock nodeMock;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -22,11 +23,11 @@ namespace Lanchat.Tests.Core.ApiHandlers
             symmetricEncryptionMock = new SymmetricEncryptionMock();
             outputMock = new OutputMock();
             nodeMock = new NodeMock();
-            
+
             handshakeHandler = new HandshakeHandler(
-                publicKeyEncryption, 
-                symmetricEncryptionMock, 
-                outputMock, 
+                publicKeyEncryption,
+                symmetricEncryptionMock,
+                outputMock,
                 nodeMock);
         }
 
@@ -40,7 +41,7 @@ namespace Lanchat.Tests.Core.ApiHandlers
                 PublicKey = publicKeyEncryption.ExportKey()
             };
             handshakeHandler.Handle(handshake);
-            
+
             publicKeyEncryption.Encrypt(new byte[] {0x10});
             Assert.IsTrue(handshakeHandler.Disabled);
             Assert.AreEqual(handshake.Status, nodeMock.Status);
@@ -58,7 +59,7 @@ namespace Lanchat.Tests.Core.ApiHandlers
                 PublicKey = new PublicKey()
             };
             handshakeHandler.Handle(handshake);
-            
+
             Assert.IsTrue(nodeMock.CannotConnectEvent);
         }
     }
