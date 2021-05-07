@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using Lanchat.Core.Api;
 using Lanchat.Core.Models;
 
@@ -8,7 +10,7 @@ namespace Lanchat.Core.FileTransfer
     {
         private readonly FileReceiver fileReceiver;
 
-        public FilePartHandler(FileReceiver fileReceiver)
+        internal FilePartHandler(FileReceiver fileReceiver)
         {
             this.fileReceiver = fileReceiver;
         }
@@ -24,10 +26,9 @@ namespace Lanchat.Core.FileTransfer
             {
                 SavePart(filePart);
             }
-            catch
+            catch(Exception e)
             {
-                fileReceiver.CancelReceive();
-                fileReceiver.OnFileTransferError();
+                CatchFileSystemExceptions(e);
             }
         }
 
@@ -37,6 +38,22 @@ namespace Lanchat.Core.FileTransfer
             var data = Convert.FromBase64String(base64Data);
             fileReceiver.WriteFileStream.Write(data);
             fileReceiver.Request.PartsTransferred++;
+        }
+        
+        private void CatchFileSystemExceptions(Exception e)
+        {
+            if (e is not (
+                DirectoryNotFoundException or
+                FileNotFoundException or
+                IOException or
+                UnauthorizedAccessException))
+            {
+                throw e;
+            }
+
+            fileReceiver.CancelReceive();
+            fileReceiver.OnFileTransferError();
+            Trace.WriteLine("Cannot access file system");
         }
     }
 }

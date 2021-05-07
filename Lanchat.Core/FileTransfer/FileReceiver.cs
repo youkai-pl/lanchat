@@ -89,6 +89,11 @@ namespace Lanchat.Core.FileTransfer
 
         internal void FinishReceive()
         {
+            if (Request == null)
+            {
+                return;
+            }
+            
             FileReceiveFinished?.Invoke(this, Request);
             ResetRequest();
         }
