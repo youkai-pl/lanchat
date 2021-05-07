@@ -51,7 +51,7 @@ namespace Lanchat.Core.Network
             FileSender.Dispose();
             try
             {
-                FileReceiver.CancelReceive();
+                FileReceiver.CancelReceive(true);
             }
             catch (InvalidOperationException)
             {

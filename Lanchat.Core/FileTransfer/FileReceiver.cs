@@ -74,7 +74,7 @@ namespace Lanchat.Core.FileTransfer
         /// <summary>
         ///     Cancel current receive request.
         /// </summary>
-        public void CancelReceive()
+        public void CancelReceive(bool deleteFile)
         {
             if (Request == null)
             {
@@ -82,7 +82,10 @@ namespace Lanchat.Core.FileTransfer
             }
 
             fileReceivingControl.Cancel();
-            fileSystem.DeleteIncompleteFile(Request.FilePath);
+            if (deleteFile)
+            {
+                fileSystem.DeleteIncompleteFile(Request.FilePath);
+            }
             FileTransferError?.Invoke(this, new FileTransferException(Request));
             ResetRequest();
         }

@@ -51,7 +51,7 @@ namespace Lanchat.Core.FileTransfer
                 throw e;
             }
 
-            fileReceiver.CancelReceive();
+            fileReceiver.CancelReceive(false);
             fileReceiver.OnFileTransferError();
             Trace.WriteLine("Cannot access file system");
         }
