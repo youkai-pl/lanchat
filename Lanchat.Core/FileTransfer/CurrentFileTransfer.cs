@@ -6,7 +6,7 @@ namespace Lanchat.Core.FileTransfer
     /// <summary>
     ///     Class representing single transfer request.
     /// </summary>
-    public class FileTransferRequest : INotifyPropertyChanged
+    public class CurrentFileTransfer : INotifyPropertyChanged
     {
         private long partsTransferred;
         internal bool Accepted { get; set; }
@@ -34,20 +34,10 @@ namespace Lanchat.Core.FileTransfer
             get => partsTransferred;
             internal set
             {
-                if (partsTransferred == value)
-                {
-                    return;
-                }
-
                 partsTransferred = value;
                 OnPropertyChanged();
             }
         }
-
-        /// <summary>
-        ///     Transfer progress in percent.
-        /// </summary>
-        public long Progress => 100 * PartsTransferred / Parts;
 
         /// <summary>
         ///     Raised for <see cref="PartsTransferred" /> update.

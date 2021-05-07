@@ -7,7 +7,7 @@ namespace Lanchat.Core.FileTransfer
     /// </summary>
     public class FileTransferException : Exception
     {
-        internal FileTransferException(FileTransferRequest request)
+        internal FileTransferException(CurrentFileTransfer request)
         {
             Request = request;
         }
@@ -15,6 +15,6 @@ namespace Lanchat.Core.FileTransfer
         /// <summary>
         ///     Request that throws error.
         /// </summary>
-        public FileTransferRequest Request { get; }
+        public CurrentFileTransfer Request { get; }
     }
 }

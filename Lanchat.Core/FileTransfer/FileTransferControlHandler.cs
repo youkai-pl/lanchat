@@ -17,29 +17,25 @@ namespace Lanchat.Core.FileTransfer
 
         protected override void Handle(FileTransferControl request)
         {
-            switch (request.RequestStatus)
+            switch (request.FileTransferSignal)
             {
-                case RequestStatus.Accepted:
+                case FileTransferSignal.Accepted:
                     fileSender.SendFile();
                     break;
 
-                case RequestStatus.Rejected:
+                case FileTransferSignal.Rejected:
                     fileSender.HandleReject();
                     break;
 
-                case RequestStatus.Canceled:
+                case FileTransferSignal.Canceled:
                     fileSender.HandleCancel();
                     break;
 
-                case RequestStatus.Sending:
-                    fileReceiver.HandleReceiveRequest(request);
-                    break;
-
-                case RequestStatus.Finished:
+                case FileTransferSignal.Finished:
                     fileReceiver.FinishReceive();
                     break;
 
-                case RequestStatus.Errored:
+                case FileTransferSignal.Errored:
                     fileReceiver.HandleSenderError();
                     break;
 

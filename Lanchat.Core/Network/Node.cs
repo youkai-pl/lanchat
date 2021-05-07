@@ -33,7 +33,7 @@ namespace Lanchat.Core.Network
             Resolver = new Resolver(this);
             var input = new Input(Resolver);
 
-            HandlersSetup.RegisterHandlers(Resolver, this);
+            HandlersSetup.RegisterHandlers(Resolver, this, config);
 
             Host.DataReceived += input.OnDataReceived;
             Host.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);

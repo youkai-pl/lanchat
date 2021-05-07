@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using Lanchat.Core.Api;
-using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
@@ -10,25 +9,25 @@ namespace Lanchat.Core.FileTransfer
     /// </summary>
     public class FileReceiver
     {
-        private readonly FileReceivingControl fileReceivingControl;
+        private readonly FileTransferSignalling fileTransferSignalling;
         private readonly IFileSystem fileSystem;
         internal FileStream WriteFileStream;
 
         internal FileReceiver(IOutput output, IFileSystem fileSystem)
         {
             this.fileSystem = fileSystem;
-            fileReceivingControl = new FileReceivingControl(output);
+            fileTransferSignalling = new FileTransferSignalling(output);
         }
 
         /// <summary>
         ///     Incoming file request.
         /// </summary>
-        public FileTransferRequest Request { get; private set; }
+        public CurrentFileTransfer Request { get; internal set; }
 
         /// <summary>
         ///     File transfer finished.
         /// </summary>
-        public event EventHandler<FileTransferRequest> FileReceiveFinished;
+        public event EventHandler<CurrentFileTransfer> FileReceiveFinished;
 
         /// <summary>
         ///     File transfer errored.
@@ -38,7 +37,7 @@ namespace Lanchat.Core.FileTransfer
         /// <summary>
         ///     File receive request received.
         /// </summary>
-        public event EventHandler<FileTransferRequest> FileTransferRequestReceived;
+        public event EventHandler<CurrentFileTransfer> FileTransferRequestReceived;
 
         /// <summary>
         ///     Accept incoming file request.
@@ -53,7 +52,7 @@ namespace Lanchat.Core.FileTransfer
 
             Request.Accepted = true;
             WriteFileStream = fileSystem.OpenWriteStream(Request.FilePath);
-            fileReceivingControl.Accept();
+            fileTransferSignalling.SignalAccept();
         }
 
         /// <summary>
@@ -68,7 +67,7 @@ namespace Lanchat.Core.FileTransfer
             }
 
             Request = null;
-            fileReceivingControl.Reject();
+            fileTransferSignalling.SignalReject();
         }
 
         /// <summary>
@@ -81,7 +80,7 @@ namespace Lanchat.Core.FileTransfer
                 throw new InvalidOperationException("No file transfers in progress");
             }
 
-            fileReceivingControl.Cancel();
+            fileTransferSignalling.SignalCancel();
             if (deleteFile)
             {
                 fileSystem.DeleteIncompleteFile(Request.FilePath);
@@ -102,18 +101,8 @@ namespace Lanchat.Core.FileTransfer
             ResetRequest();
         }
 
-        internal void HandleReceiveRequest(FileTransferControl request)
+        internal void OnFileTransferRequestReceived()
         {
-            if (Request != null)
-            {
-                return;
-            }
-
-            Request = new FileTransferRequest
-            {
-                FilePath = fileSystem.GetFilePath(request.FileName),
-                Parts = request.Parts
-            };
             FileTransferRequestReceived?.Invoke(this, Request);
         }
 

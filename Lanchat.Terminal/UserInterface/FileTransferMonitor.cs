@@ -16,7 +16,7 @@ namespace Lanchat.Terminal.UserInterface
             Text = string.Format(Resources._NoFileReceiveRequest);
         }
 
-        public void OnAcceptedByReceiver(object sender, FileTransferRequest e)
+        public void OnAcceptedByReceiver(object sender, CurrentFileTransfer e)
         {
             parts += e.Parts;
             e.PropertyChanged += (_, _) =>
@@ -26,7 +26,7 @@ namespace Lanchat.Terminal.UserInterface
             };
         }
 
-        public void OnFileReceiveFinished(object sender, FileTransferRequest e)
+        public void OnFileReceiveFinished(object sender, CurrentFileTransfer e)
         {
             ResetCounter(e);
         }
@@ -36,7 +36,7 @@ namespace Lanchat.Terminal.UserInterface
             ResetCounter(e.Request);
         }
 
-        private void ResetCounter(FileTransferRequest e)
+        private void ResetCounter(CurrentFileTransfer e)
         {
             totalProgress -= e.Parts;
             parts -= e.Parts;

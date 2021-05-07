@@ -13,20 +13,20 @@ namespace Lanchat.Core.FileTransfer
     public class FileSender
     {
         private const int ChunkSize = 1024 * 1024;
-        private readonly FileSendingControl fileSendingControl;
+        private readonly FileTransferSignalling fileTransferSignalling;
         private readonly IOutput output;
         private bool disposing;
 
         internal FileSender(IOutput output)
         {
             this.output = output;
-            fileSendingControl = new FileSendingControl(output);
+            fileTransferSignalling = new FileTransferSignalling(output);
         }
 
         /// <summary>
         ///     Outgoing file request.
         /// </summary>
-        public FileTransferRequest Request { get; private set; }
+        public CurrentFileTransfer Request { get; private set; }
 
         /// <summary>
         ///     File send returned error.
@@ -36,17 +36,17 @@ namespace Lanchat.Core.FileTransfer
         /// <summary>
         ///     File send request accepted. File transfer in progress.
         /// </summary>
-        public event EventHandler<FileTransferRequest> AcceptedByReceiver;
+        public event EventHandler<CurrentFileTransfer> AcceptedByReceiver;
 
         /// <summary>
         ///     File send request accepted.
         /// </summary>
-        public event EventHandler<FileTransferRequest> FileTransferRequestRejected;
+        public event EventHandler<CurrentFileTransfer> FileTransferRequestRejected;
 
         /// <summary>
         ///     File transfer finished.
         /// </summary>
-        public event EventHandler<FileTransferRequest> FileSendFinished;
+        public event EventHandler<CurrentFileTransfer> FileSendFinished;
 
         /// <summary>
         ///     Send file exchange request.
@@ -62,13 +62,13 @@ namespace Lanchat.Core.FileTransfer
 
             var fileInfo = new FileInfo(Path.Combine(path));
 
-            Request = new FileTransferRequest
+            Request = new CurrentFileTransfer
             {
                 FilePath = path,
                 Parts = (fileInfo.Length + ChunkSize - 1) / ChunkSize
             };
 
-            fileSendingControl.Request(Request);
+            fileTransferSignalling.SendRequest(Request);
         }
 
         internal void SendFile()
@@ -97,7 +97,7 @@ namespace Lanchat.Core.FileTransfer
                 } while (file.BytesRead > 0);
 
                 FileSendFinished?.Invoke(this, Request);
-                fileSendingControl.Finished();
+                fileTransferSignalling.SignalFinished();
                 file.Dispose();
                 Request = null;
             }
@@ -151,7 +151,7 @@ namespace Lanchat.Core.FileTransfer
             }
 
             OnFileTransferError(new FileTransferException(Request));
-            fileSendingControl.Errored();
+            fileTransferSignalling.SignalErrored();
             Request = null;
             Trace.WriteLine("Cannot access file system");
         }
