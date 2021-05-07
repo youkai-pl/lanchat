@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using Lanchat.Core.Api;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
@@ -12,14 +11,12 @@ namespace Lanchat.Core.FileTransfer
     public class FileSender
     {
         private const int ChunkSize = 1024 * 1024;
-        private readonly FileTransferSignalling fileTransferSignalling;
-        private readonly IOutput output;
+        private readonly FileTransferOutput fileTransferOutput;
         private bool disposing;
 
-        internal FileSender(IOutput output)
+        internal FileSender(FileTransferOutput fileTransferOutput)
         {
-            this.output = output;
-            fileTransferSignalling = new FileTransferSignalling(output);
+            this.fileTransferOutput = fileTransferOutput;
         }
 
         /// <summary>
@@ -67,7 +64,7 @@ namespace Lanchat.Core.FileTransfer
                 Parts = (fileInfo.Length + ChunkSize - 1) / ChunkSize
             };
 
-            fileTransferSignalling.SendRequest(CurrentFileTransfer);
+            fileTransferOutput.SendRequest(CurrentFileTransfer);
         }
 
         internal void SendFile()
@@ -90,12 +87,12 @@ namespace Lanchat.Core.FileTransfer
                         Data = Convert.ToBase64String(file.ReadChunk())
                     };
 
-                    output.SendData(part);
+                    fileTransferOutput.SendPart(part);
                     CurrentFileTransfer.PartsTransferred++;
                 } while (!file.EndReached);
 
                 FileSendFinished?.Invoke(this, CurrentFileTransfer);
-                fileTransferSignalling.SignalFinished();
+                fileTransferOutput.SendSignal(FileTransferStatus.Finished);
                 CurrentFileTransfer = null;
             }
             catch (Exception e)
@@ -148,7 +145,7 @@ namespace Lanchat.Core.FileTransfer
             }
 
             OnFileTransferError(new FileTransferException(CurrentFileTransfer));
-            fileTransferSignalling.SignalErrored();
+            fileTransferOutput.SendSignal(FileTransferStatus.Errored);
             CurrentFileTransfer = null;
             Trace.WriteLine("Cannot access file system");
         }

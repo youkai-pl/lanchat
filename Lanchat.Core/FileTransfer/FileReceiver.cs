@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using Lanchat.Core.Api;
+using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
@@ -9,14 +9,14 @@ namespace Lanchat.Core.FileTransfer
     /// </summary>
     public class FileReceiver
     {
-        private readonly FileTransferSignalling fileTransferSignalling;
+        private readonly FileTransferOutput fileTransferOutput;
         private readonly IFileSystem fileSystem;
         internal FileStream WriteFileStream;
 
-        internal FileReceiver(IOutput output, IFileSystem fileSystem)
+        internal FileReceiver(FileTransferOutput fileTransferOutput, IFileSystem fileSystem)
         {
             this.fileSystem = fileSystem;
-            fileTransferSignalling = new FileTransferSignalling(output);
+            this.fileTransferOutput = fileTransferOutput;
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Lanchat.Core.FileTransfer
 
             CurrentFileTransfer.Accepted = true;
             WriteFileStream = fileSystem.OpenWriteStream(CurrentFileTransfer.FilePath);
-            fileTransferSignalling.SignalAccept();
+            fileTransferOutput.SendSignal(FileTransferStatus.Accepted);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Lanchat.Core.FileTransfer
             }
 
             CurrentFileTransfer = null;
-            fileTransferSignalling.SignalReject();
+            fileTransferOutput.SendSignal(FileTransferStatus.Rejected);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Lanchat.Core.FileTransfer
                 throw new InvalidOperationException("No file transfers in progress");
             }
 
-            fileTransferSignalling.SignalCancel();
+            fileTransferOutput.SendSignal(FileTransferStatus.Canceled);
             if (deleteFile)
             {
                 fileSystem.DeleteIncompleteFile(CurrentFileTransfer.FilePath);

@@ -26,8 +26,10 @@ namespace Lanchat.Tests.Mock.Network
             ModelEncryption = new ModelEncryptionMock();
             Resolver = new Resolver(this);
             Messaging = new Messaging(Output);
-            FileSender = new FileSender(Output);
-            FileReceiver = new FileReceiver(Output, new FileSystemMock());
+            
+            var fileTransferOutput = new FileTransferOutput(Output);
+            FileSender = new FileSender(fileTransferOutput);
+            FileReceiver = new FileReceiver(fileTransferOutput, new FileSystemMock());
         }
 
         public bool HandshakeSent { get; private set; }

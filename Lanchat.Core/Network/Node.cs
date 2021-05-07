@@ -28,8 +28,11 @@ namespace Lanchat.Core.Network
             ModelEncryption = new ModelEncryption(SymmetricEncryption);
             Output = new Output(Host, this);
             Messaging = new Messaging(Output);
-            FileReceiver = new FileReceiver(Output, new FileSystem(config));
-            FileSender = new FileSender(Output);
+
+            var fileTransferOutput = new FileTransferOutput(Output);
+            FileReceiver = new FileReceiver(fileTransferOutput, new FileSystem(config));
+            FileSender = new FileSender(fileTransferOutput);
+            
             Resolver = new Resolver(this);
             var input = new Input(Resolver);
 
