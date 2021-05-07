@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Lanchat.Core.Api;
@@ -76,39 +77,33 @@ namespace Lanchat.Core.FileTransfer
 
             try
             {
-                var buffer = new byte[ChunkSize];
-                int bytesRead;
-                using var file = File.OpenRead(Request.FilePath);
-                while ((bytesRead = file.Read(buffer, 0, buffer.Length)) > 0)
+                var file = new FileReader(Request.FilePath, ChunkSize);
+                do
                 {
+                    var buffer = file.ReadChunk();
                     if (disposing)
                     {
                         OnFileTransferError(new FileTransferException(Request));
                         return;
                     }
-
+                    
                     var part = new FilePart
                     {
-                        Data = Convert.ToBase64String(buffer.Take(bytesRead).ToArray())
+                        Data = Convert.ToBase64String(buffer.Take(file.BytesRead).ToArray())
                     };
 
                     output.SendData(part);
                     Request.PartsTransferred++;
-
-                    if (bytesRead < ChunkSize)
-                    {
-                        fileSendingControl.Finished();
-                    }
-                }
-
+                } while (file.BytesRead > 0);
+                
                 FileSendFinished?.Invoke(this, Request);
+                fileSendingControl.Finished();
+                file.Dispose();
                 Request = null;
             }
-            catch
+            catch (Exception e)
             {
-                OnFileTransferError(new FileTransferException(Request));
-                fileSendingControl.Errored();
-                Request = null;
+                CatchFileSystemExceptions(e);
             }
         }
 
@@ -118,7 +113,7 @@ namespace Lanchat.Core.FileTransfer
             {
                 return;
             }
-            
+
             FileTransferRequestRejected?.Invoke(this, Request);
             Request = null;
         }
@@ -142,6 +137,23 @@ namespace Lanchat.Core.FileTransfer
         private void OnFileTransferError(FileTransferException e)
         {
             FileTransferError?.Invoke(this, e);
+        }
+        
+        private void CatchFileSystemExceptions(Exception e)
+        {
+            if (e is not (
+                DirectoryNotFoundException or
+                FileNotFoundException or
+                IOException or
+                UnauthorizedAccessException))
+            {
+                throw e;
+            }
+
+            OnFileTransferError(new FileTransferException(Request));
+            fileSendingControl.Errored();
+            Request = null;
+            Trace.WriteLine("Cannot access file system");
         }
     }
 }

@@ -7,11 +7,11 @@ namespace Lanchat.Core.FileTransfer
     {
         private readonly IConfig config;
 
-        public FileSystem(IConfig config)
+        internal FileSystem(IConfig config)
         {
             this.config = config;
         }
-
+        
         public FileStream OpenWriteStream(string path)
         {
             return new(path, FileMode.Append);
