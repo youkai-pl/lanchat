@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using Lanchat.Core.Api;
-using Lanchat.Core.Config;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
@@ -11,13 +10,13 @@ namespace Lanchat.Core.FileTransfer
     /// </summary>
     public class FileReceiver
     {
-        private readonly IConfig config;
+        private readonly IFileSystem fileSystem;
         private readonly FileReceivingControl fileReceivingControl;
         internal FileStream WriteFileStream;
 
-        internal FileReceiver(IOutput output, IConfig config)
+        internal FileReceiver(IOutput output, IFileSystem fileSystem)
         {
-            this.config = config;
+            this.fileSystem = fileSystem;
             fileReceivingControl = new FileReceivingControl(output);
         }
 
@@ -53,7 +52,7 @@ namespace Lanchat.Core.FileTransfer
             }
 
             Request.Accepted = true;
-            WriteFileStream = new FileStream(Request.FilePath, FileMode.Append);
+            WriteFileStream = fileSystem.OpenWriteStream(Request.FilePath);
             fileReceivingControl.Accept();
         }
 
@@ -83,7 +82,7 @@ namespace Lanchat.Core.FileTransfer
             }
 
             fileReceivingControl.Cancel();
-            File.Delete(Request.FilePath);
+            fileSystem.DeleteIncompleteFile(Request.FilePath);
             FileTransferError?.Invoke(this, new FileTransferException(Request));
             ResetRequest();
         }
@@ -103,7 +102,7 @@ namespace Lanchat.Core.FileTransfer
             
             Request = new FileTransferRequest
             {
-                FilePath = GetUniqueFileName(Path.Combine(config.ReceivedFilesDirectory, request.FileName)),
+                FilePath = fileSystem.GetFilePath(request.FileName),
                 Parts = request.Parts
             };
             FileTransferRequestReceived?.Invoke(this, Request);
@@ -116,7 +115,7 @@ namespace Lanchat.Core.FileTransfer
                 return;
             }
 
-            File.Delete(Request.FilePath);
+            fileSystem.DeleteIncompleteFile(Request.FilePath);
             OnFileTransferError();
             ResetRequest();
         }
@@ -130,22 +129,6 @@ namespace Lanchat.Core.FileTransfer
         {
             Request = null;
             WriteFileStream.Dispose();
-        }
-
-        private static string GetUniqueFileName(string file)
-        {
-            var fileName = Path.GetFileNameWithoutExtension(file);
-            var fileExt = Path.GetExtension(file);
-
-            for (var i = 1;; ++i)
-            {
-                if (!File.Exists(file))
-                {
-                    return file;
-                }
-
-                file = $"{fileName}({i}){fileExt}";
-            }
         }
     }
 }

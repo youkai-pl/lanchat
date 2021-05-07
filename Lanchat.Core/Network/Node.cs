@@ -28,7 +28,7 @@ namespace Lanchat.Core.Network
             ModelEncryption = new ModelEncryption(SymmetricEncryption);
             Output = new Output(Host, this);
             Messaging = new Messaging(Output);
-            FileReceiver = new FileReceiver(Output, config);
+            FileReceiver = new FileReceiver(Output, new FileSystem(config));
             FileSender = new FileSender(Output);
             Resolver = new Resolver(this);
             var input = new Input(Resolver);
@@ -49,7 +49,13 @@ namespace Lanchat.Core.Network
         {
             Host.Close();
             FileSender.Dispose();
-            FileReceiver.CancelReceive();
+            try
+            {
+                FileReceiver.CancelReceive();
+            }
+            catch (InvalidOperationException)
+            {
+            }
             PublicKeyEncryption.Dispose();
             GC.SuppressFinalize(this);
         }
