@@ -16,7 +16,7 @@ namespace Lanchat.Core.FileTransfer
         {
             output.SendData(new FileTransferControl
             {
-                FileTransferSignal = FileTransferSignal.Accepted
+                Status = FileTransferStatus.Accepted
             });
         }
 
@@ -24,7 +24,7 @@ namespace Lanchat.Core.FileTransfer
         {
             output.SendData(new FileTransferControl
             {
-                FileTransferSignal = FileTransferSignal.Rejected
+                Status = FileTransferStatus.Rejected
             });
         }
 
@@ -32,7 +32,7 @@ namespace Lanchat.Core.FileTransfer
         {
             output.SendData(new FileTransferControl
             {
-                FileTransferSignal = FileTransferSignal.Canceled
+                Status = FileTransferStatus.Canceled
             });
         }
         
@@ -49,7 +49,7 @@ namespace Lanchat.Core.FileTransfer
         {
             output.SendData(new FileTransferControl
             {
-                FileTransferSignal = FileTransferSignal.Finished
+                Status = FileTransferStatus.Finished
             });
         }
 
@@ -57,7 +57,7 @@ namespace Lanchat.Core.FileTransfer
         {
             output.SendData(new FileTransferControl
             {
-                FileTransferSignal = FileTransferSignal.Errored
+                Status = FileTransferStatus.Errored
             });
         }
     }

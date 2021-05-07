@@ -1,11 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Lanchat.Core.Models
 {
     internal class FileTransferControl
     {
-        public FileTransferSignal FileTransferSignal { get; init; }
+        [Required] public FileTransferStatus Status { get; init; }
     }
 
-    internal enum FileTransferSignal
+    internal enum FileTransferStatus
     {
         Accepted,
         Rejected,

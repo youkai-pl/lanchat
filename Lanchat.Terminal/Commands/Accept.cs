@@ -21,7 +21,7 @@ namespace Lanchat.Terminal.Commands
             try
             {
                 node.FileReceiver.AcceptRequest();
-                Ui.FileTransferMonitor.OnAcceptedByReceiver(null, node.FileReceiver.Request);
+                Ui.FileTransferMonitor.OnAcceptedByReceiver(null, node.FileReceiver.CurrentFileTransfer);
             }
             catch (InvalidOperationException)
             {

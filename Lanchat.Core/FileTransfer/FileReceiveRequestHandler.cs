@@ -16,12 +16,12 @@ namespace Lanchat.Core.FileTransfer
         
         protected override void Handle(FileReceiveRequest data)
         {
-            if (fileReceiver.Request != null)
+            if (fileReceiver.CurrentFileTransfer != null)
             {
                 return;
             }
 
-            fileReceiver.Request = new CurrentFileTransfer
+            fileReceiver.CurrentFileTransfer = new CurrentFileTransfer
             {
                 FilePath = fileSystem.GetFilePath(data.FileName),
                 Parts = data.PartsCount

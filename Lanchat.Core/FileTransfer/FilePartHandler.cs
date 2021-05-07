@@ -17,7 +17,7 @@ namespace Lanchat.Core.FileTransfer
 
         protected override void Handle(FilePart filePart)
         {
-            if (fileReceiver.Request is not {Accepted: true})
+            if (fileReceiver.CurrentFileTransfer is not {Accepted: true})
             {
                 return;
             }
@@ -37,7 +37,7 @@ namespace Lanchat.Core.FileTransfer
             var base64Data = filePart.Data;
             var data = Convert.FromBase64String(base64Data);
             fileReceiver.WriteFileStream.Write(data);
-            fileReceiver.Request.PartsTransferred++;
+            fileReceiver.CurrentFileTransfer.PartsTransferred++;
         }
 
         private void CatchFileSystemExceptions(Exception e)

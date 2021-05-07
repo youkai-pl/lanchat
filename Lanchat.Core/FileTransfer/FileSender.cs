@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using Lanchat.Core.Api;
 using Lanchat.Core.Models;
 
@@ -26,7 +25,7 @@ namespace Lanchat.Core.FileTransfer
         /// <summary>
         ///     Outgoing file request.
         /// </summary>
-        public CurrentFileTransfer Request { get; private set; }
+        public CurrentFileTransfer CurrentFileTransfer { get; private set; }
 
         /// <summary>
         ///     File send returned error.
@@ -55,51 +54,49 @@ namespace Lanchat.Core.FileTransfer
         /// <exception cref="InvalidOperationException">Only one file can be send at same time</exception>
         public void CreateSendRequest(string path)
         {
-            if (Request != null)
+            if (CurrentFileTransfer != null)
             {
                 throw new InvalidOperationException("File transfer already in progress");
             }
 
             var fileInfo = new FileInfo(Path.Combine(path));
 
-            Request = new CurrentFileTransfer
+            CurrentFileTransfer = new CurrentFileTransfer
             {
                 FilePath = path,
                 Parts = (fileInfo.Length + ChunkSize - 1) / ChunkSize
             };
 
-            fileTransferSignalling.SendRequest(Request);
+            fileTransferSignalling.SendRequest(CurrentFileTransfer);
         }
 
         internal void SendFile()
         {
-            AcceptedByReceiver?.Invoke(this, Request);
+            AcceptedByReceiver?.Invoke(this, CurrentFileTransfer);
 
             try
             {
-                var file = new FileReader(Request.FilePath, ChunkSize);
+                var file = new FileReader(CurrentFileTransfer.FilePath, ChunkSize);
                 do
                 {
-                    var buffer = file.ReadChunk();
                     if (disposing)
                     {
-                        OnFileTransferError(new FileTransferException(Request));
+                        OnFileTransferError(new FileTransferException(CurrentFileTransfer));
                         return;
                     }
 
                     var part = new FilePart
                     {
-                        Data = Convert.ToBase64String(buffer.Take(file.BytesRead).ToArray())
+                        Data = Convert.ToBase64String(file.ReadChunk())
                     };
 
                     output.SendData(part);
-                    Request.PartsTransferred++;
-                } while (file.BytesRead > 0);
+                    CurrentFileTransfer.PartsTransferred++;
+                } while (!file.EndReached);
 
-                FileSendFinished?.Invoke(this, Request);
+                FileSendFinished?.Invoke(this, CurrentFileTransfer);
                 fileTransferSignalling.SignalFinished();
-                file.Dispose();
-                Request = null;
+                CurrentFileTransfer = null;
             }
             catch (Exception e)
             {
@@ -109,24 +106,24 @@ namespace Lanchat.Core.FileTransfer
 
         internal void HandleReject()
         {
-            if (Request == null)
+            if (CurrentFileTransfer == null)
             {
                 return;
             }
 
-            FileTransferRequestRejected?.Invoke(this, Request);
-            Request = null;
+            FileTransferRequestRejected?.Invoke(this, CurrentFileTransfer);
+            CurrentFileTransfer = null;
         }
 
         internal void HandleCancel()
         {
-            if (Request == null || Request.Accepted == false)
+            if (CurrentFileTransfer == null || CurrentFileTransfer.Accepted == false)
             {
                 return;
             }
 
-            OnFileTransferError(new FileTransferException(Request));
-            Request = null;
+            OnFileTransferError(new FileTransferException(CurrentFileTransfer));
+            CurrentFileTransfer = null;
         }
 
         internal void Dispose()
@@ -150,9 +147,9 @@ namespace Lanchat.Core.FileTransfer
                 throw e;
             }
 
-            OnFileTransferError(new FileTransferException(Request));
+            OnFileTransferError(new FileTransferException(CurrentFileTransfer));
             fileTransferSignalling.SignalErrored();
-            Request = null;
+            CurrentFileTransfer = null;
             Trace.WriteLine("Cannot access file system");
         }
     }
