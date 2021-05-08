@@ -4,21 +4,21 @@ using System.Linq;
 
 namespace Lanchat.Core.FileSystem
 {
-    internal class FileAccess : IDisposable
+    internal class FileAccess : IFileAccess
     {
         private readonly string path;
         private byte[] buffer;
         private FileStream fileStream;
         private int bytesRead;
 
-        internal bool EndReached { get; private set; }
+        public bool EndReached { get; private set; }
 
         internal FileAccess(string path)
         {
             this.path = path;
         }
 
-        internal byte[] ReadChunk(int chunkSize)
+        public byte[] ReadChunk(int chunkSize)
         {
             buffer ??= new byte[chunkSize];
             fileStream ??= File.OpenRead(path);
@@ -31,7 +31,7 @@ namespace Lanchat.Core.FileSystem
             return buffer.Take(bytesRead).ToArray();
         }
 
-        internal void WriteChunk(byte[] chunk)
+        public void WriteChunk(byte[] chunk)
         {
             fileStream ??= File.OpenWrite(path);
             fileStream.Write(chunk);
