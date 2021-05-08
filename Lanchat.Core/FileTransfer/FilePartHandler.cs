@@ -17,11 +17,13 @@ namespace Lanchat.Core.FileTransfer
 
         protected override void Handle(FilePart filePart)
         {
-            if (fileReceiver.CurrentFileTransfer is not {Accepted: true})
+            if (fileReceiver.CurrentFileTransfer == null ||
+                !fileReceiver.CurrentFileTransfer.Accepted ||
+                fileReceiver.CurrentFileTransfer.Disposed)
             {
                 return;
             }
-
+            
             try
             {
                 SavePart(filePart);

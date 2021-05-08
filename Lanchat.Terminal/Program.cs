@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using Lanchat.ClientCore;
 using Lanchat.Core.Network;
@@ -76,6 +77,11 @@ namespace Lanchat.Terminal
                 }
 
                 Ui.Log.AddWarning(Resources._PortBusy);
+            }
+            
+            if (args.Contains("--localhost") || args.Contains("-l"))
+            {
+                Network.Connect(IPAddress.Loopback);
             }
 
             Logger.DeleteOldLogs(5);

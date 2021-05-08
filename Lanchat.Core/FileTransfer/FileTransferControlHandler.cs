@@ -27,18 +27,18 @@ namespace Lanchat.Core.FileTransfer
                     fileSender.HandleReject();
                     break;
 
-                case FileTransferStatus.Canceled:
-                    fileSender.HandleCancel();
-                    break;
-
                 case FileTransferStatus.Finished:
                     fileReceiver.FinishReceive();
                     break;
 
-                case FileTransferStatus.Errored:
-                    fileReceiver.HandleSenderError();
+                case FileTransferStatus.ReceiverError:
+                    fileSender.HandleError();
                     break;
 
+                case FileTransferStatus.SenderError:
+                    fileReceiver.HandleError();
+                    break;
+                
                 default:
                     Trace.Write("Node received file exchange request of unknown type.");
                     break;

@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
@@ -69,6 +70,7 @@ namespace Lanchat.Core.FileTransfer
 
         internal void SendFile()
         {
+            CurrentFileTransfer.Accepted = true;
             if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
             {
                 return;
@@ -79,26 +81,29 @@ namespace Lanchat.Core.FileTransfer
             try
             {
                 var file = new FileReader(CurrentFileTransfer, ChunkSize);
-                do
+                Task.Run(() =>
                 {
-                    if (disposing)
+                    do
                     {
-                        OnFileTransferError(new FileTransferException(CurrentFileTransfer));
-                        return;
-                    }
+                        if (disposing || CurrentFileTransfer.Disposed)
+                        {
+                            OnFileTransferError(new FileTransferException(CurrentFileTransfer));
+                            return;
+                        }
 
-                    var part = new FilePart
-                    {
-                        Data = Convert.ToBase64String(file.ReadChunk())
-                    };
+                        var part = new FilePart
+                        {
+                            Data = Convert.ToBase64String(file.ReadChunk())
+                        };
 
-                    fileTransferOutput.SendPart(part);
-                    CurrentFileTransfer.PartsTransferred++;
-                } while (!file.EndReached);
+                        fileTransferOutput.SendPart(part);
+                        CurrentFileTransfer.PartsTransferred++;
+                    } while (!file.EndReached);
 
-                FileSendFinished?.Invoke(this, CurrentFileTransfer);
-                fileTransferOutput.SendSignal(FileTransferStatus.Finished);
-                CurrentFileTransfer.Dispose();
+                    FileSendFinished?.Invoke(this, CurrentFileTransfer);
+                    fileTransferOutput.SendSignal(FileTransferStatus.Finished);
+                    CurrentFileTransfer.Dispose();
+                });
             }
             catch (Exception e)
             {
@@ -117,7 +122,7 @@ namespace Lanchat.Core.FileTransfer
             CurrentFileTransfer.Dispose();
         }
 
-        internal void HandleCancel()
+        internal void HandleError()
         {
             if (CurrentFileTransfer == null || 
                 CurrentFileTransfer.Disposed ||
@@ -125,8 +130,6 @@ namespace Lanchat.Core.FileTransfer
             {
                 return;
             }
-
-            OnFileTransferError(new FileTransferException(CurrentFileTransfer));
             CurrentFileTransfer.Dispose();
         }
 
@@ -153,7 +156,7 @@ namespace Lanchat.Core.FileTransfer
             }
 
             OnFileTransferError(new FileTransferException(CurrentFileTransfer));
-            fileTransferOutput.SendSignal(FileTransferStatus.Errored);
+            fileTransferOutput.SendSignal(FileTransferStatus.SenderError);
             CurrentFileTransfer = null;
             Trace.WriteLine("Cannot access file system");
         }

@@ -73,19 +73,20 @@ namespace Lanchat.Core.FileTransfer
         /// </summary>
         public void CancelReceive(bool deleteFile)
         {
-            if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
+            if (CurrentFileTransfer == null ||
+                CurrentFileTransfer.Disposed || 
+                !CurrentFileTransfer.Accepted)
             {
                 throw new InvalidOperationException("No file transfers in progress");
             }
 
-            fileTransferOutput.SendSignal(FileTransferStatus.Canceled);
+            fileTransferOutput.SendSignal(FileTransferStatus.ReceiverError);
+            CurrentFileTransfer.Dispose();
             if (deleteFile)
             {
                 fileSystem.DeleteIncompleteFile(CurrentFileTransfer.FilePath);
             }
-
             FileTransferError?.Invoke(this, new FileTransferException(CurrentFileTransfer));
-            CurrentFileTransfer.Dispose();
         }
 
         internal void FinishReceive()
@@ -99,9 +100,9 @@ namespace Lanchat.Core.FileTransfer
             CurrentFileTransfer.Dispose();
         }
 
-        internal void HandleSenderError()
+        internal void HandleError()
         {
-            if (CurrentFileTransfer is {Disposed: true})
+            if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
             {
                 return;
             }
