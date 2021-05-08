@@ -12,12 +12,7 @@ namespace Lanchat.Core.FileTransfer
         {
             this.config = config;
         }
-
-        public FileStream OpenWriteStream(string path)
-        {
-            return new(path, FileMode.Append);
-        }
-
+        
         public void DeleteIncompleteFile(string path)
         {
             File.Delete(path);

@@ -44,7 +44,7 @@ namespace Lanchat.Core.FileTransfer
         {
             var base64Data = filePart.Data;
             var data = Convert.FromBase64String(base64Data);
-            fileReceiver.CurrentFileTransfer.FileStream.Write(data);
+            fileReceiver.CurrentFileTransfer.FileAccess.WriteChunk(data);
             fileReceiver.CurrentFileTransfer.PartsTransferred++;
         }
     }

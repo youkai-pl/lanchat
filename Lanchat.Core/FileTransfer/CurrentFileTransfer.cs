@@ -11,7 +11,7 @@ namespace Lanchat.Core.FileTransfer
     {
         private long partsTransferred;
         internal bool Accepted { get; set; }
-        internal FileStream FileStream { get; set; }
+        internal FileAccess FileAccess { get; set; }
         internal bool Disposed { get; private set; }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Lanchat.Core.FileTransfer
         /// <inheritdoc />
         public void Dispose()
         {
-            FileStream?.Dispose();
+            FileAccess?.Dispose();
             Disposed = true;
             GC.SuppressFinalize(this);
         }

@@ -49,7 +49,7 @@ namespace Lanchat.Core.FileTransfer
             }
 
             CurrentFileTransfer.Accepted = true;
-            CurrentFileTransfer.FileStream = fileSystem.OpenWriteStream(CurrentFileTransfer.FilePath);
+            CurrentFileTransfer.FileAccess = new FileAccess(CurrentFileTransfer.FilePath);
             fileTransferOutput.SendSignal(FileTransferStatus.Accepted);
         }
 

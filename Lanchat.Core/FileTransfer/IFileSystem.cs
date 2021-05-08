@@ -5,7 +5,6 @@ namespace Lanchat.Core.FileTransfer
 {
     internal interface IFileSystem
     {
-        FileStream OpenWriteStream(string path);
         void DeleteIncompleteFile(string path);
         string GetFilePath(string file);
         void CatchFileSystemException(Exception e, Action errorHandler);
