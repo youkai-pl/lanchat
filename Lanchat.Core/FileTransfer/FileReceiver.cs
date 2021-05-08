@@ -7,7 +7,7 @@ namespace Lanchat.Core.FileTransfer
     /// <summary>
     ///     File receiving.
     /// </summary>
-    public class FileReceiver
+    public class FileReceiver : IDisposable
     {
         private readonly FileTransferOutput fileTransferOutput;
         private readonly IStorage storage;
@@ -82,15 +82,15 @@ namespace Lanchat.Core.FileTransfer
             }
 
             fileTransferOutput.SendSignal(FileTransferStatus.ReceiverError);
-            CurrentFileTransfer.Dispose();
             if (deleteFile)
             {
                 storage.DeleteIncompleteFile(CurrentFileTransfer.FilePath);
             }
 
             FileTransferError?.Invoke(this, new FileTransferException(
-                CurrentFileTransfer, 
+                CurrentFileTransfer,
                 "Cancelled by user"));
+            CurrentFileTransfer.Dispose();
         }
 
         internal void FinishReceive()
@@ -124,8 +124,23 @@ namespace Lanchat.Core.FileTransfer
         internal void OnFileTransferError()
         {
             FileTransferError?.Invoke(this, new FileTransferException(
-                CurrentFileTransfer, 
+                CurrentFileTransfer,
                 "Error at the sender"));
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            if (CurrentFileTransfer is {Accepted: true, Disposed: false})
+            {
+                CancelReceive(true);
+            }
+            else
+            {
+                CurrentFileTransfer?.Dispose();
+            }
+
+            GC.SuppressFinalize(this);
         }
     }
 }

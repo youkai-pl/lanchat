@@ -29,15 +29,15 @@ namespace Lanchat.Core.Network
             ModelEncryption = new ModelEncryption(SymmetricEncryption);
             Output = new Output(Host, this);
             Messaging = new Messaging(Output);
-            
+
             var fileTransferOutput = new FileTransferOutput(Output);
             var fileSystem = new Storage(config);
             FileReceiver = new FileReceiver(fileTransferOutput, fileSystem);
             FileSender = new FileSender(fileTransferOutput, fileSystem);
-            
+
             Resolver = new Resolver(this);
             HandlersSetup.RegisterHandlers(Resolver, this, config, fileSystem);
-            
+
             var input = new Input(Resolver);
             Host.DataReceived += input.OnDataReceived;
             Host.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
@@ -53,13 +53,7 @@ namespace Lanchat.Core.Network
         {
             Host.Close();
             FileSender.Dispose();
-            try
-            {
-                FileReceiver.CancelReceive(true);
-            }
-            catch (InvalidOperationException)
-            { }
-
+            FileReceiver.Dispose();
             PublicKeyEncryption.Dispose();
             GC.SuppressFinalize(this);
         }
