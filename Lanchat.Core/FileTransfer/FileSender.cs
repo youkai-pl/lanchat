@@ -51,7 +51,7 @@ namespace Lanchat.Core.FileTransfer
         /// <exception cref="InvalidOperationException">Only one file can be send at same time</exception>
         public void CreateSendRequest(string path)
         {
-            if (CurrentFileTransfer != null)
+            if (CurrentFileTransfer is {Disposed: false})
             {
                 throw new InvalidOperationException("File transfer already in progress");
             }
@@ -69,11 +69,16 @@ namespace Lanchat.Core.FileTransfer
 
         internal void SendFile()
         {
+            if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
+            {
+                return;
+            }
+            
             AcceptedByReceiver?.Invoke(this, CurrentFileTransfer);
 
             try
             {
-                var file = new FileReader(CurrentFileTransfer.FilePath, ChunkSize);
+                var file = new FileReader(CurrentFileTransfer, ChunkSize);
                 do
                 {
                     if (disposing)
@@ -93,7 +98,7 @@ namespace Lanchat.Core.FileTransfer
 
                 FileSendFinished?.Invoke(this, CurrentFileTransfer);
                 fileTransferOutput.SendSignal(FileTransferStatus.Finished);
-                CurrentFileTransfer = null;
+                CurrentFileTransfer.Dispose();
             }
             catch (Exception e)
             {
@@ -103,28 +108,31 @@ namespace Lanchat.Core.FileTransfer
 
         internal void HandleReject()
         {
-            if (CurrentFileTransfer == null)
+            if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
             {
                 return;
             }
 
             FileTransferRequestRejected?.Invoke(this, CurrentFileTransfer);
-            CurrentFileTransfer = null;
+            CurrentFileTransfer.Dispose();
         }
 
         internal void HandleCancel()
         {
-            if (CurrentFileTransfer == null || CurrentFileTransfer.Accepted == false)
+            if (CurrentFileTransfer == null || 
+                CurrentFileTransfer.Disposed ||
+                CurrentFileTransfer.Accepted == false)
             {
                 return;
             }
 
             OnFileTransferError(new FileTransferException(CurrentFileTransfer));
-            CurrentFileTransfer = null;
+            CurrentFileTransfer.Dispose();
         }
 
         internal void Dispose()
         {
+            CurrentFileTransfer?.Dispose();
             disposing = true;
         }
 

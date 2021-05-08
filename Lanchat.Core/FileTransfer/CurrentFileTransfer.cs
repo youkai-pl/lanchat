@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.IO;
 
@@ -6,10 +7,12 @@ namespace Lanchat.Core.FileTransfer
     /// <summary>
     ///     Class representing single transfer request.
     /// </summary>
-    public class CurrentFileTransfer : INotifyPropertyChanged
+    public class CurrentFileTransfer : INotifyPropertyChanged, IDisposable
     {
         private long partsTransferred;
         internal bool Accepted { get; set; }
+        internal FileStream FileStream { get; set; }
+        internal bool Disposed { get; private set; }
 
         /// <summary>
         ///     Path when file will be saved or when is sending from.
@@ -47,6 +50,14 @@ namespace Lanchat.Core.FileTransfer
         private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            FileStream?.Dispose();
+            Disposed = true;
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Lanchat.Core.FileTransfer
         
         protected override void Handle(FileReceiveRequest data)
         {
-            if (fileReceiver.CurrentFileTransfer != null)
+            if (fileReceiver.CurrentFileTransfer is {Disposed: false})
             {
                 return;
             }

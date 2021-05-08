@@ -6,26 +6,26 @@ namespace Lanchat.Core.FileTransfer
 {
     internal class FileReader
     {
+        private readonly CurrentFileTransfer currentFileTransfer;
         private readonly byte[] buffer;
-        private readonly FileStream fileStream;
         private int bytesRead;
         
         internal bool EndReached { get; private set; }
         
-        internal FileReader(string filePath, int chunkSize)
+        internal FileReader(CurrentFileTransfer currentFileTransfer, int chunkSize)
         {
-            fileStream = File.OpenRead(filePath);
+            this.currentFileTransfer = currentFileTransfer;
+            currentFileTransfer.FileStream = File.OpenRead(currentFileTransfer.FilePath);
             buffer = new byte[chunkSize];
         }
         
         internal byte[] ReadChunk()
         {
-            bytesRead = fileStream.Read(buffer, 0, buffer.Length);
+            bytesRead = currentFileTransfer.FileStream.Read(buffer, 0, buffer.Length);
             
             if (bytesRead <= 0)
             {
                 EndReached = true;
-                fileStream.Dispose();
             }
             
             return buffer.Take(bytesRead).ToArray();

@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
@@ -11,7 +10,6 @@ namespace Lanchat.Core.FileTransfer
     {
         private readonly FileTransferOutput fileTransferOutput;
         private readonly IFileSystem fileSystem;
-        internal FileStream WriteFileStream;
 
         internal FileReceiver(FileTransferOutput fileTransferOutput, IFileSystem fileSystem)
         {
@@ -45,13 +43,13 @@ namespace Lanchat.Core.FileTransfer
         /// <exception cref="InvalidOperationException">No awaiting request</exception>
         public void AcceptRequest()
         {
-            if (CurrentFileTransfer == null)
+            if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
             {
                 throw new InvalidOperationException("No pending requests ");
             }
 
             CurrentFileTransfer.Accepted = true;
-            WriteFileStream = fileSystem.OpenWriteStream(CurrentFileTransfer.FilePath);
+            CurrentFileTransfer.FileStream = fileSystem.OpenWriteStream(CurrentFileTransfer.FilePath);
             fileTransferOutput.SendSignal(FileTransferStatus.Accepted);
         }
 
@@ -61,7 +59,7 @@ namespace Lanchat.Core.FileTransfer
         /// <exception cref="InvalidOperationException">No awaiting request</exception>
         public void RejectRequest()
         {
-            if (CurrentFileTransfer == null)
+            if (CurrentFileTransfer is {Disposed: true})
             {
                 throw new InvalidOperationException("No pending requests ");
             }
@@ -75,7 +73,7 @@ namespace Lanchat.Core.FileTransfer
         /// </summary>
         public void CancelReceive(bool deleteFile)
         {
-            if (CurrentFileTransfer == null)
+            if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
             {
                 throw new InvalidOperationException("No file transfers in progress");
             }
@@ -87,46 +85,40 @@ namespace Lanchat.Core.FileTransfer
             }
 
             FileTransferError?.Invoke(this, new FileTransferException(CurrentFileTransfer));
-            ResetRequest();
+            CurrentFileTransfer.Dispose();
         }
 
         internal void FinishReceive()
         {
-            if (CurrentFileTransfer == null)
+            if (CurrentFileTransfer is {Disposed: true})
             {
                 return;
             }
 
             FileReceiveFinished?.Invoke(this, CurrentFileTransfer);
-            ResetRequest();
-        }
-
-        internal void OnFileTransferRequestReceived()
-        {
-            FileTransferRequestReceived?.Invoke(this, CurrentFileTransfer);
+            CurrentFileTransfer.Dispose();
         }
 
         internal void HandleSenderError()
         {
-            if (CurrentFileTransfer == null)
+            if (CurrentFileTransfer is {Disposed: true})
             {
                 return;
             }
 
             fileSystem.DeleteIncompleteFile(CurrentFileTransfer.FilePath);
             OnFileTransferError();
-            ResetRequest();
+            CurrentFileTransfer.Dispose();
         }
 
+        internal void OnFileTransferRequestReceived()
+        {
+            FileTransferRequestReceived?.Invoke(this, CurrentFileTransfer);
+        }
+        
         internal void OnFileTransferError()
         {
             FileTransferError?.Invoke(this, new FileTransferException(CurrentFileTransfer));
-        }
-
-        private void ResetRequest()
-        {
-            CurrentFileTransfer = null;
-            WriteFileStream.Dispose();
         }
     }
 }
