@@ -74,7 +74,7 @@ namespace Lanchat.Core.FileTransfer
         public void CancelReceive(bool deleteFile)
         {
             if (CurrentFileTransfer == null ||
-                CurrentFileTransfer.Disposed || 
+                CurrentFileTransfer.Disposed ||
                 !CurrentFileTransfer.Accepted)
             {
                 throw new InvalidOperationException("No file transfers in progress");
@@ -86,7 +86,10 @@ namespace Lanchat.Core.FileTransfer
             {
                 fileSystem.DeleteIncompleteFile(CurrentFileTransfer.FilePath);
             }
-            FileTransferError?.Invoke(this, new FileTransferException(CurrentFileTransfer));
+
+            FileTransferError?.Invoke(this, new FileTransferException(
+                CurrentFileTransfer, 
+                "Cancelled by user"));
         }
 
         internal void FinishReceive()
@@ -116,10 +119,12 @@ namespace Lanchat.Core.FileTransfer
         {
             FileTransferRequestReceived?.Invoke(this, CurrentFileTransfer);
         }
-        
+
         internal void OnFileTransferError()
         {
-            FileTransferError?.Invoke(this, new FileTransferException(CurrentFileTransfer));
+            FileTransferError?.Invoke(this, new FileTransferException(
+                CurrentFileTransfer, 
+                "Error at the sender"));
         }
     }
 }

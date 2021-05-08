@@ -87,7 +87,7 @@ namespace Lanchat.Core.FileTransfer
                     {
                         if (disposing || CurrentFileTransfer.Disposed)
                         {
-                            OnFileTransferError(new FileTransferException(CurrentFileTransfer));
+                            OnFileTransferError(new FileTransferException(CurrentFileTransfer, "Cancelled"));
                             return;
                         }
 
@@ -155,7 +155,7 @@ namespace Lanchat.Core.FileTransfer
                 throw e;
             }
 
-            OnFileTransferError(new FileTransferException(CurrentFileTransfer));
+            OnFileTransferError(new FileTransferException(CurrentFileTransfer, e.Message));
             fileTransferOutput.SendSignal(FileTransferStatus.SenderError);
             CurrentFileTransfer = null;
             Trace.WriteLine("Cannot access file system");

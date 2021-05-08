@@ -12,6 +12,9 @@ namespace Lanchat.Core.FileTransfer
             Request = request;
         }
 
+        internal FileTransferException(CurrentFileTransfer request, string message) : base(message)
+        { }
+
         /// <summary>
         ///     Request that throws error.
         /// </summary>
