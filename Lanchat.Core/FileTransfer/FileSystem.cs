@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Lanchat.Core.Config;
 
@@ -37,6 +38,20 @@ namespace Lanchat.Core.FileTransfer
 
                 path = Path.Combine(config.ReceivedFilesDirectory, $"{fileName}({i}){fileExt}");
             }
+        }
+
+        public void CatchFileSystemException(Exception e, Action errorHandler)
+        {
+            if (e is not (
+                DirectoryNotFoundException or
+                FileNotFoundException or
+                IOException or
+                UnauthorizedAccessException))
+            {
+                throw e;
+            }
+            
+            errorHandler();
         }
     }
 }

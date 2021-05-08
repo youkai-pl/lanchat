@@ -28,7 +28,7 @@ namespace Lanchat.Tests.Mock.Network
             Messaging = new Messaging(Output);
             
             var fileTransferOutput = new FileTransferOutput(Output);
-            FileSender = new FileSender(fileTransferOutput);
+            FileSender = new FileSender(fileTransferOutput, new FileSystemMock());
             FileReceiver = new FileReceiver(fileTransferOutput, new FileSystemMock());
         }
 

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 namespace Lanchat.Core.FileTransfer
@@ -7,5 +8,6 @@ namespace Lanchat.Core.FileTransfer
         FileStream OpenWriteStream(string path);
         void DeleteIncompleteFile(string path);
         string GetFilePath(string file);
+        void CatchFileSystemException(Exception e, Action errorHandler);
     }
 }

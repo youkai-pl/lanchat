@@ -28,16 +28,16 @@ namespace Lanchat.Core.Network
             ModelEncryption = new ModelEncryption(SymmetricEncryption);
             Output = new Output(Host, this);
             Messaging = new Messaging(Output);
-
+            
             var fileTransferOutput = new FileTransferOutput(Output);
-            FileReceiver = new FileReceiver(fileTransferOutput, new FileSystem(config));
-            FileSender = new FileSender(fileTransferOutput);
+            var fileSystem = new FileSystem(config);
+            FileReceiver = new FileReceiver(fileTransferOutput, fileSystem);
+            FileSender = new FileSender(fileTransferOutput, fileSystem);
             
             Resolver = new Resolver(this);
+            HandlersSetup.RegisterHandlers(Resolver, this, config, fileSystem);
+            
             var input = new Input(Resolver);
-
-            HandlersSetup.RegisterHandlers(Resolver, this, config);
-
             Host.DataReceived += input.OnDataReceived;
             Host.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 

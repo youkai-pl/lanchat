@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.IO;
 using Lanchat.Core.Api;
 using Lanchat.Core.Models;
 
@@ -9,10 +8,12 @@ namespace Lanchat.Core.FileTransfer
     internal class FilePartHandler : ApiHandler<FilePart>
     {
         private readonly FileReceiver fileReceiver;
+        private readonly IFileSystem fileSystem;
 
-        internal FilePartHandler(FileReceiver fileReceiver)
+        internal FilePartHandler(FileReceiver fileReceiver, IFileSystem fileSystem)
         {
             this.fileReceiver = fileReceiver;
+            this.fileSystem = fileSystem;
         }
 
         protected override void Handle(FilePart filePart)
@@ -30,7 +31,12 @@ namespace Lanchat.Core.FileTransfer
             }
             catch (Exception e)
             {
-                CatchFileSystemExceptions(e);
+               fileSystem.CatchFileSystemException(e, () =>
+               {
+                   fileReceiver.CancelReceive(false);
+                   fileReceiver.OnFileTransferError();
+                   Trace.WriteLine("Cannot access file system");
+               });
             }
         }
 
@@ -40,22 +46,6 @@ namespace Lanchat.Core.FileTransfer
             var data = Convert.FromBase64String(base64Data);
             fileReceiver.CurrentFileTransfer.FileStream.Write(data);
             fileReceiver.CurrentFileTransfer.PartsTransferred++;
-        }
-
-        private void CatchFileSystemExceptions(Exception e)
-        {
-            if (e is not (
-                DirectoryNotFoundException or
-                FileNotFoundException or
-                IOException or
-                UnauthorizedAccessException))
-            {
-                throw e;
-            }
-
-            fileReceiver.CancelReceive(false);
-            fileReceiver.OnFileTransferError();
-            Trace.WriteLine("Cannot access file system");
         }
     }
 }

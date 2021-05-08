@@ -11,13 +11,15 @@ namespace Lanchat.Core.FileTransfer
     /// </summary>
     public class FileSender
     {
-        private const int ChunkSize = 1024 * 1024;
         private readonly FileTransferOutput fileTransferOutput;
+        private readonly IFileSystem fileSystem;
+        private const int ChunkSize = 1024 * 1024;
         private bool disposing;
 
-        internal FileSender(FileTransferOutput fileTransferOutput)
+        internal FileSender(FileTransferOutput fileTransferOutput, IFileSystem fileSystem)
         {
             this.fileTransferOutput = fileTransferOutput;
+            this.fileSystem = fileSystem;
         }
 
         /// <summary>
@@ -107,7 +109,13 @@ namespace Lanchat.Core.FileTransfer
             }
             catch (Exception e)
             {
-                CatchFileSystemExceptions(e);
+                fileSystem.CatchFileSystemException(e, () =>
+                {
+                    OnFileTransferError(new FileTransferException(CurrentFileTransfer, e.Message));
+                    fileTransferOutput.SendSignal(FileTransferStatus.SenderError);
+                    CurrentFileTransfer = null;
+                    Trace.WriteLine("Cannot access file system");
+                });
             }
         }
 
@@ -142,23 +150,6 @@ namespace Lanchat.Core.FileTransfer
         private void OnFileTransferError(FileTransferException e)
         {
             FileTransferError?.Invoke(this, e);
-        }
-
-        private void CatchFileSystemExceptions(Exception e)
-        {
-            if (e is not (
-                DirectoryNotFoundException or
-                FileNotFoundException or
-                IOException or
-                UnauthorizedAccessException))
-            {
-                throw e;
-            }
-
-            OnFileTransferError(new FileTransferException(CurrentFileTransfer, e.Message));
-            fileTransferOutput.SendSignal(FileTransferStatus.SenderError);
-            CurrentFileTransfer = null;
-            Trace.WriteLine("Cannot access file system");
         }
     }
 }

@@ -20,5 +20,10 @@ namespace Lanchat.Tests.Mock.FileTransfer
         {
             throw new NotImplementedException();
         }
+
+        public void CatchFileSystemException(Exception e, Action errorHandler)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
