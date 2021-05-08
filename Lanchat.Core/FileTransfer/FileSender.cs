@@ -58,7 +58,7 @@ namespace Lanchat.Core.FileTransfer
             {
                 throw new InvalidOperationException("File transfer already in progress");
             }
-            
+
             CurrentFileTransfer = new CurrentFileTransfer
             {
                 FilePath = path,
@@ -75,7 +75,7 @@ namespace Lanchat.Core.FileTransfer
             {
                 return;
             }
-            
+
             AcceptedByReceiver?.Invoke(this, CurrentFileTransfer);
 
             try
@@ -83,7 +83,7 @@ namespace Lanchat.Core.FileTransfer
                 var file = new FileAccess(CurrentFileTransfer.FilePath);
                 Task.Run(() =>
                 {
-                    do
+                    while (file.ReadChunk(ChunkSize, out var chunk))
                     {
                         if (disposing || CurrentFileTransfer.Disposed)
                         {
@@ -93,12 +93,12 @@ namespace Lanchat.Core.FileTransfer
 
                         var part = new FilePart
                         {
-                            Data = Convert.ToBase64String(file.ReadChunk(ChunkSize))
+                            Data = Convert.ToBase64String(chunk)
                         };
 
                         fileTransferOutput.SendPart(part);
                         CurrentFileTransfer.PartsTransferred++;
-                    } while (!file.EndReached);
+                    }
 
                     FileSendFinished?.Invoke(this, CurrentFileTransfer);
                     fileTransferOutput.SendSignal(FileTransferStatus.Finished);
@@ -130,12 +130,13 @@ namespace Lanchat.Core.FileTransfer
 
         internal void HandleError()
         {
-            if (CurrentFileTransfer == null || 
+            if (CurrentFileTransfer == null ||
                 CurrentFileTransfer.Disposed ||
                 CurrentFileTransfer.Accepted == false)
             {
                 return;
             }
+
             CurrentFileTransfer.Dispose();
         }
 

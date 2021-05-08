@@ -4,8 +4,7 @@ namespace Lanchat.Core.FileSystem
 {
     internal interface IFileAccess : IDisposable
     {
-        bool EndReached { get; }
-        byte[] ReadChunk(int chunkSize);
+        bool ReadChunk(int chunkSize, out byte[] chunk);
         void WriteChunk(byte[] chunk);
     }
 }

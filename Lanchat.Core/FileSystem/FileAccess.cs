@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Linq;
 
@@ -10,25 +9,26 @@ namespace Lanchat.Core.FileSystem
         private byte[] buffer;
         private FileStream fileStream;
         private int bytesRead;
-
-        public bool EndReached { get; private set; }
-
+        
         internal FileAccess(string path)
         {
             this.path = path;
         }
 
-        public byte[] ReadChunk(int chunkSize)
+        public bool ReadChunk(int chunkSize, out byte[] chunk)
         {
             buffer ??= new byte[chunkSize];
             fileStream ??= File.OpenRead(path);
             bytesRead = fileStream.Read(buffer, 0, buffer.Length);
+           
             if (bytesRead <= 0)
             {
-                EndReached = true;
+                chunk = null;
+                return false;
             }
 
-            return buffer.Take(bytesRead).ToArray();
+            chunk = buffer.Take(bytesRead).ToArray();
+            return true;
         }
 
         public void WriteChunk(byte[] chunk)
