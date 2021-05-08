@@ -1,12 +1,12 @@
 using System;
-using System.IO;
 
-namespace Lanchat.Core.FileTransfer
+namespace Lanchat.Core.FileSystem
 {
-    internal interface IFileSystem
+    internal interface IStorage
     {
+        string GetFilePath(string path);
+        long GetFileSize(string path);
         void DeleteIncompleteFile(string path);
-        string GetFilePath(string file);
         void CatchFileSystemException(Exception e, Action errorHandler);
     }
 }

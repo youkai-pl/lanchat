@@ -2,22 +2,17 @@ using System;
 using System.IO;
 using Lanchat.Core.Config;
 
-namespace Lanchat.Core.FileTransfer
+namespace Lanchat.Core.FileSystem
 {
-    internal class FileSystem : IFileSystem
+    internal class Storage : IStorage
     {
         private readonly IConfig config;
 
-        internal FileSystem(IConfig config)
+        internal Storage(IConfig config)
         {
             this.config = config;
         }
         
-        public void DeleteIncompleteFile(string path)
-        {
-            File.Delete(path);
-        }
-
         public string GetFilePath(string file)
         {
             var path = Path.Combine(config.ReceivedFilesDirectory, file);
@@ -34,7 +29,17 @@ namespace Lanchat.Core.FileTransfer
                 path = Path.Combine(config.ReceivedFilesDirectory, $"{fileName}({i}){fileExt}");
             }
         }
+        
+        public long GetFileSize(string path)
+        {
+            return new FileInfo(path).Length;
+        }
 
+        public void DeleteIncompleteFile(string path)
+        {
+            File.Delete(path);
+        }
+        
         public void CatchFileSystemException(Exception e, Action errorHandler)
         {
             if (e is not (

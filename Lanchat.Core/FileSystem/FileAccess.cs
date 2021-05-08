@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Lanchat.Core.FileTransfer
+namespace Lanchat.Core.FileSystem
 {
     internal class FileAccess : IDisposable
     {

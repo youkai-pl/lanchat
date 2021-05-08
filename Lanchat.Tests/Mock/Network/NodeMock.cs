@@ -28,8 +28,8 @@ namespace Lanchat.Tests.Mock.Network
             Messaging = new Messaging(Output);
             
             var fileTransferOutput = new FileTransferOutput(Output);
-            FileSender = new FileSender(fileTransferOutput, new FileSystemMock());
-            FileReceiver = new FileReceiver(fileTransferOutput, new FileSystemMock());
+            FileSender = new FileSender(fileTransferOutput, new StorageMock());
+            FileReceiver = new FileReceiver(fileTransferOutput, new StorageMock());
         }
 
         public bool HandshakeSent { get; private set; }

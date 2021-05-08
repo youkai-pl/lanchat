@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
+using Lanchat.Core.FileSystem;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
@@ -12,14 +12,14 @@ namespace Lanchat.Core.FileTransfer
     public class FileSender
     {
         private readonly FileTransferOutput fileTransferOutput;
-        private readonly IFileSystem fileSystem;
+        private readonly IStorage storage;
         private const int ChunkSize = 1024 * 1024;
         private bool disposing;
 
-        internal FileSender(FileTransferOutput fileTransferOutput, IFileSystem fileSystem)
+        internal FileSender(FileTransferOutput fileTransferOutput, IStorage storage)
         {
             this.fileTransferOutput = fileTransferOutput;
-            this.fileSystem = fileSystem;
+            this.storage = storage;
         }
 
         /// <summary>
@@ -58,13 +58,11 @@ namespace Lanchat.Core.FileTransfer
             {
                 throw new InvalidOperationException("File transfer already in progress");
             }
-
-            var fileInfo = new FileInfo(Path.Combine(path));
-
+            
             CurrentFileTransfer = new CurrentFileTransfer
             {
                 FilePath = path,
-                Parts = (fileInfo.Length + ChunkSize - 1) / ChunkSize
+                Parts = (storage.GetFileSize(path) + ChunkSize - 1) / ChunkSize
             };
 
             fileTransferOutput.SendRequest(CurrentFileTransfer);
@@ -109,7 +107,7 @@ namespace Lanchat.Core.FileTransfer
             }
             catch (Exception e)
             {
-                fileSystem.CatchFileSystemException(e, () =>
+                storage.CatchFileSystemException(e, () =>
                 {
                     OnFileTransferError(new FileTransferException(CurrentFileTransfer, e.Message));
                     fileTransferOutput.SendSignal(FileTransferStatus.SenderError);

@@ -5,6 +5,7 @@ using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Config;
 using Lanchat.Core.Encryption;
+using Lanchat.Core.FileSystem;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
 using Lanchat.Core.Tcp;
@@ -30,7 +31,7 @@ namespace Lanchat.Core.Network
             Messaging = new Messaging(Output);
             
             var fileTransferOutput = new FileTransferOutput(Output);
-            var fileSystem = new FileSystem(config);
+            var fileSystem = new Storage(config);
             FileReceiver = new FileReceiver(fileTransferOutput, fileSystem);
             FileSender = new FileSender(fileTransferOutput, fileSystem);
             

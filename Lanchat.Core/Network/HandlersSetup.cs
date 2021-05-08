@@ -2,13 +2,14 @@ using Lanchat.Core.Api;
 using Lanchat.Core.ApiHandlers;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Config;
+using Lanchat.Core.FileSystem;
 using Lanchat.Core.FileTransfer;
 
 namespace Lanchat.Core.Network
 {
     internal static class HandlersSetup
     {
-        internal static void RegisterHandlers(IResolver resolver, Node node, IConfig config, IFileSystem fileSystem)
+        internal static void RegisterHandlers(IResolver resolver, Node node, IConfig config, IStorage storage)
         {
             resolver.RegisterHandler(new HandshakeHandler(
                 node.PublicKeyEncryption,
@@ -19,8 +20,8 @@ namespace Lanchat.Core.Network
             resolver.RegisterHandler(new StatusUpdateHandler(node));
             resolver.RegisterHandler(new NicknameUpdateHandler(node));
             resolver.RegisterHandler(new MessageHandler(node.Messaging));
-            resolver.RegisterHandler(new FilePartHandler(node.FileReceiver, fileSystem));
-            resolver.RegisterHandler(new FileReceiveRequestHandler(node.FileReceiver, fileSystem));
+            resolver.RegisterHandler(new FilePartHandler(node.FileReceiver, storage));
+            resolver.RegisterHandler(new FileReceiveRequestHandler(node.FileReceiver, storage));
             resolver.RegisterHandler(new FileTransferControlHandler(node.FileReceiver, node.FileSender));
         }
     }

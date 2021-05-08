@@ -1,12 +1,17 @@
 using System;
 using System.IO;
-using Lanchat.Core.FileTransfer;
+using Lanchat.Core.FileSystem;
 
 namespace Lanchat.Tests.Mock.FileTransfer
 {
-    public class FileSystemMock : IFileSystem
+    public class StorageMock : IStorage
     {
         public FileStream OpenWriteStream(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        public long GetFileSize(string path)
         {
             throw new NotImplementedException();
         }

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using FileAccess = Lanchat.Core.FileSystem.FileAccess;
 
 namespace Lanchat.Core.FileTransfer
 {

@@ -1,4 +1,5 @@
 using System;
+using Lanchat.Core.FileSystem;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
@@ -9,11 +10,11 @@ namespace Lanchat.Core.FileTransfer
     public class FileReceiver
     {
         private readonly FileTransferOutput fileTransferOutput;
-        private readonly IFileSystem fileSystem;
+        private readonly IStorage storage;
 
-        internal FileReceiver(FileTransferOutput fileTransferOutput, IFileSystem fileSystem)
+        internal FileReceiver(FileTransferOutput fileTransferOutput, IStorage storage)
         {
-            this.fileSystem = fileSystem;
+            this.storage = storage;
             this.fileTransferOutput = fileTransferOutput;
         }
 
@@ -84,7 +85,7 @@ namespace Lanchat.Core.FileTransfer
             CurrentFileTransfer.Dispose();
             if (deleteFile)
             {
-                fileSystem.DeleteIncompleteFile(CurrentFileTransfer.FilePath);
+                storage.DeleteIncompleteFile(CurrentFileTransfer.FilePath);
             }
 
             FileTransferError?.Invoke(this, new FileTransferException(
@@ -110,7 +111,7 @@ namespace Lanchat.Core.FileTransfer
                 return;
             }
 
-            fileSystem.DeleteIncompleteFile(CurrentFileTransfer.FilePath);
+            storage.DeleteIncompleteFile(CurrentFileTransfer.FilePath);
             OnFileTransferError();
             CurrentFileTransfer.Dispose();
         }

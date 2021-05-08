@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using Lanchat.Core.Api;
+using Lanchat.Core.FileSystem;
 using Lanchat.Core.Models;
 
 namespace Lanchat.Core.FileTransfer
@@ -8,12 +9,12 @@ namespace Lanchat.Core.FileTransfer
     internal class FilePartHandler : ApiHandler<FilePart>
     {
         private readonly FileReceiver fileReceiver;
-        private readonly IFileSystem fileSystem;
+        private readonly IStorage storage;
 
-        internal FilePartHandler(FileReceiver fileReceiver, IFileSystem fileSystem)
+        internal FilePartHandler(FileReceiver fileReceiver, IStorage storage)
         {
             this.fileReceiver = fileReceiver;
-            this.fileSystem = fileSystem;
+            this.storage = storage;
         }
 
         protected override void Handle(FilePart filePart)
@@ -31,7 +32,7 @@ namespace Lanchat.Core.FileTransfer
             }
             catch (Exception e)
             {
-               fileSystem.CatchFileSystemException(e, () =>
+               storage.CatchFileSystemException(e, () =>
                {
                    fileReceiver.CancelReceive(false);
                    fileReceiver.OnFileTransferError();
