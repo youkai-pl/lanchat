@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
-using FileAccess = Lanchat.Core.FileSystem.FileAccess;
+using Lanchat.Core.FileSystem;
 
 namespace Lanchat.Core.FileTransfer
 {
@@ -12,7 +12,6 @@ namespace Lanchat.Core.FileTransfer
     {
         private long partsTransferred;
         internal bool Accepted { get; set; }
-        internal FileAccess FileAccess { get; set; }
         internal bool Disposed { get; private set; }
 
         /// <summary>
@@ -56,7 +55,6 @@ namespace Lanchat.Core.FileTransfer
         /// <inheritdoc />
         public void Dispose()
         {
-            FileAccess?.Dispose();
             Disposed = true;
             GC.SuppressFinalize(this);
         }

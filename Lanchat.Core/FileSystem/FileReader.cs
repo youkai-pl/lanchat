@@ -1,16 +1,17 @@
+using System;
 using System.IO;
 using System.Linq;
 
 namespace Lanchat.Core.FileSystem
 {
-    internal class FileAccess : IFileAccess
+    internal class FileReader : IDisposable
     {
         private readonly string path;
-        private byte[] buffer;
         private FileStream fileStream;
+        private byte[] buffer;
         private int bytesRead;
         
-        internal FileAccess(string path)
+        internal FileReader(string path)
         {
             this.path = path;
         }
@@ -29,12 +30,6 @@ namespace Lanchat.Core.FileSystem
 
             chunk = buffer.Take(bytesRead).ToArray();
             return true;
-        }
-
-        public void WriteChunk(byte[] chunk)
-        {
-            fileStream ??= File.OpenWrite(path);
-            fileStream.Write(chunk);
         }
 
         public void Dispose()

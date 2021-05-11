@@ -18,10 +18,27 @@ namespace Lanchat.Core.FileTransfer
             this.fileTransferOutput = fileTransferOutput;
         }
 
+        internal FileWriter FileWriter { get; private set; }
+
         /// <summary>
         ///     Incoming file request.
         /// </summary>
         public CurrentFileTransfer CurrentFileTransfer { get; internal set; }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            if (CurrentFileTransfer is {Accepted: true, Disposed: false})
+            {
+                CancelReceive(true);
+            }
+            else
+            {
+                CurrentFileTransfer?.Dispose();
+            }
+
+            GC.SuppressFinalize(this);
+        }
 
         /// <summary>
         ///     File transfer finished.
@@ -50,7 +67,7 @@ namespace Lanchat.Core.FileTransfer
             }
 
             CurrentFileTransfer.Accepted = true;
-            CurrentFileTransfer.FileAccess = new FileAccess(CurrentFileTransfer.FilePath);
+            FileWriter = new FileWriter(CurrentFileTransfer.FilePath);
             fileTransferOutput.SendSignal(FileTransferStatus.Accepted);
         }
 
@@ -126,21 +143,6 @@ namespace Lanchat.Core.FileTransfer
             FileTransferError?.Invoke(this, new FileTransferException(
                 CurrentFileTransfer,
                 "Error at the sender"));
-        }
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            if (CurrentFileTransfer is {Accepted: true, Disposed: false})
-            {
-                CancelReceive(true);
-            }
-            else
-            {
-                CurrentFileTransfer?.Dispose();
-            }
-
-            GC.SuppressFinalize(this);
         }
     }
 }

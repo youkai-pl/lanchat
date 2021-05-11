@@ -80,7 +80,7 @@ namespace Lanchat.Core.FileTransfer
 
             try
             {
-                var file = new FileAccess(CurrentFileTransfer.FilePath);
+                var file = new FileReader(CurrentFileTransfer.FilePath);
                 Task.Run(() =>
                 {
                     while (file.ReadChunk(ChunkSize, out var chunk))

@@ -25,19 +25,19 @@ namespace Lanchat.Core.FileTransfer
             {
                 return;
             }
-            
+
             try
             {
                 SavePart(filePart);
             }
             catch (Exception e)
             {
-               storage.CatchFileSystemException(e, () =>
-               {
-                   fileReceiver.CancelReceive(false);
-                   fileReceiver.OnFileTransferError();
-                   Trace.WriteLine("Cannot access file system");
-               });
+                storage.CatchFileSystemException(e, () =>
+                {
+                    fileReceiver.CancelReceive(false);
+                    fileReceiver.OnFileTransferError();
+                    Trace.WriteLine("Cannot access file system");
+                });
             }
         }
 
@@ -45,7 +45,7 @@ namespace Lanchat.Core.FileTransfer
         {
             var base64Data = filePart.Data;
             var data = Convert.FromBase64String(base64Data);
-            fileReceiver.CurrentFileTransfer.FileAccess.WriteChunk(data);
+            fileReceiver.FileWriter.WriteChunk(data);
             fileReceiver.CurrentFileTransfer.PartsTransferred++;
         }
     }
