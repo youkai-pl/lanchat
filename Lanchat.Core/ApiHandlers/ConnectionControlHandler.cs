@@ -1,5 +1,5 @@
 using Lanchat.Core.Api;
-using Lanchat.Core.Models;
+using Lanchat.Core.Network.Models;
 using Lanchat.Core.Tcp;
 
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault

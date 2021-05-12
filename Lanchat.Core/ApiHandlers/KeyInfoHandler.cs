@@ -2,7 +2,7 @@ using System;
 using System.Security.Cryptography;
 using Lanchat.Core.Api;
 using Lanchat.Core.Encryption;
-using Lanchat.Core.Models;
+using Lanchat.Core.Encryption.Models;
 using Lanchat.Core.Network;
 
 namespace Lanchat.Core.ApiHandlers

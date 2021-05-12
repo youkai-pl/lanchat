@@ -1,5 +1,5 @@
 using Lanchat.Core.Api;
-using Lanchat.Core.Models;
+using Lanchat.Core.Chat.Models;
 
 namespace Lanchat.Tests.Mock.ApiHandlers
 {

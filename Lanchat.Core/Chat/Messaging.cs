@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 using Lanchat.Core.Api;
-using Lanchat.Core.Models;
+using Lanchat.Core.Chat.Models;
 
 namespace Lanchat.Core.Chat
 {

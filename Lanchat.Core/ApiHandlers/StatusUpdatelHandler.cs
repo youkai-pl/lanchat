@@ -1,10 +1,10 @@
 using Lanchat.Core.Api;
-using Lanchat.Core.Models;
+using Lanchat.Core.Chat.Models;
 using Lanchat.Core.Network;
 
 namespace Lanchat.Core.ApiHandlers
 {
-    internal class StatusUpdateHandler : ApiHandler<StatusUpdate>
+    internal class StatusUpdateHandler : ApiHandler<UserStatusUpdate>
     {
         private readonly INodeInternal node;
 
@@ -13,9 +13,9 @@ namespace Lanchat.Core.ApiHandlers
             this.node = node;
         }
 
-        protected override void Handle(StatusUpdate status)
+        protected override void Handle(UserStatusUpdate userStatus)
         {
-            node.Messaging.UserStatus = status.NewUserStatus;
+            node.Messaging.UserStatus = userStatus.NewUserStatus;
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Lanchat.Core.Chat;
-using Lanchat.Core.Encryption;
+using Lanchat.Core.Encryption.Models;
 
-namespace Lanchat.Core.Models
+namespace Lanchat.Core.Network.Models
 {
     internal class Handshake
     {

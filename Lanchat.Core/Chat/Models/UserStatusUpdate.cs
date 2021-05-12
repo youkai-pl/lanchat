@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Lanchat.Core.Chat;
 
-namespace Lanchat.Core.Models
+namespace Lanchat.Core.Chat.Models
 {
-    internal class StatusUpdate
+    internal class UserStatusUpdate
     {
         [Required] public UserStatus NewUserStatus { get; init; }
     }

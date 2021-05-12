@@ -1,6 +1,6 @@
 using System.Net;
 using Lanchat.Core.ApiHandlers;
-using Lanchat.Core.Models;
+using Lanchat.Core.Network.Models;
 using Lanchat.Tests.Mock.Config;
 using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;

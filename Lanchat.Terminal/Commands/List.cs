@@ -2,7 +2,6 @@
 using System.Linq;
 using ConsoleGUI.Controls;
 using Lanchat.Core.Chat;
-using Lanchat.Core.Models;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands

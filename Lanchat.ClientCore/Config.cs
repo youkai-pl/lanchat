@@ -6,7 +6,6 @@ using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Config;
-using Lanchat.Core.Models;
 
 namespace Lanchat.ClientCore
 {

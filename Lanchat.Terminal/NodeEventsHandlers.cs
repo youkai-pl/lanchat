@@ -4,7 +4,6 @@ using System.IO;
 using System.Net.Sockets;
 using Lanchat.Core.Chat;
 using Lanchat.Core.FileTransfer;
-using Lanchat.Core.Models;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;

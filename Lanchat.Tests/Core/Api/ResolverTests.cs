@@ -1,7 +1,8 @@
 using System;
 using Lanchat.Core.Api;
+using Lanchat.Core.Chat.Models;
 using Lanchat.Core.Json;
-using Lanchat.Core.Models;
+using Lanchat.Core.Network.Models;
 using Lanchat.Tests.Mock.ApiHandlers;
 using Lanchat.Tests.Mock.Models;
 using Lanchat.Tests.Mock.Network;

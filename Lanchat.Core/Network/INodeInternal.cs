@@ -1,7 +1,6 @@
 using System;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
-using Lanchat.Core.Models;
 using Lanchat.Core.Tcp;
 
 namespace Lanchat.Core.Network

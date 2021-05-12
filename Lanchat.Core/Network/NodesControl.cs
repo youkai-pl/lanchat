@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Lanchat.Core.ApiHandlers;
 using Lanchat.Core.Config;
-using Lanchat.Core.Models;
+using Lanchat.Core.Network.Models;
 using Lanchat.Core.Tcp;
 
 namespace Lanchat.Core.Network

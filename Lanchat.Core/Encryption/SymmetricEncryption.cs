@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using Lanchat.Core.Models;
+using Lanchat.Core.Encryption.Models;
 
 namespace Lanchat.Core.Encryption
 {

@@ -1,6 +1,7 @@
 using System.ComponentModel;
-using Lanchat.Core.Models;
+using Lanchat.Core.Chat.Models;
 using Lanchat.Core.Network;
+using Lanchat.Core.Network.Models;
 
 namespace Lanchat.Core.Config
 {
@@ -23,7 +24,7 @@ namespace Lanchat.Core.Config
                     break;
 
                 case "Status":
-                    network.Broadcast.SendData(new StatusUpdate {NewUserStatus = network.Config.UserStatus});
+                    network.Broadcast.SendData(new UserStatusUpdate {NewUserStatus = network.Config.UserStatus});
                     break;
             }
         }

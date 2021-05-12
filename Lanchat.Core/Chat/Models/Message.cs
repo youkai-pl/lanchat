@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Lanchat.Core.Encryption;
 
-namespace Lanchat.Core.Models
+namespace Lanchat.Core.Chat.Models
 {
     internal class Message
     {

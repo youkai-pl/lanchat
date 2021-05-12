@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Lanchat.Core.Config;
 using Lanchat.Core.Json;
-using Lanchat.Core.Models;
+using Lanchat.Core.NodesDetection.Models;
 using Lanchat.Core.Udp;
 
 namespace Lanchat.Core.NodesDetection

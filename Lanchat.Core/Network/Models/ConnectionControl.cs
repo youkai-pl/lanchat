@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Lanchat.Core.Models
+namespace Lanchat.Core.Network.Models
 {
     internal class ConnectionControl
     {

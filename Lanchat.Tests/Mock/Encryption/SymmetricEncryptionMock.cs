@@ -1,6 +1,6 @@
 using System;
 using Lanchat.Core.Encryption;
-using Lanchat.Core.Models;
+using Lanchat.Core.Encryption.Models;
 
 namespace Lanchat.Tests.Mock.Encryption
 {

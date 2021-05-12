@@ -1,7 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using Lanchat.Core.Encryption;
-using Lanchat.Core.Models;
+using Lanchat.Core.Encryption.Models;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.Encryption

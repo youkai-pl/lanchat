@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Lanchat.Core.Encryption
+namespace Lanchat.Core.Encryption.Models
 {
     internal class PublicKey
     {

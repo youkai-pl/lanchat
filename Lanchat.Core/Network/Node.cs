@@ -7,7 +7,7 @@ using Lanchat.Core.Config;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.FileSystem;
 using Lanchat.Core.FileTransfer;
-using Lanchat.Core.Models;
+using Lanchat.Core.Network.Models;
 using Lanchat.Core.Tcp;
 
 namespace Lanchat.Core.Network

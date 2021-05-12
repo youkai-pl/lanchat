@@ -1,5 +1,5 @@
 using System;
-using Lanchat.Core.Models;
+using Lanchat.Core.Encryption.Models;
 
 namespace Lanchat.Core.Encryption
 {

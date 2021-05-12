@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Net;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Config;
-using Lanchat.Core.Models;
 
 namespace Lanchat.Tests.Mock.Config
 {

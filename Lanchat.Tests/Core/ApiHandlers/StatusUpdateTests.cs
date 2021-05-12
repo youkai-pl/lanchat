@@ -1,6 +1,6 @@
 using Lanchat.Core.ApiHandlers;
 using Lanchat.Core.Chat;
-using Lanchat.Core.Models;
+using Lanchat.Core.Chat.Models;
 using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 
@@ -21,7 +21,7 @@ namespace Lanchat.Tests.Core.ApiHandlers
         [Test]
         public void NewStatus()
         {
-            var statusUpdate = new StatusUpdate
+            var statusUpdate = new UserStatusUpdate
             {
                 NewUserStatus = UserStatus.AwayFromKeyboard
             };
