@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net;
+using Lanchat.Core.Chat;
 using Lanchat.Core.Config;
 using Lanchat.Core.Models;
 

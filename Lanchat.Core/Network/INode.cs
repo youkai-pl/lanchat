@@ -39,11 +39,6 @@ namespace Lanchat.Core.Network
         /// </summary>
         bool Ready { get; }
 
-        /// <summary>
-        ///     Node user status.
-        /// </summary>
-        UserStatus UserStatus { get; }
-
         /// <see cref="IHost" />
         IHost Host { get; }
 

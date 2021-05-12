@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Net.Sockets;
+using Lanchat.Core.Chat;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Models;
 using Lanchat.Core.Network;
@@ -46,7 +47,7 @@ namespace Lanchat.Terminal
             switch (e.PropertyName)
             {
                 case "Status":
-                    var status = node.UserStatus switch
+                    var status = node.Messaging.UserStatus switch
                     {
                         UserStatus.Online => "online",
                         UserStatus.AwayFromKeyboard => "afk",

@@ -1,4 +1,5 @@
 using Lanchat.Core.ApiHandlers;
+using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Models;
 using Lanchat.Tests.Mock.Api;

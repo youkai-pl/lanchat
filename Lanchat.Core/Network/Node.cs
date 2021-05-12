@@ -83,22 +83,6 @@ namespace Lanchat.Core.Network
 
         public string PreviousNickname => $"{previousNickname}#{ShortId}";
         public string ShortId => Id.GetHashCode().ToString().Substring(1, 4);
-
-        public UserStatus UserStatus
-        {
-            get => userStatus;
-            set
-            {
-                if (value == userStatus)
-                {
-                    return;
-                }
-
-                userStatus = value;
-                OnPropertyChanged(nameof(UserStatus));
-            }
-        }
-
         public Guid Id => Host.Id;
         public bool Ready { get; set; }
 

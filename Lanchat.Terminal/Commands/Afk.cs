@@ -1,4 +1,4 @@
-using Lanchat.Core.Models;
+using Lanchat.Core.Chat;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands

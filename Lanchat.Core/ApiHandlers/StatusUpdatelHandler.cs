@@ -15,7 +15,7 @@ namespace Lanchat.Core.ApiHandlers
 
         protected override void Handle(StatusUpdate status)
         {
-            node.UserStatus = status.NewUserStatus;
+            node.Messaging.UserStatus = status.NewUserStatus;
         }
     }
 }
