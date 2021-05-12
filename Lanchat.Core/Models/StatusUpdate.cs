@@ -4,7 +4,7 @@ namespace Lanchat.Core.Models
 {
     internal class StatusUpdate
     {
-        [Required] public Status NewStatus { get; init; }
+        [Required] internal Status NewStatus { get; init; }
     }
 
     /// <summary>
