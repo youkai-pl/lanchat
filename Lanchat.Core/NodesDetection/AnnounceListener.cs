@@ -17,7 +17,7 @@ namespace Lanchat.Core.NodesDetection
     internal class AnnounceListener
     {
         private readonly IConfig config;
-        private readonly ObservableCollection<Announce> detectedNodes;
+        private readonly ObservableCollection<DetectedNode> detectedNodes;
         private readonly JsonUtils jsonUtils;
         private readonly IUdpClient udpClient;
         private readonly string uniqueId;
@@ -26,7 +26,7 @@ namespace Lanchat.Core.NodesDetection
             IConfig config,
             IUdpClient udpClient,
             string uniqueId,
-            ObservableCollection<Announce> detectedNodes)
+            ObservableCollection<DetectedNode> detectedNodes)
         {
             this.udpClient = udpClient;
             this.config = config;
@@ -64,8 +64,7 @@ namespace Lanchat.Core.NodesDetection
                 return;
             }
 
-            broadcast.IpAddress = from.Address;
-            BroadcastReceived(broadcast);
+            BroadcastReceived(broadcast, from.Address);
         }
 
         private bool CheckPreconditions(Announce broadcast)
@@ -80,33 +79,34 @@ namespace Lanchat.Core.NodesDetection
             return false;
         }
 
-        private void BroadcastReceived(Announce e)
+        private void BroadcastReceived(Announce announce, IPAddress ipAddress)
         {
-            var alreadyDetected = detectedNodes.FirstOrDefault(x => Equals(x.IpAddress, e.IpAddress));
+            var alreadyDetected = detectedNodes.FirstOrDefault(x => Equals(x.IpAddress, ipAddress));
             if (alreadyDetected == null)
             {
-                AddNewNode(e);
+                AddNewNode(announce, ipAddress);
             }
             else
             {
-                UpdateNode(e, alreadyDetected);
+                alreadyDetected.Active = true;
+                alreadyDetected.Nickname = announce.Nickname;
             }
         }
-
-        private static void UpdateNode(Announce newAnnounce, Announce alreadyDetected)
+        
+        private void AddNewNode(Announce announce, IPAddress ipAddress)
         {
-            alreadyDetected.Active = true;
-            alreadyDetected.Nickname = newAnnounce.Nickname;
+            var detectedNode = new DetectedNode
+            {
+                Nickname = announce.Nickname,
+                IpAddress = ipAddress,
+                Active = true
+            };
+            
+            detectedNodes.Add(detectedNode);
+            SetupTimer(detectedNode);
         }
 
-        private void AddNewNode(Announce newAnnounce)
-        {
-            detectedNodes.Add(newAnnounce);
-            newAnnounce.Active = true;
-            SetupTimer(newAnnounce);
-        }
-
-        private void SetupTimer(Announce newAnnounce)
+        private void SetupTimer(DetectedNode detectedNode)
         {
             var timer = new Timer
             {
@@ -116,14 +116,14 @@ namespace Lanchat.Core.NodesDetection
 
             timer.Elapsed += (_, _) =>
             {
-                if (newAnnounce.Active)
+                if (detectedNode.Active)
                 {
-                    newAnnounce.Active = false;
+                    detectedNode.Active = false;
                     return;
                 }
 
                 timer.Dispose();
-                detectedNodes.Remove(newAnnounce);
+                detectedNodes.Remove(detectedNode);
             };
         }
     }

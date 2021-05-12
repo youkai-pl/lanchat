@@ -1,7 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
 using Lanchat.Core.Config;
-using Lanchat.Core.Models;
 using Lanchat.Core.Udp;
 
 namespace Lanchat.Core.NodesDetection
@@ -26,7 +25,7 @@ namespace Lanchat.Core.NodesDetection
         /// <summary>
         ///     Detected nodes.
         /// </summary>
-        public ObservableCollection<Announce> DetectedNodes { get; } = new();
+        public ObservableCollection<DetectedNode> DetectedNodes { get; } = new();
 
         internal void Start()
         {
