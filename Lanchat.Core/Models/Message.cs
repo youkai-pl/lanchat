@@ -5,8 +5,8 @@ namespace Lanchat.Core.Models
 {
     internal class Message
     {
-        [Required] [MaxLength(1500)] [Encrypt] internal string Content { get; init; }
+        [Required] [MaxLength(1500)] [Encrypt] public string Content { get; init; }
 
-        internal bool Private { get; init; }
+        public bool Private { get; init; }
     }
 }

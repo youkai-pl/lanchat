@@ -2,7 +2,7 @@
 {
     internal class KeyInfo
     {
-        internal byte[] AesKey { get; init; }
-        internal byte[] AesIv { get; init; }
+        public byte[] AesKey { get; init; }
+        public byte[] AesIv { get; init; }
     }
 }

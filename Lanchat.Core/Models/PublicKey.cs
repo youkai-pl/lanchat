@@ -2,7 +2,7 @@
 {
     internal class PublicKey
     {
-        internal byte[] RsaModulus { get; init; }
-        internal byte[] RsaExponent { get; init; }
+        public byte[] RsaModulus { get; init; }
+        public byte[] RsaExponent { get; init; }
     }
 }

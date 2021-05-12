@@ -5,6 +5,6 @@ namespace Lanchat.Core.Models
 {
     internal class FilePart
     {
-        [MaxLength(1398102)] [Encrypt] internal string Data { get; init; }
+        [MaxLength(1398102)] [Encrypt] public string Data { get; init; }
     }
 }
