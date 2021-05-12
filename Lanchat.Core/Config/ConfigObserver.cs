@@ -23,7 +23,7 @@ namespace Lanchat.Core.Config
                     network.Broadcast.SendData(new NicknameUpdate {NewNickname = network.Config.Nickname});
                     break;
 
-                case "Status":
+                case "UserStatus":
                     network.Broadcast.SendData(new UserStatusUpdate {NewUserStatus = network.Config.UserStatus});
                     break;
             }

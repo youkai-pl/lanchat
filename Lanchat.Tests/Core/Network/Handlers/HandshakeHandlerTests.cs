@@ -46,7 +46,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
 
             publicKeyEncryption.Encrypt(new byte[] {0x10});
             Assert.IsTrue(handshakeHandler.Disabled);
-            Assert.AreEqual(handshake.UserStatus, nodeMock.UserStatus);
+            Assert.AreEqual(handshake.UserStatus, nodeMock.Messaging.UserStatus);
             Assert.IsTrue(nodeMock.HandshakeSent);
             Assert.NotNull(outputMock.LastOutput);
         }

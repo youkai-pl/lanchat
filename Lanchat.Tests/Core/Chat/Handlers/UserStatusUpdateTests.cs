@@ -27,7 +27,7 @@ namespace Lanchat.Tests.Core.Chat.Handlers
             };
 
             userStatusUpdateHandler.Handle(statusUpdate);
-            Assert.AreEqual(statusUpdate.NewUserStatus, nodeMock.UserStatus);
+            Assert.AreEqual(statusUpdate.NewUserStatus, nodeMock.Messaging.UserStatus);
         }
     }
 }
