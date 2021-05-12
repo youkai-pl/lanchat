@@ -10,7 +10,7 @@ namespace Lanchat.Terminal.Commands
 
         public void Execute(string[] _)
         {
-            Program.Config.Status = Status.AwayFromKeyboard;
+            Program.Config.UserStatus = UserStatus.AwayFromKeyboard;
             Ui.BottomBar.Status.Text = "AFK";
         }
     }

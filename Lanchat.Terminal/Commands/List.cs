@@ -18,19 +18,19 @@ namespace Lanchat.Terminal.Commands
                 var status = new TextBlock();
 
                 // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
-                switch (x.Status)
+                switch (x.UserStatus)
                 {
-                    case Status.Online:
+                    case UserStatus.Online:
                         status.Text = "Online";
                         status.Color = ConsoleColor.Green;
                         break;
 
-                    case Status.AwayFromKeyboard:
+                    case UserStatus.AwayFromKeyboard:
                         status.Text = "Afk";
                         status.Color = ConsoleColor.Yellow;
                         break;
 
-                    case Status.DoNotDisturb:
+                    case UserStatus.DoNotDisturb:
                         status.Text = "Dnd";
                         status.Color = ConsoleColor.Red;
                         break;

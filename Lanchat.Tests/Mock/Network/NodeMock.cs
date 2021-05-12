@@ -58,7 +58,7 @@ namespace Lanchat.Tests.Mock.Network
         public bool IsSession => false;
         public IHost Host { get; }
         public string Nickname { get; set; }
-        public Status Status { get; set; } = Status.Online;
+        public UserStatus UserStatus { get; set; } = UserStatus.Online;
         public Guid Id { get; } = Guid.NewGuid();
         public IModelEncryption ModelEncryption { get; }
 

@@ -22,11 +22,11 @@ namespace Lanchat.Tests.Core.ApiHandlers
         {
             var statusUpdate = new StatusUpdate
             {
-                NewStatus = Status.AwayFromKeyboard
+                NewUserStatus = UserStatus.AwayFromKeyboard
             };
 
             statusUpdateHandler.Handle(statusUpdate);
-            Assert.AreEqual(statusUpdate.NewStatus, nodeMock.Status);
+            Assert.AreEqual(statusUpdate.NewUserStatus, nodeMock.UserStatus);
         }
     }
 }

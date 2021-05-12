@@ -9,7 +9,7 @@ namespace Lanchat.Core.Network
     {
         string Nickname { set; }
 
-        Status Status { set; }
+        UserStatus UserStatus { set; }
 
         Guid Id { get; }
 

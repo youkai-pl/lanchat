@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Lanchat.Core.Encryption;
 
 namespace Lanchat.Core.Models
 {
@@ -6,7 +7,7 @@ namespace Lanchat.Core.Models
     {
         [Required] [MaxLength(20)] public string Nickname { get; init; }
 
-        [Required] public Status Status { get; init; }
+        [Required] public UserStatus UserStatus { get; init; }
 
         [Required] public PublicKey PublicKey { get; init; }
     }

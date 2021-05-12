@@ -1,4 +1,4 @@
-﻿namespace Lanchat.Core.Models
+﻿namespace Lanchat.Core.Encryption
 {
     internal class PublicKey
     {

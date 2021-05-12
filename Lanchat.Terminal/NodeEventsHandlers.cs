@@ -46,11 +46,11 @@ namespace Lanchat.Terminal
             switch (e.PropertyName)
             {
                 case "Status":
-                    var status = node.Status switch
+                    var status = node.UserStatus switch
                     {
-                        Status.Online => "online",
-                        Status.AwayFromKeyboard => "afk",
-                        Status.DoNotDisturb => "dnd",
+                        UserStatus.Online => "online",
+                        UserStatus.AwayFromKeyboard => "afk",
+                        UserStatus.DoNotDisturb => "dnd",
                         _ => ""
                     };
                     Ui.Log.Add(string.Format(Resources._StatusChange, node.Nickname, status));

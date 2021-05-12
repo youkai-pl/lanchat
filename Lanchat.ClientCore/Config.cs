@@ -22,7 +22,7 @@ namespace Lanchat.ClientCore
         private string nickname = Environment.UserName;
         private int port = 3645;
         private ObservableCollection<IPAddress> savedAddresses = new();
-        private Status status = Status.Online;
+        private UserStatus userStatus = UserStatus.Online;
         private bool useIPv6;
 
         /// <summary>
@@ -80,13 +80,13 @@ namespace Lanchat.ClientCore
         }
 
         /// <inheritdoc />
-        public Status Status
+        public UserStatus UserStatus
         {
-            get => status;
+            get => userStatus;
             set
             {
-                status = value;
-                OnPropertyChanged(nameof(Status));
+                userStatus = value;
+                OnPropertyChanged(nameof(UserStatus));
             }
         }
 

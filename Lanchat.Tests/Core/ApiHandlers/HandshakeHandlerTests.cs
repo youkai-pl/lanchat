@@ -37,14 +37,14 @@ namespace Lanchat.Tests.Core.ApiHandlers
             var handshake = new Handshake
             {
                 Nickname = "test",
-                Status = Status.Online,
+                UserStatus = UserStatus.Online,
                 PublicKey = publicKeyEncryption.ExportKey()
             };
             handshakeHandler.Handle(handshake);
 
             publicKeyEncryption.Encrypt(new byte[] {0x10});
             Assert.IsTrue(handshakeHandler.Disabled);
-            Assert.AreEqual(handshake.Status, nodeMock.Status);
+            Assert.AreEqual(handshake.UserStatus, nodeMock.UserStatus);
             Assert.IsTrue(nodeMock.HandshakeSent);
             Assert.NotNull(outputMock.LastOutput);
         }
@@ -55,7 +55,7 @@ namespace Lanchat.Tests.Core.ApiHandlers
             var handshake = new Handshake
             {
                 Nickname = "test",
-                Status = Status.Online,
+                UserStatus = UserStatus.Online,
                 PublicKey = new PublicKey()
             };
             handshakeHandler.Handle(handshake);

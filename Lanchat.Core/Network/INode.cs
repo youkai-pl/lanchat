@@ -42,7 +42,7 @@ namespace Lanchat.Core.Network
         /// <summary>
         ///     Node user status.
         /// </summary>
-        Status Status { get; }
+        UserStatus UserStatus { get; }
 
         /// <see cref="IHost" />
         IHost Host { get; }

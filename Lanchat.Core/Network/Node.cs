@@ -17,7 +17,7 @@ namespace Lanchat.Core.Network
         private readonly IConfig config;
         private string nickname;
         private string previousNickname;
-        private Status status;
+        private UserStatus userStatus;
 
         internal Node(IHost host, IConfig config)
         {
@@ -84,18 +84,18 @@ namespace Lanchat.Core.Network
         public string PreviousNickname => $"{previousNickname}#{ShortId}";
         public string ShortId => Id.GetHashCode().ToString().Substring(1, 4);
 
-        public Status Status
+        public UserStatus UserStatus
         {
-            get => status;
+            get => userStatus;
             set
             {
-                if (value == status)
+                if (value == userStatus)
                 {
                     return;
                 }
 
-                status = value;
-                OnPropertyChanged(nameof(Status));
+                userStatus = value;
+                OnPropertyChanged(nameof(UserStatus));
             }
         }
 
@@ -124,7 +124,7 @@ namespace Lanchat.Core.Network
             var handshake = new Handshake
             {
                 Nickname = config.Nickname,
-                Status = config.Status,
+                UserStatus = config.UserStatus,
                 PublicKey = PublicKeyEncryption.ExportKey()
             };
 

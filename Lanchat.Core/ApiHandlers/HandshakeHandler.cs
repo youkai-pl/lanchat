@@ -38,7 +38,7 @@ namespace Lanchat.Core.ApiHandlers
             try
             {
                 publicKeyEncryption.ImportKey(handshake.PublicKey);
-                node.Status = handshake.Status;
+                node.UserStatus = handshake.UserStatus;
                 output.SendPrivilegedData(encryption.ExportKey());
                 Disabled = true;
             }

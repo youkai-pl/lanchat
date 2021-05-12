@@ -4,13 +4,13 @@ namespace Lanchat.Core.Models
 {
     internal class StatusUpdate
     {
-        [Required] public Status NewStatus { get; init; }
+        [Required] public UserStatus NewUserStatus { get; init; }
     }
 
     /// <summary>
     ///     Node user status.
     /// </summary>
-    public enum Status
+    public enum UserStatus
     {
         /// <summary>
         ///     Online.

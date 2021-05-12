@@ -40,7 +40,7 @@ namespace Lanchat.Core.Config
         /// <summary>
         ///     User status.
         /// </summary>
-        Status Status { get; set; }
+        UserStatus UserStatus { get; set; }
 
         /// <summary>
         ///     Use IPv6 instead IPv4.

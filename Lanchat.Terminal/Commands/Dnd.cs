@@ -10,7 +10,7 @@ namespace Lanchat.Terminal.Commands
 
         public void Execute(string[] _)
         {
-            Program.Config.Status = Status.DoNotDisturb;
+            Program.Config.UserStatus = UserStatus.DoNotDisturb;
             Ui.BottomBar.Status.Text = "DND";
         }
     }
