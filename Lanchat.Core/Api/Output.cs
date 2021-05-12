@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Lanchat.Core.Encryption;
+﻿using Lanchat.Core.Encryption;
 using Lanchat.Core.Json;
 using Lanchat.Core.Network;
 using Lanchat.Core.Tcp;

@@ -1,7 +1,5 @@
 using Lanchat.Core.Api;
-using Lanchat.Core.Chat;
 using Lanchat.Core.Chat.Handlers;
-using Lanchat.Core.Config;
 using Lanchat.Core.Encryption.Handlers;
 using Lanchat.Core.FileSystem;
 using Lanchat.Core.FileTransfer;
@@ -11,7 +9,7 @@ namespace Lanchat.Core.Network
 {
     internal static class HandlersSetup
     {
-        internal static void RegisterHandlers(IResolver resolver, Node node, IConfig config, IStorage storage)
+        internal static void RegisterHandlers(IResolver resolver, Node node, IStorage storage)
         {
             resolver.RegisterHandler(new HandshakeHandler(
                 node.PublicKeyEncryption,

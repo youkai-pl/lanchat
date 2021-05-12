@@ -17,7 +17,6 @@ namespace Lanchat.Core.Network
         private readonly IConfig config;
         private string nickname;
         private string previousNickname;
-        private UserStatus userStatus;
 
         internal Node(IHost host, IConfig config)
         {
@@ -36,7 +35,7 @@ namespace Lanchat.Core.Network
             FileSender = new FileSender(fileTransferOutput, fileSystem);
 
             Resolver = new Resolver(this);
-            HandlersSetup.RegisterHandlers(Resolver, this, config, fileSystem);
+            HandlersSetup.RegisterHandlers(Resolver, this, fileSystem);
 
             var input = new Input(Resolver);
             Host.DataReceived += input.OnDataReceived;
