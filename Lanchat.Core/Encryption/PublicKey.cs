@@ -1,8 +1,10 @@
-﻿namespace Lanchat.Core.Encryption
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Lanchat.Core.Encryption
 {
     internal class PublicKey
     {
-        public byte[] RsaModulus { get; init; }
-        public byte[] RsaExponent { get; init; }
+        [Required] public byte[] RsaModulus { get; init; }
+        [Required] public byte[] RsaExponent { get; init; }
     }
 }

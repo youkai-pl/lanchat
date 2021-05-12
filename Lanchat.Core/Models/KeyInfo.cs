@@ -1,8 +1,10 @@
-﻿namespace Lanchat.Core.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Lanchat.Core.Models
 {
     internal class KeyInfo
     {
-        public byte[] AesKey { get; init; }
-        public byte[] AesIv { get; init; }
+        [Required] public byte[] AesKey { get; init; }
+        [Required] public byte[] AesIv { get; init; }
     }
 }

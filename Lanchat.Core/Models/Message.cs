@@ -7,6 +7,6 @@ namespace Lanchat.Core.Models
     {
         [Required] [MaxLength(1500)] [Encrypt] public string Content { get; init; }
 
-        public bool Private { get; init; }
+        [Required] public bool Private { get; init; }
     }
 }
