@@ -2,7 +2,7 @@
 
 Encrypted, P2P, local network chat. 
 
-[Documentation](https://github.com/tofudd/lanchat/wiki)
+[Documentation](https://tofu.ovh/lanchat-docs/)
 
 ## Installation
 
