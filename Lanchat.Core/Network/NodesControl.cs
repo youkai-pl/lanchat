@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Lanchat.Core.ApiHandlers;
 using Lanchat.Core.Config;
+using Lanchat.Core.Network.Handlers;
 using Lanchat.Core.Network.Models;
 using Lanchat.Core.Tcp;
 

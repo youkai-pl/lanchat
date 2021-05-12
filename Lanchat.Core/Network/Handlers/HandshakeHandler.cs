@@ -1,10 +1,9 @@
 using System.Security.Cryptography;
 using Lanchat.Core.Api;
 using Lanchat.Core.Encryption;
-using Lanchat.Core.Network;
 using Lanchat.Core.Network.Models;
 
-namespace Lanchat.Core.ApiHandlers
+namespace Lanchat.Core.Network.Handlers
 {
     internal class HandshakeHandler : ApiHandler<Handshake>
     {

@@ -1,7 +1,7 @@
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat.Models;
 
-namespace Lanchat.Core.Chat
+namespace Lanchat.Core.Chat.Handlers
 {
     internal class MessageHandler : ApiHandler<Message>
     {

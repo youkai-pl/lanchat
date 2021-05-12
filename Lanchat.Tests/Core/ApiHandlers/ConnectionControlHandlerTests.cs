@@ -1,4 +1,4 @@
-using Lanchat.Core.ApiHandlers;
+using Lanchat.Core.Network.Handlers;
 using Lanchat.Core.Network.Models;
 using Lanchat.Tests.Mock.Tcp;
 using NUnit.Framework;

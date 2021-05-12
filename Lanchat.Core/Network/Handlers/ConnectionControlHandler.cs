@@ -4,7 +4,7 @@ using Lanchat.Core.Tcp;
 
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 
-namespace Lanchat.Core.ApiHandlers
+namespace Lanchat.Core.Network.Handlers
 {
     internal class ConnectionControlHandler : ApiHandler<ConnectionControl>
     {

@@ -1,11 +1,10 @@
 using System;
 using System.Security.Cryptography;
 using Lanchat.Core.Api;
-using Lanchat.Core.Encryption;
 using Lanchat.Core.Encryption.Models;
 using Lanchat.Core.Network;
 
-namespace Lanchat.Core.ApiHandlers
+namespace Lanchat.Core.Encryption.Handlers
 {
     internal class KeyInfoHandler : ApiHandler<KeyInfo>
     {

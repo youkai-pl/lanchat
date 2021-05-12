@@ -1,5 +1,5 @@
-using Lanchat.Core.ApiHandlers;
 using Lanchat.Core.Encryption;
+using Lanchat.Core.Encryption.Handlers;
 using Lanchat.Core.Encryption.Models;
 using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;

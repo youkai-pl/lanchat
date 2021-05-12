@@ -1,9 +1,11 @@
 using Lanchat.Core.Api;
-using Lanchat.Core.ApiHandlers;
 using Lanchat.Core.Chat;
+using Lanchat.Core.Chat.Handlers;
 using Lanchat.Core.Config;
+using Lanchat.Core.Encryption.Handlers;
 using Lanchat.Core.FileSystem;
 using Lanchat.Core.FileTransfer;
+using Lanchat.Core.Network.Handlers;
 
 namespace Lanchat.Core.Network
 {
@@ -17,7 +19,7 @@ namespace Lanchat.Core.Network
                 node.Output, node));
             resolver.RegisterHandler(new KeyInfoHandler(node.SymmetricEncryption, node));
             resolver.RegisterHandler(new ConnectionControlHandler(node.Host));
-            resolver.RegisterHandler(new StatusUpdateHandler(node));
+            resolver.RegisterHandler(new UserStatusUpdateHandler(node));
             resolver.RegisterHandler(new NicknameUpdateHandler(node));
             resolver.RegisterHandler(new MessageHandler(node.Messaging));
             resolver.RegisterHandler(new FilePartHandler(node.FileReceiver, storage));
