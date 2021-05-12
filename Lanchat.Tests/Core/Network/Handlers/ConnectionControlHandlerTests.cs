@@ -3,7 +3,7 @@ using Lanchat.Core.Network.Models;
 using Lanchat.Tests.Mock.Tcp;
 using NUnit.Framework;
 
-namespace Lanchat.Tests.Core.ApiHandlers
+namespace Lanchat.Tests.Core.Network.Handlers
 {
     public class ConnectionControlHandlerTests
     {

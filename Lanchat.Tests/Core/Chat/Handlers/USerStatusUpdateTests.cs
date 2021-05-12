@@ -4,9 +4,9 @@ using Lanchat.Core.Chat.Models;
 using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 
-namespace Lanchat.Tests.Core.ApiHandlers
+namespace Lanchat.Tests.Core.Chat.Handlers
 {
-    public class StatusUpdateTests
+    public class USerStatusUpdateTests
     {
         private NodeMock nodeMock;
         private UserStatusUpdateHandler userStatusUpdateHandler;

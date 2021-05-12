@@ -3,7 +3,7 @@ using Lanchat.Core.Network.Models;
 using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 
-namespace Lanchat.Tests.Core.ApiHandlers
+namespace Lanchat.Tests.Core.Network.Handlers
 {
     public class NicknameUpdateHandlerTests
 

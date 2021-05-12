@@ -4,7 +4,7 @@ using Lanchat.Core.Encryption.Models;
 using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 
-namespace Lanchat.Tests.Core.ApiHandlers
+namespace Lanchat.Tests.Core.Encryption.Handlers
 {
     public class KeyInfoHandlerTest
     {
