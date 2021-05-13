@@ -21,7 +21,7 @@ namespace Lanchat.Core.Network
     internal class Node : IDisposable, INode, INodeInternal
     {
         private readonly IConfig config;
-        internal IContainer Container { get; }
+        private readonly IContainer container;
         private string nickname;
         private string previousNickname;
         private readonly IPublicKeyEncryption publicKeyEncryption;
@@ -41,6 +41,8 @@ namespace Lanchat.Core.Network
             builder.RegisterType<ModelEncryption>().As<IModelEncryption>().SingleInstance();
             builder.RegisterType<Output>().As<IOutput>().SingleInstance();
             builder.RegisterType<Storage>().As<IStorage>().SingleInstance();
+            builder.RegisterType<HandshakeSender>().SingleInstance();
+            builder.RegisterType<Connection>().SingleInstance();
             builder.RegisterType<Resolver>().SingleInstance();
             builder.RegisterType<Messaging>().SingleInstance();
             builder.RegisterType<FileTransferOutput>().SingleInstance();
@@ -48,26 +50,26 @@ namespace Lanchat.Core.Network
             builder.RegisterType<FileSender>().SingleInstance();
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
                .Where(t => t.Name.EndsWith("Handler") && t.Name != "NodesListHandler").AsImplementedInterfaces();
-            Container = builder.Build();
+            container = builder.Build();
             
-            FileReceiver = Container.Resolve<FileReceiver>();
-            FileSender = Container.Resolve<FileSender>();
-            publicKeyEncryption = Container.Resolve<IPublicKeyEncryption>();
-            Output = Container.Resolve<IOutput>();
-            Resolver = Container.Resolve<Resolver>();
-            Messaging = Container.Resolve<Messaging>();
+            FileReceiver = container.Resolve<FileReceiver>();
+            FileSender = container.Resolve<FileSender>();
+            publicKeyEncryption = container.Resolve<IPublicKeyEncryption>();
+            Output = container.Resolve<IOutput>();
+            Resolver = container.Resolve<Resolver>();
+            Messaging = container.Resolve<Messaging>();
             
             var input = new Input(Resolver);
             Host.DataReceived += input.OnDataReceived;
             Host.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
 
-            var connection = new Connection(this);
+            var connection = container.Resolve<Connection>();
             connection.Initialize();
         }
         
         public void Dispose()
         {
-            Container.Dispose();
+            container.Dispose();
             GC.SuppressFinalize(this);
         }
 
@@ -113,20 +115,7 @@ namespace Lanchat.Core.Network
             Dispose();
         }
 
-        public IModelEncryption ModelEncryption { get; }
         public bool IsSession { get; }
-
-        public void SendHandshake()
-        {
-            var handshake = new Handshake
-            {
-                Nickname = config.Nickname,
-                UserStatus = config.UserStatus,
-                PublicKey = publicKeyEncryption.ExportKey()
-            };
-
-            Output.SendPrivilegedData(handshake);
-        }
 
         public void OnConnected()
         {

@@ -11,6 +11,7 @@ namespace Lanchat.Core.Network.Handlers
         private readonly ISymmetricEncryption encryption;
         private readonly INodeInternal node;
         private readonly Messaging messaging;
+        private readonly HandshakeSender handshakeSender;
         private readonly IOutput output;
         private readonly IPublicKeyEncryption publicKeyEncryption;
 
@@ -19,13 +20,15 @@ namespace Lanchat.Core.Network.Handlers
             ISymmetricEncryption encryption,
             IOutput output,
             INodeInternal node,
-            Messaging messaging)
+            Messaging messaging,
+            HandshakeSender handshakeSender)
         {
             this.publicKeyEncryption = publicKeyEncryption;
             this.encryption = encryption;
             this.output = output;
             this.node = node;
             this.messaging = messaging;
+            this.handshakeSender = handshakeSender;
             Privileged = true;
         }
 
@@ -35,7 +38,7 @@ namespace Lanchat.Core.Network.Handlers
 
             if (!node.IsSession)
             {
-                node.SendHandshake();
+                handshakeSender.SendHandshake();
             }
 
             try

@@ -6,10 +6,12 @@ namespace Lanchat.Core.Network
     internal class Connection
     {
         private readonly INodeInternal nodeInternal;
+        private readonly HandshakeSender handshakeSender;
 
-        internal Connection(INodeInternal nodeInternal)
+        public Connection(INodeInternal nodeInternal, HandshakeSender handshakeSender)
         {
             this.nodeInternal = nodeInternal;
+            this.handshakeSender = handshakeSender;
             nodeInternal.Host.Disconnected += OnDisconnected;
         }
 
@@ -17,7 +19,7 @@ namespace Lanchat.Core.Network
         {
             if (nodeInternal.IsSession)
             {
-                nodeInternal.SendHandshake();
+                handshakeSender.SendHandshake();
             }
 
             Task.Delay(5000).ContinueWith(_ =>

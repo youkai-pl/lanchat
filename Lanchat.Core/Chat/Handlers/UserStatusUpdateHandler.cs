@@ -6,16 +6,16 @@ namespace Lanchat.Core.Chat.Handlers
 {
     internal class UserStatusUpdateHandler : ApiHandler<UserStatusUpdate>
     {
-        private readonly INodeInternal node;
+        private readonly Messaging messaging;
 
-        public UserStatusUpdateHandler(INodeInternal node)
+        public UserStatusUpdateHandler(Messaging messaging)
         {
-            this.node = node;
+            this.messaging = messaging;
         }
 
         protected override void Handle(UserStatusUpdate userStatus)
         {
-            node.Messaging.UserStatus = userStatus.NewUserStatus;
+            messaging.UserStatus = userStatus.NewUserStatus;
         }
     }
 }

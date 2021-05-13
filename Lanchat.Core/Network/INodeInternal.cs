@@ -12,9 +12,6 @@ namespace Lanchat.Core.Network
         bool Ready { get; set; }
         bool IsSession { get; }
         IHost Host { get; }
-        IModelEncryption ModelEncryption { get; }
-        Messaging Messaging { get; }
-        void SendHandshake();
         void OnConnected();
         void OnDisconnected();
         void OnCannotConnect();
