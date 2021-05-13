@@ -29,17 +29,25 @@ namespace Lanchat.Core.Network
 
         internal Node CreateNode(IHost host)
         {
-            var nodeContainer = container.BeginLifetimeScope(b =>
+            var scope = container.BeginLifetimeScope(b =>
             {
                 b.RegisterInstance(host).As<IHost>();
             });
-            
-            var node = nodeContainer.Resolve<Node>();
+            var node = scope.Resolve<Node>();
             Nodes.Add(node);
             node.Resolver.RegisterHandler(new NodesListHandler(config, network));
             node.Connected += OnConnected;
-            node.CannotConnect += CloseNode;
-            node.Disconnected += CloseNode;
+            node.CannotConnect += (sender, args) =>
+            {
+                CloseNode(sender, args);
+                scope.Dispose();
+            };
+            
+            node.Disconnected += (sender, args) =>
+            {
+                CloseNode(sender, args);
+                scope.Dispose();
+            };
             NodeCreated?.Invoke(this, node);
             node.Connection.Initialize();
             return node;

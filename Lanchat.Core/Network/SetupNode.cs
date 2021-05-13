@@ -21,6 +21,7 @@ namespace Lanchat.Core.Network
                 .As<INodeInternal>()
                 .InstancePerLifetimeScope()
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+            
             builder.RegisterType<PublicKeyEncryption>().As<IPublicKeyEncryption>().InstancePerLifetimeScope();
             builder.RegisterType<SymmetricEncryption>().As<ISymmetricEncryption>().InstancePerLifetimeScope();
             builder.RegisterType<ModelEncryption>().As<IModelEncryption>().InstancePerLifetimeScope();
@@ -34,11 +35,13 @@ namespace Lanchat.Core.Network
             builder.RegisterType<FileTransferOutput>().InstancePerLifetimeScope();
             builder.RegisterType<FileReceiver>().InstancePerLifetimeScope();
             builder.RegisterType<FileSender>().InstancePerLifetimeScope();
+            
             builder.RegisterAssemblyTypes(
                     Assembly.GetExecutingAssembly())
                 .Where(t => t.Name.EndsWith("Handler") && t.Name != "NodesListHandler")
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
+            
             return builder.Build();
         }
     }

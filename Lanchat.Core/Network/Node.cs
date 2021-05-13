@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Net.Sockets;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;

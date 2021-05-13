@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Lanchat.Core.FileSystem;
 using Lanchat.Core.FileTransfer.Models;
 
