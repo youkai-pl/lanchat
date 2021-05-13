@@ -1,6 +1,7 @@
 using Lanchat.Core.Chat;
 using Lanchat.Core.Chat.Handlers;
 using Lanchat.Core.Chat.Models;
+using Lanchat.Tests.Mock.Api;
 using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 
@@ -15,7 +16,7 @@ namespace Lanchat.Tests.Core.Chat.Handlers
         public void Setup()
         {
             nodeMock = new NodeMock();
-            userStatusUpdateHandler = new UserStatusUpdateHandler(nodeMock);
+            userStatusUpdateHandler = new UserStatusUpdateHandler(nodeMock.Messaging);
         }
 
         [Test]

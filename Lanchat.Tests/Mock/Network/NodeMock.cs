@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Sockets;
 using Lanchat.Core.Api;
@@ -23,7 +24,7 @@ namespace Lanchat.Tests.Mock.Network
             Nickname = "test";
             PreviousNickname = "test";
             ModelEncryption = new ModelEncryptionMock();
-            Resolver = new Resolver(this);
+            Resolver = new Resolver(this, ModelEncryption, new List<IApiHandler>());
             Messaging = new Messaging(Output);
             
             var fileTransferOutput = new FileTransferOutput(Output);
@@ -31,7 +32,6 @@ namespace Lanchat.Tests.Mock.Network
             FileReceiver = new FileReceiver(fileTransferOutput, new StorageMock());
         }
 
-        public bool HandshakeSent { get; private set; }
         public bool ConnectedEvent { get; private set; }
         public bool CannotConnectEvent { get; private set; }
 
@@ -59,11 +59,6 @@ namespace Lanchat.Tests.Mock.Network
         public string Nickname { get; set; }
         public Guid Id { get; } = Guid.NewGuid();
         public IModelEncryption ModelEncryption { get; }
-
-        public void SendHandshake()
-        {
-            HandshakeSent = true;
-        }
 
         public void OnConnected()
         {

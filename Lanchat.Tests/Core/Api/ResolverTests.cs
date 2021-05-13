@@ -4,6 +4,7 @@ using Lanchat.Core.Chat.Models;
 using Lanchat.Core.Json;
 using Lanchat.Core.Network.Models;
 using Lanchat.Tests.Mock.ApiHandlers;
+using Lanchat.Tests.Mock.Encryption;
 using Lanchat.Tests.Mock.Models;
 using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
@@ -22,15 +23,19 @@ namespace Lanchat.Tests.Core.Api
         [SetUp]
         public void Setup()
         {
+            messageHandlerMock = new MessageHandlerMock();
+            privilegedHandler = new PrivilegedHandler();
             jsonUtils = new JsonUtils();
             nodeMock = new NodeMock
             {
                 Ready = true
             };
-            resolver = new Resolver(nodeMock);
+            resolver = new Resolver(nodeMock, new ModelEncryptionMock(), new IApiHandler[]
+            {
+                messageHandlerMock,
+                privilegedHandler
+            });
             input = new Input(resolver);
-            messageHandlerMock = new MessageHandlerMock();
-            privilegedHandler = new PrivilegedHandler();
             resolver.RegisterHandler(messageHandlerMock);
             resolver.RegisterHandler(privilegedHandler);
         }

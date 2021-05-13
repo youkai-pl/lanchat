@@ -1,6 +1,7 @@
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Chat.Handlers;
+using Lanchat.Tests.Mock.Encryption;
 using Lanchat.Tests.Mock.Network;
 using Lanchat.Tests.Mock.Tcp;
 using NUnit.Framework;
@@ -23,11 +24,13 @@ namespace Lanchat.Tests.Core.Chat
                 Ready = true
             };
             hostMock = new HostMock();
-            output = new Output(hostMock, nodeState);
+            output = new Output(hostMock, nodeState, new ModelEncryptionMock());
             messaging = new Messaging(output);
             messageHandler = new MessageHandler(messaging);
-            resolver = new Resolver(nodeState);
-            resolver.RegisterHandler(messageHandler);
+            resolver = new Resolver(nodeState, new ModelEncryptionMock(), new[]
+            {
+                messageHandler
+            });
         }
 
         [Test]

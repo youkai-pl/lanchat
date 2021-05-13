@@ -1,9 +1,11 @@
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Encryption.Models;
+using Lanchat.Core.Network;
 using Lanchat.Core.Network.Handlers;
 using Lanchat.Core.Network.Models;
 using Lanchat.Tests.Mock.Api;
+using Lanchat.Tests.Mock.Config;
 using Lanchat.Tests.Mock.Encryption;
 using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
@@ -24,13 +26,15 @@ namespace Lanchat.Tests.Core.Network.Handlers
             publicKeyEncryption = new PublicKeyEncryption();
             symmetricEncryptionMock = new SymmetricEncryptionMock();
             outputMock = new OutputMock();
-            nodeMock = new NodeMock();
+            nodeMock = new NodeMock(outputMock);
 
             handshakeHandler = new HandshakeHandler(
                 publicKeyEncryption,
                 symmetricEncryptionMock,
                 outputMock,
-                nodeMock);
+                nodeMock,
+                new Messaging(outputMock),
+                new HandshakeSender(outputMock, new ConfigMock(), publicKeyEncryption));
         }
 
         [Test]
@@ -47,7 +51,6 @@ namespace Lanchat.Tests.Core.Network.Handlers
             publicKeyEncryption.Encrypt(new byte[] {0x10});
             Assert.IsTrue(handshakeHandler.Disabled);
             Assert.AreEqual(handshake.UserStatus, nodeMock.Messaging.UserStatus);
-            Assert.IsTrue(nodeMock.HandshakeSent);
             Assert.NotNull(outputMock.LastOutput);
         }
 
