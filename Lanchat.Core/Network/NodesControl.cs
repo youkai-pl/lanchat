@@ -61,7 +61,6 @@ namespace Lanchat.Core.Network
             node.Connected -= OnConnected;
             node.CannotConnect -= CloseNode;
             node.Disconnected -= CloseNode;
-            node.Dispose();
             Trace.WriteLine($"Node {id} disposed");
         }
 
