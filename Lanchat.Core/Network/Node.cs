@@ -47,8 +47,7 @@ namespace Lanchat.Core.Network
             builder.RegisterType<FileReceiver>().SingleInstance();
             builder.RegisterType<FileSender>().SingleInstance();
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-               .Where(t => t.Name.EndsWith("Handler"));
-            
+               .Where(t => t.Name.EndsWith("Handler") && t.Name != "NodesListHandler").AsImplementedInterfaces();
             Container = builder.Build();
             
             FileReceiver = Container.Resolve<FileReceiver>();
@@ -58,8 +57,6 @@ namespace Lanchat.Core.Network
             Resolver = Container.Resolve<Resolver>();
             Messaging = Container.Resolve<Messaging>();
             
-            HandlersSetup.RegisterHandlers(Resolver, Container);
-
             var input = new Input(Resolver);
             Host.DataReceived += input.OnDataReceived;
             Host.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
