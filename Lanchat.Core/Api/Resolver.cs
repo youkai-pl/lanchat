@@ -17,10 +17,10 @@ namespace Lanchat.Core.Api
         private readonly INodeInternal node;
         private readonly Validation validation;
 
-        internal Resolver(INodeInternal node)
+        public Resolver(INodeInternal node, IModelEncryption encryption)
         {
             this.node = node;
-            encryption = node.ModelEncryption;
+            this.encryption = encryption;
             jsonUtils = new JsonUtils();
             validation = new Validation(node);
         }

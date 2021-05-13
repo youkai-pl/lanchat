@@ -16,7 +16,7 @@ namespace Lanchat.Core.FileTransfer
         private const int ChunkSize = 1024 * 1024;
         private bool disposing;
 
-        internal FileSender(FileTransferOutput fileTransferOutput, IStorage storage)
+        public FileSender(FileTransferOutput fileTransferOutput, IStorage storage)
         {
             this.fileTransferOutput = fileTransferOutput;
             this.storage = storage;

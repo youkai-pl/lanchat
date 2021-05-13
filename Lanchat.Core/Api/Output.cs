@@ -15,11 +15,11 @@ namespace Lanchat.Core.Api
         private readonly JsonUtils jsonUtils;
         private readonly INodeInternal node;
 
-        internal Output(IHost host, INodeInternal node)
+        public Output(IHost host, INodeInternal node, IModelEncryption encryption)
         {
             this.host = host;
             this.node = node;
-            encryption = node.ModelEncryption;
+            this.encryption = encryption;
             jsonUtils = new JsonUtils();
         }
 

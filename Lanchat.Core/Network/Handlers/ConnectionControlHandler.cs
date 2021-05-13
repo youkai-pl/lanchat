@@ -10,7 +10,7 @@ namespace Lanchat.Core.Network.Handlers
     {
         private readonly IHost host;
 
-        internal ConnectionControlHandler(IHost host)
+        public ConnectionControlHandler(IHost host)
         {
             this.host = host;
         }

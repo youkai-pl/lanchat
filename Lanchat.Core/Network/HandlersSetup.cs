@@ -1,7 +1,7 @@
+using Autofac;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat.Handlers;
 using Lanchat.Core.Encryption.Handlers;
-using Lanchat.Core.FileSystem;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Network.Handlers;
 
@@ -9,20 +9,17 @@ namespace Lanchat.Core.Network
 {
     internal static class HandlersSetup
     {
-        internal static void RegisterHandlers(IResolver resolver, Node node, IStorage storage)
+        internal static void RegisterHandlers(IResolver resolver, IContainer container)
         {
-            resolver.RegisterHandler(new HandshakeHandler(
-                node.PublicKeyEncryption,
-                node.SymmetricEncryption,
-                node.Output, node));
-            resolver.RegisterHandler(new KeyInfoHandler(node.SymmetricEncryption, node));
-            resolver.RegisterHandler(new ConnectionControlHandler(node.Host));
-            resolver.RegisterHandler(new UserStatusUpdateHandler(node));
-            resolver.RegisterHandler(new NicknameUpdateHandler(node));
-            resolver.RegisterHandler(new MessageHandler(node.Messaging));
-            resolver.RegisterHandler(new FilePartHandler(node.FileReceiver, storage));
-            resolver.RegisterHandler(new FileReceiveRequestHandler(node.FileReceiver, storage));
-            resolver.RegisterHandler(new FileTransferControlHandler(node.FileReceiver, node.FileSender));
+            resolver.RegisterHandler(container.Resolve<HandshakeHandler>());
+            resolver.RegisterHandler(container.Resolve<KeyInfoHandler>());
+            resolver.RegisterHandler(container.Resolve<ConnectionControlHandler>());
+            resolver.RegisterHandler(container.Resolve<UserStatusUpdateHandler>());
+            resolver.RegisterHandler(container.Resolve<NicknameUpdateHandler>());
+            resolver.RegisterHandler(container.Resolve<MessageHandler>());
+            resolver.RegisterHandler(container.Resolve<FilePartHandler>());
+            resolver.RegisterHandler(container.Resolve<FileReceiveRequestHandler>());
+            resolver.RegisterHandler(container.Resolve<FileTransferControlHandler>());
         }
     }
 }

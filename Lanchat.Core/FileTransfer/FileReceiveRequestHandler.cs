@@ -9,7 +9,7 @@ namespace Lanchat.Core.FileTransfer
         private readonly FileReceiver fileReceiver;
         private readonly IStorage storage;
 
-        internal FileReceiveRequestHandler (FileReceiver fileReceiver, IStorage storage)
+        public FileReceiveRequestHandler (FileReceiver fileReceiver, IStorage storage)
         {
             this.fileReceiver = fileReceiver;
             this.storage = storage;

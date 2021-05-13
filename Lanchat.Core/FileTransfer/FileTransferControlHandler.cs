@@ -9,7 +9,7 @@ namespace Lanchat.Core.FileTransfer
         private readonly FileReceiver fileReceiver;
         private readonly FileSender fileSender;
 
-        internal FileTransferControlHandler(FileReceiver fileReceiver, FileSender fileSender)
+        public FileTransferControlHandler(FileReceiver fileReceiver, FileSender fileSender)
         {
             this.fileReceiver = fileReceiver;
             this.fileSender = fileSender;

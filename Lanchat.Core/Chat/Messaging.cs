@@ -13,7 +13,7 @@ namespace Lanchat.Core.Chat
         private readonly IOutput output;
         private UserStatus userStatus;
 
-        internal Messaging(IOutput output)
+        public Messaging(IOutput output)
         {
             this.output = output;
         }

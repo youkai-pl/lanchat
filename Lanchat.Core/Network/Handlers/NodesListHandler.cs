@@ -11,7 +11,7 @@ namespace Lanchat.Core.Network.Handlers
         private readonly IConfig config;
         private readonly IP2P network;
 
-        internal NodesListHandler(IConfig config, IP2P network)
+        public NodesListHandler(IConfig config, IP2P network)
         {
             this.config = config;
             this.network = network;

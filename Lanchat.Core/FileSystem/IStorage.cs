@@ -2,7 +2,7 @@ using System;
 
 namespace Lanchat.Core.FileSystem
 {
-    internal interface IStorage
+    public interface IStorage
     {
         string GetFilePath(string path);
         long GetFileSize(string path);

@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using Lanchat.Core.Api;
+using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Network.Models;
 
@@ -9,19 +10,22 @@ namespace Lanchat.Core.Network.Handlers
     {
         private readonly ISymmetricEncryption encryption;
         private readonly INodeInternal node;
+        private readonly Messaging messaging;
         private readonly IOutput output;
         private readonly IPublicKeyEncryption publicKeyEncryption;
 
-        internal HandshakeHandler(
+        public HandshakeHandler(
             IPublicKeyEncryption publicKeyEncryption,
             ISymmetricEncryption encryption,
             IOutput output,
-            INodeInternal node)
+            INodeInternal node,
+            Messaging messaging)
         {
             this.publicKeyEncryption = publicKeyEncryption;
             this.encryption = encryption;
             this.output = output;
             this.node = node;
+            this.messaging = messaging;
             Privileged = true;
         }
 
@@ -37,7 +41,7 @@ namespace Lanchat.Core.Network.Handlers
             try
             {
                 publicKeyEncryption.ImportKey(handshake.PublicKey);
-                node.Messaging.UserStatus = handshake.UserStatus;
+                messaging.UserStatus = handshake.UserStatus;
                 output.SendPrivilegedData(encryption.ExportKey());
                 Disabled = true;
             }

@@ -7,7 +7,7 @@ namespace Lanchat.Core.Network.Handlers
     {
         private readonly INodeInternal node;
 
-        internal NicknameUpdateHandler(INodeInternal node)
+        public NicknameUpdateHandler(INodeInternal node)
         {
             this.node = node;
         }

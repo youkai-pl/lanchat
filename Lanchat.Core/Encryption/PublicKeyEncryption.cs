@@ -9,7 +9,7 @@ namespace Lanchat.Core.Encryption
         private readonly RSA localRsa;
         private readonly RSA remoteRsa;
 
-        internal PublicKeyEncryption()
+        public PublicKeyEncryption()
         {
             localRsa = RSA.Create(2048);
             remoteRsa = RSA.Create();

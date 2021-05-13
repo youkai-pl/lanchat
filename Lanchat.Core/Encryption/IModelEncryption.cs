@@ -1,6 +1,6 @@
 namespace Lanchat.Core.Encryption
 {
-    internal interface IModelEncryption
+    public interface IModelEncryption
     {
         void EncryptObject(object data);
         void DecryptObject(object data);

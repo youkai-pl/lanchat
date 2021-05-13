@@ -7,7 +7,7 @@ namespace Lanchat.Core.Chat.Handlers
     {
         private readonly Messaging messaging;
 
-        internal MessageHandler(Messaging messaging)
+        public MessageHandler(Messaging messaging)
         {
             this.messaging = messaging;
         }

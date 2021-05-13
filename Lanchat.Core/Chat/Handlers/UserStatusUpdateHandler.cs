@@ -8,7 +8,7 @@ namespace Lanchat.Core.Chat.Handlers
     {
         private readonly INodeInternal node;
 
-        internal UserStatusUpdateHandler(INodeInternal node)
+        public UserStatusUpdateHandler(INodeInternal node)
         {
             this.node = node;
         }

@@ -5,7 +5,7 @@ using Lanchat.Core.Tcp;
 
 namespace Lanchat.Core.Network
 {
-    internal interface INodeInternal
+    public interface INodeInternal
     {
         string Nickname { set; }
         Guid Id { get; }

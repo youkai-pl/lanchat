@@ -12,7 +12,7 @@ namespace Lanchat.Core.FileTransfer
         private readonly FileTransferOutput fileTransferOutput;
         private readonly IStorage storage;
 
-        internal FileReceiver(FileTransferOutput fileTransferOutput, IStorage storage)
+        public FileReceiver(FileTransferOutput fileTransferOutput, IStorage storage)
         {
             this.storage = storage;
             this.fileTransferOutput = fileTransferOutput;

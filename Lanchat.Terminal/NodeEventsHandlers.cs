@@ -19,16 +19,16 @@ namespace Lanchat.Terminal
             this.node = node;
             node.Messaging.MessageReceived += OnMessageReceived;
             node.Messaging.PrivateMessageReceived += OnPrivateMessageReceived;
-
+            
             node.FileReceiver.FileReceiveFinished += OnFileReceiveFinished;
             node.FileReceiver.FileTransferError += OnFileTransferError;
             node.FileReceiver.FileTransferRequestReceived += OnFileTransferHandlerRequestReceived;
-
+            
             node.FileSender.AcceptedByReceiver += OnFileTransferHandlerReceiveAcceptedByReceiver;
             node.FileSender.FileTransferRequestRejected += OnFileTransferHandlerRequestRejected;
             node.FileSender.FileSendFinished += OnFileSendFinished;
             node.FileSender.FileTransferError += OnFileTransferError;
-
+            
             node.FileSender.AcceptedByReceiver += Ui.FileTransferMonitor.OnAcceptedByReceiver;
             node.FileSender.FileSendFinished += Ui.FileTransferMonitor.OnFileReceiveFinished;
             node.FileSender.FileTransferError += Ui.FileTransferMonitor.OnFileTransferError;

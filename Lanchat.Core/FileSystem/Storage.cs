@@ -8,7 +8,7 @@ namespace Lanchat.Core.FileSystem
     {
         private readonly IConfig config;
 
-        internal Storage(IConfig config)
+        public Storage(IConfig config)
         {
             this.config = config;
         }

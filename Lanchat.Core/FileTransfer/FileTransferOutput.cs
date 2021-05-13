@@ -3,11 +3,11 @@ using Lanchat.Core.FileTransfer.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
-    internal class FileTransferOutput
+    public class FileTransferOutput
     {
         private readonly IOutput output;
 
-        internal FileTransferOutput(IOutput output)
+        public FileTransferOutput(IOutput output)
         {
             this.output = output;
         }
