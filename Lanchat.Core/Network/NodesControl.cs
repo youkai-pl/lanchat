@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Autofac;
 using Lanchat.Core.Config;
 using Lanchat.Core.Network.Handlers;
 using Lanchat.Core.Network.Models;
@@ -13,11 +14,13 @@ namespace Lanchat.Core.Network
     {
         private readonly IConfig config;
         private readonly P2P network;
+        private readonly IContainer container;
 
         internal NodesControl(IConfig config, P2P network)
         {
             this.config = config;
             this.network = network;
+            container = SetupNode.Setup(config);
             Nodes = new List<INode>();
         }
 
@@ -26,13 +29,19 @@ namespace Lanchat.Core.Network
 
         internal Node CreateNode(IHost host)
         {
-            var node = new Node(host, config);
+            var nodeContainer = container.BeginLifetimeScope(b =>
+            {
+                b.RegisterInstance(host).As<IHost>();
+            });
+            
+            var node = nodeContainer.Resolve<Node>();
             Nodes.Add(node);
             node.Resolver.RegisterHandler(new NodesListHandler(config, network));
             node.Connected += OnConnected;
             node.CannotConnect += CloseNode;
             node.Disconnected += CloseNode;
             NodeCreated?.Invoke(this, node);
+            node.Connection.Initialize();
             return node;
         }
 
