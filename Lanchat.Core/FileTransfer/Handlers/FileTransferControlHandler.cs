@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Lanchat.Core.Api;
 using Lanchat.Core.FileTransfer.Models;
 
-namespace Lanchat.Core.FileTransfer
+namespace Lanchat.Core.FileTransfer.Handlers
 {
     internal class FileTransferControlHandler : ApiHandler<FileTransferControl>
     {

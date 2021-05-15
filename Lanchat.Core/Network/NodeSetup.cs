@@ -2,7 +2,6 @@ using System.Reflection;
 using Autofac;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
-using Lanchat.Core.Chat.Models;
 using Lanchat.Core.Config;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.FileSystem;
@@ -57,6 +56,7 @@ namespace Lanchat.Core.Network
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<FileReceiver>()
+                .As<IFileReceiver>()
                 .As<IInternalFileReceiver>()
                 .InstancePerLifetimeScope();
 

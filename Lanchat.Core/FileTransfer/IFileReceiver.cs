@@ -10,7 +10,7 @@ namespace Lanchat.Core.FileTransfer
         /// <summary>
         ///     Incoming file request.
         /// </summary>
-        CurrentFileTransfer CurrentFileTransfer { get; set; }
+        CurrentFileTransfer CurrentFileTransfer { get; }
 
         /// <summary>
         ///     File transfer finished.

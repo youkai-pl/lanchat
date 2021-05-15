@@ -6,7 +6,7 @@ using Lanchat.Core.FileTransfer.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
-    internal class FileSender : IFileSender
+    internal class FileSender : IFileSender, IInternalFileSender
     {
         private const int ChunkSize = 1024 * 1024;
         private readonly FileTransferOutput fileTransferOutput;

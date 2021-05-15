@@ -2,7 +2,7 @@ using Lanchat.Core.Api;
 using Lanchat.Core.FileSystem;
 using Lanchat.Core.FileTransfer.Models;
 
-namespace Lanchat.Core.FileTransfer
+namespace Lanchat.Core.FileTransfer.Handlers
 {
     internal class FileReceiveRequestHandler : ApiHandler<FileReceiveRequest>
     {

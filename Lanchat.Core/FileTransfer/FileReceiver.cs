@@ -4,7 +4,7 @@ using Lanchat.Core.FileTransfer.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
-    internal class FileReceiver : IDisposable, IInternalFileReceiver
+    internal class FileReceiver : IDisposable, IFileReceiver, IInternalFileReceiver
     {
         private readonly FileTransferOutput fileTransferOutput;
         private readonly IStorage storage;
