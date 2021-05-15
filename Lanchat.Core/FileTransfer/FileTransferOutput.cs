@@ -3,7 +3,7 @@ using Lanchat.Core.FileTransfer.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
-    public class FileTransferOutput
+    internal class FileTransferOutput
     {
         private readonly IOutput output;
 
@@ -19,7 +19,7 @@ namespace Lanchat.Core.FileTransfer
                 Status = status
             });
         }
-        
+
         internal void SendRequest(CurrentFileTransfer request)
         {
             output.SendData(new FileReceiveRequest

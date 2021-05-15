@@ -6,15 +6,15 @@ namespace Lanchat.Core.FileTransfer
 {
     internal class FileReceiveRequestHandler : ApiHandler<FileReceiveRequest>
     {
-        private readonly FileReceiver fileReceiver;
+        private readonly IInternalFileReceiver fileReceiver;
         private readonly IStorage storage;
 
-        public FileReceiveRequestHandler (FileReceiver fileReceiver, IStorage storage)
+        public FileReceiveRequestHandler(IInternalFileReceiver fileReceiver, IStorage storage)
         {
             this.fileReceiver = fileReceiver;
             this.storage = storage;
         }
-        
+
         protected override void Handle(FileReceiveRequest data)
         {
             if (fileReceiver.CurrentFileTransfer is {Disposed: false})
@@ -27,7 +27,7 @@ namespace Lanchat.Core.FileTransfer
                 FilePath = storage.GetFilePath(data.FileName),
                 Parts = data.PartsCount
             };
-            
+
             fileReceiver.OnFileTransferRequestReceived();
         }
     }

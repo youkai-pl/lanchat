@@ -5,10 +5,7 @@ using Lanchat.Core.Tcp;
 
 namespace Lanchat.Core.Api
 {
-    /// <summary>
-    ///     Send data other of type not belonging to standard Lanchat.Core set.
-    /// </summary>
-    public class Output : IOutput
+    internal class Output : IOutput
     {
         private readonly IModelEncryption encryption;
         private readonly IHost host;
@@ -23,10 +20,6 @@ namespace Lanchat.Core.Api
             jsonUtils = new JsonUtils();
         }
 
-        /// <summary>
-        ///     Send data.
-        /// </summary>
-        /// <param name="content">Object to send.</param>
         public void SendData(object content)
         {
             if (!node.Ready)
@@ -38,10 +31,6 @@ namespace Lanchat.Core.Api
             host.Send(jsonUtils.Serialize(content));
         }
 
-        /// <summary>
-        ///     Send the data before marking the node as ready (Handshake, KeyInfo...).
-        /// </summary>
-        /// <param name="content">Object to send.</param>
         public void SendPrivilegedData(object content)
         {
             encryption.EncryptObject(content);

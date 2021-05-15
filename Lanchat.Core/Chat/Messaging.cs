@@ -5,10 +5,7 @@ using Lanchat.Core.Chat.Models;
 
 namespace Lanchat.Core.Chat
 {
-    /// <summary>
-    ///     Basic chat features.
-    /// </summary>
-    public class Messaging : INotifyPropertyChanged
+    internal class Messaging : IMessaging, IInternalMessaging
     {
         private readonly IOutput output;
         private UserStatus userStatus;
@@ -18,9 +15,16 @@ namespace Lanchat.Core.Chat
             this.output = output;
         }
 
-        /// <summary>
-        ///     <see cref="Lanchat.Core.Chat.UserStatus"/>
-        /// </summary>
+        public void OnMessageReceived(string e)
+        {
+            MessageReceived?.Invoke(this, e);
+        }
+
+        public void OnPrivateMessageReceived(string e)
+        {
+            PrivateMessageReceived?.Invoke(this, e);
+        }
+
         public UserStatus UserStatus
         {
             get => userStatus;
@@ -30,38 +34,21 @@ namespace Lanchat.Core.Chat
                 {
                     return;
                 }
-                
+
                 userStatus = value;
                 OnPropertyChanged(nameof(UserStatus));
             }
         }
 
-        /// <summary>
-        ///     Message received.
-        /// </summary>
         public event EventHandler<string> MessageReceived;
-
-        /// <summary>
-        ///     Private message received.
-        /// </summary>
         public event EventHandler<string> PrivateMessageReceived;
-
-        /// <inheritdoc />
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        ///     Send message.
-        /// </summary>
-        /// <param name="content">Message content.</param>
         public void SendMessage(string content)
         {
             output.SendData(new Message {Content = content});
         }
 
-        /// <summary>
-        ///     Send private message.
-        /// </summary>
-        /// <param name="content">Message content.</param>
         public void SendPrivateMessage(string content)
         {
             output.SendData(new Message
@@ -71,16 +58,6 @@ namespace Lanchat.Core.Chat
             });
         }
 
-        internal void OnMessageReceived(string e)
-        {
-            MessageReceived?.Invoke(this, e);
-        }
-
-        internal void OnPrivateMessageReceived(string e)
-        {
-            PrivateMessageReceived?.Invoke(this, e);
-        }
-        
         private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

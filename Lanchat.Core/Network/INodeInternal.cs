@@ -1,11 +1,9 @@
 using System;
-using Lanchat.Core.Chat;
-using Lanchat.Core.Encryption;
 using Lanchat.Core.Tcp;
 
 namespace Lanchat.Core.Network
 {
-    public interface INodeInternal
+    internal interface INodeInternal
     {
         string Nickname { set; }
         Guid Id { get; }

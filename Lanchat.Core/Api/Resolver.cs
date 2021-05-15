@@ -9,8 +9,7 @@ using Lanchat.Core.Network;
 
 namespace Lanchat.Core.Api
 {
-    /// <inheritdoc />
-    public class Resolver : IResolver
+    internal class Resolver : IResolver
     {
         private readonly IModelEncryption encryption;
         private readonly List<IApiHandler> handlers = new();
@@ -27,14 +26,12 @@ namespace Lanchat.Core.Api
             handlers.ForEach(RegisterHandler);
         }
 
-        /// <inheritdoc />
         public void RegisterHandler(IApiHandler apiHandler)
         {
             handlers.Add(apiHandler);
             jsonUtils.KnownModels.Add(apiHandler.HandledType);
         }
 
-        /// <inheritdoc />
         public void CallHandler(string item)
         {
             var data = jsonUtils.Deserialize(item);

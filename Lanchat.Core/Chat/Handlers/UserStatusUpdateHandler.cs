@@ -1,14 +1,13 @@
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat.Models;
-using Lanchat.Core.Network;
 
 namespace Lanchat.Core.Chat.Handlers
 {
     internal class UserStatusUpdateHandler : ApiHandler<UserStatusUpdate>
     {
-        private readonly Messaging messaging;
+        private readonly IMessaging messaging;
 
-        public UserStatusUpdateHandler(Messaging messaging)
+        public UserStatusUpdateHandler(IMessaging messaging)
         {
             this.messaging = messaging;
         }

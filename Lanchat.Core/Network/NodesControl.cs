@@ -13,14 +13,14 @@ namespace Lanchat.Core.Network
     internal class NodesControl
     {
         private readonly IConfig config;
-        private readonly P2P network;
         private readonly IContainer container;
+        private readonly P2P network;
 
         internal NodesControl(IConfig config, P2P network)
         {
             this.config = config;
             this.network = network;
-            container = SetupNode.Setup(config);
+            container = NodeSetup.Setup(config);
             Nodes = new List<INode>();
         }
 
@@ -29,10 +29,7 @@ namespace Lanchat.Core.Network
 
         internal Node CreateNode(IHost host)
         {
-            var scope = container.BeginLifetimeScope(b =>
-            {
-                b.RegisterInstance(host).As<IHost>();
-            });
+            var scope = container.BeginLifetimeScope(b => { b.RegisterInstance(host).As<IHost>(); });
             var node = scope.Resolve<Node>();
             Nodes.Add(node);
             node.Resolver.RegisterHandler(new NodesListHandler(config, network));
@@ -42,7 +39,7 @@ namespace Lanchat.Core.Network
                 CloseNode(sender, args);
                 scope.Dispose();
             };
-            
+
             node.Disconnected += (sender, args) =>
             {
                 CloseNode(sender, args);

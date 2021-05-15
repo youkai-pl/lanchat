@@ -42,13 +42,13 @@ namespace Lanchat.Core.Network
         IHost Host { get; }
 
         /// <see cref="Lanchat.Core.Chat.Messaging" />
-        Messaging Messaging { get; }
+        IMessaging Messaging { get; }
 
         /// <see cref="Lanchat.Core.FileTransfer.FileReceiver" />
-        FileReceiver FileReceiver { get; }
+        IFileReceiver FileReceiver { get; }
 
         /// <see cref="Lanchat.Core.FileTransfer.FileSender" />
-        FileSender FileSender { get; }
+        IFileSender FileSender { get; }
 
         /// <see cref="Lanchat.Core.Api.Output" />
         IOutput Output { get; }

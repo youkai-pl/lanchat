@@ -5,9 +5,9 @@ namespace Lanchat.Core.Chat.Handlers
 {
     internal class MessageHandler : ApiHandler<Message>
     {
-        private readonly Messaging messaging;
+        private readonly IInternalMessaging messaging;
 
-        public MessageHandler(Messaging messaging)
+        public MessageHandler(IInternalMessaging messaging)
         {
             this.messaging = messaging;
         }

@@ -92,7 +92,7 @@ namespace Lanchat.Core.NodesDetection
                 alreadyDetected.Nickname = announce.Nickname;
             }
         }
-        
+
         private void AddNewNode(Announce announce, IPAddress ipAddress)
         {
             var detectedNode = new DetectedNode
@@ -101,7 +101,7 @@ namespace Lanchat.Core.NodesDetection
                 IpAddress = ipAddress,
                 Active = true
             };
-            
+
             detectedNodes.Add(detectedNode);
             SetupTimer(detectedNode);
         }

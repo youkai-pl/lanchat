@@ -36,9 +36,9 @@ namespace Lanchat.Tests.Mock.Network
         public bool CannotConnectEvent { get; private set; }
 
         public string ShortId { get; }
-        public Messaging Messaging { get; }
-        public FileReceiver FileReceiver { get; }
-        public FileSender FileSender { get; }
+        public IMessaging Messaging { get; }
+        public IFileReceiver FileReceiver { get; }
+        public IFileSender FileSender { get; }
         public IOutput Output { get; }
         public IResolver Resolver { get; }
         public string PreviousNickname { get; }

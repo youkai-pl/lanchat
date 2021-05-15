@@ -13,15 +13,15 @@ namespace Lanchat.Core.FileSystem
             this.path = path;
         }
 
+        public void Dispose()
+        {
+            fileStream?.Dispose();
+        }
+
         public void WriteChunk(byte[] chunk)
         {
             fileStream ??= File.OpenWrite(path);
             fileStream.Write(chunk);
-        }
-
-        public void Dispose()
-        {
-            fileStream?.Dispose();
         }
     }
 }

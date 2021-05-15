@@ -7,10 +7,10 @@ namespace Lanchat.Core.Network
 {
     internal class Connection
     {
-        private readonly INodeInternal nodeInternal;
-        private readonly IInput input;
-        private readonly IHost host;
         private readonly HandshakeSender handshakeSender;
+        private readonly IHost host;
+        private readonly IInput input;
+        private readonly INodeInternal nodeInternal;
 
         public Connection(
             INodeInternal nodeInternal,
@@ -28,7 +28,7 @@ namespace Lanchat.Core.Network
         internal void Initialize()
         {
             host.DataReceived += input.OnDataReceived;
-            
+
             if (nodeInternal.IsSession)
             {
                 handshakeSender.SendHandshake();

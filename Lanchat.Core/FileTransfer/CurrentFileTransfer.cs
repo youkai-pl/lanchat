@@ -41,6 +41,13 @@ namespace Lanchat.Core.FileTransfer
             }
         }
 
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Disposed = true;
+            GC.SuppressFinalize(this);
+        }
+
         /// <summary>
         ///     Raised for <see cref="PartsTransferred" /> update.
         /// </summary>
@@ -49,13 +56,6 @@ namespace Lanchat.Core.FileTransfer
         private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            Disposed = true;
-            GC.SuppressFinalize(this);
         }
     }
 }

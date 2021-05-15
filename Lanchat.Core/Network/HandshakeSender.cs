@@ -7,8 +7,8 @@ namespace Lanchat.Core.Network
 {
     internal class HandshakeSender
     {
-        private readonly IOutput output;
         private readonly IConfig config;
+        private readonly IOutput output;
         private readonly IPublicKeyEncryption publicKeyEncryption;
 
         public HandshakeSender(IOutput output, IConfig config, IPublicKeyEncryption publicKeyEncryption)
@@ -17,7 +17,7 @@ namespace Lanchat.Core.Network
             this.config = config;
             this.publicKeyEncryption = publicKeyEncryption;
         }
-        
+
         internal void SendHandshake()
         {
             var handshake = new Handshake

@@ -8,10 +8,10 @@ namespace Lanchat.Core.FileTransfer
 {
     internal class FilePartHandler : ApiHandler<FilePart>
     {
-        private readonly FileReceiver fileReceiver;
+        private readonly IInternalFileReceiver fileReceiver;
         private readonly IStorage storage;
 
-        public FilePartHandler(FileReceiver fileReceiver, IStorage storage)
+        public FilePartHandler(IInternalFileReceiver fileReceiver, IStorage storage)
         {
             this.fileReceiver = fileReceiver;
             this.storage = storage;

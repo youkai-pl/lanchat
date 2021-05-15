@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Lanchat.Core.Api;
 using Lanchat.Core.Json;
 using Lanchat.Tests.Mock.ApiHandlers;
