@@ -1,4 +1,4 @@
-namespace Lanchat.Core.Chat.Models
+namespace Lanchat.Core.Chat
 {
     internal interface IInternalMessaging
     {
