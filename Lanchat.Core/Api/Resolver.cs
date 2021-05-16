@@ -26,7 +26,7 @@ namespace Lanchat.Core.Api
             handlers.ForEach(RegisterHandler);
         }
 
-        public void RegisterHandler(IApiHandler apiHandler)
+        private void RegisterHandler(IApiHandler apiHandler)
         {
             handlers.Add(apiHandler);
             jsonUtils.KnownModels.Add(apiHandler.HandledType);

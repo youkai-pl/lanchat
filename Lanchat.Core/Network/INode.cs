@@ -52,10 +52,7 @@ namespace Lanchat.Core.Network
 
         /// <see cref="Lanchat.Core.Api.Output" />
         IOutput Output { get; }
-
-        /// <see cref="Lanchat.Core.Api.Resolver" />
-        IResolver Resolver { get; }
-
+        
         /// <summary>
         ///     Node successful connected and ready to data exchange.
         /// </summary>

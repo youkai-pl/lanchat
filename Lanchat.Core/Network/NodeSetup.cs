@@ -11,10 +11,13 @@ namespace Lanchat.Core.Network
 {
     internal static class NodeSetup
     {
-        internal static IContainer Setup(IConfig config)
+        internal static IContainer Setup(IConfig config, IP2P network)
         {
             var builder = new ContainerBuilder();
+            
             builder.RegisterInstance(config).As<IConfig>().SingleInstance();
+            builder.RegisterInstance(network).As<IP2P>().SingleInstance();
+            
             builder.RegisterType<Node>()
                 .As<Node>()
                 .As<INode>()
@@ -71,7 +74,7 @@ namespace Lanchat.Core.Network
 
             builder.RegisterAssemblyTypes(
                     Assembly.GetExecutingAssembly())
-                .Where(t => t.Name.EndsWith("Handler") && t.Name != "NodesListHandler")
+                .Where(t => t.Name.EndsWith("Handler"))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 

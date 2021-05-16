@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using Autofac;
 using Lanchat.Core.Config;
-using Lanchat.Core.Network.Handlers;
 using Lanchat.Core.Network.Models;
 using Lanchat.Core.Tcp;
 
@@ -14,13 +13,11 @@ namespace Lanchat.Core.Network
     {
         private readonly IConfig config;
         private readonly IContainer container;
-        private readonly P2P network;
 
-        internal NodesControl(IConfig config, P2P network)
+        internal NodesControl(IConfig config, IP2P network)
         {
             this.config = config;
-            this.network = network;
-            container = NodeSetup.Setup(config);
+            container = NodeSetup.Setup(config, network);
             Nodes = new List<INode>();
         }
 
@@ -32,7 +29,6 @@ namespace Lanchat.Core.Network
             var scope = container.BeginLifetimeScope(b => { b.RegisterInstance(host).As<IHost>(); });
             var node = scope.Resolve<Node>();
             Nodes.Add(node);
-            node.Resolver.RegisterHandler(new NodesListHandler(config, network));
             node.Connected += OnConnected;
             node.CannotConnect += (sender, args) =>
             {
