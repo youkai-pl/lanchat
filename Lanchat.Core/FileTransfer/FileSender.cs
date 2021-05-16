@@ -80,10 +80,10 @@ namespace Lanchat.Core.FileTransfer
 
             try
             {
-                var file = new FileReader(CurrentFileTransfer.FilePath);
+                var file = new FileReader(ChunkSize, CurrentFileTransfer.FilePath);
                 Task.Run(() =>
                 {
-                    while (file.ReadChunk(ChunkSize, out var chunk))
+                    while (file.ReadChunk(out var chunk))
                     {
                         if (disposing || CurrentFileTransfer.Disposed)
                         {
@@ -95,7 +95,7 @@ namespace Lanchat.Core.FileTransfer
                         {
                             Data = Convert.ToBase64String(chunk)
                         };
-
+                        
                         fileTransferOutput.SendPart(part);
                         CurrentFileTransfer.PartsTransferred++;
                     }

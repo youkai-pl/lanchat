@@ -5,18 +5,16 @@ namespace Lanchat.Core.FileSystem
 {
     internal class FileWriter : IDisposable
     {
-        private readonly string path;
-        private FileStream fileStream;
+        private readonly FileStream fileStream;
 
         internal FileWriter(string path)
         {
-            this.path = path;
+            fileStream = File.OpenWrite(path);
         }
 
         public void WriteChunk(byte[] chunk)
         {
-            fileStream ??= File.OpenWrite(path);
-            fileStream.Write(chunk);
+            fileStream.Write(chunk, 0, chunk.Length);
         }
 
         public void Dispose()
