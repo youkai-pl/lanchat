@@ -1,9 +1,12 @@
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Autofac;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Config;
 using Lanchat.Core.Encryption;
+using Lanchat.Core.Extensions;
 using Lanchat.Core.FileSystem;
 using Lanchat.Core.FileTransfer;
 
@@ -11,13 +14,13 @@ namespace Lanchat.Core.Network
 {
     internal static class NodeSetup
     {
-        internal static IContainer Setup(IConfig config, IP2P network)
+        internal static IContainer Setup(IConfig config, IP2P network, IEnumerable<Type> handlers = null)
         {
             var builder = new ContainerBuilder();
-            
+
             builder.RegisterInstance(config).As<IConfig>().SingleInstance();
             builder.RegisterInstance(network).As<IP2P>().SingleInstance();
-            
+
             builder.RegisterType<Node>()
                 .As<Node>()
                 .As<INode>()
@@ -77,6 +80,11 @@ namespace Lanchat.Core.Network
                 .Where(t => t.Name.EndsWith("Handler"))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
+
+            handlers?.ForEach(x => builder
+                .RegisterType(x)
+                .As<IApiHandler>()
+                .AsImplementedInterfaces());
 
             return builder.Build();
         }

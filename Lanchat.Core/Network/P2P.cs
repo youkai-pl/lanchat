@@ -8,6 +8,7 @@ using Lanchat.Core.Config;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.NodesDetection;
 using Lanchat.Core.Tcp;
+// ReSharper disable IntroduceOptionalParameters.Global
 
 namespace Lanchat.Core.Network
 {
@@ -22,10 +23,22 @@ namespace Lanchat.Core.Network
         ///     Initialize P2P mode
         /// </summary>
         /// <param name="config">Lanchat config</param>
-        public P2P(IConfig config)
+        public P2P(IConfig config) : this(config, null)
+        {
+            
+        }
+
+        /// <summary>
+        ///     Initialize P2P mode
+        /// </summary>
+        /// <param name="config">Lanchat config</param>
+        /// <param name="apiHandlers">Custom api handlers</param>
+        public P2P(IConfig config, IEnumerable<Type> apiHandlers)
         {
             Config = config;
-            nodesControl = new NodesControl(config, this);
+            var container = NodeSetup.Setup(config, this, apiHandlers);
+            nodesControl = new NodesControl(config, container);
+            
             nodesControl.NodeCreated += (sender, node) =>
                 NodeCreated?.Invoke(sender, node);
 

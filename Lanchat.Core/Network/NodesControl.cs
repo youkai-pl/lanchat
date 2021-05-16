@@ -14,10 +14,10 @@ namespace Lanchat.Core.Network
         private readonly IConfig config;
         private readonly IContainer container;
 
-        internal NodesControl(IConfig config, IP2P network)
+        internal NodesControl(IConfig config, IContainer container)
         {
             this.config = config;
-            container = NodeSetup.Setup(config, network);
+            this.container = container;
             Nodes = new List<INode>();
         }
 
