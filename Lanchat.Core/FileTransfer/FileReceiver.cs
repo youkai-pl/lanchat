@@ -107,7 +107,9 @@ namespace Lanchat.Core.FileTransfer
             FileTransferError?.Invoke(this, new FileTransferException(
                 CurrentFileTransfer,
                 "Cancelled by user"));
+            
             CurrentFileTransfer.Dispose();
+            FileWriter.Dispose();
         }
 
         internal void FinishReceive()
@@ -119,6 +121,7 @@ namespace Lanchat.Core.FileTransfer
 
             FileReceiveFinished?.Invoke(this, CurrentFileTransfer);
             CurrentFileTransfer.Dispose();
+            FileWriter.Dispose();
         }
 
         internal void HandleError()
@@ -131,6 +134,7 @@ namespace Lanchat.Core.FileTransfer
             storage.DeleteIncompleteFile(CurrentFileTransfer.FilePath);
             OnFileTransferError();
             CurrentFileTransfer.Dispose();
+            FileWriter.Dispose();
         }
 
         internal void OnFileTransferRequestReceived()

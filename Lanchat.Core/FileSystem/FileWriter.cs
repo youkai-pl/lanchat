@@ -6,10 +6,10 @@ namespace Lanchat.Core.FileSystem
     internal class FileWriter : IDisposable
     {
         private readonly FileStream fileStream;
-
+        
         internal FileWriter(string path)
         {
-            fileStream = File.OpenWrite(path);
+            fileStream = new FileStream(path, FileMode.Append);
         }
 
         public void WriteChunk(byte[] chunk)
