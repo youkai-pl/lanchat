@@ -3,7 +3,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net;
-using Lanchat.Core.Chat;
 using Lanchat.Core.Identity;
 
 namespace Lanchat.Core.Config

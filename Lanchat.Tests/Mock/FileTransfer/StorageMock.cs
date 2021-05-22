@@ -6,11 +6,6 @@ namespace Lanchat.Tests.Mock.FileTransfer
 {
     public class StorageMock : IStorage
     {
-        public FileStream OpenWriteStream(string path)
-        {
-            throw new NotImplementedException();
-        }
-
         public long GetFileSize(string path)
         {
             throw new NotImplementedException();
@@ -27,6 +22,11 @@ namespace Lanchat.Tests.Mock.FileTransfer
         }
 
         public void CatchFileSystemException(Exception e, Action errorHandler)
+        {
+            throw new NotImplementedException();
+        }
+
+        public FileStream OpenWriteStream(string path)
         {
             throw new NotImplementedException();
         }

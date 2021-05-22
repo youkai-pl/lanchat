@@ -26,7 +26,7 @@ namespace Lanchat.Tests.Mock.Network
             ModelEncryption = new ModelEncryptionMock();
             Resolver = new Resolver(this, ModelEncryption, new List<IApiHandler>());
             Messaging = new Messaging(Output);
-            
+
             var fileTransferOutput = new FileTransferOutput(Output);
             FileSender = new FileSender(fileTransferOutput, new StorageMock());
             FileReceiver = new FileReceiver(fileTransferOutput, new StorageMock());
@@ -36,29 +36,29 @@ namespace Lanchat.Tests.Mock.Network
         public bool CannotConnectEvent { get; private set; }
 
         public string ShortId { get; }
+        public IResolver Resolver { get; }
+        public string PreviousNickname { get; }
+        public bool IsSession => false;
+        public string Nickname { get; set; }
+        public IModelEncryption ModelEncryption { get; }
         public IMessaging Messaging { get; }
         public IFileReceiver FileReceiver { get; }
         public IFileSender FileSender { get; }
         public IOutput Output { get; }
-        public IResolver Resolver { get; }
-        public string PreviousNickname { get; }
 
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler<SocketError> SocketErrored;
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public void Disconnect()
         {
             throw new NotImplementedException();
         }
 
-        public bool Ready { get; set; }
-        public bool IsSession => false;
         public IHost Host { get; }
-        public string Nickname { get; set; }
+
+        public bool Ready { get; set; }
         public Guid Id { get; } = Guid.NewGuid();
-        public IModelEncryption ModelEncryption { get; }
 
         public void OnConnected()
         {
@@ -74,5 +74,7 @@ namespace Lanchat.Tests.Mock.Network
         {
             CannotConnectEvent = true;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

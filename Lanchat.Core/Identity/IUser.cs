@@ -21,9 +21,9 @@ namespace Lanchat.Core.Identity
         ///     Short ID.
         /// </summary>
         string ShortId { get; }
-        
+
         /// <summary>
-        ///     <see cref="Identity.UserStatus"/>
+        ///     <see cref="Identity.UserStatus" />
         /// </summary>
         public UserStatus UserStatus { get; }
     }

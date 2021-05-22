@@ -26,12 +26,6 @@ namespace Lanchat.Core.Api
             handlers.ForEach(RegisterHandler);
         }
 
-        private void RegisterHandler(IApiHandler apiHandler)
-        {
-            handlers.Add(apiHandler);
-            jsonUtils.KnownModels.Add(apiHandler.HandledType);
-        }
-
         public void CallHandler(string item)
         {
             var data = jsonUtils.Deserialize(item);
@@ -44,6 +38,12 @@ namespace Lanchat.Core.Api
             encryption.DecryptObject(data);
             Trace.WriteLine($"Node {node.Id} received {handler.HandledType.Name}");
             handler.Handle(data);
+        }
+
+        private void RegisterHandler(IApiHandler apiHandler)
+        {
+            handlers.Add(apiHandler);
+            jsonUtils.KnownModels.Add(apiHandler.HandledType);
         }
 
         private IApiHandler GetHandler(Type jsonType)

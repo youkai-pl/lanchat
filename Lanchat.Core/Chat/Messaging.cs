@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat.Models;
 
@@ -23,7 +22,7 @@ namespace Lanchat.Core.Chat
         {
             PrivateMessageReceived?.Invoke(this, e);
         }
-        
+
         public event EventHandler<string> MessageReceived;
         public event EventHandler<string> PrivateMessageReceived;
 

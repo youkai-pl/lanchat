@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using Lanchat.Core.Chat;
 using Lanchat.Core.Config;
 using Lanchat.Core.Identity;
 
@@ -23,8 +22,8 @@ namespace Lanchat.ClientCore
         private string nickname = Environment.UserName;
         private int port = 3645;
         private ObservableCollection<IPAddress> savedAddresses = new();
-        private UserStatus userStatus = UserStatus.Online;
         private bool useIPv6;
+        private UserStatus userStatus = UserStatus.Online;
 
         /// <summary>
         ///     Config could not be loaded and has just been generated.

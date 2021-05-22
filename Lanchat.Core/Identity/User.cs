@@ -10,17 +10,13 @@ namespace Lanchat.Core.Identity
         private string previousNickname;
         private UserStatus userStatus;
 
-        /// <inheritdoc />
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public User(INodeInternal node)
         {
             this.node = node;
         }
 
-        /// <summary>
-        ///     Node user nickname.
-        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public string Nickname
         {
             get => $"{nickname}#{ShortId}";
@@ -37,14 +33,7 @@ namespace Lanchat.Core.Identity
             }
         }
 
-        /// <summary>
-        ///     Nickname before last change.
-        /// </summary>
         public string PreviousNickname => $"{previousNickname}#{ShortId}";
-
-        /// <summary>
-        ///     Short ID.
-        /// </summary>
         public string ShortId => node.Id.GetHashCode().ToString().Substring(1, 4);
 
         public UserStatus UserStatus

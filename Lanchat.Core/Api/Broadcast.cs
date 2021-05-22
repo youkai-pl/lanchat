@@ -8,9 +8,9 @@ namespace Lanchat.Core.Api
     /// </summary>
     public class Broadcast
     {
-        private readonly List<INode> nodes;
+        private readonly List<INodeInternal> nodes;
 
-        internal Broadcast(List<INode> nodes)
+        internal Broadcast(List<INodeInternal> nodes)
         {
             this.nodes = nodes;
         }

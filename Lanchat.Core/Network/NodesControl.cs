@@ -18,16 +18,16 @@ namespace Lanchat.Core.Network
         {
             this.config = config;
             this.container = container;
-            Nodes = new List<INode>();
+            Nodes = new List<INodeInternal>();
         }
 
-        internal List<INode> Nodes { get; }
-        internal event EventHandler<INode> NodeCreated;
+        internal List<INodeInternal> Nodes { get; }
+        internal event EventHandler<INodeInternal> NodeCreated;
 
-        internal Node CreateNode(IHost host)
+        internal INodeInternal CreateNode(IHost host)
         {
             var scope = container.BeginLifetimeScope(b => { b.RegisterInstance(host).As<IHost>(); });
-            var node = scope.Resolve<Node>();
+            var node = scope.Resolve<INodeInternal>();
             Nodes.Add(node);
             node.Connected += OnConnected;
             node.CannotConnect += (sender, args) =>
@@ -48,7 +48,7 @@ namespace Lanchat.Core.Network
 
         private void CloseNode(object sender, EventArgs e)
         {
-            var node = (Node) sender;
+            var node = (INodeInternal) sender;
             var id = node.Id;
             Nodes.Remove(node);
             node.Connected -= OnConnected;
@@ -59,7 +59,7 @@ namespace Lanchat.Core.Network
 
         private void OnConnected(object sender, EventArgs e)
         {
-            var node = (Node) sender;
+            var node = (INodeInternal) sender;
             var nodesList = new NodesList();
             nodesList.AddRange(Nodes
                 .Where(x => x.Id != node.Id)

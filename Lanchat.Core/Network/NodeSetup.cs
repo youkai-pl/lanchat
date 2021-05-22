@@ -23,7 +23,6 @@ namespace Lanchat.Core.Network
             builder.RegisterInstance(network).As<IP2P>().SingleInstance();
 
             builder.RegisterType<Node>()
-                .As<Node>()
                 .As<INode>()
                 .As<INodeInternal>()
                 .InstancePerLifetimeScope()
@@ -33,7 +32,7 @@ namespace Lanchat.Core.Network
                 .As<IUser>()
                 .As<IInternalUser>()
                 .InstancePerLifetimeScope();
-            
+
             builder.RegisterType<PublicKeyEncryption>()
                 .As<IPublicKeyEncryption>()
                 .InstancePerLifetimeScope();

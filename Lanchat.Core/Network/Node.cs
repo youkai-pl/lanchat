@@ -16,16 +16,10 @@ namespace Lanchat.Core.Network
             Host = host;
             Host.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
         }
-
+        
         public Connection Connection { get; set; }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
-
         public IUser User { get; set; }
-        public IHost Host { get; }
+        public IHost Host { get; set; }
         public IFileReceiver FileReceiver { get; set; }
         public IFileSender FileSender { get; set; }
         public IMessaging Messaging { get; set; }
@@ -36,6 +30,7 @@ namespace Lanchat.Core.Network
 
         public event EventHandler Connected;
         public event EventHandler Disconnected;
+        public event EventHandler CannotConnect;
         public event EventHandler<SocketError> SocketErrored;
 
         public void Disconnect()
@@ -45,6 +40,11 @@ namespace Lanchat.Core.Network
                 Status = ConnectionStatus.RemoteDisconnect
             });
             Dispose();
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
         
         public void OnConnected()
@@ -61,9 +61,5 @@ namespace Lanchat.Core.Network
         {
             CannotConnect?.Invoke(this, EventArgs.Empty);
         }
-
-        internal event EventHandler CannotConnect;
-
-        
     }
 }

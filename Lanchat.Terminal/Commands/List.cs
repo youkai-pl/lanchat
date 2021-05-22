@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using ConsoleGUI.Controls;
-using Lanchat.Core.Chat;
 using Lanchat.Core.Identity;
 using Lanchat.Terminal.UserInterface;
 

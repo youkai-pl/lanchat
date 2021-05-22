@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.Net.Sockets;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
@@ -23,8 +22,8 @@ namespace Lanchat.Core.Network
         ///     Node ready. If set to false node won't send or receive messages.
         /// </summary>
         bool Ready { get; }
-        
-        /// <see cref="IUser"/>
+
+        /// <see cref="IUser" />
         IUser User { get; }
 
         /// <see cref="IHost" />
@@ -41,7 +40,7 @@ namespace Lanchat.Core.Network
 
         /// <see cref="Lanchat.Core.Api.IOutput" />
         IOutput Output { get; }
-        
+
         /// <summary>
         ///     Node successful connected and ready to data exchange.
         /// </summary>

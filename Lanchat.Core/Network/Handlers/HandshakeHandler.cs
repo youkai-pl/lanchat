@@ -1,6 +1,5 @@
 using System.Security.Cryptography;
 using Lanchat.Core.Api;
-using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Identity;
 using Lanchat.Core.Network.Models;
@@ -13,10 +12,10 @@ namespace Lanchat.Core.Network.Handlers
         private readonly ISymmetricEncryption encryption;
         private readonly HandshakeSender handshakeSender;
         private readonly IHost host;
-        private readonly IInternalUser user;
         private readonly INodeInternal node;
         private readonly IOutput output;
         private readonly IPublicKeyEncryption publicKeyEncryption;
+        private readonly IInternalUser user;
 
         public HandshakeHandler(
             IPublicKeyEncryption publicKeyEncryption,

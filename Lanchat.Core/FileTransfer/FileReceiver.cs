@@ -29,7 +29,6 @@ namespace Lanchat.Core.FileTransfer
             GC.SuppressFinalize(this);
         }
 
-        public FileWriter FileWriter { get; private set; }
         public CurrentFileTransfer CurrentFileTransfer { get; set; }
 
         public event EventHandler<CurrentFileTransfer> FileReceiveFinished;
@@ -81,6 +80,8 @@ namespace Lanchat.Core.FileTransfer
                 "Cancelled by user"));
             CurrentFileTransfer.Dispose();
         }
+
+        public FileWriter FileWriter { get; private set; }
 
         public void FinishReceive()
         {
