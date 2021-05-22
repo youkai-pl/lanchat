@@ -4,7 +4,7 @@ using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Identity;
-using Lanchat.Core.Tcp;
+using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.Network
 {

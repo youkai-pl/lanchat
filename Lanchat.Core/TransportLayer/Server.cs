@@ -6,7 +6,7 @@ using Lanchat.Core.Config;
 using Lanchat.Core.Network;
 using NetCoreServer;
 
-namespace Lanchat.Core.Tcp
+namespace Lanchat.Core.TransportLayer
 {
     internal class Server : TcpServer
     {

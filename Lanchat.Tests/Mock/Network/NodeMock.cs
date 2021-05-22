@@ -7,7 +7,7 @@ using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Network;
-using Lanchat.Core.Tcp;
+using Lanchat.Core.TransportLayer;
 using Lanchat.Tests.Mock.Encryption;
 using Lanchat.Tests.Mock.FileTransfer;
 using Lanchat.Tests.Mock.Tcp;

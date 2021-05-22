@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Lanchat.Core.Api;
-using Lanchat.Core.Tcp;
+using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.Network
 {

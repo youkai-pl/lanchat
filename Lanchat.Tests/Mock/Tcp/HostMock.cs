@@ -1,7 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
-using Lanchat.Core.Tcp;
+using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Tests.Mock.Tcp
 {

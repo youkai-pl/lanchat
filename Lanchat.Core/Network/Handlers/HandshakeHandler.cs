@@ -3,7 +3,7 @@ using Lanchat.Core.Api;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Identity;
 using Lanchat.Core.Network.Models;
-using Lanchat.Core.Tcp;
+using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.Network.Handlers
 {

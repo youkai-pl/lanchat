@@ -1,7 +1,7 @@
 ﻿using Lanchat.Core.Encryption;
 using Lanchat.Core.Json;
 using Lanchat.Core.Network;
-using Lanchat.Core.Tcp;
+using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.Api
 {

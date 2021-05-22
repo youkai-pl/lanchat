@@ -7,7 +7,7 @@ using Lanchat.Core.Api;
 using Lanchat.Core.Config;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.NodesDetection;
-using Lanchat.Core.Tcp;
+using Lanchat.Core.TransportLayer;
 
 // ReSharper disable IntroduceOptionalParameters.Global
 

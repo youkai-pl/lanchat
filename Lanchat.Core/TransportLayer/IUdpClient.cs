@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Lanchat.Core.Udp
+namespace Lanchat.Core.TransportLayer
 {
     internal interface IUdpClient
     {

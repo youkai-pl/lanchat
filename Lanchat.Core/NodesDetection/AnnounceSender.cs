@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Lanchat.Core.Config;
 using Lanchat.Core.Json;
 using Lanchat.Core.NodesDetection.Models;
-using Lanchat.Core.Udp;
+using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.NodesDetection
 {
