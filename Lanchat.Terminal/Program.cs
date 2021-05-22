@@ -32,6 +32,7 @@ namespace Lanchat.Terminal
 
             Ui.Start();
             Network = new P2P(Config);
+
             Network.NodeCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
             Ui.SetupNetworkEvents();
 
@@ -78,7 +79,7 @@ namespace Lanchat.Terminal
 
                 Ui.Log.AddWarning(Resources._PortBusy);
             }
-            
+
             if (args.Contains("--localhost") || args.Contains("-l"))
             {
                 Network.Connect(IPAddress.Loopback);

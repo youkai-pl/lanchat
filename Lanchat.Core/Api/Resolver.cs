@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Lanchat.Core.Encryption;
+using Lanchat.Core.Extensions;
 using Lanchat.Core.Json;
 using Lanchat.Core.Network;
 
 namespace Lanchat.Core.Api
 {
-    /// <inheritdoc />
-    public class Resolver : IResolver
+    internal class Resolver : IResolver
     {
         private readonly IModelEncryption encryption;
         private readonly List<IApiHandler> handlers = new();
@@ -17,22 +17,15 @@ namespace Lanchat.Core.Api
         private readonly INodeInternal node;
         private readonly Validation validation;
 
-        internal Resolver(INodeInternal node)
+        public Resolver(INodeInternal node, IModelEncryption encryption, IEnumerable<IApiHandler> handlers)
         {
             this.node = node;
-            encryption = node.ModelEncryption;
+            this.encryption = encryption;
             jsonUtils = new JsonUtils();
             validation = new Validation(node);
+            handlers.ForEach(RegisterHandler);
         }
 
-        /// <inheritdoc />
-        public void RegisterHandler(IApiHandler apiHandler)
-        {
-            handlers.Add(apiHandler);
-            jsonUtils.KnownModels.Add(apiHandler.HandledType);
-        }
-
-        /// <inheritdoc />
         public void CallHandler(string item)
         {
             var data = jsonUtils.Deserialize(item);
@@ -45,6 +38,12 @@ namespace Lanchat.Core.Api
             encryption.DecryptObject(data);
             Trace.WriteLine($"Node {node.Id} received {handler.HandledType.Name}");
             handler.Handle(data);
+        }
+
+        internal void RegisterHandler(IApiHandler apiHandler)
+        {
+            handlers.Add(apiHandler);
+            jsonUtils.KnownModels.Add(apiHandler.HandledType);
         }
 
         private IApiHandler GetHandler(Type jsonType)

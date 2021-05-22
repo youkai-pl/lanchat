@@ -10,7 +10,7 @@ using System.Timers;
 using Lanchat.Core.Config;
 using Lanchat.Core.Json;
 using Lanchat.Core.NodesDetection.Models;
-using Lanchat.Core.Udp;
+using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.NodesDetection
 {
@@ -92,7 +92,7 @@ namespace Lanchat.Core.NodesDetection
                 alreadyDetected.Nickname = announce.Nickname;
             }
         }
-        
+
         private void AddNewNode(Announce announce, IPAddress ipAddress)
         {
             var detectedNode = new DetectedNode
@@ -101,7 +101,7 @@ namespace Lanchat.Core.NodesDetection
                 IpAddress = ipAddress,
                 Active = true
             };
-            
+
             detectedNodes.Add(detectedNode);
             SetupTimer(detectedNode);
         }

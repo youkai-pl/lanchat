@@ -7,7 +7,9 @@ using Lanchat.Core.Api;
 using Lanchat.Core.Config;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.NodesDetection;
-using Lanchat.Core.Tcp;
+using Lanchat.Core.TransportLayer;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable IntroduceOptionalParameters.Global
 
 namespace Lanchat.Core.Network
 {
@@ -22,12 +24,25 @@ namespace Lanchat.Core.Network
         ///     Initialize P2P mode
         /// </summary>
         /// <param name="config">Lanchat config</param>
-        public P2P(IConfig config)
+        public P2P(IConfig config) : this(config, null)
+        { }
+
+        /// <summary>
+        ///     Initialize P2P mode
+        /// </summary>
+        /// <param name="config">Lanchat config</param>
+        /// <param name="apiHandlers">Custom api handlers</param>
+        public P2P(IConfig config, IEnumerable<Type> apiHandlers)
         {
             Config = config;
-            nodesControl = new NodesControl(config, this);
+            var container = NodeSetup.Setup(config, this, apiHandlers);
+            nodesControl = new NodesControl(config, container);
+
             nodesControl.NodeCreated += (sender, node) =>
-                NodeCreated?.Invoke(sender, node);
+            {
+                var inode = (INode) node;
+                NodeCreated?.Invoke(sender, inode);
+            };
 
             server = Config.UseIPv6
                 ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config, nodesControl)
@@ -42,10 +57,10 @@ namespace Lanchat.Core.Network
         public NodesDetector NodesDetection { get; }
 
         /// <inheritdoc />
-        public List<INode> Nodes => nodesControl.Nodes.Where(x => x.Ready).ToList();
+        public List<INode> Nodes => nodesControl.Nodes.Where(x => x.Ready).Cast<INode>().ToList();
 
         /// <inheritdoc />
-        public Broadcast Broadcast { get; }
+        public IBroadcast Broadcast { get; }
 
         /// <inheritdoc />
         public event EventHandler<INode> NodeCreated;
@@ -108,7 +123,7 @@ namespace Lanchat.Core.Network
             }
         }
 
-        private static void SubscribeEvents(Node node, TaskCompletionSource<bool> tcs)
+        private static void SubscribeEvents(INodeInternal node, TaskCompletionSource<bool> tcs)
         {
             node.Connected += (_, _) => { tcs.TrySetResult(true); };
             node.CannotConnect += (_, _) => { tcs.TrySetResult(false); };

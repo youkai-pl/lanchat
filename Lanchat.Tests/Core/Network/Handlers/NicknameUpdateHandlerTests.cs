@@ -1,6 +1,6 @@
-using Lanchat.Core.Network.Handlers;
-using Lanchat.Core.Network.Models;
-using Lanchat.Tests.Mock.Network;
+using Lanchat.Core.Identity.Handlers;
+using Lanchat.Core.Identity.Models;
+using Lanchat.Tests.Mock.Identity;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.Network.Handlers
@@ -9,13 +9,13 @@ namespace Lanchat.Tests.Core.Network.Handlers
 
     {
         private NicknameUpdateHandler nicknameUpdateHandler;
-        private NodeMock nodeMock;
+        private UserMock userMock;
 
         [SetUp]
         public void Setup()
         {
-            nodeMock = new NodeMock();
-            nicknameUpdateHandler = new NicknameUpdateHandler(nodeMock);
+            userMock = new UserMock();
+            nicknameUpdateHandler = new NicknameUpdateHandler(userMock);
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
             };
 
             nicknameUpdateHandler.Handle(nicknameUpdate);
-            Assert.AreEqual(nicknameUpdate.NewNickname, nodeMock.Nickname);
+            Assert.AreEqual(nicknameUpdate.NewNickname, userMock.Nickname);
         }
     }
 }

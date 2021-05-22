@@ -22,7 +22,7 @@ namespace Lanchat.Terminal.Commands
 
             if (args[0].Length == 4)
             {
-                var node = Program.Network.Nodes.Find(x => x.ShortId == args[0]);
+                var node = Program.Network.Nodes.Find(x => x.User.ShortId == args[0]);
                 ipAddress = node?.Host.Endpoint.Address;
                 node?.Disconnect();
             }

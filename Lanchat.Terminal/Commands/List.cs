@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ConsoleGUI.Controls;
-using Lanchat.Core.Chat;
+using Lanchat.Core.Identity;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
@@ -18,7 +18,7 @@ namespace Lanchat.Terminal.Commands
                 var status = new TextBlock();
 
                 // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
-                switch (x.Messaging.UserStatus)
+                switch (x.User.UserStatus)
                 {
                     case UserStatus.Online:
                         status.Text = "Online";
@@ -38,7 +38,7 @@ namespace Lanchat.Terminal.Commands
 
                 var line = new[]
                 {
-                    new TextBlock {Text = $"{x.Nickname} (", Color = ConsoleColor.White},
+                    new TextBlock {Text = $"{x.User.Nickname} (", Color = ConsoleColor.White},
                     status,
                     new TextBlock {Text = ")", Color = ConsoleColor.White}
                 };

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption.Models;
+using Lanchat.Core.Identity;
 
 namespace Lanchat.Core.Network.Models
 {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using TcpClient = NetCoreServer.TcpClient;
 
-namespace Lanchat.Core.Tcp
+namespace Lanchat.Core.TransportLayer
 {
     internal class Client : TcpClient, IHost
     {

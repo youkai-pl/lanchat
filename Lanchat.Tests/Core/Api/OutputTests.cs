@@ -1,4 +1,5 @@
 using Lanchat.Core.Api;
+using Lanchat.Tests.Mock.Encryption;
 using Lanchat.Tests.Mock.Models;
 using Lanchat.Tests.Mock.Network;
 using Lanchat.Tests.Mock.Tcp;
@@ -20,7 +21,7 @@ namespace Lanchat.Tests.Core.Api
             {
                 Ready = true
             };
-            output = new Output(hostMock, nodeMock);
+            output = new Output(hostMock, nodeMock, new ModelEncryptionMock());
         }
 
         [Test]

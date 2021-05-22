@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Lanchat.Core.Udp
+namespace Lanchat.Core.TransportLayer
 {
     internal class UdpClientWrapper : IUdpClient
     {

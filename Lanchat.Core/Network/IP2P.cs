@@ -20,8 +20,8 @@ namespace Lanchat.Core.Network
         /// </summary>
         List<INode> Nodes { get; }
 
-        /// <see cref="Lanchat.Core.Api.Broadcast" />
-        Broadcast Broadcast { get; }
+        /// <see cref="Lanchat.Core.Api.IBroadcast" />
+        IBroadcast Broadcast { get; }
 
         /// <summary>
         ///     New node connected. After receiving this handlers for node events can be created.

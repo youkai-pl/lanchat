@@ -13,7 +13,7 @@ namespace Lanchat.Core.Encryption
         private readonly Aes remoteAes;
         private bool disposed;
 
-        internal SymmetricEncryption(IPublicKeyEncryption publicKeyEncryption)
+        public SymmetricEncryption(IPublicKeyEncryption publicKeyEncryption)
         {
             this.publicKeyEncryption = publicKeyEncryption;
             localAes = Aes.Create();

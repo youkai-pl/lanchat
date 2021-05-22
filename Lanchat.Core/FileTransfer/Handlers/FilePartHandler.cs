@@ -4,14 +4,14 @@ using Lanchat.Core.Api;
 using Lanchat.Core.FileSystem;
 using Lanchat.Core.FileTransfer.Models;
 
-namespace Lanchat.Core.FileTransfer
+namespace Lanchat.Core.FileTransfer.Handlers
 {
     internal class FilePartHandler : ApiHandler<FilePart>
     {
-        private readonly FileReceiver fileReceiver;
+        private readonly IInternalFileReceiver fileReceiver;
         private readonly IStorage storage;
 
-        internal FilePartHandler(FileReceiver fileReceiver, IStorage storage)
+        public FilePartHandler(IInternalFileReceiver fileReceiver, IStorage storage)
         {
             this.fileReceiver = fileReceiver;
             this.storage = storage;

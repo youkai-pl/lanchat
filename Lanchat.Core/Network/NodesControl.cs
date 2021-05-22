@@ -2,55 +2,64 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Autofac;
 using Lanchat.Core.Config;
-using Lanchat.Core.Network.Handlers;
 using Lanchat.Core.Network.Models;
-using Lanchat.Core.Tcp;
+using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.Network
 {
     internal class NodesControl
     {
         private readonly IConfig config;
-        private readonly P2P network;
+        private readonly IContainer container;
 
-        internal NodesControl(IConfig config, P2P network)
+        internal NodesControl(IConfig config, IContainer container)
         {
             this.config = config;
-            this.network = network;
-            Nodes = new List<INode>();
+            this.container = container;
+            Nodes = new List<INodeInternal>();
         }
 
-        internal List<INode> Nodes { get; }
-        internal event EventHandler<INode> NodeCreated;
+        internal List<INodeInternal> Nodes { get; }
+        internal event EventHandler<INodeInternal> NodeCreated;
 
-        internal Node CreateNode(IHost host)
+        internal INodeInternal CreateNode(IHost host)
         {
-            var node = new Node(host, config);
+            var scope = container.BeginLifetimeScope(b => { b.RegisterInstance(host).As<IHost>(); });
+            var node = scope.Resolve<INodeInternal>();
             Nodes.Add(node);
-            node.Resolver.RegisterHandler(new NodesListHandler(config, network));
             node.Connected += OnConnected;
-            node.CannotConnect += CloseNode;
-            node.Disconnected += CloseNode;
+            node.CannotConnect += (sender, args) =>
+            {
+                CloseNode(sender, args);
+                scope.Dispose();
+            };
+
+            node.Disconnected += (sender, args) =>
+            {
+                CloseNode(sender, args);
+                scope.Dispose();
+            };
             NodeCreated?.Invoke(this, node);
+            node.Start();
             return node;
         }
 
         private void CloseNode(object sender, EventArgs e)
         {
-            var node = (Node) sender;
+            var node = (INodeInternal) sender;
             var id = node.Id;
             Nodes.Remove(node);
             node.Connected -= OnConnected;
             node.CannotConnect -= CloseNode;
             node.Disconnected -= CloseNode;
-            node.Dispose();
             Trace.WriteLine($"Node {id} disposed");
         }
 
         private void OnConnected(object sender, EventArgs e)
         {
-            var node = (Node) sender;
+            var node = (INodeInternal) sender;
             var nodesList = new NodesList();
             nodesList.AddRange(Nodes
                 .Where(x => x.Id != node.Id)

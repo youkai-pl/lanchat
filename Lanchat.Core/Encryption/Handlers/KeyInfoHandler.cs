@@ -11,7 +11,7 @@ namespace Lanchat.Core.Encryption.Handlers
         private readonly ISymmetricEncryption encryption;
         private readonly INodeInternal node;
 
-        internal KeyInfoHandler(ISymmetricEncryption encryption, INodeInternal node)
+        public KeyInfoHandler(ISymmetricEncryption encryption, INodeInternal node)
         {
             this.encryption = encryption;
             this.node = node;

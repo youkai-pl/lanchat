@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using NetCoreServer;
 
-namespace Lanchat.Core.Tcp
+namespace Lanchat.Core.TransportLayer
 {
     internal class Session : TcpSession, IHost
     {

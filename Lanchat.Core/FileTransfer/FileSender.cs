@@ -6,52 +6,30 @@ using Lanchat.Core.FileTransfer.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
-    /// <summary>
-    ///     File sending.
-    /// </summary>
-    public class FileSender
+    internal class FileSender : IFileSender, IInternalFileSender
     {
+        private const int ChunkSize = 1024 * 1024;
         private readonly FileTransferOutput fileTransferOutput;
         private readonly IStorage storage;
-        private const int ChunkSize = 1024 * 1024;
         private bool disposing;
 
-        internal FileSender(FileTransferOutput fileTransferOutput, IStorage storage)
+        public FileSender(FileTransferOutput fileTransferOutput, IStorage storage)
         {
             this.fileTransferOutput = fileTransferOutput;
             this.storage = storage;
         }
 
-        /// <summary>
-        ///     Outgoing file request.
-        /// </summary>
         public CurrentFileTransfer CurrentFileTransfer { get; private set; }
 
-        /// <summary>
-        ///     File send returned error.
-        /// </summary>
         public event EventHandler<FileTransferException> FileTransferError;
 
-        /// <summary>
-        ///     File send request accepted. File transfer in progress.
-        /// </summary>
         public event EventHandler<CurrentFileTransfer> AcceptedByReceiver;
 
-        /// <summary>
-        ///     File send request accepted.
-        /// </summary>
         public event EventHandler<CurrentFileTransfer> FileTransferRequestRejected;
 
-        /// <summary>
-        ///     File transfer finished.
-        /// </summary>
         public event EventHandler<CurrentFileTransfer> FileSendFinished;
 
-        /// <summary>
-        ///     Send file exchange request.
-        /// </summary>
-        /// <param name="path">File path</param>
-        /// <exception cref="InvalidOperationException">Only one file can be send at same time</exception>
+
         public void CreateSendRequest(string path)
         {
             if (CurrentFileTransfer is {Disposed: false})
@@ -68,7 +46,7 @@ namespace Lanchat.Core.FileTransfer
             fileTransferOutput.SendRequest(CurrentFileTransfer);
         }
 
-        internal void SendFile()
+        public void SendFile()
         {
             CurrentFileTransfer.Accepted = true;
             if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
@@ -117,7 +95,7 @@ namespace Lanchat.Core.FileTransfer
             }
         }
 
-        internal void HandleReject()
+        public void HandleReject()
         {
             if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
             {
@@ -128,7 +106,7 @@ namespace Lanchat.Core.FileTransfer
             CurrentFileTransfer.Dispose();
         }
 
-        internal void HandleError()
+        public void HandleError()
         {
             if (CurrentFileTransfer == null ||
                 CurrentFileTransfer.Disposed ||

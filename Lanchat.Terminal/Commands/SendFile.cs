@@ -13,7 +13,7 @@ namespace Lanchat.Terminal.Commands
 
         public void Execute(string[] args)
         {
-            var node = Program.Network.Nodes.Find(x => x.ShortId == args[0]);
+            var node = Program.Network.Nodes.Find(x => x.User.ShortId == args[0]);
             if (node == null)
             {
                 Ui.Log.AddError(Resources._UserNotFound);

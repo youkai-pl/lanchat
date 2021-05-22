@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace Lanchat.Core.Tcp
+namespace Lanchat.Core.TransportLayer
 {
     /// <summary>
     ///     Common TCP client and session stuff.

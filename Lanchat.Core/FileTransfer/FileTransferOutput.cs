@@ -7,7 +7,7 @@ namespace Lanchat.Core.FileTransfer
     {
         private readonly IOutput output;
 
-        internal FileTransferOutput(IOutput output)
+        public FileTransferOutput(IOutput output)
         {
             this.output = output;
         }
@@ -19,7 +19,7 @@ namespace Lanchat.Core.FileTransfer
                 Status = status
             });
         }
-        
+
         internal void SendRequest(CurrentFileTransfer request)
         {
             output.SendData(new FileReceiveRequest

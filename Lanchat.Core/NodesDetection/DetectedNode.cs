@@ -11,7 +11,7 @@ namespace Lanchat.Core.NodesDetection
         private string nickname;
 
         /// <summary>
-        ///     Nickname. Can raise <see cref="PropertyChanged"/> event.
+        ///     Nickname. Can raise <see cref="PropertyChanged" /> event.
         /// </summary>
         public string Nickname
         {
@@ -32,7 +32,7 @@ namespace Lanchat.Core.NodesDetection
         ///     IP address of node
         /// </summary>
         public IPAddress IpAddress { get; init; }
-        
+
         /// <summary>
         ///     Turns to false if node stops sending broadcast.
         /// </summary>

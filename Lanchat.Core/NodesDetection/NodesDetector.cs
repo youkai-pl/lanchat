@@ -1,7 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using Lanchat.Core.Config;
-using Lanchat.Core.Udp;
+using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.NodesDetection
 {

@@ -1,4 +1,4 @@
-namespace Lanchat.Core.Chat
+namespace Lanchat.Core.Identity
 {
     /// <summary>
     ///     Node user status.

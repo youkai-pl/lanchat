@@ -4,28 +4,17 @@ using Lanchat.Core.FileTransfer.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
-    /// <summary>
-    ///     File receiving.
-    /// </summary>
-    public class FileReceiver : IDisposable
+    internal class FileReceiver : IDisposable, IFileReceiver, IInternalFileReceiver
     {
         private readonly FileTransferOutput fileTransferOutput;
         private readonly IStorage storage;
 
-        internal FileReceiver(FileTransferOutput fileTransferOutput, IStorage storage)
+        public FileReceiver(FileTransferOutput fileTransferOutput, IStorage storage)
         {
             this.storage = storage;
             this.fileTransferOutput = fileTransferOutput;
         }
 
-        internal FileWriter FileWriter { get; private set; }
-
-        /// <summary>
-        ///     Incoming file request.
-        /// </summary>
-        public CurrentFileTransfer CurrentFileTransfer { get; internal set; }
-
-        /// <inheritdoc />
         public void Dispose()
         {
             if (CurrentFileTransfer is {Accepted: true, Disposed: false})
@@ -40,25 +29,14 @@ namespace Lanchat.Core.FileTransfer
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        ///     File transfer finished.
-        /// </summary>
+        public CurrentFileTransfer CurrentFileTransfer { get; set; }
+
         public event EventHandler<CurrentFileTransfer> FileReceiveFinished;
 
-        /// <summary>
-        ///     File transfer errored.
-        /// </summary>
         public event EventHandler<FileTransferException> FileTransferError;
 
-        /// <summary>
-        ///     File receive request received.
-        /// </summary>
         public event EventHandler<CurrentFileTransfer> FileTransferRequestReceived;
 
-        /// <summary>
-        ///     Accept incoming file request.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">No awaiting request</exception>
         public void AcceptRequest()
         {
             if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
@@ -71,10 +49,6 @@ namespace Lanchat.Core.FileTransfer
             fileTransferOutput.SendSignal(FileTransferStatus.Accepted);
         }
 
-        /// <summary>
-        ///     Reject incoming file request.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">No awaiting request</exception>
         public void RejectRequest()
         {
             if (CurrentFileTransfer is {Disposed: true})
@@ -86,9 +60,6 @@ namespace Lanchat.Core.FileTransfer
             fileTransferOutput.SendSignal(FileTransferStatus.Rejected);
         }
 
-        /// <summary>
-        ///     Cancel current receive request.
-        /// </summary>
         public void CancelReceive(bool deleteFile)
         {
             if (CurrentFileTransfer == null ||
@@ -112,7 +83,9 @@ namespace Lanchat.Core.FileTransfer
             FileWriter.Dispose();
         }
 
-        internal void FinishReceive()
+        public FileWriter FileWriter { get; private set; }
+
+        public void FinishReceive()
         {
             if (CurrentFileTransfer is {Disposed: true})
             {
@@ -124,7 +97,7 @@ namespace Lanchat.Core.FileTransfer
             FileWriter.Dispose();
         }
 
-        internal void HandleError()
+        public void HandleError()
         {
             if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
             {
@@ -137,12 +110,12 @@ namespace Lanchat.Core.FileTransfer
             FileWriter.Dispose();
         }
 
-        internal void OnFileTransferRequestReceived()
+        public void OnFileTransferRequestReceived()
         {
             FileTransferRequestReceived?.Invoke(this, CurrentFileTransfer);
         }
 
-        internal void OnFileTransferError()
+        public void OnFileTransferError()
         {
             FileTransferError?.Invoke(this, new FileTransferException(
                 CurrentFileTransfer,
