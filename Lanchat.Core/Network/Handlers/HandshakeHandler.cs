@@ -3,6 +3,7 @@ using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Network.Models;
+using Lanchat.Core.Tcp;
 
 namespace Lanchat.Core.Network.Handlers
 {
@@ -11,6 +12,7 @@ namespace Lanchat.Core.Network.Handlers
         private readonly ISymmetricEncryption encryption;
         private readonly HandshakeSender handshakeSender;
         private readonly IMessaging messaging;
+        private readonly IHost host;
         private readonly INodeInternal node;
         private readonly IOutput output;
         private readonly IPublicKeyEncryption publicKeyEncryption;
@@ -21,6 +23,7 @@ namespace Lanchat.Core.Network.Handlers
             IOutput output,
             INodeInternal node,
             IMessaging messaging,
+            IHost host,
             HandshakeSender handshakeSender)
         {
             this.publicKeyEncryption = publicKeyEncryption;
@@ -28,6 +31,7 @@ namespace Lanchat.Core.Network.Handlers
             this.output = output;
             this.node = node;
             this.messaging = messaging;
+            this.host = host;
             this.handshakeSender = handshakeSender;
             Privileged = true;
         }
@@ -36,7 +40,7 @@ namespace Lanchat.Core.Network.Handlers
         {
             node.Nickname = handshake.Nickname;
 
-            if (!node.IsSession)
+            if (!host.IsSession)
             {
                 handshakeSender.SendHandshake();
             }

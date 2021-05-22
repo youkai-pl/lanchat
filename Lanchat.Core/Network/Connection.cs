@@ -22,14 +22,14 @@ namespace Lanchat.Core.Network
             this.input = input;
             this.host = host;
             this.handshakeSender = handshakeSender;
-            nodeInternal.Host.Disconnected += OnDisconnected;
+            host.Disconnected += OnDisconnected;
         }
 
         internal void Initialize()
         {
             host.DataReceived += input.OnDataReceived;
 
-            if (nodeInternal.IsSession)
+            if (host.IsSession)
             {
                 handshakeSender.SendHandshake();
             }

@@ -16,7 +16,6 @@ namespace Lanchat.Core.Network
 
         public Node(IHost host)
         {
-            IsSession = host.IsSession;
             Host = host;
             Host.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
         }
@@ -29,7 +28,6 @@ namespace Lanchat.Core.Network
         }
 
         public IHost Host { get; }
-        public IResolver Resolver { get; set; }
         public IFileReceiver FileReceiver { get; set; }
         public IFileSender FileSender { get; set; }
         public IMessaging Messaging { get; set; }
@@ -69,9 +67,7 @@ namespace Lanchat.Core.Network
             });
             Dispose();
         }
-
-        public bool IsSession { get; }
-
+        
         public void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);
