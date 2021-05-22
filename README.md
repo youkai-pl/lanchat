@@ -2,7 +2,7 @@
 
 Encrypted, P2P, local network chat. 
 
-[Documentation](https://tofu.ovh/lanchat-docs/)
+[Documentation](https://youkai.pl/lanchat-docs/)
 
 ## Installation
 
