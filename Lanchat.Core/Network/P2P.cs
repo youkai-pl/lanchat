@@ -124,7 +124,10 @@ namespace Lanchat.Core.Network
             }
 
             var localHost = Dns.GetHostEntry(Dns.GetHostName());
-            if (localHost.AddressList.Any(x => x.Equals(ipAddress)) && !Config.DebugMode)
+            if ((localHost.AddressList.Any(x => x.Equals(ipAddress)) ||
+                ipAddress.Equals(IPAddress.Loopback) ||
+                ipAddress.Equals(IPAddress.IPv6Loopback)) 
+                && !Config.DebugMode)
             {
                 throw new ArgumentException("Address belong to local machine");
             }
