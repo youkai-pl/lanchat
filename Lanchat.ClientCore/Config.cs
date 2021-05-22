@@ -146,6 +146,9 @@ namespace Lanchat.ClientCore
         }
 
         /// <inheritdoc />
+        public bool DebugMode { get; set; }
+
+        /// <inheritdoc />
         public bool UseIPv6
         {
             get => useIPv6;

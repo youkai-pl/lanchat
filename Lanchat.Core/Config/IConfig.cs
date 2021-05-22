@@ -71,5 +71,10 @@ namespace Lanchat.Core.Config
         ///     Files download directory.
         /// </summary>
         string ReceivedFilesDirectory { get; set; }
+        
+        /// <summary>
+        ///     Enable debug features.
+        /// </summary>
+        bool DebugMode { get; set; }
     }
 }

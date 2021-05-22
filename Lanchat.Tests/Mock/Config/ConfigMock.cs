@@ -21,5 +21,6 @@ namespace Lanchat.Tests.Mock.Config
         public bool NodesDetection { get; set; }
         public bool StartServer { get; set; }
         public string ReceivedFilesDirectory { get; set; }
+        public bool DebugMode { get; set; }
     }
 }

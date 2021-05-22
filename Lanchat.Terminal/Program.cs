@@ -53,6 +53,7 @@ namespace Lanchat.Terminal
 
             if (args.Contains("--debug") || args.Contains("-d") || Debugger.IsAttached)
             {
+                Config.DebugMode = true;
                 Trace.Listeners.Add(new TerminalTraceListener());
             }
             else

@@ -8,6 +8,7 @@ using Lanchat.Core.Config;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.NodesDetection;
 using Lanchat.Core.TransportLayer;
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable IntroduceOptionalParameters.Global
 
@@ -120,6 +121,12 @@ namespace Lanchat.Core.Network
             if (Nodes.Any(x => x.Host.Endpoint.Address.Equals(ipAddress)))
             {
                 throw new ArgumentException("Already connected to this node");
+            }
+
+            var localHost = Dns.GetHostEntry(Dns.GetHostName());
+            if (localHost.AddressList.Any(x => x.Equals(ipAddress)) && !Config.DebugMode)
+            {
+                throw new ArgumentException("Address belong to local machine");
             }
         }
 
