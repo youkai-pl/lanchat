@@ -1,4 +1,3 @@
-using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Encryption.Models;
 using Lanchat.Core.Identity;
@@ -9,6 +8,7 @@ using Lanchat.Tests.Mock.Api;
 using Lanchat.Tests.Mock.Config;
 using Lanchat.Tests.Mock.Encryption;
 using Lanchat.Tests.Mock.Network;
+using Lanchat.Tests.Mock.Tcp;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.Network.Handlers
@@ -34,8 +34,9 @@ namespace Lanchat.Tests.Core.Network.Handlers
                 symmetricEncryptionMock,
                 outputMock,
                 nodeMock,
-                new Messaging(outputMock),
-                new HandshakeSender(outputMock, new ConfigMock(), publicKeyEncryption));
+                new HostMock(),
+                new User(nodeMock),
+                new Connection(nodeMock, new HostMock(), outputMock, new ConfigMock(), publicKeyEncryption));
         }
 
         [Test]
@@ -51,13 +52,19 @@ namespace Lanchat.Tests.Core.Network.Handlers
 
             publicKeyEncryption.Encrypt(new byte[] {0x10});
             Assert.IsTrue(handshakeHandler.Disabled);
-            Assert.AreEqual(handshake.UserStatus, nodeMock.Messaging.UserStatus);
+            Assert.AreEqual(handshake.UserStatus, nodeMock.User.UserStatus);
             Assert.NotNull(outputMock.LastOutput);
         }
 
         [Test]
         public void InvalidKey()
         {
+            var eventRaised = false;
+            nodeMock.CannotConnect += (_, _) =>
+            {
+                eventRaised = true;
+            };
+            
             var handshake = new Handshake
             {
                 Nickname = "test",
@@ -65,8 +72,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
                 PublicKey = new PublicKey()
             };
             handshakeHandler.Handle(handshake);
-
-            Assert.IsTrue(nodeMock.CannotConnectEvent);
+            Assert.IsTrue(eventRaised);
         }
     }
 }

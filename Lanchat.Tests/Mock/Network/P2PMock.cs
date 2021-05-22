@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Lanchat.Core.Api;
@@ -14,7 +15,7 @@ namespace Lanchat.Tests.Mock.Network
         public P2PMock()
         {
             NodesDetection = new NodesDetector(new ConfigMock());
-            Broadcast = new Broadcast(Nodes);
+            Broadcast = new Broadcast(Nodes.Cast<INodeInternal>().ToList());
         }
 
         public List<IPAddress> Connected { get; } = new();

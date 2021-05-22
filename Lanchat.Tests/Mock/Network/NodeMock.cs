@@ -1,15 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Net.Sockets;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
-using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
+using Lanchat.Core.Identity;
 using Lanchat.Core.Network;
 using Lanchat.Core.TransportLayer;
-using Lanchat.Tests.Mock.Encryption;
 using Lanchat.Tests.Mock.FileTransfer;
+using Lanchat.Tests.Mock.Identity;
 using Lanchat.Tests.Mock.Tcp;
 
 namespace Lanchat.Tests.Mock.Network
@@ -18,63 +16,56 @@ namespace Lanchat.Tests.Mock.Network
     {
         public NodeMock(IOutput outputMock = null)
         {
+            Id = Guid.NewGuid();
             Host = new HostMock();
             Output = outputMock;
-            ShortId = "9999";
-            Nickname = "test";
-            PreviousNickname = "test";
-            ModelEncryption = new ModelEncryptionMock();
-            Resolver = new Resolver(this, ModelEncryption, new List<IApiHandler>());
+            User = new UserMock();
             Messaging = new Messaging(Output);
-
             var fileTransferOutput = new FileTransferOutput(Output);
             FileSender = new FileSender(fileTransferOutput, new StorageMock());
             FileReceiver = new FileReceiver(fileTransferOutput, new StorageMock());
         }
 
-        public bool ConnectedEvent { get; private set; }
-        public bool CannotConnectEvent { get; private set; }
-
-        public string ShortId { get; }
-        public IResolver Resolver { get; }
-        public string PreviousNickname { get; }
-        public bool IsSession => false;
-        public string Nickname { get; set; }
-        public IModelEncryption ModelEncryption { get; }
-        public IMessaging Messaging { get; }
-        public IFileReceiver FileReceiver { get; }
-        public IFileSender FileSender { get; }
-        public IOutput Output { get; }
-
-        public event EventHandler Connected;
-        public event EventHandler Disconnected;
-        public event EventHandler<SocketError> SocketErrored;
-
+        public void Start()
+        {
+            throw new NotImplementedException();
+        }
+        
+        public Connection Connection { get; set; }
+        public IUser User { get; set; }
+        public IHost Host { get; set; }
+        public IFileReceiver FileReceiver { get; set; }
+        public IFileSender FileSender { get; set; }
+        public IMessaging Messaging { get; set; }
+        public IOutput Output { get; set; }
+        
+        public IInput Input { get; set; }
+        public Guid Id { get; }
+        public bool Ready { get; set; }
+        
         public void Disconnect()
         {
             throw new NotImplementedException();
         }
-
-        public IHost Host { get; }
-
-        public bool Ready { get; set; }
-        public Guid Id { get; } = Guid.NewGuid();
-
+        
         public void OnConnected()
         {
-            ConnectedEvent = true;
+            Connected?.Invoke(this, EventArgs.Empty);
         }
 
         public void OnDisconnected()
         {
-            throw new NotImplementedException();
+            Disconnected?.Invoke(this, EventArgs.Empty);
         }
 
         public void OnCannotConnect()
         {
-            CannotConnectEvent = true;
+            CannotConnect?.Invoke(this, EventArgs.Empty);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler Connected;
+        public event EventHandler Disconnected;
+        public event EventHandler CannotConnect;
+        public event EventHandler<SocketError> SocketErrored;
     }
 }

@@ -40,7 +40,7 @@ namespace Lanchat.Core.Api
             handler.Handle(data);
         }
 
-        private void RegisterHandler(IApiHandler apiHandler)
+        internal void RegisterHandler(IApiHandler apiHandler)
         {
             handlers.Add(apiHandler);
             jsonUtils.KnownModels.Add(apiHandler.HandledType);

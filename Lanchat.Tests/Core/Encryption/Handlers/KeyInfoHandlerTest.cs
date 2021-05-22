@@ -25,17 +25,29 @@ namespace Lanchat.Tests.Core.Encryption.Handlers
         [Test]
         public void ValidKeyInfo()
         {
+            var eventRaised = false;
+            nodeMock.Connected += (_, _) =>
+            {
+                eventRaised = true;
+            };
+            
             var keyInfo = symmetricEncryption.ExportKey();
             keyInfoHandler.Handle(keyInfo);
 
             Assert.IsTrue(keyInfoHandler.Disabled);
             Assert.IsTrue(nodeMock.Ready);
-            Assert.IsTrue(nodeMock.ConnectedEvent);
+            Assert.IsTrue(eventRaised);
         }
 
         [Test]
         public void InvalidKeyInfo()
         {
+            var eventRaised = false;
+            nodeMock.CannotConnect += (_, _) =>
+            {
+                eventRaised = true;
+            };
+            
             var keyInfo = new KeyInfo
             {
                 AesKey = new byte[] {0x10},
@@ -43,16 +55,22 @@ namespace Lanchat.Tests.Core.Encryption.Handlers
             };
             keyInfoHandler.Handle(keyInfo);
 
-            Assert.IsTrue(nodeMock.CannotConnectEvent);
+            Assert.IsTrue(eventRaised);
         }
 
         [Test]
         public void BlankKeyInfo()
         {
+            var eventRaised = false;
+            nodeMock.CannotConnect += (_, _) =>
+            {
+                eventRaised = true;
+            };
+            
             var keyInfo = new KeyInfo();
             keyInfoHandler.Handle(keyInfo);
 
-            Assert.IsTrue(nodeMock.CannotConnectEvent);
+            Assert.IsTrue(eventRaised);
         }
     }
 }
