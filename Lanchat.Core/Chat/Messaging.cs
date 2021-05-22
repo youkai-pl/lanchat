@@ -8,7 +8,6 @@ namespace Lanchat.Core.Chat
     internal class Messaging : IMessaging, IInternalMessaging
     {
         private readonly IOutput output;
-        private UserStatus userStatus;
 
         public Messaging(IOutput output)
         {
@@ -24,25 +23,9 @@ namespace Lanchat.Core.Chat
         {
             PrivateMessageReceived?.Invoke(this, e);
         }
-
-        public UserStatus UserStatus
-        {
-            get => userStatus;
-            set
-            {
-                if (userStatus == value)
-                {
-                    return;
-                }
-
-                userStatus = value;
-                OnPropertyChanged(nameof(UserStatus));
-            }
-        }
-
+        
         public event EventHandler<string> MessageReceived;
         public event EventHandler<string> PrivateMessageReceived;
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public void SendMessage(string content)
         {
@@ -56,11 +39,6 @@ namespace Lanchat.Core.Chat
                 Content = content,
                 Private = true
             });
-        }
-
-        private void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

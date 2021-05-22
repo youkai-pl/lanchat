@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
+using Lanchat.Core.Identity;
 using Lanchat.Core.Network.Models;
 using Lanchat.Core.Tcp;
 
@@ -11,8 +12,8 @@ namespace Lanchat.Core.Network.Handlers
     {
         private readonly ISymmetricEncryption encryption;
         private readonly HandshakeSender handshakeSender;
-        private readonly IMessaging messaging;
         private readonly IHost host;
+        private readonly IInternalUser user;
         private readonly INodeInternal node;
         private readonly IOutput output;
         private readonly IPublicKeyEncryption publicKeyEncryption;
@@ -22,24 +23,22 @@ namespace Lanchat.Core.Network.Handlers
             ISymmetricEncryption encryption,
             IOutput output,
             INodeInternal node,
-            IMessaging messaging,
             IHost host,
+            IInternalUser user,
             HandshakeSender handshakeSender)
         {
             this.publicKeyEncryption = publicKeyEncryption;
             this.encryption = encryption;
             this.output = output;
             this.node = node;
-            this.messaging = messaging;
             this.host = host;
+            this.user = user;
             this.handshakeSender = handshakeSender;
             Privileged = true;
         }
 
         protected override void Handle(Handshake handshake)
         {
-            node.Nickname = handshake.Nickname;
-
             if (!host.IsSession)
             {
                 handshakeSender.SendHandshake();
@@ -48,7 +47,8 @@ namespace Lanchat.Core.Network.Handlers
             try
             {
                 publicKeyEncryption.ImportKey(handshake.PublicKey);
-                messaging.UserStatus = handshake.UserStatus;
+                user.Nickname = handshake.Nickname;
+                user.UserStatus = handshake.UserStatus;
                 output.SendPrivilegedData(encryption.ExportKey());
                 Disabled = true;
             }

@@ -9,6 +9,7 @@ using Lanchat.Core.Encryption;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.FileSystem;
 using Lanchat.Core.FileTransfer;
+using Lanchat.Core.Identity;
 
 namespace Lanchat.Core.Network
 {
@@ -28,6 +29,11 @@ namespace Lanchat.Core.Network
                 .InstancePerLifetimeScope()
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
+            builder.RegisterType<User>()
+                .As<IUser>()
+                .As<IInternalUser>()
+                .InstancePerLifetimeScope();
+            
             builder.RegisterType<PublicKeyEncryption>()
                 .As<IPublicKeyEncryption>()
                 .InstancePerLifetimeScope();

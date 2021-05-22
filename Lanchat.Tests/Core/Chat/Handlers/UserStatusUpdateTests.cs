@@ -1,6 +1,9 @@
 using Lanchat.Core.Chat;
 using Lanchat.Core.Chat.Handlers;
 using Lanchat.Core.Chat.Models;
+using Lanchat.Core.Identity;
+using Lanchat.Core.Identity.Handlers;
+using Lanchat.Core.Identity.Models;
 using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 

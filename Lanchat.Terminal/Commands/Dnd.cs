@@ -1,4 +1,5 @@
 using Lanchat.Core.Chat;
+using Lanchat.Core.Identity;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands

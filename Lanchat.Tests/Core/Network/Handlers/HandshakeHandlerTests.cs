@@ -1,6 +1,7 @@
 using Lanchat.Core.Chat;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Encryption.Models;
+using Lanchat.Core.Identity;
 using Lanchat.Core.Network;
 using Lanchat.Core.Network.Handlers;
 using Lanchat.Core.Network.Models;

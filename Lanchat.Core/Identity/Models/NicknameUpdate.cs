@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Lanchat.Core.Network.Models
+namespace Lanchat.Core.Identity.Models
 {
     internal class NicknameUpdate
     {

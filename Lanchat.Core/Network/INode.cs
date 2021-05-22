@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
 using Lanchat.Core.FileTransfer;
+using Lanchat.Core.Identity;
 using Lanchat.Core.Tcp;
 
 namespace Lanchat.Core.Network
@@ -11,37 +12,25 @@ namespace Lanchat.Core.Network
     /// <summary>
     ///     Connected user.
     /// </summary>
-    public interface INode : INotifyPropertyChanged
+    public interface INode
     {
-        /// <summary>
-        ///     Node user nickname.
-        /// </summary>
-        string Nickname { get; }
-
-        /// <summary>
-        ///     Nickname before last change.
-        /// </summary>
-        string PreviousNickname { get; }
-
         /// <summary>
         ///     ID of TCP client or session.
         /// </summary>
         Guid Id { get; }
 
         /// <summary>
-        ///     Short ID.
-        /// </summary>
-        string ShortId { get; }
-
-        /// <summary>
         ///     Node ready. If set to false node won't send or receive messages.
         /// </summary>
         bool Ready { get; }
+        
+        /// <see cref="IUser"/>
+        IUser User { get; }
 
         /// <see cref="IHost" />
         IHost Host { get; }
 
-        /// <see cref="Lanchat.Core.Chat.Messaging" />
+        /// <see cref="Lanchat.Core.Chat.IMessaging" />
         IMessaging Messaging { get; }
 
         /// <see cref="Lanchat.Core.FileTransfer.FileReceiver" />
@@ -50,7 +39,7 @@ namespace Lanchat.Core.Network
         /// <see cref="Lanchat.Core.FileTransfer.FileSender" />
         IFileSender FileSender { get; }
 
-        /// <see cref="Lanchat.Core.Api.Output" />
+        /// <see cref="Lanchat.Core.Api.IOutput" />
         IOutput Output { get; }
         
         /// <summary>

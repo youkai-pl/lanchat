@@ -1,18 +1,12 @@
 using System;
-using System.ComponentModel;
 
 namespace Lanchat.Core.Chat
 {
     /// <summary>
     ///     Basic chat features.
     /// </summary>
-    public interface IMessaging : INotifyPropertyChanged
+    public interface IMessaging
     {
-        /// <summary>
-        ///     <see cref="Lanchat.Core.Chat.UserStatus" />
-        /// </summary>
-        UserStatus UserStatus { get; set; }
-
         /// <summary>
         ///     Message received.
         /// </summary>

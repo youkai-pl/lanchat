@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using Lanchat.Core.Chat.Models;
+using Lanchat.Core.Identity.Models;
 using Lanchat.Core.Network;
 using Lanchat.Core.Network.Models;
 
