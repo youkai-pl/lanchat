@@ -19,7 +19,7 @@ namespace Lanchat.Tests.Mock.Network
         }
 
         public List<IPAddress> Connected { get; } = new();
-        public Broadcast Broadcast { get; }
+        public IBroadcast Broadcast { get; }
         public NodesDetector NodesDetection { get; }
         public List<INode> Nodes { get; } = new();
 

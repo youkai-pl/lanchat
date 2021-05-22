@@ -8,7 +8,7 @@ using Lanchat.Core.Config;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.NodesDetection;
 using Lanchat.Core.TransportLayer;
-
+// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable IntroduceOptionalParameters.Global
 
 namespace Lanchat.Core.Network
@@ -60,7 +60,7 @@ namespace Lanchat.Core.Network
         public List<INode> Nodes => nodesControl.Nodes.Where(x => x.Ready).Cast<INode>().ToList();
 
         /// <inheritdoc />
-        public Broadcast Broadcast { get; }
+        public IBroadcast Broadcast { get; }
 
         /// <inheritdoc />
         public event EventHandler<INode> NodeCreated;
