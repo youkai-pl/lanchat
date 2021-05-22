@@ -76,7 +76,6 @@ namespace Lanchat.Core.Network
                 .As<IInternalFileSender>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<HandshakeSender>().InstancePerLifetimeScope();
             builder.RegisterType<Connection>().InstancePerLifetimeScope();
             builder.RegisterType<FileTransferOutput>().InstancePerLifetimeScope();
 

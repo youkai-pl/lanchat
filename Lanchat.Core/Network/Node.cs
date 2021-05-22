@@ -14,7 +14,13 @@ namespace Lanchat.Core.Network
         public Node(IHost host)
         {
             Host = host;
+        }
+
+        public void Start()
+        {
             Host.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
+            Host.DataReceived += Input.OnDataReceived;
+            Connection.Initialize();
         }
         
         public Connection Connection { get; set; }
@@ -24,6 +30,7 @@ namespace Lanchat.Core.Network
         public IFileSender FileSender { get; set; }
         public IMessaging Messaging { get; set; }
         public IOutput Output { get; set; }
+        public IInput Input { get; set; }
 
         public Guid Id => Host.Id;
         public bool Ready { get; set; }

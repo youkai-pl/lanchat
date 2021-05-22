@@ -9,6 +9,8 @@ namespace Lanchat.Core.Network
 {
     internal interface INodeInternal
     {
+        void Start();
+        
         public Connection Connection { get; set; }
         public IUser User { get; set; }
         public IHost Host { get; set; }
@@ -16,6 +18,7 @@ namespace Lanchat.Core.Network
         public IFileSender FileSender { get; set; }
         public IMessaging Messaging { get; set; }
         public IOutput Output { get; set; }
+        public IInput Input { get; set; }
         
         Guid Id { get; }
         bool Ready { get; set; }

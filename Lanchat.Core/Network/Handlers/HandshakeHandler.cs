@@ -10,12 +10,12 @@ namespace Lanchat.Core.Network.Handlers
     internal class HandshakeHandler : ApiHandler<Handshake>
     {
         private readonly ISymmetricEncryption encryption;
-        private readonly HandshakeSender handshakeSender;
         private readonly IHost host;
         private readonly INodeInternal node;
         private readonly IOutput output;
         private readonly IPublicKeyEncryption publicKeyEncryption;
         private readonly IInternalUser user;
+        private readonly Connection connection;
 
         public HandshakeHandler(
             IPublicKeyEncryption publicKeyEncryption,
@@ -24,7 +24,7 @@ namespace Lanchat.Core.Network.Handlers
             INodeInternal node,
             IHost host,
             IInternalUser user,
-            HandshakeSender handshakeSender)
+            Connection connection)
         {
             this.publicKeyEncryption = publicKeyEncryption;
             this.encryption = encryption;
@@ -32,7 +32,7 @@ namespace Lanchat.Core.Network.Handlers
             this.node = node;
             this.host = host;
             this.user = user;
-            this.handshakeSender = handshakeSender;
+            this.connection = connection;
             Privileged = true;
         }
 
@@ -40,7 +40,7 @@ namespace Lanchat.Core.Network.Handlers
         {
             if (!host.IsSession)
             {
-                handshakeSender.SendHandshake();
+                connection.SendHandshake();
             }
 
             try

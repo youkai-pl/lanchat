@@ -42,7 +42,7 @@ namespace Lanchat.Core.Network
                 scope.Dispose();
             };
             NodeCreated?.Invoke(this, node);
-            node.Connection.Initialize();
+            node.Start();
             return node;
         }
 

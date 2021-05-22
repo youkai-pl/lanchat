@@ -1,37 +1,41 @@
 using System;
 using System.Threading.Tasks;
 using Lanchat.Core.Api;
+using Lanchat.Core.Config;
+using Lanchat.Core.Encryption;
+using Lanchat.Core.Network.Models;
 using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.Network
 {
     internal class Connection
     {
-        private readonly HandshakeSender handshakeSender;
+        private readonly IOutput output;
+        private readonly IConfig config;
+        private readonly IPublicKeyEncryption publicKeyEncryption;
         private readonly IHost host;
-        private readonly IInput input;
         private readonly INodeInternal nodeInternal;
 
         public Connection(
             INodeInternal nodeInternal,
-            IInput input,
             IHost host,
-            HandshakeSender handshakeSender)
+            IOutput output, 
+            IConfig config, 
+            IPublicKeyEncryption publicKeyEncryption)
         {
             this.nodeInternal = nodeInternal;
-            this.input = input;
             this.host = host;
-            this.handshakeSender = handshakeSender;
+            this.output = output;
+            this.config = config;
+            this.publicKeyEncryption = publicKeyEncryption;
             host.Disconnected += OnDisconnected;
         }
 
         internal void Initialize()
         {
-            host.DataReceived += input.OnDataReceived;
-
             if (host.IsSession)
             {
-                handshakeSender.SendHandshake();
+                SendHandshake();
             }
 
             Task.Delay(5000).ContinueWith(_ =>
@@ -43,6 +47,18 @@ namespace Lanchat.Core.Network
             });
         }
 
+        internal void SendHandshake()
+        {
+            var handshake = new Handshake
+            {
+                Nickname = config.Nickname,
+                UserStatus = config.UserStatus,
+                PublicKey = publicKeyEncryption.ExportKey()
+            };
+
+            output.SendPrivilegedData(handshake);
+        }
+        
         private void OnDisconnected(object sender, EventArgs _)
         {
             if (nodeInternal.Ready)
