@@ -1,4 +1,4 @@
-using System.ComponentModel;
+using System;
 using Lanchat.Core.Network;
 
 namespace Lanchat.Core.Identity
@@ -14,9 +14,7 @@ namespace Lanchat.Core.Identity
         {
             this.node = node;
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
+        
         public string Nickname
         {
             get => $"{nickname}#{ShortId}";
@@ -29,7 +27,7 @@ namespace Lanchat.Core.Identity
 
                 previousNickname = nickname;
                 nickname = value;
-                OnPropertyChanged(nameof(Nickname));
+                NicknameUpdated?.Invoke(this, value);
             }
         }
 
@@ -47,13 +45,11 @@ namespace Lanchat.Core.Identity
                 }
 
                 userStatus = value;
-                OnPropertyChanged(nameof(UserStatus));
+                StatusUpdated?.Invoke(this, value);
             }
         }
 
-        private void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public event EventHandler<string> NicknameUpdated;
+        public event EventHandler<UserStatus> StatusUpdated;
     }
 }

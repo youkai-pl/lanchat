@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using System.Net.Sockets;
 using Lanchat.Core.FileTransfer;
@@ -17,6 +16,10 @@ namespace Lanchat.Terminal
         public NodeEventsHandlers(INode node)
         {
             this.node = node;
+
+            node.User.NicknameUpdated += OnNicknameUpdated;
+            node.User.StatusUpdated += OnStatusUpdated;
+
             node.Messaging.MessageReceived += OnMessageReceived;
             node.Messaging.PrivateMessageReceived += OnPrivateMessageReceived;
 
@@ -37,35 +40,24 @@ namespace Lanchat.Terminal
 
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
-            node.User.PropertyChanged += OnPropertyChanged;
             node.SocketErrored += OnSocketErrored;
         }
-
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        
+        private void OnNicknameUpdated(object sender, string e)
         {
-            switch (e.PropertyName)
+            Ui.Log.Add(string.Format(Resources._NicknameChanged, node.User.PreviousNickname, e));
+        }
+
+        private void OnStatusUpdated(object sender, UserStatus e)
+        {
+            var status = e switch
             {
-                case "Status":
-                    var status = node.User.UserStatus switch
-                    {
-                        UserStatus.Online => "online",
-                        UserStatus.AwayFromKeyboard => "afk",
-                        UserStatus.DoNotDisturb => "dnd",
-                        _ => ""
-                    };
-                    Ui.Log.Add(string.Format(Resources._StatusChange, node.User.Nickname, status));
-                    break;
-
-                case "Nickname":
-                    if (!node.Ready)
-                    {
-                        return;
-                    }
-
-                    Ui.Log.Add(
-                        string.Format(Resources._NicknameChanged, node.User.PreviousNickname, node.User.Nickname));
-                    break;
-            }
+                UserStatus.Online => "online",
+                UserStatus.AwayFromKeyboard => "afk",
+                UserStatus.DoNotDisturb => "dnd",
+                _ => ""
+            };
+            Ui.Log.Add(string.Format(Resources._StatusChange, node.User.Nickname, status));
         }
 
         private void OnConnected(object sender, EventArgs e)

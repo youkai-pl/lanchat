@@ -1,11 +1,11 @@
-using System.ComponentModel;
+using System;
 
 namespace Lanchat.Core.Identity
 {
     /// <summary>
     ///     Node user information readable for humans
     /// </summary>
-    public interface IUser : INotifyPropertyChanged
+    public interface IUser
     {
         /// <summary>
         ///     Node user nickname.
@@ -26,5 +26,15 @@ namespace Lanchat.Core.Identity
         ///     <see cref="Identity.UserStatus" />
         /// </summary>
         public UserStatus UserStatus { get; }
+
+        /// <summary>
+        ///     User nickname changed.
+        /// </summary>
+        event EventHandler<string> NicknameUpdated;
+        
+        /// <summary>
+        ///     User status changed.
+        /// </summary>
+        event EventHandler<UserStatus> StatusUpdated;
     }
 }

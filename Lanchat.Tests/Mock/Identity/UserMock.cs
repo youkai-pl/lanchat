@@ -1,4 +1,4 @@
-using System.ComponentModel;
+using System;
 using Lanchat.Core.Identity;
 
 namespace Lanchat.Tests.Mock.Identity
@@ -7,7 +7,6 @@ namespace Lanchat.Tests.Mock.Identity
     {
         private string nickname;
         private UserStatus userStatus;
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public UserMock()
         {
@@ -22,7 +21,7 @@ namespace Lanchat.Tests.Mock.Identity
             set
             {
                 nickname = value;
-                OnPropertyChanged(nameof(Nickname));
+                NicknameUpdated?.Invoke(this, value);
             }
         }
         
@@ -32,16 +31,14 @@ namespace Lanchat.Tests.Mock.Identity
             set
             {
                 userStatus = value;
-                OnPropertyChanged(nameof(UserStatus));
+                StatusUpdated?.Invoke(this, value);
             }
         }
 
+        public event EventHandler<string> NicknameUpdated;
+        public event EventHandler<UserStatus> StatusUpdated;
+
         public string PreviousNickname { get; }
         public string ShortId { get; }
-        
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }
