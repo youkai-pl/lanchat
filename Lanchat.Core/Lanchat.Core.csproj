@@ -7,7 +7,7 @@
         <Description>Local network P2P chat libary.</Description>
         <Copyright>tofudd</Copyright>
         <PackageProjectUrl>https://github.com/tofudd/lanchat</PackageProjectUrl>
-        <PackageLicenseUrl>https://github.com/tofudd/lanchat/blob/master/Docs/LICENSE.md</PackageLicenseUrl>
+        <PackageLicenseUrl>https://github.com/tof4/lanchat/blob/master/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/tofudd/lanchat</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>p2p, chat, network</PackageTags>
