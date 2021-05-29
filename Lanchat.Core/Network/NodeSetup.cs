@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Autofac;
+using Autofac.Core;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
 using Lanchat.Core.Config;
@@ -15,7 +16,11 @@ namespace Lanchat.Core.Network
 {
     internal static class NodeSetup
     {
-        internal static IContainer Setup(IConfig config, IP2P network, IEnumerable<Type> handlers = null)
+        internal static IContainer Setup(
+            IConfig config, 
+            IP2P network,
+            Action<IActivatedEventArgs<INode>> nodeCreated,
+            IEnumerable<Type> handlers = null)
         {
             var builder = new ContainerBuilder();
 
@@ -24,6 +29,7 @@ namespace Lanchat.Core.Network
 
             builder.RegisterType<Node>()
                 .As<INode>()
+                .OnActivated(nodeCreated)
                 .As<INodeInternal>()
                 .InstancePerLifetimeScope()
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);

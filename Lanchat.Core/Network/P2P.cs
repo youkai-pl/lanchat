@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Autofac.Core;
 using Lanchat.Core.Api;
 using Lanchat.Core.Config;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.NodesDetection;
 using Lanchat.Core.TransportLayer;
-
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable IntroduceOptionalParameters.Global
 
 namespace Lanchat.Core.Network
 {
@@ -21,30 +19,18 @@ namespace Lanchat.Core.Network
         private readonly NodesControl nodesControl;
         private readonly Server server;
 
-        /// <summary>
-        ///     Initialize P2P mode
-        /// </summary>
-        /// <param name="config">Lanchat config</param>
-        public P2P(IConfig config) : this(config, null)
-        { }
 
         /// <summary>
         ///     Initialize P2P mode
         /// </summary>
         /// <param name="config">Lanchat config</param>
-        /// <param name="apiHandlers">Custom api handlers</param>
-        public P2P(IConfig config, IEnumerable<Type> apiHandlers)
+        /// <param name="nodeCreated">Method called after creation of new node.</param>
+        /// <param name="apiHandlers">Optional custom api handlers</param>
+        public P2P(IConfig config, Action<IActivatedEventArgs<INode>> nodeCreated, IEnumerable<Type> apiHandlers = null)
         {
             Config = config;
-            var container = NodeSetup.Setup(config, this, apiHandlers);
+            var container = NodeSetup.Setup(config, this, nodeCreated, apiHandlers);
             nodesControl = new NodesControl(config, container);
-
-            nodesControl.NodeCreated += (sender, node) =>
-            {
-                var inode = (INode) node;
-                NodeCreated?.Invoke(sender, inode);
-            };
-
             server = Config.UseIPv6
                 ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config, nodesControl)
                 : new Server(IPAddress.Any, Config.ServerPort, Config, nodesControl);
@@ -62,9 +48,6 @@ namespace Lanchat.Core.Network
 
         /// <inheritdoc />
         public IBroadcast Broadcast { get; }
-
-        /// <inheritdoc />
-        public event EventHandler<INode> NodeCreated;
 
         /// <inheritdoc />
         public void Start()

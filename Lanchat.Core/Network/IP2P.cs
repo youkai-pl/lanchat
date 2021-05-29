@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -22,12 +21,7 @@ namespace Lanchat.Core.Network
 
         /// <see cref="Lanchat.Core.Api.IBroadcast" />
         IBroadcast Broadcast { get; }
-
-        /// <summary>
-        ///     New node connected. After receiving this handlers for node events can be created.
-        /// </summary>
-        event EventHandler<INode> NodeCreated;
-
+        
         /// <summary>
         ///     Start server.
         /// </summary>

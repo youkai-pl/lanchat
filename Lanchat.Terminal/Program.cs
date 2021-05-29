@@ -31,9 +31,11 @@ namespace Lanchat.Terminal
             Resources.Culture = CultureInfo.CurrentCulture;
 
             Ui.Start();
-            Network = new P2P(Config);
+            Network = new P2P(Config, x =>
+            {
+                _ = new NodeEventsHandlers(x.Instance);
+            });
 
-            Network.NodeCreated += (sender, node) => { _ = new NodeEventsHandlers(node); };
             Ui.SetupNetworkEvents();
 
             if (args.Contains("--no-saved") || args.Contains("-a"))

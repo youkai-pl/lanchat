@@ -22,7 +22,6 @@ namespace Lanchat.Core.Network
         }
 
         internal List<INodeInternal> Nodes { get; }
-        internal event EventHandler<INodeInternal> NodeCreated;
 
         internal INodeInternal CreateNode(IHost host)
         {
@@ -41,7 +40,6 @@ namespace Lanchat.Core.Network
                 CloseNode(sender, args);
                 scope.Dispose();
             };
-            NodeCreated?.Invoke(this, node);
             node.Start();
             return node;
         }
