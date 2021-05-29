@@ -9,10 +9,12 @@
     <ItemGroup>
         <PackageReference Include="NUnit" Version="3.13.1" />
         <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+        <PackageReference Include="System.Text.Json" Version="5.0.2" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Lanchat.ClientCore\Lanchat.ClientCore.csproj" />
       <ProjectReference Include="..\Lanchat.Core\Lanchat.Core.csproj" />
     </ItemGroup>
 

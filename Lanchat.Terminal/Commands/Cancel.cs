@@ -6,25 +6,25 @@ namespace Lanchat.Terminal.Commands
 {
     public class Cancel : ICommand
     {
-        public string Alias { get; set; } = "cancel";
-        public int ArgsCount { get; set; } = 1;
+        public string Alias => "cancel";
+        public int ArgsCount => 1;
 
         public void Execute(string[] args)
         {
-            var node = Program.Network.Nodes.Find(x => x.ShortId == args[0]);
+            var node = Program.Network.Nodes.Find(x => x.User.ShortId == args[0]);
             if (node == null)
             {
-                Ui.Log.Add(Resources._UserNotFound);
+                Ui.Log.AddError(Resources._UserNotFound);
                 return;
             }
 
             try
             {
-                node.FileReceiver.CancelReceive();
+                node.FileReceiver.CancelReceive(true);
             }
             catch (InvalidOperationException)
             {
-                Ui.Log.Add(Resources._NoFileReceiveRequest);
+                Ui.Log.AddError(Resources._NoFileReceiveRequest);
             }
         }
     }

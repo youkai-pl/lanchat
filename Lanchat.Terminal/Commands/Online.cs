@@ -1,18 +1,17 @@
-using Lanchat.Core;
-using Lanchat.Core.Models;
+using Lanchat.Core.Identity;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
     public class Online : ICommand
     {
-        public string Alias { get; set; } = "online";
-        public int ArgsCount { get; set; }
+        public string Alias => "online";
+        public int ArgsCount => 0;
 
         public void Execute(string[] _)
         {
-            CoreConfig.Status = Status.Online;
-            Ui.Status.Text = "Online";
+            Program.Config.UserStatus = UserStatus.Online;
+            Ui.BottomBar.Status.Text = "Online";
         }
     }
 }

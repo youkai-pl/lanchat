@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 using ConsoleGUI.Controls;
-using Lanchat.Core.Models;
+using Lanchat.Core.Identity;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
     public class List : ICommand
     {
-        public string Alias { get; set; } = "list";
-        public int ArgsCount { get; set; }
+        public string Alias => "list";
+        public int ArgsCount => 0;
 
         public void Execute(string[] _)
         {
@@ -17,19 +17,20 @@ namespace Lanchat.Terminal.Commands
             {
                 var status = new TextBlock();
 
-                switch (x.Status)
+                // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+                switch (x.User.UserStatus)
                 {
-                    case Status.Online:
+                    case UserStatus.Online:
                         status.Text = "Online";
                         status.Color = ConsoleColor.Green;
                         break;
 
-                    case Status.AwayFromKeyboard:
+                    case UserStatus.AwayFromKeyboard:
                         status.Text = "Afk";
                         status.Color = ConsoleColor.Yellow;
                         break;
 
-                    case Status.DoNotDisturb:
+                    case UserStatus.DoNotDisturb:
                         status.Text = "Dnd";
                         status.Color = ConsoleColor.Red;
                         break;
@@ -37,15 +38,15 @@ namespace Lanchat.Terminal.Commands
 
                 var line = new[]
                 {
-                    new TextBlock {Text = $"{x.Nickname} (", Color = ConsoleColor.White},
+                    new TextBlock {Text = $"{x.User.Nickname} (", Color = ConsoleColor.White},
                     status,
                     new TextBlock {Text = ")", Color = ConsoleColor.White}
                 };
 
-                Ui.Log.AddCustomTextBlock(line);
+                Ui.Log.AddTextLine(line);
             });
 
-            Program.Network.Broadcasting.DetectedNodes.ToList().ForEach(x =>
+            Program.Network.NodesDetection.DetectedNodes.ToList().ForEach(x =>
             {
                 var line = new[]
                 {
@@ -54,7 +55,7 @@ namespace Lanchat.Terminal.Commands
                     new TextBlock {Text = ")", Color = ConsoleColor.White}
                 };
 
-                Ui.Log.AddCustomTextBlock(line);
+                Ui.Log.AddTextLine(line);
             });
         }
     }

@@ -1,125 +1,132 @@
 using System;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using Lanchat.Core.Encryption;
-using Lanchat.Core.Models;
-using Lanchat.Core.NetworkIO;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using Lanchat.Core.FileSystem;
+using Lanchat.Core.FileTransfer.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
-    public class FileSender : INotifyPropertyChanged
+    internal class FileSender : IFileSender, IInternalFileSender
     {
         private const int ChunkSize = 1024 * 1024;
-        private readonly IBytesEncryption encryption;
-        private readonly INetworkOutput networkOutput;
-        private FileTransferRequest fileTransferRequest;
+        private readonly FileTransferOutput fileTransferOutput;
+        private readonly IStorage storage;
+        private bool disposing;
 
-        internal FileSender(INetworkOutput networkOutput, IBytesEncryption encryption)
+        public FileSender(FileTransferOutput fileTransferOutput, IStorage storage)
         {
-            this.networkOutput = networkOutput;
-            this.encryption = encryption;
+            this.fileTransferOutput = fileTransferOutput;
+            this.storage = storage;
         }
 
-        /// <summary>
-        ///     Outgoing file request.
-        /// </summary>
-        public FileTransferRequest Request
-        {
-            get => fileTransferRequest;
-            private set
-            {
-                if (fileTransferRequest == value) return;
-                fileTransferRequest = value;
-                OnPropertyChanged();
-            }
-        }
+        public CurrentFileTransfer CurrentFileTransfer { get; private set; }
 
-        public event EventHandler<Exception> FileTransferError;
-        public event EventHandler FileTransferRequestAccepted;
-        public event EventHandler FileTransferRequestRejected;
-        public event EventHandler FileTransferFinished;
+        public event EventHandler<FileTransferException> FileTransferError;
 
-        /// <summary>
-        ///     Send file exchange request.
-        /// </summary>
-        /// <param name="path">File path</param>
+        public event EventHandler<CurrentFileTransfer> AcceptedByReceiver;
+
+        public event EventHandler<CurrentFileTransfer> FileTransferRequestRejected;
+
+        public event EventHandler<CurrentFileTransfer> FileSendFinished;
+
+
         public void CreateSendRequest(string path)
         {
-            if (Request != null) throw new InvalidOperationException("File transfer in progress");
+            if (CurrentFileTransfer is {Disposed: false})
+            {
+                throw new InvalidOperationException("File transfer already in progress");
+            }
 
-            var fileInfo = new FileInfo(Path.Combine(path));
-
-            Request = new FileTransferRequest
+            CurrentFileTransfer = new CurrentFileTransfer
             {
                 FilePath = path,
-                Parts = (fileInfo.Length + ChunkSize - 1) / ChunkSize
+                Parts = (storage.GetFileSize(path) + ChunkSize - 1) / ChunkSize
             };
 
-            networkOutput.SendUserData(
-                DataTypes.FileTransferControl,
-                new FileTransferControl
-                {
-                    FileName = Request.FileName,
-                    RequestStatus = RequestStatus.Sending,
-                    Parts = Request.Parts
-                });
+            fileTransferOutput.SendRequest(CurrentFileTransfer);
         }
 
-        internal void SendFile()
+        public void SendFile()
         {
-            FileTransferRequestAccepted?.Invoke(this, EventArgs.Empty);
+            CurrentFileTransfer.Accepted = true;
+            if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
+            {
+                return;
+            }
+
+            AcceptedByReceiver?.Invoke(this, CurrentFileTransfer);
 
             try
             {
-                var buffer = new byte[ChunkSize];
-                int bytesRead;
-                using var file = File.OpenRead(Request.FilePath);
-                while ((bytesRead = file.Read(buffer, 0, buffer.Length)) > 0 && Request != null)
+                var file = new FileReader(ChunkSize, CurrentFileTransfer.FilePath);
+                Task.Run(() =>
                 {
-                    var part = new FilePart
+                    while (file.ReadChunk(out var chunk))
                     {
-                        Data = encryption.Encrypt(buffer.Take(bytesRead).ToArray())
-                    };
+                        if (disposing || CurrentFileTransfer.Disposed)
+                        {
+                            OnFileTransferError(new FileTransferException(CurrentFileTransfer, "Cancelled"));
+                            return;
+                        }
 
-                    if (bytesRead < ChunkSize) part.Last = true;
-                    networkOutput.SendUserData(DataTypes.FilePart, part);
-                    Request.PartsTransferred++;
-                }
+                        var part = new FilePart
+                        {
+                            Data = Convert.ToBase64String(chunk)
+                        };
+                        
+                        fileTransferOutput.SendPart(part);
+                        CurrentFileTransfer.PartsTransferred++;
+                    }
 
-                Request = null;
-                FileTransferFinished?.Invoke(this, EventArgs.Empty);
+                    FileSendFinished?.Invoke(this, CurrentFileTransfer);
+                    fileTransferOutput.SendSignal(FileTransferStatus.Finished);
+                    CurrentFileTransfer.Dispose();
+                });
             }
             catch (Exception e)
             {
-                FileTransferError?.Invoke(this, e);
-                networkOutput.SendUserData(
-                    DataTypes.FileTransferControl,
-                    new FileTransferControl
-                    {
-                        RequestStatus = RequestStatus.Errored
-                    });
+                storage.CatchFileSystemException(e, () =>
+                {
+                    OnFileTransferError(new FileTransferException(CurrentFileTransfer, e.Message));
+                    fileTransferOutput.SendSignal(FileTransferStatus.SenderError);
+                    CurrentFileTransfer = null;
+                    Trace.WriteLine("Cannot access file system");
+                });
             }
         }
 
-        internal void HandleReject()
+        public void HandleReject()
         {
-            FileTransferRequestRejected?.Invoke(this, EventArgs.Empty);
-            Request = null;
+            if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
+            {
+                return;
+            }
+
+            FileTransferRequestRejected?.Invoke(this, CurrentFileTransfer);
+            CurrentFileTransfer.Dispose();
         }
 
-        internal void HandleCancel()
+        public void HandleError()
         {
-            if (Request == null) return;
-            Request = null;
-            FileTransferError?.Invoke(this, new Exception("File transfer cancelled by receiver"));
+            if (CurrentFileTransfer == null ||
+                CurrentFileTransfer.Disposed ||
+                CurrentFileTransfer.Accepted == false)
+            {
+                return;
+            }
+
+            CurrentFileTransfer.Dispose();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName = null)
+        internal void Dispose()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            CurrentFileTransfer?.Dispose();
+            disposing = true;
+        }
+
+        private void OnFileTransferError(FileTransferException e)
+        {
+            FileTransferError?.Invoke(this, e);
         }
     }
 }

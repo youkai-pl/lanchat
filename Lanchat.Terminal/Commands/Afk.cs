@@ -1,18 +1,17 @@
-using Lanchat.Core;
-using Lanchat.Core.Models;
+using Lanchat.Core.Identity;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
     public class Afk : ICommand
     {
-        public string Alias { get; set; } = "afk";
-        public int ArgsCount { get; set; }
+        public string Alias => "afk";
+        public int ArgsCount => 0;
 
         public void Execute(string[] _)
         {
-            CoreConfig.Status = Status.AwayFromKeyboard;
-            Ui.Status.Text = "AFK";
+            Program.Config.UserStatus = UserStatus.AwayFromKeyboard;
+            Ui.BottomBar.Status.Text = "AFK";
         }
     }
 }

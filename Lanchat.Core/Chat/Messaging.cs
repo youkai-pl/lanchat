@@ -1,57 +1,43 @@
 using System;
-using Lanchat.Core.Encryption;
-using Lanchat.Core.Models;
-using Lanchat.Core.NetworkIO;
+using Lanchat.Core.Api;
+using Lanchat.Core.Chat.Models;
 
 namespace Lanchat.Core.Chat
 {
-    public class Messaging
+    internal class Messaging : IMessaging, IInternalMessaging
     {
-        internal readonly IStringEncryption Encryption;
-        private readonly INetworkOutput networkOutput;
+        private readonly IOutput output;
 
-        internal Messaging(INetworkOutput networkOutput, IStringEncryption encryption)
+        public Messaging(IOutput output)
         {
-            this.networkOutput = networkOutput;
-            Encryption = encryption;
+            this.output = output;
         }
 
-        /// <summary>
-        ///     Message received.
-        /// </summary>
-        public event EventHandler<string> MessageReceived;
-
-        /// <summary>
-        ///     Private message received.
-        /// </summary>
-        public event EventHandler<string> PrivateMessageReceived;
-
-        /// <summary>
-        ///     Send message.
-        /// </summary>
-        /// <param name="content">Message content.</param>
-        public void SendMessage(string content)
-        {
-            networkOutput.SendUserData(DataTypes.Message, Encryption.Encrypt(content));
-        }
-
-        /// <summary>
-        ///     Send private message.
-        /// </summary>
-        /// <param name="content">Message content.</param>
-        public void SendPrivateMessage(string content)
-        {
-            networkOutput.SendUserData(DataTypes.PrivateMessage, Encryption.Encrypt(content));
-        }
-
-        internal void OnMessageReceived(string e)
+        public void OnMessageReceived(string e)
         {
             MessageReceived?.Invoke(this, e);
         }
 
-        internal void OnPrivateMessageReceived(string e)
+        public void OnPrivateMessageReceived(string e)
         {
             PrivateMessageReceived?.Invoke(this, e);
+        }
+
+        public event EventHandler<string> MessageReceived;
+        public event EventHandler<string> PrivateMessageReceived;
+
+        public void SendMessage(string content)
+        {
+            output.SendData(new Message {Content = content});
+        }
+
+        public void SendPrivateMessage(string content)
+        {
+            output.SendData(new Message
+            {
+                Content = content,
+                Private = true
+            });
         }
     }
 }

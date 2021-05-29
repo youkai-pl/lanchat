@@ -1,18 +1,17 @@
-using Lanchat.Core;
-using Lanchat.Core.Models;
+using Lanchat.Core.Identity;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
     public class Dnd : ICommand
     {
-        public string Alias { get; set; } = "dnd";
-        public int ArgsCount { get; set; }
+        public string Alias => "dnd";
+        public int ArgsCount => 0;
 
         public void Execute(string[] _)
         {
-            CoreConfig.Status = Status.DoNotDisturb;
-            Ui.Status.Text = "DND";
+            Program.Config.UserStatus = UserStatus.DoNotDisturb;
+            Ui.BottomBar.Status.Text = "DND";
         }
     }
 }

@@ -14,8 +14,8 @@
         </p>
     </description>
     <launchable type="desktop-id">io.github.tofudd.lanchat.terminal.desktop</launchable>
-    <url type="homepage">https://github.com/tofudd/lanchat/</url>
-    <developer_name>Bartłomiej Tota (tofudd)</developer_name>
+    <url type="homepage">https://github.com/tof4/lanchat/</url>
+    <developer_name>Bartłomiej Tota (tof4)</developer_name>
     <provides>
         <binary>Lanchat</binary>
     </provides>

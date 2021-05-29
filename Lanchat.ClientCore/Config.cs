@@ -1,188 +1,170 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Net;
-using System.Runtime.InteropServices;
-using System.Text.Json;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using Lanchat.Core;
+using Lanchat.Core.Config;
+using Lanchat.Core.Identity;
 
 namespace Lanchat.ClientCore
 {
-    public class Config
+    /// <summary>
+    ///     Default IConfig implementation.
+    /// </summary>
+    public class Config : IConfig
     {
-        private static int _port;
-        private static int _broadcastPort;
-        private static string _nickname;
-        private static List<string> _blockedAddresses;
-        private static bool _automaticConnecting;
-        private static bool _useIPv6;
-        private static string _language;
+        private bool automatic = true;
+        private ObservableCollection<IPAddress> blockedAddresses = new();
+        private int broadcastPort = 3646;
+        private string filesDownloadDirectory = Storage.DownloadsPath;
+        private string language = "default";
+        private string nickname = Environment.UserName;
+        private int port = 3645;
+        private ObservableCollection<IPAddress> savedAddresses = new();
+        private bool useIPv6;
+        private UserStatus userStatus = UserStatus.Online;
 
-        public List<string> BlockedAddresses
-        {
-            get => _blockedAddresses;
-            set
-            {
-                _blockedAddresses = value;
-                CoreConfig.BlockedAddresses = _blockedAddresses.Select(IPAddress.Parse).ToList();
-            }
-        }
+        /// <summary>
+        ///     Config could not be loaded and has just been generated.
+        /// </summary>
+        [JsonIgnore]
+        public bool Fresh { get; set; }
 
-        public int Port
-        {
-            get => _port;
-            set
-            {
-                _port = value;
-                CoreConfig.ServerPort = value;
-                Save();
-            }
-        }
-
-        public int BroadcastPort
-        {
-            get => _broadcastPort;
-            set
-            {
-                _broadcastPort = value;
-                CoreConfig.BroadcastPort = value;
-                Save();
-            }
-        }
-
-        public string Nickname
-        {
-            get => _nickname;
-            set
-            {
-                _nickname = value;
-                CoreConfig.Nickname = value;
-                Save();
-            }
-        }
-
-        public bool AutomaticConnecting
-        {
-            get => _automaticConnecting;
-            set
-            {
-                _automaticConnecting = value;
-                CoreConfig.AutomaticConnecting = value;
-                Save();
-            }
-        }
-
-        public bool UseIPv6
-        {
-            get => _useIPv6;
-            set
-            {
-                _useIPv6 = value;
-                CoreConfig.UseIPv6 = value;
-                Save();
-            }
-        }
-
+        /// <summary>
+        ///     UI language.
+        /// </summary>
         public string Language
         {
-            get => _language;
+            get => language;
             set
             {
-                _language = value;
-                Save();
+                language = value;
+                OnPropertyChanged(nameof(Language));
             }
         }
 
-        [JsonIgnore] public bool Fresh { get; set; }
 
-        public static string ConfigPath { get; private set; }
-        public static string DataPath { get; private set; }
+        /// <inheritdoc />
+        [JsonIgnore]
+        public bool ConnectToSaved { get; set; } = true;
 
-        public void AddBlocked(IPAddress ipAddress)
+        /// <inheritdoc />
+        [JsonIgnore]
+        public bool NodesDetection { get; set; } = true;
+
+        /// <inheritdoc />
+        [JsonIgnore]
+        public bool StartServer { get; set; } = true;
+
+        /// <inheritdoc />
+        public ObservableCollection<IPAddress> BlockedAddresses
         {
-            var ipString = ipAddress.ToString();
-            if (BlockedAddresses.Contains(ipString)) return;
-            BlockedAddresses.Add(ipString);
-            CoreConfig.BlockedAddresses.Add(ipAddress);
-            Save();
+            get => blockedAddresses;
+            set
+            {
+                blockedAddresses = value;
+                OnPropertyChanged(nameof(BlockedAddresses));
+            }
         }
 
-        public void RemoveBlocked(IPAddress ipAddress)
+        /// <inheritdoc />
+        public ObservableCollection<IPAddress> SavedAddresses
         {
-            BlockedAddresses.Remove(ipAddress.ToString());
-            CoreConfig.BlockedAddresses.Remove(ipAddress);
-            Save();
+            get => savedAddresses;
+            set
+            {
+                savedAddresses = value;
+                OnPropertyChanged(nameof(SavedAddresses));
+            }
         }
 
-        public static Config Load()
+        /// <inheritdoc />
+        public UserStatus UserStatus
         {
-            Config config;
-            try
+            get => userStatus;
+            set
             {
-                var xdgConfigHome = Environment.GetEnvironmentVariable("XDG_CONFIG_HOME");
-                var xdgDataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
-
-                if (xdgDataHome != null && xdgConfigHome != null)
-                {
-                    DataPath = xdgDataHome;
-                    ConfigPath = $"{xdgConfigHome}/config.json";
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    DataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Lanchat2";
-                    ConfigPath = $"{DataPath}/config.json";
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    DataPath = Environment.GetEnvironmentVariable("HOME") + "/.Lancaht2";
-                    ConfigPath = $"{DataPath}/config.json";
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    DataPath = Environment.GetEnvironmentVariable("HOME") + "/Library/Preferences/.Lancaht2";
-                    ConfigPath = $"{DataPath}/config.json";
-                }
-
-                config = JsonSerializer.Deserialize<Config>(File.ReadAllText(ConfigPath));
+                userStatus = value;
+                OnPropertyChanged(nameof(UserStatus));
             }
-            catch (Exception e)
-            {
-                if (!(e is FileNotFoundException) &&
-                    !(e is DirectoryNotFoundException) &&
-                    !(e is JsonException)) throw;
-
-                config = new Config
-                {
-                    Port = 3645,
-                    BroadcastPort = 3646,
-                    BlockedAddresses = new List<string>(),
-                    Nickname = NicknamesGenerator.GimmeNickname(),
-                    AutomaticConnecting = true,
-                    UseIPv6 = false,
-                    Language = "default",
-                    Fresh = true
-                };
-                config.Save();
-            }
-
-            return config;
         }
 
-        private void Save()
+        /// <inheritdoc />
+        public int ServerPort
         {
-            try
+            get => port;
+            set
             {
-                var configFileDirectory = Path.GetDirectoryName(ConfigPath);
-                if (!Directory.Exists(configFileDirectory)) Directory.CreateDirectory(configFileDirectory!);
-                File.WriteAllText(ConfigPath,
-                    JsonSerializer.Serialize(this, new JsonSerializerOptions {WriteIndented = true}));
+                port = value;
+                OnPropertyChanged(nameof(ServerPort));
             }
-            catch (Exception e)
+        }
+
+        /// <inheritdoc />
+        public int BroadcastPort
+        {
+            get => broadcastPort;
+            set
             {
-                if (!(e is DirectoryNotFoundException) && !(e is UnauthorizedAccessException)) throw;
+                broadcastPort = value;
+                OnPropertyChanged(nameof(BroadcastPort));
             }
+        }
+
+        /// <inheritdoc />
+        public string Nickname
+        {
+            get => nickname;
+            set
+            {
+                nickname = value;
+                OnPropertyChanged(nameof(Nickname));
+            }
+        }
+
+        /// <inheritdoc />
+        public bool ConnectToReceivedList
+        {
+            get => automatic;
+            set
+            {
+                automatic = value;
+                OnPropertyChanged(nameof(ConnectToReceivedList));
+            }
+        }
+
+        /// <inheritdoc />
+        public string ReceivedFilesDirectory
+        {
+            get => filesDownloadDirectory;
+            set
+            {
+                filesDownloadDirectory = value;
+                OnPropertyChanged(nameof(ReceivedFilesDirectory));
+            }
+        }
+
+        /// <inheritdoc />
+        public bool DebugMode { get; set; }
+
+        /// <inheritdoc />
+        public bool UseIPv6
+        {
+            get => useIPv6;
+            set
+            {
+                useIPv6 = value;
+                OnPropertyChanged(nameof(UseIPv6));
+            }
+        }
+
+        /// <inheritdoc />
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -1,0 +1,31 @@
+using Lanchat.Core.Network.Handlers;
+using Lanchat.Core.Network.Models;
+using Lanchat.Tests.Mock.Tcp;
+using NUnit.Framework;
+
+namespace Lanchat.Tests.Core.Network.Handlers
+{
+    public class ConnectionControlHandlerTests
+    {
+        private ConnectionControlHandler connectionControlHandler;
+        private HostMock hostElement;
+
+        [SetUp]
+        public void Setup()
+        {
+            hostElement = new HostMock();
+            connectionControlHandler = new ConnectionControlHandler(hostElement);
+        }
+
+        [Test]
+        public void RemoteClose()
+        {
+            var data = new ConnectionControl
+            {
+                Status = ConnectionStatus.RemoteDisconnect
+            };
+            connectionControlHandler.Handle(data);
+            Assert.IsTrue(hostElement.Closed);
+        }
+    }
+}

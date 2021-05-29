@@ -1,163 +1,125 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using Lanchat.Core.Encryption;
-using Lanchat.Core.Models;
-using Lanchat.Core.NetworkIO;
+using Lanchat.Core.FileSystem;
+using Lanchat.Core.FileTransfer.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
-    public class FileReceiver : IApiHandler, INotifyPropertyChanged
+    internal class FileReceiver : IDisposable, IFileReceiver, IInternalFileReceiver
     {
-        private readonly IBytesEncryption encryption;
-        private readonly INetworkOutput networkOutput;
-        private FileTransferRequest fileTransferRequest;
+        private readonly FileTransferOutput fileTransferOutput;
+        private readonly IStorage storage;
 
-        private FileStream writeFileStream;
-
-        internal FileReceiver(INetworkOutput networkOutput, IBytesEncryption encryption)
+        public FileReceiver(FileTransferOutput fileTransferOutput, IStorage storage)
         {
-            this.networkOutput = networkOutput;
-            this.encryption = encryption;
+            this.storage = storage;
+            this.fileTransferOutput = fileTransferOutput;
         }
 
-        /// <summary>
-        ///     Incoming file request.
-        /// </summary>
-        public FileTransferRequest Request
+        public void Dispose()
         {
-            get => fileTransferRequest;
-            private set
+            if (CurrentFileTransfer is {Accepted: true, Disposed: false})
             {
-                if (fileTransferRequest == value) return;
-                fileTransferRequest = value;
-                OnPropertyChanged();
+                CancelReceive(true);
             }
+            else
+            {
+                CurrentFileTransfer?.Dispose();
+            }
+
+            GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<DataTypes> HandledDataTypes { get; } = new[]
-        {
-            DataTypes.FilePart
-        };
+        public CurrentFileTransfer CurrentFileTransfer { get; set; }
 
-        public void Handle(DataTypes type, object data)
-        {
-            var binary = (FilePart) data;
-            HandleReceivedFilePart(binary);
-        }
+        public event EventHandler<CurrentFileTransfer> FileReceiveFinished;
 
-        public event EventHandler<FileTransferRequest> FileTransferFinished;
-        public event EventHandler<Exception> FileTransferError;
-        public event EventHandler<FileTransferRequest> FileTransferRequestReceived;
+        public event EventHandler<FileTransferException> FileTransferError;
 
-        /// <summary>
-        ///     Accept incoming file request.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">No awaiting request</exception>
+        public event EventHandler<CurrentFileTransfer> FileTransferRequestReceived;
+
         public void AcceptRequest()
         {
-            if (Request == null) throw new InvalidOperationException("No receive request");
-            Request.Accepted = true;
-            writeFileStream = new FileStream(Request.FileName, FileMode.Append);
-            networkOutput.SendUserData(DataTypes.FileTransferControl, new FileTransferControl
+            if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
             {
-                RequestStatus = RequestStatus.Accepted
-            });
+                throw new InvalidOperationException("No pending requests ");
+            }
+
+            CurrentFileTransfer.Accepted = true;
+            FileWriter = new FileWriter(CurrentFileTransfer.FilePath);
+            fileTransferOutput.SendSignal(FileTransferStatus.Accepted);
         }
 
-        /// <summary>
-        ///     Reject incoming file request.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">No awaiting request</exception>
         public void RejectRequest()
         {
-            if (Request == null) throw new InvalidOperationException("No receive request");
-            Request = null;
-            networkOutput.SendUserData(DataTypes.FileTransferControl, new FileTransferControl
+            if (CurrentFileTransfer is {Disposed: true})
             {
-                RequestStatus = RequestStatus.Rejected
-            });
-        }
-
-        /// <summary>
-        ///     Cancel current receive request.
-        /// </summary>
-        public void CancelReceive()
-        {
-            if (Request == null) throw new InvalidOperationException("No receive request");
-            networkOutput.SendUserData(
-                DataTypes.FileTransferControl,
-                new FileTransferControl
-                {
-                    RequestStatus = RequestStatus.Canceled
-                });
-
-            File.Delete(Request.FilePath);
-            FileTransferError?.Invoke(this, new Exception("File transfer cancelled by user"));
-            Request = null;
-            writeFileStream.Dispose();
-        }
-
-        internal void HandleReceiveRequest(FileTransferControl request)
-        {
-            Request = new FileTransferRequest
-            {
-                FilePath = MakeUnique(request.FileName),
-                Parts = request.Parts
-            };
-            FileTransferRequestReceived?.Invoke(this, Request);
-        }
-
-        internal void HandleSenderError()
-        {
-            if (Request == null) return;
-            writeFileStream.Dispose();
-            File.Delete(Request.FilePath);
-            Request = null;
-            FileTransferError?.Invoke(this, new Exception("File transfer cancelled by sender"));
-        }
-
-        private void HandleReceivedFilePart(FilePart filePart)
-        {
-            if (Request == null) return;
-            if (!Request.Accepted) return;
-
-            try
-            {
-                var data = encryption.Decrypt(filePart.Data);
-                writeFileStream.Write(data, 0, data.Length);
-                Request.PartsTransferred++;
-                if (!filePart.Last) return;
-                FileTransferFinished?.Invoke(this, Request);
-                writeFileStream.Dispose();
-                Request = null;
+                throw new InvalidOperationException("No pending requests ");
             }
-            catch (Exception e)
-            {
-                CancelReceive();
-                FileTransferError?.Invoke(this, e);
-            }
+
+            CurrentFileTransfer = null;
+            fileTransferOutput.SendSignal(FileTransferStatus.Rejected);
         }
 
-        private static string MakeUnique(string file)
+        public void CancelReceive(bool deleteFile)
         {
-            var fileName = Path.GetFileNameWithoutExtension(file);
-            var fileExt = Path.GetExtension(file);
-
-            for (var i = 1;; ++i)
+            if (CurrentFileTransfer == null ||
+                CurrentFileTransfer.Disposed ||
+                !CurrentFileTransfer.Accepted)
             {
-                if (!File.Exists(file))
-                    return file;
-                file = $"{fileName}({i}){fileExt}";
+                throw new InvalidOperationException("No file transfers in progress");
             }
+
+            fileTransferOutput.SendSignal(FileTransferStatus.ReceiverError);
+            if (deleteFile)
+            {
+                storage.DeleteIncompleteFile(CurrentFileTransfer.FilePath);
+            }
+
+            FileTransferError?.Invoke(this, new FileTransferException(
+                CurrentFileTransfer,
+                "Cancelled by user"));
+            
+            CurrentFileTransfer.Dispose();
+            FileWriter.Dispose();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public FileWriter FileWriter { get; private set; }
 
-        private void OnPropertyChanged(string propertyName = null)
+        public void FinishReceive()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (CurrentFileTransfer is {Disposed: true})
+            {
+                return;
+            }
+
+            FileReceiveFinished?.Invoke(this, CurrentFileTransfer);
+            CurrentFileTransfer.Dispose();
+            FileWriter.Dispose();
+        }
+
+        public void HandleError()
+        {
+            if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
+            {
+                return;
+            }
+
+            storage.DeleteIncompleteFile(CurrentFileTransfer.FilePath);
+            OnFileTransferError();
+            CurrentFileTransfer.Dispose();
+            FileWriter.Dispose();
+        }
+
+        public void OnFileTransferRequestReceived()
+        {
+            FileTransferRequestReceived?.Invoke(this, CurrentFileTransfer);
+        }
+
+        public void OnFileTransferError()
+        {
+            FileTransferError?.Invoke(this, new FileTransferException(
+                CurrentFileTransfer,
+                "Error at the sender"));
         }
     }
 }
