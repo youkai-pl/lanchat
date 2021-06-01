@@ -136,7 +136,7 @@ namespace Lanchat.ClientCore
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 DataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Lanchat2";
-                DownloadsPath = Environment.GetEnvironmentVariable("%USERPROFILE%") + "\\Downloads";
+                DownloadsPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads";
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
