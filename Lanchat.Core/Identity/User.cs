@@ -27,7 +27,10 @@ namespace Lanchat.Core.Identity
 
                 previousNickname = nickname;
                 nickname = value;
-                NicknameUpdated?.Invoke(this, value);
+                if (node.Ready)
+                {
+                    NicknameUpdated?.Invoke(this, value);
+                }
             }
         }
 
