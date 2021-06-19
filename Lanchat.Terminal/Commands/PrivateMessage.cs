@@ -18,7 +18,9 @@ namespace Lanchat.Terminal.Commands
                 return;
             }
 
-            node.Messaging.SendPrivateMessage(string.Join(" ", args.Skip(1)));
+            var message = string.Join(" ", args.Skip(1));
+            Ui.Log.AddMessage(message, $"{Program.Config.Nickname} -> {node.User.Nickname}");
+            node.Messaging.SendPrivateMessage(message);
         }
     }
 }

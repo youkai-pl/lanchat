@@ -83,7 +83,7 @@ namespace Lanchat.Terminal.UserInterface
                 }
                 else
                 {
-                    Ui.Log.AddMessage(input.Text, Program.Config.Nickname, false);
+                    Ui.Log.AddMessage(input.Text, Program.Config.Nickname);
                     Program.Network.Broadcast.SendMessage(input.Text);
                 }
             }

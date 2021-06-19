@@ -37,9 +37,8 @@ namespace Lanchat.Terminal.UserInterface
             Add(text, ConsoleColor.Yellow);
         }
 
-        public void AddMessage(string text, string nickname, bool privateMessage)
+        public void AddMessage(string text, string nickname)
         {
-            var color = privateMessage ? ConsoleColor.Magenta : ConsoleColor.White;
             foreach (var line in SplitLines(text))
             {
                 AddToLog(new List<TextBlock>
@@ -48,7 +47,7 @@ namespace Lanchat.Terminal.UserInterface
                     new() {Text = "<", Color = ConsoleColor.DarkGray},
                     new() {Text = $"{nickname}"},
                     new() {Text = "> ", Color = ConsoleColor.DarkGray},
-                    new() {Text = line, Color = color}
+                    new() {Text = line, Color = ConsoleColor.White}
                 });
                 Ui.ScrollPanel.Top = int.MaxValue;
             }
