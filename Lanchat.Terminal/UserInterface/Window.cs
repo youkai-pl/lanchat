@@ -11,30 +11,17 @@ namespace Lanchat.Terminal.UserInterface
 {
     public class Window
     {
+        public TabPanel TabPanel { get; }
         private readonly DockPanel dockPanel;
-        private readonly TabPanel tabPanel;
         private readonly TextBox promptInput;
         private readonly BottomBar bottomBar;
 
         public Window()
         {
-            var chat = new ChatView();
-            
-            tabPanel = new TabPanel();
-            tabPanel.AddTab("#main", new Box
-            {
-                Content = chat
-            });
-
-            tabPanel.AddTab("@user#1234", new Box
-            {
-                Content = new ChatView()
-            });
-            
-            tabPanel.AddTab("@user#4324", new Box
-            {
-                Content = new ChatView()
-            });
+            TabPanel = new TabPanel();
+            TabPanel.AddTab("#main", new ChatView());
+            TabPanel.AddTab("@admin#4324", new ChatView());
+            TabPanel.AddTab("@user#4324", new ChatView());
 
             promptInput = new TextBox();
             var promptIndicator = new TextBlock
@@ -60,11 +47,11 @@ namespace Lanchat.Terminal.UserInterface
             };
 
             bottomBar = new BottomBar();
-            
+
             dockPanel = new DockPanel
             {
                 Placement = DockPanel.DockedControlPlacement.Bottom,
-                FillingControl = tabPanel,
+                FillingControl = TabPanel,
 
                 DockedControl = new DockPanel
                 {
@@ -85,8 +72,9 @@ namespace Lanchat.Terminal.UserInterface
 
             var input = new IInputListener[]
             {
+                new InputController(promptInput, TabPanel),
                 promptInput,
-                tabPanel
+                TabPanel
             };
 
             while (true)

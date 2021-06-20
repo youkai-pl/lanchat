@@ -1,30 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
-using ConsoleGUI.UserDefined;
 
 namespace Lanchat.Terminal.UserInterface
 {
-    public class ChatView : SimpleControl
+    public class ChatView : VerticalScrollPanel
     {
         private readonly object lockThread;
-        public VerticalScrollPanel ScrollPanel { get; }
         private readonly VerticalStackPanel stackPanel;
 
         public ChatView()
         {
             lockThread = new object();
             stackPanel = new VerticalStackPanel();
-            ScrollPanel = new VerticalScrollPanel
-            {
-                Content = stackPanel,
-                ScrollBarBackground = new Character(),
-                ScrollBarForeground = new Character(),
-                ScrollUpKey = ConsoleKey.PageUp,
-                ScrollDownKey = ConsoleKey.PageDown
-            };
-            Content = ScrollPanel;
+            
+            Content = stackPanel;
+            ScrollBarBackground = new Character();
+            ScrollBarForeground = new Character();
+            ScrollUpKey = ConsoleKey.PageUp;
+            ScrollDownKey = ConsoleKey.PageDown;
         }
 
         public void Add(string text, ConsoleColor color = ConsoleColor.White)
@@ -60,7 +56,7 @@ namespace Lanchat.Terminal.UserInterface
                     new() {Text = "> ", Color = ConsoleColor.DarkGray},
                     new() {Text = line, Color = ConsoleColor.White}
                 });
-                ScrollPanel.Top = int.MaxValue;
+                Top = int.MaxValue;
             }
         }
 
@@ -75,7 +71,7 @@ namespace Lanchat.Terminal.UserInterface
             };
             children.AddRange(line);
             AddToLog(children);
-            ScrollPanel.Top = int.MaxValue;
+            Top = int.MaxValue;
         }
 
         private static IEnumerable<string> SplitLines(string text)

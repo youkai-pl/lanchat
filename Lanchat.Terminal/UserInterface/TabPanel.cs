@@ -11,7 +11,7 @@ namespace Lanchat.Terminal.UserInterface
 {
     public class TabPanel : SimpleControl, IInputListener
     {
-        private class Tab
+        public class Tab
         {
             private readonly Background headerBackground;
 
@@ -43,7 +43,7 @@ namespace Lanchat.Terminal.UserInterface
         private readonly DockPanel wrapper;
         private readonly HorizontalStackPanel tabsPanel;
 
-        private Tab currentTab;
+        public Tab CurrentTab { get; private set; }
 
         public TabPanel()
         {
@@ -78,17 +78,17 @@ namespace Lanchat.Terminal.UserInterface
 
         private void SelectTab(int tab)
         {
-            currentTab?.MarkAsInactive();
-            currentTab = tabs[tab];
-            currentTab.MarkAsActive();
-            wrapper.FillingControl = currentTab.Content;
+            CurrentTab?.MarkAsInactive();
+            CurrentTab = tabs[tab];
+            CurrentTab.MarkAsActive();
+            wrapper.FillingControl = CurrentTab.Content;
         }
 
         public void OnInput(InputEvent inputEvent)
         {
             if (inputEvent.Key.Key != ConsoleKey.Tab) return;
 
-            SelectTab((tabs.IndexOf(currentTab) + 1) % tabs.Count);
+            SelectTab((tabs.IndexOf(CurrentTab) + 1) % tabs.Count);
             inputEvent.Handled = true;
         }
     }
