@@ -6,8 +6,6 @@ namespace Lanchat.Terminal.UserInterface
 {
     public class BottomBar : Boundary
     {
-        private readonly TextBlock detectedCount;
-
         public BottomBar()
         {
             Status = new TextBlock
@@ -26,50 +24,31 @@ namespace Lanchat.Terminal.UserInterface
                 Text = "0",
                 Color = ConsoleColor.Gray
             };
-
-            detectedCount = new TextBlock
-            {
-                Text = "0",
-                Color = ConsoleColor.Gray
-            };
-
+            
             MaxHeight = 1;
             Content = new Background
             {
-                Color = ConsoleColor.DarkBlue,
+                Color = ConsoleColor.Blue,
                 Content = new HorizontalStackPanel
                 {
                     Children = new IControl[]
                     {
-                        new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
+                        new TextBlock {Text = "[", Color = ConsoleColor.DarkBlue},
                         Clock,
-                        new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan},
-                        new TextBlock {Text = " [", Color = ConsoleColor.DarkCyan},
+                        new TextBlock {Text = "]", Color = ConsoleColor.DarkBlue},
+                        new TextBlock {Text = " [", Color = ConsoleColor.DarkBlue},
                         NodesCount,
-                        new TextBlock {Text = "/"},
-                        detectedCount,
-                        new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan},
-                        new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
+                        new TextBlock {Text = "] ", Color = ConsoleColor.DarkBlue},
+                        new TextBlock {Text = "[", Color = ConsoleColor.DarkBlue},
                         Status,
-                        new TextBlock {Text = "] ", Color = ConsoleColor.DarkCyan},
-                        new TextBlock {Text = "[", Color = ConsoleColor.DarkCyan},
-                        Ui.FileTransferMonitor,
-                        new TextBlock {Text = "]", Color = ConsoleColor.DarkCyan}
+                        new TextBlock {Text = "] ", Color = ConsoleColor.DarkBlue}
                     }
                 }
             };
         }
 
-        internal TextBlock Status { get; }
-        internal TextBlock NodesCount { get; }
-        internal TextBlock Clock { get; }
-
-        internal void SetupEvents()
-        {
-            Program.Network.NodesDetection.DetectedNodes.CollectionChanged += (_, _) =>
-            {
-                detectedCount.Text = Program.Network.NodesDetection.DetectedNodes.Count.ToString();
-            };
-        }
+        public TextBlock Status { get; }
+        public TextBlock NodesCount { get; }
+        public TextBlock Clock { get; }
     }
 }

@@ -12,6 +12,7 @@ namespace Lanchat.Terminal
 {
     public static class Program
     {
+        public static Window Window { get; private set; }
         public static IP2P Network { get; private set; }
         public static Config Config { get; private set; }
 
@@ -29,15 +30,39 @@ namespace Lanchat.Terminal
             }
 
             Resources.Culture = CultureInfo.CurrentCulture;
-
-            Ui.Start();
             Network = new P2P(Config, x =>
             {
-                _ = new NodeEventsHandlers(x.Instance);
+               // _ = new NodeEventsHandlers(x.Instance);
             });
+            Window = new Window();
+            CheckStartArguments(args);
+            Window.Start();
+            Logger.StartLogging();
 
-            Ui.SetupNetworkEvents();
+            try
+            {
+                Network.Start();
+            }
+            catch (SocketException e)
+            {
+                if (e.SocketErrorCode != SocketError.AddressAlreadyInUse)
+                {
+                    throw;
+                }
 
+                //Ui.Log.AddWarning(Resources._PortBusy);
+            }
+
+            if (args.Contains("--localhost") || args.Contains("-l"))
+            {
+                Network.Connect(IPAddress.Loopback);
+            }
+
+            Logger.DeleteOldLogs(5);
+        }
+
+        private static void CheckStartArguments(string[] args)
+        {
             if (args.Contains("--no-saved") || args.Contains("-a"))
             {
                 Config.ConnectToSaved = false;
@@ -56,39 +81,15 @@ namespace Lanchat.Terminal
             if (args.Contains("--debug") || args.Contains("-d") || Debugger.IsAttached)
             {
                 Config.DebugMode = true;
-                Trace.Listeners.Add(new TerminalTraceListener());
             }
             else
             {
                 var newVersion = UpdateChecker.CheckUpdates();
                 if (newVersion != null)
                 {
-                    Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
+                    //Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
                 }
             }
-
-            Logger.StartLogging();
-
-            try
-            {
-                Network.Start();
-            }
-            catch (SocketException e)
-            {
-                if (e.SocketErrorCode != SocketError.AddressAlreadyInUse)
-                {
-                    throw;
-                }
-
-                Ui.Log.AddWarning(Resources._PortBusy);
-            }
-
-            if (args.Contains("--localhost") || args.Contains("-l"))
-            {
-                Network.Connect(IPAddress.Loopback);
-            }
-
-            Logger.DeleteOldLogs(5);
         }
     }
 }

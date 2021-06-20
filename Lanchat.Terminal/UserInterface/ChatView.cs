@@ -1,19 +1,30 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using ConsoleGUI.Controls;
+using ConsoleGUI.Data;
 using ConsoleGUI.UserDefined;
 
 namespace Lanchat.Terminal.UserInterface
 {
-    public class LogPanel : SimpleControl
+    public class ChatView : SimpleControl
     {
-        private readonly object lockUi = new();
+        private readonly object lockThread;
+        public VerticalScrollPanel ScrollPanel { get; }
         private readonly VerticalStackPanel stackPanel;
 
-        public LogPanel()
+        public ChatView()
         {
+            lockThread = new object();
             stackPanel = new VerticalStackPanel();
-            Content = stackPanel;
+            ScrollPanel = new VerticalScrollPanel
+            {
+                Content = stackPanel,
+                ScrollBarBackground = new Character(),
+                ScrollBarForeground = new Character(),
+                ScrollUpKey = ConsoleKey.PageUp,
+                ScrollDownKey = ConsoleKey.PageDown
+            };
+            Content = ScrollPanel;
         }
 
         public void Add(string text, ConsoleColor color = ConsoleColor.White)
@@ -37,9 +48,8 @@ namespace Lanchat.Terminal.UserInterface
             Add(text, ConsoleColor.Yellow);
         }
 
-        public void AddMessage(string text, string nickname, bool privateMessage)
+        public void AddMessage(string text, string nickname)
         {
-            var color = privateMessage ? ConsoleColor.Magenta : ConsoleColor.White;
             foreach (var line in SplitLines(text))
             {
                 AddToLog(new List<TextBlock>
@@ -48,9 +58,9 @@ namespace Lanchat.Terminal.UserInterface
                     new() {Text = "<", Color = ConsoleColor.DarkGray},
                     new() {Text = $"{nickname}"},
                     new() {Text = "> ", Color = ConsoleColor.DarkGray},
-                    new() {Text = line, Color = color}
+                    new() {Text = line, Color = ConsoleColor.White}
                 });
-                Ui.ScrollPanel.Top = int.MaxValue;
+                ScrollPanel.Top = int.MaxValue;
             }
         }
 
@@ -65,7 +75,7 @@ namespace Lanchat.Terminal.UserInterface
             };
             children.AddRange(line);
             AddToLog(children);
-            Ui.ScrollPanel.Top = int.MaxValue;
+            ScrollPanel.Top = int.MaxValue;
         }
 
         private static IEnumerable<string> SplitLines(string text)
@@ -88,7 +98,7 @@ namespace Lanchat.Terminal.UserInterface
 
         private void AddToLog(IEnumerable<TextBlock> textBlocks)
         {
-            lock (lockUi)
+            lock (lockThread)
             {
                 stackPanel.Add(new WrapPanel
                 {
