@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading;
 using ConsoleGUI;
 using ConsoleGUI.Api;
@@ -15,13 +17,18 @@ namespace Lanchat.Terminal.UserInterface
         private readonly DockPanel dockPanel;
         private readonly TextBox promptInput;
         private readonly BottomBar bottomBar;
+        private readonly List<IInputListener> inputListeners = new();
 
         public Window()
         {
-            TabPanel = new TabPanel();
-            TabPanel.AddTab("#main", new ChatView());
-            TabPanel.AddTab("@admin#4324", new ChatView());
-            TabPanel.AddTab("@user#4324", new ChatView());
+            TabPanel = new TabPanel(inputListeners);
+            var c1 = new ChatView();
+            var c2 = new ChatView();
+            var c3 = new ChatView();
+            
+            TabPanel.AddTab("#main", c1);
+            TabPanel.AddTab("@admin#4324", c2);
+            TabPanel.AddTab("@user#4324", c3);
 
             promptInput = new TextBox();
             var promptIndicator = new TextBlock
@@ -52,7 +59,6 @@ namespace Lanchat.Terminal.UserInterface
             {
                 Placement = DockPanel.DockedControlPlacement.Bottom,
                 FillingControl = TabPanel,
-
                 DockedControl = new DockPanel
                 {
                     Placement = DockPanel.DockedControlPlacement.Bottom,
@@ -60,28 +66,29 @@ namespace Lanchat.Terminal.UserInterface
                     FillingControl = bottomBar
                 }
             };
+            
+            inputListeners.Add(new InputController(promptInput, TabPanel));
+            inputListeners.Add(promptInput);
+            inputListeners.Add(TabPanel);
         }
 
         public void Start()
         {
-            ConsoleManager.Console = new SimplifiedConsole();
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                ConsoleManager.Console = new SimplifiedConsole();
+            }
+            
             ConsoleManager.Setup();
             ConsoleManager.Resize(new Size(100, 30));
             ConsoleManager.Content = dockPanel;
             Console.Title = Resources._WindowTitle;
 
-            var input = new IInputListener[]
-            {
-                new InputController(promptInput, TabPanel),
-                promptInput,
-                TabPanel
-            };
-
             while (true)
             {
                 Thread.Sleep(10);
                 bottomBar.Clock.Text = DateTime.Now.ToString("HH:mm");
-                ConsoleManager.ReadInput(input);
+                ConsoleManager.ReadInput(inputListeners);
                 ConsoleManager.AdjustBufferSize();
             }
 
