@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using ConsoleGUI;
 using ConsoleGUI.Controls;
-using ConsoleGUI.Data;
 using ConsoleGUI.Input;
 using ConsoleGUI.UserDefined;
 
@@ -51,18 +50,19 @@ namespace Lanchat.Terminal.UserInterface
 
         private void SelectTab(int tab)
         {
-            // TODO: Handle tabs where content is not IInputListener
-            try
+            if (CurrentTab is {Content: IInputListener oldTabListener})
             {
-                inputListeners.Remove((IInputListener) CurrentTab.Content);
+                inputListeners.Remove(oldTabListener);
             }
-            catch (NullReferenceException)
-            { }
 
             CurrentTab?.MarkAsInactive();
             CurrentTab = tabs[tab];
 
-            inputListeners.Add((IInputListener) CurrentTab.Content);
+            if (CurrentTab.Content is IInputListener newTabListener)
+            {
+                inputListeners.Add(newTabListener);
+            }
+
             CurrentTab.MarkAsActive();
             wrapper.FillingControl = CurrentTab.Content;
         }

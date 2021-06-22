@@ -26,6 +26,7 @@ namespace Lanchat.Terminal.UserInterface
             var c2 = new ChatView();
             var c3 = new ChatView();
             
+            TabPanel.AddTab("Lanchat", new HomeTab());
             TabPanel.AddTab("#main", c1);
             TabPanel.AddTab("@admin#4324", c2);
             TabPanel.AddTab("@user#4324", c3);

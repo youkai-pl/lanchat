@@ -21,8 +21,12 @@ namespace Lanchat.Terminal.UserInterface
             {
                 return;
             }
-            var chat = (ChatView)tabPanel.CurrentTab.Content;
-            chat.Add(promptInput.Text);
+            
+            if (tabPanel.CurrentTab is {Content: ChatView chatView})
+            {
+                chatView.Add(promptInput.Text);
+            }
+            
             promptInput.Text = string.Empty;
             inputEvent.Handled = true;
         }
