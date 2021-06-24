@@ -13,23 +13,18 @@ namespace Lanchat.Terminal.UserInterface
 {
     public class Window
     {
-        public TabPanel TabPanel { get; }
+        private readonly TabPanel tabPanel;
         private readonly DockPanel dockPanel;
         private readonly TextBox promptInput;
         private readonly BottomBar bottomBar;
         private readonly List<IInputListener> inputListeners = new();
 
+        public TabsManager TabsManager { get; }
+
         public Window()
         {
-            TabPanel = new TabPanel(inputListeners);
-            var c1 = new ChatView();
-            var c2 = new ChatView();
-            var c3 = new ChatView();
-            
-            TabPanel.AddTab("Lanchat", new HomeTab());
-            TabPanel.AddTab("#main", c1);
-            TabPanel.AddTab("@admin#4324", c2);
-            TabPanel.AddTab("@user#4324", c3);
+            tabPanel = new TabPanel(inputListeners);
+            TabsManager = new TabsManager(tabPanel);
 
             promptInput = new TextBox();
             var promptIndicator = new TextBlock
@@ -59,7 +54,7 @@ namespace Lanchat.Terminal.UserInterface
             dockPanel = new DockPanel
             {
                 Placement = DockPanel.DockedControlPlacement.Bottom,
-                FillingControl = TabPanel,
+                FillingControl = tabPanel,
                 DockedControl = new DockPanel
                 {
                     Placement = DockPanel.DockedControlPlacement.Bottom,
@@ -67,10 +62,10 @@ namespace Lanchat.Terminal.UserInterface
                     FillingControl = bottomBar
                 }
             };
-            
-            inputListeners.Add(new InputController(promptInput, TabPanel));
+
+            inputListeners.Add(new InputController(promptInput, tabPanel));
             inputListeners.Add(promptInput);
-            inputListeners.Add(TabPanel);
+            inputListeners.Add(tabPanel);
         }
 
         public void Start()
@@ -79,19 +74,22 @@ namespace Lanchat.Terminal.UserInterface
             {
                 ConsoleManager.Console = new SimplifiedConsole();
             }
-            
+
             ConsoleManager.Setup();
             ConsoleManager.Resize(new Size(100, 30));
             ConsoleManager.Content = dockPanel;
             Console.Title = Resources._WindowTitle;
 
-            while (true)
+            new Thread(() =>
             {
-                Thread.Sleep(10);
-                bottomBar.Clock.Text = DateTime.Now.ToString("HH:mm");
-                ConsoleManager.ReadInput(inputListeners);
-                ConsoleManager.AdjustBufferSize();
-            }
+                while (true)
+                {
+                    Thread.Sleep(10);
+                    bottomBar.Clock.Text = DateTime.Now.ToString("HH:mm");
+                    ConsoleManager.ReadInput(inputListeners);
+                    ConsoleManager.AdjustBufferSize();
+                }
+            }).Start();
 
             // ReSharper disable once FunctionNeverReturns
         }

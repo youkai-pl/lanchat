@@ -25,6 +25,7 @@ namespace Lanchat.Terminal.UserInterface
             if (tabPanel.CurrentTab is {Content: ChatView chatView})
             {
                 chatView.Add(promptInput.Text);
+                Program.Network.Broadcast.SendMessage(promptInput.Text);
             }
             
             promptInput.Text = string.Empty;

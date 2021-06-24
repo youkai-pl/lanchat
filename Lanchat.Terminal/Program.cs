@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using Lanchat.ClientCore;
 using Lanchat.Core.Network;
+using Lanchat.Terminal.Handlers;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -30,11 +31,13 @@ namespace Lanchat.Terminal
             }
 
             Resources.Culture = CultureInfo.CurrentCulture;
+            
+            Window = new Window();
             Network = new P2P(Config, x =>
             {
-               // _ = new NodeEventsHandlers(x.Instance);
+                _ = new NodeHandlers(x.Instance, Window.TabsManager);
             });
-            Window = new Window();
+            
             CheckStartArguments(args);
             Window.Start();
             Logger.StartLogging();
@@ -55,7 +58,7 @@ namespace Lanchat.Terminal
 
             if (args.Contains("--localhost") || args.Contains("-l"))
             {
-                Network.Connect(IPAddress.Loopback);
+               Network.Connect(IPAddress.Loopback);
             }
 
             Logger.DeleteOldLogs(5);

@@ -7,7 +7,7 @@ using ConsoleGUI.UserDefined;
 
 namespace Lanchat.Terminal.UserInterface
 {
-    public partial class TabPanel : SimpleControl, IInputListener
+    public class TabPanel : SimpleControl, IInputListener
     {
         private readonly List<IInputListener> inputListeners;
         private readonly List<Tab> tabs = new();

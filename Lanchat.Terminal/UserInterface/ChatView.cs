@@ -9,9 +9,12 @@ namespace Lanchat.Terminal.UserInterface
     {
         private readonly object lockThread;
         private readonly VerticalStackPanel stackPanel;
+        
+        public string Id { get; }
 
-        public ChatView()
+        public ChatView(string id)
         {
+            Id = id;
             lockThread = new object();
             stackPanel = new VerticalStackPanel();
             

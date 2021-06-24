@@ -5,34 +5,30 @@ using ConsoleGUI.Space;
 
 namespace Lanchat.Terminal.UserInterface
 {
-    public partial class TabPanel
+    public class Tab
     {
-        public class Tab
+        private readonly Background headerBackground;
+        public IControl Header { get; }
+        public IControl Content { get; }
+
+        public Tab(string name, IControl content)
         {
-            private readonly Background headerBackground;
-
-            public IControl Header { get; }
-            public IControl Content { get; }
-
-            public Tab(string name, IControl content)
+            headerBackground = new Background
             {
-                headerBackground = new Background
+                Content = new Margin
                 {
-                    Content = new Margin
-                    {
-                        Offset = new Offset(1, 0, 1, 0),
-                        Content = new TextBlock {Text = name}
-                    }
-                };
+                    Offset = new Offset(1, 0, 1, 0),
+                    Content = new TextBlock {Text = name}
+                }
+            };
 
-                Header = headerBackground;
-                Content = content;
+            Header = headerBackground;
+            Content = content;
 
-                MarkAsInactive();
-            }
-
-            public void MarkAsActive() => headerBackground.Color = ConsoleColor.Blue;
-            public void MarkAsInactive() => headerBackground.Color = ConsoleColor.DarkBlue;
+            MarkAsInactive();
         }
+
+        public void MarkAsActive() => headerBackground.Color = ConsoleColor.Blue;
+        public void MarkAsInactive() => headerBackground.Color = ConsoleColor.DarkBlue;
     }
 }
