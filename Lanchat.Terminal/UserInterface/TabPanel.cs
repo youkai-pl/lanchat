@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ConsoleGUI.Controls;
+using ConsoleGUI.Data;
 using ConsoleGUI.Input;
 using ConsoleGUI.UserDefined;
 
@@ -11,25 +12,25 @@ namespace Lanchat.Terminal.UserInterface
         private readonly List<IInputListener> inputListeners;
         private readonly List<Tab> tabs = new();
         private readonly DockPanel wrapper;
-        private readonly HorizontalStackPanel tabsPanel;
+        private readonly VerticalStackPanel tabsPanel;
 
         public Tab CurrentTab { get; private set; }
 
         public TabPanel(List<IInputListener> inputListeners)
         {
             this.inputListeners = inputListeners;
-            tabsPanel = new HorizontalStackPanel();
+            tabsPanel = new VerticalStackPanel();
 
             wrapper = new DockPanel
             {
-                Placement = DockPanel.DockedControlPlacement.Top,
-                DockedControl = new Background
+                Placement = DockPanel.DockedControlPlacement.Right,
+                DockedControl = new Border
                 {
-                    Color = ConsoleColor.DarkBlue,
+                    BorderStyle = BorderStyle.Single,
                     Content = new Boundary
                     {
-                        MinHeight = 1,
-                        MaxHeight = 1,
+                        MinWidth = 25,
+                        MaxWidth = 25,
                         Content = tabsPanel
                     }
                 }
@@ -45,7 +46,7 @@ namespace Lanchat.Terminal.UserInterface
             if (tabs.Count == 1)
                 SelectTab(0);
         }
-        
+
         public void OnInput(InputEvent inputEvent)
         {
             if (inputEvent.Key.Key != ConsoleKey.Tab) return;

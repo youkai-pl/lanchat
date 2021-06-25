@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Lanchat.Core.Network;
 
 namespace Lanchat.Terminal.UserInterface
@@ -19,18 +18,11 @@ namespace Lanchat.Terminal.UserInterface
             tabPanel.AddTab(MainChatView);
         }
         
-        public ChatView GetOrCreatePrivateChatView(INode node)
+        public ChatView CreatePrivateChatView(INode node)
         {
-            var chatView = ChatViews.FirstOrDefault(x => x.Node.Id == node.Id);
-            if (chatView != null)
-            {
-                return chatView;
-            }
-            
-            chatView = new ChatView(node.User.Nickname, false, node);
+            var chatView = new ChatView(node.User.Nickname, false, node);
             ChatViews.Add(chatView);
             tabPanel.AddTab(chatView);
-            
             return chatView;
         }
     }

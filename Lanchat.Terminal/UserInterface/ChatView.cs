@@ -29,7 +29,11 @@ namespace Lanchat.Terminal.UserInterface
                 ScrollDownKey = ConsoleKey.PageDown
             };
 
-            Content = scrollPanel;
+            Content = new Border
+            {
+                BorderStyle = BorderStyle.Single,
+                Content = scrollPanel
+            };
         }
 
         public void Add(string text, ConsoleColor color = ConsoleColor.White)

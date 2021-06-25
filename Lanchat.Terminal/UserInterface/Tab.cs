@@ -25,7 +25,7 @@ namespace Lanchat.Terminal.UserInterface
         }
 
         public void MarkAsActive() => headerBackground.Color = ConsoleColor.Blue;
-        public void MarkAsInactive() => headerBackground.Color = ConsoleColor.DarkBlue;
+        public void MarkAsInactive() => headerBackground.Color = ConsoleColor.Black;
         
         public void UpdateHeader(string name)
         {

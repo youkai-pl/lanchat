@@ -1,3 +1,4 @@
+using System;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.UserInterface;
 
@@ -14,8 +15,14 @@ namespace Lanchat.Terminal.Handlers
             this.node = node;
             this.tabsManager = tabsManager;
             
+            node.Connected += NodeOnConnected;
             node.Messaging.MessageReceived += MessagingOnMessageReceived;
             node.Messaging.PrivateMessageReceived += MessagingOnPrivateMessageReceived;
+        }
+
+        private void NodeOnConnected(object sender, EventArgs e)
+        {
+            privateChatView = tabsManager.CreatePrivateChatView(node);
         }
 
         private void MessagingOnMessageReceived(object sender, string e)
@@ -25,7 +32,6 @@ namespace Lanchat.Terminal.Handlers
         
         private void MessagingOnPrivateMessageReceived(object sender, string e)
         {
-            privateChatView ??= tabsManager.GetOrCreatePrivateChatView(node);
             privateChatView.AddMessage(e, node.User.Nickname);
         }
     }
