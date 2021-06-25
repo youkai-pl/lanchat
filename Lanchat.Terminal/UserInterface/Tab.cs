@@ -12,6 +12,7 @@ namespace Lanchat.Terminal.UserInterface
         public IControl Header { get; private set; }
         public IControl Content { get; }
         public VerticalScrollPanel VerticalScrollPanel { get; }
+        public Guid Id { get; init; }
 
         public Tab(string name, IControl content)
         {

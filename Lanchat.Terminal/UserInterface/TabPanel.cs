@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
 using ConsoleGUI.Input;
@@ -10,12 +11,12 @@ namespace Lanchat.Terminal.UserInterface
     public class TabPanel : SimpleControl, IInputListener
     {
         private readonly List<IInputListener> inputListeners;
-        private readonly List<Tab> tabs = new();
         private readonly DockPanel wrapper;
         private readonly VerticalStackPanel systemTabsPanel;
         private readonly VerticalStackPanel chatTabsPanel;
 
         public Tab CurrentTab { get; private set; }
+        public  List<Tab> Tabs { get; } = new();
 
         public TabPanel(List<IInputListener> inputListeners)
         {
@@ -50,24 +51,34 @@ namespace Lanchat.Terminal.UserInterface
 
         public void AddSystemTab(Tab tab)
         {
-            tabs.Add(tab);
+            Tabs.Add(tab);
             systemTabsPanel.Add(tab.Header);
-            if (tabs.Count == 1)
+            if (Tabs.Count == 1)
                 SelectTab(0);
         }
 
         public void AddChatTab(Tab tab)
         {
-            tabs.Add(tab);
+            Tabs.Add(tab);
             chatTabsPanel.Add(tab.Header);
-            if (tabs.Count == 1)
+            if (Tabs.Count == 1)
                 SelectTab(0);
+        }
+
+        public void RemoveChatTab(Tab tab)
+        {
+            if (CurrentTab == tab)
+            {
+               SelectTab(0); 
+            }
+            Tabs.Remove(tab);
+            chatTabsPanel.Children = chatTabsPanel.Children.Where(x => x != tab.Header).ToList();
         }
 
         public void OnInput(InputEvent inputEvent)
         {
             if (inputEvent.Key.Key != ConsoleKey.Tab) return;
-            SelectTab((tabs.IndexOf(CurrentTab) + 1) % tabs.Count);
+            SelectTab((Tabs.IndexOf(CurrentTab) + 1) % Tabs.Count);
             inputEvent.Handled = true;
         }
 
@@ -79,7 +90,7 @@ namespace Lanchat.Terminal.UserInterface
             }
 
             CurrentTab?.MarkAsInactive();
-            CurrentTab = tabs[tab];
+            CurrentTab = Tabs[tab];
             inputListeners.Add(CurrentTab.VerticalScrollPanel);
             CurrentTab.MarkAsActive();
             wrapper.FillingControl = new Border

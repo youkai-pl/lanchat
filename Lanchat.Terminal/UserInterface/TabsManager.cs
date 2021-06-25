@@ -1,3 +1,4 @@
+using System.Linq;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.UserInterface.Views;
 
@@ -19,14 +20,20 @@ namespace Lanchat.Terminal.UserInterface
             MainChatView.ScrollPanel = mainChatTab.VerticalScrollPanel;
             tabPanel.AddChatTab(mainChatTab);
         }
-        
+
         public ChatView CreatePrivateChatView(INode node)
         {
             var chatView = new ChatView(false, node);
-            var chatTab = new Tab(node.User.Nickname, chatView);
+            var chatTab = new Tab(node.User.Nickname, chatView) {Id = node.Id};
             chatView.ScrollPanel = chatTab.VerticalScrollPanel;
             tabPanel.AddChatTab(chatTab);
             return chatView;
+        }
+
+        public void ClosePrivateChatView(INode node)
+        {
+            var chatTab = tabPanel.Tabs.FirstOrDefault(x => x.Id == node.Id);
+            tabPanel.RemoveChatTab(chatTab);
         }
     }
 }

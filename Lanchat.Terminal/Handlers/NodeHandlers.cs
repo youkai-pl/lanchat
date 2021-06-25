@@ -17,15 +17,21 @@ namespace Lanchat.Terminal.Handlers
             this.tabsManager = tabsManager;
             
             node.Connected += NodeOnConnected;
+            node.Disconnected += NodeOnDisconnected;
             node.Messaging.MessageReceived += MessagingOnMessageReceived;
             node.Messaging.PrivateMessageReceived += MessagingOnPrivateMessageReceived;
         }
-
+        
         private void NodeOnConnected(object sender, EventArgs e)
         {
             privateChatView = tabsManager.CreatePrivateChatView(node);
         }
 
+        private void NodeOnDisconnected(object sender, EventArgs e)
+        {
+            tabsManager.ClosePrivateChatView(node);
+        }
+        
         private void MessagingOnMessageReceived(object sender, string e)
         {
             tabsManager.MainChatView.AddMessage(e, node.User.Nickname);
