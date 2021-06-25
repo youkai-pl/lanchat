@@ -11,16 +11,16 @@ namespace Lanchat.Terminal.UserInterface
         public TabsManager(TabPanel tabPanel)
         {
             this.tabPanel = tabPanel;
-            MainChatView = new ChatView("#main", true);
-            tabPanel.AddChatTab(MainChatView);
+            MainChatView = new ChatView(true);
+            tabPanel.AddChatTab(new Tab("main", MainChatView));
             tabPanel.AddSystemTab(new Tab("Detected users", new DetectedUsersView()));
             tabPanel.AddSystemTab(new Tab("File transfer", new FileTransfersView()));
         }
         
         public ChatView CreatePrivateChatView(INode node)
         {
-            var chatView = new ChatView(node.User.Nickname, false, node);
-            tabPanel.AddChatTab(chatView);
+            var chatView = new ChatView(false, node);
+            tabPanel.AddChatTab(new Tab(node.User.Nickname, chatView));
             return chatView;
         }
     }

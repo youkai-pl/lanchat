@@ -1,39 +1,20 @@
 using System;
 using System.Collections.Generic;
 using ConsoleGUI.Controls;
-using ConsoleGUI.Data;
 using Lanchat.Core.Network;
 
 namespace Lanchat.Terminal.UserInterface.Views
 {
-    public class ChatView : Tab
+    public class ChatView : VerticalStackPanel
     {
         private readonly object lockThread = new();
-        private readonly VerticalStackPanel stackPanel = new();
-        private readonly VerticalScrollPanel scrollPanel;
-
         public bool Broadcast { get; }
         public INode Node { get; }
 
-        public ChatView(string name, bool broadcast, INode node = null) : base( name)
+        public ChatView(bool broadcast, INode node = null)
         {
             Node = node;
             Broadcast = broadcast;
-
-            scrollPanel = new VerticalScrollPanel
-            {
-                Content = stackPanel,
-                ScrollBarBackground = new Character(),
-                ScrollBarForeground = new Character(),
-                ScrollUpKey = ConsoleKey.PageUp,
-                ScrollDownKey = ConsoleKey.PageDown
-            };
-
-            Content = new Border
-            {
-                BorderStyle = BorderStyle.Single,
-                Content = scrollPanel
-            };
         }
 
         public void Add(string text, ConsoleColor color = ConsoleColor.White)
@@ -59,7 +40,6 @@ namespace Lanchat.Terminal.UserInterface.Views
                     new() {Text = "> ", Color = ConsoleColor.DarkGray},
                     new() {Text = line, Color = ConsoleColor.White}
                 });
-                scrollPanel.Top = int.MaxValue;
             }
         }
 
@@ -74,7 +54,6 @@ namespace Lanchat.Terminal.UserInterface.Views
             };
             children.AddRange(line);
             AddToLog(children);
-            scrollPanel.Top = int.MaxValue;
         }
 
         private static IEnumerable<string> SplitLines(string text)
@@ -99,7 +78,7 @@ namespace Lanchat.Terminal.UserInterface.Views
         {
             lock (lockThread)
             {
-                stackPanel.Add(new WrapPanel
+                base.Add(new WrapPanel
                 {
                     Content = new HorizontalStackPanel
                     {

@@ -67,28 +67,26 @@ namespace Lanchat.Terminal.UserInterface
         public void OnInput(InputEvent inputEvent)
         {
             if (inputEvent.Key.Key != ConsoleKey.Tab) return;
-
             SelectTab((tabs.IndexOf(CurrentTab) + 1) % tabs.Count);
             inputEvent.Handled = true;
         }
 
         private void SelectTab(int tab)
         {
-            if (CurrentTab is {Content: IInputListener oldTabListener})
+            if (CurrentTab != null)
             {
-                inputListeners.Remove(oldTabListener);
+                inputListeners.Remove(CurrentTab.VerticalScrollPanel);
             }
 
             CurrentTab?.MarkAsInactive();
             CurrentTab = tabs[tab];
-
-            if (CurrentTab.Content is IInputListener newTabListener)
-            {
-                inputListeners.Add(newTabListener);
-            }
-
+            inputListeners.Add(CurrentTab.VerticalScrollPanel);
             CurrentTab.MarkAsActive();
-            wrapper.FillingControl = CurrentTab.Content;
+            wrapper.FillingControl = new Border
+            {
+                BorderStyle = BorderStyle.Single,
+                Content = CurrentTab.Content
+            };
         }
     }
 }

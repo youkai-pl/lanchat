@@ -10,28 +10,28 @@ namespace Lanchat.Terminal.UserInterface
     {
         private Background headerBackground;
         public IControl Header { get; private set; }
-        public IControl Content { get; set; }
+        public IControl Content { get; }
+        public VerticalScrollPanel VerticalScrollPanel { get; }
 
         public Tab(string name, IControl content)
         {
-            UpdateHeader(name);
-            Content = new Border
+            VerticalScrollPanel = new VerticalScrollPanel
             {
-                BorderStyle = BorderStyle.Single,
-                Content = content
-            };;
-            MarkAsInactive();
-        }
-        
-        public Tab(string name)
-        {
+                Content = content,
+                ScrollBarBackground = new Character(),
+                ScrollBarForeground = new Character(),
+                ScrollUpKey = ConsoleKey.PageUp,
+                ScrollDownKey = ConsoleKey.PageDown
+            };
+
             UpdateHeader(name);
+            Content = VerticalScrollPanel;
             MarkAsInactive();
         }
 
         public void MarkAsActive() => headerBackground.Color = ConsoleColor.Blue;
         public void MarkAsInactive() => headerBackground.Color = ConsoleColor.Black;
-        
+
         public void UpdateHeader(string name)
         {
             headerBackground = new Background
