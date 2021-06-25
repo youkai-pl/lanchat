@@ -4,7 +4,7 @@ using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
 using Lanchat.Core.Network;
 
-namespace Lanchat.Terminal.UserInterface
+namespace Lanchat.Terminal.UserInterface.Views
 {
     public class ChatView : Tab
     {

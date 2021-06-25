@@ -1,6 +1,7 @@
 using System;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.UserInterface;
+using Lanchat.Terminal.UserInterface.Views;
 
 namespace Lanchat.Terminal.Handlers
 {

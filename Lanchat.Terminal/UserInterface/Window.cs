@@ -14,19 +14,17 @@ namespace Lanchat.Terminal.UserInterface
 {
     public class Window
     {
-        private readonly TabPanel tabPanel;
         private readonly DockPanel dockPanel;
-        private readonly TextBox promptInput;
         private readonly List<IInputListener> inputListeners = new();
 
         public TabsManager TabsManager { get; }
 
         public Window()
         {
-            tabPanel = new TabPanel(inputListeners);
+            var tabPanel = new TabPanel(inputListeners);
             TabsManager = new TabsManager(tabPanel);
 
-            promptInput = new TextBox();
+            var promptInput = new TextBox();
             var promptIndicator = new TextBlock
             {
                 Text = $"[{Program.Config.Nickname} (Online)] "
@@ -85,9 +83,8 @@ namespace Lanchat.Terminal.UserInterface
                     ConsoleManager.ReadInput(inputListeners);
                     ConsoleManager.AdjustBufferSize();
                 }
+                // ReSharper disable once FunctionNeverReturns
             }).Start();
-
-            // ReSharper disable once FunctionNeverReturns
         }
     }
 }

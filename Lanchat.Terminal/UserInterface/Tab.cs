@@ -1,6 +1,7 @@
 using System;
 using ConsoleGUI;
 using ConsoleGUI.Controls;
+using ConsoleGUI.Data;
 using ConsoleGUI.Space;
 
 namespace Lanchat.Terminal.UserInterface
@@ -14,7 +15,11 @@ namespace Lanchat.Terminal.UserInterface
         public Tab(string name, IControl content)
         {
             UpdateHeader(name);
-            Content = content;
+            Content = new Border
+            {
+                BorderStyle = BorderStyle.Single,
+                Content = content
+            };;
             MarkAsInactive();
         }
         

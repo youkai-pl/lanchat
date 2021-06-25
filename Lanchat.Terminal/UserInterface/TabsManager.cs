@@ -1,28 +1,26 @@
-using System.Collections.Generic;
 using Lanchat.Core.Network;
+using Lanchat.Terminal.UserInterface.Views;
 
 namespace Lanchat.Terminal.UserInterface
 {
     public class TabsManager
     {
-        public ChatView MainChatView { get; }
-        public List<ChatView> ChatViews { get; } = new();
-
         private readonly TabPanel tabPanel;
+        public ChatView MainChatView { get; }
 
         public TabsManager(TabPanel tabPanel)
         {
             this.tabPanel = tabPanel;
-            MainChatView = new ChatView("main", true);
-            ChatViews.Add(MainChatView);
-            tabPanel.AddTab(MainChatView);
+            MainChatView = new ChatView("#main", true);
+            tabPanel.AddChatTab(MainChatView);
+            tabPanel.AddSystemTab(new Tab("Detected users", new DetectedUsersView()));
+            tabPanel.AddSystemTab(new Tab("File transfer", new FileTransfersView()));
         }
         
         public ChatView CreatePrivateChatView(INode node)
         {
             var chatView = new ChatView(node.User.Nickname, false, node);
-            ChatViews.Add(chatView);
-            tabPanel.AddTab(chatView);
+            tabPanel.AddChatTab(chatView);
             return chatView;
         }
     }

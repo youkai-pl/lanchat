@@ -12,37 +12,54 @@ namespace Lanchat.Terminal.UserInterface
         private readonly List<IInputListener> inputListeners;
         private readonly List<Tab> tabs = new();
         private readonly DockPanel wrapper;
-        private readonly VerticalStackPanel tabsPanel;
+        private readonly VerticalStackPanel systemTabsPanel;
+        private readonly VerticalStackPanel chatTabsPanel;
 
         public Tab CurrentTab { get; private set; }
 
         public TabPanel(List<IInputListener> inputListeners)
         {
             this.inputListeners = inputListeners;
-            tabsPanel = new VerticalStackPanel();
+            systemTabsPanel = new VerticalStackPanel();
+            chatTabsPanel = new VerticalStackPanel();
 
             wrapper = new DockPanel
             {
                 Placement = DockPanel.DockedControlPlacement.Right,
-                DockedControl = new Border
+                DockedControl = new Boundary
                 {
-                    BorderStyle = BorderStyle.Single,
-                    Content = new Boundary
+                    MinWidth = 25,
+                    MaxWidth = 25,
+                    Content = new DockPanel
                     {
-                        MinWidth = 25,
-                        MaxWidth = 25,
-                        Content = tabsPanel
+                        DockedControl = new Border
+                        {
+                            BorderStyle = BorderStyle.Single,
+                            Content = systemTabsPanel
+                        },
+                        FillingControl = new Border
+                        {
+                            BorderStyle = BorderStyle.Single,
+                            Content = chatTabsPanel
+                        }
                     }
                 }
             };
-
             Content = wrapper;
         }
 
-        public void AddTab(Tab tab)
+        public void AddSystemTab(Tab tab)
         {
             tabs.Add(tab);
-            tabsPanel.Add(tab.Header);
+            systemTabsPanel.Add(tab.Header);
+            if (tabs.Count == 1)
+                SelectTab(0);
+        }
+
+        public void AddChatTab(Tab tab)
+        {
+            tabs.Add(tab);
+            chatTabsPanel.Add(tab.Header);
             if (tabs.Count == 1)
                 SelectTab(0);
         }

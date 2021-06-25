@@ -1,6 +1,7 @@
 using System;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Input;
+using Lanchat.Terminal.UserInterface.Views;
 
 namespace Lanchat.Terminal.UserInterface
 {
