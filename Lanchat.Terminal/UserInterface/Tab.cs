@@ -7,11 +7,27 @@ namespace Lanchat.Terminal.UserInterface
 {
     public class Tab
     {
-        private readonly Background headerBackground;
-        public IControl Header { get; }
-        public IControl Content { get; }
+        private Background headerBackground;
+        public IControl Header { get; private set; }
+        public IControl Content { get; set; }
 
         public Tab(string name, IControl content)
+        {
+            UpdateHeader(name);
+            Content = content;
+            MarkAsInactive();
+        }
+        
+        public Tab(string name)
+        {
+            UpdateHeader(name);
+            MarkAsInactive();
+        }
+
+        public void MarkAsActive() => headerBackground.Color = ConsoleColor.Blue;
+        public void MarkAsInactive() => headerBackground.Color = ConsoleColor.DarkBlue;
+        
+        public void UpdateHeader(string name)
         {
             headerBackground = new Background
             {
@@ -23,12 +39,6 @@ namespace Lanchat.Terminal.UserInterface
             };
 
             Header = headerBackground;
-            Content = content;
-
-            MarkAsInactive();
         }
-
-        public void MarkAsActive() => headerBackground.Color = ConsoleColor.Blue;
-        public void MarkAsInactive() => headerBackground.Color = ConsoleColor.DarkBlue;
     }
 }

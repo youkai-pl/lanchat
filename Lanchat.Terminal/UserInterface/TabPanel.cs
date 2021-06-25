@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using ConsoleGUI;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Input;
 using ConsoleGUI.UserDefined;
@@ -39,13 +38,20 @@ namespace Lanchat.Terminal.UserInterface
             Content = wrapper;
         }
 
-        public void AddTab(string name, IControl content)
+        public void AddTab(Tab tab)
         {
-            var newTab = new Tab(name, content);
-            tabs.Add(newTab);
-            tabsPanel.Add(newTab.Header);
+            tabs.Add(tab);
+            tabsPanel.Add(tab.Header);
             if (tabs.Count == 1)
                 SelectTab(0);
+        }
+        
+        public void OnInput(InputEvent inputEvent)
+        {
+            if (inputEvent.Key.Key != ConsoleKey.Tab) return;
+
+            SelectTab((tabs.IndexOf(CurrentTab) + 1) % tabs.Count);
+            inputEvent.Handled = true;
         }
 
         private void SelectTab(int tab)
@@ -65,14 +71,6 @@ namespace Lanchat.Terminal.UserInterface
 
             CurrentTab.MarkAsActive();
             wrapper.FillingControl = CurrentTab.Content;
-        }
-
-        public void OnInput(InputEvent inputEvent)
-        {
-            if (inputEvent.Key.Key != ConsoleKey.Tab) return;
-
-            SelectTab((tabs.IndexOf(CurrentTab) + 1) % tabs.Count);
-            inputEvent.Handled = true;
         }
     }
 }

@@ -2,27 +2,34 @@ using System;
 using System.Collections.Generic;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
+using Lanchat.Core.Network;
 
 namespace Lanchat.Terminal.UserInterface
 {
-    public class ChatView : VerticalScrollPanel
+    public class ChatView : Tab
     {
-        private readonly object lockThread;
-        private readonly VerticalStackPanel stackPanel;
-        
-        public string Id { get; }
+        private readonly object lockThread = new();
+        private readonly VerticalStackPanel stackPanel = new();
+        private readonly VerticalScrollPanel scrollPanel;
 
-        public ChatView(string id)
+        public bool Broadcast { get; }
+        public INode Node { get; }
+
+        public ChatView(string name, bool broadcast, INode node = null) : base( name)
         {
-            Id = id;
-            lockThread = new object();
-            stackPanel = new VerticalStackPanel();
-            
-            Content = stackPanel;
-            ScrollBarBackground = new Character();
-            ScrollBarForeground = new Character();
-            ScrollUpKey = ConsoleKey.PageUp;
-            ScrollDownKey = ConsoleKey.PageDown;
+            Node = node;
+            Broadcast = broadcast;
+
+            scrollPanel = new VerticalScrollPanel
+            {
+                Content = stackPanel,
+                ScrollBarBackground = new Character(),
+                ScrollBarForeground = new Character(),
+                ScrollUpKey = ConsoleKey.PageUp,
+                ScrollDownKey = ConsoleKey.PageDown
+            };
+
+            Content = scrollPanel;
         }
 
         public void Add(string text, ConsoleColor color = ConsoleColor.White)
@@ -34,16 +41,6 @@ namespace Lanchat.Terminal.UserInterface
                     new TextBlock {Text = line, Color = color}
                 });
             }
-        }
-
-        public void AddError(string text)
-        {
-            Add(text, ConsoleColor.Red);
-        }
-
-        public void AddWarning(string text)
-        {
-            Add(text, ConsoleColor.Yellow);
         }
 
         public void AddMessage(string text, string nickname)
@@ -58,7 +55,7 @@ namespace Lanchat.Terminal.UserInterface
                     new() {Text = "> ", Color = ConsoleColor.DarkGray},
                     new() {Text = line, Color = ConsoleColor.White}
                 });
-                Top = int.MaxValue;
+                scrollPanel.Top = int.MaxValue;
             }
         }
 
@@ -73,7 +70,7 @@ namespace Lanchat.Terminal.UserInterface
             };
             children.AddRange(line);
             AddToLog(children);
-            Top = int.MaxValue;
+            scrollPanel.Top = int.MaxValue;
         }
 
         private static IEnumerable<string> SplitLines(string text)

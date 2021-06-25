@@ -22,10 +22,17 @@ namespace Lanchat.Terminal.UserInterface
                 return;
             }
             
-            if (tabPanel.CurrentTab is {Content: ChatView chatView})
+            if (tabPanel.CurrentTab is ChatView chatView)
             {
                 chatView.Add(promptInput.Text);
-                Program.Network.Broadcast.SendMessage(promptInput.Text);
+                if (chatView.Broadcast)
+                {
+                    Program.Network.Broadcast.SendMessage(promptInput.Text);
+                }
+                else
+                {
+                    chatView.Node.Messaging.SendPrivateMessage(promptInput.Text);
+                }
             }
             
             promptInput.Text = string.Empty;
