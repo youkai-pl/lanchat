@@ -8,6 +8,7 @@ namespace Lanchat.Terminal.UserInterface.Views
     public class ChatView : VerticalStackPanel
     {
         private readonly object lockThread = new();
+        public VerticalScrollPanel ScrollPanel { get; set; }
         public bool Broadcast { get; }
         public INode Node { get; }
 
@@ -85,6 +86,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                         Children = textBlocks
                     }
                 });
+                ScrollPanel.Top = int.MaxValue;
             }
         }
     }

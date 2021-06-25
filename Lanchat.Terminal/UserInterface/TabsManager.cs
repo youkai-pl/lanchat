@@ -14,13 +14,17 @@ namespace Lanchat.Terminal.UserInterface
             MainChatView = new ChatView(true);
             tabPanel.AddSystemTab(new Tab("Detected users", new DetectedUsersView()));
             tabPanel.AddSystemTab(new Tab("File transfer", new FileTransfersView()));
-            tabPanel.AddChatTab(new Tab("main", MainChatView));
+            var mainChatTab = new Tab("main", MainChatView);
+            MainChatView.ScrollPanel = mainChatTab.VerticalScrollPanel;
+            tabPanel.AddChatTab(mainChatTab);
         }
         
         public ChatView CreatePrivateChatView(INode node)
         {
             var chatView = new ChatView(false, node);
-            tabPanel.AddChatTab(new Tab(node.User.Nickname, chatView));
+            var chatTab = new Tab(node.User.Nickname, chatView);
+            chatView.ScrollPanel = chatTab.VerticalScrollPanel;
+            tabPanel.AddChatTab(chatTab);
             return chatView;
         }
     }
