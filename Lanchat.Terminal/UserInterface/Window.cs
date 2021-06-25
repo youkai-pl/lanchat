@@ -5,6 +5,7 @@ using System.Threading;
 using ConsoleGUI;
 using ConsoleGUI.Api;
 using ConsoleGUI.Controls;
+using ConsoleGUI.Data;
 using ConsoleGUI.Input;
 using ConsoleGUI.Space;
 using Lanchat.Terminal.Properties;
@@ -16,7 +17,6 @@ namespace Lanchat.Terminal.UserInterface
         private readonly TabPanel tabPanel;
         private readonly DockPanel dockPanel;
         private readonly TextBox promptInput;
-        private readonly BottomBar bottomBar;
         private readonly List<IInputListener> inputListeners = new();
 
         public TabsManager TabsManager { get; }
@@ -29,38 +29,35 @@ namespace Lanchat.Terminal.UserInterface
             promptInput = new TextBox();
             var promptIndicator = new TextBlock
             {
-                Text = $"[{Program.Config.Nickname}] "
+                Text = $"[{Program.Config.Nickname} (Online)] "
             };
 
-            var promptBox = new Boundary
+            var promptBox = new Border
             {
-                MinHeight = 1,
-                MaxHeight = 1,
-                Content = new HorizontalStackPanel
+                BorderStyle = BorderStyle.Single,
+                Content = new Boundary
                 {
-                    Children = new IControl[]
+                    MinHeight = 1,
+                    MaxHeight = 1,
+                    Content = new HorizontalStackPanel
                     {
-                        new Style
+                        Children = new IControl[]
                         {
-                            Content = promptIndicator
-                        },
-                        promptInput
+                            new Style
+                            {
+                                Content = promptIndicator
+                            },
+                            promptInput
+                        }
                     }
                 }
             };
-
-            bottomBar = new BottomBar();
-
+            
             dockPanel = new DockPanel
             {
                 Placement = DockPanel.DockedControlPlacement.Bottom,
                 FillingControl = tabPanel,
-                DockedControl = new DockPanel
-                {
-                    Placement = DockPanel.DockedControlPlacement.Bottom,
-                    DockedControl = promptBox,
-                    FillingControl = bottomBar
-                }
+                DockedControl = promptBox
             };
 
             inputListeners.Add(new InputController(promptInput, tabPanel));
@@ -85,7 +82,6 @@ namespace Lanchat.Terminal.UserInterface
                 while (true)
                 {
                     Thread.Sleep(10);
-                    bottomBar.Clock.Text = DateTime.Now.ToString("HH:mm");
                     ConsoleManager.ReadInput(inputListeners);
                     ConsoleManager.AdjustBufferSize();
                 }
