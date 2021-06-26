@@ -25,7 +25,7 @@ namespace Lanchat.Terminal.UserInterface
             
             if (tabPanel.CurrentTab.VerticalScrollPanel.Content is ChatView chatView)
             {
-                chatView.Add(promptInput.Text);
+                chatView.AddMessage(promptInput.Text, Program.Config.Nickname);
                 if (chatView.Broadcast)
                 {
                     Program.Network.Broadcast.SendMessage(promptInput.Text);

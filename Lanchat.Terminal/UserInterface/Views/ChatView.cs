@@ -18,17 +18,6 @@ namespace Lanchat.Terminal.UserInterface.Views
             Broadcast = broadcast;
         }
 
-        public void Add(string text, ConsoleColor color = ConsoleColor.White)
-        {
-            foreach (var line in SplitLines(text))
-            {
-                AddTextLine(new[]
-                {
-                    new TextBlock {Text = line, Color = color}
-                });
-            }
-        }
-
         public void AddMessage(string text, string nickname)
         {
             foreach (var line in SplitLines(text))
@@ -42,19 +31,6 @@ namespace Lanchat.Terminal.UserInterface.Views
                     new() {Text = line, Color = ConsoleColor.White}
                 });
             }
-        }
-
-        public void AddTextLine(IEnumerable<TextBlock> line)
-        {
-            var children = new List<TextBlock>
-            {
-                new() {Text = $"{DateTime.Now:HH:mm} "},
-                new() {Text = "-", Color = ConsoleColor.Blue},
-                new() {Text = "!"},
-                new() {Text = "- ", Color = ConsoleColor.Blue}
-            };
-            children.AddRange(line);
-            AddToLog(children);
         }
 
         private static IEnumerable<string> SplitLines(string text)
@@ -79,7 +55,7 @@ namespace Lanchat.Terminal.UserInterface.Views
         {
             lock (lockThread)
             {
-                base.Add(new WrapPanel
+                Add(new WrapPanel
                 {
                     Content = new HorizontalStackPanel
                     {
