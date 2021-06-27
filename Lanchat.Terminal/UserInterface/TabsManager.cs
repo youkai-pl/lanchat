@@ -27,7 +27,10 @@ namespace Lanchat.Terminal.UserInterface
 
         public void ShowMainChatView()
         {
-            tabPanel.Replace(homeViewTab, mainViewTab);
+            if (tabPanel.Tabs[0].Content is HomeView)
+            {
+                tabPanel.Replace(homeViewTab, mainViewTab);
+            }
         }
         
         public ChatView AddPrivateChatView(INode node)
