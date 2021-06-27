@@ -7,19 +7,29 @@ namespace Lanchat.Terminal.UserInterface
     public class TabsManager
     {
         private readonly TabPanel tabPanel;
+        private readonly Tab homeViewTab;
+        private readonly Tab mainViewTab;
+        
         public ChatView MainChatView { get; }
+        public HomeView HomeView { get; }
         public TabsManager(TabPanel tabPanel)
         {
             this.tabPanel = tabPanel;
             MainChatView = new ChatView(true);
-            
-            tabPanel.AddSystemTab(new Tab("Lanchat", new HomeView()));
+
+            HomeView = new HomeView();
+            homeViewTab = new Tab("Lanchat", HomeView);
+            tabPanel.AddSystemTab(homeViewTab);
             tabPanel.AddSystemTab(new Tab("Detected users", new DetectedUsersView()));
             tabPanel.AddSystemTab(new Tab("File transfer", new FileTransfersView()));
-            var mainChatTab = new Tab("main", MainChatView);
-            tabPanel.AddChatTab(mainChatTab);
+            mainViewTab = new Tab("Lanchat", MainChatView);
         }
 
+        public void ShowMainChatView()
+        {
+            tabPanel.Replace(homeViewTab, mainViewTab);
+        }
+        
         public ChatView AddPrivateChatView(INode node)
         {
             var chatView = new ChatView(false, node);

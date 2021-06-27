@@ -290,5 +290,29 @@ namespace Lanchat.Terminal.Properties {
                 return ResourceManager.GetString("_InvalidCommand", resourceCulture);
             }
         }
+        
+        internal static string _Logo1 {
+            get {
+                return ResourceManager.GetString("_Logo1", resourceCulture);
+            }
+        }
+        
+        internal static string _Logo2 {
+            get {
+                return ResourceManager.GetString("_Logo2", resourceCulture);
+            }
+        }
+        
+        internal static string _Logo3 {
+            get {
+                return ResourceManager.GetString("_Logo3", resourceCulture);
+            }
+        }
+        
+        internal static string _Logo4 {
+            get {
+                return ResourceManager.GetString("_Logo4", resourceCulture);
+            }
+        }
     }
 }

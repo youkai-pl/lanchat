@@ -85,6 +85,8 @@ namespace Lanchat.Terminal.UserInterface
                 }
                 // ReSharper disable once FunctionNeverReturns
             }).Start();
+            
+            TabsManager.HomeView.Animate();
         }
     }
 }

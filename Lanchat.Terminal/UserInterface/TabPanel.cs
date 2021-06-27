@@ -54,7 +54,7 @@ namespace Lanchat.Terminal.UserInterface
             Tabs.Add(tab);
             systemTabsPanel.Add(tab.Header);
             if (Tabs.Count == 1)
-                SelectTab(0);
+                SelectTab(Tabs[0]);
         }
 
         public void AddChatTab(Tab tab)
@@ -62,27 +62,36 @@ namespace Lanchat.Terminal.UserInterface
             Tabs.Add(tab);
             chatTabsPanel.Add(tab.Header);
             if (Tabs.Count == 1)
-                SelectTab(0);
+                SelectTab(Tabs[0]);
         }
 
         public void RemoveChatTab(Tab tab)
         {
             if (CurrentTab == tab)
             {
-               SelectTab(0); 
+               SelectTab(Tabs[0]); 
             }
             Tabs.Remove(tab);
             chatTabsPanel.Children = chatTabsPanel.Children.Where(x => x != tab.Header).ToList();
         }
 
+        public void Replace(Tab previousTab, Tab newTab)
+        {
+            Tabs[Tabs.FindIndex(x => x.Equals(previousTab))] = newTab;
+            var newTabs = systemTabsPanel.Children.ToList();
+            newTabs[0] = newTab.Header;
+            systemTabsPanel.Children = newTabs.ToList();
+            SelectTab(newTab);
+        }
+
         public void OnInput(InputEvent inputEvent)
         {
             if (inputEvent.Key.Key != ConsoleKey.Tab) return;
-            SelectTab((Tabs.IndexOf(CurrentTab) + 1) % Tabs.Count);
+            SelectTab(Tabs[(Tabs.IndexOf(CurrentTab) + 1) % Tabs.Count]);
             inputEvent.Handled = true;
         }
 
-        private void SelectTab(int tab)
+        private void SelectTab(Tab tab)
         {
             if (CurrentTab is {Content: IScrollable previousScrollPanel})
             {
@@ -90,7 +99,7 @@ namespace Lanchat.Terminal.UserInterface
             }
 
             CurrentTab?.MarkAsInactive();
-            CurrentTab = Tabs[tab];
+            CurrentTab = tab;
 
             if (CurrentTab.Content is IScrollable newScrollPanel)
             {

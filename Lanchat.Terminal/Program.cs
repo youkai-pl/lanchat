@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using Lanchat.ClientCore;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Handlers;
