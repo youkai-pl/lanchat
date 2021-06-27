@@ -91,6 +91,7 @@ namespace Lanchat.Terminal.UserInterface
 
             CurrentTab?.MarkAsInactive();
             CurrentTab = Tabs[tab];
+            
             inputListeners.Add(CurrentTab.VerticalScrollPanel);
             CurrentTab.MarkAsActive();
             wrapper.FillingControl = new Border

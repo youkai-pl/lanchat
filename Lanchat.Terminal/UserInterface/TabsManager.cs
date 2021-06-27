@@ -8,11 +8,11 @@ namespace Lanchat.Terminal.UserInterface
     {
         private readonly TabPanel tabPanel;
         public ChatView MainChatView { get; }
-
         public TabsManager(TabPanel tabPanel)
         {
             this.tabPanel = tabPanel;
             MainChatView = new ChatView(true);
+            
             tabPanel.AddSystemTab(new Tab("Lanchat", new HomeView()));
             tabPanel.AddSystemTab(new Tab("Detected users", new DetectedUsersView()));
             tabPanel.AddSystemTab(new Tab("File transfer", new FileTransfersView()));
@@ -21,7 +21,7 @@ namespace Lanchat.Terminal.UserInterface
             tabPanel.AddChatTab(mainChatTab);
         }
 
-        public ChatView CreatePrivateChatView(INode node)
+        public ChatView AddPrivateChatView(INode node)
         {
             var chatView = new ChatView(false, node);
             var chatTab = new Tab(node.User.Nickname, chatView) {Id = node.Id};
@@ -34,6 +34,15 @@ namespace Lanchat.Terminal.UserInterface
         {
             var chatTab = tabPanel.Tabs.FirstOrDefault(x => x.Id == node.Id);
             tabPanel.RemoveChatTab(chatTab);
+        }
+
+        public DebugView AddDebugView()
+        {
+            var debugView = new DebugView();
+            var debugTab = new Tab("Debug", debugView);
+            debugView.ScrollPanel = debugTab.VerticalScrollPanel;
+            tabPanel.AddSystemTab(debugTab);
+            return debugView;
         }
     }
 }

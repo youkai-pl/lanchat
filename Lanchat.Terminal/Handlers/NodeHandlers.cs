@@ -24,7 +24,7 @@ namespace Lanchat.Terminal.Handlers
         
         private void NodeOnConnected(object sender, EventArgs e)
         {
-            privateChatView = tabsManager.CreatePrivateChatView(node);
+            privateChatView = tabsManager.AddPrivateChatView(node);
         }
 
         private void NodeOnDisconnected(object sender, EventArgs e)

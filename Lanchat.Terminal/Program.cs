@@ -31,13 +31,10 @@ namespace Lanchat.Terminal
             }
 
             Resources.Culture = CultureInfo.CurrentCulture;
-            
+
             Window = new Window();
-            Network = new P2P(Config, x =>
-            {
-                _ = new NodeHandlers(x.Instance, Window.TabsManager);
-            });
-            
+            Network = new P2P(Config, x => { _ = new NodeHandlers(x.Instance, Window.TabsManager); });
+
             CheckStartArguments(args);
             Window.Start();
             Logger.StartLogging();
@@ -58,7 +55,7 @@ namespace Lanchat.Terminal
 
             if (args.Contains("--localhost") || args.Contains("-l"))
             {
-               Network.Connect(IPAddress.Loopback);
+                Network.Connect(IPAddress.Loopback);
             }
 
             Logger.DeleteOldLogs(5);
@@ -84,6 +81,7 @@ namespace Lanchat.Terminal
             if (args.Contains("--debug") || args.Contains("-d") || Debugger.IsAttached)
             {
                 Config.DebugMode = true;
+                Trace.Listeners.Add(new TraceListener());
             }
             else
             {

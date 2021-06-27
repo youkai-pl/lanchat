@@ -5,7 +5,7 @@ using Lanchat.Core.Network;
 
 namespace Lanchat.Terminal.UserInterface.Views
 {
-    public class ChatView : VerticalStackPanel
+    public class ChatView : VerticalStackPanel, IScrollable
     {
         private readonly object lockThread = new();
         public VerticalScrollPanel ScrollPanel { get; set; }
