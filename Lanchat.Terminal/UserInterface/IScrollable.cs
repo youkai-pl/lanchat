@@ -4,6 +4,6 @@ namespace Lanchat.Terminal.UserInterface
 {
     public interface IScrollable
     {
-        VerticalScrollPanel ScrollPanel { get; set; }
+        VerticalScrollPanel ScrollPanel { get; }
     }
 }

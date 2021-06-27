@@ -84,15 +84,20 @@ namespace Lanchat.Terminal.UserInterface
 
         private void SelectTab(int tab)
         {
-            if (CurrentTab != null)
+            if (CurrentTab is {Content: IScrollable previousScrollPanel})
             {
-                inputListeners.Remove(CurrentTab.VerticalScrollPanel);
+                inputListeners.Remove(previousScrollPanel.ScrollPanel);
             }
 
             CurrentTab?.MarkAsInactive();
             CurrentTab = Tabs[tab];
+
+            if (CurrentTab.Content is IScrollable newScrollPanel)
+            {
+                inputListeners.Add(newScrollPanel.ScrollPanel);
+                newScrollPanel.ScrollPanel.Top = int.MaxValue;
+            }
             
-            inputListeners.Add(CurrentTab.VerticalScrollPanel);
             CurrentTab.MarkAsActive();
             wrapper.FillingControl = new Border
             {

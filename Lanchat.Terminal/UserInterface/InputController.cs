@@ -23,7 +23,7 @@ namespace Lanchat.Terminal.UserInterface
                 return;
             }
             
-            if (tabPanel.CurrentTab.VerticalScrollPanel.Content is ChatView chatView)
+            if (tabPanel.CurrentTab.Content is ChatView chatView)
             {
                 chatView.AddMessage(promptInput.Text, Program.Config.Nickname);
                 if (chatView.Broadcast)

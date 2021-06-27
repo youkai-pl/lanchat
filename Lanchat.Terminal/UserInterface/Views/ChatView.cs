@@ -1,21 +1,33 @@
 using System;
 using System.Collections.Generic;
 using ConsoleGUI.Controls;
+using ConsoleGUI.Data;
+using ConsoleGUI.UserDefined;
 using Lanchat.Core.Network;
 
 namespace Lanchat.Terminal.UserInterface.Views
 {
-    public class ChatView : VerticalStackPanel, IScrollable
+    public class ChatView : SimpleControl, IScrollable
     {
         private readonly object lockThread = new();
-        public VerticalScrollPanel ScrollPanel { get; set; }
+        private readonly VerticalStackPanel stackPanel = new();
         public bool Broadcast { get; }
         public INode Node { get; }
+        public VerticalScrollPanel ScrollPanel { get; }
 
         public ChatView(bool broadcast, INode node = null)
         {
             Node = node;
             Broadcast = broadcast;
+            ScrollPanel = new VerticalScrollPanel
+            {
+                Content = stackPanel,
+                ScrollBarBackground = new Character(),
+                ScrollBarForeground = new Character(),
+                ScrollUpKey = ConsoleKey.PageUp,
+                ScrollDownKey = ConsoleKey.PageDown
+            };
+            Content = ScrollPanel;
         }
 
         public void AddMessage(string text, string nickname)
@@ -55,7 +67,7 @@ namespace Lanchat.Terminal.UserInterface.Views
         {
             lock (lockThread)
             {
-                Add(new WrapPanel
+               stackPanel.Add(new WrapPanel
                 {
                     Content = new HorizontalStackPanel
                     {

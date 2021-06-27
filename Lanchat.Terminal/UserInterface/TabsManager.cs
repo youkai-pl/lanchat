@@ -17,7 +17,6 @@ namespace Lanchat.Terminal.UserInterface
             tabPanel.AddSystemTab(new Tab("Detected users", new DetectedUsersView()));
             tabPanel.AddSystemTab(new Tab("File transfer", new FileTransfersView()));
             var mainChatTab = new Tab("main", MainChatView);
-            MainChatView.ScrollPanel = mainChatTab.VerticalScrollPanel;
             tabPanel.AddChatTab(mainChatTab);
         }
 
@@ -25,7 +24,6 @@ namespace Lanchat.Terminal.UserInterface
         {
             var chatView = new ChatView(false, node);
             var chatTab = new Tab(node.User.Nickname, chatView) {Id = node.Id};
-            chatView.ScrollPanel = chatTab.VerticalScrollPanel;
             tabPanel.AddChatTab(chatTab);
             return chatView;
         }
@@ -40,7 +38,6 @@ namespace Lanchat.Terminal.UserInterface
         {
             var debugView = new DebugView();
             var debugTab = new Tab("Debug", debugView);
-            debugView.ScrollPanel = debugTab.VerticalScrollPanel;
             tabPanel.AddSystemTab(debugTab);
             return debugView;
         }
