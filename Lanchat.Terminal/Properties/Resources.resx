@@ -213,7 +213,7 @@ Try /help &lt;command&gt; for detailed help.
         <value>Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
     </data>
     <data name="_PortBusy" xml:space="preserve">
-        <value>Port busy. Cannot start server. Try to change port in config.</value>
+        <value>Port busy. Cannot start server.</value>
     </data>
     <data name="_CannotConnect" xml:space="preserve">
         <value>Cannot connect with {0}</value>
@@ -272,53 +272,5 @@ Try /help &lt;command&gt; for detailed help.
     </data>
     <data name="_InvalidCommand" xml:space="preserve">
         <value>Invalid command</value>
-    </data>
-    <data name="_Logo1" xml:space="preserve">
-        <value>
-
-    __                     __          __ 
-   / /   ____ _____  _____/ /_  ____ _/ /_
-  / /   / __ `/ __ \/ ___/ __ \/ __ `/ __/
- / /___/ /_/ / / / / /__/ / / / /_/ / /_  
-/_____/\__,_/_/ /_/\___/_/ /_/\__,_/\__/  
-                                          
-
-</value>
-    </data>
-    <data name="_Logo2" xml:space="preserve">
-        <value>
-
-    __                     __          __     ___ 
-   / /   ____ _____  _____/ /_  ____ _/ /_   |__ \
-  / /   / __ `/ __ \/ ___/ __ \/ __ `/ __/   __/ /
- / /___/ /_/ / / / / /__/ / / / /_/ / /_    / __/ 
-/_____/\__,_/_/ /_/\___/_/ /_/\__,_/\__/   /____/ 
-                                                  
-
-</value>
-    </data>
-    <data name="_Logo3" xml:space="preserve">
-        <value>
-
-    __                     __          __     ___  
-   / /   ____ _____  _____/ /_  ____ _/ /_   |__ \ 
-  / /   / __ `/ __ \/ ___/ __ \/ __ `/ __/   __/ / 
- / /___/ /_/ / / / / /__/ / / / /_/ / /_    / __/_ 
-/_____/\__,_/_/ /_/\___/_/ /_/\__,_/\__/   /____(_)
-                                                   
-
-</value>
-    </data>
-    <data name="_Logo4" xml:space="preserve">
-        <value>
-
-    __                     __          __     ___    ____ 
-   / /   ____ _____  _____/ /_  ____ _/ /_   |__ \  ( __ )
-  / /   / __ `/ __ \/ ___/ __ \/ __ `/ __/   __/ / / __  |
- / /___/ /_/ / / / / /__/ / / / /_/ / /_    / __/_/ /_/ / 
-/_____/\__,_/_/ /_/\___/_/ /_/\__,_/\__/   /____(_)____/  
-                                                          
-
-</value>
     </data>
 </root>

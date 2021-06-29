@@ -51,7 +51,7 @@ namespace Lanchat.Terminal
                     throw;
                 }
 
-                //Ui.Log.AddWarning(Resources._PortBusy);
+                Window.TabsManager.HomeView.AddAlert(Resources._PortBusy);
             }
 
             if (args.Contains("--localhost") || args.Contains("-l"))
@@ -89,7 +89,7 @@ namespace Lanchat.Terminal
                 var newVersion = UpdateChecker.CheckUpdates();
                 if (newVersion != null)
                 {
-                    //Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
+                    Window.TabsManager.HomeView.AddAlert($"Update available: {newVersion}");
                 }
             }
         }

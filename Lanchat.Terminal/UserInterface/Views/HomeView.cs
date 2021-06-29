@@ -1,4 +1,4 @@
-using System.Threading;
+using System.Reflection;
 using ConsoleGUI.Controls;
 using ConsoleGUI.UserDefined;
 using Lanchat.Terminal.Properties;
@@ -7,47 +7,42 @@ namespace Lanchat.Terminal.UserInterface.Views
 {
     public class HomeView : SimpleControl
     {
-        private readonly TextBlock text;
         private readonly VerticalStackPanel stackPanel;
 
         public HomeView()
         {
-            text = new TextBlock();
-
             stackPanel = new VerticalStackPanel
             {
                 Children = new []
                 {
                     new BreakPanel
                     {
-                        Content = text
+                        Content = new TextBlock
+                        {
+                            Text = Resources._Logo
+                        }
                     }
                 }
             };
+            
             Content = new Box
             {
                 HorizontalContentPlacement = Box.HorizontalPlacement.Center,
                 VerticalContentPlacement = Box.VerticalPlacement.Center,
                 Content = new Boundary
                 {
-                    Width = 59,
+                    Width = 43,
                     Content = stackPanel
                 }
             };
+
+            var currentVersion = Assembly.GetEntryAssembly().GetName().Version.ToString(3);
+            stackPanel.Add(new TextBlock{Text = $"Version: {currentVersion}"});
         }
 
-        public void Animate()
+        public void AddAlert(string message)
         {
-            Thread.Sleep(100);
-            text.Text = Resources._Logo1;
-            Thread.Sleep(100);
-            text.Text = Resources._Logo2;
-            Thread.Sleep(100);
-            text.Text = Resources._Logo3;
-            Thread.Sleep(100);
-            text.Text = Resources._Logo4;
-            Thread.Sleep(100);
-            stackPanel.Add(new TextBlock{Text = "Looking for nodes..."});
+            stackPanel.Add(new TextBlock{Text = message});
         }
     }
 }
