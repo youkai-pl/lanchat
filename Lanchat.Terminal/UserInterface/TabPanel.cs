@@ -14,9 +14,10 @@ namespace Lanchat.Terminal.UserInterface
         private readonly DockPanel wrapper;
         private readonly VerticalStackPanel systemTabsPanel;
         private readonly VerticalStackPanel chatTabsPanel;
+        private int tabSwitch;
 
         public Tab CurrentTab { get; private set; }
-        public  List<Tab> Tabs { get; } = new();
+        public List<Tab> Tabs { get; } = new();
 
         public TabPanel(List<IInputListener> inputListeners)
         {
@@ -69,8 +70,9 @@ namespace Lanchat.Terminal.UserInterface
         {
             if (CurrentTab == tab)
             {
-               SelectTab(Tabs[0]); 
+                SelectTab(Tabs[0]);
             }
+
             Tabs.Remove(tab);
             chatTabsPanel.Children = chatTabsPanel.Children.Where(x => x != tab.Header).ToList();
         }
@@ -87,7 +89,24 @@ namespace Lanchat.Terminal.UserInterface
         public void OnInput(InputEvent inputEvent)
         {
             if (inputEvent.Key.Key != ConsoleKey.Tab) return;
-            SelectTab(Tabs[(Tabs.IndexOf(CurrentTab) + 1) % Tabs.Count]);
+            if ((inputEvent.Key.Modifiers & ConsoleModifiers.Shift) == 0)
+            {
+                tabSwitch++;
+                if (tabSwitch == Tabs.Count)
+                {
+                    tabSwitch = 0;
+                }
+            }
+            else
+            {
+                tabSwitch--;
+                if (tabSwitch == -1)
+                {
+                    tabSwitch = Tabs.Count - 1;
+                }
+            }
+
+            SelectTab(Tabs[tabSwitch]);
             inputEvent.Handled = true;
         }
 
@@ -106,7 +125,7 @@ namespace Lanchat.Terminal.UserInterface
                 inputListeners.Add(newScrollPanel.ScrollPanel);
                 newScrollPanel.ScrollPanel.Top = int.MaxValue;
             }
-            
+
             CurrentTab.MarkAsActive();
             wrapper.FillingControl = new Border
             {
