@@ -1,5 +1,6 @@
 using System.Linq;
 using Lanchat.Core.Network;
+using Lanchat.Terminal.UserInterface.Controls;
 using Lanchat.Terminal.UserInterface.Views;
 
 namespace Lanchat.Terminal.UserInterface
@@ -13,7 +14,7 @@ namespace Lanchat.Terminal.UserInterface
         public TabsManager(TabPanel tabPanel)
         {
             this.tabPanel = tabPanel;
-            MainChatView = new ChatView(true);
+            MainChatView = new ChatView();
 
             HomeView = new HomeView();
             homeViewTab = new Tab("Lanchat", HomeView);
@@ -36,7 +37,7 @@ namespace Lanchat.Terminal.UserInterface
 
         public ChatView AddPrivateChatView(INode node)
         {
-            var chatView = new ChatView(false, node);
+            var chatView = new ChatView(node);
             var chatTab = new Tab(node.User.Nickname, chatView) {Id = node.Id};
             tabPanel.AddUserTab(chatTab);
             return chatView;

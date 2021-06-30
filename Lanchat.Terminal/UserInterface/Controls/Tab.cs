@@ -3,7 +3,7 @@ using ConsoleGUI;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Space;
 
-namespace Lanchat.Terminal.UserInterface
+namespace Lanchat.Terminal.UserInterface.Controls
 {
     public class Tab
     {

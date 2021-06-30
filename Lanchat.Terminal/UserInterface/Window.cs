@@ -9,6 +9,7 @@ using ConsoleGUI.Data;
 using ConsoleGUI.Input;
 using ConsoleGUI.Space;
 using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.UserInterface.Controls;
 
 namespace Lanchat.Terminal.UserInterface
 {
@@ -23,10 +24,7 @@ namespace Lanchat.Terminal.UserInterface
             TabsManager = new TabsManager(tabPanel);
 
             var promptInput = new TextBox();
-            var promptIndicator = new TextBlock
-            {
-                Text = $"[{Program.Config.Nickname} (Online)] "
-            };
+
 
             var promptBox = new Border
             {
@@ -41,7 +39,7 @@ namespace Lanchat.Terminal.UserInterface
                         {
                             new Style
                             {
-                                Content = promptIndicator
+                                Content = new PromptIndicator()
                             },
                             promptInput
                         }

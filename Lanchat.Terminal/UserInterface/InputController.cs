@@ -1,6 +1,8 @@
 using System;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Input;
+using Lanchat.Terminal.Commands;
+using Lanchat.Terminal.UserInterface.Controls;
 using Lanchat.Terminal.UserInterface.Views;
 
 namespace Lanchat.Terminal.UserInterface
@@ -9,6 +11,7 @@ namespace Lanchat.Terminal.UserInterface
     {
         private readonly TextBox promptInput;
         private readonly TabPanel tabPanel;
+        private readonly CommandsController commandsController = new();
 
         public InputController(TextBox promptInput, TabPanel tabPanel)
         {
@@ -23,10 +26,14 @@ namespace Lanchat.Terminal.UserInterface
                 return;
             }
 
-            if (tabPanel.CurrentTab.Content is ChatView chatView)
+            if (promptInput.Text.StartsWith("/", StringComparison.CurrentCulture))
+            {
+                commandsController.ExecuteCommand(promptInput.Text.Split(' '));
+            }
+            else if (tabPanel.CurrentTab.Content is ChatView chatView)
             {
                 chatView.AddMessage(promptInput.Text, Program.Config.Nickname);
-                if (chatView.Broadcast)
+                if (chatView.Node == null)
                 {
                     Program.Network.Broadcast.SendMessage(promptInput.Text);
                 }

@@ -6,7 +6,7 @@ using ConsoleGUI.Data;
 using ConsoleGUI.Input;
 using ConsoleGUI.UserDefined;
 
-namespace Lanchat.Terminal.UserInterface
+namespace Lanchat.Terminal.UserInterface.Controls
 {
     public class TabPanel : SimpleControl, IInputListener
     {
