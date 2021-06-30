@@ -11,9 +11,6 @@ namespace Lanchat.Terminal.UserInterface.Views
     {
         private readonly object lockThread = new();
         private readonly VerticalStackPanel stackPanel = new();
-        public bool Broadcast { get; }
-        public INode Node { get; }
-        public VerticalScrollPanel ScrollPanel { get; }
 
         public ChatView(bool broadcast, INode node = null)
         {
@@ -29,6 +26,10 @@ namespace Lanchat.Terminal.UserInterface.Views
             };
             Content = ScrollPanel;
         }
+
+        public bool Broadcast { get; }
+        public INode Node { get; }
+        public VerticalScrollPanel ScrollPanel { get; }
 
         public void AddMessage(string text, string nickname)
         {
@@ -67,7 +68,7 @@ namespace Lanchat.Terminal.UserInterface.Views
         {
             lock (lockThread)
             {
-               stackPanel.Add(new WrapPanel
+                stackPanel.Add(new WrapPanel
                 {
                     Content = new HorizontalStackPanel
                     {

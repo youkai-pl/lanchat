@@ -1,7 +1,6 @@
 using System;
 using ConsoleGUI;
 using ConsoleGUI.Controls;
-using ConsoleGUI.Data;
 using ConsoleGUI.Space;
 
 namespace Lanchat.Terminal.UserInterface
@@ -9,9 +8,6 @@ namespace Lanchat.Terminal.UserInterface
     public class Tab
     {
         private Background headerBackground;
-        public IControl Header { get; private set; }
-        public IControl Content { get; }
-        public Guid Id { get; init; }
 
         public Tab(string name, IControl content)
         {
@@ -20,10 +16,21 @@ namespace Lanchat.Terminal.UserInterface
             MarkAsInactive();
         }
 
-        public void MarkAsActive() => headerBackground.Color = ConsoleColor.Blue;
-        public void MarkAsInactive() => headerBackground.Color = ConsoleColor.Black;
+        public IControl Header { get; private set; }
+        public IControl Content { get; }
+        public Guid Id { get; init; }
 
-        private void UpdateHeader(string name)
+        public void MarkAsActive()
+        {
+            headerBackground.Color = ConsoleColor.Blue;
+        }
+
+        public void MarkAsInactive()
+        {
+            headerBackground.Color = ConsoleColor.Black;
+        }
+
+        public void UpdateHeader(string name)
         {
             headerBackground = new Background
             {

@@ -13,7 +13,7 @@ namespace Lanchat.Terminal.UserInterface.Views
         {
             stackPanel = new VerticalStackPanel
             {
-                Children = new []
+                Children = new[]
                 {
                     new BreakPanel
                     {
@@ -24,7 +24,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                     }
                 }
             };
-            
+
             Content = new Box
             {
                 HorizontalContentPlacement = Box.HorizontalPlacement.Center,
@@ -37,12 +37,12 @@ namespace Lanchat.Terminal.UserInterface.Views
             };
 
             var currentVersion = Assembly.GetEntryAssembly().GetName().Version.ToString(3);
-            stackPanel.Add(new TextBlock{Text = $"Version: {currentVersion}"});
+            stackPanel.Add(new TextBlock {Text = $"Version: {currentVersion}"});
         }
 
         public void AddAlert(string message)
         {
-            stackPanel.Add(new TextBlock{Text = message});
+            stackPanel.Add(new TextBlock {Text = message});
         }
     }
 }

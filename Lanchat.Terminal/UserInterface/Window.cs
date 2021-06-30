@@ -17,8 +17,6 @@ namespace Lanchat.Terminal.UserInterface
         private readonly DockPanel dockPanel;
         private readonly List<IInputListener> inputListeners = new();
 
-        public TabsManager TabsManager { get; }
-
         public Window()
         {
             var tabPanel = new TabPanel(inputListeners);
@@ -50,7 +48,7 @@ namespace Lanchat.Terminal.UserInterface
                     }
                 }
             };
-            
+
             dockPanel = new DockPanel
             {
                 Placement = DockPanel.DockedControlPlacement.Bottom,
@@ -62,6 +60,8 @@ namespace Lanchat.Terminal.UserInterface
             inputListeners.Add(promptInput);
             inputListeners.Add(tabPanel);
         }
+
+        public TabsManager TabsManager { get; }
 
         public void Start()
         {

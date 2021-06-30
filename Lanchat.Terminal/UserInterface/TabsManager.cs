@@ -6,12 +6,10 @@ namespace Lanchat.Terminal.UserInterface
 {
     public class TabsManager
     {
-        private readonly TabPanel tabPanel;
         private readonly Tab homeViewTab;
         private readonly Tab mainViewTab;
-        
-        public ChatView MainChatView { get; }
-        public HomeView HomeView { get; }
+        private readonly TabPanel tabPanel;
+
         public TabsManager(TabPanel tabPanel)
         {
             this.tabPanel = tabPanel;
@@ -19,39 +17,42 @@ namespace Lanchat.Terminal.UserInterface
 
             HomeView = new HomeView();
             homeViewTab = new Tab("Lanchat", HomeView);
-            tabPanel.AddSystemTab(homeViewTab);
-            tabPanel.AddSystemTab(new Tab("Detected users", new DetectedUsersView()));
-            tabPanel.AddSystemTab(new Tab("File transfer", new FileTransfersView()));
             mainViewTab = new Tab("Lanchat", MainChatView);
+            tabPanel.AddTab(homeViewTab);
+            tabPanel.AddTab(new Tab("Detected users", new DetectedUsersView()));
+            tabPanel.AddTab(new Tab("File transfer", new FileTransfersView()));
         }
+
+        public ChatView MainChatView { get; }
+        public HomeView HomeView { get; }
 
         public void ShowMainChatView()
         {
             if (tabPanel.Tabs[0].Content is HomeView)
             {
-                tabPanel.Replace(homeViewTab, mainViewTab);
+                tabPanel.ReplaceTab(homeViewTab, mainViewTab);
             }
         }
-        
+
         public ChatView AddPrivateChatView(INode node)
         {
             var chatView = new ChatView(false, node);
             var chatTab = new Tab(node.User.Nickname, chatView) {Id = node.Id};
-            tabPanel.AddChatTab(chatTab);
+            tabPanel.AddUserTab(chatTab);
             return chatView;
         }
 
         public void ClosePrivateChatView(INode node)
         {
             var chatTab = tabPanel.Tabs.FirstOrDefault(x => x.Id == node.Id);
-            tabPanel.RemoveChatTab(chatTab);
+            tabPanel.RemoveUserTab(chatTab);
         }
 
         public DebugView AddDebugView()
         {
             var debugView = new DebugView();
             var debugTab = new Tab("Debug", debugView);
-            tabPanel.AddSystemTab(debugTab);
+            tabPanel.AddTab(debugTab);
             return debugView;
         }
     }

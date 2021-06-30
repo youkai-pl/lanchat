@@ -15,13 +15,13 @@ namespace Lanchat.Terminal.Handlers
         {
             this.node = node;
             this.tabsManager = tabsManager;
-            
+
             node.Connected += NodeOnConnected;
             node.Disconnected += NodeOnDisconnected;
             node.Messaging.MessageReceived += MessagingOnMessageReceived;
             node.Messaging.PrivateMessageReceived += MessagingOnPrivateMessageReceived;
         }
-        
+
         private void NodeOnConnected(object sender, EventArgs e)
         {
             tabsManager.ShowMainChatView();
@@ -32,12 +32,12 @@ namespace Lanchat.Terminal.Handlers
         {
             tabsManager.ClosePrivateChatView(node);
         }
-        
+
         private void MessagingOnMessageReceived(object sender, string e)
         {
             tabsManager.MainChatView.AddMessage(e, node.User.Nickname);
         }
-        
+
         private void MessagingOnPrivateMessageReceived(object sender, string e)
         {
             privateChatView.AddMessage(e, node.User.Nickname);

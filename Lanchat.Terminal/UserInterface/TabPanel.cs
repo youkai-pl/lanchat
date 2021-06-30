@@ -11,19 +11,14 @@ namespace Lanchat.Terminal.UserInterface
     public class TabPanel : SimpleControl, IInputListener
     {
         private readonly List<IInputListener> inputListeners;
+        private readonly VerticalStackPanel tabsHeaders = new();
+        private readonly VerticalStackPanel userTabsHeaders = new();
         private readonly DockPanel wrapper;
-        private readonly VerticalStackPanel systemTabsPanel;
-        private readonly VerticalStackPanel chatTabsPanel;
         private int tabSwitch;
-
-        public Tab CurrentTab { get; private set; }
-        public List<Tab> Tabs { get; } = new();
 
         public TabPanel(List<IInputListener> inputListeners)
         {
             this.inputListeners = inputListeners;
-            systemTabsPanel = new VerticalStackPanel();
-            chatTabsPanel = new VerticalStackPanel();
 
             wrapper = new DockPanel
             {
@@ -37,12 +32,12 @@ namespace Lanchat.Terminal.UserInterface
                         DockedControl = new Border
                         {
                             BorderStyle = BorderStyle.Single,
-                            Content = systemTabsPanel
+                            Content = tabsHeaders
                         },
                         FillingControl = new Border
                         {
                             BorderStyle = BorderStyle.Single,
-                            Content = chatTabsPanel
+                            Content = userTabsHeaders
                         }
                     }
                 }
@@ -50,23 +45,30 @@ namespace Lanchat.Terminal.UserInterface
             Content = wrapper;
         }
 
-        public void AddSystemTab(Tab tab)
+        public Tab CurrentTab { get; private set; }
+        public List<Tab> Tabs { get; } = new();
+
+        public void AddTab(Tab tab)
         {
             Tabs.Add(tab);
-            systemTabsPanel.Add(tab.Header);
+            tabsHeaders.Add(tab.Header);
             if (Tabs.Count == 1)
+            {
                 SelectTab(Tabs[0]);
+            }
         }
 
-        public void AddChatTab(Tab tab)
+        public void AddUserTab(Tab tab)
         {
             Tabs.Add(tab);
-            chatTabsPanel.Add(tab.Header);
+            userTabsHeaders.Add(tab.Header);
             if (Tabs.Count == 1)
+            {
                 SelectTab(Tabs[0]);
+            }
         }
 
-        public void RemoveChatTab(Tab tab)
+        public void RemoveUserTab(Tab tab)
         {
             if (CurrentTab == tab)
             {
@@ -74,21 +76,25 @@ namespace Lanchat.Terminal.UserInterface
             }
 
             Tabs.Remove(tab);
-            chatTabsPanel.Children = chatTabsPanel.Children.Where(x => x != tab.Header).ToList();
+            userTabsHeaders.Children = userTabsHeaders.Children.Where(x => x != tab.Header).ToList();
         }
 
-        public void Replace(Tab previousTab, Tab newTab)
+        public void ReplaceTab(Tab previousTab, Tab newTab)
         {
             Tabs[Tabs.FindIndex(x => x.Equals(previousTab))] = newTab;
-            var newTabs = systemTabsPanel.Children.ToList();
-            newTabs[0] = newTab.Header;
-            systemTabsPanel.Children = newTabs.ToList();
+            var newTabs = tabsHeaders.Children.ToList();
+            newTabs[newTabs.IndexOf(previousTab.Header)] = newTab.Header;
+            tabsHeaders.Children = newTabs.ToList();
             SelectTab(newTab);
         }
 
         public void OnInput(InputEvent inputEvent)
         {
-            if (inputEvent.Key.Key != ConsoleKey.Tab) return;
+            if (inputEvent.Key.Key != ConsoleKey.Tab)
+            {
+                return;
+            }
+
             if ((inputEvent.Key.Modifiers & ConsoleModifiers.Shift) == 0)
             {
                 tabSwitch++;
@@ -109,7 +115,7 @@ namespace Lanchat.Terminal.UserInterface
             SelectTab(Tabs[tabSwitch]);
             inputEvent.Handled = true;
         }
-
+        
         private void SelectTab(Tab tab)
         {
             if (CurrentTab is {Content: IScrollable previousScrollPanel})

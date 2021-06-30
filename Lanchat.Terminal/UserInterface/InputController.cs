@@ -15,14 +15,14 @@ namespace Lanchat.Terminal.UserInterface
             this.promptInput = promptInput;
             this.tabPanel = tabPanel;
         }
-        
+
         public void OnInput(InputEvent inputEvent)
         {
             if (inputEvent.Key.Key != ConsoleKey.Enter)
             {
                 return;
             }
-            
+
             if (tabPanel.CurrentTab.Content is ChatView chatView)
             {
                 chatView.AddMessage(promptInput.Text, Program.Config.Nickname);
@@ -35,7 +35,7 @@ namespace Lanchat.Terminal.UserInterface
                     chatView.Node.Messaging.SendPrivateMessage(promptInput.Text);
                 }
             }
-            
+
             promptInput.Text = string.Empty;
             inputEvent.Handled = true;
         }

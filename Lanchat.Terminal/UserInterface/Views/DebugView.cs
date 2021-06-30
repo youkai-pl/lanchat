@@ -8,7 +8,6 @@ namespace Lanchat.Terminal.UserInterface.Views
     public class DebugView : SimpleControl, IScrollable
     {
         private readonly VerticalStackPanel stackPanel;
-        public VerticalScrollPanel ScrollPanel { get; }
 
         public DebugView()
         {
@@ -23,7 +22,9 @@ namespace Lanchat.Terminal.UserInterface.Views
             };
             Content = ScrollPanel;
         }
-        
+
+        public VerticalScrollPanel ScrollPanel { get; }
+
         public void AddToLog(string textBlocks)
         {
             stackPanel.Add(new WrapPanel
@@ -33,7 +34,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                     Text = textBlocks
                 }
             });
-           ScrollPanel.Top = int.MaxValue;
+            ScrollPanel.Top = int.MaxValue;
         }
     }
 }
