@@ -20,8 +20,9 @@ namespace Lanchat.Terminal.Handlers
             node.Disconnected += NodeOnDisconnected;
             node.Messaging.MessageReceived += MessagingOnMessageReceived;
             node.Messaging.PrivateMessageReceived += MessagingOnPrivateMessageReceived;
+            node.User.NicknameUpdated += UserOnNicknameUpdated;
         }
-
+        
         private void NodeOnConnected(object sender, EventArgs e)
         {
             tabsManager.ShowMainChatView();
@@ -41,6 +42,11 @@ namespace Lanchat.Terminal.Handlers
         private void MessagingOnPrivateMessageReceived(object sender, string e)
         {
             privateChatView.AddMessage(e, node.User.Nickname);
+        }
+        
+        private void UserOnNicknameUpdated(object sender, string e)
+        {
+           tabsManager.UpdateNickname(node);
         }
     }
 }

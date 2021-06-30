@@ -82,10 +82,19 @@ namespace Lanchat.Terminal.UserInterface.Controls
         public void ReplaceTab(Tab previousTab, Tab newTab)
         {
             Tabs[Tabs.FindIndex(x => x.Equals(previousTab))] = newTab;
-            var newTabs = tabsHeaders.Children.ToList();
-            newTabs[newTabs.IndexOf(previousTab.Header)] = newTab.Header;
-            tabsHeaders.Children = newTabs.ToList();
+            var newTabsHeaders = tabsHeaders.Children.ToList();
+            newTabsHeaders[newTabsHeaders.IndexOf(previousTab.Header)] = newTab.Header;
+            tabsHeaders.Children = newTabsHeaders.ToList();
             SelectTab(newTab);
+        }
+        
+        public void UpdateUserTabHeader(Tab tab, string headerText)
+        {
+            var newUserTabsHeaders = userTabsHeaders.Children.ToList();
+            var index = newUserTabsHeaders.IndexOf(tab.Header);
+            tab.UpdateHeader(headerText);
+            newUserTabsHeaders[index] = tab.Header;
+            userTabsHeaders.Children = newUserTabsHeaders.ToList();
         }
 
         public void OnInput(InputEvent inputEvent)
