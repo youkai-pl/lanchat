@@ -53,7 +53,7 @@ namespace Lanchat.Core.Config
         bool ConnectToReceivedList { get; set; }
 
         /// <summary>
-        ///     Try connecting with nodes from SavedAddresses
+        ///     Try connecting with nodes from SavedAddresses.
         /// </summary>
         bool ConnectToSaved { get; set; }
 
@@ -76,5 +76,10 @@ namespace Lanchat.Core.Config
         ///     Enable debug features.
         /// </summary>
         bool DebugMode { get; set; }
+        
+        /// <summary>
+        ///     RSA Key.
+        /// </summary>
+        byte[] PublicKey { get; set; }
     }
 }

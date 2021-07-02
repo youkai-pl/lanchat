@@ -1,17 +1,31 @@
 ﻿using System;
 using System.Security.Cryptography;
+using Lanchat.Core.Config;
 using Lanchat.Core.Encryption.Models;
 
 namespace Lanchat.Core.Encryption
 {
     internal class PublicKeyEncryption : IPublicKeyEncryption
     {
+        private readonly IConfig config;
         private readonly RSA localRsa;
         private readonly RSA remoteRsa;
 
-        public PublicKeyEncryption()
+        public PublicKeyEncryption(IConfig config)
         {
-            localRsa = RSA.Create(2048);
+            this.config = config;
+
+            try
+            {
+                localRsa = RSA.Create();
+                localRsa.ImportRSAPrivateKey(config.PublicKey, out _);
+            }
+            catch (CryptographicException)
+            {
+                localRsa = RSA.Create(2048);
+                config.PublicKey = localRsa.ExportRSAPrivateKey();
+            }
+            
             remoteRsa = RSA.Create();
         }
 
