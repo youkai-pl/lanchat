@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Identity;
 using Lanchat.Core.Network.Models;
@@ -31,6 +32,7 @@ namespace Lanchat.Core.Network
         public IMessaging Messaging { get; set; }
         public IOutput Output { get; set; }
         public IInput Input { get; set; }
+        public IPublicKeyEncryption PublicKeyEncryption { get; set; }
 
         public Guid Id => Host.Id;
         public bool Ready { get; set; }

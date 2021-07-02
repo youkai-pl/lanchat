@@ -68,6 +68,11 @@ namespace Lanchat.Core.Encryption
             return localRsa.Decrypt(encryptedBytes, RSAEncryptionPadding.Pkcs1);
         }
 
+        public byte[] GetRemotePublicKey()
+        {
+            return remoteRsa.ExportRSAPublicKey();
+        }
+
         private void TestKeys()
         {
             remoteRsa.Encrypt(new byte[] {0x10}, RSAEncryptionPadding.Pkcs1);

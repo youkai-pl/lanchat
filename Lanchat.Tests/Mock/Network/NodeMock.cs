@@ -2,6 +2,7 @@ using System;
 using System.Net.Sockets;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Identity;
 using Lanchat.Core.Network;
@@ -40,6 +41,7 @@ namespace Lanchat.Tests.Mock.Network
         public IOutput Output { get; set; }
         
         public IInput Input { get; set; }
+        public IPublicKeyEncryption PublicKeyEncryption { get; set; }
         public Guid Id { get; }
         public bool Ready { get; set; }
         

@@ -24,7 +24,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
         [SetUp]
         public void Setup()
         {
-            publicKeyEncryption = new PublicKeyEncryption();
+            publicKeyEncryption = new PublicKeyEncryption(new ConfigMock());
             symmetricEncryptionMock = new SymmetricEncryptionMock();
             outputMock = new OutputMock();
             nodeMock = new NodeMock(outputMock);

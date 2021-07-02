@@ -9,5 +9,6 @@ namespace Lanchat.Core.Encryption
         void ImportKey(PublicKey publicKey);
         byte[] Encrypt(byte[] bytes);
         byte[] Decrypt(byte[] encryptedBytes);
+        byte[] GetRemotePublicKey();
     }
 }

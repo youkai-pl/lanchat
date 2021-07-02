@@ -64,9 +64,13 @@ namespace Lanchat.Core.Network
                 .Select(x => x.Host.Endpoint.Address));
             node.Output.SendData(nodesList);
 
-            if (!config.SavedAddresses.Contains(node.Host.Endpoint.Address))
+            if (!config.SavedNodes.Any(x=> Equals(x.IpAddress, node.Host.Endpoint.Address)))
             {
-                config.SavedAddresses.Add(node.Host.Endpoint.Address);
+                config.SavedNodes.Add(new SavedNode
+                {
+                    IpAddress = node.Host.Endpoint.Address,
+                    PublicKey = node.PublicKeyEncryption.GetRemotePublicKey()
+                });
             }
         }
     }

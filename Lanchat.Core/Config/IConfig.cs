@@ -35,7 +35,7 @@ namespace Lanchat.Core.Config
         /// <summary>
         ///     Addresses of previously connected nodes.
         /// </summary>
-        ObservableCollection<IPAddress> SavedAddresses { get; set; }
+        ObservableCollection<SavedNode> SavedNodes { get; set; }
 
         /// <summary>
         ///     User status.

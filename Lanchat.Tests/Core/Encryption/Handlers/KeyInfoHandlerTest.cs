@@ -1,6 +1,7 @@
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Encryption.Handlers;
 using Lanchat.Core.Encryption.Models;
+using Lanchat.Tests.Mock.Config;
 using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 
@@ -15,7 +16,7 @@ namespace Lanchat.Tests.Core.Encryption.Handlers
         [SetUp]
         public void Setup()
         {
-            var publicKeyEncryption = new PublicKeyEncryption();
+            var publicKeyEncryption = new PublicKeyEncryption(new ConfigMock());
             publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey());
             symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
             nodeMock = new NodeMock();

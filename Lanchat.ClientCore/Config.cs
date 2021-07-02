@@ -21,7 +21,7 @@ namespace Lanchat.ClientCore
         private string language = "default";
         private string nickname = Environment.UserName;
         private int port = 3645;
-        private ObservableCollection<IPAddress> savedAddresses = new();
+        private ObservableCollection<SavedNode> savedNodes = new();
         private bool useIPv6;
         private UserStatus userStatus = UserStatus.Online;
         private byte[] publicKey;
@@ -70,13 +70,13 @@ namespace Lanchat.ClientCore
         }
 
         /// <inheritdoc />
-        public ObservableCollection<IPAddress> SavedAddresses
+        public ObservableCollection<SavedNode> SavedNodes
         {
-            get => savedAddresses;
+            get => savedNodes;
             set
             {
-                savedAddresses = value;
-                OnPropertyChanged(nameof(SavedAddresses));
+                savedNodes = value;
+                OnPropertyChanged(nameof(SavedNodes));
             }
         }
 

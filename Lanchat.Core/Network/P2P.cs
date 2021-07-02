@@ -83,11 +83,11 @@ namespace Lanchat.Core.Network
 
         private void ConnectToSavedAddresses()
         {
-            Config.SavedAddresses.ForEach(x =>
+            Config.SavedNodes.ForEach(x =>
             {
                 try
                 {
-                    Connect(x);
+                    Connect(x.IpAddress);
                 }
                 catch (ArgumentException)
                 { }

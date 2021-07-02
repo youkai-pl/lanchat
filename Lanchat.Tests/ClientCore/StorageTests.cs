@@ -1,6 +1,8 @@
 using System.IO;
+using System.Linq;
 using System.Net;
 using Lanchat.ClientCore;
+using Lanchat.Core.Config;
 using Lanchat.Tests.Mock;
 using NUnit.Framework;
 
@@ -50,10 +52,10 @@ namespace Lanchat.Tests.ClientCore
         {
             var config = Storage.LoadConfig();
             config.BlockedAddresses.Add(IPAddress.Loopback);
-            config.SavedAddresses.Add(IPAddress.Loopback);
+            config.SavedNodes.Add(new SavedNode {IpAddress = IPAddress.Loopback});
             var loadedConfig = Storage.LoadConfig();
             Assert.Contains(IPAddress.Loopback, loadedConfig.BlockedAddresses);
-            Assert.Contains(IPAddress.Loopback, loadedConfig.SavedAddresses);
+            Assert.True(loadedConfig.SavedNodes.Any(x => x.IpAddress.Equals(IPAddress.Loopback)));
         }
 
         [Test]
