@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -50,7 +51,7 @@ namespace Lanchat.Terminal
                     throw;
                 }
 
-                Window.TabsManager.HomeView.AddAlert(Resources._PortBusy);
+                Window.TabsManager.HomeView.AddText(Resources._PortBusy, ConsoleColor.Yellow);
             }
 
             if (args.Contains("--localhost") || args.Contains("-l"))
@@ -88,7 +89,7 @@ namespace Lanchat.Terminal
                 var newVersion = UpdateChecker.CheckUpdates();
                 if (newVersion != null)
                 {
-                    Window.TabsManager.HomeView.AddAlert($"Update available: {newVersion}");
+                    Window.TabsManager.HomeView.AddText($"Update available: {newVersion}", ConsoleColor.Green);
                 }
             }
         }

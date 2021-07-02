@@ -17,11 +17,12 @@ namespace Lanchat.Terminal.UserInterface
     {
         private readonly DockPanel dockPanel;
         private readonly List<IInputListener> inputListeners = new();
+        public TabPanel TabPanel { get; }
 
         public Window()
         {
-            var tabPanel = new TabPanel(inputListeners);
-            TabsManager = new TabsManager(tabPanel);
+            TabPanel = new TabPanel(inputListeners);
+            TabsManager = new TabsManager(TabPanel);
 
             var promptInput = new TextBox();
 
@@ -50,13 +51,13 @@ namespace Lanchat.Terminal.UserInterface
             dockPanel = new DockPanel
             {
                 Placement = DockPanel.DockedControlPlacement.Bottom,
-                FillingControl = tabPanel,
+                FillingControl = TabPanel,
                 DockedControl = promptBox
             };
 
-            inputListeners.Add(new InputController(promptInput, tabPanel));
+            inputListeners.Add(new InputController(promptInput, TabPanel));
             inputListeners.Add(promptInput);
-            inputListeners.Add(tabPanel);
+            inputListeners.Add(TabPanel);
         }
 
         public TabsManager TabsManager { get; }

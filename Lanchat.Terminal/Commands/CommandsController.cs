@@ -1,19 +1,24 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using ConsoleGUI.Data;
 using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.UserInterface;
+using Lanchat.Terminal.UserInterface.Controls;
 
 namespace Lanchat.Terminal.Commands
 {
     public class CommandsController
     {
+        private readonly TabPanel tabPanel;
         private readonly List<ICommand> commands = new();
 
-        public CommandsController()
+        public CommandsController(TabPanel tabPanel)
         {
+            this.tabPanel = tabPanel;
             commands.Add(new Nick());
         }
-        
+
         public void ExecuteCommand(string[] args)
         {
             var commandAlias = args[0][1..];
@@ -22,7 +27,7 @@ namespace Lanchat.Terminal.Commands
 
             if (command == null)
             {
-                // TODO: Show error
+                WriteText(Resources._InvalidCommand);
                 return;
             }
 
@@ -31,13 +36,19 @@ namespace Lanchat.Terminal.Commands
                 var help = Resources.ResourceManager.GetString($"Help_{commandAlias}", CultureInfo.CurrentCulture);
                 if (help != null)
                 {
-                    // TODO: Show help
+                    WriteText(help);
                 }
 
                 return;
             }
 
             command.Execute(args);
+        }
+
+        private void WriteText(string text)
+        {
+            var writeable = tabPanel.CurrentTab.Content as IWriteable;
+            writeable?.AddText(text, Color.White);
         }
     }
 }

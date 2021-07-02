@@ -1,11 +1,12 @@
 using System.Reflection;
 using ConsoleGUI.Controls;
+using ConsoleGUI.Data;
 using ConsoleGUI.UserDefined;
 using Lanchat.Terminal.Properties;
 
 namespace Lanchat.Terminal.UserInterface.Views
 {
-    public class HomeView : SimpleControl
+    public class HomeView : SimpleControl, IWriteable
     {
         private readonly VerticalStackPanel stackPanel;
 
@@ -37,12 +38,12 @@ namespace Lanchat.Terminal.UserInterface.Views
             };
 
             var currentVersion = Assembly.GetEntryAssembly().GetName().Version.ToString(3);
-            stackPanel.Add(new TextBlock {Text = $"Version: {currentVersion}"});
+            AddText($"Version: {currentVersion}", Color.White);
         }
 
-        public void AddAlert(string message)
+        public void AddText(string text, Color color)
         {
-            stackPanel.Add(new TextBlock {Text = message});
+            stackPanel.Add(new TextBlock {Text = text, Color = color});
         }
     }
 }

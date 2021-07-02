@@ -11,12 +11,13 @@ namespace Lanchat.Terminal.UserInterface
     {
         private readonly TextBox promptInput;
         private readonly TabPanel tabPanel;
-        private readonly CommandsController commandsController = new();
+        private readonly CommandsController commandsController;
 
         public InputController(TextBox promptInput, TabPanel tabPanel)
         {
             this.promptInput = promptInput;
             this.tabPanel = tabPanel;
+            commandsController = new CommandsController(tabPanel);
         }
 
         public void OnInput(InputEvent inputEvent)

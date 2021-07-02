@@ -7,7 +7,7 @@ using Lanchat.Core.Network;
 
 namespace Lanchat.Terminal.UserInterface.Views
 {
-    public class ChatView : SimpleControl, IScrollable
+    public class ChatView : SimpleControl, IScrollable, IWriteable
     {
         private readonly object lockThread = new();
         private readonly VerticalStackPanel stackPanel = new();
@@ -44,6 +44,17 @@ namespace Lanchat.Terminal.UserInterface.Views
             }
         }
 
+        public void AddText(string text, Color color)
+        {
+            foreach (var line in SplitLines(text))
+            {
+                AddToLog(new List<TextBlock>
+                {
+                    new() {Text = line, Color = color}
+                });
+            } 
+        }
+        
         private static IEnumerable<string> SplitLines(string text)
         {
             if (text == null)
