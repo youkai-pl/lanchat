@@ -1,3 +1,4 @@
+using System.Net;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Encryption.Handlers;
 using Lanchat.Core.Encryption.Models;
@@ -16,8 +17,8 @@ namespace Lanchat.Tests.Core.Encryption.Handlers
         [SetUp]
         public void Setup()
         {
-            var publicKeyEncryption = new PublicKeyEncryption(new ConfigMock());
-            publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey());
+            var publicKeyEncryption = new PublicKeyEncryption(new RsaDatabaseMock(), new EncryptionAlerts());
+            publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey(), IPAddress.Loopback);
             symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
             nodeMock = new NodeMock();
             keyInfoHandler = new KeyInfoHandler(symmetricEncryption, nodeMock);

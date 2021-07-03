@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Security.Cryptography;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Encryption.Models;
@@ -14,8 +15,8 @@ namespace Lanchat.Tests.Core.Encryption
         [SetUp]
         public void Setup()
         {
-            publicKeyEncryptionTest = new PublicKeyEncryption(new ConfigMock());
-            publicKeyEncryptionTest.ImportKey(publicKeyEncryptionTest.ExportKey());
+            publicKeyEncryptionTest = new PublicKeyEncryption(new RsaDatabaseMock(), new EncryptionAlerts());
+            publicKeyEncryptionTest.ImportKey(publicKeyEncryptionTest.ExportKey(), IPAddress.Loopback);
         }
 
         [Test]
@@ -36,7 +37,7 @@ namespace Lanchat.Tests.Core.Encryption
                 {
                     RsaExponent = new byte[] {0x10},
                     RsaModulus = new byte[] {0x10}
-                });
+                }, IPAddress.Loopback);
             });
         }
 

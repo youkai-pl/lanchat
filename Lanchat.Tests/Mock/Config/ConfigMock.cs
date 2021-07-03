@@ -13,7 +13,7 @@ namespace Lanchat.Tests.Mock.Config
         public int ServerPort { get; set; }
         public int BroadcastPort { get; set; }
         public ObservableCollection<IPAddress> BlockedAddresses { get; set; }
-        public ObservableCollection<SavedNode> SavedNodes { get; set; }
+        public ObservableCollection<IPAddress> SavedAddresses { get; set; }
         public UserStatus UserStatus { get; set; }
         public bool UseIPv6 { get; set; }
         public bool ConnectToReceivedList { get; set; }
