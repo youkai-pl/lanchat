@@ -76,10 +76,5 @@ namespace Lanchat.Core.Config
         ///     Enable debug features.
         /// </summary>
         bool DebugMode { get; set; }
-        
-        /// <summary>
-        ///     RSA Key.
-        /// </summary>
-        byte[] PublicKey { get; set; }
     }
 }

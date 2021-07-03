@@ -5,6 +5,6 @@ namespace Lanchat.Core.Config
     public class SavedNode
     {
         public IPAddress IpAddress { get; set; }
-        public byte[] PublicKey { get; set; }
+        public string PublicKey { get; set; }
     }
 }

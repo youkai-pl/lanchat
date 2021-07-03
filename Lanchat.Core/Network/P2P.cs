@@ -24,12 +24,17 @@ namespace Lanchat.Core.Network
         ///     Initialize P2P mode
         /// </summary>
         /// <param name="config">Lanchat config</param>
-        /// <param name="nodeCreated">Method called after creation of new node.</param>
+        /// <param name="rsaDatabase">IRsaDatabase implementation</param>
+        /// <param name="nodeCreated">Method called after creation of new node</param>
         /// <param name="apiHandlers">Optional custom api handlers</param>
-        public P2P(IConfig config, Action<IActivatedEventArgs<INode>> nodeCreated, IEnumerable<Type> apiHandlers = null)
+        public P2P(
+            IConfig config, 
+            IRsaDatabase rsaDatabase, 
+            Action<IActivatedEventArgs<INode>> nodeCreated,
+            IEnumerable<Type> apiHandlers = null)
         {
             Config = config;
-            var container = NodeSetup.Setup(config, this, nodeCreated, apiHandlers);
+            var container = NodeSetup.Setup(config, rsaDatabase, this, nodeCreated, apiHandlers);
             nodesControl = new NodesControl(config, container);
             server = Config.UseIPv6
                 ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config, nodesControl)
@@ -108,8 +113,8 @@ namespace Lanchat.Core.Network
 
             var localHost = Dns.GetHostEntry(Dns.GetHostName());
             if ((localHost.AddressList.Any(x => x.Equals(ipAddress)) ||
-                ipAddress.Equals(IPAddress.Loopback) ||
-                ipAddress.Equals(IPAddress.IPv6Loopback)) 
+                 ipAddress.Equals(IPAddress.Loopback) ||
+                 ipAddress.Equals(IPAddress.IPv6Loopback))
                 && !Config.DebugMode)
             {
                 throw new ArgumentException("Address belong to local machine");

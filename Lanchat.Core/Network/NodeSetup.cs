@@ -17,7 +17,8 @@ namespace Lanchat.Core.Network
     internal static class NodeSetup
     {
         internal static IContainer Setup(
-            IConfig config, 
+            IConfig config,
+            IRsaDatabase rsaDatabase,
             IP2P network,
             Action<IActivatedEventArgs<INode>> nodeCreated,
             IEnumerable<Type> handlers = null)
@@ -25,6 +26,7 @@ namespace Lanchat.Core.Network
             var builder = new ContainerBuilder();
 
             builder.RegisterInstance(config).As<IConfig>().SingleInstance();
+            builder.RegisterInstance(rsaDatabase).As<IRsaDatabase>().SingleInstance();
             builder.RegisterInstance(network).As<IP2P>().SingleInstance();
 
             builder.RegisterType<Node>()

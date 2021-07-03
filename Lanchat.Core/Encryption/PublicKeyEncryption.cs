@@ -7,23 +7,21 @@ namespace Lanchat.Core.Encryption
 {
     internal class PublicKeyEncryption : IPublicKeyEncryption
     {
-        private readonly IConfig config;
         private readonly RSA localRsa;
         private readonly RSA remoteRsa;
 
-        public PublicKeyEncryption(IConfig config)
+        public PublicKeyEncryption(IRsaDatabase rsaDatabase)
         {
-            this.config = config;
-
             try
             {
                 localRsa = RSA.Create();
-                localRsa.ImportRSAPrivateKey(config.PublicKey, out _);
+                localRsa.ImportFromPem(rsaDatabase.GetLocalPem());
             }
-            catch (CryptographicException)
+            catch (ArgumentException)
             {
                 localRsa = RSA.Create(2048);
-                config.PublicKey = localRsa.ExportRSAPrivateKey();
+                var pemFile = PemEncoding.Write("RSA PRIVATE KEY", localRsa.ExportRSAPrivateKey());
+                rsaDatabase.SaveLocalPem(new string(pemFile));
             }
             
             remoteRsa = RSA.Create();

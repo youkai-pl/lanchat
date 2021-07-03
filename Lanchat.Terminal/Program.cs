@@ -18,6 +18,7 @@ namespace Lanchat.Terminal
         private static void Main(string[] args)
         {
             Config = Storage.LoadConfig();
+            var rsaDatabase = new RsaDatabase();
 
             try
             {
@@ -31,7 +32,7 @@ namespace Lanchat.Terminal
             Resources.Culture = CultureInfo.CurrentCulture;
 
             Ui.Start();
-            Network = new P2P(Config, x =>
+            Network = new P2P(Config, rsaDatabase, x =>
             {
                 _ = new NodeEventsHandlers(x.Instance);
             });

@@ -24,7 +24,6 @@ namespace Lanchat.ClientCore
         private ObservableCollection<SavedNode> savedNodes = new();
         private bool useIPv6;
         private UserStatus userStatus = UserStatus.Online;
-        private byte[] publicKey;
 
         /// <summary>
         ///     Config could not be loaded and has just been generated.
@@ -148,17 +147,6 @@ namespace Lanchat.ClientCore
 
         /// <inheritdoc />
         public bool DebugMode { get; set; }
-
-        /// <inheritdoc />
-        public byte[] PublicKey
-        {
-            get => publicKey;
-            set
-            {
-                publicKey = value;
-                OnPropertyChanged(nameof(PublicKey));
-            }
-        }
 
         /// <inheritdoc />
         public bool UseIPv6
