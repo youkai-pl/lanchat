@@ -167,7 +167,7 @@ namespace Lanchat.ClientCore
         {
             config.PropertyChanged += (_, _) => { SaveConfig(config); };
             config.BlockedAddresses.CollectionChanged += (_, _) => { SaveConfig(config); };
-            config.SavedNodes.CollectionChanged += (_, _) => { SaveConfig(config); };
+            config.SavedAddresses.CollectionChanged += (_, _) => { SaveConfig(config); };
         }
 
         private static void SetPaths()

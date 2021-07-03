@@ -45,7 +45,7 @@ namespace Lanchat.Core.Network.Handlers
 
             try
             {
-                publicKeyEncryption.ImportKey(handshake.PublicKey);
+                publicKeyEncryption.ImportKey(handshake.PublicKey, host.Endpoint.Address);
                 user.Nickname = handshake.Nickname;
                 user.UserStatus = handshake.UserStatus;
                 output.SendPrivilegedData(encryption.ExportKey());

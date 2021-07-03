@@ -11,8 +11,8 @@ namespace Lanchat.Terminal.Commands
 
         public void Execute(string[] _)
         {
-            Ui.Log.Add($"{Resources._BlockedList} {Program.Config.SavedNodes.Count}");
-            Program.Config.SavedNodes.ForEach(x => Ui.Log.Add($"{x}"));
+            Ui.Log.Add($"{Resources._BlockedList} {Program.Config.SavedAddresses.Count}");
+            Program.Config.SavedAddresses.ForEach(x => Ui.Log.Add($"{x}"));
         }
     }
 }

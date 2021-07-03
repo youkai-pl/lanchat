@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Net;
 using System.Security.Cryptography;
 using Lanchat.Core.Config;
 using Lanchat.Core.Encryption.Models;
@@ -9,9 +11,11 @@ namespace Lanchat.Core.Encryption
     {
         private readonly RSA localRsa;
         private readonly RSA remoteRsa;
+        private IRsaDatabase rsaDatabase;
 
         public PublicKeyEncryption(IRsaDatabase rsaDatabase)
         {
+            this.rsaDatabase = rsaDatabase;
             try
             {
                 localRsa = RSA.Create();
@@ -23,7 +27,7 @@ namespace Lanchat.Core.Encryption
                 var pemFile = PemEncoding.Write("RSA PRIVATE KEY", localRsa.ExportRSAPrivateKey());
                 rsaDatabase.SaveLocalPem(new string(pemFile));
             }
-            
+
             remoteRsa = RSA.Create();
         }
 
@@ -44,7 +48,7 @@ namespace Lanchat.Core.Encryption
             };
         }
 
-        public void ImportKey(PublicKey publicKey)
+        public void ImportKey(PublicKey publicKey, IPAddress remoteIp)
         {
             var parameters = new RSAParameters
             {
@@ -52,8 +56,10 @@ namespace Lanchat.Core.Encryption
                 Exponent = publicKey.RsaExponent
             };
 
+
             remoteRsa.ImportParameters(parameters);
             TestKeys();
+            CompareWithSaved(remoteIp);
         }
 
         public byte[] Encrypt(byte[] bytes)
@@ -66,14 +72,25 @@ namespace Lanchat.Core.Encryption
             return localRsa.Decrypt(encryptedBytes, RSAEncryptionPadding.Pkcs1);
         }
 
-        public byte[] GetRemotePublicKey()
-        {
-            return remoteRsa.ExportRSAPublicKey();
-        }
-
         private void TestKeys()
         {
             remoteRsa.Encrypt(new byte[] {0x10}, RSAEncryptionPadding.Pkcs1);
+        }
+
+        private void CompareWithSaved(IPAddress ipAddress)
+        {
+            var savedPem = rsaDatabase.GetNodePem(ipAddress);
+            var currentPem = new string(PemEncoding.Write("RSA PUBLIC KEY", remoteRsa.ExportRSAPublicKey()));
+            if (savedPem == null)
+            {
+                Trace.WriteLine("New RSA key");
+                rsaDatabase.SaveNodePem(ipAddress, currentPem);
+            }
+            else if (savedPem != currentPem)
+            {
+                Trace.WriteLine("Changed RSA key");
+                rsaDatabase.SaveNodePem(ipAddress, currentPem);
+            }
         }
     }
 }

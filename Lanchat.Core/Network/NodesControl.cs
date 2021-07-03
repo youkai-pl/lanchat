@@ -64,32 +64,10 @@ namespace Lanchat.Core.Network
                 .Select(x => x.Host.Endpoint.Address));
             node.Output.SendData(nodesList);
 
-            var savedNode = config.SavedNodes.FirstOrDefault(x => Equals(x.IpAddress, node.Host.Endpoint.Address));
-            if (savedNode == null)
+            if (!config.SavedAddresses.Contains(node.Host.Endpoint.Address))
             {
-                SaveNodeInfo(node);
-                Trace.WriteLine("New RSA");
+                config.SavedAddresses.Add(node.Host.Endpoint.Address);
             }
-            else
-            {
-                if (savedNode.PublicKey == Convert.ToBase64String(node.PublicKeyEncryption.GetRemotePublicKey()))
-                {
-                    return;
-                }
-
-                config.SavedNodes.Remove(savedNode);
-                SaveNodeInfo(node);
-                Trace.WriteLine("Changed RSA");
-            }
-        }
-
-        private void SaveNodeInfo(INodeInternal node)
-        {
-            config.SavedNodes.Add(new SavedNode
-            {
-                IpAddress = node.Host.Endpoint.Address,
-                PublicKey = Convert.ToBase64String(node.PublicKeyEncryption.GetRemotePublicKey())
-            });
         }
     }
 }
