@@ -45,6 +45,11 @@ namespace Lanchat.Core.Network
                 .As<IPublicKeyEncryption>()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<EncryptionAlerts>()
+                .As<IEncryptionAlerts>()
+                .As<IInternalEncryptionAlerts>()
+                .InstancePerLifetimeScope();
+
             builder.RegisterType<SymmetricEncryption>()
                 .As<ISymmetricEncryption>()
                 .InstancePerLifetimeScope();

@@ -2,6 +2,7 @@ using System;
 using System.Net.Sockets;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Identity;
 using Lanchat.Core.TransportLayer;
@@ -40,6 +41,9 @@ namespace Lanchat.Core.Network
 
         /// <see cref="Lanchat.Core.Api.IOutput" />
         IOutput Output { get; }
+        
+        /// <see cref="Lanchat.Core.Encryption.IEncryptionAlerts"/>
+        IEncryptionAlerts EncryptionAlerts { get; }
 
         /// <summary>
         ///     Node successful connected and ready to data exchange.

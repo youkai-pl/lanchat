@@ -37,12 +37,15 @@ namespace Lanchat.Terminal
             node.FileSender.FileTransferError += Ui.FileTransferMonitor.OnFileTransferError;
             node.FileReceiver.FileReceiveFinished += Ui.FileTransferMonitor.OnFileReceiveFinished;
             node.FileReceiver.FileTransferError += Ui.FileTransferMonitor.OnFileTransferError;
+            
+            node.EncryptionAlerts.NewKey += OnNewKey;
+            node.EncryptionAlerts.ChangedKey += OnChangedKey;
 
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
             node.SocketErrored += OnSocketErrored;
         }
-        
+
         private void OnNicknameUpdated(object sender, string e)
         {
             Ui.Log.Add(string.Format(Resources._NicknameChanged, node.User.PreviousNickname, e));
@@ -115,6 +118,18 @@ namespace Lanchat.Terminal
         private void OnFileTransferHandlerRequestRejected(object sender, CurrentFileTransfer e)
         {
             Ui.Log.Add(string.Format(Resources._FileRequestRejected, node.User.Nickname));
+        }
+
+        private void OnNewKey(object sender, string e)
+        {
+            Ui.Log.AddWarning($"To make sure the connection is secure check the public key:");
+            Ui.Log.AddWarning(e);
+        }
+        
+        private void OnChangedKey(object sender, string e)
+        {
+            Ui.Log.AddError($"Public key has changed. Connection may be not secure.");
+            Ui.Log.AddError(e);
         }
     }
 }

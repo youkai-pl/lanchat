@@ -11,11 +11,13 @@ namespace Lanchat.Core.Encryption
     {
         private readonly RSA localRsa;
         private readonly RSA remoteRsa;
-        private IRsaDatabase rsaDatabase;
+        private readonly IRsaDatabase rsaDatabase;
+        private readonly IInternalEncryptionAlerts encryptionAlerts;
 
-        public PublicKeyEncryption(IRsaDatabase rsaDatabase)
+        public PublicKeyEncryption(IRsaDatabase rsaDatabase, IInternalEncryptionAlerts encryptionAlerts)
         {
             this.rsaDatabase = rsaDatabase;
+            this.encryptionAlerts = encryptionAlerts;
             try
             {
                 localRsa = RSA.Create();
@@ -84,11 +86,13 @@ namespace Lanchat.Core.Encryption
             if (savedPem == null)
             {
                 Trace.WriteLine("New RSA key");
+                encryptionAlerts.OnNewKey(currentPem);
                 rsaDatabase.SaveNodePem(ipAddress, currentPem);
             }
             else if (savedPem != currentPem)
             {
                 Trace.WriteLine("Changed RSA key");
+                encryptionAlerts.OnChangedKey(currentPem);
                 rsaDatabase.SaveNodePem(ipAddress, currentPem);
             }
         }

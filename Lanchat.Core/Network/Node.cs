@@ -31,6 +31,7 @@ namespace Lanchat.Core.Network
         public IFileSender FileSender { get; set; }
         public IMessaging Messaging { get; set; }
         public IOutput Output { get; set; }
+        public IEncryptionAlerts EncryptionAlerts { get; set; }
         public IInput Input { get; set; }
         public IPublicKeyEncryption PublicKeyEncryption { get; set; }
 
