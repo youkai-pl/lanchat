@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Lanchat.Core.Json;
@@ -107,20 +106,10 @@ namespace Lanchat.ClientCore
         {
             try
             {
+                var filePath = $"{RsaDatabasePath}/{name}.pem";
                 CreateStorageDirectoryIfNotExists();
-                File.Create($"{RsaDatabasePath}/{name}.pem").Dispose();
-
-                if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    var fileInfo = new UnixFileInfo($"{RsaDatabasePath}/{name}.pem")
-                    {
-                        FileAccessPermissions = FileAccessPermissions.UserRead | FileAccessPermissions.UserWrite
-                    };
-                
-                    fileInfo.Refresh(); 
-                }
-                
-                File.WriteAllText($"{RsaDatabasePath}/{name}.pem", content);
+                SetPermissions(filePath);
+                File.WriteAllText(filePath, content);
             }
             catch (Exception e)
             {
@@ -133,6 +122,7 @@ namespace Lanchat.ClientCore
             try
             {
                 CreateStorageDirectoryIfNotExists();
+                SetPermissions(ConfigPath);
                 File.WriteAllText(ConfigPath, JsonSerializer.Serialize(config, JsonSerializerOptions));
             }
             catch (Exception e)
@@ -212,6 +202,23 @@ namespace Lanchat.ClientCore
             }
 
             RsaDatabasePath = $"{DataPath}/RSA";
+        }
+
+        private static void SetPermissions(string filePath)
+        {
+            File.Create(filePath).Dispose();
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return;
+            }
+
+            var fileInfo = new UnixFileInfo(filePath)
+            {
+                FileAccessPermissions = FileAccessPermissions.UserRead | FileAccessPermissions.UserWrite
+            };
+                
+            fileInfo.Refresh();
         }
     }
 }
