@@ -2,9 +2,11 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Lanchat.Core.Json;
+using Mono.Unix;
 
 namespace Lanchat.ClientCore
 {
@@ -106,6 +108,18 @@ namespace Lanchat.ClientCore
             try
             {
                 CreateStorageDirectoryIfNotExists();
+                File.Create($"{RsaDatabasePath}/{name}.pem").Dispose();
+
+                if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    var fileInfo = new UnixFileInfo($"{RsaDatabasePath}/{name}.pem")
+                    {
+                        FileAccessPermissions = FileAccessPermissions.UserRead | FileAccessPermissions.UserWrite
+                    };
+                
+                    fileInfo.Refresh(); 
+                }
+                
                 File.WriteAllText($"{RsaDatabasePath}/{name}.pem", content);
             }
             catch (Exception e)
