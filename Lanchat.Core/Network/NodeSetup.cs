@@ -19,6 +19,7 @@ namespace Lanchat.Core.Network
         internal static IContainer Setup(
             IConfig config,
             IRsaDatabase rsaDatabase,
+            ILocalPublicKey localPublicKey,
             IP2P network,
             Action<IActivatedEventArgs<INode>> nodeCreated,
             IEnumerable<Type> handlers = null)
@@ -28,7 +29,7 @@ namespace Lanchat.Core.Network
             builder.RegisterInstance(config).As<IConfig>().SingleInstance();
             builder.RegisterInstance(rsaDatabase).As<IRsaDatabase>().SingleInstance();
             builder.RegisterInstance(network).As<IP2P>().SingleInstance();
-            builder.RegisterType<LocalPublicKey>().As<ILocalPublicKey>().SingleInstance();
+            builder.RegisterInstance(localPublicKey).As<ILocalPublicKey>().SingleInstance();
 
             builder.RegisterType<Node>()
                 .As<INode>()

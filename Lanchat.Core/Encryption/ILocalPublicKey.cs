@@ -11,5 +11,11 @@ namespace Lanchat.Core.Encryption
         ///     RSA class.
         /// </summary>
         RSA LocalRsa { get; }
+
+        /// <summary>
+        ///     Get public key in PEM format.
+        /// </summary>
+        /// <returns>PEM string</returns>
+        string GetPublicPem();
     }
 }

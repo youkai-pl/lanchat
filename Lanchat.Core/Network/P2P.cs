@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Autofac.Core;
 using Lanchat.Core.Api;
 using Lanchat.Core.Config;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.NodesDetection;
 using Lanchat.Core.TransportLayer;
@@ -34,7 +35,8 @@ namespace Lanchat.Core.Network
             IEnumerable<Type> apiHandlers = null)
         {
             Config = config;
-            var container = NodeSetup.Setup(config, rsaDatabase, this, nodeCreated, apiHandlers);
+            LocalPublicKey = new LocalPublicKey(rsaDatabase);
+            var container = NodeSetup.Setup(config, rsaDatabase, LocalPublicKey, this, nodeCreated, apiHandlers);
             nodesControl = new NodesControl(config, container);
             server = Config.UseIPv6
                 ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config, nodesControl)
@@ -53,6 +55,9 @@ namespace Lanchat.Core.Network
 
         /// <inheritdoc />
         public IBroadcast Broadcast { get; }
+
+        /// <inheritdoc />
+        public ILocalPublicKey LocalPublicKey { get; }
 
         /// <inheritdoc />
         public void Start()

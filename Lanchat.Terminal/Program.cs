@@ -83,6 +83,9 @@ namespace Lanchat.Terminal
 
                 Ui.Log.AddWarning(Resources._PortBusy);
             }
+            
+            Ui.Log.Add("Your RSA public key:");
+            Ui.Log.Add(Network.LocalPublicKey.GetPublicPem());
 
             if (args.Contains("--localhost") || args.Contains("-l"))
             {
