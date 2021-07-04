@@ -32,10 +32,7 @@ namespace Lanchat.Terminal
             Resources.Culture = CultureInfo.CurrentCulture;
 
             Ui.Start();
-            Network = new P2P(Config, rsaDatabase, x =>
-            {
-                _ = new NodeEventsHandlers(x.Instance);
-            });
+            Network = new P2P(Config, rsaDatabase, x => { _ = new NodeEventsHandlers(x.Instance); });
 
             Ui.SetupNetworkEvents();
 
@@ -83,7 +80,7 @@ namespace Lanchat.Terminal
 
                 Ui.Log.AddWarning(Resources._PortBusy);
             }
-            
+
             Ui.Log.Add("Your RSA public key:");
             Ui.Log.Add(Network.LocalPublicKey.GetPublicPem());
 

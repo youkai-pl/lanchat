@@ -22,10 +22,10 @@ namespace Lanchat.Core.Network
 
         /// <see cref="Lanchat.Core.Api.IBroadcast" />
         IBroadcast Broadcast { get; }
-        
-        /// <see cref="Lanchat.Core.Encryption.ILocalPublicKey"/>
+
+        /// <see cref="Lanchat.Core.Encryption.ILocalPublicKey" />
         ILocalPublicKey LocalPublicKey { get; }
-        
+
         /// <summary>
         ///     Start server.
         /// </summary>

@@ -10,21 +10,21 @@ namespace Lanchat.Tests.Core.Encryption
 {
     public class PublicKeyEncryptionTests
     {
-        private NodePublicKey nodePublicKeyTest;
+        private InternalNodeRsa internalNodeRsaTest;
 
         [SetUp]
         public void Setup()
         {
-            nodePublicKeyTest = new NodePublicKey(new RsaDatabaseMock(), new EncryptionAlerts());
-            nodePublicKeyTest.ImportKey(nodePublicKeyTest.ExportKey(), IPAddress.Loopback);
+            internalNodeRsaTest = new InternalNodeRsa(new RsaDatabaseMock(), new EncryptionAlerts());
+            internalNodeRsaTest.ImportKey(internalNodeRsaTest.ExportKey(), IPAddress.Loopback);
         }
 
         [Test]
         public void BytesEncryption()
         {
             var testBytes = new byte[] {0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70};
-            var encryptedBytes = nodePublicKeyTest.Encrypt(testBytes);
-            var decryptedBytes = nodePublicKeyTest.Decrypt(encryptedBytes);
+            var encryptedBytes = internalNodeRsaTest.Encrypt(testBytes);
+            var decryptedBytes = internalNodeRsaTest.Decrypt(encryptedBytes);
             Assert.AreEqual(testBytes, decryptedBytes);
         }
 
@@ -33,7 +33,7 @@ namespace Lanchat.Tests.Core.Encryption
         {
             Assert.Catch<CryptographicException>(() =>
             {
-                nodePublicKeyTest.ImportKey(new PublicKey
+                internalNodeRsaTest.ImportKey(new PublicKey
                 {
                     RsaExponent = new byte[] {0x10},
                     RsaModulus = new byte[] {0x10}
@@ -44,8 +44,8 @@ namespace Lanchat.Tests.Core.Encryption
         [Test]
         public void Dispose()
         {
-            nodePublicKeyTest.Dispose();
-            Assert.Catch<ObjectDisposedException>(() => { nodePublicKeyTest.Encrypt(new byte[] {0x10}); });
+            internalNodeRsaTest.Dispose();
+            Assert.Catch<ObjectDisposedException>(() => { internalNodeRsaTest.Encrypt(new byte[] {0x10}); });
         }
     }
 }

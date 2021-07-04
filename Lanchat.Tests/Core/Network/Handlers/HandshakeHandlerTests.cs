@@ -16,27 +16,27 @@ namespace Lanchat.Tests.Core.Network.Handlers
     public class HandshakeHandlerTests
     {
         private HandshakeHandler handshakeHandler;
+        private InternalNodeRsa internalNodeRsa;
+        private NodeAesMock nodeAesMock;
         private NodeMock nodeMock;
         private OutputMock outputMock;
-        private NodePublicKey nodePublicKey;
-        private SymmetricEncryptionMock symmetricEncryptionMock;
 
         [SetUp]
         public void Setup()
         {
-            nodePublicKey = new NodePublicKey(new RsaDatabaseMock(), new EncryptionAlerts());
-            symmetricEncryptionMock = new SymmetricEncryptionMock();
+            internalNodeRsa = new InternalNodeRsa(new RsaDatabaseMock(), new EncryptionAlerts());
+            nodeAesMock = new NodeAesMock();
             outputMock = new OutputMock();
             nodeMock = new NodeMock(outputMock);
 
             handshakeHandler = new HandshakeHandler(
-                nodePublicKey,
-                symmetricEncryptionMock,
+                internalNodeRsa,
+                nodeAesMock,
                 outputMock,
                 nodeMock,
                 new HostMock(),
                 new User(nodeMock),
-                new Connection(nodeMock, new HostMock(), outputMock, new ConfigMock(), nodePublicKey));
+                new Connection(nodeMock, new HostMock(), outputMock, new ConfigMock(), internalNodeRsa));
         }
 
         [Test]
@@ -46,11 +46,11 @@ namespace Lanchat.Tests.Core.Network.Handlers
             {
                 Nickname = "test",
                 UserStatus = UserStatus.Online,
-                PublicKey = nodePublicKey.ExportKey()
+                PublicKey = internalNodeRsa.ExportKey()
             };
             handshakeHandler.Handle(handshake);
 
-            nodePublicKey.Encrypt(new byte[] {0x10});
+            internalNodeRsa.Encrypt(new byte[] {0x10});
             Assert.IsTrue(handshakeHandler.Disabled);
             Assert.AreEqual(handshake.UserStatus, nodeMock.User.UserStatus);
             Assert.NotNull(outputMock.LastOutput);
@@ -60,11 +60,8 @@ namespace Lanchat.Tests.Core.Network.Handlers
         public void InvalidKey()
         {
             var eventRaised = false;
-            nodeMock.CannotConnect += (_, _) =>
-            {
-                eventRaised = true;
-            };
-            
+            nodeMock.CannotConnect += (_, _) => { eventRaised = true; };
+
             var handshake = new Handshake
             {
                 Nickname = "test",

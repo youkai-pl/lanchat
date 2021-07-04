@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net.Sockets;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Identity;
 using Lanchat.Core.Network;
@@ -37,9 +38,6 @@ namespace Lanchat.Terminal
             node.FileSender.FileTransferError += Ui.FileTransferMonitor.OnFileTransferError;
             node.FileReceiver.FileReceiveFinished += Ui.FileTransferMonitor.OnFileReceiveFinished;
             node.FileReceiver.FileTransferError += Ui.FileTransferMonitor.OnFileTransferError;
-            
-            node.EncryptionAlerts.NewKey += OnNewKey;
-            node.EncryptionAlerts.ChangedKey += OnChangedKey;
 
             node.Connected += OnConnected;
             node.Disconnected += OnDisconnected;
@@ -67,6 +65,19 @@ namespace Lanchat.Terminal
         {
             Ui.Log.Add(string.Format(Resources._Connected, node.User.Nickname));
             Ui.BottomBar.NodesCount.Text = Program.Network.Nodes.Count.ToString();
+
+            switch (node.NodeRsa.KeyStatus)
+            {
+                case KeyStatus.ChangedKey:
+                    Ui.Log.AddError("Public key has changed. Connection may be not secure.");
+                    Ui.Log.AddError(node.NodeRsa.PublicPem);
+                    break;
+
+                case KeyStatus.FreshKey:
+                    Ui.Log.AddWarning("To make sure the connection is secure check the public key:");
+                    Ui.Log.AddWarning(node.NodeRsa.PublicPem);
+                    break;
+            }
         }
 
         private void OnDisconnected(object sender, EventArgs e)
@@ -118,18 +129,6 @@ namespace Lanchat.Terminal
         private void OnFileTransferHandlerRequestRejected(object sender, CurrentFileTransfer e)
         {
             Ui.Log.Add(string.Format(Resources._FileRequestRejected, node.User.Nickname));
-        }
-
-        private void OnNewKey(object sender, string e)
-        {
-            Ui.Log.AddWarning($"To make sure the connection is secure check the public key:");
-            Ui.Log.AddWarning(e);
-        }
-        
-        private void OnChangedKey(object sender, string e)
-        {
-            Ui.Log.AddError($"Public key has changed. Connection may be not secure.");
-            Ui.Log.AddError(e);
         }
     }
 }

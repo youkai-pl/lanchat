@@ -31,7 +31,7 @@ namespace Lanchat.Core.Identity
         ///     User nickname changed.
         /// </summary>
         event EventHandler<string> NicknameUpdated;
-        
+
         /// <summary>
         ///     User status changed.
         /// </summary>

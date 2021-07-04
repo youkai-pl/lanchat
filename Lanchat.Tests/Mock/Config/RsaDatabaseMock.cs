@@ -14,7 +14,7 @@ namespace Lanchat.Tests.Mock.Config
             localRsa = RSA.Create(2048);
             remoteRsa = RSA.Create(2048);
         }
-        
+
         public string GetLocalPem()
         {
             return new(PemEncoding.Write("RSA PRIVATE KEY", localRsa.ExportRSAPrivateKey()));

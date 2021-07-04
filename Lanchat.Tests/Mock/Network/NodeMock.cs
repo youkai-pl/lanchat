@@ -27,11 +27,20 @@ namespace Lanchat.Tests.Mock.Network
             FileReceiver = new FileReceiver(fileTransferOutput, new StorageMock());
         }
 
+        public INodeRsa NodeRsa { get; set; }
+
+        public void Disconnect()
+        {
+            throw new NotImplementedException();
+        }
+
+        public event EventHandler<SocketError> SocketErrored;
+
         public void Start()
         {
             throw new NotImplementedException();
         }
-        
+
         public Connection Connection { get; set; }
         public IUser User { get; set; }
         public IHost Host { get; set; }
@@ -39,18 +48,12 @@ namespace Lanchat.Tests.Mock.Network
         public IFileSender FileSender { get; set; }
         public IMessaging Messaging { get; set; }
         public IOutput Output { get; set; }
-        public IEncryptionAlerts EncryptionAlerts { get; set; }
 
         public IInput Input { get; set; }
-        public INodePublicKey NodePublicKey { get; set; }
+        public IInternalNodeRsa InternalNodeRsa { get; set; }
         public Guid Id { get; }
         public bool Ready { get; set; }
-        
-        public void Disconnect()
-        {
-            throw new NotImplementedException();
-        }
-        
+
         public void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);
@@ -69,6 +72,5 @@ namespace Lanchat.Tests.Mock.Network
         public event EventHandler Connected;
         public event EventHandler Disconnected;
         public event EventHandler CannotConnect;
-        public event EventHandler<SocketError> SocketErrored;
     }
 }

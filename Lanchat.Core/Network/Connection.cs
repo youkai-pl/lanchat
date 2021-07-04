@@ -10,24 +10,24 @@ namespace Lanchat.Core.Network
 {
     internal class Connection
     {
-        private readonly IOutput output;
         private readonly IConfig config;
-        private readonly INodePublicKey nodePublicKey;
         private readonly IHost host;
+        private readonly IInternalNodeRsa internalNodeRsa;
         private readonly INodeInternal nodeInternal;
+        private readonly IOutput output;
 
         public Connection(
             INodeInternal nodeInternal,
             IHost host,
-            IOutput output, 
-            IConfig config, 
-            INodePublicKey nodePublicKey)
+            IOutput output,
+            IConfig config,
+            IInternalNodeRsa internalNodeRsa)
         {
             this.nodeInternal = nodeInternal;
             this.host = host;
             this.output = output;
             this.config = config;
-            this.nodePublicKey = nodePublicKey;
+            this.internalNodeRsa = internalNodeRsa;
             host.Disconnected += OnDisconnected;
         }
 
@@ -53,12 +53,12 @@ namespace Lanchat.Core.Network
             {
                 Nickname = config.Nickname,
                 UserStatus = config.UserStatus,
-                PublicKey = nodePublicKey.ExportKey()
+                PublicKey = internalNodeRsa.ExportKey()
             };
 
             output.SendPrivilegedData(handshake);
         }
-        
+
         private void OnDisconnected(object sender, EventArgs _)
         {
             if (nodeInternal.Ready)

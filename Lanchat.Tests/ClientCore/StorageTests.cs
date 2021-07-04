@@ -1,8 +1,6 @@
 using System.IO;
-using System.Linq;
 using System.Net;
 using Lanchat.ClientCore;
-using Lanchat.Core.Config;
 using Lanchat.Tests.Mock;
 using NUnit.Framework;
 

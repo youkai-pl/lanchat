@@ -7,18 +7,15 @@ using Lanchat.Core.Encryption.Models;
 
 namespace Lanchat.Core.Encryption
 {
-    internal class NodePublicKey : INodePublicKey
+    internal class InternalNodeRsa : INodeRsa, IInternalNodeRsa
     {
+        private readonly ILocalPublicKey localPublicKey;
         private readonly RSA remoteRsa;
         private readonly IRsaDatabase rsaDatabase;
-        private readonly IInternalEncryptionAlerts encryptionAlerts;
-        private readonly ILocalPublicKey localPublicKey;
 
-        public NodePublicKey(IRsaDatabase rsaDatabase, IInternalEncryptionAlerts encryptionAlerts,
-            ILocalPublicKey localPublicKey)
+        public InternalNodeRsa(IRsaDatabase rsaDatabase, ILocalPublicKey localPublicKey)
         {
             this.rsaDatabase = rsaDatabase;
-            this.encryptionAlerts = encryptionAlerts;
             this.localPublicKey = localPublicKey;
             remoteRsa = RSA.Create();
         }
@@ -63,6 +60,9 @@ namespace Lanchat.Core.Encryption
             return localPublicKey.LocalRsa.Decrypt(encryptedBytes, RSAEncryptionPadding.Pkcs1);
         }
 
+        public string PublicPem { get; private set; }
+        public KeyStatus KeyStatus { get; private set; }
+
         private void TestKeys()
         {
             remoteRsa.Encrypt(new byte[] {0x10}, RSAEncryptionPadding.Pkcs1);
@@ -75,15 +75,21 @@ namespace Lanchat.Core.Encryption
             if (savedPem == null)
             {
                 Trace.WriteLine("New RSA key");
-                encryptionAlerts.OnNewKey(currentPem);
+                KeyStatus = KeyStatus.FreshKey;
                 rsaDatabase.SaveNodePem(ipAddress, currentPem);
             }
             else if (savedPem != currentPem)
             {
                 Trace.WriteLine("Changed RSA key");
-                encryptionAlerts.OnChangedKey(currentPem);
+                KeyStatus = KeyStatus.ChangedKey;
                 rsaDatabase.SaveNodePem(ipAddress, currentPem);
             }
+            else
+            {
+                KeyStatus = KeyStatus.ValidKey;
+            }
+
+            PublicPem = currentPem;
         }
     }
 }

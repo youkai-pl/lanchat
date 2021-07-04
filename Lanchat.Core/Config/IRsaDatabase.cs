@@ -12,7 +12,7 @@ namespace Lanchat.Core.Config
         /// </summary>
         /// <returns>PEM file string</returns>
         string GetLocalPem();
-        
+
         /// <summary>
         ///     Save local public and private keys.
         /// </summary>

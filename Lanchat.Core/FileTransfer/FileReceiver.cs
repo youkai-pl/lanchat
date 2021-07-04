@@ -78,7 +78,7 @@ namespace Lanchat.Core.FileTransfer
             FileTransferError?.Invoke(this, new FileTransferException(
                 CurrentFileTransfer,
                 "Cancelled by user"));
-            
+
             CurrentFileTransfer.Dispose();
             FileWriter.Dispose();
         }

@@ -17,30 +17,24 @@ namespace Lanchat.Core.Network
             Host = host;
         }
 
-        public void Start()
+        public void Dispose()
         {
-            Host.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
-            Host.DataReceived += Input.OnDataReceived;
-            Connection.Initialize();
+            GC.SuppressFinalize(this);
         }
-        
-        public Connection Connection { get; set; }
+
         public IUser User { get; set; }
         public IHost Host { get; set; }
         public IFileReceiver FileReceiver { get; set; }
         public IFileSender FileSender { get; set; }
         public IMessaging Messaging { get; set; }
         public IOutput Output { get; set; }
-        public IEncryptionAlerts EncryptionAlerts { get; set; }
-        public IInput Input { get; set; }
-        public INodePublicKey NodePublicKey { get; set; }
+        public INodeRsa NodeRsa { get; set; }
 
         public Guid Id => Host.Id;
         public bool Ready { get; set; }
 
         public event EventHandler Connected;
         public event EventHandler Disconnected;
-        public event EventHandler CannotConnect;
         public event EventHandler<SocketError> SocketErrored;
 
         public void Disconnect()
@@ -52,11 +46,18 @@ namespace Lanchat.Core.Network
             Dispose();
         }
 
-        public void Dispose()
+        public void Start()
         {
-            GC.SuppressFinalize(this);
+            Host.SocketErrored += (s, e) => SocketErrored?.Invoke(s, e);
+            Host.DataReceived += Input.OnDataReceived;
+            Connection.Initialize();
         }
-        
+
+        public Connection Connection { get; set; }
+        public IInput Input { get; set; }
+        public IInternalNodeRsa InternalNodeRsa { get; set; }
+        public event EventHandler CannotConnect;
+
         public void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);

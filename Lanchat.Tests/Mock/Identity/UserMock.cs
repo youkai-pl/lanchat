@@ -24,7 +24,7 @@ namespace Lanchat.Tests.Mock.Identity
                 NicknameUpdated?.Invoke(this, value);
             }
         }
-        
+
         public UserStatus UserStatus
         {
             get => userStatus;

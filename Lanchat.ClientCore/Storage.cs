@@ -22,7 +22,7 @@ namespace Lanchat.ClientCore
         ///     Path of main Lanchat data folder.
         /// </summary>
         public static string DataPath { get; set; }
-        
+
         /// <summary>
         ///     Path of RSA keys database.
         /// </summary>
@@ -95,7 +95,7 @@ namespace Lanchat.ClientCore
                 return null;
             }
         }
-        
+
         /// <summary>
         ///     Save PEM file.
         /// </summary>
@@ -113,7 +113,7 @@ namespace Lanchat.ClientCore
                 CatchFileSystemExceptions(e);
             }
         }
-        
+
         internal static void SaveConfig(Config config)
         {
             try
@@ -138,6 +138,7 @@ namespace Lanchat.ClientCore
                 {
                     Directory.CreateDirectory(DataPath);
                 }
+
                 if (!Directory.Exists($"{RsaDatabasePath}"))
                 {
                     Directory.CreateDirectory($"{RsaDatabasePath}");

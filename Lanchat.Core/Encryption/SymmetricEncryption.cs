@@ -6,16 +6,16 @@ using Lanchat.Core.Encryption.Models;
 
 namespace Lanchat.Core.Encryption
 {
-    internal class SymmetricEncryption : ISymmetricEncryption
+    internal class NodeAes : INodeAes
     {
+        private readonly IInternalNodeRsa internalNodeRsa;
         private readonly Aes localAes;
-        private readonly INodePublicKey nodePublicKey;
         private readonly Aes remoteAes;
         private bool disposed;
 
-        public SymmetricEncryption(INodePublicKey nodePublicKey)
+        public NodeAes(IInternalNodeRsa internalNodeRsa)
         {
-            this.nodePublicKey = nodePublicKey;
+            this.internalNodeRsa = internalNodeRsa;
             localAes = Aes.Create();
             remoteAes = Aes.Create();
         }
@@ -24,7 +24,7 @@ namespace Lanchat.Core.Encryption
         {
             localAes?.Dispose();
             remoteAes?.Dispose();
-            nodePublicKey?.Dispose();
+            internalNodeRsa?.Dispose();
             disposed = true;
             GC.SuppressFinalize(this);
         }
@@ -45,22 +45,22 @@ namespace Lanchat.Core.Encryption
         {
             return new()
             {
-                AesKey = nodePublicKey.Encrypt(localAes.Key),
-                AesIv = nodePublicKey.Encrypt(localAes.IV)
+                AesKey = internalNodeRsa.Encrypt(localAes.Key),
+                AesIv = internalNodeRsa.Encrypt(localAes.IV)
             };
         }
 
         public void ImportKey(KeyInfo keyInfo)
         {
-            remoteAes.Key = nodePublicKey.Decrypt(keyInfo.AesKey);
-            remoteAes.IV = nodePublicKey.Decrypt(keyInfo.AesIv);
+            remoteAes.Key = internalNodeRsa.Decrypt(keyInfo.AesKey);
+            remoteAes.IV = internalNodeRsa.Decrypt(keyInfo.AesIv);
         }
 
         internal byte[] EncryptBytes(byte[] data)
         {
             if (disposed)
             {
-                throw new ObjectDisposedException(nameof(SymmetricEncryption));
+                throw new ObjectDisposedException(nameof(NodeAes));
             }
 
             using var memoryStream = new MemoryStream();
@@ -75,7 +75,7 @@ namespace Lanchat.Core.Encryption
         {
             if (disposed)
             {
-                throw new ObjectDisposedException(nameof(SymmetricEncryption));
+                throw new ObjectDisposedException(nameof(NodeAes));
             }
 
             using var memoryStream = new MemoryStream();

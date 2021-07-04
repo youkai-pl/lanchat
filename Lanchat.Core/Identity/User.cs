@@ -14,7 +14,7 @@ namespace Lanchat.Core.Identity
         {
             this.node = node;
         }
-        
+
         public string Nickname
         {
             get => $"{nickname}#{ShortId}";

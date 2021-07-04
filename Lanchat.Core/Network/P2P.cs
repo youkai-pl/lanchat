@@ -29,8 +29,8 @@ namespace Lanchat.Core.Network
         /// <param name="nodeCreated">Method called after creation of new node</param>
         /// <param name="apiHandlers">Optional custom api handlers</param>
         public P2P(
-            IConfig config, 
-            IRsaDatabase rsaDatabase, 
+            IConfig config,
+            IRsaDatabase rsaDatabase,
             Action<IActivatedEventArgs<INode>> nodeCreated,
             IEnumerable<Type> apiHandlers = null)
         {

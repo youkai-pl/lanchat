@@ -23,8 +23,6 @@ namespace Lanchat.Tests.Mock.Network
         public NodesDetector NodesDetection { get; }
         public List<INode> Nodes { get; } = new();
 
-        public event EventHandler<INode> NodeCreated;
-
         public void Start()
         {
             throw new NotImplementedException();
@@ -40,5 +38,7 @@ namespace Lanchat.Tests.Mock.Network
             Connected.Add(ipAddress);
             return new Task<bool>(() => true);
         }
+
+        public event EventHandler<INode> NodeCreated;
     }
 }

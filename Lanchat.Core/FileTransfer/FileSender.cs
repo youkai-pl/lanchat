@@ -73,7 +73,7 @@ namespace Lanchat.Core.FileTransfer
                         {
                             Data = Convert.ToBase64String(chunk)
                         };
-                        
+
                         fileTransferOutput.SendPart(part);
                         CurrentFileTransfer.PartsTransferred++;
                     }

@@ -41,9 +41,9 @@ namespace Lanchat.Core.Network
 
         /// <see cref="Lanchat.Core.Api.IOutput" />
         IOutput Output { get; }
-        
-        /// <see cref="Lanchat.Core.Encryption.IEncryptionAlerts"/>
-        IEncryptionAlerts EncryptionAlerts { get; }
+
+        /// <see cref="INodeRsa" />
+        INodeRsa NodeRsa { get; }
 
         /// <summary>
         ///     Node successful connected and ready to data exchange.

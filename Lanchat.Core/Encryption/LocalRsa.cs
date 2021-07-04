@@ -6,7 +6,6 @@ namespace Lanchat.Core.Encryption
 {
     internal class LocalPublicKey : ILocalPublicKey
     {
-        public RSA LocalRsa { get; }
         public LocalPublicKey(IRsaDatabase rsaDatabase)
         {
             try
@@ -21,7 +20,9 @@ namespace Lanchat.Core.Encryption
                 rsaDatabase.SaveLocalPem(new string(pemFile));
             }
         }
-        
+
+        public RSA LocalRsa { get; }
+
         public string GetPublicPem()
         {
             return new(PemEncoding.Write("RSA PUBLIC KEY", LocalRsa.ExportRSAPublicKey()));

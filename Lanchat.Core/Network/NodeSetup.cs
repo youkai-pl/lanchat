@@ -43,17 +43,13 @@ namespace Lanchat.Core.Network
                 .As<IInternalUser>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<NodePublicKey>()
-                .As<INodePublicKey>()
+            builder.RegisterType<InternalNodeRsa>()
+                .As<INodeRsa>()
+                .As<IInternalNodeRsa>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<EncryptionAlerts>()
-                .As<IEncryptionAlerts>()
-                .As<IInternalEncryptionAlerts>()
-                .InstancePerLifetimeScope();
-
-            builder.RegisterType<SymmetricEncryption>()
-                .As<ISymmetricEncryption>()
+            builder.RegisterType<NodeAes>()
+                .As<INodeAes>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<ModelEncryption>()

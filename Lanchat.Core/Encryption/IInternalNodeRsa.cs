@@ -4,7 +4,7 @@ using Lanchat.Core.Encryption.Models;
 
 namespace Lanchat.Core.Encryption
 {
-    internal interface INodePublicKey : IDisposable
+    internal interface IInternalNodeRsa : IDisposable
     {
         PublicKey ExportKey();
         void ImportKey(PublicKey publicKey, IPAddress remoteIp);

@@ -8,11 +8,11 @@ namespace Lanchat.Core.Encryption
 {
     internal class ModelEncryption : IModelEncryption
     {
-        private readonly ISymmetricEncryption symmetricEncryption;
+        private readonly INodeAes nodeAes;
 
-        public ModelEncryption(ISymmetricEncryption symmetricEncryption)
+        public ModelEncryption(INodeAes nodeAes)
         {
-            this.symmetricEncryption = symmetricEncryption;
+            this.nodeAes = nodeAes;
         }
 
         public void EncryptObject(object data)
@@ -21,7 +21,7 @@ namespace Lanchat.Core.Encryption
             props.ForEach(x =>
             {
                 var value = x.GetValue(data)?.ToString();
-                x.SetValue(data, symmetricEncryption.EncryptString(value), null);
+                x.SetValue(data, nodeAes.EncryptString(value), null);
             });
         }
 
@@ -31,7 +31,7 @@ namespace Lanchat.Core.Encryption
             props.ForEach(x =>
             {
                 var value = x.GetValue(data)?.ToString();
-                x.SetValue(data, symmetricEncryption.DecryptString(value), null);
+                x.SetValue(data, nodeAes.DecryptString(value), null);
             });
         }
 
