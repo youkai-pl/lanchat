@@ -290,5 +290,23 @@ namespace Lanchat.Terminal.Properties {
                 return ResourceManager.GetString("_InvalidCommand", resourceCulture);
             }
         }
+        
+        internal static string _RsaChanged {
+            get {
+                return ResourceManager.GetString("_RsaChanged", resourceCulture);
+            }
+        }
+        
+        internal static string _FreshRsa {
+            get {
+                return ResourceManager.GetString("_FreshRsa", resourceCulture);
+            }
+        }
+        
+        internal static string _YourRsa {
+            get {
+                return ResourceManager.GetString("_YourRsa", resourceCulture);
+            }
+        }
     }
 }

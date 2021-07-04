@@ -148,4 +148,13 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="_InvalidCommand" xml:space="preserve">
         <value>Nieprawidłowa komenda</value>
     </data>
+    <data name="_RsaChanged" xml:space="preserve">
+        <value>Klucz publiczny został zmieniony. Połączenie może być niezabezpieczone.</value>
+    </data>
+    <data name="_FreshRsa" xml:space="preserve">
+        <value>Aby upewnić się, że połączenie jest bezpieczne sprawdź klucz publiczny drugiego użytkownika.</value>
+    </data>
+    <data name="_YourRsa" xml:space="preserve">
+        <value>Twój klucz publiczny:</value>
+    </data>
 </root>

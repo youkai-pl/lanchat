@@ -69,12 +69,12 @@ namespace Lanchat.Terminal
             switch (node.NodeRsa.KeyStatus)
             {
                 case KeyStatus.ChangedKey:
-                    Ui.Log.AddError("Public key has changed. Connection may be not secure.");
+                    Ui.Log.AddError(Resources._RsaChanged);
                     Ui.Log.AddError(node.NodeRsa.PublicPem);
                     break;
 
                 case KeyStatus.FreshKey:
-                    Ui.Log.AddWarning("To make sure the connection is secure check the public key:");
+                    Ui.Log.AddWarning(Resources._FreshRsa);
                     Ui.Log.AddWarning(node.NodeRsa.PublicPem);
                     break;
             }

@@ -273,4 +273,13 @@ Try /help &lt;command&gt; for detailed help.
     <data name="_InvalidCommand" xml:space="preserve">
         <value>Invalid command</value>
     </data>
+    <data name="_RsaChanged" xml:space="preserve">
+        <value>Public key has changed. Connection may be not secure.</value>
+    </data>
+    <data name="_FreshRsa" xml:space="preserve">
+        <value>To make sure the connection is secure check public key of second user.</value>
+    </data>
+    <data name="_YourRsa" xml:space="preserve">
+        <value>Your public key:</value>
+    </data>
 </root>
