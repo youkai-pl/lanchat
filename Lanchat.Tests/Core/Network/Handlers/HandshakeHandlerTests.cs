@@ -16,7 +16,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
     public class HandshakeHandlerTests
     {
         private HandshakeHandler handshakeHandler;
-        private InternalNodeRsa internalNodeRsa;
+        private NodeRsa nodeRsa;
         private NodeAesMock nodeAesMock;
         private NodeMock nodeMock;
         private OutputMock outputMock;
@@ -24,19 +24,19 @@ namespace Lanchat.Tests.Core.Network.Handlers
         [SetUp]
         public void Setup()
         {
-            internalNodeRsa = new InternalNodeRsa(new RsaDatabaseMock(), new LocalPublicKey(new RsaDatabaseMock()));
+            nodeRsa = new NodeRsa(new RsaDatabaseMock(), new LocalRsa(new RsaDatabaseMock()));
             nodeAesMock = new NodeAesMock();
             outputMock = new OutputMock();
             nodeMock = new NodeMock(outputMock);
 
             handshakeHandler = new HandshakeHandler(
-                internalNodeRsa,
+                nodeRsa,
                 nodeAesMock,
                 outputMock,
                 nodeMock,
                 new HostMock(),
                 new User(nodeMock),
-                new Connection(nodeMock, new HostMock(), outputMock, new ConfigMock(), internalNodeRsa));
+                new Connection(nodeMock, new HostMock(), outputMock, new ConfigMock(), nodeRsa));
         }
 
         [Test]
@@ -46,11 +46,11 @@ namespace Lanchat.Tests.Core.Network.Handlers
             {
                 Nickname = "test",
                 UserStatus = UserStatus.Online,
-                PublicKey = internalNodeRsa.ExportKey()
+                PublicKey = nodeRsa.ExportKey()
             };
             handshakeHandler.Handle(handshake);
 
-            internalNodeRsa.Encrypt(new byte[] {0x10});
+            nodeRsa.Encrypt(new byte[] {0x10});
             Assert.IsTrue(handshakeHandler.Disabled);
             Assert.AreEqual(handshake.UserStatus, nodeMock.User.UserStatus);
             Assert.NotNull(outputMock.LastOutput);

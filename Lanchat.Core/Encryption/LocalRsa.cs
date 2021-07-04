@@ -4,28 +4,23 @@ using Lanchat.Core.Config;
 
 namespace Lanchat.Core.Encryption
 {
-    internal class LocalPublicKey : ILocalPublicKey
+    internal class LocalRsa : ILocalRsa
     {
-        public LocalPublicKey(IRsaDatabase rsaDatabase)
+        public LocalRsa(IRsaDatabase rsaDatabase)
         {
             try
             {
-                LocalRsa = RSA.Create();
-                LocalRsa.ImportFromPem(rsaDatabase.GetLocalPem());
+                Rsa = RSA.Create();
+                Rsa.ImportFromPem(rsaDatabase.GetLocalPem());
             }
             catch (ArgumentException)
             {
-                LocalRsa = RSA.Create(2048);
-                var pemFile = PemEncoding.Write("RSA PRIVATE KEY", LocalRsa.ExportRSAPrivateKey());
+                Rsa = RSA.Create(2048);
+                var pemFile = PemEncoding.Write("RSA PRIVATE KEY", Rsa.ExportRSAPrivateKey());
                 rsaDatabase.SaveLocalPem(new string(pemFile));
             }
         }
 
-        public RSA LocalRsa { get; }
-
-        public string GetPublicPem()
-        {
-            return new(PemEncoding.Write("RSA PUBLIC KEY", LocalRsa.ExportRSAPublicKey()));
-        }
+        public RSA Rsa { get; }
     }
 }

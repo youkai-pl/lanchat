@@ -35,8 +35,8 @@ namespace Lanchat.Core.Network
             IEnumerable<Type> apiHandlers = null)
         {
             Config = config;
-            LocalPublicKey = new LocalPublicKey(rsaDatabase);
-            var container = NodeSetup.Setup(config, rsaDatabase, LocalPublicKey, this, nodeCreated, apiHandlers);
+            LocalRsa = new LocalRsa(rsaDatabase);
+            var container = NodeSetup.Setup(config, rsaDatabase, LocalRsa, this, nodeCreated, apiHandlers);
             nodesControl = new NodesControl(config, container);
             server = Config.UseIPv6
                 ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config, nodesControl)
@@ -57,7 +57,7 @@ namespace Lanchat.Core.Network
         public IBroadcast Broadcast { get; }
 
         /// <inheritdoc />
-        public ILocalPublicKey LocalPublicKey { get; }
+        public ILocalRsa LocalRsa { get; }
 
         /// <inheritdoc />
         public void Start()

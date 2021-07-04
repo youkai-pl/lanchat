@@ -23,8 +23,8 @@ namespace Lanchat.Core.Network
         /// <see cref="Lanchat.Core.Api.IBroadcast" />
         IBroadcast Broadcast { get; }
 
-        /// <see cref="Lanchat.Core.Encryption.ILocalPublicKey" />
-        ILocalPublicKey LocalPublicKey { get; }
+        /// <see cref="ILocalRsa" />
+        ILocalRsa LocalRsa { get; }
 
         /// <summary>
         ///     Start server.

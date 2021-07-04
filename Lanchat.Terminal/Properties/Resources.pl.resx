@@ -155,6 +155,6 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
         <value>Aby upewnić się, że połączenie jest bezpieczne sprawdź klucz publiczny drugiego użytkownika.</value>
     </data>
     <data name="_YourRsa" xml:space="preserve">
-        <value>Twój klucz publiczny:</value>
+        <value>Twój skrót klucza publicznego:</value>
     </data>
 </root>

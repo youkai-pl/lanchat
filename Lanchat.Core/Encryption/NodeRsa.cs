@@ -7,28 +7,28 @@ using Lanchat.Core.Encryption.Models;
 
 namespace Lanchat.Core.Encryption
 {
-    internal class InternalNodeRsa : INodeRsa, IInternalNodeRsa
+    internal class NodeRsa : INodeRsa, IInternalNodeRsa
     {
-        private readonly ILocalPublicKey localPublicKey;
-        private readonly RSA remoteRsa;
+        private readonly ILocalRsa localRsa;
+        public RSA Rsa { get; }
         private readonly IRsaDatabase rsaDatabase;
 
-        public InternalNodeRsa(IRsaDatabase rsaDatabase, ILocalPublicKey localPublicKey)
+        public NodeRsa(IRsaDatabase rsaDatabase, ILocalRsa localRsa)
         {
             this.rsaDatabase = rsaDatabase;
-            this.localPublicKey = localPublicKey;
-            remoteRsa = RSA.Create();
+            this.localRsa = localRsa;
+            Rsa = RSA.Create();
         }
 
         public void Dispose()
         {
-            remoteRsa?.Dispose();
+            Rsa?.Dispose();
             GC.SuppressFinalize(this);
         }
 
         public PublicKey ExportKey()
         {
-            var parameters = localPublicKey.LocalRsa.ExportParameters(false);
+            var parameters = localRsa.Rsa.ExportParameters(false);
             return new PublicKey
             {
                 RsaModulus = parameters.Modulus,
@@ -45,33 +45,32 @@ namespace Lanchat.Core.Encryption
             };
 
 
-            remoteRsa.ImportParameters(parameters);
+            Rsa.ImportParameters(parameters);
             TestKeys();
             CompareWithSaved(remoteIp);
         }
 
         public byte[] Encrypt(byte[] bytes)
         {
-            return remoteRsa.Encrypt(bytes, RSAEncryptionPadding.Pkcs1);
+            return Rsa.Encrypt(bytes, RSAEncryptionPadding.Pkcs1);
         }
 
         public byte[] Decrypt(byte[] encryptedBytes)
         {
-            return localPublicKey.LocalRsa.Decrypt(encryptedBytes, RSAEncryptionPadding.Pkcs1);
+            return localRsa.Rsa.Decrypt(encryptedBytes, RSAEncryptionPadding.Pkcs1);
         }
 
-        public string PublicPem { get; private set; }
         public KeyStatus KeyStatus { get; private set; }
 
         private void TestKeys()
         {
-            remoteRsa.Encrypt(new byte[] {0x10}, RSAEncryptionPadding.Pkcs1);
+            Rsa.Encrypt(new byte[] {0x10}, RSAEncryptionPadding.Pkcs1);
         }
 
         private void CompareWithSaved(IPAddress ipAddress)
         {
             var savedPem = rsaDatabase.GetNodePem(ipAddress);
-            var currentPem = new string(PemEncoding.Write("RSA PUBLIC KEY", remoteRsa.ExportRSAPublicKey()));
+            var currentPem = new string(PemEncoding.Write("RSA PUBLIC KEY", Rsa.ExportRSAPublicKey()));
             if (savedPem == null)
             {
                 Trace.WriteLine("New RSA key");
@@ -88,8 +87,6 @@ namespace Lanchat.Core.Encryption
             {
                 KeyStatus = KeyStatus.ValidKey;
             }
-
-            PublicPem = currentPem;
         }
     }
 }

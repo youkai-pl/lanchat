@@ -15,14 +15,14 @@ namespace Lanchat.Tests.Mock.Network
     {
         public P2PMock()
         {
-            LocalPublicKey = new LocalPublicKey(new RsaDatabaseMock());
+            LocalRsa = new LocalRsa(new RsaDatabaseMock());
             NodesDetection = new NodesDetector(new ConfigMock());
             Broadcast = new Broadcast(Nodes.Cast<INodeInternal>().ToList());
         }
 
         public List<IPAddress> Connected { get; } = new();
         public IBroadcast Broadcast { get; }
-        public ILocalPublicKey LocalPublicKey { get; }
+        public ILocalRsa LocalRsa { get; }
         public NodesDetector NodesDetection { get; }
         public List<INode> Nodes { get; } = new();
 

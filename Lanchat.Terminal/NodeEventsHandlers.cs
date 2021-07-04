@@ -70,12 +70,12 @@ namespace Lanchat.Terminal
             {
                 case KeyStatus.ChangedKey:
                     Ui.Log.AddError(Resources._RsaChanged);
-                    Ui.Log.AddError(node.NodeRsa.PublicPem);
+                    Ui.Log.AddError(RsaFingerprint.GetMd5(node.NodeRsa.Rsa.ExportRSAPublicKey()));
                     break;
 
                 case KeyStatus.FreshKey:
                     Ui.Log.AddWarning(Resources._FreshRsa);
-                    Ui.Log.AddWarning(node.NodeRsa.PublicPem);
+                    Ui.Log.AddWarning(RsaFingerprint.GetMd5(node.NodeRsa.Rsa.ExportRSAPublicKey()));
                     break;
             }
         }

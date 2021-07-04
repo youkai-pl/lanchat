@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+
 namespace Lanchat.Core.Encryption
 {
     /// <summary>
@@ -6,9 +8,9 @@ namespace Lanchat.Core.Encryption
     public interface INodeRsa
     {
         /// <summary>
-        ///     Node public key in PEM format.
+        ///     Node RSA object.
         /// </summary>
-        string PublicPem { get; }
+        RSA Rsa { get; }
 
         /// <summary>
         ///     Result of key validation.

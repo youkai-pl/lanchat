@@ -10,15 +10,15 @@ namespace Lanchat.Tests.Core.Encryption
 {
     public class SymmetricEncryptionTests
     {
-        private InternalNodeRsa internalNodeRsa;
+        private NodeRsa nodeRsa;
         private NodeAes nodeAes;
 
         [SetUp]
         public void Setup()
         {
-            internalNodeRsa = new InternalNodeRsa(new RsaDatabaseMock(), new LocalPublicKey(new RsaDatabaseMock()));
-            nodeAes = new NodeAes(internalNodeRsa);
-            internalNodeRsa.ImportKey(internalNodeRsa.ExportKey(), IPAddress.Loopback);
+            nodeRsa = new NodeRsa(new RsaDatabaseMock(), new LocalRsa(new RsaDatabaseMock()));
+            nodeAes = new NodeAes(nodeRsa);
+            nodeRsa.ImportKey(nodeRsa.ExportKey(), IPAddress.Loopback);
             nodeAes.ImportKey(nodeAes.ExportKey());
         }
 

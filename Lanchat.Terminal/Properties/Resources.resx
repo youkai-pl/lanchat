@@ -277,9 +277,9 @@ Try /help &lt;command&gt; for detailed help.
         <value>Public key has changed. Connection may be not secure.</value>
     </data>
     <data name="_FreshRsa" xml:space="preserve">
-        <value>To make sure the connection is secure check public key of second user.</value>
+        <value>To make sure the connection is secure check public key fingerpint of second user.</value>
     </data>
     <data name="_YourRsa" xml:space="preserve">
-        <value>Your public key:</value>
+        <value>Your public key fingerprint:</value>
     </data>
 </root>

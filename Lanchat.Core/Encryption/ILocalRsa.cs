@@ -5,17 +5,11 @@ namespace Lanchat.Core.Encryption
     /// <summary>
     ///     Local RSA algorithm.
     /// </summary>
-    public interface ILocalPublicKey
+    public interface ILocalRsa
     {
         /// <summary>
         ///     RSA class.
         /// </summary>
-        RSA LocalRsa { get; }
-
-        /// <summary>
-        ///     Get public key in PEM format.
-        /// </summary>
-        /// <returns>PEM string</returns>
-        string GetPublicPem();
+        RSA Rsa { get; }
     }
 }

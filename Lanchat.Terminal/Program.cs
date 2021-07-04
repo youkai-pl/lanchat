@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using Lanchat.ClientCore;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
@@ -82,7 +83,7 @@ namespace Lanchat.Terminal
             }
 
             Ui.Log.Add(Resources._YourRsa);
-            Ui.Log.Add(Network.LocalPublicKey.GetPublicPem());
+            Ui.Log.Add(RsaFingerprint.GetMd5(Network.LocalRsa.Rsa.ExportRSAPublicKey()));
 
             if (args.Contains("--localhost") || args.Contains("-l"))
             {
