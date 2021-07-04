@@ -42,7 +42,7 @@ namespace Lanchat.Tests.Mock.Network
         public IEncryptionAlerts EncryptionAlerts { get; set; }
 
         public IInput Input { get; set; }
-        public IPublicKeyEncryption PublicKeyEncryption { get; set; }
+        public INodePublicKey NodePublicKey { get; set; }
         public Guid Id { get; }
         public bool Ready { get; set; }
         

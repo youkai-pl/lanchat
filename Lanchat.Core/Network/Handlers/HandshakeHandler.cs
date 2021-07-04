@@ -13,12 +13,12 @@ namespace Lanchat.Core.Network.Handlers
         private readonly IHost host;
         private readonly INodeInternal node;
         private readonly IOutput output;
-        private readonly IPublicKeyEncryption publicKeyEncryption;
+        private readonly INodePublicKey nodePublicKey;
         private readonly IInternalUser user;
         private readonly Connection connection;
 
         public HandshakeHandler(
-            IPublicKeyEncryption publicKeyEncryption,
+            INodePublicKey nodePublicKey,
             ISymmetricEncryption encryption,
             IOutput output,
             INodeInternal node,
@@ -26,7 +26,7 @@ namespace Lanchat.Core.Network.Handlers
             IInternalUser user,
             Connection connection)
         {
-            this.publicKeyEncryption = publicKeyEncryption;
+            this.nodePublicKey = nodePublicKey;
             this.encryption = encryption;
             this.output = output;
             this.node = node;
@@ -45,7 +45,7 @@ namespace Lanchat.Core.Network.Handlers
 
             try
             {
-                publicKeyEncryption.ImportKey(handshake.PublicKey, host.Endpoint.Address);
+                nodePublicKey.ImportKey(handshake.PublicKey, host.Endpoint.Address);
                 user.Nickname = handshake.Nickname;
                 user.UserStatus = handshake.UserStatus;
                 output.SendPrivilegedData(encryption.ExportKey());

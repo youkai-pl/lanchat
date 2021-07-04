@@ -7,42 +7,31 @@ using Lanchat.Core.Encryption.Models;
 
 namespace Lanchat.Core.Encryption
 {
-    internal class PublicKeyEncryption : IPublicKeyEncryption
+    internal class NodePublicKey : INodePublicKey
     {
-        private readonly RSA localRsa;
         private readonly RSA remoteRsa;
         private readonly IRsaDatabase rsaDatabase;
         private readonly IInternalEncryptionAlerts encryptionAlerts;
+        private readonly ILocalPublicKey localPublicKey;
 
-        public PublicKeyEncryption(IRsaDatabase rsaDatabase, IInternalEncryptionAlerts encryptionAlerts)
+        public NodePublicKey(IRsaDatabase rsaDatabase, IInternalEncryptionAlerts encryptionAlerts,
+            ILocalPublicKey localPublicKey)
         {
             this.rsaDatabase = rsaDatabase;
             this.encryptionAlerts = encryptionAlerts;
-            try
-            {
-                localRsa = RSA.Create();
-                localRsa.ImportFromPem(rsaDatabase.GetLocalPem());
-            }
-            catch (ArgumentException)
-            {
-                localRsa = RSA.Create(2048);
-                var pemFile = PemEncoding.Write("RSA PRIVATE KEY", localRsa.ExportRSAPrivateKey());
-                rsaDatabase.SaveLocalPem(new string(pemFile));
-            }
-
+            this.localPublicKey = localPublicKey;
             remoteRsa = RSA.Create();
         }
 
         public void Dispose()
         {
-            localRsa?.Dispose();
             remoteRsa?.Dispose();
             GC.SuppressFinalize(this);
         }
 
         public PublicKey ExportKey()
         {
-            var parameters = localRsa.ExportParameters(false);
+            var parameters = localPublicKey.LocalRsa.ExportParameters(false);
             return new PublicKey
             {
                 RsaModulus = parameters.Modulus,
@@ -71,7 +60,7 @@ namespace Lanchat.Core.Encryption
 
         public byte[] Decrypt(byte[] encryptedBytes)
         {
-            return localRsa.Decrypt(encryptedBytes, RSAEncryptionPadding.Pkcs1);
+            return localPublicKey.LocalRsa.Decrypt(encryptedBytes, RSAEncryptionPadding.Pkcs1);
         }
 
         private void TestKeys()

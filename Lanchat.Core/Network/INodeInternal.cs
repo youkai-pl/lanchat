@@ -20,7 +20,7 @@ namespace Lanchat.Core.Network
         public IMessaging Messaging { get; set; }
         public IOutput Output { get; set; }
         public IInput Input { get; set; }
-        public IPublicKeyEncryption PublicKeyEncryption { get; set; }
+        public INodePublicKey NodePublicKey { get; set; }
         
         Guid Id { get; }
         bool Ready { get; set; }

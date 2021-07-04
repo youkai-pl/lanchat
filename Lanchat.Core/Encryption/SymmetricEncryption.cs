@@ -9,13 +9,13 @@ namespace Lanchat.Core.Encryption
     internal class SymmetricEncryption : ISymmetricEncryption
     {
         private readonly Aes localAes;
-        private readonly IPublicKeyEncryption publicKeyEncryption;
+        private readonly INodePublicKey nodePublicKey;
         private readonly Aes remoteAes;
         private bool disposed;
 
-        public SymmetricEncryption(IPublicKeyEncryption publicKeyEncryption)
+        public SymmetricEncryption(INodePublicKey nodePublicKey)
         {
-            this.publicKeyEncryption = publicKeyEncryption;
+            this.nodePublicKey = nodePublicKey;
             localAes = Aes.Create();
             remoteAes = Aes.Create();
         }
@@ -24,7 +24,7 @@ namespace Lanchat.Core.Encryption
         {
             localAes?.Dispose();
             remoteAes?.Dispose();
-            publicKeyEncryption?.Dispose();
+            nodePublicKey?.Dispose();
             disposed = true;
             GC.SuppressFinalize(this);
         }
@@ -45,15 +45,15 @@ namespace Lanchat.Core.Encryption
         {
             return new()
             {
-                AesKey = publicKeyEncryption.Encrypt(localAes.Key),
-                AesIv = publicKeyEncryption.Encrypt(localAes.IV)
+                AesKey = nodePublicKey.Encrypt(localAes.Key),
+                AesIv = nodePublicKey.Encrypt(localAes.IV)
             };
         }
 
         public void ImportKey(KeyInfo keyInfo)
         {
-            remoteAes.Key = publicKeyEncryption.Decrypt(keyInfo.AesKey);
-            remoteAes.IV = publicKeyEncryption.Decrypt(keyInfo.AesIv);
+            remoteAes.Key = nodePublicKey.Decrypt(keyInfo.AesKey);
+            remoteAes.IV = nodePublicKey.Decrypt(keyInfo.AesIv);
         }
 
         internal byte[] EncryptBytes(byte[] data)

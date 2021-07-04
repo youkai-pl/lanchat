@@ -12,7 +12,7 @@ namespace Lanchat.Core.Network
     {
         private readonly IOutput output;
         private readonly IConfig config;
-        private readonly IPublicKeyEncryption publicKeyEncryption;
+        private readonly INodePublicKey nodePublicKey;
         private readonly IHost host;
         private readonly INodeInternal nodeInternal;
 
@@ -21,13 +21,13 @@ namespace Lanchat.Core.Network
             IHost host,
             IOutput output, 
             IConfig config, 
-            IPublicKeyEncryption publicKeyEncryption)
+            INodePublicKey nodePublicKey)
         {
             this.nodeInternal = nodeInternal;
             this.host = host;
             this.output = output;
             this.config = config;
-            this.publicKeyEncryption = publicKeyEncryption;
+            this.nodePublicKey = nodePublicKey;
             host.Disconnected += OnDisconnected;
         }
 
@@ -53,7 +53,7 @@ namespace Lanchat.Core.Network
             {
                 Nickname = config.Nickname,
                 UserStatus = config.UserStatus,
-                PublicKey = publicKeyEncryption.ExportKey()
+                PublicKey = nodePublicKey.ExportKey()
             };
 
             output.SendPrivilegedData(handshake);

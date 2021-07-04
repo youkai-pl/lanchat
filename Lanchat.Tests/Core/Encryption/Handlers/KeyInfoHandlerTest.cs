@@ -17,7 +17,7 @@ namespace Lanchat.Tests.Core.Encryption.Handlers
         [SetUp]
         public void Setup()
         {
-            var publicKeyEncryption = new PublicKeyEncryption(new RsaDatabaseMock(), new EncryptionAlerts());
+            var publicKeyEncryption = new NodePublicKey(new RsaDatabaseMock(), new EncryptionAlerts());
             publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey(), IPAddress.Loopback);
             symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
             nodeMock = new NodeMock();

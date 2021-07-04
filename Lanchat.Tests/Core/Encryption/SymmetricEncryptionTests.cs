@@ -10,15 +10,15 @@ namespace Lanchat.Tests.Core.Encryption
 {
     public class SymmetricEncryptionTests
     {
-        private PublicKeyEncryption publicKeyEncryption;
+        private NodePublicKey nodePublicKey;
         private SymmetricEncryption symmetricEncryption;
 
         [SetUp]
         public void Setup()
         {
-            publicKeyEncryption = new PublicKeyEncryption(new RsaDatabaseMock(), new EncryptionAlerts());
-            symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
-            publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey(), IPAddress.Loopback);
+            nodePublicKey = new NodePublicKey(new RsaDatabaseMock(), new EncryptionAlerts());
+            symmetricEncryption = new SymmetricEncryption(nodePublicKey);
+            nodePublicKey.ImportKey(nodePublicKey.ExportKey(), IPAddress.Loopback);
             symmetricEncryption.ImportKey(symmetricEncryption.ExportKey());
         }
 

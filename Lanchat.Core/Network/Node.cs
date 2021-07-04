@@ -33,7 +33,7 @@ namespace Lanchat.Core.Network
         public IOutput Output { get; set; }
         public IEncryptionAlerts EncryptionAlerts { get; set; }
         public IInput Input { get; set; }
-        public IPublicKeyEncryption PublicKeyEncryption { get; set; }
+        public INodePublicKey NodePublicKey { get; set; }
 
         public Guid Id => Host.Id;
         public bool Ready { get; set; }

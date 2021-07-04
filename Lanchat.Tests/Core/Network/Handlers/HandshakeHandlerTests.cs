@@ -18,25 +18,25 @@ namespace Lanchat.Tests.Core.Network.Handlers
         private HandshakeHandler handshakeHandler;
         private NodeMock nodeMock;
         private OutputMock outputMock;
-        private PublicKeyEncryption publicKeyEncryption;
+        private NodePublicKey nodePublicKey;
         private SymmetricEncryptionMock symmetricEncryptionMock;
 
         [SetUp]
         public void Setup()
         {
-            publicKeyEncryption = new PublicKeyEncryption(new RsaDatabaseMock(), new EncryptionAlerts());
+            nodePublicKey = new NodePublicKey(new RsaDatabaseMock(), new EncryptionAlerts());
             symmetricEncryptionMock = new SymmetricEncryptionMock();
             outputMock = new OutputMock();
             nodeMock = new NodeMock(outputMock);
 
             handshakeHandler = new HandshakeHandler(
-                publicKeyEncryption,
+                nodePublicKey,
                 symmetricEncryptionMock,
                 outputMock,
                 nodeMock,
                 new HostMock(),
                 new User(nodeMock),
-                new Connection(nodeMock, new HostMock(), outputMock, new ConfigMock(), publicKeyEncryption));
+                new Connection(nodeMock, new HostMock(), outputMock, new ConfigMock(), nodePublicKey));
         }
 
         [Test]
@@ -46,11 +46,11 @@ namespace Lanchat.Tests.Core.Network.Handlers
             {
                 Nickname = "test",
                 UserStatus = UserStatus.Online,
-                PublicKey = publicKeyEncryption.ExportKey()
+                PublicKey = nodePublicKey.ExportKey()
             };
             handshakeHandler.Handle(handshake);
 
-            publicKeyEncryption.Encrypt(new byte[] {0x10});
+            nodePublicKey.Encrypt(new byte[] {0x10});
             Assert.IsTrue(handshakeHandler.Disabled);
             Assert.AreEqual(handshake.UserStatus, nodeMock.User.UserStatus);
             Assert.NotNull(outputMock.LastOutput);

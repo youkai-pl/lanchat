@@ -10,21 +10,21 @@ namespace Lanchat.Tests.Core.Encryption
 {
     public class PublicKeyEncryptionTests
     {
-        private PublicKeyEncryption publicKeyEncryptionTest;
+        private NodePublicKey nodePublicKeyTest;
 
         [SetUp]
         public void Setup()
         {
-            publicKeyEncryptionTest = new PublicKeyEncryption(new RsaDatabaseMock(), new EncryptionAlerts());
-            publicKeyEncryptionTest.ImportKey(publicKeyEncryptionTest.ExportKey(), IPAddress.Loopback);
+            nodePublicKeyTest = new NodePublicKey(new RsaDatabaseMock(), new EncryptionAlerts());
+            nodePublicKeyTest.ImportKey(nodePublicKeyTest.ExportKey(), IPAddress.Loopback);
         }
 
         [Test]
         public void BytesEncryption()
         {
             var testBytes = new byte[] {0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70};
-            var encryptedBytes = publicKeyEncryptionTest.Encrypt(testBytes);
-            var decryptedBytes = publicKeyEncryptionTest.Decrypt(encryptedBytes);
+            var encryptedBytes = nodePublicKeyTest.Encrypt(testBytes);
+            var decryptedBytes = nodePublicKeyTest.Decrypt(encryptedBytes);
             Assert.AreEqual(testBytes, decryptedBytes);
         }
 
@@ -33,7 +33,7 @@ namespace Lanchat.Tests.Core.Encryption
         {
             Assert.Catch<CryptographicException>(() =>
             {
-                publicKeyEncryptionTest.ImportKey(new PublicKey
+                nodePublicKeyTest.ImportKey(new PublicKey
                 {
                     RsaExponent = new byte[] {0x10},
                     RsaModulus = new byte[] {0x10}
@@ -44,8 +44,8 @@ namespace Lanchat.Tests.Core.Encryption
         [Test]
         public void Dispose()
         {
-            publicKeyEncryptionTest.Dispose();
-            Assert.Catch<ObjectDisposedException>(() => { publicKeyEncryptionTest.Encrypt(new byte[] {0x10}); });
+            nodePublicKeyTest.Dispose();
+            Assert.Catch<ObjectDisposedException>(() => { nodePublicKeyTest.Encrypt(new byte[] {0x10}); });
         }
     }
 }

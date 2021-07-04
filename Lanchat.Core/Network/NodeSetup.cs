@@ -28,6 +28,7 @@ namespace Lanchat.Core.Network
             builder.RegisterInstance(config).As<IConfig>().SingleInstance();
             builder.RegisterInstance(rsaDatabase).As<IRsaDatabase>().SingleInstance();
             builder.RegisterInstance(network).As<IP2P>().SingleInstance();
+            builder.RegisterType<LocalPublicKey>().As<ILocalPublicKey>().SingleInstance();
 
             builder.RegisterType<Node>()
                 .As<INode>()
@@ -41,8 +42,8 @@ namespace Lanchat.Core.Network
                 .As<IInternalUser>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<PublicKeyEncryption>()
-                .As<IPublicKeyEncryption>()
+            builder.RegisterType<NodePublicKey>()
+                .As<INodePublicKey>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<EncryptionAlerts>()
