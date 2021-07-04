@@ -24,7 +24,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
         [SetUp]
         public void Setup()
         {
-            internalNodeRsa = new InternalNodeRsa(new RsaDatabaseMock(), new EncryptionAlerts());
+            internalNodeRsa = new InternalNodeRsa(new RsaDatabaseMock(), new LocalPublicKey(new RsaDatabaseMock()));
             nodeAesMock = new NodeAesMock();
             outputMock = new OutputMock();
             nodeMock = new NodeMock(outputMock);
