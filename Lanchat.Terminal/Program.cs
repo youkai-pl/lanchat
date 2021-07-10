@@ -33,8 +33,8 @@ namespace Lanchat.Terminal
 
             Resources.Culture = CultureInfo.CurrentCulture;
 
-            Window = new Window();
             Network = new P2P(Config, x => { _ = new NodeHandlers(x.Instance, Window.TabsManager); });
+            Window = new Window();
 
             CheckStartArguments(args);
             Window.Start();
