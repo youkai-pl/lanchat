@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Lanchat.Terminal.Commands.General;
-using Lanchat.Terminal.Commands.Status;
+using Lanchat.Core.Extensions;
 using Lanchat.Terminal.Properties;
 
 namespace Lanchat.Terminal.Commands
@@ -13,11 +12,14 @@ namespace Lanchat.Terminal.Commands
 
         public CommandsController()
         {
-            commands.Add(new Nick());
-            commands.Add(new Online());
-            commands.Add(new Dnd());
-            commands.Add(new Afk());
-            commands.Add(new Connect());
+            var ass = System.Reflection.Assembly.GetEntryAssembly();
+            ass?.DefinedTypes.ForEach(x =>
+            {
+                if (x.ImplementedInterfaces.Contains(typeof(ICommand)))
+                {
+                    commands.Add(ass.CreateInstance(x.FullName!) as ICommand);
+                } 
+            });
         }
 
         public void ExecuteCommand(string[] args)
