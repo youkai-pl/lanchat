@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using ConsoleGUI.Data;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.UserInterface.Controls;
 using Lanchat.Terminal.UserInterface.Views;
@@ -61,6 +63,18 @@ namespace Lanchat.Terminal.UserInterface
             var debugTab = new Tab("Debug", debugView);
             tabPanel.AddTab(debugTab);
             return debugView;
+        }
+        
+        public void WriteText(string text)
+        {
+            var writeable = tabPanel.CurrentTab.Content as IWriteable;
+            writeable?.AddText(text, Color.White);
+        }
+        
+        public void WriteError(string text)
+        {
+            var writeable = tabPanel.CurrentTab.Content as IWriteable;
+            writeable?.AddText(text, ConsoleColor.Red);
         }
     }
 }

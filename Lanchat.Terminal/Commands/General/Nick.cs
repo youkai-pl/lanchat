@@ -1,4 +1,4 @@
-namespace Lanchat.Terminal.Commands
+namespace Lanchat.Terminal.Commands.General
 {
     public class Nick : ICommand
     {
