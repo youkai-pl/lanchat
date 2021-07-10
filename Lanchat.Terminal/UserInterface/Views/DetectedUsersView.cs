@@ -1,5 +1,3 @@
-using System.Threading;
-using ConsoleGUI;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
 using ConsoleGUI.UserDefined;

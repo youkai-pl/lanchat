@@ -1,5 +1,6 @@
 using ConsoleGUI.Controls;
 using ConsoleGUI.UserDefined;
+using Lanchat.Core.Identity;
 
 namespace Lanchat.Terminal.UserInterface.Controls
 {
@@ -23,7 +24,14 @@ namespace Lanchat.Terminal.UserInterface.Controls
 
         private void UpdateText()
         {
-            textBlock.Text = $"[{Program.Config.Nickname} ({Program.Config.UserStatus})] ";
+            var status = Program.Config.UserStatus switch
+            {
+                UserStatus.Online => "online",
+                UserStatus.AwayFromKeyboard => "afk",
+                UserStatus.DoNotDisturb => "dnd",
+                _ => ""
+            };
+            textBlock.Text = $"[{Program.Config.Nickname} ({status})] ";
         }
     }
 }

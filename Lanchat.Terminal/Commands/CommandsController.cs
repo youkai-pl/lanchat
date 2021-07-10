@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using ConsoleGUI.Data;
+using Lanchat.Terminal.Commands.Status;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 using Lanchat.Terminal.UserInterface.Controls;
@@ -17,6 +18,9 @@ namespace Lanchat.Terminal.Commands
         {
             this.tabPanel = tabPanel;
             commands.Add(new Nick());
+            commands.Add(new Online());
+            commands.Add(new Dnd());
+            commands.Add(new Afk());
         }
 
         public void ExecuteCommand(string[] args)
