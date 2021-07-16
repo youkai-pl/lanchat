@@ -20,7 +20,7 @@ namespace Lanchat.Terminal.Handlers
 
         private void FileSenderOnFileTransferQueued(object sender, CurrentFileTransfer e)
         {
-            var fileTransferStatus = new FileTransferStatus(node, e);
+            var fileTransferStatus = new FileTransferStatus(node, e, fileTransfersView.Counter);
             fileTransfersView.Add(fileTransferStatus);
             e.PropertyChanged += (_, _) =>
             {

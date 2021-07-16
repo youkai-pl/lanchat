@@ -10,18 +10,20 @@ namespace Lanchat.Terminal.UserInterface.Controls
         private readonly TextBlock textBlock = new();
         private readonly INode node;
         private readonly CurrentFileTransfer currentFileTransfer;
+        private readonly int counter;
 
-        public FileTransferStatus(INode node, CurrentFileTransfer currentFileTransfer)
+        public FileTransferStatus(INode node, CurrentFileTransfer currentFileTransfer, int counter)
         {
             this.node = node;
             this.currentFileTransfer = currentFileTransfer;
+            this.counter = counter;
             Update();
         }
 
         public void Update()
         {
             textBlock.Text =
-                $"{node.User.Nickname} - {currentFileTransfer.FileName} - {currentFileTransfer.PartsTransferred}/{currentFileTransfer.Parts}";
+                $"#{counter} | {node.User.Nickname} - {currentFileTransfer.FileName} - {currentFileTransfer.Progress}%";
             Content = textBlock;
         }
     }
