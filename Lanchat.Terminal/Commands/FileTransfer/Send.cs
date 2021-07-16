@@ -19,7 +19,6 @@ namespace Lanchat.Terminal.Commands.FileTransfer
                 tabsManager.WriteError(Resources._UserNotFound);
                 return;
             }
-
             try
             {
                 node.FileSender.CreateSendRequest(args[1]);

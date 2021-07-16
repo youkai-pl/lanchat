@@ -16,18 +16,20 @@ namespace Lanchat.Terminal.UserInterface
         public TabsManager(TabPanel tabPanel)
         {
             this.tabPanel = tabPanel;
-            MainChatView = new ChatView();
-
             HomeView = new HomeView();
+            MainChatView = new ChatView();
+            FileTransfersView = new FileTransfersView();
+            
             homeViewTab = new Tab("Lanchat", HomeView);
             mainViewTab = new Tab("Lanchat", MainChatView);
             tabPanel.AddTab(homeViewTab);
             tabPanel.AddTab(new Tab("Detected users", new DetectedUsersView()));
-            tabPanel.AddTab(new Tab("File transfer", new FileTransfersView()));
+            tabPanel.AddTab(new Tab("File transfer", FileTransfersView));
         }
 
-        public ChatView MainChatView { get; }
         public HomeView HomeView { get; }
+        public ChatView MainChatView { get; }
+        public FileTransfersView FileTransfersView { get; }
 
         public void ShowMainChatView()
         {

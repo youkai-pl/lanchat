@@ -33,7 +33,11 @@ namespace Lanchat.Terminal
 
             Resources.Culture = CultureInfo.CurrentCulture;
 
-            Network = new P2P(Config, x => { _ = new NodeHandlers(x.Instance, Window.TabsManager); });
+            Network = new P2P(Config, x =>
+            {
+                _ = new NodeHandlers(x.Instance, Window.TabsManager);
+                _ = new FileTransferHandlers(x.Instance, Window.TabsManager.FileTransfersView);
+            });
             Window = new Window();
 
             CheckStartArguments(args);

@@ -23,6 +23,7 @@ namespace Lanchat.Core.FileTransfer
 
         public event EventHandler<FileTransferException> FileTransferError;
 
+        public event EventHandler<CurrentFileTransfer> FileTransferQueued;
         public event EventHandler<CurrentFileTransfer> AcceptedByReceiver;
 
         public event EventHandler<CurrentFileTransfer> FileTransferRequestRejected;
@@ -44,6 +45,7 @@ namespace Lanchat.Core.FileTransfer
             };
 
             fileTransferOutput.SendRequest(CurrentFileTransfer);
+            FileTransferQueued?.Invoke(this, CurrentFileTransfer);
         }
 
         public void SendFile()
