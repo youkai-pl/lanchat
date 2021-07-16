@@ -10,7 +10,7 @@ namespace Lanchat.Terminal.Commands.General
     {
         public string Alias => "connect";
         public int ArgsCount => 1;
-
+        
         public async void Execute(string[] args)
         {
             var tabsManager = Program.Window.TabsManager;
