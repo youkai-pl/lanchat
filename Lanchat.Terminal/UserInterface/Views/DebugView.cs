@@ -27,14 +27,17 @@ namespace Lanchat.Terminal.UserInterface.Views
 
         public void AddToLog(string textBlocks)
         {
-            stackPanel.Add(new WrapPanel
+            Window.UiAction(() =>
             {
-                Content = new TextBlock
+                stackPanel.Add(new WrapPanel
                 {
-                    Text = textBlocks
-                }
+                    Content = new TextBlock
+                    {
+                        Text = textBlocks
+                    }
+                });
+                ScrollPanel.Top = int.MaxValue;
             });
-            ScrollPanel.Top = int.MaxValue;
         }
     }
 }

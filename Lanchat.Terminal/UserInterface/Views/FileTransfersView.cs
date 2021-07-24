@@ -25,7 +25,7 @@ namespace Lanchat.Terminal.UserInterface.Views
 
         public void Add(FileTransferStatus fileTransferStatus)
         {
-            stackPanel.Add(fileTransferStatus);
+            Window.UiAction(() => stackPanel.Add(fileTransferStatus)); 
             Counter++;
         }
 

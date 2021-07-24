@@ -18,17 +18,20 @@ namespace Lanchat.Terminal.UserInterface.Views
                 ScrollBarBackground = new Character(),
                 ScrollBarForeground = new Character(),
             };
-            
+
             Content = ScrollPanel;
 
             detectedNodes.CollectionChanged += (_, _) =>
             {
-                stackPanel.Children.ForEach(x => stackPanel.Remove(x));
-                detectedNodes.ForEach(x =>
+                Window.UiAction(() =>
                 {
-                    stackPanel.Add(new TextBlock
+                    stackPanel.Children.ForEach(x => stackPanel.Remove(x));
+                    detectedNodes.ForEach(x =>
                     {
-                        Text = $"{x.Nickname} - {x.IpAddress}"
+                        stackPanel.Add(new TextBlock
+                        {
+                            Text = $"{x.Nickname} - {x.IpAddress}"
+                        });
                     });
                 });
             };

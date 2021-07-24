@@ -50,51 +50,66 @@ namespace Lanchat.Terminal.UserInterface.Controls
 
         public void AddTab(Tab tab)
         {
-            Tabs.Add(tab);
-            tabsHeaders.Add(tab.Header);
-            if (Tabs.Count == 1)
+            Window.UiAction(() =>
             {
-                SelectTab(Tabs[0]);
-            }
+                Tabs.Add(tab);
+                tabsHeaders.Add(tab.Header);
+                if (Tabs.Count == 1)
+                {
+                    SelectTab(Tabs[0]);
+                }
+            });
         }
 
         public void AddUserTab(Tab tab)
         {
-            Tabs.Add(tab);
-            userTabsHeaders.Add(tab.Header);
-            if (Tabs.Count == 1)
+            Window.UiAction(() =>
             {
-                SelectTab(Tabs[0]);
-            }
+                Tabs.Add(tab);
+                userTabsHeaders.Add(tab.Header);
+                if (Tabs.Count == 1)
+                {
+                    SelectTab(Tabs[0]);
+                }
+            });
         }
 
         public void RemoveUserTab(Tab tab)
         {
-            if (CurrentTab == tab)
+            Window.UiAction(() =>
             {
-                SelectTab(Tabs[0]);
-            }
+                if (CurrentTab == tab)
+                {
+                    SelectTab(Tabs[0]);
+                }
 
-            Tabs.Remove(tab);
-            userTabsHeaders.Children = userTabsHeaders.Children.Where(x => x != tab.Header).ToList();
+                Tabs.Remove(tab);
+                userTabsHeaders.Children = userTabsHeaders.Children.Where(x => x != tab.Header).ToList();
+            });
         }
 
         public void ReplaceTab(Tab previousTab, Tab newTab)
         {
-            Tabs[Tabs.FindIndex(x => x.Equals(previousTab))] = newTab;
-            var newTabsHeaders = tabsHeaders.Children.ToList();
-            newTabsHeaders[newTabsHeaders.IndexOf(previousTab.Header)] = newTab.Header;
-            tabsHeaders.Children = newTabsHeaders.ToList();
-            SelectTab(newTab);
+            Window.UiAction(() =>
+            {
+                Tabs[Tabs.FindIndex(x => x.Equals(previousTab))] = newTab;
+                var newTabsHeaders = tabsHeaders.Children.ToList();
+                newTabsHeaders[newTabsHeaders.IndexOf(previousTab.Header)] = newTab.Header;
+                tabsHeaders.Children = newTabsHeaders.ToList();
+                SelectTab(newTab);
+            });
         }
-        
+
         public void UpdateUserTabHeader(Tab tab, string headerText)
         {
-            var newUserTabsHeaders = userTabsHeaders.Children.ToList();
-            var index = newUserTabsHeaders.IndexOf(tab.Header);
-            tab.UpdateHeader(headerText);
-            newUserTabsHeaders[index] = tab.Header;
-            userTabsHeaders.Children = newUserTabsHeaders.ToList();
+            Window.UiAction(() =>
+            {
+                var newUserTabsHeaders = userTabsHeaders.Children.ToList();
+                var index = newUserTabsHeaders.IndexOf(tab.Header);
+                tab.UpdateHeader(headerText);
+                newUserTabsHeaders[index] = tab.Header;
+                userTabsHeaders.Children = newUserTabsHeaders.ToList();
+            });
         }
 
         public void OnInput(InputEvent inputEvent)
@@ -124,29 +139,32 @@ namespace Lanchat.Terminal.UserInterface.Controls
             SelectTab(Tabs[tabSwitch]);
             inputEvent.Handled = true;
         }
-        
+
         private void SelectTab(Tab tab)
         {
-            if (CurrentTab is {Content: IScrollable previousScrollPanel})
+            Window.UiAction(() =>
             {
-                inputListeners.Remove(previousScrollPanel.ScrollPanel);
-            }
+                if (CurrentTab is {Content: IScrollable previousScrollPanel})
+                {
+                    inputListeners.Remove(previousScrollPanel.ScrollPanel);
+                }
 
-            CurrentTab?.MarkAsInactive();
-            CurrentTab = tab;
+                CurrentTab?.MarkAsInactive();
+                CurrentTab = tab;
 
-            if (CurrentTab.Content is IScrollable newScrollPanel)
-            {
-                inputListeners.Add(newScrollPanel.ScrollPanel);
-                newScrollPanel.ScrollPanel.Top = int.MaxValue;
-            }
+                if (CurrentTab.Content is IScrollable newScrollPanel)
+                {
+                    inputListeners.Add(newScrollPanel.ScrollPanel);
+                    newScrollPanel.ScrollPanel.Top = int.MaxValue;
+                }
 
-            CurrentTab.MarkAsActive();
-            wrapper.FillingControl = new Border
-            {
-                BorderStyle = BorderStyle.Single,
-                Content = CurrentTab.Content
-            };
+                CurrentTab.MarkAsActive();
+                wrapper.FillingControl = new Border
+                {
+                    BorderStyle = BorderStyle.Single,
+                    Content = CurrentTab.Content
+                };
+            });
         }
     }
 }

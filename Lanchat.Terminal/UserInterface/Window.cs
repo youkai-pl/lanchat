@@ -17,7 +17,8 @@ namespace Lanchat.Terminal.UserInterface
     {
         private static readonly DockPanel DockPanel;
         private static readonly List<IInputListener> InputListeners = new();
-        public static TabPanel TabPanel { get; }
+        private static TabPanel TabPanel { get; }
+        private static readonly object Locker = new();
 
         static Window()
         {
@@ -62,7 +63,7 @@ namespace Lanchat.Terminal.UserInterface
 
         public static TabsManager TabsManager { get; }
 
-        public static  void Start()
+        public static void Start()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -79,11 +80,22 @@ namespace Lanchat.Terminal.UserInterface
                 while (true)
                 {
                     Thread.Sleep(10);
-                    ConsoleManager.ReadInput(InputListeners);
-                    ConsoleManager.AdjustBufferSize();
+                    UiAction(() =>
+                    {
+                        ConsoleManager.ReadInput(InputListeners);
+                        ConsoleManager.AdjustBufferSize();
+                    });
                 }
                 // ReSharper disable once FunctionNeverReturns
             }).Start();
+        }
+
+        public static void UiAction(Action action)
+        {
+            lock (Locker)
+            {
+                action();
+            }
         }
     }
 }

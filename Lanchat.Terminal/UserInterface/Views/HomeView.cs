@@ -29,7 +29,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                     }
                 }
             };
-
+            
             Content = new Box
             {
                 HorizontalContentPlacement = Box.HorizontalPlacement.Center,
@@ -44,7 +44,7 @@ namespace Lanchat.Terminal.UserInterface.Views
 
         public void AddText(string text, Color color)
         {
-            stackPanel.Add(new TextBlock {Text = text, Color = color});
+            Window.UiAction(() => stackPanel.Add(new TextBlock {Text = text, Color = color}));
         }
     }
 }

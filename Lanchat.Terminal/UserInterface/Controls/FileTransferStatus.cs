@@ -22,9 +22,12 @@ namespace Lanchat.Terminal.UserInterface.Controls
 
         public void Update()
         {
-            textBlock.Text =
-                $"#{counter} | {node.User.Nickname} - {currentFileTransfer.FileName} - {currentFileTransfer.Progress}%";
-            Content = textBlock;
+            Window.UiAction(() =>
+            {
+                textBlock.Text =
+                    $"#{counter} | {node.User.Nickname} - {currentFileTransfer.FileName} - {currentFileTransfer.Progress}%";
+                Content = textBlock;
+            });
         }
     }
 }

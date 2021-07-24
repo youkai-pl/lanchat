@@ -22,34 +22,38 @@ namespace Lanchat.Terminal.UserInterface
 
         public void OnInput(InputEvent inputEvent)
         {
-            if (inputEvent.Key.Key != ConsoleKey.Enter)
+            Window.UiAction(() =>
             {
-                return;
-            }
+                if (inputEvent.Key.Key != ConsoleKey.Enter)
+                {
+                    return;
+                }
 
-            if (promptInput.Text.StartsWith("/", StringComparison.CurrentCulture))
-            {
-                if (tabPanel.CurrentTab.Content is HomeView)
+                if (promptInput.Text.StartsWith("/", StringComparison.CurrentCulture))
                 {
-                    Window.TabsManager.ShowMainChatView();
-                }
-                commandsController.ExecuteCommand(promptInput.Text.Split(' '));
-            }
-            else if (tabPanel.CurrentTab.Content is ChatView chatView)
-            {
-                chatView.AddMessage(promptInput.Text, Program.Config.Nickname);
-                if (chatView.Node == null)
-                {
-                    Program.Network.Broadcast.SendMessage(promptInput.Text);
-                }
-                else
-                {
-                    chatView.Node.Messaging.SendPrivateMessage(promptInput.Text);
-                }
-            }
+                    if (tabPanel.CurrentTab.Content is HomeView)
+                    {
+                        Window.TabsManager.ShowMainChatView();
+                    }
 
-            promptInput.Text = string.Empty;
-            inputEvent.Handled = true;
+                    commandsController.ExecuteCommand(promptInput.Text.Split(' '));
+                }
+                else if (tabPanel.CurrentTab.Content is ChatView chatView)
+                {
+                    chatView.AddMessage(promptInput.Text, Program.Config.Nickname);
+                    if (chatView.Node == null)
+                    {
+                        Program.Network.Broadcast.SendMessage(promptInput.Text);
+                    }
+                    else
+                    {
+                        chatView.Node.Messaging.SendPrivateMessage(promptInput.Text);
+                    }
+                }
+
+                promptInput.Text = string.Empty;
+                inputEvent.Handled = true;
+            });
         }
     }
 }

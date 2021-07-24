@@ -9,7 +9,6 @@ namespace Lanchat.Terminal.UserInterface.Views
 {
     public class ChatView : SimpleControl, IScrollable, IWriteable
     {
-        private readonly object lockThread = new();
         private readonly VerticalStackPanel stackPanel = new();
 
         public ChatView(INode node = null)
@@ -75,7 +74,7 @@ namespace Lanchat.Terminal.UserInterface.Views
 
         private void AddToLog(IEnumerable<TextBlock> textBlocks)
         {
-            lock (lockThread)
+            Window.UiAction(() =>
             {
                 stackPanel.Add(new WrapPanel
                 {
@@ -85,7 +84,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                     }
                 });
                 ScrollPanel.Top = int.MaxValue;
-            }
+            });
         }
     }
 }

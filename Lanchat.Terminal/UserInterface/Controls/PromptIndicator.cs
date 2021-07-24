@@ -6,7 +6,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
 {
     public class PromptIndicator : SimpleControl
     {
-        private readonly TextBlock textBlock = new ();
+        private readonly TextBlock textBlock = new();
 
         public PromptIndicator()
         {
@@ -17,7 +17,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
                     UpdateText();
                 }
             };
-            
+
             UpdateText();
             Content = textBlock;
         }
@@ -31,7 +31,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
                 UserStatus.DoNotDisturb => "dnd",
                 _ => ""
             };
-            textBlock.Text = $"[{Program.Config.Nickname} ({status})] ";
+            Window.UiAction(() => textBlock.Text = $"[{Program.Config.Nickname} ({status})] ");
         }
     }
 }
