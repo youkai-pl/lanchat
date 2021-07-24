@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Reflection;
+using ConsoleGUI;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
 using ConsoleGUI.UserDefined;
@@ -12,15 +14,17 @@ namespace Lanchat.Terminal.UserInterface.Views
 
         public HomeView()
         {
+            var currentVersion = $"Version: {Assembly.GetEntryAssembly().GetName().Version.ToString(3)}";
+
             stackPanel = new VerticalStackPanel
             {
-                Children = new[]
+                Children = new List<IControl>
                 {
                     new BreakPanel
                     {
                         Content = new TextBlock
                         {
-                            Text = Resources._Logo
+                            Text = string.Format(Resources._Logo, currentVersion)
                         }
                     }
                 }
@@ -32,13 +36,10 @@ namespace Lanchat.Terminal.UserInterface.Views
                 VerticalContentPlacement = Box.VerticalPlacement.Center,
                 Content = new Boundary
                 {
-                    Width = 43,
+                    Width = 65,
                     Content = stackPanel
                 }
             };
-
-            var currentVersion = Assembly.GetEntryAssembly().GetName().Version.ToString(3);
-            AddText($"Version: {currentVersion}", Color.White);
         }
 
         public void AddText(string text, Color color)

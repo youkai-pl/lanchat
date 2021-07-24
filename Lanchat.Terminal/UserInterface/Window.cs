@@ -70,7 +70,7 @@ namespace Lanchat.Terminal.UserInterface
             }
 
             ConsoleManager.Setup();
-            ConsoleManager.Resize(new Size(100, 30));
+            ConsoleManager.Resize(new Size(140, 30));
             ConsoleManager.Content = dockPanel;
             Console.Title = Resources._WindowTitle;
 
