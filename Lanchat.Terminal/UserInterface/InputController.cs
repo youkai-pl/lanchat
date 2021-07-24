@@ -31,7 +31,7 @@ namespace Lanchat.Terminal.UserInterface
             {
                 if (tabPanel.CurrentTab.Content is HomeView)
                 {
-                    Program.Window.TabsManager.ShowMainChatView();
+                    Window.TabsManager.ShowMainChatView();
                 }
                 commandsController.ExecuteCommand(promptInput.Text.Split(' '));
             }

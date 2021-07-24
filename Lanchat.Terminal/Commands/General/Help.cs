@@ -1,5 +1,6 @@
 using System.Globalization;
 using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands.General
 {
@@ -10,16 +11,14 @@ namespace Lanchat.Terminal.Commands.General
 
         public void Execute(string[] args)
         {
-            var tabsManager = Program.Window.TabsManager;
-
             if (args.Length < 1)
             {
-                tabsManager.WriteText(Resources.Help);
+                Window.TabsManager.WriteText(Resources.Help);
             }
             else
             {
                 var commandHelp = Resources.ResourceManager.GetString($"Help_{args[0]}", CultureInfo.CurrentCulture);
-                tabsManager.WriteError(commandHelp ?? Resources._ManualNotFound);
+                Window.TabsManager.WriteError(commandHelp ?? Resources._ManualNotFound);
             }
         }
     }

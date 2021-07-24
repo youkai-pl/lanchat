@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Lanchat.Terminal.UserInterface;
 using Lanchat.Terminal.UserInterface.Views;
 
 namespace Lanchat.Terminal
@@ -9,7 +10,7 @@ namespace Lanchat.Terminal
 
         public TraceListener()
         {
-            debugView = Program.Window.TabsManager.AddDebugView();
+            debugView = Window.TabsManager.AddDebugView();
         }
 
         public override void WriteLine(string message)

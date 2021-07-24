@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands.General
 {
@@ -13,10 +14,9 @@ namespace Lanchat.Terminal.Commands.General
         
         public async void Execute(string[] args)
         {
-            var tabsManager = Program.Window.TabsManager;
             if (args == null || args.Length < 1)
             {
-                tabsManager.WriteText(Resources.Help_connect);
+                Window.TabsManager.WriteText(Resources.Help_connect);
                 return;
             }
 
@@ -41,24 +41,24 @@ namespace Lanchat.Terminal.Commands.General
                     port = Program.Config.ServerPort;
                 }
 
-                tabsManager.WriteText(string.Format(Resources._ConnectionAttempt, addressArgument));
+                Window.TabsManager.WriteText(string.Format(Resources._ConnectionAttempt, addressArgument));
                 var result = await Program.Network.Connect(ipAddress, port);
                 if (!result)
                 {
-                    tabsManager.WriteError(string.Format(Resources._CannotConnect, ipAddress));
+                    Window.TabsManager.WriteError(string.Format(Resources._CannotConnect, ipAddress));
                 }
             }
             catch (FormatException)
             {
-                tabsManager.WriteError(Resources._IncorrectValues);
+                Window.TabsManager.WriteError(Resources._IncorrectValues);
             }
             catch (SocketException)
             {
-                tabsManager.WriteError(Resources._IncorrectValues);
+                Window.TabsManager.WriteError(Resources._IncorrectValues);
             }
             catch (ArgumentException e)
             {
-                tabsManager.WriteError(e.Message);
+                Window.TabsManager.WriteError(e.Message);
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using Lanchat.Core.Extensions;
 using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands
 {
@@ -30,7 +31,7 @@ namespace Lanchat.Terminal.Commands
 
             if (command == null)
             {
-                Program.Window.TabsManager.WriteText(Resources._InvalidCommand);
+                Window.TabsManager.WriteText(Resources._InvalidCommand);
                 return;
             }
 
@@ -39,7 +40,7 @@ namespace Lanchat.Terminal.Commands
                 var help = Resources.ResourceManager.GetString($"Help_{commandAlias}", CultureInfo.CurrentCulture);
                 if (help != null)
                 {
-                    Program.Window.TabsManager.WriteText(help);
+                    Window.TabsManager.WriteText(help);
                 }
 
                 return;

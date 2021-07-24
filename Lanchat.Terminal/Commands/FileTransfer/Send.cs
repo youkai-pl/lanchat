@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Security;
 using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands.FileTransfer
 {
@@ -12,11 +13,10 @@ namespace Lanchat.Terminal.Commands.FileTransfer
         
         public void Execute(string[] args)
         {
-            var tabsManager = Program.Window.TabsManager;
             var node = Program.Network.Nodes.Find(x => x.User.ShortId == args[0]);
             if (node == null)
             {
-                tabsManager.WriteError(Resources._UserNotFound);
+                Window.TabsManager.WriteError(Resources._UserNotFound);
                 return;
             }
             try
@@ -32,11 +32,11 @@ namespace Lanchat.Terminal.Commands.FileTransfer
                     case SecurityException:
                     case PathTooLongException:
                     case ArgumentException:
-                        tabsManager.WriteError(string.Format(Resources._CannotAccessFile, args[1]));
+                        Window.TabsManager.WriteError(string.Format(Resources._CannotAccessFile, args[1]));
                         break;
 
                     case InvalidOperationException:
-                        tabsManager.WriteError(Resources._FileTransferInProgress);
+                        Window.TabsManager.WriteError(Resources._FileTransferInProgress);
                         break;
                 }
             }

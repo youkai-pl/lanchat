@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Net;
 using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands.Blocking
 {
@@ -11,22 +12,21 @@ namespace Lanchat.Terminal.Commands.Blocking
 
         public void Execute(string[] args)
         {
-            var tabsManager = Program.Window.TabsManager;
             var correct = IPAddress.TryParse(args[0], out var parsedIp);
             if (!correct)
             {
-                tabsManager.WriteError(Resources._IncorrectValues);
+                Window.TabsManager.WriteError(Resources._IncorrectValues);
                 return;
             }
 
             if (Program.Config.BlockedAddresses.All(x => !Equals(x, parsedIp)))
             {
-                tabsManager.WriteError(Resources._UserNotFound);
+                Window.TabsManager.WriteError(Resources._UserNotFound);
                 return;
             }
 
             Program.Config.BlockedAddresses.Remove(parsedIp);
-            tabsManager.WriteError(string.Format(Resources._Unblocked, parsedIp));
+            Window.TabsManager.WriteError(string.Format(Resources._Unblocked, parsedIp));
         }
     }
 }

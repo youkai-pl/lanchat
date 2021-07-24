@@ -1,5 +1,6 @@
 using Lanchat.Core.Extensions;
 using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands.Blocking
 {
@@ -10,9 +11,8 @@ namespace Lanchat.Terminal.Commands.Blocking
 
         public void Execute(string[] _)
         {
-            var tabsManager = Program.Window.TabsManager;
-            tabsManager.WriteText($"{Resources._BlockedList} {Program.Config.SavedAddresses.Count}");
-            Program.Config.SavedAddresses.ForEach(x => tabsManager.WriteText($"{x}"));
+            Window.TabsManager.WriteText($"{Resources._BlockedList} {Program.Config.SavedAddresses.Count}");
+            Program.Config.SavedAddresses.ForEach(x => Window.TabsManager.WriteText($"{x}"));
         }
     }
 }

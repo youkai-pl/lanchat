@@ -13,15 +13,15 @@ using Lanchat.Terminal.UserInterface.Controls;
 
 namespace Lanchat.Terminal.UserInterface
 {
-    public class Window
+    public static class Window
     {
-        private readonly DockPanel dockPanel;
-        private readonly List<IInputListener> inputListeners = new();
-        public TabPanel TabPanel { get; }
+        private static readonly DockPanel DockPanel;
+        private static readonly List<IInputListener> InputListeners = new();
+        public static TabPanel TabPanel { get; }
 
-        public Window()
+        static Window()
         {
-            TabPanel = new TabPanel(inputListeners);
+            TabPanel = new TabPanel(InputListeners);
             TabsManager = new TabsManager(TabPanel);
 
             var promptInput = new TextBox();
@@ -48,21 +48,21 @@ namespace Lanchat.Terminal.UserInterface
                 }
             };
 
-            dockPanel = new DockPanel
+            DockPanel = new DockPanel
             {
                 Placement = DockPanel.DockedControlPlacement.Bottom,
                 FillingControl = TabPanel,
                 DockedControl = promptBox
             };
 
-            inputListeners.Add(new InputController(promptInput, TabPanel));
-            inputListeners.Add(promptInput);
-            inputListeners.Add(TabPanel);
+            InputListeners.Add(new InputController(promptInput, TabPanel));
+            InputListeners.Add(promptInput);
+            InputListeners.Add(TabPanel);
         }
 
-        public TabsManager TabsManager { get; }
+        public static TabsManager TabsManager { get; }
 
-        public void Start()
+        public static  void Start()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -71,7 +71,7 @@ namespace Lanchat.Terminal.UserInterface
 
             ConsoleManager.Setup();
             ConsoleManager.Resize(new Size(140, 30));
-            ConsoleManager.Content = dockPanel;
+            ConsoleManager.Content = DockPanel;
             Console.Title = Resources._WindowTitle;
 
             new Thread(() =>
@@ -79,7 +79,7 @@ namespace Lanchat.Terminal.UserInterface
                 while (true)
                 {
                     Thread.Sleep(10);
-                    ConsoleManager.ReadInput(inputListeners);
+                    ConsoleManager.ReadInput(InputListeners);
                     ConsoleManager.AdjustBufferSize();
                 }
                 // ReSharper disable once FunctionNeverReturns

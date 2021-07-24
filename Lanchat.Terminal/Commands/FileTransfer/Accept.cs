@@ -1,5 +1,6 @@
 using System;
 using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands.FileTransfer
 {
@@ -10,11 +11,10 @@ namespace Lanchat.Terminal.Commands.FileTransfer
 
         public void Execute(string[] args)
         {
-            var tabsManager = Program.Window.TabsManager;
             var node = Program.Network.Nodes.Find(x => x.User.ShortId == args[0]);
             if (node == null)
             {
-                tabsManager.WriteError(Resources._UserNotFound);
+                Window.TabsManager.WriteError(Resources._UserNotFound);
                 return;
             }
 
@@ -24,7 +24,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             }
             catch (InvalidOperationException)
             {
-                tabsManager.WriteError(Resources._NoFileReceiveRequest);
+                Window.TabsManager.WriteError(Resources._NoFileReceiveRequest);
             }
         }
     }

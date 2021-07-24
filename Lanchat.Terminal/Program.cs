@@ -14,7 +14,6 @@ namespace Lanchat.Terminal
 {
     public static class Program
     {
-        public static Window Window { get; private set; }
         public static IP2P Network { get; private set; }
         public static Config Config { get; private set; }
 
@@ -38,7 +37,6 @@ namespace Lanchat.Terminal
                 _ = new NodeHandlers(x.Instance, Window.TabsManager);
                 _ = new FileTransferHandlers(x.Instance, Window.TabsManager.FileTransfersView);
             });
-            Window = new Window();
 
             CheckStartArguments(args);
             Window.Start();
