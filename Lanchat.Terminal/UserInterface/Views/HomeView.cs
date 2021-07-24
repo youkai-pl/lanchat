@@ -14,7 +14,7 @@ namespace Lanchat.Terminal.UserInterface.Views
 
         public HomeView()
         {
-            var currentVersion = $"Version: {Assembly.GetEntryAssembly().GetName().Version.ToString(3)}";
+            var currentVersion = $"Version: {Assembly.GetEntryAssembly()!.GetName().Version!.ToString(3)}";
 
             stackPanel = new VerticalStackPanel
             {

@@ -29,6 +29,10 @@ namespace Lanchat.Terminal.UserInterface
 
             if (promptInput.Text.StartsWith("/", StringComparison.CurrentCulture))
             {
+                if (tabPanel.CurrentTab.Content is HomeView)
+                {
+                    Program.Window.TabsManager.ShowMainChatView();
+                }
                 commandsController.ExecuteCommand(promptInput.Text.Split(' '));
             }
             else if (tabPanel.CurrentTab.Content is ChatView chatView)
