@@ -13,12 +13,12 @@ namespace Lanchat.Terminal.Commands.General
         {
             if (args.Length < 1)
             {
-                Window.TabsManager.WriteText(Resources.Help);
+                Window.Writer.WriteText(Resources.Help);
             }
             else
             {
                 var commandHelp = Resources.ResourceManager.GetString($"Help_{args[0]}", CultureInfo.CurrentCulture);
-                Window.TabsManager.WriteError(commandHelp ?? Resources._ManualNotFound);
+                Window.Writer.WriteError(commandHelp ?? Resources._ManualNotFound);
             }
         }
     }

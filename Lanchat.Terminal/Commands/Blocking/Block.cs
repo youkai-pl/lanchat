@@ -16,7 +16,7 @@ namespace Lanchat.Terminal.Commands.Blocking
 
             if (args == null || args.Length < 1)
             {
-                Window.TabsManager.WriteError(Resources.Help_block);
+                Window.Writer.WriteError(Resources.Help_block);
                 return;
             }
 
@@ -33,18 +33,18 @@ namespace Lanchat.Terminal.Commands.Blocking
             }
             else
             {
-                Window.TabsManager.WriteError(Resources._IncorrectValues);
+                Window.Writer.WriteError(Resources._IncorrectValues);
                 return;
             }
 
             if (Program.Config.BlockedAddresses.Any(x => Equals(x, ipAddress)))
             {
-                Window.TabsManager.WriteError(Resources._AlreadyBlocked);
+                Window.Writer.WriteError(Resources._AlreadyBlocked);
                 return;
             }
 
             Program.Config.BlockedAddresses.Add(ipAddress);
-            Window.TabsManager.WriteText(string.Format(Resources._Blocked, ipAddress));
+            Window.Writer.WriteText(string.Format(Resources._Blocked, ipAddress));
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             var node = Program.Network.Nodes.Find(x => x.User.ShortId == args[0]);
             if (node == null)
             {
-                Window.TabsManager.WriteError(Resources._UserNotFound);
+                Window.Writer.WriteError(Resources._UserNotFound);
                 return;
             }
             try
@@ -32,11 +32,11 @@ namespace Lanchat.Terminal.Commands.FileTransfer
                     case SecurityException:
                     case PathTooLongException:
                     case ArgumentException:
-                        Window.TabsManager.WriteError(string.Format(Resources._CannotAccessFile, args[1]));
+                        Window.Writer.WriteError(string.Format(Resources._CannotAccessFile, args[1]));
                         break;
 
                     case InvalidOperationException:
-                        Window.TabsManager.WriteError(Resources._FileTransferInProgress);
+                        Window.Writer.WriteError(Resources._FileTransferInProgress);
                         break;
                 }
             }

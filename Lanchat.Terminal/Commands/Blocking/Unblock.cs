@@ -15,18 +15,18 @@ namespace Lanchat.Terminal.Commands.Blocking
             var correct = IPAddress.TryParse(args[0], out var parsedIp);
             if (!correct)
             {
-                Window.TabsManager.WriteError(Resources._IncorrectValues);
+                Window.Writer.WriteError(Resources._IncorrectValues);
                 return;
             }
 
             if (Program.Config.BlockedAddresses.All(x => !Equals(x, parsedIp)))
             {
-                Window.TabsManager.WriteError(Resources._UserNotFound);
+                Window.Writer.WriteError(Resources._UserNotFound);
                 return;
             }
 
             Program.Config.BlockedAddresses.Remove(parsedIp);
-            Window.TabsManager.WriteError(string.Format(Resources._Unblocked, parsedIp));
+            Window.Writer.WriteError(string.Format(Resources._Unblocked, parsedIp));
         }
     }
 }

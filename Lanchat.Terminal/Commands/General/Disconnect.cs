@@ -17,7 +17,7 @@ namespace Lanchat.Terminal.Commands.General
             }
             else
             {
-                Window.TabsManager.WriteError(Resources._UserNotFound);
+                Window.Writer.WriteError(Resources._UserNotFound);
             }
         }
     }

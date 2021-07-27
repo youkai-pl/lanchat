@@ -31,7 +31,7 @@ namespace Lanchat.Terminal.Commands
 
             if (command == null)
             {
-                Window.TabsManager.WriteText(Resources._InvalidCommand);
+                Window.Writer.WriteText(Resources._InvalidCommand);
                 return;
             }
 
@@ -40,7 +40,7 @@ namespace Lanchat.Terminal.Commands
                 var help = Resources.ResourceManager.GetString($"Help_{commandAlias}", CultureInfo.CurrentCulture);
                 if (help != null)
                 {
-                    Window.TabsManager.WriteText(help);
+                    Window.Writer.WriteText(help);
                 }
 
                 return;

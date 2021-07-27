@@ -24,10 +24,9 @@ namespace Lanchat.Terminal.UserInterface
         {
             TabPanel = new TabPanel(InputListeners);
             TabsManager = new TabsManager(TabPanel);
+            Writer = new Writer(TabPanel);
 
             var promptInput = new TextBox();
-
-
             var promptBox = new Border
             {
                 BorderStyle = BorderStyle.Single,
@@ -62,6 +61,7 @@ namespace Lanchat.Terminal.UserInterface
         }
 
         public static TabsManager TabsManager { get; }
+        public static Writer Writer { get; }
 
         public static void Start()
         {

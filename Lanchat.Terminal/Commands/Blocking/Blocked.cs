@@ -11,8 +11,8 @@ namespace Lanchat.Terminal.Commands.Blocking
 
         public void Execute(string[] _)
         {
-            Window.TabsManager.WriteText($"{Resources._BlockedList} {Program.Config.SavedAddresses.Count}");
-            Program.Config.SavedAddresses.ForEach(x => Window.TabsManager.WriteText($"{x}"));
+            Window.Writer.WriteText($"{Resources._BlockedList} {Program.Config.SavedAddresses.Count}");
+            Program.Config.SavedAddresses.ForEach(x => Window.Writer.WriteText($"{x}"));
         }
     }
 }
