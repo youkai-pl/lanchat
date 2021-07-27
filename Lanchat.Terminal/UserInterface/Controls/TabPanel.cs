@@ -93,18 +93,20 @@ namespace Lanchat.Terminal.UserInterface.Controls
                 CurrentTab?.Header.MarkAsInactive();
                 CurrentTab = tab;
 
-                if (CurrentTab.Content is IScrollable newScrollPanel)
-                {
-                    inputListeners.Add(newScrollPanel.ScrollPanel);
-                    newScrollPanel.ScrollPanel.Top = int.MaxValue;
-                }
-
                 CurrentTab.Header.MarkAsActive();
                 wrapper.FillingControl = new Border
                 {
                     BorderStyle = BorderStyle.Single,
                     Content = CurrentTab.Content
                 };
+
+                if (CurrentTab.Content is not IScrollable newScrollPanel)
+                {
+                    return;
+                }
+
+                inputListeners.Add(newScrollPanel.ScrollPanel);
+                newScrollPanel.ScrollPanel.Top = int.MaxValue;
             });
         }
     }

@@ -48,13 +48,13 @@ namespace Lanchat.Terminal.UserInterface
 
         public void ClosePrivateChatView(INode node)
         {
-            var chatTab = tabPanel.AllTabs.FirstOrDefault(x => x.Id == node.Id);
+            var chatTab = tabPanel.AllTabs.First(x => x.Id == node.Id);
             tabPanel.ChatTabs.RemoveTab(chatTab);
         }
 
         public void UpdateNickname(INode node)
         {
-            var tab = tabPanel.AllTabs.FirstOrDefault(x => x.Content is ChatView chatView && chatView.Node == node);
+            var tab = tabPanel.AllTabs.First(x => x.Content is ChatView chatView && chatView.Node == node);
             tab!.Header.UpdateText(node.User.Nickname);
             tabPanel.ChatTabs.RefreshHeaders();
         }
