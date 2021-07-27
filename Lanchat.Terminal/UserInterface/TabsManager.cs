@@ -38,12 +38,12 @@ namespace Lanchat.Terminal.UserInterface
             }
         }
 
-        public ChatView AddPrivateChatView(INode node)
+        public Tab AddPrivateChatView(INode node)
         {
             var chatView = new ChatView(node);
             var chatTab = new Tab(node.User.Nickname, chatView) {Id = node.Id};
             tabPanel.ChatTabs.AddTab(chatTab);
-            return chatView;
+            return chatTab;
         }
 
         public void ClosePrivateChatView(INode node)
@@ -57,6 +57,23 @@ namespace Lanchat.Terminal.UserInterface
             var tab = tabPanel.AllTabs.First(x => x.Content is ChatView chatView && chatView.Node == node);
             tab!.Header.UpdateText(node.User.Nickname);
             tabPanel.ChatTabs.RefreshHeaders();
+        }
+
+        public void SignalNewMessage()
+        {
+            if (tabPanel.CurrentTab != mainViewTab)
+            {
+                mainViewTab.Header.MarkAsUnread();
+            }
+        }
+        
+        public void SignalPrivateNewMessage(INode node = null)
+        {
+            var tab = tabPanel.AllTabs.First(x => x.Content is ChatView chatView && chatView.Node == node);
+            if (tabPanel.CurrentTab != tab)
+            {
+                tab.Header.MarkAsUnread();
+            }
         }
 
         public DebugView AddDebugView()
