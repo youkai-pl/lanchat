@@ -12,8 +12,8 @@ namespace Lanchat.Terminal.Commands
 {
     public class CommandsController
     {
-        private readonly TabPanel tabPanel;
         private readonly List<ICommand> commands = new();
+        private readonly TabPanel tabPanel;
 
         public CommandsController(TabPanel tabPanel)
         {

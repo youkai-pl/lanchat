@@ -29,7 +29,7 @@ namespace Lanchat.Terminal.Handlers
         {
             tabsManager.ShowMainChatView();
             privateChatTab = tabsManager.AddPrivateChatView(node);
-            privateChatView = (ChatView)privateChatTab.Content;
+            privateChatView = (ChatView) privateChatTab.Content;
         }
 
         private void NodeOnDisconnected(object sender, EventArgs e)

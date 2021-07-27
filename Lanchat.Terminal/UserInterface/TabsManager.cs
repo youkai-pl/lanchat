@@ -66,7 +66,7 @@ namespace Lanchat.Terminal.UserInterface
                 mainViewTab.Header.MarkAsUnread();
             }
         }
-        
+
         public void SignalPrivateNewMessage(INode node = null)
         {
             var tab = tabPanel.AllTabs.First(x => x.Content is ChatView chatView && chatView.Node == node);

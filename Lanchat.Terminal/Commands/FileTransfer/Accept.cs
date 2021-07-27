@@ -19,6 +19,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
                 Window.Writer.WriteError(Resources._UserNotFound);
                 return;
             }
+
             Execute(args, node);
         }
 

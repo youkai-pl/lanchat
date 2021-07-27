@@ -24,6 +24,7 @@ namespace Lanchat.Terminal.Commands.Blocking
             {
                 Execute(args, Program.Network.Nodes.Find(x => x.User.ShortId == args[0]));
             }
+
             if (IPAddress.TryParse(args[0], out var ipAddress))
             {
                 var node = Program.Network.Nodes.Find(x => Equals(x.Host.Endpoint.Address, ipAddress));
