@@ -40,11 +40,7 @@ namespace Lanchat.Core.TransportLayer
 
         protected override void OnDisconnected()
         {
-            if (disposing)
-            {
-                return;
-            }
-
+            Trace.WriteLine($"Client {Id} disconnected");
             Disconnected?.Invoke(this, EventArgs.Empty);
         }
 
