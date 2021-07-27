@@ -30,11 +30,6 @@ namespace Lanchat.Terminal.UserInterface.Controls
         {
             Window.UiAction(() =>
             {
-                if (tabPanel.CurrentTab == tab)
-                {
-                    tabPanel.SelectTab(Tabs[0]);
-                }
-
                 Tabs.Remove(tab);
                 Headers.Children = Headers.Children.Where(x => x != tab.Header).ToList();
             });

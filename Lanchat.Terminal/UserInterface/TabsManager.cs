@@ -49,6 +49,10 @@ namespace Lanchat.Terminal.UserInterface
         public void ClosePrivateChatView(INode node)
         {
             var chatTab = tabPanel.AllTabs.First(x => x.Id == node.Id);
+            if (tabPanel.CurrentTab == chatTab)
+            {
+                tabPanel.SelectTab(tabPanel.AllTabs[0]);
+            }
             tabPanel.ChatTabs.RemoveTab(chatTab);
         }
 
