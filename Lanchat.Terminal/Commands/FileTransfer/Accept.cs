@@ -9,7 +9,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
     {
         public string Alias => "accept";
         public int ArgsCount => 1;
-        public int ContextArgsCount => ArgsCount;
+        public int ContextArgsCount => 0;
 
         public void Execute(string[] args)
         {
@@ -19,7 +19,11 @@ namespace Lanchat.Terminal.Commands.FileTransfer
                 Window.Writer.WriteError(Resources._UserNotFound);
                 return;
             }
+            Execute(args, node);
+        }
 
+        public void Execute(string[] args, INode node)
+        {
             try
             {
                 node.FileReceiver.AcceptRequest();
@@ -28,11 +32,6 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             {
                 Window.Writer.WriteError(Resources._NoFileReceiveRequest);
             }
-        }
-
-        public void Execute(string[] args, INode node)
-        {
-            Execute(args);
         }
     }
 }

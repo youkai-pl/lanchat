@@ -11,7 +11,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
     {
         public string Alias => "send";
         public int ArgsCount => 2;
-        public int ContextArgsCount => ArgsCount;
+        public int ContextArgsCount => 1;
 
         public void Execute(string[] args)
         {
@@ -22,9 +22,14 @@ namespace Lanchat.Terminal.Commands.FileTransfer
                 return;
             }
 
+            Execute(new []{args[0]}, node);
+        }
+
+        public void Execute(string[] args, INode node)
+        {
             try
             {
-                node.FileSender.CreateSendRequest(args[1]);
+                node.FileSender.CreateSendRequest(args[0]);
             }
             catch (Exception e)
             {
@@ -35,7 +40,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
                     case SecurityException:
                     case PathTooLongException:
                     case ArgumentException:
-                        Window.Writer.WriteError(string.Format(Resources._CannotAccessFile, args[1]));
+                        Window.Writer.WriteError(string.Format(Resources._CannotAccessFile, args[0]));
                         break;
 
                     case InvalidOperationException:
@@ -43,11 +48,6 @@ namespace Lanchat.Terminal.Commands.FileTransfer
                         break;
                 }
             }
-        }
-
-        public void Execute(string[] args, INode node)
-        {
-            Execute(args);
         }
     }
 }
