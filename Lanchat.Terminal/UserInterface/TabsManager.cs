@@ -20,9 +20,11 @@ namespace Lanchat.Terminal.UserInterface
             
             homeViewTab = new Tab("Lanchat", HomeView);
             mainViewTab = new Tab("Lanchat", MainChatView);
-            tabPanel.AddTab(homeViewTab);
-            tabPanel.AddTab(new Tab("Detected users", new DetectedUsersView()));
-            tabPanel.AddTab(new Tab("File transfer", FileTransfersView));
+            tabPanel.SystemTabs.AddTab(homeViewTab);
+            tabPanel.SystemTabs.AddTab(new Tab("Detected users", new DetectedUsersView()));
+            tabPanel.SystemTabs.AddTab(new Tab("File transfer", FileTransfersView));
+            tabPanel.SelectTab(homeViewTab);
+
         }
 
         public HomeView HomeView { get; }
@@ -31,9 +33,9 @@ namespace Lanchat.Terminal.UserInterface
 
         public void ShowMainChatView()
         {
-            if (tabPanel.Tabs[0].Content is HomeView)
+            if (tabPanel.SystemTabs.Tabs.First().Content is HomeView)
             {
-                tabPanel.ReplaceTab(homeViewTab, mainViewTab);
+                tabPanel.SystemTabs.ReplaceTab(homeViewTab, mainViewTab);
             }
         }
 
@@ -41,27 +43,28 @@ namespace Lanchat.Terminal.UserInterface
         {
             var chatView = new ChatView(node);
             var chatTab = new Tab(node.User.Nickname, chatView) {Id = node.Id};
-            tabPanel.AddUserTab(chatTab);
+            tabPanel.ChatTabs.AddTab(chatTab);
             return chatView;
         }
         
         public void ClosePrivateChatView(INode node)
         {
-            var chatTab = tabPanel.Tabs.FirstOrDefault(x => x.Id == node.Id);
-            tabPanel.RemoveUserTab(chatTab);
+            var chatTab = tabPanel.AllTabs.FirstOrDefault(x => x.Id == node.Id);
+            tabPanel.ChatTabs.RemoveTab(chatTab);
         }
         
         public void UpdateNickname(INode node)
         {
-            var tab = tabPanel.Tabs.FirstOrDefault(x => x.Content is ChatView chatView && chatView.Node == node);
-            tabPanel.UpdateUserTabHeader(tab, node.User.Nickname);
+            var tab = tabPanel.AllTabs.FirstOrDefault(x => x.Content is ChatView chatView && chatView.Node == node);
+            tab!.Header.UpdateText(node.User.Nickname);
+            tabPanel.ChatTabs.RefreshHeaders();
         }
         
         public DebugView AddDebugView()
         {
             var debugView = new DebugView();
             var debugTab = new Tab("Debug", debugView);
-            tabPanel.AddTab(debugTab);
+            tabPanel.SystemTabs.AddTab(debugTab);
             return debugView;
         }
     }

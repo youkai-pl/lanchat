@@ -11,8 +11,6 @@ namespace Lanchat.Terminal.UserInterface.Controls
     public class TabPanel : SimpleControl, IInputListener
     {
         private readonly List<IInputListener> inputListeners;
-        private readonly VerticalStackPanel tabsHeaders = new();
-        private readonly VerticalStackPanel userTabsHeaders = new();
         private readonly DockPanel wrapper;
         private int tabSwitch;
 
@@ -20,6 +18,9 @@ namespace Lanchat.Terminal.UserInterface.Controls
         {
             this.inputListeners = inputListeners;
 
+            SystemTabs = new TabsGroup(this);
+            ChatTabs = new TabsGroup(this);
+            
             wrapper = new DockPanel
             {
                 Placement = DockPanel.DockedControlPlacement.Right,
@@ -32,12 +33,12 @@ namespace Lanchat.Terminal.UserInterface.Controls
                         DockedControl = new Border
                         {
                             BorderStyle = BorderStyle.Single,
-                            Content = tabsHeaders
+                            Content = SystemTabs.Headers
                         },
                         FillingControl = new Border
                         {
                             BorderStyle = BorderStyle.Single,
-                            Content = userTabsHeaders
+                            Content = ChatTabs.Headers
                         }
                     }
                 }
@@ -46,71 +47,11 @@ namespace Lanchat.Terminal.UserInterface.Controls
         }
 
         public Tab CurrentTab { get; private set; }
-        public List<Tab> Tabs { get; } = new();
+        
+        public TabsGroup SystemTabs { get; }
+        public TabsGroup ChatTabs { get; }
 
-        public void AddTab(Tab tab)
-        {
-            Window.UiAction(() =>
-            {
-                Tabs.Add(tab);
-                tabsHeaders.Add(tab.Header);
-                if (Tabs.Count == 1)
-                {
-                    SelectTab(Tabs[0]);
-                }
-            });
-        }
-
-        public void AddUserTab(Tab tab)
-        {
-            Window.UiAction(() =>
-            {
-                Tabs.Add(tab);
-                userTabsHeaders.Add(tab.Header);
-                if (Tabs.Count == 1)
-                {
-                    SelectTab(Tabs[0]);
-                }
-            });
-        }
-
-        public void RemoveUserTab(Tab tab)
-        {
-            Window.UiAction(() =>
-            {
-                if (CurrentTab == tab)
-                {
-                    SelectTab(Tabs[0]);
-                }
-
-                Tabs.Remove(tab);
-                userTabsHeaders.Children = userTabsHeaders.Children.Where(x => x != tab.Header).ToList();
-            });
-        }
-
-        public void ReplaceTab(Tab previousTab, Tab newTab)
-        {
-            Window.UiAction(() =>
-            {
-                Tabs[Tabs.FindIndex(x => x.Equals(previousTab))] = newTab;
-                var newTabsHeaders = tabsHeaders.Children.ToList();
-                newTabsHeaders[newTabsHeaders.IndexOf(previousTab.Header)] = newTab.Header;
-                tabsHeaders.Children = newTabsHeaders.ToList();
-                SelectTab(newTab);
-            });
-        }
-
-        public void UpdateUserTabHeader(Tab tab, string headerText)
-        {
-            Window.UiAction(() =>
-            {
-                var newUserTabsHeaders = userTabsHeaders.Children.ToList();
-                var index = newUserTabsHeaders.IndexOf(tab.Header);
-                tab.UpdateHeader(headerText);
-                newUserTabsHeaders[index] = tab.Header;
-                userTabsHeaders.Children = newUserTabsHeaders.ToList();
-            });
-        }
+        public List<Tab> AllTabs => SystemTabs.Tabs.Concat(ChatTabs.Tabs).ToList();
 
         public void OnInput(InputEvent inputEvent)
         {
@@ -122,7 +63,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
             if ((inputEvent.Key.Modifiers & ConsoleModifiers.Shift) == 0)
             {
                 tabSwitch++;
-                if (tabSwitch == Tabs.Count)
+                if (tabSwitch == AllTabs.Count)
                 {
                     tabSwitch = 0;
                 }
@@ -132,15 +73,15 @@ namespace Lanchat.Terminal.UserInterface.Controls
                 tabSwitch--;
                 if (tabSwitch == -1)
                 {
-                    tabSwitch = Tabs.Count - 1;
+                    tabSwitch = AllTabs.Count - 1;
                 }
             }
 
-            SelectTab(Tabs[tabSwitch]);
+            SelectTab(AllTabs[tabSwitch]);
             inputEvent.Handled = true;
         }
 
-        private void SelectTab(Tab tab)
+        public void SelectTab(Tab tab)
         {
             Window.UiAction(() =>
             {
@@ -149,7 +90,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
                     inputListeners.Remove(previousScrollPanel.ScrollPanel);
                 }
 
-                CurrentTab?.MarkAsInactive();
+                CurrentTab?.Header.MarkAsInactive();
                 CurrentTab = tab;
 
                 if (CurrentTab.Content is IScrollable newScrollPanel)
@@ -158,7 +99,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
                     newScrollPanel.ScrollPanel.Top = int.MaxValue;
                 }
 
-                CurrentTab.MarkAsActive();
+                CurrentTab.Header.MarkAsActive();
                 wrapper.FillingControl = new Border
                 {
                     BorderStyle = BorderStyle.Single,
