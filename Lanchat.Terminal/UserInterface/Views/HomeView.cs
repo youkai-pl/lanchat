@@ -36,7 +36,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                 VerticalContentPlacement = Box.VerticalPlacement.Center,
                 Content = new Boundary
                 {
-                    Width = 65,
+                    Width = 44,
                     Content = stackPanel
                 }
             };
