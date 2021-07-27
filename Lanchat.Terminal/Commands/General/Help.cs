@@ -9,6 +9,7 @@ namespace Lanchat.Terminal.Commands.General
     {
         public string Alias => "help";
         public int ArgsCount => 0;
+        public int ContextArgsCount => ArgsCount;
 
         public void Execute(string[] args)
         {
@@ -23,7 +24,7 @@ namespace Lanchat.Terminal.Commands.General
             }
         }
 
-        public void Execute(string[] args, INode context)
+        public void Execute(string[] args, INode node)
         {
             Execute(args);
         }

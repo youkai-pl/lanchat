@@ -7,6 +7,7 @@ namespace Lanchat.Terminal.Commands.General
     {
         public string Alias => "exit";
         public int ArgsCount => 0;
+        public int ContextArgsCount => ArgsCount;
 
         public void Execute(string[] _)
         {
@@ -15,7 +16,7 @@ namespace Lanchat.Terminal.Commands.General
             Environment.Exit(0);
         }
 
-        public void Execute(string[] args, INode context)
+        public void Execute(string[] args, INode node)
         {
             Execute(args);
         }

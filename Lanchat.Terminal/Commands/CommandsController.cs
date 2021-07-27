@@ -40,30 +40,37 @@ namespace Lanchat.Terminal.Commands
                 return;
             }
 
-            if (args.Length < command.ArgsCount)
+
+            if (tabPanel.CurrentTab.Content is not ChatView view || view.Node == null)
             {
-                var help = Resources.ResourceManager.GetString($"Help_{commandAlias}", CultureInfo.CurrentCulture);
-                if (help != null)
+                if (CheckArgumentsCount(args, command.ArgsCount, commandAlias))
                 {
-                    Window.Writer.WriteText(help);
+                    command.Execute(args);
                 }
-
-                return;
-            }
-
-
-            if (tabPanel.CurrentTab.Content is not ChatView view)
-            {
-                command.Execute(args);
-            }
-            else if (view.Node == null)
-            {
-                command.Execute(args);
             }
             else
             {
-                command.Execute(args, view.Node);
+                if (CheckArgumentsCount(args, command.ContextArgsCount, commandAlias))
+                {
+                    command.Execute(args, view.Node);
+                }
             }
+        }
+
+        private static bool CheckArgumentsCount(IReadOnlyCollection<string> args, int expectedCount, string alias)
+        {
+            if (args.Count >= expectedCount)
+            {
+                return true;
+            }
+
+            var help = Resources.ResourceManager.GetString($"Help_{alias}", CultureInfo.CurrentCulture);
+            if (help != null)
+            {
+                Window.Writer.WriteText(help);
+            }
+
+            return false;
         }
     }
 }

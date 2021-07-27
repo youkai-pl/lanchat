@@ -8,13 +8,14 @@ namespace Lanchat.Terminal.Commands.General
     {
         public string Alias => "disconnect";
         public int ArgsCount => 1;
+        public int ContextArgsCount => 0;
 
         public void Execute(string[] args)
         {
             var node = Program.Network.Nodes.Find(x => x.User.ShortId == args[0]);
             if (node != null)
             {
-                node.Disconnect();
+                Execute(args, node);
             }
             else
             {
@@ -22,9 +23,9 @@ namespace Lanchat.Terminal.Commands.General
             }
         }
 
-        public void Execute(string[] args, INode context)
+        public void Execute(string[] args, INode node)
         {
-            Execute(args);
+            node.Disconnect();
         }
     }
 }

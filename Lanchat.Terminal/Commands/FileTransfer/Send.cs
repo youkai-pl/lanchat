@@ -11,6 +11,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
     {
         public string Alias => "send";
         public int ArgsCount => 2;
+        public int ContextArgsCount => ArgsCount;
 
         public void Execute(string[] args)
         {
@@ -44,7 +45,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             }
         }
 
-        public void Execute(string[] args, INode context)
+        public void Execute(string[] args, INode node)
         {
             Execute(args);
         }

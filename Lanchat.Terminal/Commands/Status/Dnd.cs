@@ -7,13 +7,14 @@ namespace Lanchat.Terminal.Commands.Status
     {
         public string Alias => "dnd";
         public int ArgsCount => 0;
+        public int ContextArgsCount => ArgsCount;
 
         public void Execute(string[] _)
         {
             Program.Config.UserStatus = UserStatus.DoNotDisturb;
         }
 
-        public void Execute(string[] args, INode context)
+        public void Execute(string[] args, INode node)
         {
             Execute(args);
         }

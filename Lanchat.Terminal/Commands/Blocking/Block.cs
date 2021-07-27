@@ -10,6 +10,7 @@ namespace Lanchat.Terminal.Commands.Blocking
     {
         public string Alias => "block";
         public int ArgsCount => 1;
+        public int ContextArgsCount => ArgsCount;
 
         public void Execute(string[] args)
         {
@@ -48,7 +49,7 @@ namespace Lanchat.Terminal.Commands.Blocking
             Window.Writer.WriteText(string.Format(Resources._Blocked, ipAddress));
         }
 
-        public void Execute(string[] args, INode context)
+        public void Execute(string[] args, INode node)
         {
             Execute(args);
         }

@@ -9,6 +9,7 @@ namespace Lanchat.Terminal.Commands.Blocking
     {
         public string Alias => "blocked";
         public int ArgsCount => 0;
+        public int ContextArgsCount => ArgsCount;
 
         public void Execute(string[] _)
         {
@@ -16,7 +17,7 @@ namespace Lanchat.Terminal.Commands.Blocking
             Program.Config.SavedAddresses.ForEach(x => Window.Writer.WriteText($"{x}"));
         }
 
-        public void Execute(string[] args, INode context)
+        public void Execute(string[] args, INode node)
         {
             Execute(args);
         }

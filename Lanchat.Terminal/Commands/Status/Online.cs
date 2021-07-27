@@ -7,13 +7,14 @@ namespace Lanchat.Terminal.Commands.Status
     {
         public string Alias => "online";
         public int ArgsCount => 0;
+        public int ContextArgsCount => ArgsCount;
 
         public void Execute(string[] _)
         {
             Program.Config.UserStatus = UserStatus.Online;
         }
 
-        public void Execute(string[] args, INode context)
+        public void Execute(string[] args, INode node)
         {
             Execute(args);
         }
