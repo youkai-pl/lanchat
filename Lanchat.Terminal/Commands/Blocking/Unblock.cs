@@ -28,7 +28,7 @@ namespace Lanchat.Terminal.Commands.Blocking
             }
 
             Program.Config.BlockedAddresses.Remove(parsedIp);
-            Window.Writer.WriteError(string.Format(Resources._Unblocked, parsedIp));
+            Window.Writer.WriteText(string.Format(Resources._Unblocked, parsedIp));
         }
 
         public void Execute(string[] args, INode node)
