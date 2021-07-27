@@ -10,12 +10,10 @@ namespace Lanchat.Terminal.Commands.Blocking
     {
         public string Alias => "block";
         public int ArgsCount => 1;
-        public int ContextArgsCount => ArgsCount;
+        public int ContextArgsCount => 0;
 
         public void Execute(string[] args)
         {
-            IPAddress ipAddress;
-
             if (args == null || args.Length < 1)
             {
                 Window.Writer.WriteError(Resources.Help_block);
@@ -24,21 +22,36 @@ namespace Lanchat.Terminal.Commands.Blocking
 
             if (args[0].Length == 4)
             {
-                var node = Program.Network.Nodes.Find(x => x.User.ShortId == args[0]);
-                ipAddress = node?.Host.Endpoint.Address;
-                node?.Disconnect();
+                Execute(args, Program.Network.Nodes.Find(x => x.User.ShortId == args[0]));
             }
-            else if (IPAddress.TryParse(args[0], out ipAddress))
+            if (IPAddress.TryParse(args[0], out var ipAddress))
             {
                 var node = Program.Network.Nodes.Find(x => Equals(x.Host.Endpoint.Address, ipAddress));
-                node?.Disconnect();
+                if (node == null)
+                {
+                    SaveBlockInConfig(ipAddress);
+                }
+                else
+                {
+                    Execute(args, node);
+                }
             }
             else
             {
                 Window.Writer.WriteError(Resources._IncorrectValues);
-                return;
             }
+        }
 
+        public void Execute(string[] args, INode node)
+        {
+            var ipAddress = node.Host.Endpoint.Address;
+            node.Disconnect();
+            SaveBlockInConfig(ipAddress);
+            Window.Writer.WriteText(string.Format(Resources._Blocked, ipAddress));
+        }
+
+        private static void SaveBlockInConfig(IPAddress ipAddress)
+        {
             if (Program.Config.BlockedAddresses.Any(x => Equals(x, ipAddress)))
             {
                 Window.Writer.WriteError(Resources._AlreadyBlocked);
@@ -46,12 +59,6 @@ namespace Lanchat.Terminal.Commands.Blocking
             }
 
             Program.Config.BlockedAddresses.Add(ipAddress);
-            Window.Writer.WriteText(string.Format(Resources._Blocked, ipAddress));
-        }
-
-        public void Execute(string[] args, INode node)
-        {
-            Execute(args);
         }
     }
 }
