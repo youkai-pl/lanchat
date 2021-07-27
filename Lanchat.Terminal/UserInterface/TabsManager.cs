@@ -17,14 +17,13 @@ namespace Lanchat.Terminal.UserInterface
             HomeView = new HomeView();
             MainChatView = new ChatView();
             FileTransfersView = new FileTransfersView();
-            
+
             homeViewTab = new Tab("Lanchat", HomeView);
             mainViewTab = new Tab("Lanchat", MainChatView);
             tabPanel.SystemTabs.AddTab(homeViewTab);
             tabPanel.SystemTabs.AddTab(new Tab("Detected users", new DetectedUsersView()));
             tabPanel.SystemTabs.AddTab(new Tab("File transfer", FileTransfersView));
             tabPanel.SelectTab(homeViewTab);
-
         }
 
         public HomeView HomeView { get; }
@@ -46,20 +45,20 @@ namespace Lanchat.Terminal.UserInterface
             tabPanel.ChatTabs.AddTab(chatTab);
             return chatView;
         }
-        
+
         public void ClosePrivateChatView(INode node)
         {
             var chatTab = tabPanel.AllTabs.FirstOrDefault(x => x.Id == node.Id);
             tabPanel.ChatTabs.RemoveTab(chatTab);
         }
-        
+
         public void UpdateNickname(INode node)
         {
             var tab = tabPanel.AllTabs.FirstOrDefault(x => x.Content is ChatView chatView && chatView.Node == node);
             tab!.Header.UpdateText(node.User.Nickname);
             tabPanel.ChatTabs.RefreshHeaders();
         }
-        
+
         public DebugView AddDebugView()
         {
             var debugView = new DebugView();

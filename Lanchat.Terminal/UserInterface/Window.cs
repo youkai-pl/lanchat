@@ -17,7 +17,6 @@ namespace Lanchat.Terminal.UserInterface
     {
         private static readonly DockPanel DockPanel;
         private static readonly List<IInputListener> InputListeners = new();
-        private static TabPanel TabPanel { get; }
         private static readonly object Locker = new();
 
         static Window()
@@ -59,6 +58,8 @@ namespace Lanchat.Terminal.UserInterface
             InputListeners.Add(promptInput);
             InputListeners.Add(TabPanel);
         }
+
+        private static TabPanel TabPanel { get; }
 
         public static TabsManager TabsManager { get; }
         public static Writer Writer { get; }

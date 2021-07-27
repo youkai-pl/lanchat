@@ -10,7 +10,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
     {
         public string Alias => "send";
         public int ArgsCount => 2;
-        
+
         public void Execute(string[] args)
         {
             var node = Program.Network.Nodes.Find(x => x.User.ShortId == args[0]);
@@ -19,6 +19,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
                 Window.Writer.WriteError(Resources._UserNotFound);
                 return;
             }
+
             try
             {
                 node.FileSender.CreateSendRequest(args[1]);

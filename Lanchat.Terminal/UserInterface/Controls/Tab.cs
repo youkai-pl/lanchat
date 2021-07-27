@@ -1,7 +1,5 @@
 using System;
 using ConsoleGUI;
-using ConsoleGUI.Controls;
-using ConsoleGUI.Space;
 
 namespace Lanchat.Terminal.UserInterface.Controls
 {

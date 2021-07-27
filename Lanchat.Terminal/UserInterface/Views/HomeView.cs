@@ -29,7 +29,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                     }
                 }
             };
-            
+
             Content = new Box
             {
                 HorizontalContentPlacement = Box.HorizontalPlacement.Center,

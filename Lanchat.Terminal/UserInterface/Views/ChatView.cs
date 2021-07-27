@@ -28,6 +28,17 @@ namespace Lanchat.Terminal.UserInterface.Views
         public INode Node { get; }
         public VerticalScrollPanel ScrollPanel { get; }
 
+        public void AddText(string text, Color color)
+        {
+            foreach (var line in SplitLines(text))
+            {
+                AddToLog(new List<TextBlock>
+                {
+                    new() {Text = line, Color = color}
+                });
+            }
+        }
+
         public void AddMessage(string text, string nickname)
         {
             foreach (var line in SplitLines(text))
@@ -43,17 +54,6 @@ namespace Lanchat.Terminal.UserInterface.Views
             }
         }
 
-        public void AddText(string text, Color color)
-        {
-            foreach (var line in SplitLines(text))
-            {
-                AddToLog(new List<TextBlock>
-                {
-                    new() {Text = line, Color = color}
-                });
-            } 
-        }
-        
         private static IEnumerable<string> SplitLines(string text)
         {
             if (text == null)

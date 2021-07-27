@@ -9,9 +9,9 @@ namespace Lanchat.Terminal.UserInterface
 {
     public class InputController : IInputListener
     {
+        private readonly CommandsController commandsController;
         private readonly TextBox promptInput;
         private readonly TabPanel tabPanel;
-        private readonly CommandsController commandsController;
 
         public InputController(TextBox promptInput, TabPanel tabPanel)
         {

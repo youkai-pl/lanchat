@@ -9,7 +9,7 @@ namespace Lanchat.Terminal.UserInterface.Views
     public class FileTransfersView : SimpleControl, IScrollable
     {
         private readonly VerticalStackPanel stackPanel = new();
-        public int Counter { get; private set; } = 1;
+
         public FileTransfersView()
         {
             ScrollPanel = new VerticalScrollPanel
@@ -23,12 +23,14 @@ namespace Lanchat.Terminal.UserInterface.Views
             Content = ScrollPanel;
         }
 
-        public void Add(FileTransferStatus fileTransferStatus)
-        {
-            Window.UiAction(() => stackPanel.Add(fileTransferStatus)); 
-            Counter++;
-        }
+        public int Counter { get; private set; } = 1;
 
         public VerticalScrollPanel ScrollPanel { get; }
+
+        public void Add(FileTransferStatus fileTransferStatus)
+        {
+            Window.UiAction(() => stackPanel.Add(fileTransferStatus));
+            Counter++;
+        }
     }
 }

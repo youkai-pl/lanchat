@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using Lanchat.Core.Extensions;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
@@ -13,13 +14,13 @@ namespace Lanchat.Terminal.Commands
 
         public CommandsController()
         {
-            var ass = System.Reflection.Assembly.GetEntryAssembly();
+            var ass = Assembly.GetEntryAssembly();
             ass?.DefinedTypes.ForEach(x =>
             {
                 if (x.ImplementedInterfaces.Contains(typeof(ICommand)))
                 {
                     commands.Add(ass.CreateInstance(x.FullName!) as ICommand);
-                } 
+                }
             });
         }
 

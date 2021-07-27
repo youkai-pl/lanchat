@@ -16,7 +16,7 @@ namespace Lanchat.Terminal.UserInterface.Views
             {
                 Content = stackPanel,
                 ScrollBarBackground = new Character(),
-                ScrollBarForeground = new Character(),
+                ScrollBarForeground = new Character()
             };
 
             Content = ScrollPanel;

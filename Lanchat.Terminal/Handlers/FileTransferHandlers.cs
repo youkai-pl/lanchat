@@ -7,8 +7,8 @@ namespace Lanchat.Terminal.Handlers
 {
     public class FileTransferHandlers
     {
-        private readonly INode node;
         private readonly FileTransfersView fileTransfersView;
+        private readonly INode node;
 
         public FileTransferHandlers(INode node, FileTransfersView fileTransfersView)
         {
@@ -22,10 +22,7 @@ namespace Lanchat.Terminal.Handlers
         {
             var fileTransferStatus = new FileTransferStatus(node, e, fileTransfersView.Counter);
             fileTransfersView.Add(fileTransferStatus);
-            e.PropertyChanged += (_, _) =>
-            {
-                fileTransferStatus.Update();
-            };
+            e.PropertyChanged += (_, _) => { fileTransferStatus.Update(); };
         }
     }
 }

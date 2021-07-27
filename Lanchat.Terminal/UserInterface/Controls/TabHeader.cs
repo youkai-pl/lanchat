@@ -21,7 +21,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
                     Content = textBlock
                 }
             };
-            
+
             Content = headerBackground;
         }
 
@@ -29,7 +29,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
         {
             textBlock.Text = text;
         }
-        
+
         public void MarkAsActive()
         {
             headerBackground.Color = ConsoleColor.Blue;

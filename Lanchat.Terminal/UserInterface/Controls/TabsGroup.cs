@@ -25,7 +25,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
                 Headers.Add(tab.Header);
             });
         }
-        
+
         public void RemoveTab(Tab tab)
         {
             Window.UiAction(() =>
@@ -39,7 +39,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
                 Headers.Children = Headers.Children.Where(x => x != tab.Header).ToList();
             });
         }
-        
+
         public void ReplaceTab(Tab previousTab, Tab newTab)
         {
             Window.UiAction(() =>
@@ -57,7 +57,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
             Window.UiAction(() =>
             {
                 var updatedHeaders = new List<IControl>();
-                Tabs.ForEach(x=> updatedHeaders.Add(x.Header));
+                Tabs.ForEach(x => updatedHeaders.Add(x.Header));
                 Headers.Children = updatedHeaders.ToList();
             });
         }

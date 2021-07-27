@@ -20,7 +20,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
 
             SystemTabs = new TabsGroup(this);
             ChatTabs = new TabsGroup(this);
-            
+
             wrapper = new DockPanel
             {
                 Placement = DockPanel.DockedControlPlacement.Right,
@@ -47,7 +47,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
         }
 
         public Tab CurrentTab { get; private set; }
-        
+
         public TabsGroup SystemTabs { get; }
         public TabsGroup ChatTabs { get; }
 

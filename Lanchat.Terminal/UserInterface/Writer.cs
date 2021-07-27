@@ -11,13 +11,13 @@ namespace Lanchat.Terminal.UserInterface
         {
             this.tabPanel = tabPanel;
         }
-        
+
         public void WriteText(string text)
         {
             var writeable = tabPanel.CurrentTab.Content as IWriteable;
             writeable?.AddText(text, ConsoleColor.White);
         }
-        
+
         public void WriteError(string text)
         {
             var writeable = tabPanel.CurrentTab.Content as IWriteable;

@@ -7,10 +7,10 @@ namespace Lanchat.Terminal.UserInterface.Controls
 {
     public class FileTransferStatus : SimpleControl
     {
-        private readonly TextBlock textBlock = new();
-        private readonly INode node;
-        private readonly CurrentFileTransfer currentFileTransfer;
         private readonly int counter;
+        private readonly CurrentFileTransfer currentFileTransfer;
+        private readonly INode node;
+        private readonly TextBlock textBlock = new();
 
         public FileTransferStatus(INode node, CurrentFileTransfer currentFileTransfer, int counter)
         {
