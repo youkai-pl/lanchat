@@ -15,6 +15,7 @@ namespace Lanchat.Core.Network
         private readonly IInternalNodeRsa internalNodeRsa;
         private readonly INodeInternal nodeInternal;
         private readonly IOutput output;
+        private bool cannotConnectHandled;
 
         public Connection(
             INodeInternal nodeInternal,
@@ -40,10 +41,13 @@ namespace Lanchat.Core.Network
 
             Task.Delay(5000).ContinueWith(_ =>
             {
-                if (!nodeInternal.Ready)
+                if (nodeInternal.Ready || cannotConnectHandled)
                 {
-                    nodeInternal.OnCannotConnect();
+                    return;
                 }
+
+                cannotConnectHandled = true;
+                nodeInternal.OnCannotConnect();
             });
         }
 
@@ -65,8 +69,9 @@ namespace Lanchat.Core.Network
             {
                 nodeInternal.OnDisconnected();
             }
-            else
+            else if(!cannotConnectHandled)
             {
+                cannotConnectHandled = true;
                 nodeInternal.OnCannotConnect();
             }
         }
