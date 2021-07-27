@@ -81,7 +81,6 @@ namespace Lanchat.Core.Encryption
             {
                 Trace.WriteLine("Changed RSA key");
                 KeyStatus = KeyStatus.ChangedKey;
-                rsaDatabase.SaveNodePem(ipAddress, currentPem);
             }
             else
             {
