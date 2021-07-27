@@ -1,4 +1,5 @@
 using System;
+using Lanchat.Core.Network;
 
 namespace Lanchat.Terminal.Commands.General
 {
@@ -12,6 +13,11 @@ namespace Lanchat.Terminal.Commands.General
             Console.ResetColor();
             Console.Clear();
             Environment.Exit(0);
+        }
+
+        public void Execute(string[] args, INode context)
+        {
+            Execute(args);
         }
     }
 }

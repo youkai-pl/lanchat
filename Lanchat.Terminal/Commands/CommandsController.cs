@@ -5,15 +5,19 @@ using System.Reflection;
 using Lanchat.Core.Extensions;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
+using Lanchat.Terminal.UserInterface.Controls;
+using Lanchat.Terminal.UserInterface.Views;
 
 namespace Lanchat.Terminal.Commands
 {
     public class CommandsController
     {
+        private readonly TabPanel tabPanel;
         private readonly List<ICommand> commands = new();
 
-        public CommandsController()
+        public CommandsController(TabPanel tabPanel)
         {
+            this.tabPanel = tabPanel;
             var ass = Assembly.GetEntryAssembly();
             ass?.DefinedTypes.ForEach(x =>
             {
@@ -47,7 +51,19 @@ namespace Lanchat.Terminal.Commands
                 return;
             }
 
-            command.Execute(args);
+
+            if (tabPanel.CurrentTab.Content is not ChatView view)
+            {
+                command.Execute(args);
+            }
+            else if (view.Node == null)
+            {
+                command.Execute(args);
+            }
+            else
+            {
+                command.Execute(args, view.Node);
+            }
         }
     }
 }

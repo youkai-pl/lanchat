@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Net;
+using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -45,6 +46,11 @@ namespace Lanchat.Terminal.Commands.Blocking
 
             Program.Config.BlockedAddresses.Add(ipAddress);
             Window.Writer.WriteText(string.Format(Resources._Blocked, ipAddress));
+        }
+
+        public void Execute(string[] args, INode context)
+        {
+            Execute(args);
         }
     }
 }

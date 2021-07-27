@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Net;
+using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -27,6 +28,11 @@ namespace Lanchat.Terminal.Commands.Blocking
 
             Program.Config.BlockedAddresses.Remove(parsedIp);
             Window.Writer.WriteError(string.Format(Resources._Unblocked, parsedIp));
+        }
+
+        public void Execute(string[] args, INode context)
+        {
+            Execute(args);
         }
     }
 }

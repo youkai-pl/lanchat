@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -60,6 +61,11 @@ namespace Lanchat.Terminal.Commands.General
             {
                 Window.Writer.WriteError(e.Message);
             }
+        }
+
+        public void Execute(string[] args, INode context)
+        {
+            Execute(args);
         }
     }
 }

@@ -1,3 +1,5 @@
+using Lanchat.Core.Network;
+
 namespace Lanchat.Terminal.Commands.General
 {
     public class Nick : ICommand
@@ -14,6 +16,11 @@ namespace Lanchat.Terminal.Commands.General
             {
                 Program.Config.Nickname = nickname;
             }
+        }
+
+        public void Execute(string[] args, INode context)
+        {
+            Execute(args);
         }
     }
 }

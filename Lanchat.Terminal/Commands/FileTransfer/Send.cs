@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Security;
+using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -41,6 +42,11 @@ namespace Lanchat.Terminal.Commands.FileTransfer
                         break;
                 }
             }
+        }
+
+        public void Execute(string[] args, INode context)
+        {
+            Execute(args);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Lanchat.Terminal.UserInterface
         {
             this.promptInput = promptInput;
             this.tabPanel = tabPanel;
-            commandsController = new CommandsController();
+            commandsController = new CommandsController(tabPanel);
         }
 
         public void OnInput(InputEvent inputEvent)

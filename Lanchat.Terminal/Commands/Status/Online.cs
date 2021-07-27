@@ -1,4 +1,5 @@
 using Lanchat.Core.Identity;
+using Lanchat.Core.Network;
 
 namespace Lanchat.Terminal.Commands.Status
 {
@@ -10,6 +11,11 @@ namespace Lanchat.Terminal.Commands.Status
         public void Execute(string[] _)
         {
             Program.Config.UserStatus = UserStatus.Online;
+        }
+
+        public void Execute(string[] args, INode context)
+        {
+            Execute(args);
         }
     }
 }

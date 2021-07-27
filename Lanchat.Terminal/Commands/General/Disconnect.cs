@@ -1,3 +1,4 @@
+using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -19,6 +20,11 @@ namespace Lanchat.Terminal.Commands.General
             {
                 Window.Writer.WriteError(Resources._UserNotFound);
             }
+        }
+
+        public void Execute(string[] args, INode context)
+        {
+            Execute(args);
         }
     }
 }

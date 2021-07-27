@@ -1,4 +1,5 @@
 using System.Globalization;
+using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -20,6 +21,11 @@ namespace Lanchat.Terminal.Commands.General
                 var commandHelp = Resources.ResourceManager.GetString($"Help_{args[0]}", CultureInfo.CurrentCulture);
                 Window.Writer.WriteError(commandHelp ?? Resources._ManualNotFound);
             }
+        }
+
+        public void Execute(string[] args, INode context)
+        {
+            Execute(args);
         }
     }
 }
