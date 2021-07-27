@@ -34,7 +34,7 @@ namespace Lanchat.Terminal.UserInterface
         {
             if (tabPanel.SystemTabs.Tabs.First().Content is HomeView)
             {
-                tabPanel.SystemTabs.ReplaceTab(homeViewTab, mainViewTab);
+                Window.UiAction(() =>tabPanel.SystemTabs.ReplaceTab(homeViewTab, mainViewTab));
             }
         }
 
