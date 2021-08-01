@@ -9,6 +9,7 @@ namespace Lanchat.Terminal.UserInterface
     {
         private readonly Tab homeViewTab;
         private readonly Tab mainViewTab;
+        private readonly Tab fileTransferViewTab;
         private readonly TabPanel tabPanel;
 
         public TabsManager(TabPanel tabPanel)
@@ -20,9 +21,11 @@ namespace Lanchat.Terminal.UserInterface
 
             homeViewTab = new Tab("Lanchat", HomeView);
             mainViewTab = new Tab("Lanchat", MainChatView);
+            fileTransferViewTab = new Tab("File transfer", FileTransfersView);
+            
             tabPanel.SystemTabs.AddTab(homeViewTab);
             tabPanel.SystemTabs.AddTab(new Tab("Detected users", new DetectedUsersView()));
-            tabPanel.SystemTabs.AddTab(new Tab("File transfer", FileTransfersView));
+            tabPanel.SystemTabs.AddTab(fileTransferViewTab);
             tabPanel.SelectTab(homeViewTab);
         }
 
@@ -68,6 +71,14 @@ namespace Lanchat.Terminal.UserInterface
             if (tabPanel.CurrentTab != mainViewTab)
             {
                 mainViewTab.Header.MarkAsUnread();
+            }
+        }
+        
+        public void SignalFileTransfer()
+        {
+            if (tabPanel.CurrentTab != fileTransferViewTab)
+            {
+                fileTransferViewTab.Header.MarkAsUnread();
             }
         }
 

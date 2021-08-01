@@ -28,9 +28,9 @@ namespace Lanchat.Terminal.Handlers
             e.PropertyChanged += (_, _) => { fileTransferStatus.Update(); };
         }
         
-        private void FileReceiverOnFileTransferRequestReceived(object sender, CurrentFileTransfer e)
+        private static void FileReceiverOnFileTransferRequestReceived(object sender, CurrentFileTransfer e)
         {
-            Window.Writer.WriteStatus(string.Format(Resources._FileRequest, node.User.Nickname, e));
+            Window.TabsManager.SignalFileTransfer();
         }
     }
 }
