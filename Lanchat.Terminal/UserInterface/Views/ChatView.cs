@@ -34,8 +34,9 @@ namespace Lanchat.Terminal.UserInterface.Views
             {
                 AddToLog(new List<TextBlock>
                 {
+                    new() {Text = $"{DateTime.Now:HH:mm} "},
                     new() {Text = line, Color = color}
-                });
+                });;
             }
         }
 

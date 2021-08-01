@@ -23,7 +23,7 @@ namespace Lanchat.Terminal.UserInterface
         {
             TabPanel = new TabPanel(InputListeners);
             TabsManager = new TabsManager(TabPanel);
-            Writer = new Writer(TabPanel);
+            Writer = new Writer(TabPanel, TabsManager);
 
             var promptInput = new TextBox();
             var promptBox = new Border

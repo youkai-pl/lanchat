@@ -1,5 +1,6 @@
 using System;
 using Lanchat.Core.Network;
+using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 using Lanchat.Terminal.UserInterface.Controls;
 using Lanchat.Terminal.UserInterface.Views;
@@ -30,11 +31,13 @@ namespace Lanchat.Terminal.Handlers
             tabsManager.ShowMainChatView();
             privateChatTab = tabsManager.AddPrivateChatView(node);
             privateChatView = (ChatView) privateChatTab.Content;
+            Window.Writer.WriteStatus(string.Format(Resources._Connected, node.User.Nickname));
         }
 
         private void NodeOnDisconnected(object sender, EventArgs e)
         {
             tabsManager.ClosePrivateChatView(node);
+            Window.Writer.WriteStatus(string.Format(Resources._Disconnected, node.User.Nickname));
         }
 
         private void MessagingOnMessageReceived(object sender, string e)
@@ -52,6 +55,7 @@ namespace Lanchat.Terminal.Handlers
         private void UserOnNicknameUpdated(object sender, string e)
         {
             tabsManager.UpdateNickname(node);
+            Window.Writer.WriteStatus(string.Format(Resources._NicknameChanged, node.User.PreviousNickname, node.User.Nickname));
         }
     }
 }
