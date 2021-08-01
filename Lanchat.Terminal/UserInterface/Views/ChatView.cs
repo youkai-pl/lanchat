@@ -36,7 +36,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                 {
                     new() {Text = $"{DateTime.Now:HH:mm} "},
                     new() {Text = line, Color = color}
-                });;
+                });
             }
         }
 

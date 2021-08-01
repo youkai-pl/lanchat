@@ -22,7 +22,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
                 return;
             }
 
-            Execute(new[] {args[0]}, node);
+            Execute(new[] {args[1]}, node);
         }
 
         public void Execute(string[] args, INode node)
