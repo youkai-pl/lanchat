@@ -31,6 +31,11 @@ namespace Lanchat.Core.FileTransfer
         ///     File transfer finished.
         /// </summary>
         event EventHandler<CurrentFileTransfer> FileSendFinished;
+        
+        /// <summary>
+        ///     File transfer receive request sent.
+        /// </summary>
+        event EventHandler<CurrentFileTransfer> FileTransferQueued;
 
         /// <summary>
         ///     Send file exchange request.

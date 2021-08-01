@@ -1,122 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+using System;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Input;
 using Lanchat.Terminal.Commands;
-using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.UserInterface.Controls;
+using Lanchat.Terminal.UserInterface.Views;
 
 namespace Lanchat.Terminal.UserInterface
 {
     public class InputController : IInputListener
     {
-        private static readonly List<string> History = new()
+        private readonly CommandsController commandsController;
+        private readonly TextBox promptInput;
+        private readonly TabPanel tabPanel;
+
+        public InputController(TextBox promptInput, TabPanel tabPanel)
         {
-            string.Empty
-        };
-
-        private static int _currentHistoryItem;
-        private readonly List<ICommand> commands = new();
-        private readonly TextBox input;
-
-        public InputController(TextBox input)
-        {
-            commands.Add(new Afk());
-            commands.Add(new Block());
-            commands.Add(new Blocked());
-            commands.Add(new Connect());
-            commands.Add(new Disconnect());
-            commands.Add(new Dnd());
-            commands.Add(new Exit());
-            commands.Add(new Help());
-            commands.Add(new List());
-            commands.Add(new Nick());
-            commands.Add(new Online());
-            commands.Add(new PrivateMessage());
-            commands.Add(new Unblock());
-            commands.Add(new SendFile());
-            commands.Add(new Accept());
-            commands.Add(new Reject());
-            commands.Add(new Cancel());
-
-            this.input = input;
+            this.promptInput = promptInput;
+            this.tabPanel = tabPanel;
+            commandsController = new CommandsController(tabPanel);
         }
 
         public void OnInput(InputEvent inputEvent)
         {
-            if (inputEvent.Key.Key == ConsoleKey.UpArrow)
-            {
-                if (History.Count == _currentHistoryItem + 1)
-                {
-                    return;
-                }
-
-                _currentHistoryItem++;
-                input.Text = History.ElementAt(_currentHistoryItem);
-                return;
-            }
-
-            if (inputEvent.Key.Key == ConsoleKey.DownArrow)
-            {
-                if (_currentHistoryItem == 0)
-                {
-                    return;
-                }
-
-                _currentHistoryItem--;
-                input.Text = History.ElementAt(_currentHistoryItem);
-                return;
-            }
-
-            History[0] = input.Text;
             if (inputEvent.Key.Key != ConsoleKey.Enter)
             {
                 return;
             }
 
-            if (!string.IsNullOrWhiteSpace(input.Text))
+            if (!string.IsNullOrWhiteSpace(promptInput.Text))
             {
-                if (input.Text.StartsWith("/", StringComparison.CurrentCulture))
+                if (tabPanel.CurrentTab.Content is HomeView)
                 {
-                    ExecuteCommand(input.Text.Split(' '));
+                    Window.TabsManager.ShowMainChatView();
                 }
-                else
+                
+                if (promptInput.Text.StartsWith("/", StringComparison.CurrentCulture))
                 {
-                    Ui.Log.AddMessage(input.Text, Program.Config.Nickname, false);
-                    Program.Network.Broadcast.SendMessage(input.Text);
+                    commandsController.ExecuteCommand(promptInput.Text.Split(' '));
+                }
+                else if (tabPanel.CurrentTab.Content is ChatView chatView)
+                {
+                    SendMessage(chatView);
                 }
             }
 
-            History.Insert(1, input.Text);
-            input.Text = string.Empty;
+            Window.UiAction(() => promptInput.Text = string.Empty);
             inputEvent.Handled = true;
         }
 
-        private void ExecuteCommand(string[] args)
+        private void SendMessage(ChatView chatView)
         {
-            var commandAlias = args[0][1..];
-            args = args.Skip(1).ToArray();
-            var command = commands.FirstOrDefault(x => x.Alias == commandAlias);
-
-            if (command == null)
+            chatView.AddMessage(promptInput.Text, Program.Config.Nickname);
+            if (chatView.Node == null)
             {
-                Ui.Log.AddError(Resources._InvalidCommand);
-                return;
+                Program.Network.Broadcast.SendMessage(promptInput.Text);
             }
-
-            if (args.Length < command.ArgsCount)
+            else
             {
-                var help = Resources.ResourceManager.GetString($"Help_{commandAlias}", CultureInfo.CurrentCulture);
-                if (help != null)
-                {
-                    Ui.Log.Add(help);
-                }
-
-                return;
+                chatView.Node.Messaging.SendPrivateMessage(promptInput.Text);
             }
-
-            command.Execute(args);
         }
     }
 }
