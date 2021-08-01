@@ -29,7 +29,7 @@ namespace Lanchat.Terminal.UserInterface
 
         public void WriteStatus(string text)
         {
-            tabsManager.MainChatView.AddText(text, ConsoleColor.Gray);
+            tabsManager.MainChatView.AddText(text, ConsoleColor.White);
             tabsManager.SignalNewMessage();
         }
     }
