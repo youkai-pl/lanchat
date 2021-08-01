@@ -4,7 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using ConsoleGUI.Data;
 using Lanchat.ClientCore;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Handlers;
 using Lanchat.Terminal.Properties;
@@ -57,11 +59,15 @@ namespace Lanchat.Terminal
                 Window.TabsManager.HomeView.AddText(Resources._PortBusy, ConsoleColor.Yellow);
             }
 
+            Window.TabsManager.HomeView.AddText("", Color.White);
+            Window.TabsManager.HomeView.AddText(Resources._YourRsa, Color.White);
+            Window.TabsManager.HomeView.AddText(RsaFingerprint.GetMd5(Network.LocalRsa.Rsa.ExportRSAPublicKey()), Color.White);
+            
             if (args.Contains("--localhost") || args.Contains("-l"))
             {
                 Network.Connect(IPAddress.Loopback);
             }
-
+            
             Logger.DeleteOldLogs(5);
         }
 
