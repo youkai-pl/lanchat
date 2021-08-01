@@ -1,10 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using Lanchat.ClientCore;
-using Lanchat.Core.Encryption;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Handlers;
 using Lanchat.Terminal.Properties;
@@ -21,7 +21,7 @@ namespace Lanchat.Terminal
         {
             Config = Storage.LoadConfig();
             var rsaDatabase = new RsaDatabase();
-
+            
             try
             {
                 CultureInfo.CurrentCulture = new CultureInfo(Config.Language);
@@ -95,13 +95,6 @@ namespace Lanchat.Terminal
                     Window.TabsManager.HomeView.AddText($"Update available: {newVersion}", ConsoleColor.Green);
                 }
             }
-            
-            if (args.Contains("--localhost") || args.Contains("-l"))
-            {
-                Network.Connect(IPAddress.Loopback);
-            }
-
-            Logger.DeleteOldLogs(5);
         }
     }
 }
