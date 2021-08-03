@@ -21,7 +21,9 @@
     </provides>
     <screenshots>
         <screenshot type="default">
-            <image>https://user-images.githubusercontent.com/20731856/108912793-65e25300-7629-11eb-804e-e62361b94edb.png</image>
+            <image>
+                https://user-images.githubusercontent.com/20731856/108912793-65e25300-7629-11eb-804e-e62361b94edb.png
+            </image>
         </screenshot>
     </screenshots>
     <releases>

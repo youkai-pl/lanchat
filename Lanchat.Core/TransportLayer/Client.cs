@@ -48,7 +48,7 @@ namespace Lanchat.Core.TransportLayer
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            var message = Encoding.UTF8.GetString(buffer, (int) offset, (int) size);
+            var message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
             DataReceived?.Invoke(this, message);
         }
 

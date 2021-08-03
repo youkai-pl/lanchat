@@ -17,14 +17,14 @@ namespace Lanchat.Tests.Core.Network.Handlers
         public void Setup()
         {
             network = new P2PMock();
-            configMock = new ConfigMock {ConnectToReceivedList = true};
+            configMock = new ConfigMock { ConnectToReceivedList = true };
             nodesListHandler = new NodesListHandler(configMock, network);
         }
 
         [Test]
         public void IgnoreLoopback()
         {
-            var nodesList = new NodesList {IPAddress.Loopback};
+            var nodesList = new NodesList { IPAddress.Loopback };
             nodesListHandler.Handle(nodesList);
 
             Assert.IsFalse(network.Connected.Contains(IPAddress.Loopback));
@@ -35,7 +35,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
         {
             var address1 = IPAddress.Parse("1.1.1.1");
             var address2 = IPAddress.Parse("1.1.1.2");
-            var nodesList = new NodesList {address1, address2};
+            var nodesList = new NodesList { address1, address2 };
             nodesListHandler.Handle(nodesList);
 
             Assert.IsTrue(network.Connected.Contains(address1));
@@ -47,7 +47,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
         {
             var address1 = IPAddress.Parse("1.1.1.1");
             var address2 = IPAddress.Parse("1.1.1.1");
-            var nodesList = new NodesList {address1, address2};
+            var nodesList = new NodesList { address1, address2 };
             nodesListHandler.Handle(nodesList);
 
             Assert.IsTrue(network.Connected.Contains(address1));
@@ -59,7 +59,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
         {
             configMock.ConnectToReceivedList = false;
             var address1 = IPAddress.Parse("1.1.1.1");
-            var nodesList = new NodesList {address1};
+            var nodesList = new NodesList { address1 };
             nodesListHandler.Handle(nodesList);
 
             Assert.IsFalse(network.Connected.Contains(address1));

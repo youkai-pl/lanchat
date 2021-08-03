@@ -85,7 +85,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
         {
             Window.UiAction(() =>
             {
-                if (CurrentTab is {Content: IScrollable previousScrollPanel})
+                if (CurrentTab is { Content: IScrollable previousScrollPanel })
                 {
                     inputListeners.Remove(previousScrollPanel.ScrollPanel);
                 }

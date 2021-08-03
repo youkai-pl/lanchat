@@ -10,7 +10,6 @@ namespace Lanchat.Core.Encryption
     internal class NodeRsa : INodeRsa, IInternalNodeRsa
     {
         private readonly ILocalRsa localRsa;
-        public RSA Rsa { get; }
         private readonly IRsaDatabase rsaDatabase;
 
         public NodeRsa(IRsaDatabase rsaDatabase, ILocalRsa localRsa)
@@ -60,11 +59,13 @@ namespace Lanchat.Core.Encryption
             return localRsa.Rsa.Decrypt(encryptedBytes, RSAEncryptionPadding.Pkcs1);
         }
 
+        public RSA Rsa { get; }
+
         public KeyStatus KeyStatus { get; private set; }
 
         private void TestKeys()
         {
-            Rsa.Encrypt(new byte[] {0x10}, RSAEncryptionPadding.Pkcs1);
+            Rsa.Encrypt(new byte[] { 0x10 }, RSAEncryptionPadding.Pkcs1);
         }
 
         private void CompareWithSaved(IPAddress ipAddress)

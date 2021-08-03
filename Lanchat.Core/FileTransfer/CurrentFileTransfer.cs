@@ -27,7 +27,7 @@ namespace Lanchat.Core.FileTransfer
         ///     Size of file in parts.
         /// </summary>
         public long Parts { get; internal init; }
-        
+
         /// <summary>
         ///     File transfer progress in percent.
         /// </summary>

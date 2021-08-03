@@ -19,14 +19,14 @@ namespace Lanchat.Terminal.Handlers
             node.FileReceiver.FileTransferRequestReceived += FileSenderOnFileTransferQueued;
             node.FileReceiver.FileTransferRequestReceived += FileReceiverOnFileTransferRequestReceived;
         }
-        
+
         private void FileSenderOnFileTransferQueued(object sender, CurrentFileTransfer e)
         {
             var fileTransferStatus = new FileTransferStatus(node, e, fileTransfersView.Counter);
             fileTransfersView.Add(fileTransferStatus);
             e.PropertyChanged += (_, _) => { fileTransferStatus.Update(); };
         }
-        
+
         private static void FileReceiverOnFileTransferRequestReceived(object sender, CurrentFileTransfer e)
         {
             Window.TabsManager.SignalFileTransfer();

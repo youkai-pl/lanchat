@@ -46,8 +46,8 @@ namespace Lanchat.Tests.Core.Encryption.Handlers
 
             var keyInfo = new KeyInfo
             {
-                AesKey = new byte[] {0x10},
-                AesIv = new byte[] {0x10}
+                AesKey = new byte[] { 0x10 },
+                AesIv = new byte[] { 0x10 }
             };
             keyInfoHandler.Handle(keyInfo);
 

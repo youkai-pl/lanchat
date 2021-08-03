@@ -20,7 +20,7 @@ namespace Lanchat.Core.Api
         /// <inheritdoc />
         public void Handle(object data)
         {
-            Handle((T) data);
+            Handle((T)data);
         }
 
         /// <summary>

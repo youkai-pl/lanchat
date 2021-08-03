@@ -33,7 +33,7 @@ namespace Lanchat.Terminal.UserInterface
                 {
                     Window.TabsManager.ShowMainChatView();
                 }
-                
+
                 if (promptInput.Text.StartsWith("/", StringComparison.CurrentCulture))
                 {
                     commandsController.ExecuteCommand(promptInput.Text.Split(' '));

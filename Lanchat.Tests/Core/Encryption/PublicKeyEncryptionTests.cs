@@ -22,7 +22,7 @@ namespace Lanchat.Tests.Core.Encryption
         [Test]
         public void BytesEncryption()
         {
-            var testBytes = new byte[] {0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70};
+            var testBytes = new byte[] { 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70 };
             var encryptedBytes = nodeRsaTest.Encrypt(testBytes);
             var decryptedBytes = nodeRsaTest.Decrypt(encryptedBytes);
             Assert.AreEqual(testBytes, decryptedBytes);
@@ -35,8 +35,8 @@ namespace Lanchat.Tests.Core.Encryption
             {
                 nodeRsaTest.ImportKey(new PublicKey
                 {
-                    RsaExponent = new byte[] {0x10},
-                    RsaModulus = new byte[] {0x10}
+                    RsaExponent = new byte[] { 0x10 },
+                    RsaModulus = new byte[] { 0x10 }
                 }, IPAddress.Loopback);
             });
         }
@@ -45,7 +45,7 @@ namespace Lanchat.Tests.Core.Encryption
         public void Dispose()
         {
             nodeRsaTest.Dispose();
-            Assert.Catch<ObjectDisposedException>(() => { nodeRsaTest.Encrypt(new byte[] {0x10}); });
+            Assert.Catch<ObjectDisposedException>(() => { nodeRsaTest.Encrypt(new byte[] { 0x10 }); });
         }
     }
 }

@@ -69,7 +69,7 @@ namespace Lanchat.Core.Network
             {
                 nodeInternal.OnDisconnected();
             }
-            else if(!cannotConnectHandled)
+            else if (!cannotConnectHandled)
             {
                 cannotConnectHandled = true;
                 nodeInternal.OnCannotConnect();

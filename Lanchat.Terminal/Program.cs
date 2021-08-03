@@ -23,7 +23,7 @@ namespace Lanchat.Terminal
         {
             Config = Storage.LoadConfig();
             var rsaDatabase = new RsaDatabase();
-            
+
             try
             {
                 CultureInfo.CurrentCulture = new CultureInfo(Config.Language);
@@ -61,13 +61,14 @@ namespace Lanchat.Terminal
 
             Window.TabsManager.HomeView.AddText("", Color.White);
             Window.TabsManager.HomeView.AddText(Resources._YourRsa, Color.White);
-            Window.TabsManager.HomeView.AddText(RsaFingerprint.GetMd5(Network.LocalRsa.Rsa.ExportRSAPublicKey()), Color.White);
-            
+            Window.TabsManager.HomeView.AddText(RsaFingerprint.GetMd5(Network.LocalRsa.Rsa.ExportRSAPublicKey()),
+                Color.White);
+
             if (args.Contains("--localhost") || args.Contains("-l"))
             {
                 Network.Connect(IPAddress.Loopback);
             }
-            
+
             Logger.DeleteOldLogs(5);
         }
 

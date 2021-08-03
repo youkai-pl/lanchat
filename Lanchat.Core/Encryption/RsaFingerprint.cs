@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 namespace Lanchat.Core.Encryption
 {
     /// <summary>
-    ///     RSA fingerprint generator 
+    ///     RSA fingerprint generator
     /// </summary>
     public static class RsaFingerprint
     {

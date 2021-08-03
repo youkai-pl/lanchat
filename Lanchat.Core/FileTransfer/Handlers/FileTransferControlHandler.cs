@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using Lanchat.Core.Api;
 using Lanchat.Core.FileTransfer.Models;
 

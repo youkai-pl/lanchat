@@ -35,7 +35,6 @@ namespace Lanchat.Core.Api
 
             Trace.WriteLine($"Node {node.Id} received invalid json");
             return false;
-
         }
     }
 }

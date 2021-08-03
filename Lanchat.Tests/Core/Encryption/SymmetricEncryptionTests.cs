@@ -10,8 +10,8 @@ namespace Lanchat.Tests.Core.Encryption
 {
     public class SymmetricEncryptionTests
     {
-        private NodeRsa nodeRsa;
         private NodeAes nodeAes;
+        private NodeRsa nodeRsa;
 
         [SetUp]
         public void Setup()
@@ -34,7 +34,7 @@ namespace Lanchat.Tests.Core.Encryption
         [Test]
         public void BytesEncryption()
         {
-            var testBytes = new byte[] {0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70};
+            var testBytes = new byte[] { 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70 };
             var encryptedBytes = nodeAes.EncryptBytes(testBytes);
             var decryptedBytes = nodeAes.DecryptBytes(encryptedBytes);
             Assert.AreEqual(testBytes, decryptedBytes);
@@ -59,8 +59,8 @@ namespace Lanchat.Tests.Core.Encryption
             {
                 nodeAes.ImportKey(new KeyInfo
                 {
-                    AesIv = new byte[] {0x10},
-                    AesKey = new byte[] {0x10}
+                    AesIv = new byte[] { 0x10 },
+                    AesKey = new byte[] { 0x10 }
                 });
             });
         }

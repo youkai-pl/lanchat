@@ -7,9 +7,9 @@ namespace Lanchat.Terminal.UserInterface
 {
     public class TabsManager
     {
+        private readonly Tab fileTransferViewTab;
         private readonly Tab homeViewTab;
         private readonly Tab mainViewTab;
-        private readonly Tab fileTransferViewTab;
         private readonly TabPanel tabPanel;
 
         public TabsManager(TabPanel tabPanel)
@@ -22,7 +22,7 @@ namespace Lanchat.Terminal.UserInterface
             homeViewTab = new Tab("Lanchat", HomeView);
             mainViewTab = new Tab("Lanchat", MainChatView);
             fileTransferViewTab = new Tab("File transfer", FileTransfersView);
-            
+
             tabPanel.SystemTabs.AddTab(homeViewTab);
             tabPanel.SystemTabs.AddTab(new Tab("Detected users", new DetectedUsersView()));
             tabPanel.SystemTabs.AddTab(fileTransferViewTab);
@@ -37,14 +37,14 @@ namespace Lanchat.Terminal.UserInterface
         {
             if (tabPanel.SystemTabs.Tabs.First().Content is HomeView)
             {
-                Window.UiAction(() =>tabPanel.SystemTabs.ReplaceTab(homeViewTab, mainViewTab));
+                Window.UiAction(() => tabPanel.SystemTabs.ReplaceTab(homeViewTab, mainViewTab));
             }
         }
 
         public Tab AddPrivateChatView(INode node)
         {
             var chatView = new ChatView(node);
-            var chatTab = new Tab(node.User.Nickname, chatView) {Id = node.Id};
+            var chatTab = new Tab(node.User.Nickname, chatView) { Id = node.Id };
             tabPanel.ChatTabs.AddTab(chatTab);
             return chatTab;
         }
@@ -56,6 +56,7 @@ namespace Lanchat.Terminal.UserInterface
             {
                 tabPanel.SelectTab(tabPanel.AllTabs[0]);
             }
+
             tabPanel.ChatTabs.RemoveTab(chatTab);
         }
 
@@ -73,7 +74,7 @@ namespace Lanchat.Terminal.UserInterface
                 mainViewTab.Header.MarkAsUnread();
             }
         }
-        
+
         public void SignalFileTransfer()
         {
             if (tabPanel.CurrentTab != fileTransferViewTab)

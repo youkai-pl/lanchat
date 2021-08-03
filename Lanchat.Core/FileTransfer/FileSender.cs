@@ -33,7 +33,7 @@ namespace Lanchat.Core.FileTransfer
 
         public void CreateSendRequest(string path)
         {
-            if (CurrentFileTransfer is {Disposed: false})
+            if (CurrentFileTransfer is { Disposed: false })
             {
                 throw new InvalidOperationException("File transfer already in progress");
             }

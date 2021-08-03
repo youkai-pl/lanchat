@@ -18,7 +18,7 @@ namespace Lanchat.Tests.Core.Api
         [Test]
         public void KnownTypeDeserialize()
         {
-            var model = new Model {Property = "test"};
+            var model = new Model { Property = "test" };
             var serializedModel = jsonUtils.Serialize(model);
             var deserializedModel = jsonUtils.Deserialize<Model>(serializedModel);
             Assert.AreEqual(model.Property, deserializedModel.Property);
@@ -28,9 +28,9 @@ namespace Lanchat.Tests.Core.Api
         public void RegisteredTypeDeserialize()
         {
             jsonUtils.KnownModels.Add(typeof(Model));
-            var model = new Model {Property = "test"};
+            var model = new Model { Property = "test" };
             var serializedModel = jsonUtils.Serialize(model);
-            var deserializedModel = (Model) jsonUtils.Deserialize(serializedModel);
+            var deserializedModel = (Model)jsonUtils.Deserialize(serializedModel);
             Assert.AreEqual(model.Property, deserializedModel.Property);
         }
 

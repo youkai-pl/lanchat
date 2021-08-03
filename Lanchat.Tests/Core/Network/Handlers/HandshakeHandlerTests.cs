@@ -16,9 +16,9 @@ namespace Lanchat.Tests.Core.Network.Handlers
     public class HandshakeHandlerTests
     {
         private HandshakeHandler handshakeHandler;
-        private NodeRsa nodeRsa;
         private NodeAesMock nodeAesMock;
         private NodeMock nodeMock;
+        private NodeRsa nodeRsa;
         private OutputMock outputMock;
 
         [SetUp]
@@ -50,7 +50,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
             };
             handshakeHandler.Handle(handshake);
 
-            nodeRsa.Encrypt(new byte[] {0x10});
+            nodeRsa.Encrypt(new byte[] { 0x10 });
             Assert.IsTrue(handshakeHandler.Disabled);
             Assert.AreEqual(handshake.UserStatus, nodeMock.User.UserStatus);
             Assert.NotNull(outputMock.LastOutput);

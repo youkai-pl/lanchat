@@ -30,7 +30,7 @@ namespace Lanchat.Terminal.Handlers
         {
             tabsManager.ShowMainChatView();
             privateChatTab = tabsManager.AddPrivateChatView(node);
-            privateChatView = (ChatView) privateChatTab.Content;
+            privateChatView = (ChatView)privateChatTab.Content;
             Window.Writer.WriteStatus(string.Format(Resources._Connected, node.User.Nickname));
         }
 
@@ -55,7 +55,8 @@ namespace Lanchat.Terminal.Handlers
         private void UserOnNicknameUpdated(object sender, string e)
         {
             tabsManager.UpdateNickname(node);
-            Window.Writer.WriteStatus(string.Format(Resources._NicknameChanged, node.User.PreviousNickname, node.User.Nickname));
+            Window.Writer.WriteStatus(string.Format(Resources._NicknameChanged, node.User.PreviousNickname,
+                node.User.Nickname));
         }
     }
 }

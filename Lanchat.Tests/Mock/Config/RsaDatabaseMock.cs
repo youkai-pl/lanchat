@@ -17,7 +17,7 @@ namespace Lanchat.Tests.Mock.Config
 
         public string GetLocalPem()
         {
-            return new(PemEncoding.Write("RSA PRIVATE KEY", localRsa.ExportRSAPrivateKey()));
+            return new string(PemEncoding.Write("RSA PRIVATE KEY", localRsa.ExportRSAPrivateKey()));
         }
 
         public void SaveLocalPem(string pem)
@@ -27,7 +27,7 @@ namespace Lanchat.Tests.Mock.Config
 
         public string GetNodePem(IPAddress ipAddress)
         {
-            return new(PemEncoding.Write("RSA PUBLIC KEY", remoteRsa.ExportRSAPublicKey()));
+            return new string(PemEncoding.Write("RSA PUBLIC KEY", remoteRsa.ExportRSAPublicKey()));
         }
 
         public void SaveNodePem(IPAddress ipAddress, string pem)

@@ -28,7 +28,7 @@ namespace Lanchat.Core.Chat
 
         public void SendMessage(string content)
         {
-            output.SendData(new Message {Content = content});
+            output.SendData(new Message { Content = content });
         }
 
         public void SendPrivateMessage(string content)

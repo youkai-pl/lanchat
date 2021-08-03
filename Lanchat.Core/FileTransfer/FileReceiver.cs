@@ -17,7 +17,7 @@ namespace Lanchat.Core.FileTransfer
 
         public void Dispose()
         {
-            if (CurrentFileTransfer is {Accepted: true, Disposed: false})
+            if (CurrentFileTransfer is { Accepted: true, Disposed: false })
             {
                 CancelReceive(true);
             }
@@ -51,7 +51,7 @@ namespace Lanchat.Core.FileTransfer
 
         public void RejectRequest()
         {
-            if (CurrentFileTransfer is {Disposed: true})
+            if (CurrentFileTransfer is { Disposed: true })
             {
                 throw new InvalidOperationException("No pending requests ");
             }
@@ -87,7 +87,7 @@ namespace Lanchat.Core.FileTransfer
 
         public void FinishReceive()
         {
-            if (CurrentFileTransfer is {Disposed: true})
+            if (CurrentFileTransfer is { Disposed: true })
             {
                 return;
             }

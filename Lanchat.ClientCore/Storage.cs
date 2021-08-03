@@ -66,12 +66,12 @@ namespace Lanchat.ClientCore
             }
             catch (JsonException)
             {
-                config = new Config {Fresh = true};
+                config = new Config { Fresh = true };
             }
             catch (Exception e)
             {
                 CatchFileSystemExceptions(e);
-                config = new Config {Fresh = true};
+                config = new Config { Fresh = true };
             }
 
             SaveConfig(config);
@@ -217,7 +217,7 @@ namespace Lanchat.ClientCore
             {
                 FileAccessPermissions = FileAccessPermissions.UserRead | FileAccessPermissions.UserWrite
             };
-                
+
             fileInfo.Refresh();
         }
     }
