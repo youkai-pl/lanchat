@@ -1,5 +1,4 @@
 using System;
-using ConsoleGUI.Data;
 using Lanchat.Terminal.UserInterface.Controls;
 
 namespace Lanchat.Terminal.UserInterface

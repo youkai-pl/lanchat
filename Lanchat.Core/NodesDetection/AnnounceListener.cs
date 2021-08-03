@@ -43,10 +43,10 @@ namespace Lanchat.Core.NodesDetection
             {
                 while (true)
                 {
-                    var recvBuffer = udpClient.Receive(ref from);
+                    var buffer = udpClient.Receive(ref from);
                     try
                     {
-                        HandleBroadcast(recvBuffer, from);
+                        HandleBroadcast(buffer, from);
                     }
                     catch (JsonException)
                     { }

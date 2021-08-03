@@ -1,6 +1,5 @@
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Network;
-using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 using Lanchat.Terminal.UserInterface.Controls;
 using Lanchat.Terminal.UserInterface.Views;

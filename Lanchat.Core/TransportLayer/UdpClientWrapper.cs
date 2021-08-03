@@ -21,8 +21,8 @@ namespace Lanchat.Core.TransportLayer
 
         public string Receive(ref IPEndPoint endPoint)
         {
-            var recvBuffer = udpClient.Receive(ref endPoint);
-            return Encoding.UTF8.GetString(recvBuffer);
+            var bufer = udpClient.Receive(ref endPoint);
+            return Encoding.UTF8.GetString(bufer);
         }
 
         public void Bind(IPEndPoint endPoint)

@@ -43,7 +43,7 @@ namespace Lanchat.Core.Encryption
 
         public KeyInfo ExportKey()
         {
-            return new()
+            return new KeyInfo
             {
                 AesKey = internalNodeRsa.Encrypt(localAes.Key),
                 AesIv = internalNodeRsa.Encrypt(localAes.IV)

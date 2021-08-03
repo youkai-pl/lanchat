@@ -10,8 +10,6 @@ namespace Lanchat.Core.TransportLayer
 {
     internal class Client : TcpClient, IHost
     {
-        private bool disposing;
-
         internal Client(IPAddress address, int port) : base(address, port)
         { }
 
@@ -28,7 +26,6 @@ namespace Lanchat.Core.TransportLayer
 
         public void Close()
         {
-            disposing = true;
             DisconnectAsync();
             while (IsConnected)
             {

@@ -19,9 +19,7 @@ namespace Lanchat.Core.FileTransfer.Handlers
 
         protected override void Handle(FilePart filePart)
         {
-            if (fileReceiver.CurrentFileTransfer == null ||
-                !fileReceiver.CurrentFileTransfer.Accepted ||
-                fileReceiver.CurrentFileTransfer.Disposed)
+            if (fileReceiver.CurrentFileTransfer is not { Accepted: true } || fileReceiver.CurrentFileTransfer.Disposed)
             {
                 return;
             }

@@ -28,13 +28,14 @@ namespace Lanchat.Core.Api
                 return false;
             }
 
-            if (!Validator.TryValidateObject(data, new ValidationContext(data), new List<ValidationResult>()))
+            if (Validator.TryValidateObject(data, new ValidationContext(data), new List<ValidationResult>()))
             {
-                Trace.WriteLine($"Node {node.Id} received invalid json");
-                return false;
+                return true;
             }
 
-            return true;
+            Trace.WriteLine($"Node {node.Id} received invalid json");
+            return false;
+
         }
     }
 }
