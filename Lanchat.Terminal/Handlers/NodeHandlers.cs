@@ -16,7 +16,6 @@ namespace Lanchat.Terminal.Handlers
         public NodeHandlers(INode node)
         {
             this.node = node;
-
             node.Connected += NodeOnConnected;
             node.Disconnected += NodeOnDisconnected;
             node.Messaging.MessageReceived += MessagingOnMessageReceived;
