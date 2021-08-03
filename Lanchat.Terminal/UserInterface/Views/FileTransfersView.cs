@@ -2,6 +2,7 @@ using System;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
 using ConsoleGUI.UserDefined;
+using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface.Controls;
 
 namespace Lanchat.Terminal.UserInterface.Views
@@ -14,12 +15,13 @@ namespace Lanchat.Terminal.UserInterface.Views
         {
             ScrollPanel = new VerticalScrollPanel
             {
-                Content = stackPanel,
+                Content =  new TextBlock{Text = Resources._NoFileReceiveRequest},
                 ScrollBarBackground = new Character(),
                 ScrollBarForeground = new Character(),
                 ScrollUpKey = ConsoleKey.PageUp,
                 ScrollDownKey = ConsoleKey.PageDown
             };
+            
             Content = ScrollPanel;
         }
 
@@ -29,6 +31,7 @@ namespace Lanchat.Terminal.UserInterface.Views
 
         public void Add(FileTransferStatus fileTransferStatus)
         {
+            ScrollPanel.Content = stackPanel;
             Window.UiAction(() => stackPanel.Add(fileTransferStatus));
             Counter++;
         }

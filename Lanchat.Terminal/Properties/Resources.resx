@@ -252,7 +252,7 @@ Try /help &lt;command&gt; for detailed help.
         <value>Cannot send multiple files at once.</value>
     </data>
     <data name="_NoFileReceiveRequest" xml:space="preserve">
-        <value>No file transfers</value>
+        <value>No file transfers in progress.</value>
     </data>
     <data name="Help_send" xml:space="preserve">
         <value>Syntax: /send &lt;short id&gt; &lt;file path&gt;</value>
