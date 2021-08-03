@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using System.Reflection;
-using ConsoleGUI;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
 using ConsoleGUI.UserDefined;
+using Lanchat.Core.Encryption;
 using Lanchat.Terminal.Properties;
 
 namespace Lanchat.Terminal.UserInterface.Views
@@ -14,22 +13,7 @@ namespace Lanchat.Terminal.UserInterface.Views
 
         public HomeView()
         {
-            var currentVersion = $"Version: {Assembly.GetEntryAssembly()!.GetName().Version!.ToString(3)}";
-
-            stackPanel = new VerticalStackPanel
-            {
-                Children = new List<IControl>
-                {
-                    new BreakPanel
-                    {
-                        Content = new TextBlock
-                        {
-                            Text = string.Format(Resources._Logo, currentVersion)
-                        }
-                    }
-                }
-            };
-
+            stackPanel = new VerticalStackPanel();
             Content = new Box
             {
                 HorizontalContentPlacement = Box.HorizontalPlacement.Center,
@@ -40,11 +24,33 @@ namespace Lanchat.Terminal.UserInterface.Views
                     Content = stackPanel
                 }
             };
+
+            WriteAsciiLogo();
+            WriteWelcomeText();
         }
 
         public void AddText(string text, Color color)
         {
             Window.UiAction(() => stackPanel.Add(new TextBlock { Text = text, Color = color }));
+        }
+
+        private void WriteAsciiLogo()
+        {
+            var currentVersion = $"Version: {Assembly.GetEntryAssembly()!.GetName().Version!.ToString(3)}";
+            stackPanel.Add(new BreakPanel
+            {
+                Content = new TextBlock
+                {
+                    Text = string.Format(Resources._Logo, currentVersion)
+                }
+            });
+        }
+        
+        private void WriteWelcomeText()
+        {
+            AddText("", Color.White);
+            AddText(Resources._YourRsa, Color.White);
+            AddText(RsaFingerprint.GetMd5(Program.Network.LocalRsa.Rsa.ExportRSAPublicKey()), Color.White);
         }
     }
 }
