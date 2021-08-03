@@ -35,12 +35,12 @@ namespace Lanchat.Terminal
 
             Network = new P2P(Config, rsaDatabase, x =>
             {
-                _ = new NodeHandlers(x.Instance, Window.TabsManager);
-                _ = new FileTransferHandlers(x.Instance, Window.TabsManager.FileTransfersView);
+                _ = new NodeHandlers(x.Instance);
+                _ = new FileTransferHandlers(x.Instance);
             });
 
             CheckStartArguments(args);
-            Window.Start();
+            Window.Initialize();
             Logger.StartLogging();
 
             try
@@ -54,7 +54,7 @@ namespace Lanchat.Terminal
                     throw;
                 }
 
-                Window.TabsManager.HomeView.AddText(Resources._PortBusy, ConsoleColor.Yellow);
+                TabsManager.HomeView.AddText(Resources._PortBusy, ConsoleColor.Yellow);
             }
 
             if (args.Contains("--localhost") || args.Contains("-l"))
@@ -92,7 +92,7 @@ namespace Lanchat.Terminal
                 var newVersion = UpdateChecker.CheckUpdates();
                 if (newVersion != null)
                 {
-                    Window.TabsManager.HomeView.AddText($"Update available: {newVersion}", ConsoleColor.Green);
+                    TabsManager.HomeView.AddText($"Update available: {newVersion}", ConsoleColor.Green);
                 }
             }
         }

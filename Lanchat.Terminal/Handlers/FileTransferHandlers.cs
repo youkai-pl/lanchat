@@ -2,19 +2,16 @@ using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.UserInterface;
 using Lanchat.Terminal.UserInterface.Controls;
-using Lanchat.Terminal.UserInterface.Views;
 
 namespace Lanchat.Terminal.Handlers
 {
     public class FileTransferHandlers
     {
-        private readonly FileTransfersView fileTransfersView;
         private readonly INode node;
 
-        public FileTransferHandlers(INode node, FileTransfersView fileTransfersView)
+        public FileTransferHandlers(INode node)
         {
             this.node = node;
-            this.fileTransfersView = fileTransfersView;
             node.FileSender.FileTransferQueued += FileSenderOnFileTransferQueued;
             node.FileReceiver.FileTransferRequestReceived += FileSenderOnFileTransferQueued;
             node.FileReceiver.FileTransferRequestReceived += FileReceiverOnFileTransferRequestReceived;
@@ -22,14 +19,14 @@ namespace Lanchat.Terminal.Handlers
 
         private void FileSenderOnFileTransferQueued(object sender, CurrentFileTransfer e)
         {
-            var fileTransferStatus = new FileTransferStatus(node, e, fileTransfersView.Counter);
-            fileTransfersView.Add(fileTransferStatus);
+            var fileTransferStatus = new FileTransferStatus(node, e, TabsManager.FileTransfersView.Counter);
+            TabsManager.FileTransfersView.Add(fileTransferStatus);
             e.PropertyChanged += (_, _) => { fileTransferStatus.Update(); };
         }
 
         private static void FileReceiverOnFileTransferRequestReceived(object sender, CurrentFileTransfer e)
         {
-            Window.TabsManager.SignalFileTransfer();
+            TabsManager.SignalFileTransfer();
         }
     }
 }

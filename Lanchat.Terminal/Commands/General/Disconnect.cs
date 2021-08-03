@@ -19,7 +19,7 @@ namespace Lanchat.Terminal.Commands.General
             }
             else
             {
-                Window.Writer.WriteError(Resources._UserNotFound);
+                Writer.WriteError(Resources._UserNotFound);
             }
         }
 

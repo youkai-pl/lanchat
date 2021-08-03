@@ -10,7 +10,7 @@ namespace Lanchat.Terminal
 
         public TraceListener()
         {
-            debugView = Window.TabsManager.AddDebugView();
+            debugView = TabsManager.AddDebugView();
         }
 
         public override void WriteLine(string message)

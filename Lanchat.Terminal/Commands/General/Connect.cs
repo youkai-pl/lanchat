@@ -18,7 +18,7 @@ namespace Lanchat.Terminal.Commands.General
         {
             if (args == null || args.Length < 1)
             {
-                Window.Writer.WriteText(Resources.Help_connect);
+                Writer.WriteText(Resources.Help_connect);
                 return;
             }
 
@@ -43,24 +43,24 @@ namespace Lanchat.Terminal.Commands.General
                     port = Program.Config.ServerPort;
                 }
 
-                Window.Writer.WriteText(string.Format(Resources._ConnectionAttempt, addressArgument));
+                Writer.WriteText(string.Format(Resources._ConnectionAttempt, addressArgument));
                 var result = await Program.Network.Connect(ipAddress, port);
                 if (!result)
                 {
-                    Window.Writer.WriteError(string.Format(Resources._CannotConnect, ipAddress));
+                    Writer.WriteError(string.Format(Resources._CannotConnect, ipAddress));
                 }
             }
             catch (FormatException)
             {
-                Window.Writer.WriteError(Resources._IncorrectValues);
+                Writer.WriteError(Resources._IncorrectValues);
             }
             catch (SocketException)
             {
-                Window.Writer.WriteError(Resources._IncorrectValues);
+                Writer.WriteError(Resources._IncorrectValues);
             }
             catch (ArgumentException e)
             {
-                Window.Writer.WriteError(e.Message);
+                Writer.WriteError(e.Message);
             }
         }
 

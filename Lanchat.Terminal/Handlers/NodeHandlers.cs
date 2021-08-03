@@ -10,14 +10,12 @@ namespace Lanchat.Terminal.Handlers
     public class NodeHandlers
     {
         private readonly INode node;
-        private readonly TabsManager tabsManager;
         private Tab privateChatTab;
         private ChatView privateChatView;
 
-        public NodeHandlers(INode node, TabsManager tabsManager)
+        public NodeHandlers(INode node)
         {
             this.node = node;
-            this.tabsManager = tabsManager;
 
             node.Connected += NodeOnConnected;
             node.Disconnected += NodeOnDisconnected;
@@ -28,35 +26,35 @@ namespace Lanchat.Terminal.Handlers
 
         private void NodeOnConnected(object sender, EventArgs e)
         {
-            tabsManager.ShowMainChatView();
-            privateChatTab = tabsManager.AddPrivateChatView(node);
+            TabsManager.ShowMainChatView();
+            privateChatTab = TabsManager.AddPrivateChatView(node);
             privateChatView = (ChatView)privateChatTab.Content;
-            Window.Writer.WriteStatus(string.Format(Resources._Connected, node.User.Nickname));
+            Writer.WriteStatus(string.Format(Resources._Connected, node.User.Nickname));
         }
 
         private void NodeOnDisconnected(object sender, EventArgs e)
         {
-            tabsManager.ClosePrivateChatView(node);
-            Window.Writer.WriteStatus(string.Format(Resources._Disconnected, node.User.Nickname));
+            TabsManager.ClosePrivateChatView(node);
+            Writer.WriteStatus(string.Format(Resources._Disconnected, node.User.Nickname));
         }
 
         private void MessagingOnMessageReceived(object sender, string e)
         {
-            tabsManager.MainChatView.AddMessage(e, node.User.Nickname);
-            tabsManager.SignalNewMessage();
+            TabsManager.MainChatView.AddMessage(e, node.User.Nickname);
+            TabsManager.SignalNewMessage();
         }
 
         private void MessagingOnPrivateMessageReceived(object sender, string e)
         {
             privateChatView.AddMessage(e, node.User.Nickname);
-            tabsManager.SignalPrivateNewMessage(node);
+            TabsManager.SignalPrivateNewMessage(node);
         }
 
         private void UserOnNicknameUpdated(object sender, string e)
         {
-            tabsManager.UpdateNickname(node);
-            Window.Writer.WriteStatus(string.Format(Resources._NicknameChanged, node.User.PreviousNickname,
-                node.User.Nickname));
+            TabsManager.UpdateNickname(node);
+            Writer.WriteStatus(
+                string.Format(Resources._NicknameChanged, node.User.PreviousNickname, node.User.Nickname));
         }
     }
 }

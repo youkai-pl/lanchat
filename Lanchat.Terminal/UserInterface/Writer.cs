@@ -1,35 +1,25 @@
 using System;
-using Lanchat.Terminal.UserInterface.Controls;
 
 namespace Lanchat.Terminal.UserInterface
 {
-    public class Writer
+    public static class Writer
     {
-        private readonly TabPanel tabPanel;
-        private readonly TabsManager tabsManager;
-
-        public Writer(TabPanel tabPanel, TabsManager tabsManager)
+        public static void WriteText(string text)
         {
-            this.tabPanel = tabPanel;
-            this.tabsManager = tabsManager;
-        }
-
-        public void WriteText(string text)
-        {
-            var writeable = tabPanel.CurrentTab.Content as IWriteable;
+            var writeable = Window.TabPanel.CurrentTab.Content as IWriteable;
             writeable?.AddText(text, ConsoleColor.White);
         }
 
-        public void WriteError(string text)
+        public static void WriteError(string text)
         {
-            var writeable = tabPanel.CurrentTab.Content as IWriteable;
+            var writeable = Window.TabPanel.CurrentTab.Content as IWriteable;
             writeable?.AddText(text, ConsoleColor.Red);
         }
 
-        public void WriteStatus(string text)
+        public static void WriteStatus(string text)
         {
-            tabsManager.MainChatView.AddText(text, ConsoleColor.White);
-            tabsManager.SignalNewMessage();
+            TabsManager.MainChatView.AddText(text, ConsoleColor.White);
+            TabsManager.SignalNewMessage();
         }
     }
 }

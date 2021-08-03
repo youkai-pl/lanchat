@@ -22,8 +22,6 @@ namespace Lanchat.Terminal.UserInterface
         static Window()
         {
             TabPanel = new TabPanel(InputListeners);
-            TabsManager = new TabsManager(TabPanel);
-            Writer = new Writer(TabPanel, TabsManager);
 
             var promptInput = new TextBox();
             var promptBox = new Border
@@ -54,17 +52,11 @@ namespace Lanchat.Terminal.UserInterface
                 DockedControl = promptBox
             };
 
-            InputListeners.Add(new InputController(promptInput, TabPanel));
-            InputListeners.Add(promptInput);
-            InputListeners.Add(TabPanel);
+            SetupInputListeners(promptInput);
         }
 
-        private static TabPanel TabPanel { get; }
-
-        public static TabsManager TabsManager { get; }
-        public static Writer Writer { get; }
-
-        public static void Start()
+        public static TabPanel TabPanel { get; }
+        public static void Initialize()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -76,6 +68,19 @@ namespace Lanchat.Terminal.UserInterface
             ConsoleManager.Content = DockPanel;
             Console.Title = Resources._WindowTitle;
 
+            StartUiThread();
+        }
+
+        public static void UiAction(Action action)
+        {
+            lock (Locker)
+            {
+                action();
+            }
+        }
+        
+        private static void StartUiThread()
+        {
             new Thread(() =>
             {
                 while (true)
@@ -90,13 +95,12 @@ namespace Lanchat.Terminal.UserInterface
                 // ReSharper disable once FunctionNeverReturns
             }).Start();
         }
-
-        public static void UiAction(Action action)
+        
+        private static void SetupInputListeners(TextBox promptInput)
         {
-            lock (Locker)
-            {
-                action();
-            }
+            InputListeners.Add(new InputController(promptInput));
+            InputListeners.Add(promptInput);
+            InputListeners.Add(TabPanel);
         }
     }
 }

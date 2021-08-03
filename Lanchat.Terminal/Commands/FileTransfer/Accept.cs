@@ -16,7 +16,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             var node = Program.Network.Nodes.Find(x => x.User.ShortId == args[0]);
             if (node == null)
             {
-                Window.Writer.WriteError(Resources._UserNotFound);
+                Writer.WriteError(Resources._UserNotFound);
                 return;
             }
 
@@ -31,7 +31,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             }
             catch (InvalidOperationException)
             {
-                Window.Writer.WriteError(Resources._NoFileReceiveRequest);
+                Writer.WriteError(Resources._NoFileReceiveRequest);
             }
         }
     }

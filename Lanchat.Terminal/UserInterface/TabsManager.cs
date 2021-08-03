@@ -5,98 +5,92 @@ using Lanchat.Terminal.UserInterface.Views;
 
 namespace Lanchat.Terminal.UserInterface
 {
-    public class TabsManager
+    public static class TabsManager
     {
-        private readonly Tab fileTransferViewTab;
-        private readonly Tab homeViewTab;
-        private readonly Tab mainViewTab;
-        private readonly TabPanel tabPanel;
+        private static readonly Tab FileTransferViewTab;
+        private static readonly Tab HomeViewTab;
+        private static readonly Tab MainViewTab;
 
-        public TabsManager(TabPanel tabPanel)
+        static TabsManager()
         {
-            this.tabPanel = tabPanel;
-            HomeView = new HomeView();
-            MainChatView = new ChatView();
-            FileTransfersView = new FileTransfersView();
+            HomeViewTab = new Tab("Lanchat", HomeView);
+            MainViewTab = new Tab("Lanchat", MainChatView);
+            FileTransferViewTab = new Tab("File transfer", FileTransfersView);
 
-            homeViewTab = new Tab("Lanchat", HomeView);
-            mainViewTab = new Tab("Lanchat", MainChatView);
-            fileTransferViewTab = new Tab("File transfer", FileTransfersView);
-
-            tabPanel.SystemTabs.AddTab(homeViewTab);
-            tabPanel.SystemTabs.AddTab(new Tab("Detected users", new DetectedUsersView()));
-            tabPanel.SystemTabs.AddTab(fileTransferViewTab);
-            tabPanel.SelectTab(homeViewTab);
+            Window.TabPanel.SystemTabs.AddTab(HomeViewTab);
+            Window.TabPanel.SystemTabs.AddTab(new Tab("Detected users", new DetectedUsersView()));
+            Window.TabPanel.SystemTabs.AddTab(FileTransferViewTab);
+            Window.TabPanel.SelectTab(HomeViewTab);
         }
 
-        public HomeView HomeView { get; }
-        public ChatView MainChatView { get; }
-        public FileTransfersView FileTransfersView { get; }
+        public static HomeView HomeView { get; } = new();
+        public static ChatView MainChatView { get; } = new();
+        public static FileTransfersView FileTransfersView { get; } = new();
 
-        public void ShowMainChatView()
+        public static void ShowMainChatView()
         {
-            if (tabPanel.SystemTabs.Tabs.First().Content is HomeView)
+            if (Window.TabPanel.SystemTabs.Tabs.First().Content is HomeView)
             {
-                Window.UiAction(() => tabPanel.SystemTabs.ReplaceTab(homeViewTab, mainViewTab));
+                Window.UiAction(() => Window.TabPanel.SystemTabs.ReplaceTab(HomeViewTab, MainViewTab));
             }
         }
 
-        public Tab AddPrivateChatView(INode node)
+        public static Tab AddPrivateChatView(INode node)
         {
             var chatView = new ChatView(node);
             var chatTab = new Tab(node.User.Nickname, chatView) { Id = node.Id };
-            tabPanel.ChatTabs.AddTab(chatTab);
+            Window.TabPanel.ChatTabs.AddTab(chatTab);
             return chatTab;
         }
 
-        public void ClosePrivateChatView(INode node)
+        public static void ClosePrivateChatView(INode node)
         {
-            var chatTab = tabPanel.AllTabs.First(x => x.Id == node.Id);
-            if (tabPanel.CurrentTab == chatTab)
+            var chatTab = Window.TabPanel.AllTabs.First(x => x.Id == node.Id);
+            if (Window.TabPanel.CurrentTab == chatTab)
             {
-                tabPanel.SelectTab(tabPanel.AllTabs[0]);
+                Window.TabPanel.SelectTab(Window.TabPanel.AllTabs[0]);
             }
 
-            tabPanel.ChatTabs.RemoveTab(chatTab);
+            Window.TabPanel.ChatTabs.RemoveTab(chatTab);
         }
 
-        public void UpdateNickname(INode node)
+        public static void UpdateNickname(INode node)
         {
-            var tab = tabPanel.AllTabs.First(x => x.Content is ChatView chatView && chatView.Node == node);
+            var tab = Window.TabPanel.AllTabs.First(x => x.Content is ChatView chatView && chatView.Node == node);
             tab!.Header.UpdateText(node.User.Nickname);
-            tabPanel.ChatTabs.RefreshHeaders();
+            Window.TabPanel.ChatTabs.RefreshHeaders();
         }
 
-        public void SignalNewMessage()
+        public static void SignalNewMessage()
         {
-            if (tabPanel.CurrentTab != mainViewTab)
+            if (Window.TabPanel.CurrentTab != MainViewTab)
             {
-                mainViewTab.Header.MarkAsUnread();
+                MainViewTab.Header.MarkAsUnread();
             }
         }
 
-        public void SignalFileTransfer()
+        public static void SignalFileTransfer()
         {
-            if (tabPanel.CurrentTab != fileTransferViewTab)
+            if (Window.TabPanel.CurrentTab != FileTransferViewTab)
             {
-                fileTransferViewTab.Header.MarkAsUnread();
+                FileTransferViewTab.Header.MarkAsUnread();
             }
         }
 
-        public void SignalPrivateNewMessage(INode node = null)
+        public static void SignalPrivateNewMessage(INode node = null)
         {
-            var tab = tabPanel.AllTabs.First(x => x.Content is ChatView chatView && chatView.Node == node);
-            if (tabPanel.CurrentTab != tab)
+            var tab = Window.TabPanel.AllTabs.First(x => x.Content is ChatView chatView && chatView.Node == node);
+            if (Window.TabPanel.CurrentTab != tab)
             {
                 tab.Header.MarkAsUnread();
             }
         }
 
-        public DebugView AddDebugView()
+        public static DebugView AddDebugView()
         {
             var debugView = new DebugView();
             var debugTab = new Tab("Debug", debugView);
-            tabPanel.SystemTabs.AddTab(debugTab);
+            Window.TabPanel.SystemTabs.AddTab(debugTab);
             return debugView;
         }
     }
