@@ -7,13 +7,6 @@ namespace Lanchat.Terminal.UserInterface.Controls
 {
     public class TabsGroup
     {
-        private readonly TabPanel tabPanel;
-
-        public TabsGroup(TabPanel tabPanel)
-        {
-            this.tabPanel = tabPanel;
-        }
-
         public VerticalStackPanel Headers { get; } = new();
         public List<Tab> Tabs { get; } = new();
 
@@ -43,7 +36,6 @@ namespace Lanchat.Terminal.UserInterface.Controls
                 var updatedHeaders = Headers.Children.ToList();
                 updatedHeaders[updatedHeaders.IndexOf(previousTab.Header)] = newTab.Header;
                 Headers.Children = updatedHeaders.ToList();
-                tabPanel.SelectTab(newTab);
             });
         }
 

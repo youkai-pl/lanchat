@@ -33,6 +33,7 @@ namespace Lanchat.Terminal.UserInterface
 
         private static void WriteOnMainChat(string text, ConsoleColor color)
         {
+            TabsManager.ShowMainChatView();
             TabsManager.MainChatView.AddText(text, color);
             TabsManager.SignalNewMessage();
         }

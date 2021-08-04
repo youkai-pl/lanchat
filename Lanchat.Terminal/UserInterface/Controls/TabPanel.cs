@@ -18,8 +18,8 @@ namespace Lanchat.Terminal.UserInterface.Controls
         {
             this.inputListeners = inputListeners;
 
-            SystemTabs = new TabsGroup(this);
-            ChatTabs = new TabsGroup(this);
+            SystemTabs = new TabsGroup();
+            ChatTabs = new TabsGroup();
 
             wrapper = new DockPanel
             {
@@ -93,6 +93,8 @@ namespace Lanchat.Terminal.UserInterface.Controls
                 CurrentTab?.Header.MarkAsInactive();
                 CurrentTab = tab;
 
+                tabSwitch = AllTabs.IndexOf(CurrentTab);
+                
                 CurrentTab.Header.MarkAsActive();
                 wrapper.FillingControl = new Border
                 {
