@@ -6,19 +6,34 @@ namespace Lanchat.Terminal.UserInterface
     {
         public static void WriteText(string text)
         {
-            var writeable = Window.TabPanel.CurrentTab.Content as IWriteable;
-            writeable?.AddText(text, ConsoleColor.White);
+            Write(text, ConsoleColor.White);
         }
 
         public static void WriteError(string text)
         {
-            var writeable = Window.TabPanel.CurrentTab.Content as IWriteable;
-            writeable?.AddText(text, ConsoleColor.Red);
+            Write(text, ConsoleColor.Red);
         }
 
         public static void WriteStatus(string text)
         {
-            TabsManager.MainChatView.AddText(text, ConsoleColor.White);
+            WriteOnMainChat(text, ConsoleColor.White);
+        }
+
+        private static void Write(string text, ConsoleColor color)
+        {
+            if (Window.TabPanel.CurrentTab.Content is IWriteable writeable)
+            {
+                writeable.AddText(text, color);
+            }
+            else
+            {
+                WriteOnMainChat(text, color);
+            }
+        }
+
+        private static void WriteOnMainChat(string text, ConsoleColor color)
+        {
+            TabsManager.MainChatView.AddText(text, color);
             TabsManager.SignalNewMessage();
         }
     }
