@@ -1,7 +1,8 @@
 {
   "profiles": {
     "Lanchat.Terminal": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "-d -a"
     }
   }
 }
