@@ -18,7 +18,7 @@ namespace Lanchat.Terminal.UserInterface
             FileTransferViewTab = new Tab("File transfer", FileTransfersView);
 
             Window.TabPanel.SystemTabs.AddTab(HomeViewTab);
-            Window.TabPanel.SystemTabs.AddTab(new Tab("Detected users", new DetectedUsersView()));
+            Window.TabPanel.SystemTabs.AddTab(new Tab("Users", UsersView));
             Window.TabPanel.SystemTabs.AddTab(FileTransferViewTab);
             Window.TabPanel.SelectTab(HomeViewTab);
         }
@@ -26,6 +26,7 @@ namespace Lanchat.Terminal.UserInterface
         public static HomeView HomeView { get; } = new();
         public static ChatView MainChatView { get; } = new();
         public static FileTransfersView FileTransfersView { get; } = new();
+        public static UsersView UsersView { get; } = new();
 
         public static void ShowMainChatView()
         {

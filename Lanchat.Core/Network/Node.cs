@@ -65,6 +65,7 @@ namespace Lanchat.Core.Network
 
         public void OnDisconnected()
         {
+            Ready = false;
             Disconnected?.Invoke(this, EventArgs.Empty);
         }
 

@@ -29,12 +29,14 @@ namespace Lanchat.Terminal.Handlers
             privateChatTab = TabsManager.AddPrivateChatView(node);
             privateChatView = (ChatView)privateChatTab.Content;
             Writer.WriteStatus(string.Format(Resources._Connected, node.User.Nickname));
+            TabsManager.UsersView.RefreshConnectedUsers();
         }
 
         private void NodeOnDisconnected(object sender, EventArgs e)
         {
             TabsManager.ClosePrivateChatView(node);
             Writer.WriteStatus(string.Format(Resources._Disconnected, node.User.Nickname));
+            TabsManager.UsersView.RefreshConnectedUsers();
         }
 
         private void MessagingOnMessageReceived(object sender, string e)
