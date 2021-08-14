@@ -9,6 +9,11 @@ namespace Lanchat.Terminal.UserInterface
             Write(text, ConsoleColor.White);
         }
 
+        public static void WriteWarning(string text)
+        {
+            Write(text, ConsoleColor.Yellow);
+        }
+        
         public static void WriteError(string text)
         {
             Write(text, ConsoleColor.Red);

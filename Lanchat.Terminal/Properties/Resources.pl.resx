@@ -153,10 +153,10 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
         <value>Nieprawidłowa komenda</value>
     </data>
     <data name="_RsaChanged" xml:space="preserve">
-        <value>Klucz publiczny został zmieniony. Połączenie może być niezabezpieczone.</value>
+        <value>Klucz publiczny {0} został zmieniony. Połączenie może być niezabezpieczone.</value>
     </data>
     <data name="_FreshRsa" xml:space="preserve">
-        <value>Aby upewnić się, że połączenie jest bezpieczne sprawdź klucz publiczny drugiego użytkownika.</value>
+        <value>Aby upewnić się, że połączenie z {0} jest bezpieczne sprawdź klucz publiczny w zakładce "Users".</value>
     </data>
     <data name="_YourRsa" xml:space="preserve">
         <value>Twój skrót klucza publicznego:</value>

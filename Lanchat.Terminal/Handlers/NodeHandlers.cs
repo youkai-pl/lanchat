@@ -1,4 +1,5 @@
 using System;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
@@ -30,6 +31,18 @@ namespace Lanchat.Terminal.Handlers
             privateChatView = (ChatView)privateChatTab.Content;
             Writer.WriteStatus(string.Format(Resources._Connected, node.User.Nickname));
             TabsManager.UsersView.RefreshConnectedUsers();
+            
+            
+            switch (node.NodeRsa.KeyStatus)
+            {
+                case KeyStatus.FreshKey:
+                    Writer.WriteWarning(string.Format(Resources._FreshRsa, node.User.Nickname));
+                    break;
+                
+                case KeyStatus.ChangedKey:
+                    Writer.WriteError(string.Format(Resources._RsaChanged, node.User.Nickname));
+                    break;
+            }
         }
 
         private void NodeOnDisconnected(object sender, EventArgs e)
