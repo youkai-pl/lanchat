@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using ConsoleGUI;
 using ConsoleGUI.Controls;
 
 namespace Lanchat.Terminal.UserInterface.Controls
@@ -35,16 +34,6 @@ namespace Lanchat.Terminal.UserInterface.Controls
                 Tabs[Tabs.FindIndex(x => x.Equals(previousTab))] = newTab;
                 var updatedHeaders = Headers.Children.ToList();
                 updatedHeaders[updatedHeaders.IndexOf(previousTab.Header)] = newTab.Header;
-                Headers.Children = updatedHeaders.ToList();
-            });
-        }
-
-        public void RefreshHeaders()
-        {
-            Window.UiAction(() =>
-            {
-                var updatedHeaders = new List<IControl>();
-                Tabs.ForEach(x => updatedHeaders.Add(x.Header));
                 Headers.Children = updatedHeaders.ToList();
             });
         }

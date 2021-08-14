@@ -1,5 +1,6 @@
 using System;
 using Lanchat.Core.Encryption;
+using Lanchat.Core.Identity;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
@@ -22,6 +23,7 @@ namespace Lanchat.Terminal.Handlers
             node.Messaging.MessageReceived += MessagingOnMessageReceived;
             node.Messaging.PrivateMessageReceived += MessagingOnPrivateMessageReceived;
             node.User.NicknameUpdated += UserOnNicknameUpdated;
+            node.User.StatusUpdated += UserOnStatusUpdated;
         }
 
         private void NodeOnConnected(object sender, EventArgs e)
@@ -31,14 +33,15 @@ namespace Lanchat.Terminal.Handlers
             privateChatView = (ChatView)privateChatTab.Content;
             Writer.WriteStatus(string.Format(Resources._Connected, node.User.Nickname));
             TabsManager.UsersView.RefreshConnectedUsers();
-            
-            
+
+            UpdateHeaderColor();
+
             switch (node.NodeRsa.KeyStatus)
             {
                 case KeyStatus.FreshKey:
                     Writer.WriteWarning(string.Format(Resources._FreshRsa, node.User.Nickname));
                     break;
-                
+
                 case KeyStatus.ChangedKey:
                     Writer.WriteError(string.Format(Resources._RsaChanged, node.User.Nickname));
                     break;
@@ -66,9 +69,30 @@ namespace Lanchat.Terminal.Handlers
 
         private void UserOnNicknameUpdated(object sender, string e)
         {
-            TabsManager.UpdateNickname(node);
+            privateChatTab?.Header.UpdateText(node.User.Nickname);
             Writer.WriteStatus(
                 string.Format(Resources._NicknameChanged, node.User.PreviousNickname, node.User.Nickname));
+        }
+
+        private void UserOnStatusUpdated(object sender, UserStatus e)
+        {
+            UpdateHeaderColor();
+        }
+
+        private void UpdateHeaderColor()
+        {
+            switch (node.User.UserStatus)
+            {
+                case UserStatus.Online:
+                    privateChatTab?.Header.UpdateTextColor(ConsoleColor.White);
+                    break;
+                case UserStatus.AwayFromKeyboard:
+                    privateChatTab?.Header.UpdateTextColor(ConsoleColor.Yellow);
+                    break;
+                case UserStatus.DoNotDisturb:
+                    privateChatTab?.Header.UpdateTextColor(ConsoleColor.Red);
+                    break;
+            }
         }
     }
 }

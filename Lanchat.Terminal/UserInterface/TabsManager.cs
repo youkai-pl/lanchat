@@ -59,14 +59,7 @@ namespace Lanchat.Terminal.UserInterface
 
             Window.TabPanel.ChatTabs.RemoveTab(chatTab);
         }
-
-        public static void UpdateNickname(INode node)
-        {
-            var tab = Window.TabPanel.AllTabs.First(x => x.Content is ChatView chatView && chatView.Node == node);
-            tab!.Header.UpdateText(node.User.Nickname);
-            Window.TabPanel.ChatTabs.RefreshHeaders();
-        }
-
+        
         public static void SignalNewMessage()
         {
             if (Window.TabPanel.CurrentTab != MainViewTab)

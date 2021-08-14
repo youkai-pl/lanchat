@@ -30,6 +30,11 @@ namespace Lanchat.Terminal.UserInterface.Controls
             textBlock.Text = text;
         }
 
+        public void UpdateTextColor(ConsoleColor color)
+        {
+            textBlock.Color = color;
+        }
+
         public void MarkAsActive()
         {
             headerBackground.Color = ConsoleColor.Blue;
