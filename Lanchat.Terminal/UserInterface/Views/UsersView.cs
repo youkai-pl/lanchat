@@ -17,21 +17,25 @@ namespace Lanchat.Terminal.UserInterface.Views
 
         public UsersView()
         {
-
             ScrollPanel = new VerticalScrollPanel
             {
-                Content = new VerticalStackPanel{Children = new IControl[]
+                Content = new VerticalStackPanel
                 {
-                    connectedPanel,
-                    new HorizontalSeparator(),
-                    detectedPanel
-                }},
+                    Children = new IControl[]
+                    {
+                        new TextBlock { Text = "Connected users" },
+                        connectedPanel,
+                        new HorizontalSeparator(),
+                        new TextBlock { Text = "Detected users" },
+                        detectedPanel
+                    }
+                },
                 ScrollBarBackground = new Character(),
                 ScrollBarForeground = new Character()
             };
 
             Content = ScrollPanel;
-            
+
             Program.Network.NodesDetection.DetectedNodes.CollectionChanged += RefreshDetectedUsers;
         }
 
@@ -42,11 +46,22 @@ namespace Lanchat.Terminal.UserInterface.Views
             Window.UiAction(() =>
             {
                 connectedPanel.Children = new List<IControl>();
-                Program.Network.Nodes.Where(x=>x.Ready).ForEach(x =>
+                Program.Network.Nodes.Where(x => x.Ready).ForEach(x =>
                 {
-                    connectedPanel.Add(new TextBlock
+                    connectedPanel.Add(new VerticalStackPanel
                     {
-                        Text = $"{x.User.Nickname} - {RsaFingerprint.GetMd5(x.NodeRsa.Rsa.ExportRSAPublicKey())}"
+                        Children = new[]
+                        {
+                            new TextBlock(),
+                            new TextBlock
+                            {
+                                Text = $"{x.User.Nickname} / {x.Host.Endpoint.Address}"
+                            },
+                            new TextBlock
+                            {
+                                Text = RsaFingerprint.GetMd5(x.NodeRsa.Rsa.ExportRSAPublicKey())
+                            }
+                        }
                     });
                 });
             });
@@ -61,7 +76,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                 {
                     detectedPanel.Add(new TextBlock
                     {
-                        Text = $"{x.Nickname} - {x.IpAddress}"
+                        Text = $"{x.Nickname} / {x.IpAddress}"
                     });
                 });
             });
