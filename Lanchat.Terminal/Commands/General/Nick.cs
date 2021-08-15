@@ -1,4 +1,6 @@
 using Lanchat.Core.Network;
+using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands.General
 {
@@ -12,7 +14,9 @@ namespace Lanchat.Terminal.Commands.General
         {
             var nickname = args[0].Trim();
             if (nickname.Length >= 20 || string.IsNullOrWhiteSpace(nickname))
-            { }
+            {
+                Writer.WriteError(Resources._WrongNickname);
+            }
             else
             {
                 Program.Config.Nickname = nickname;

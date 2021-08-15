@@ -56,7 +56,7 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
         <value>{0} został odblokowany</value>
     </data>
     <data name="_WrongNickname" xml:space="preserve">
-        <value>Nick musi być krótszy niż 20 znaków i nie może być pusty</value>
+        <value>Nickname musi być krótszy niż 20 znaków i nie może być pusty</value>
     </data>
     <data name="_ConnectionAttempt" xml:space="preserve">
         <value>Łączenie z {0}</value>

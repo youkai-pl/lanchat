@@ -168,8 +168,8 @@ Check https://youkai.pl/lanchat-docs for more info.
     <value>Syntax: /nick &lt;new_nick&gt;</value>
   </data>
     <data name="_WrongNickname" xml:space="preserve">
-    <value>Nick must be shorter than 20 characters and cannot be blank</value>
-  </data>
+        <value>Nickname must be shorter than 20 characters and cannot be blank</value>
+    </data>
     <data name="Help_disconnect" xml:space="preserve">
         <value>Syntax: /disconnect &lt;short id&gt;</value>
     </data>
