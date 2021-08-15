@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Threading;
 using ConsoleGUI;
 using ConsoleGUI.Api;
@@ -56,13 +55,10 @@ namespace Lanchat.Terminal.UserInterface
         }
 
         public static TabPanel TabPanel { get; }
+
         public static void Initialize()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                ConsoleManager.Console = new SimplifiedConsole();
-            }
-
+            ConsoleManager.Console = new SimplifiedConsole();
             ConsoleManager.Setup();
             ConsoleManager.Resize(new Size(140, 30));
             ConsoleManager.Content = DockPanel;
@@ -78,7 +74,7 @@ namespace Lanchat.Terminal.UserInterface
                 action();
             }
         }
-        
+
         private static void StartUiThread()
         {
             new Thread(() =>
@@ -95,7 +91,7 @@ namespace Lanchat.Terminal.UserInterface
                 // ReSharper disable once FunctionNeverReturns
             }).Start();
         }
-        
+
         private static void SetupInputListeners(TextBox promptInput)
         {
             InputListeners.Add(new InputController(promptInput));
