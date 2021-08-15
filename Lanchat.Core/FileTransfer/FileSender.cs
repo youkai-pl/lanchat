@@ -6,7 +6,7 @@ using Lanchat.Core.FileTransfer.Models;
 
 namespace Lanchat.Core.FileTransfer
 {
-    internal class FileSender : IFileSender, IInternalFileSender
+    internal class FileSender : IFileSender, IInternalFileSender, IDisposable
     {
         private const int ChunkSize = 1024 * 1024;
         private readonly FileTransferOutput fileTransferOutput;
@@ -22,15 +22,11 @@ namespace Lanchat.Core.FileTransfer
         public CurrentFileTransfer CurrentFileTransfer { get; private set; }
 
         public event EventHandler<FileTransferException> FileTransferError;
-
         public event EventHandler<CurrentFileTransfer> FileTransferQueued;
         public event EventHandler<CurrentFileTransfer> AcceptedByReceiver;
-
         public event EventHandler<CurrentFileTransfer> FileTransferRequestRejected;
-
         public event EventHandler<CurrentFileTransfer> FileSendFinished;
-
-
+        
         public void CreateSendRequest(string path)
         {
             if (CurrentFileTransfer is { Disposed: false })
@@ -120,7 +116,13 @@ namespace Lanchat.Core.FileTransfer
             CurrentFileTransfer.Dispose();
         }
 
-        internal void Dispose()
+        public void CancelSend()
+        {
+            CurrentFileTransfer?.Dispose();
+            fileTransferOutput.SendSignal(FileTransferStatus.SendCancelled);
+        }
+        
+        public void Dispose()
         {
             CurrentFileTransfer?.Dispose();
             disposing = true;

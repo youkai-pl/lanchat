@@ -15,26 +15,10 @@ namespace Lanchat.Core.FileTransfer
             this.fileTransferOutput = fileTransferOutput;
         }
 
-        public void Dispose()
-        {
-            if (CurrentFileTransfer is { Accepted: true, Disposed: false })
-            {
-                CancelReceive(true);
-            }
-            else
-            {
-                CurrentFileTransfer?.Dispose();
-            }
-
-            GC.SuppressFinalize(this);
-        }
-
         public CurrentFileTransfer CurrentFileTransfer { get; set; }
 
         public event EventHandler<CurrentFileTransfer> FileReceiveFinished;
-
         public event EventHandler<FileTransferException> FileTransferError;
-
         public event EventHandler<CurrentFileTransfer> FileTransferRequestReceived;
 
         public void AcceptRequest()
@@ -56,8 +40,15 @@ namespace Lanchat.Core.FileTransfer
                 throw new InvalidOperationException("No pending requests ");
             }
 
-            CurrentFileTransfer = null;
-            fileTransferOutput.SendSignal(FileTransferStatus.Rejected);
+            if (CurrentFileTransfer.Accepted)
+            {
+                CancelReceive(true);
+            }
+            else
+            {
+                CurrentFileTransfer = null;
+                fileTransferOutput.SendSignal(FileTransferStatus.Rejected);
+            }
         }
 
         public void CancelReceive(bool deleteFile)
@@ -69,7 +60,7 @@ namespace Lanchat.Core.FileTransfer
                 throw new InvalidOperationException("No file transfers in progress");
             }
 
-            fileTransferOutput.SendSignal(FileTransferStatus.ReceiverError);
+            fileTransferOutput.SendSignal(FileTransferStatus.ReceiveCancelled);
             if (deleteFile)
             {
                 storage.DeleteIncompleteFile(CurrentFileTransfer.FilePath);
@@ -120,6 +111,20 @@ namespace Lanchat.Core.FileTransfer
             FileTransferError?.Invoke(this, new FileTransferException(
                 CurrentFileTransfer,
                 "Error at the sender"));
+        }
+
+        public void Dispose()
+        {
+            if (CurrentFileTransfer is { Accepted: true, Disposed: false })
+            {
+                CancelReceive(true);
+            }
+            else
+            {
+                CurrentFileTransfer?.Dispose();
+            }
+
+            GC.SuppressFinalize(this);
         }
     }
 }

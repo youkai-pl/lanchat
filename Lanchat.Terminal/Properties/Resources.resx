@@ -269,4 +269,7 @@ Try /help &lt;command&gt; for detailed help.
     <data name="_FileTransferError" xml:space="preserve">
         <value>Error: {0}</value>
     </data>
+    <data name="_FileTransferCancelled" xml:space="preserve">
+        <value>Cancelled</value>
+    </data>
 </root>

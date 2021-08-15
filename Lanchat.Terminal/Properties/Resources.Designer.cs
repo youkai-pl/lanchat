@@ -284,5 +284,11 @@ namespace Lanchat.Terminal.Properties {
                 return ResourceManager.GetString("_FileTransferError", resourceCulture);
             }
         }
+        
+        internal static string _FileTransferCancelled {
+            get {
+                return ResourceManager.GetString("_FileTransferCancelled", resourceCulture);
+            }
+        }
     }
 }
