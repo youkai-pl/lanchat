@@ -91,14 +91,8 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="Help_disconnect" xml:space="preserve">
         <value>Składnia: /disconnect &lt;krótkie id&gt;</value>
     </data>
-    <data name="Help_m" xml:space="preserve">
-        <value>Składnia: /m &lt;krótkie id&gt; &lt;wiadomość&gt;</value>
-    </data>
     <data name="Help_nick" xml:space="preserve">
         <value>Składnia: /nick &lt;nowy nick&gt;</value>
-    </data>
-    <data name="Help_ping" xml:space="preserve">
-        <value>Składnia: /ping &lt;krótkie id&gt;</value>
     </data>
     <data name="Help_unblock" xml:space="preserve">
         <value>Składnia: /unblock &lt;ip&gt;</value>

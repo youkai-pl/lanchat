@@ -208,17 +208,11 @@ Try /help &lt;command&gt; for detailed help.
     <data name="_NicknameChanged" xml:space="preserve">
         <value>{0} is now {1}</value>
     </data>
-    <data name="Help_m" xml:space="preserve">
-        <value>Syntax: /m &lt;short id&gt; &lt;message&gt;</value>
-    </data>
     <data name="_PortBusy" xml:space="preserve">
         <value>Port busy. Cannot start server.</value>
     </data>
     <data name="_CannotConnect" xml:space="preserve">
         <value>Cannot connect with {0}</value>
-    </data>
-    <data name="Help_ping" xml:space="preserve">
-        <value>Syntax: /ping &lt;short id&gt;</value>
     </data>
     <data name="_StatusChange" xml:space="preserve">
         <value>{0} is {1}</value>

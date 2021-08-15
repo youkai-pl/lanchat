@@ -171,12 +171,6 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string Help_m {
-            get {
-                return ResourceManager.GetString("Help_m", resourceCulture);
-            }
-        }
-        
         internal static string _PortBusy {
             get {
                 return ResourceManager.GetString("_PortBusy", resourceCulture);
@@ -186,12 +180,6 @@ namespace Lanchat.Terminal.Properties {
         internal static string _CannotConnect {
             get {
                 return ResourceManager.GetString("_CannotConnect", resourceCulture);
-            }
-        }
-        
-        internal static string Help_ping {
-            get {
-                return ResourceManager.GetString("Help_ping", resourceCulture);
             }
         }
         
