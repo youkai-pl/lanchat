@@ -22,6 +22,11 @@ namespace Lanchat.Core.FileTransfer.Handlers
                 return;
             }
 
+            if (data.PartsCount < 1)
+            {
+                return;
+            }
+
             fileReceiver.CurrentFileTransfer = new CurrentFileTransfer
             {
                 FilePath = storage.GetFilePath(data.FileName),
