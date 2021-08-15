@@ -99,12 +99,6 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string _SelfNicknameChanged {
-            get {
-                return ResourceManager.GetString("_SelfNicknameChanged", resourceCulture);
-            }
-        }
-        
         internal static string Help_disconnect {
             get {
                 return ResourceManager.GetString("Help_disconnect", resourceCulture);
@@ -159,12 +153,6 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string _ConnectionError {
-            get {
-                return ResourceManager.GetString("_ConnectionError", resourceCulture);
-            }
-        }
-        
         internal static string _NicknameChanged {
             get {
                 return ResourceManager.GetString("_NicknameChanged", resourceCulture);
@@ -180,12 +168,6 @@ namespace Lanchat.Terminal.Properties {
         internal static string _CannotConnect {
             get {
                 return ResourceManager.GetString("_CannotConnect", resourceCulture);
-            }
-        }
-        
-        internal static string _StatusChange {
-            get {
-                return ResourceManager.GetString("_StatusChange", resourceCulture);
             }
         }
         

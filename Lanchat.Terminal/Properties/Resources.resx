@@ -170,9 +170,6 @@ Check https://youkai.pl/lanchat-docs for more info.
     <data name="_WrongNickname" xml:space="preserve">
     <value>Nick must be shorter than 20 characters and cannot be blank</value>
   </data>
-    <data name="_SelfNicknameChanged" xml:space="preserve">
-    <value>Nickname changed</value>
-  </data>
     <data name="Help_disconnect" xml:space="preserve">
         <value>Syntax: /disconnect &lt;short id&gt;</value>
     </data>
@@ -200,9 +197,6 @@ Check https://youkai.pl/lanchat-docs for more info.
     <data name="_Connected" xml:space="preserve">
         <value>{0} connected</value>
     </data>
-    <data name="_ConnectionError" xml:space="preserve">
-        <value>Connection error: {0} / {1}</value>
-    </data>
     <data name="_NicknameChanged" xml:space="preserve">
         <value>{0} is now {1}</value>
     </data>
@@ -211,9 +205,6 @@ Check https://youkai.pl/lanchat-docs for more info.
     </data>
     <data name="_CannotConnect" xml:space="preserve">
         <value>Cannot connect with {0}</value>
-    </data>
-    <data name="_StatusChange" xml:space="preserve">
-        <value>{0} is {1}</value>
     </data>
     <data name="_CannotAccessFile" xml:space="preserve">
         <value>Cannot access {0}. File name or permissions may be wrong.</value>

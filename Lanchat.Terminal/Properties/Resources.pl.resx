@@ -34,9 +34,6 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="_Connected" xml:space="preserve">
         <value>Połączono z {0}</value>
     </data>
-    <data name="_ConnectionError" xml:space="preserve">
-        <value>Błąd połączenia: {0} / {1}</value>
-    </data>
     <data name="_Disconnected" xml:space="preserve">
         <value>Rozłączono z {0}</value>
     </data>
@@ -55,9 +52,6 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="_PortBusy" xml:space="preserve">
         <value>Port zajęty, nie można uruchomić serwera.</value>
     </data>
-    <data name="_SelfNicknameChanged" xml:space="preserve">
-        <value>Nick został zmieniony</value>
-    </data>
     <data name="_Unblocked" xml:space="preserve">
         <value>{0} został odblokowany</value>
     </data>
@@ -75,9 +69,6 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     </data>
     <data name="_Blocked" xml:space="preserve">
         <value>{0} został zablokowany</value>
-    </data>
-    <data name="_StatusChange" xml:space="preserve">
-        <value>{0} jest {1}</value>
     </data>
     <data name="Help_block" xml:space="preserve">
         <value>Składnia: /block &lt;ip | krótkie id&gt;</value>
