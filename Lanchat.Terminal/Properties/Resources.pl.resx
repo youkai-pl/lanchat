@@ -17,12 +17,8 @@
         </value>
     </resheader>
     <data name="Help" xml:space="preserve">
-        <value>Parametry uruchamiania:
---debug (-d)      Wyświetlanie logów     
---loopback (-l)   Łączenie z localhostem po starcie
---no-server (-n)  Uruchamianie bez serwera
---no-udp (-b)     Uruchamianie bez rozgłaszania
-        
+        <value>Połącz się za pomocą komendy /connect &lt;adres ip&gt;
+Przełączaj karty klawiszami "Tab" i "Shift+Tab"
 Polecenia:
 connect   disconnect
 list      nickname     m
@@ -32,6 +28,7 @@ exit      help
 send      accept       reject
             
 Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
+ Więcej informacji znajdziesz na https://youkai.pl/lanchat-docs
     </value>
     </data>
     <data name="_Connected" xml:space="preserve">
@@ -97,13 +94,6 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="Help_unblock" xml:space="preserve">
         <value>Składnia: /unblock &lt;ip&gt;</value>
     </data>
-    <data name="_FirstRunMessage" xml:space="preserve">
-        <value>Szybka instrukcja:
-1. Pomoc jest dostępna pod komendą /help
-2. Aby połączyć się z innym użytkownikiem użyj komedny /connect &lt;adres ip&gt;
-3. Możesz zobaczyć adresy dostępnych w sieci osób przy pomocy komendy /list
-4. Plik konfiguracyjny znajduje się w {0}</value>
-    </data>
     <data name="_CannotAccessFile" xml:space="preserve">
         <value>Nie można uzyskać dostępu do {0}. Nazwa pliku lub uprawnienia dostępu mogą być błędne</value>
     </data>
@@ -151,5 +141,8 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     </data>
     <data name="_FileTransferCancelled" xml:space="preserve">
         <value>Anulowano</value>
+    </data>
+    <data name="_GetHelp" xml:space="preserve">
+        <value>Sprawdź komendę /help</value>
     </data>
 </root>

@@ -136,21 +136,19 @@
         <value>Syntax: /connect &lt;ip&gt; &lt;port&gt;</value>
     </data>
     <data name="Help" xml:space="preserve">
-        <value>Start options:
---debug (-d)      Show logs      
---loopback (-l)   Connect with localhost after start        
---no-server (-n)  Start without server
---no-udp (-b)     Start without broadcast
-        
+        <value>Connect with other users witch /connect &lt;ip&gt;
+Switch tabs with "Tab" and "Shift+Tab" keys
+Config file can be found in {0}
+
 Commands:
-connect   disconnect
-list      nickname     m
+connect   disconnect nick    
 block     unblock      blocked
 afk       dnd          online
 exit      help
 send      accept       reject
             
 Try /help &lt;command&gt; for detailed help.
+Check https://youkai.pl/lanchat-docs for more info.
     </value>
     </data>
     <!-- ReSharper disable once NotOverriddenInSpecificCulture -->
@@ -217,13 +215,6 @@ Try /help &lt;command&gt; for detailed help.
     <data name="_StatusChange" xml:space="preserve">
         <value>{0} is {1}</value>
     </data>
-    <data name="_FirstRunMessage" xml:space="preserve">
-        <value>Quickstart guide:
-1. Help is available under /help command.
-2. Connect with other users witch /connect &lt;ip&gt;
-3. You can see detected users addresses by calling /list
-4. Config file can be found in {0}</value>
-    </data>
     <data name="_CannotAccessFile" xml:space="preserve">
         <value>Cannot access {0}. File name or permissions may be wrong.</value>
     </data>
@@ -271,5 +262,8 @@ Try /help &lt;command&gt; for detailed help.
     </data>
     <data name="_FileTransferCancelled" xml:space="preserve">
         <value>Cancelled</value>
+    </data>
+    <data name="_GetHelp" xml:space="preserve">
+        <value>Check /help command before asking</value>
     </data>
 </root>

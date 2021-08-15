@@ -51,6 +51,11 @@ namespace Lanchat.Terminal.UserInterface.Views
             AddText("", Color.White);
             AddText(Resources._YourRsa, Color.White);
             AddText(RsaFingerprint.GetMd5(Program.Network.LocalRsa.Rsa.ExportRSAPublicKey()), Color.White);
+            AddText("", Color.White);
+            if (Program.Config.Fresh)
+            {
+                AddText(Resources._GetHelp, Color.White);
+            }
         }
     }
 }

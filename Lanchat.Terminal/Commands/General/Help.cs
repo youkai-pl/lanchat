@@ -1,4 +1,5 @@
 using System.Globalization;
+using Lanchat.ClientCore;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
@@ -15,7 +16,7 @@ namespace Lanchat.Terminal.Commands.General
         {
             if (args.Length < 1)
             {
-                Writer.WriteText(Resources.Help);
+                Writer.WriteText(string.Format(Resources.Help, Storage.ConfigPath));
             }
             else
             {

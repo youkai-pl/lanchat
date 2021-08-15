@@ -189,12 +189,6 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string _FirstRunMessage {
-            get {
-                return ResourceManager.GetString("_FirstRunMessage", resourceCulture);
-            }
-        }
-        
         internal static string _CannotAccessFile {
             get {
                 return ResourceManager.GetString("_CannotAccessFile", resourceCulture);
@@ -288,6 +282,12 @@ namespace Lanchat.Terminal.Properties {
         internal static string _FileTransferCancelled {
             get {
                 return ResourceManager.GetString("_FileTransferCancelled", resourceCulture);
+            }
+        }
+        
+        internal static string _GetHelp {
+            get {
+                return ResourceManager.GetString("_GetHelp", resourceCulture);
             }
         }
     }
