@@ -1,5 +1,6 @@
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Network;
+using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 using Lanchat.Terminal.UserInterface.Controls;
 
@@ -8,24 +9,38 @@ namespace Lanchat.Terminal.Handlers
     public class FileTransferHandlers
     {
         private readonly INode node;
+        private FileTransferStatus fileTransferStatus;
 
         public FileTransferHandlers(INode node)
         {
             this.node = node;
-            node.FileSender.FileTransferQueued += FileSenderOnFileTransferQueued;
-            node.FileReceiver.FileTransferRequestReceived += FileSenderOnFileTransferQueued;
-            node.FileReceiver.FileTransferRequestReceived += FileReceiverOnFileTransferRequestReceived;
+            node.FileSender.FileTransferQueued += OnFileTransferQueued;
+            node.FileSender.FileTransferRequestRejected += FileSenderOnFileTransferRequestRejected;
+            node.FileSender.FileTransferError += OnFileTransferError;
+            node.FileReceiver.FileTransferRequestReceived += OnFileTransferQueued;
+            node.FileReceiver.FileTransferError += OnFileTransferError;
         }
 
-        private void FileSenderOnFileTransferQueued(object sender, CurrentFileTransfer e)
+        private void OnFileTransferQueued(object sender, CurrentFileTransfer e)
         {
-            var fileTransferStatus = new FileTransferStatus(node, e, TabsManager.FileTransfersView.Counter);
+            fileTransferStatus = new FileTransferStatus(node, e, TabsManager.FileTransfersView.Counter);
             TabsManager.FileTransfersView.Add(fileTransferStatus);
-            e.PropertyChanged += (_, _) => { fileTransferStatus.Update(); };
+            TabsManager.SignalFileTransfer();
+            e.PropertyChanged += (_, _) =>
+            {
+                fileTransferStatus.Update(e.Progress == 100 ? Resources._FileTransferRejected : $"{e.Progress}%");
+            };
         }
 
-        private static void FileReceiverOnFileTransferRequestReceived(object sender, CurrentFileTransfer e)
+        private void FileSenderOnFileTransferRequestRejected(object sender, CurrentFileTransfer e)
         {
+            fileTransferStatus.Update(Resources._FileTransferRejected);
+            TabsManager.SignalFileTransfer();
+        }
+        
+        private void OnFileTransferError(object sender, FileTransferException e)
+        {
+            fileTransferStatus.Update(string.Format(Resources._FileTransferError, e.Message));
             TabsManager.SignalFileTransfer();
         }
     }

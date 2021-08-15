@@ -28,6 +28,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             try
             {
                 node.FileReceiver.RejectRequest();
+                TabsManager.FileTransfersView.GetFileTransferStatus(node).Update(Resources._FileTransferRejected);
             }
             catch (InvalidOperationException)
             {

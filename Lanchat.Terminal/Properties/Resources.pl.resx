@@ -104,21 +104,6 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
 3. Możesz zobaczyć adresy dostępnych w sieci osób przy pomocy komendy /list
 4. Plik konfiguracyjny znajduje się w {0}</value>
     </data>
-    <data name="_FileRequest" xml:space="preserve">
-        <value>{0} chce wysłać ci plik {1} (/accept | /reject)</value>
-    </data>
-    <data name="_FileReceived" xml:space="preserve">
-        <value>Plik od {0} zapisany w {1}</value>
-    </data>
-    <data name="_FileTransferError" xml:space="preserve">
-        <value>Błąd wymiany plików z {0}</value>
-    </data>
-    <data name="_FileRequestAccepted" xml:space="preserve">
-        <value>{0} zaakceptował twój plik. Jest on wysyłany.</value>
-    </data>
-    <data name="_FileRequestRejected" xml:space="preserve">
-        <value>{0} odrzucił twój plik.</value>
-    </data>
     <data name="_CannotAccessFile" xml:space="preserve">
         <value>Nie można uzyskać dostępu do {0}. Nazwa pliku lub uprawnienia dostępu mogą być błędne</value>
     </data>
@@ -137,9 +122,6 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="Help_reject" xml:space="preserve">
         <value>Składnia: /reject &lt;krótkie id&gt;</value>
     </data>
-    <data name="_FileTransferFinished" xml:space="preserve">
-        <value>Wymiania plików z {0} zakończona</value>
-    </data>
     <data name="_AlreadyBlocked" xml:space="preserve">
         <value>Adres jest już zablokowany</value>
     </data>
@@ -154,5 +136,17 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     </data>
     <data name="_YourRsa" xml:space="preserve">
         <value>Twój skrót klucza publicznego:</value>
+    </data>
+    <data name="_FileTransferRejected" xml:space="preserve">
+        <value>Odrzucono</value>
+    </data>
+    <data name="_FileTransferFinished" xml:space="preserve">
+        <value>Zakończono</value>
+    </data>
+    <data name="_FileTransferWaiting" xml:space="preserve">
+        <value>Oczekuje</value>
+    </data>
+    <data name="_FileTransferError" xml:space="preserve">
+        <value>Błąd: {0}</value>
     </data>
 </root>

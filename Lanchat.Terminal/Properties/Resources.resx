@@ -224,21 +224,6 @@ Try /help &lt;command&gt; for detailed help.
 3. You can see detected users addresses by calling /list
 4. Config file can be found in {0}</value>
     </data>
-    <data name="_FileRequest" xml:space="preserve">
-        <value>{0} wants to send you a file {1} (/accept | /reject)</value>
-    </data>
-    <data name="_FileReceived" xml:space="preserve">
-        <value>File from {0} saved to {1}</value>
-    </data>
-    <data name="_FileTransferError" xml:space="preserve">
-        <value>File exchange with {0} errored</value>
-    </data>
-    <data name="_FileRequestAccepted" xml:space="preserve">
-        <value>{0} accepted your request. File is sending.</value>
-    </data>
-    <data name="_FileRequestRejected" xml:space="preserve">
-        <value>{0} rejected your file send request.</value>
-    </data>
     <data name="_CannotAccessFile" xml:space="preserve">
         <value>Cannot access {0}. File name or permissions may be wrong.</value>
     </data>
@@ -257,9 +242,6 @@ Try /help &lt;command&gt; for detailed help.
     <data name="Help_reject" xml:space="preserve">
         <value>Syntax: /reject &lt;short id&gt;</value>
     </data>
-    <data name="_FileTransferFinished" xml:space="preserve">
-        <value>File transfer with {0} finished.</value>
-    </data>
     <data name="_AlreadyBlocked" xml:space="preserve">
         <value>Address already blocked</value>
     </data>
@@ -274,5 +256,17 @@ Try /help &lt;command&gt; for detailed help.
     </data>
     <data name="_YourRsa" xml:space="preserve">
         <value>Your public key fingerprint:</value>
+    </data>
+    <data name="_FileTransferRejected" xml:space="preserve">
+        <value>Rejected</value>
+    </data>
+    <data name="_FileTransferFinished" xml:space="preserve">
+        <value>Finished</value>
+    </data>
+    <data name="_FileTransferWaiting" xml:space="preserve">
+        <value>Waiting for accept</value>
+    </data>
+    <data name="_FileTransferError" xml:space="preserve">
+        <value>Error: {0}</value>
     </data>
 </root>

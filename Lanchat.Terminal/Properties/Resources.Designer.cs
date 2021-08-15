@@ -195,36 +195,6 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string _FileRequest {
-            get {
-                return ResourceManager.GetString("_FileRequest", resourceCulture);
-            }
-        }
-        
-        internal static string _FileReceived {
-            get {
-                return ResourceManager.GetString("_FileReceived", resourceCulture);
-            }
-        }
-        
-        internal static string _FileTransferError {
-            get {
-                return ResourceManager.GetString("_FileTransferError", resourceCulture);
-            }
-        }
-        
-        internal static string _FileRequestAccepted {
-            get {
-                return ResourceManager.GetString("_FileRequestAccepted", resourceCulture);
-            }
-        }
-        
-        internal static string _FileRequestRejected {
-            get {
-                return ResourceManager.GetString("_FileRequestRejected", resourceCulture);
-            }
-        }
-        
         internal static string _CannotAccessFile {
             get {
                 return ResourceManager.GetString("_CannotAccessFile", resourceCulture);
@@ -261,12 +231,6 @@ namespace Lanchat.Terminal.Properties {
             }
         }
         
-        internal static string _FileTransferFinished {
-            get {
-                return ResourceManager.GetString("_FileTransferFinished", resourceCulture);
-            }
-        }
-        
         internal static string _AlreadyBlocked {
             get {
                 return ResourceManager.GetString("_AlreadyBlocked", resourceCulture);
@@ -294,6 +258,30 @@ namespace Lanchat.Terminal.Properties {
         internal static string _YourRsa {
             get {
                 return ResourceManager.GetString("_YourRsa", resourceCulture);
+            }
+        }
+        
+        internal static string _FileTransferRejected {
+            get {
+                return ResourceManager.GetString("_FileTransferRejected", resourceCulture);
+            }
+        }
+        
+        internal static string _FileTransferFinished {
+            get {
+                return ResourceManager.GetString("_FileTransferFinished", resourceCulture);
+            }
+        }
+        
+        internal static string _FileTransferWaiting {
+            get {
+                return ResourceManager.GetString("_FileTransferWaiting", resourceCulture);
+            }
+        }
+        
+        internal static string _FileTransferError {
+            get {
+                return ResourceManager.GetString("_FileTransferError", resourceCulture);
             }
         }
     }
