@@ -25,14 +25,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                 {
                     Children = new IControl[]
                     {
-                        new TextBlock { Text = "Connected users" },
                         connectedPanel,
-                        new Border
-                        {
-                            BorderPlacement = BorderPlacement.Top,
-                            BorderStyle = BorderStyle.Single,
-                            Content = new TextBlock { Text = "Detected users" },
-                        },
                         detectedPanel
                     }
                 },
@@ -81,17 +74,17 @@ namespace Lanchat.Terminal.UserInterface.Views
                 {
                     connectedPanel.Add(new VerticalStackPanel
                     {
-                        Children = new[]
+                        Children = new IControl[]
                         {
-                            new TextBlock(),
                             new TextBlock
                             {
-                                Text = $"{x.User.Nickname} / {x.Host.Endpoint.Address}"
+                                Text = $"{x.User.Nickname} - {x.Host.Endpoint.Address}"
                             },
                             new TextBlock
                             {
                                 Text = RsaFingerprint.GetMd5(x.NodeRsa.Rsa.ExportRSAPublicKey())
-                            }
+                            },
+                            new HorizontalSeparator(),
                         }
                     });
                 });
@@ -105,9 +98,16 @@ namespace Lanchat.Terminal.UserInterface.Views
                 detectedPanel.Children = new List<IControl>();
                 Program.Network.NodesDetection.DetectedNodes.ForEach(x =>
                 {
-                    detectedPanel.Add(new TextBlock
+                    detectedPanel.Add(new VerticalStackPanel
                     {
-                        Text = $"{x.Nickname} / {x.IpAddress}"
+                        Children = new IControl[]
+                        {
+                            new TextBlock
+                            {
+                                Text = $"{x.Nickname} - {x.IpAddress}"
+                            },
+                            new HorizontalSeparator(),
+                        }
                     });
                 });
             });
