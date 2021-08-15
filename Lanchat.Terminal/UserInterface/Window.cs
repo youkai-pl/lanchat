@@ -61,7 +61,7 @@ namespace Lanchat.Terminal.UserInterface
             ConsoleManager.Setup();
             ConsoleManager.Content = DockPanel;
             Console.Title = Resources._WindowTitle;
-
+            TabsManager.Initialize();
             StartUiThread();
         }
 

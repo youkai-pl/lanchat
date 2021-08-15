@@ -16,18 +16,26 @@ namespace Lanchat.Terminal.UserInterface
             HomeViewTab = new Tab("Lanchat", HomeView);
             MainViewTab = new Tab("Lanchat", MainChatView);
             FileTransferViewTab = new Tab("File transfer", FileTransfersView);
-
-            Window.TabPanel.SystemTabs.AddTab(HomeViewTab);
-            Window.TabPanel.SystemTabs.AddTab(new Tab("Users", UsersView));
-            Window.TabPanel.SystemTabs.AddTab(FileTransferViewTab);
-            Window.TabPanel.SelectTab(HomeViewTab);
         }
 
         public static HomeView HomeView { get; } = new();
         public static ChatView MainChatView { get; } = new();
         public static FileTransfersView FileTransfersView { get; } = new();
         public static UsersView UsersView { get; } = new();
+        public static DebugView DebugView { get; private set; }
 
+        public static void Initialize()
+        {
+            Window.TabPanel.SystemTabs.AddTab(HomeViewTab);
+            Window.TabPanel.SystemTabs.AddTab(new Tab("Users", UsersView));
+            Window.TabPanel.SystemTabs.AddTab(FileTransferViewTab);
+            Window.TabPanel.SelectTab(HomeViewTab);
+            if (Program.Config.DebugMode)
+            {
+                AddDebugView();
+            }
+        }
+        
         public static void ShowMainChatView()
         {
             if (Window.TabPanel.SystemTabs.Tabs.First().Content is HomeView)
@@ -85,12 +93,11 @@ namespace Lanchat.Terminal.UserInterface
             }
         }
 
-        public static DebugView AddDebugView()
+        private static void AddDebugView()
         {
-            var debugView = new DebugView();
-            var debugTab = new Tab("Debug", debugView);
+            DebugView = new DebugView();
+            var debugTab = new Tab("Debug", DebugView);
             Window.TabPanel.SystemTabs.AddTab(debugTab);
-            return debugView;
         }
     }
 }
