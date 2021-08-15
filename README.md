@@ -39,6 +39,8 @@ Runtime ID for your operating system can be found [here](https://docs.microsoft.
 
 ### Usage
 
+Lanchat.Terminal UI is split into several tabs. You can switch between them using "Tab" and "Shift+Tab".
+
 #### Connecting
 
 Use `/connect <IP address>` command to connect with other user in network. You also can use domain name
@@ -56,6 +58,7 @@ Check list of commands with `/help`. Detailed help for each command can be get b
 
 Commands like `/send` or `/block` takes four digits ID in argument. ID of user can be read from nickname after `#`.
 Like `User#1321`. IDs are assigned randomly upon connection and are different on each node.
+Commands that takes user id in argument can be executed in user tab without it.
 
 #### CLI arguments
 
@@ -68,6 +71,17 @@ You can start terminal client with the following arguments:
 | --localhost | -l    | Connect to localhost.                      |
 | --no-server | -n    | Start without server.                      |
 | --no-udp    | -b    | Start without broadcasting.                |
+
+### Public key verification
+Lanchat saves public key of connected users and compare them in next connections.
+Keys are assigned to IP address.
+Thanks to that the possibility of a man in the middle attack is somewhat limited.
+
+**On first connection you should compare fingerprints by yourself**
+
+If public key was changed Lanchat will give error message on each connection.
+If you are sure the keys are correct (for example ip address is used by more than one user) 
+you should remove corresponding PEM file in Lanchat config directory. 
 
 ### Configuration
 
