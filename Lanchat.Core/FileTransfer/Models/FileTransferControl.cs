@@ -13,8 +13,6 @@ namespace Lanchat.Core.FileTransfer.Models
         Rejected,
         ReceiverError,
         SenderError,
-        Finished,
-        ReceiveCancelled,
-        SendCancelled
+        Finished
     }
 }

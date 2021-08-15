@@ -28,7 +28,7 @@ namespace Lanchat.Terminal.Handlers
             TabsManager.SignalFileTransfer();
             e.PropertyChanged += (_, _) =>
             {
-                fileTransferStatus.Update(e.Progress == 100 ? Resources._FileTransferRejected : $"{e.Progress}%");
+                fileTransferStatus.Update(e.Progress == 100 ? Resources._FileTransferFinished : $"{e.Progress}%");
             };
         }
 
@@ -40,7 +40,7 @@ namespace Lanchat.Terminal.Handlers
         
         private void OnFileTransferError(object sender, FileTransferException e)
         {
-            fileTransferStatus.Update(string.Format(Resources._FileTransferError, e.Message));
+            fileTransferStatus.Update(e.Message);
             TabsManager.SignalFileTransfer();
         }
     }

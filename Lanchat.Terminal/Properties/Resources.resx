@@ -257,9 +257,6 @@ Check https://youkai.pl/lanchat-docs for more info.
     <data name="_FileTransferWaiting" xml:space="preserve">
         <value>Waiting for accept</value>
     </data>
-    <data name="_FileTransferError" xml:space="preserve">
-        <value>Error: {0}</value>
-    </data>
     <data name="_FileTransferCancelled" xml:space="preserve">
         <value>Cancelled</value>
     </data>

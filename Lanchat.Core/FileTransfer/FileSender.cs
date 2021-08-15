@@ -119,7 +119,7 @@ namespace Lanchat.Core.FileTransfer
         public void CancelSend()
         {
             CurrentFileTransfer?.Dispose();
-            fileTransferOutput.SendSignal(FileTransferStatus.SendCancelled);
+            fileTransferOutput.SendSignal(FileTransferStatus.SenderError);
         }
         
         public void Dispose()

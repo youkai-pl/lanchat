@@ -136,9 +136,6 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
     <data name="_FileTransferWaiting" xml:space="preserve">
         <value>Oczekuje</value>
     </data>
-    <data name="_FileTransferError" xml:space="preserve">
-        <value>Błąd: {0}</value>
-    </data>
     <data name="_FileTransferCancelled" xml:space="preserve">
         <value>Anulowano</value>
     </data>

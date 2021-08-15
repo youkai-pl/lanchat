@@ -6,7 +6,6 @@ using ConsoleGUI.Api;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
 using ConsoleGUI.Input;
-using ConsoleGUI.Space;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface.Controls;
 
@@ -60,7 +59,6 @@ namespace Lanchat.Terminal.UserInterface
         {
             ConsoleManager.Console = new SimplifiedConsole();
             ConsoleManager.Setup();
-            ConsoleManager.Resize(new Size(140, 30));
             ConsoleManager.Content = DockPanel;
             Console.Title = Resources._WindowTitle;
 
