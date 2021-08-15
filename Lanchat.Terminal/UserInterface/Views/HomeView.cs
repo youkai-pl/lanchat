@@ -2,7 +2,6 @@ using System.Reflection;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
 using ConsoleGUI.UserDefined;
-using Lanchat.Core.Encryption;
 using Lanchat.Terminal.Properties;
 
 namespace Lanchat.Terminal.UserInterface.Views
@@ -48,9 +47,6 @@ namespace Lanchat.Terminal.UserInterface.Views
         
         private void WriteWelcomeText()
         {
-            AddText("", Color.White);
-            AddText(Resources._YourRsa, Color.White);
-            AddText(RsaFingerprint.GetMd5(Program.Network.LocalRsa.Rsa.ExportRSAPublicKey()), Color.White);
             AddText("", Color.White);
             if (Program.Config.Fresh)
             {

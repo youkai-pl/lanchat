@@ -17,9 +17,11 @@
         </value>
     </resheader>
     <data name="Help" xml:space="preserve">
-        <value>Połącz się za pomocą komendy /connect &lt;adres ip&gt;
-Przełączaj karty klawiszami "Tab" i "Shift+Tab"
-Polecenia:
+        <value>
+Tab / Shift+Tab - przełączanie kart
+PageUp / PageDown - przewijanie
+
+Komendy:
 connect   disconnect
 list      nickname     m
 block     unblock      blocked
@@ -27,8 +29,10 @@ afk       dnd          online
 exit      help
 send      accept       reject
             
+Plik configuracyjny znajduje się w {0}
+            
 Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
- Więcej informacji znajdziesz na https://youkai.pl/lanchat-docs
+Więcej informacji znajdziesz na https://youkai.pl/lanchat-docs
     </value>
     </data>
     <data name="_Connected" xml:space="preserve">
@@ -116,7 +120,7 @@ Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
         <value>Aby upewnić się, że połączenie z {0} jest bezpieczne sprawdź klucz publiczny w zakładce "Users".</value>
     </data>
     <data name="_YourRsa" xml:space="preserve">
-        <value>Twój skrót klucza publicznego:</value>
+        <value>Twój klucz:</value>
     </data>
     <data name="_FileTransferRejected" xml:space="preserve">
         <value>Odrzucono</value>

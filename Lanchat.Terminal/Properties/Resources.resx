@@ -136,9 +136,9 @@
         <value>Syntax: /connect &lt;ip&gt; &lt;port&gt;</value>
     </data>
     <data name="Help" xml:space="preserve">
-        <value>Connect with other users witch /connect &lt;ip&gt;
-Switch tabs with "Tab" and "Shift+Tab" keys
-Config file can be found in {0}
+        <value>
+Tab / Shift+Tab - tabs switching
+PageUp / PageDown - scrolling
 
 Commands:
 connect   disconnect nick    
@@ -146,7 +146,9 @@ block     unblock      blocked
 afk       dnd          online
 exit      help
 send      accept       reject
-            
+      
+Config file can be found in {0}
+
 Try /help &lt;command&gt; for detailed help.
 Check https://youkai.pl/lanchat-docs for more info.
     </value>
@@ -237,7 +239,7 @@ Check https://youkai.pl/lanchat-docs for more info.
         <value>To make sure the connection with {0} is secure check fingerprint in "Users" tab.</value>
     </data>
     <data name="_YourRsa" xml:space="preserve">
-        <value>Your public key fingerprint:</value>
+        <value>Your key fingerprint:</value>
     </data>
     <data name="_FileTransferRejected" xml:space="preserve">
         <value>Rejected</value>
@@ -252,6 +254,6 @@ Check https://youkai.pl/lanchat-docs for more info.
         <value>Cancelled</value>
     </data>
     <data name="_GetHelp" xml:space="preserve">
-        <value>Check /help command before asking</value>
+        <value>Check /help command</value>
     </data>
 </root>

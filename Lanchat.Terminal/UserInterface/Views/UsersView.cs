@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -7,6 +8,7 @@ using ConsoleGUI.Data;
 using ConsoleGUI.UserDefined;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Extensions;
+using Lanchat.Terminal.Properties;
 
 namespace Lanchat.Terminal.UserInterface.Views
 {
@@ -25,16 +27,45 @@ namespace Lanchat.Terminal.UserInterface.Views
                     {
                         new TextBlock { Text = "Connected users" },
                         connectedPanel,
-                        new HorizontalSeparator(),
-                        new TextBlock { Text = "Detected users" },
+                        new Border
+                        {
+                            BorderPlacement = BorderPlacement.Top,
+                            BorderStyle = BorderStyle.Single,
+                            Content = new TextBlock { Text = "Detected users" },
+                        },
                         detectedPanel
                     }
                 },
                 ScrollBarBackground = new Character(),
-                ScrollBarForeground = new Character()
+                ScrollBarForeground = new Character(),
+                ScrollUpKey = ConsoleKey.PageUp,
+                ScrollDownKey = ConsoleKey.PageDown
             };
 
-            Content = ScrollPanel;
+            Content = new DockPanel
+            {
+                FillingControl = ScrollPanel,
+                DockedControl = new Border
+                {
+                    BorderPlacement = BorderPlacement.Top,
+                    BorderStyle = BorderStyle.Single,
+                    Content = new VerticalStackPanel
+                    {
+                        Children = new[]
+                        {
+                            new TextBlock
+                            {
+                                Text = Resources._YourRsa
+                            },
+                            new TextBlock
+                            {
+                                Text = RsaFingerprint.GetMd5(Program.Network.LocalRsa.Rsa.ExportRSAPublicKey())
+                            }
+                        }
+                    }
+                },
+                Placement = DockPanel.DockedControlPlacement.Bottom
+            };
 
             Program.Network.NodesDetection.DetectedNodes.CollectionChanged += RefreshDetectedUsers;
         }
