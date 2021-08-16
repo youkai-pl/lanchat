@@ -19,7 +19,7 @@ namespace Lanchat.Tests.Core.Api
         public void Setup()
         {
             modelHandlerMock = new ModelHandlerMock();
-            resolver = new Resolver(new NodeMock {Ready = true}, new ModelEncryptionMock(), new IApiHandler[]
+            resolver = new Resolver(new NodeMock { Ready = true }, new ModelEncryptionMock(), new IApiHandler[]
             {
                 modelHandlerMock,
                 new ModelWithValidationHandlerMock()

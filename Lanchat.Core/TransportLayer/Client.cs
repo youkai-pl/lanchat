@@ -10,8 +10,6 @@ namespace Lanchat.Core.TransportLayer
 {
     internal class Client : TcpClient, IHost
     {
-        private bool disposing;
-
         internal Client(IPAddress address, int port) : base(address, port)
         { }
 
@@ -28,7 +26,6 @@ namespace Lanchat.Core.TransportLayer
 
         public void Close()
         {
-            disposing = true;
             DisconnectAsync();
             while (IsConnected)
             {
@@ -40,11 +37,7 @@ namespace Lanchat.Core.TransportLayer
 
         protected override void OnDisconnected()
         {
-            if (disposing)
-            {
-                return;
-            }
-
+            Trace.WriteLine($"Client {Id} disconnected");
             Disconnected?.Invoke(this, EventArgs.Empty);
         }
 
@@ -55,7 +48,7 @@ namespace Lanchat.Core.TransportLayer
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            var message = Encoding.UTF8.GetString(buffer, (int) offset, (int) size);
+            var message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
             DataReceived?.Invoke(this, message);
         }
 

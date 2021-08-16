@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Lanchat.Core.Api;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.NodesDetection;
 
 namespace Lanchat.Core.Network
@@ -21,7 +22,10 @@ namespace Lanchat.Core.Network
 
         /// <see cref="Lanchat.Core.Api.IBroadcast" />
         IBroadcast Broadcast { get; }
-        
+
+        /// <see cref="ILocalRsa" />
+        ILocalRsa LocalRsa { get; }
+
         /// <summary>
         ///     Start server.
         /// </summary>

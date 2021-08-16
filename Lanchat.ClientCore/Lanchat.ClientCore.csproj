@@ -14,11 +14,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Lanchat.Core\Lanchat.Core.csproj" />
+        <ProjectReference Include="..\Lanchat.Core\Lanchat.Core.csproj"/>
     </ItemGroup>
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>Lanchat.Tests</_Parameter1>
         </AssemblyAttribute>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Mono.Posix.NETStandard" Version="1.0.0"/>
     </ItemGroup>
 </Project>

@@ -12,7 +12,7 @@ namespace Lanchat.Tests.Core.Encryption
         [SetUp]
         public void Setup()
         {
-            modelEncryption = new ModelEncryption(new SymmetricEncryptionMock());
+            modelEncryption = new ModelEncryption(new NodeAesMock());
         }
 
         [Test]

@@ -1,53 +1,55 @@
 using System;
+using System.Net;
 using System.Security.Cryptography;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Encryption.Models;
+using Lanchat.Tests.Mock.Config;
 using NUnit.Framework;
 
 namespace Lanchat.Tests.Core.Encryption
 {
     public class SymmetricEncryptionTests
     {
-        private PublicKeyEncryption publicKeyEncryption;
-        private SymmetricEncryption symmetricEncryption;
+        private NodeAes nodeAes;
+        private NodeRsa nodeRsa;
 
         [SetUp]
         public void Setup()
         {
-            publicKeyEncryption = new PublicKeyEncryption();
-            symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
-            publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey());
-            symmetricEncryption.ImportKey(symmetricEncryption.ExportKey());
+            nodeRsa = new NodeRsa(new RsaDatabaseMock(), new LocalRsa(new RsaDatabaseMock()));
+            nodeAes = new NodeAes(nodeRsa);
+            nodeRsa.ImportKey(nodeRsa.ExportKey(), IPAddress.Loopback);
+            nodeAes.ImportKey(nodeAes.ExportKey());
         }
 
         [Test]
         public void StringEncryption()
         {
             const string testString = "test";
-            var encryptedString = symmetricEncryption.EncryptString(testString);
-            var decryptedString = symmetricEncryption.DecryptString(encryptedString);
+            var encryptedString = nodeAes.EncryptString(testString);
+            var decryptedString = nodeAes.DecryptString(encryptedString);
             Assert.AreEqual(testString, decryptedString);
         }
 
         [Test]
         public void BytesEncryption()
         {
-            var testBytes = new byte[] {0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70};
-            var encryptedBytes = symmetricEncryption.EncryptBytes(testBytes);
-            var decryptedBytes = symmetricEncryption.DecryptBytes(encryptedBytes);
+            var testBytes = new byte[] { 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70 };
+            var encryptedBytes = nodeAes.EncryptBytes(testBytes);
+            var decryptedBytes = nodeAes.DecryptBytes(encryptedBytes);
             Assert.AreEqual(testBytes, decryptedBytes);
         }
 
         [Test]
         public void InvalidFormat()
         {
-            Assert.Catch<FormatException>(() => { symmetricEncryption.DecryptString("not a base 64"); });
+            Assert.Catch<FormatException>(() => { nodeAes.DecryptString("not a base 64"); });
         }
 
         [Test]
         public void InvalidEncryption()
         {
-            Assert.Catch<CryptographicException>(() => { symmetricEncryption.DecryptString("bm90IGVuY3J5cHRlZA=="); });
+            Assert.Catch<CryptographicException>(() => { nodeAes.DecryptString("bm90IGVuY3J5cHRlZA=="); });
         }
 
         [Test]
@@ -55,10 +57,10 @@ namespace Lanchat.Tests.Core.Encryption
         {
             Assert.Catch<CryptographicException>(() =>
             {
-                symmetricEncryption.ImportKey(new KeyInfo
+                nodeAes.ImportKey(new KeyInfo
                 {
-                    AesIv = new byte[] {0x10},
-                    AesKey = new byte[] {0x10}
+                    AesIv = new byte[] { 0x10 },
+                    AesKey = new byte[] { 0x10 }
                 });
             });
         }
@@ -66,9 +68,9 @@ namespace Lanchat.Tests.Core.Encryption
         [Test]
         public void Dispose()
         {
-            symmetricEncryption.Dispose();
-            Assert.Catch<ObjectDisposedException>(() => { symmetricEncryption.EncryptString("test"); });
-            Assert.Catch<ObjectDisposedException>(() => { symmetricEncryption.DecryptString("test"); });
+            nodeAes.Dispose();
+            Assert.Catch<ObjectDisposedException>(() => { nodeAes.EncryptString("test"); });
+            Assert.Catch<ObjectDisposedException>(() => { nodeAes.DecryptString("test"); });
         }
     }
 }

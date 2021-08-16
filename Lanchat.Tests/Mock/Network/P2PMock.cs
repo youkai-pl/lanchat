@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Lanchat.Core.Api;
+using Lanchat.Core.Encryption;
 using Lanchat.Core.Network;
 using Lanchat.Core.NodesDetection;
 using Lanchat.Tests.Mock.Config;
@@ -14,16 +15,16 @@ namespace Lanchat.Tests.Mock.Network
     {
         public P2PMock()
         {
+            LocalRsa = new LocalRsa(new RsaDatabaseMock());
             NodesDetection = new NodesDetector(new ConfigMock());
             Broadcast = new Broadcast(Nodes.Cast<INodeInternal>().ToList());
         }
 
         public List<IPAddress> Connected { get; } = new();
         public IBroadcast Broadcast { get; }
+        public ILocalRsa LocalRsa { get; }
         public NodesDetector NodesDetection { get; }
         public List<INode> Nodes { get; } = new();
-
-        public event EventHandler<INode> NodeCreated;
 
         public void Start()
         {

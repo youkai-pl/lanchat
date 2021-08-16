@@ -39,7 +39,7 @@ namespace Lanchat.Core.Json
 
         internal string Serialize(object content)
         {
-            var data = new Dictionary<string, object> {{content.GetType().Name, content}};
+            var data = new Dictionary<string, object> { { content.GetType().Name, content } };
             return JsonSerializer.Serialize(data, serializerOptions);
         }
     }

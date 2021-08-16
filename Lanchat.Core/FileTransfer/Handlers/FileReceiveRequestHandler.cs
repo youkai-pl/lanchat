@@ -17,7 +17,12 @@ namespace Lanchat.Core.FileTransfer.Handlers
 
         protected override void Handle(FileReceiveRequest data)
         {
-            if (fileReceiver.CurrentFileTransfer is {Disposed: false})
+            if (fileReceiver.CurrentFileTransfer is { Disposed: false })
+            {
+                return;
+            }
+
+            if (data.PartsCount < 1)
             {
                 return;
             }

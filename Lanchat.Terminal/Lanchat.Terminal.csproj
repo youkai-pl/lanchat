@@ -1,50 +1,50 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <Version>2.7.2</Version>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
-    <PackageIcon>icon.ico</PackageIcon>
-    <AssemblyName>Lanchat</AssemblyName>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
-    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-    <IsPackable>false</IsPackable>
-    <Company>tofudd</Company>
-    <PublishTrimmed>true</PublishTrimmed>
-  </PropertyGroup>
+    <PropertyGroup>
+        <Version>2.8.0</Version>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <PackageIcon>icon.ico</PackageIcon>
+        <AssemblyName>Lanchat</AssemblyName>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
+        <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+        <IsPackable>false</IsPackable>
+        <Company>tofudd</Company>
+        <PublishTrimmed>true</PublishTrimmed>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
-    <DebugType>portable</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
+        <DebugType>portable</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
-    <DebugType>none</DebugType>
-    <DebugSymbols>false</DebugSymbols>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="ConsoleGUI" Version="1.3.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="ConsoleGUI" Version="1.3.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Lanchat.ClientCore\Lanchat.ClientCore.csproj" />
-    <ProjectReference Include="..\Lanchat.Core\Lanchat.Core.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Lanchat.ClientCore\Lanchat.ClientCore.csproj" />
+        <ProjectReference Include="..\Lanchat.Core\Lanchat.Core.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Properties\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Properties\Resources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
 
 </Project>

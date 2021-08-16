@@ -8,10 +8,10 @@ namespace Lanchat.Core.Encryption.Handlers
 {
     internal class KeyInfoHandler : ApiHandler<KeyInfo>
     {
-        private readonly ISymmetricEncryption encryption;
+        private readonly INodeAes encryption;
         private readonly INodeInternal node;
 
-        public KeyInfoHandler(ISymmetricEncryption encryption, INodeInternal node)
+        public KeyInfoHandler(INodeAes encryption, INodeInternal node)
         {
             this.encryption = encryption;
             this.node = node;

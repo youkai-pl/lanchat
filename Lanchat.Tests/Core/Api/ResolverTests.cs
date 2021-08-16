@@ -74,14 +74,14 @@ namespace Lanchat.Tests.Core.Api
         [Test]
         public void ValidModel()
         {
-            input.OnDataReceived(this, jsonUtils.Serialize(new Message {Content = "test"}));
+            input.OnDataReceived(this, jsonUtils.Serialize(new Message { Content = "test" }));
             Assert.IsTrue(messageHandlerMock.Received);
         }
 
         [Test]
         public void InvalidModel()
         {
-            input.OnDataReceived(this, jsonUtils.Serialize(new Message {Content = null}));
+            input.OnDataReceived(this, jsonUtils.Serialize(new Message { Content = null }));
             Assert.IsFalse(messageHandlerMock.Received);
         }
 

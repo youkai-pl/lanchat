@@ -15,7 +15,6 @@ namespace Lanchat.Core.NodesDetection
         private readonly JsonUtils jsonUtils;
         private readonly IUdpClient udpClient;
         private readonly string uniqueId;
-        private bool continueSendingAnnouncements = true;
 
         public AnnounceSender(IConfig config, IUdpClient udpClient, string uniqueId)
         {
@@ -30,7 +29,7 @@ namespace Lanchat.Core.NodesDetection
         {
             Task.Run(() =>
             {
-                while (continueSendingAnnouncements)
+                while (true)
                 {
                     var json = jsonUtils.Serialize(new Announce
                     {
@@ -41,12 +40,8 @@ namespace Lanchat.Core.NodesDetection
                     udpClient.Send(json, endPoint);
                     Thread.Sleep(2000);
                 }
+                // ReSharper disable once FunctionNeverReturns
             });
-        }
-
-        internal void Stop()
-        {
-            continueSendingAnnouncements = false;
         }
     }
 }

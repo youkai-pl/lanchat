@@ -29,6 +29,11 @@ namespace Lanchat.Core.FileTransfer
         public long Parts { get; internal init; }
 
         /// <summary>
+        ///     File transfer progress in percent.
+        /// </summary>
+        public long Progress => 100 * PartsTransferred / Parts;
+
+        /// <summary>
         ///     Already transferred parts counter.
         /// </summary>
         public long PartsTransferred

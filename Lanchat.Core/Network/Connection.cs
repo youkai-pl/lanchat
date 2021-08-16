@@ -10,24 +10,25 @@ namespace Lanchat.Core.Network
 {
     internal class Connection
     {
-        private readonly IOutput output;
         private readonly IConfig config;
-        private readonly IPublicKeyEncryption publicKeyEncryption;
         private readonly IHost host;
+        private readonly IInternalNodeRsa internalNodeRsa;
         private readonly INodeInternal nodeInternal;
+        private readonly IOutput output;
+        private bool cannotConnectHandled;
 
         public Connection(
             INodeInternal nodeInternal,
             IHost host,
-            IOutput output, 
-            IConfig config, 
-            IPublicKeyEncryption publicKeyEncryption)
+            IOutput output,
+            IConfig config,
+            IInternalNodeRsa internalNodeRsa)
         {
             this.nodeInternal = nodeInternal;
             this.host = host;
             this.output = output;
             this.config = config;
-            this.publicKeyEncryption = publicKeyEncryption;
+            this.internalNodeRsa = internalNodeRsa;
             host.Disconnected += OnDisconnected;
         }
 
@@ -40,10 +41,13 @@ namespace Lanchat.Core.Network
 
             Task.Delay(5000).ContinueWith(_ =>
             {
-                if (!nodeInternal.Ready)
+                if (nodeInternal.Ready || cannotConnectHandled)
                 {
-                    nodeInternal.OnCannotConnect();
+                    return;
                 }
+
+                cannotConnectHandled = true;
+                nodeInternal.OnCannotConnect();
             });
         }
 
@@ -53,20 +57,21 @@ namespace Lanchat.Core.Network
             {
                 Nickname = config.Nickname,
                 UserStatus = config.UserStatus,
-                PublicKey = publicKeyEncryption.ExportKey()
+                PublicKey = internalNodeRsa.ExportKey()
             };
 
             output.SendPrivilegedData(handshake);
         }
-        
+
         private void OnDisconnected(object sender, EventArgs _)
         {
             if (nodeInternal.Ready)
             {
                 nodeInternal.OnDisconnected();
             }
-            else
+            else if (!cannotConnectHandled)
             {
+                cannotConnectHandled = true;
                 nodeInternal.OnCannotConnect();
             }
         }

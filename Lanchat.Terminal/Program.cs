@@ -1,10 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using Lanchat.ClientCore;
 using Lanchat.Core.Network;
+using Lanchat.Terminal.Handlers;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
 
@@ -18,6 +20,7 @@ namespace Lanchat.Terminal
         private static void Main(string[] args)
         {
             Config = Storage.LoadConfig();
+            var rsaDatabase = new RsaDatabase();
 
             try
             {
@@ -30,14 +33,40 @@ namespace Lanchat.Terminal
 
             Resources.Culture = CultureInfo.CurrentCulture;
 
-            Ui.Start();
-            Network = new P2P(Config, x =>
+            Network = new P2P(Config, rsaDatabase, x =>
             {
-                _ = new NodeEventsHandlers(x.Instance);
+                _ = new NodeHandlers(x.Instance);
+                _ = new FileTransferHandlers(x.Instance);
             });
 
-            Ui.SetupNetworkEvents();
+            CheckStartArguments(args);
+            Window.Initialize();
+            Logger.StartLogging();
 
+            try
+            {
+                Network.Start();
+            }
+            catch (SocketException e)
+            {
+                if (e.SocketErrorCode != SocketError.AddressAlreadyInUse)
+                {
+                    throw;
+                }
+
+                TabsManager.HomeView.AddText(Resources._PortBusy, ConsoleColor.Yellow);
+            }
+
+            if (args.Contains("--localhost") || args.Contains("-l"))
+            {
+                Network.Connect(IPAddress.Loopback);
+            }
+
+            Logger.DeleteOldLogs(5);
+        }
+
+        private static void CheckStartArguments(string[] args)
+        {
             if (args.Contains("--no-saved") || args.Contains("-a"))
             {
                 Config.ConnectToSaved = false;
@@ -56,39 +85,16 @@ namespace Lanchat.Terminal
             if (args.Contains("--debug") || args.Contains("-d") || Debugger.IsAttached)
             {
                 Config.DebugMode = true;
-                Trace.Listeners.Add(new TerminalTraceListener());
+                Trace.Listeners.Add(new TraceListener());
             }
             else
             {
                 var newVersion = UpdateChecker.CheckUpdates();
                 if (newVersion != null)
                 {
-                    Ui.StatusBar.Text = Ui.StatusBar.Text += $" - Update available ({newVersion})";
+                    TabsManager.HomeView.AddText($"Update available: {newVersion}", ConsoleColor.Green);
                 }
             }
-
-            Logger.StartLogging();
-
-            try
-            {
-                Network.Start();
-            }
-            catch (SocketException e)
-            {
-                if (e.SocketErrorCode != SocketError.AddressAlreadyInUse)
-                {
-                    throw;
-                }
-
-                Ui.Log.AddWarning(Resources._PortBusy);
-            }
-
-            if (args.Contains("--localhost") || args.Contains("-l"))
-            {
-                Network.Connect(IPAddress.Loopback);
-            }
-
-            Logger.DeleteOldLogs(5);
         }
     }
 }

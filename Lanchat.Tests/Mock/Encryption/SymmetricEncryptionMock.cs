@@ -4,7 +4,7 @@ using Lanchat.Core.Encryption.Models;
 
 namespace Lanchat.Tests.Mock.Encryption
 {
-    internal class SymmetricEncryptionMock : ISymmetricEncryption
+    internal class NodeAesMock : INodeAes
     {
         public string EncryptString(string text)
         {
@@ -27,10 +27,10 @@ namespace Lanchat.Tests.Mock.Encryption
 
         public KeyInfo ExportKey()
         {
-            return new()
+            return new KeyInfo
             {
-                AesKey = new byte[] {0x10},
-                AesIv = new byte[] {0x10}
+                AesKey = new byte[] { 0x10 },
+                AesIv = new byte[] { 0x10 }
             };
         }
 

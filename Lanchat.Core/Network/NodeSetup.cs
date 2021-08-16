@@ -17,7 +17,9 @@ namespace Lanchat.Core.Network
     internal static class NodeSetup
     {
         internal static IContainer Setup(
-            IConfig config, 
+            IConfig config,
+            IRsaDatabase rsaDatabase,
+            ILocalRsa localRsa,
             IP2P network,
             Action<IActivatedEventArgs<INode>> nodeCreated,
             IEnumerable<Type> handlers = null)
@@ -25,7 +27,9 @@ namespace Lanchat.Core.Network
             var builder = new ContainerBuilder();
 
             builder.RegisterInstance(config).As<IConfig>().SingleInstance();
+            builder.RegisterInstance(rsaDatabase).As<IRsaDatabase>().SingleInstance();
             builder.RegisterInstance(network).As<IP2P>().SingleInstance();
+            builder.RegisterInstance(localRsa).As<ILocalRsa>().SingleInstance();
 
             builder.RegisterType<Node>()
                 .As<INode>()
@@ -39,12 +43,13 @@ namespace Lanchat.Core.Network
                 .As<IInternalUser>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<PublicKeyEncryption>()
-                .As<IPublicKeyEncryption>()
+            builder.RegisterType<NodeRsa>()
+                .As<INodeRsa>()
+                .As<IInternalNodeRsa>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<SymmetricEncryption>()
-                .As<ISymmetricEncryption>()
+            builder.RegisterType<NodeAes>()
+                .As<INodeAes>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<ModelEncryption>()

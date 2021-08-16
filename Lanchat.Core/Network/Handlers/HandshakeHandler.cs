@@ -9,24 +9,24 @@ namespace Lanchat.Core.Network.Handlers
 {
     internal class HandshakeHandler : ApiHandler<Handshake>
     {
-        private readonly ISymmetricEncryption encryption;
+        private readonly Connection connection;
+        private readonly INodeAes encryption;
         private readonly IHost host;
+        private readonly IInternalNodeRsa internalNodeRsa;
         private readonly INodeInternal node;
         private readonly IOutput output;
-        private readonly IPublicKeyEncryption publicKeyEncryption;
         private readonly IInternalUser user;
-        private readonly Connection connection;
 
         public HandshakeHandler(
-            IPublicKeyEncryption publicKeyEncryption,
-            ISymmetricEncryption encryption,
+            IInternalNodeRsa internalNodeRsa,
+            INodeAes encryption,
             IOutput output,
             INodeInternal node,
             IHost host,
             IInternalUser user,
             Connection connection)
         {
-            this.publicKeyEncryption = publicKeyEncryption;
+            this.internalNodeRsa = internalNodeRsa;
             this.encryption = encryption;
             this.output = output;
             this.node = node;
@@ -45,7 +45,7 @@ namespace Lanchat.Core.Network.Handlers
 
             try
             {
-                publicKeyEncryption.ImportKey(handshake.PublicKey);
+                internalNodeRsa.ImportKey(handshake.PublicKey, host.Endpoint.Address);
                 user.Nickname = handshake.Nickname;
                 user.UserStatus = handshake.UserStatus;
                 output.SendPrivilegedData(encryption.ExportKey());

@@ -35,7 +35,7 @@ namespace Lanchat.Core.TransportLayer
 
         private void SessionOnConnected(object sender, EventArgs e)
         {
-            var session = (Session) sender;
+            var session = (Session)sender;
             if (config.BlockedAddresses.Contains(session.Endpoint.Address))
             {
                 Trace.WriteLine($"Connection from {session.Endpoint.Address} blocked");

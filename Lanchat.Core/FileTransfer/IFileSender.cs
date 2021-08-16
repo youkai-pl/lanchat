@@ -33,10 +33,20 @@ namespace Lanchat.Core.FileTransfer
         event EventHandler<CurrentFileTransfer> FileSendFinished;
 
         /// <summary>
+        ///     File transfer receive request sent.
+        /// </summary>
+        event EventHandler<CurrentFileTransfer> FileTransferQueued;
+
+        /// <summary>
         ///     Send file exchange request.
         /// </summary>
         /// <param name="path">File path</param>
         /// <exception cref="InvalidOperationException">Only one file can be send at same time</exception>
         void CreateSendRequest(string path);
+
+        /// <summary>
+        ///     Cancel file send.
+        /// </summary>
+        void CancelSend();
     }
 }

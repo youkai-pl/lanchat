@@ -46,7 +46,7 @@ namespace Lanchat.Core.Network
 
         private void CloseNode(object sender, EventArgs e)
         {
-            var node = (INodeInternal) sender;
+            var node = (INodeInternal)sender;
             var id = node.Id;
             Nodes.Remove(node);
             node.Connected -= OnConnected;
@@ -57,7 +57,7 @@ namespace Lanchat.Core.Network
 
         private void OnConnected(object sender, EventArgs e)
         {
-            var node = (INodeInternal) sender;
+            var node = (INodeInternal)sender;
             var nodesList = new NodesList();
             nodesList.AddRange(Nodes
                 .Where(x => x.Id != node.Id)

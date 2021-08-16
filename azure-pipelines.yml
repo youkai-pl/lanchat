@@ -20,52 +20,52 @@ stages:
               projects: '**/*Tests.csproj'
   - stage: Publish
     jobs:
-    - job: Core
-      steps:
-        - task: DotNetCoreCLI@2
-          inputs:
-            command: 'pack'
-            packagesToPack: 'Lanchat.Core/Lanchat.Core.csproj'
-            packDirectory: '$(Build.ArtifactStagingDirectory)/Core'
-            versioningScheme: 'off'
-        - task: PublishBuildArtifacts@1
-          inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)/Core'
-            ArtifactName: 'Core'
-            publishLocation: 'Container'
+      - job: Core
+        steps:
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'pack'
+              packagesToPack: 'Lanchat.Core/Lanchat.Core.csproj'
+              packDirectory: '$(Build.ArtifactStagingDirectory)/Core'
+              versioningScheme: 'off'
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/Core'
+              ArtifactName: 'Core'
+              publishLocation: 'Container'
 
-    - job: ClientCore
-      steps:
-        - task: DotNetCoreCLI@2
-          inputs:
-            command: 'pack'
-            packagesToPack: 'Lanchat.ClientCore/Lanchat.ClientCore.csproj'
-            packDirectory: '$(Build.ArtifactStagingDirectory)/ClientCore'
-            versioningScheme: 'off'
-        - task: PublishBuildArtifacts@1
-          inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)/ClientCore'
-            ArtifactName: 'ClientCore'
-            publishLocation: 'Container'
+      - job: ClientCore
+        steps:
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'pack'
+              packagesToPack: 'Lanchat.ClientCore/Lanchat.ClientCore.csproj'
+              packDirectory: '$(Build.ArtifactStagingDirectory)/ClientCore'
+              versioningScheme: 'off'
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/ClientCore'
+              ArtifactName: 'ClientCore'
+              publishLocation: 'Container'
 
-    - job: Terminal
-      steps:
-      - task: DotNetCoreCLI@2
-        inputs:
-          command: 'publish'
-          publishWebProjects: false
-          projects: 'Lanchat.Terminal/Lanchat.Terminal.csproj'
-          modifyOutputPath: false
-          arguments: '-c Release -p:PublishSingleFile=true --self-contained true -r win-x86 -o $(Build.ArtifactStagingDirectory)/Terminal/win-x86'
-      - task: DotNetCoreCLI@2
-        inputs:
-          command: 'publish'
-          publishWebProjects: false
-          projects: 'Lanchat.Terminal/Lanchat.Terminal.csproj'
-          modifyOutputPath: false
-          arguments: '-c Release -p:PublishSingleFile=true --self-contained true -r win-x64 -o $(Build.ArtifactStagingDirectory)/Terminal/win-x64'
-      - task: PublishBuildArtifacts@1
-        inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/Terminal'
-          ArtifactName: 'Terminal'
-          publishLocation: 'Container'
+      - job: Terminal
+        steps:
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'publish'
+              publishWebProjects: false
+              projects: 'Lanchat.Terminal/Lanchat.Terminal.csproj'
+              modifyOutputPath: false
+              arguments: '-c Release -p:PublishSingleFile=true --self-contained true -r win-x86 -o $(Build.ArtifactStagingDirectory)/Terminal/win-x86'
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'publish'
+              publishWebProjects: false
+              projects: 'Lanchat.Terminal/Lanchat.Terminal.csproj'
+              modifyOutputPath: false
+              arguments: '-c Release -p:PublishSingleFile=true --self-contained true -r win-x64 -o $(Build.ArtifactStagingDirectory)/Terminal/win-x64'
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/Terminal'
+              ArtifactName: 'Terminal'
+              publishLocation: 'Container'

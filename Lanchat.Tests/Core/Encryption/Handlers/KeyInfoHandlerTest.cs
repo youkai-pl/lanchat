@@ -1,6 +1,8 @@
+using System.Net;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Encryption.Handlers;
 using Lanchat.Core.Encryption.Models;
+using Lanchat.Tests.Mock.Config;
 using Lanchat.Tests.Mock.Network;
 using NUnit.Framework;
 
@@ -9,29 +11,26 @@ namespace Lanchat.Tests.Core.Encryption.Handlers
     public class KeyInfoHandlerTest
     {
         private KeyInfoHandler keyInfoHandler;
+        private NodeAes nodeAes;
         private NodeMock nodeMock;
-        private SymmetricEncryption symmetricEncryption;
 
         [SetUp]
         public void Setup()
         {
-            var publicKeyEncryption = new PublicKeyEncryption();
-            publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey());
-            symmetricEncryption = new SymmetricEncryption(publicKeyEncryption);
+            var publicKeyEncryption = new NodeRsa(new RsaDatabaseMock(), new LocalRsa(new RsaDatabaseMock()));
+            publicKeyEncryption.ImportKey(publicKeyEncryption.ExportKey(), IPAddress.Loopback);
+            nodeAes = new NodeAes(publicKeyEncryption);
             nodeMock = new NodeMock();
-            keyInfoHandler = new KeyInfoHandler(symmetricEncryption, nodeMock);
+            keyInfoHandler = new KeyInfoHandler(nodeAes, nodeMock);
         }
 
         [Test]
         public void ValidKeyInfo()
         {
             var eventRaised = false;
-            nodeMock.Connected += (_, _) =>
-            {
-                eventRaised = true;
-            };
-            
-            var keyInfo = symmetricEncryption.ExportKey();
+            nodeMock.Connected += (_, _) => { eventRaised = true; };
+
+            var keyInfo = nodeAes.ExportKey();
             keyInfoHandler.Handle(keyInfo);
 
             Assert.IsTrue(keyInfoHandler.Disabled);
@@ -43,15 +42,12 @@ namespace Lanchat.Tests.Core.Encryption.Handlers
         public void InvalidKeyInfo()
         {
             var eventRaised = false;
-            nodeMock.CannotConnect += (_, _) =>
-            {
-                eventRaised = true;
-            };
-            
+            nodeMock.CannotConnect += (_, _) => { eventRaised = true; };
+
             var keyInfo = new KeyInfo
             {
-                AesKey = new byte[] {0x10},
-                AesIv = new byte[] {0x10}
+                AesKey = new byte[] { 0x10 },
+                AesIv = new byte[] { 0x10 }
             };
             keyInfoHandler.Handle(keyInfo);
 
@@ -62,11 +58,8 @@ namespace Lanchat.Tests.Core.Encryption.Handlers
         public void BlankKeyInfo()
         {
             var eventRaised = false;
-            nodeMock.CannotConnect += (_, _) =>
-            {
-                eventRaised = true;
-            };
-            
+            nodeMock.CannotConnect += (_, _) => { eventRaised = true; };
+
             var keyInfo = new KeyInfo();
             keyInfoHandler.Handle(keyInfo);
 

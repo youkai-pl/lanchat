@@ -8,6 +8,7 @@ namespace Lanchat.Tests.Mock.Config
 {
     public class ConfigMock : IConfig
     {
+        public byte[] PublicKey { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public string Nickname { get; set; }
         public int ServerPort { get; set; }

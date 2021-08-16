@@ -12,7 +12,7 @@ namespace Lanchat.Core.TransportLayer
         internal Session(TcpServer server) : base(server)
         { }
 
-        public IPEndPoint Endpoint => (IPEndPoint) Socket.RemoteEndPoint;
+        public IPEndPoint Endpoint => (IPEndPoint)Socket.RemoteEndPoint;
         public event EventHandler Disconnected;
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
@@ -46,7 +46,7 @@ namespace Lanchat.Core.TransportLayer
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            var json = Encoding.UTF8.GetString(buffer, (int) offset, (int) size);
+            var json = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
             DataReceived?.Invoke(this, json);
         }
 

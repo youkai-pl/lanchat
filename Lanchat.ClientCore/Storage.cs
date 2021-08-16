@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Lanchat.Core.Json;
+using Mono.Unix;
 
 namespace Lanchat.ClientCore
 {
@@ -22,6 +23,11 @@ namespace Lanchat.ClientCore
         ///     Path of main Lanchat data folder.
         /// </summary>
         public static string DataPath { get; set; }
+
+        /// <summary>
+        ///     Path of RSA keys database.
+        /// </summary>
+        public static string RsaDatabasePath { get; set; }
 
         /// <summary>
         ///     Path of Lanchat config file.
@@ -60,12 +66,12 @@ namespace Lanchat.ClientCore
             }
             catch (JsonException)
             {
-                config = new Config {Fresh = true};
+                config = new Config { Fresh = true };
             }
             catch (Exception e)
             {
                 CatchFileSystemExceptions(e);
-                config = new Config {Fresh = true};
+                config = new Config { Fresh = true };
             }
 
             SaveConfig(config);
@@ -73,11 +79,50 @@ namespace Lanchat.ClientCore
             return config;
         }
 
+        /// <summary>
+        ///     Load PEM file.
+        /// </summary>
+        /// <param name="name">Key ID</param>
+        /// <returns>PEM file string</returns>
+        public static string ReadPemFile(string name)
+        {
+            try
+            {
+                return File.ReadAllText($"{RsaDatabasePath}/{name}.pem");
+            }
+            catch (Exception e)
+            {
+                CatchFileSystemExceptions(e);
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///     Save PEM file.
+        /// </summary>
+        /// <param name="name">Key ID</param>
+        /// <param name="content">PEM file string</param>
+        public static void SavePemFile(string name, string content)
+        {
+            try
+            {
+                var filePath = $"{RsaDatabasePath}/{name}.pem";
+                CreateStorageDirectoryIfNotExists();
+                SetPermissions(filePath);
+                File.WriteAllText(filePath, content);
+            }
+            catch (Exception e)
+            {
+                CatchFileSystemExceptions(e);
+            }
+        }
+
         internal static void SaveConfig(Config config)
         {
             try
             {
                 CreateStorageDirectoryIfNotExists();
+                SetPermissions(ConfigPath);
                 File.WriteAllText(ConfigPath, JsonSerializer.Serialize(config, JsonSerializerOptions));
             }
             catch (Exception e)
@@ -96,6 +141,11 @@ namespace Lanchat.ClientCore
                 if (!Directory.Exists(DataPath))
                 {
                     Directory.CreateDirectory(DataPath);
+                }
+
+                if (!Directory.Exists($"{RsaDatabasePath}"))
+                {
+                    Directory.CreateDirectory($"{RsaDatabasePath}");
                 }
             }
             catch (Exception e)
@@ -150,6 +200,25 @@ namespace Lanchat.ClientCore
                 DataPath = $"{home}/Library/Preferences/.Lancaht2";
                 DownloadsPath = $"{home}/Downloads";
             }
+
+            RsaDatabasePath = $"{DataPath}/RSA";
+        }
+
+        private static void SetPermissions(string filePath)
+        {
+            File.Create(filePath).Dispose();
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return;
+            }
+
+            var fileInfo = new UnixFileInfo(filePath)
+            {
+                FileAccessPermissions = FileAccessPermissions.UserRead | FileAccessPermissions.UserWrite
+            };
+
+            fileInfo.Refresh();
         }
     }
 }
