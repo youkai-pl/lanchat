@@ -39,8 +39,6 @@ namespace Lanchat.Core.NodesDetection
         {
             udpClient.Bind(new IPEndPoint(IPAddress.Any, config.BroadcastPort));
             var from = new IPEndPoint(0, 0);
-            BroadcastReceived(new Announce { Guid = Guid.NewGuid().ToString(), Nickname = "test" },
-                IPAddress.Loopback);
             Task.Run(() =>
             {
                 while (true)

@@ -51,7 +51,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                     new() { Text = "[" },
                     new() { Text = $"{DateTime.Now:HH:mm:ss}", Color = ConsoleColor.DarkGreen },
                     new() { Text = "] " },
-                    new() { Text = nickname, Color = ConsoleColor.Blue },
+                    new() { Text = nickname, Color = ConsoleColor.Cyan },
                     new() { Text = " " },
                     new() { Text = line }
                 });

@@ -47,7 +47,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
 
         public void MarkAsUnread()
         {
-            headerBackground.Color = ConsoleColor.DarkMagenta;
+            headerBackground.Color = ConsoleColor.Green;
         }
     }
 }
