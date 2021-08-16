@@ -26,12 +26,20 @@ namespace Lanchat.Terminal.UserInterface.Controls
         {
             var status = Program.Config.UserStatus switch
             {
-                UserStatus.Online => "online",
-                UserStatus.AwayFromKeyboard => "afk",
-                UserStatus.DoNotDisturb => "dnd",
-                _ => ""
+                UserStatus.Online => null,
+                UserStatus.AwayFromKeyboard => "AFK",
+                UserStatus.DoNotDisturb => "DND",
+                _ => null
             };
-            Window.UiAction(() => textBlock.Text = $"[{Program.Config.Nickname} ({status})] ");
+            
+            if (status == null)
+            {
+                Window.UiAction(() => textBlock.Text = "> ");
+            }
+            else
+            {
+                Window.UiAction(() => textBlock.Text = $"{status}> ");
+            }
         }
     }
 }
