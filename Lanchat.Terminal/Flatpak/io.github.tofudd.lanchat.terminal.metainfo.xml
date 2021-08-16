@@ -22,11 +22,17 @@
     <screenshots>
         <screenshot type="default">
             <image>
-                https://user-images.githubusercontent.com/20731856/129494473-bb9c77ab-45fb-4ccd-884b-a6fc849dbff8.png
+                https://user-images.githubusercontent.com/20731856/129565573-1e9d3451-55b1-482a-9bda-ad05207ae156.png
+            </image>
+        </screenshot>
+        <screenshot>
+            <image>
+                https://user-images.githubusercontent.com/20731856/129565578-2c89215e-7c9d-4bdc-b86d-5f903b89477b.png
             </image>
         </screenshot>
     </screenshots>
     <releases>
+        <release version="2.8.0" date="2021-08-16"/>
         <release version="2.7.1" date="2021-06-1"/>
         <release version="2.7.0" date="2021-05-30"/>
         <release version="2.6.2" date="2021-03-12"/>
