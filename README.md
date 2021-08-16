@@ -6,7 +6,7 @@ Encrypted, P2P, local network chat.
 
 ## Lanchat.Terminal
 
-Main client of Lanchat based on Lanchat.Core. Terminal app with look inspired by Irssi. Available for Windows, Linux and
+Main client of Lanchat based on Lanchat.Core. Available for Windows, Linux and
 MacOS.
 
 ### Installation
@@ -39,11 +39,16 @@ Runtime ID for your operating system can be found [here](https://docs.microsoft.
 
 ### Usage
 
-Lanchat.Terminal UI is split into several tabs. You can switch between them using "Tab" and "Shift+Tab".
+#### Keys
+
+* `Tab` - Switch to next tab
+* `Shift + Tab` - Switch to previous tab
+* `PageUp` - Scroll content up
+* `PageDown` - Scroll content down
 
 #### Connecting
 
-Use `/connect <IP address>` command to connect with other user in network. You also can use domain name
+Use `/connect <IP address>` command to connect with other user in network. You can use IP or domain name
 like `/connect pc.lan`. Lanchat also can be used outside LAN network but host you are connecting to must have public IP
 and forwarded server port.
 
@@ -58,7 +63,7 @@ Check list of commands with `/help`. Detailed help for each command can be get b
 
 Commands like `/send` or `/block` takes four digits ID in argument. ID of user can be read from nickname after `#`.
 Like `User#1321`. IDs are assigned randomly upon connection and are different on each node.
-Commands that takes user id in argument can be executed in user tab without it.
+Commands that takes user ID in argument can be executed in user tab without it.
 
 #### CLI arguments
 
@@ -66,7 +71,7 @@ You can start terminal client with the following arguments:
 
 | Argument    | Short | Description                                |
 | ----------- | ----- | ------------------------------------------ |
-| --debug     | -d    | Show logs.                                 |
+| --debug     | -d    | Show debug tab.                            |
 | --no-saved  | -a    | Don't connect to addresses saved in config |
 | --localhost | -l    | Connect to localhost.                      |
 | --no-server | -n    | Start without server.                      |
