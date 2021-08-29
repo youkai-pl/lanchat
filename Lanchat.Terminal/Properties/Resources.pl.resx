@@ -18,21 +18,23 @@
     </resheader>
     <data name="Help" xml:space="preserve">
         <value>
+Lanchat: LAN chat i wysyłanie plików
+https://youkai.pl/lanchat-docs
+
 Tab / Shift+Tab - przełączanie kart
 PageUp / PageDown - przewijanie
 
 Komendy:
-connect   disconnect
-list      nickname     m
+connect   disconnect   nick    
 block     unblock      blocked
 afk       dnd          online
-exit      help
 send      accept       reject
+exit      help
             
-Plik configuracyjny znajduje się w {0}
-            
-Użyj polecenia /help &lt;polecenie&gt; aby wyświetlić szczegółową pomoc.
-Więcej informacji znajdziesz na https://youkai.pl/lanchat-docs
+Sprawdź /help &lt;polecenie&gt;
+       
+Plik configuracyjny znajduje się w:
+{0}
     </value>
     </data>
     <data name="_Connected" xml:space="preserve">

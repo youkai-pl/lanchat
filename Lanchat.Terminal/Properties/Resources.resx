@@ -137,20 +137,23 @@
     </data>
     <data name="Help" xml:space="preserve">
         <value>
+Lanchat: LAN chat and file transfer
+https://youkai.pl/lanchat-docs
+
 Tab / Shift+Tab - tabs switching
 PageUp / PageDown - scrolling
 
 Commands:
-connect   disconnect nick    
+connect   disconnect   nick    
 block     unblock      blocked
 afk       dnd          online
-exit      help
 send      accept       reject
-      
-Config file can be found in {0}
+exit      help
 
-Try /help &lt;command&gt; for detailed help.
-Check https://youkai.pl/lanchat-docs for more info.
+Try /help &lt;command&gt;
+      
+Config file can be found in:
+{0}
     </value>
     </data>
     <!-- ReSharper disable once NotOverriddenInSpecificCulture -->
