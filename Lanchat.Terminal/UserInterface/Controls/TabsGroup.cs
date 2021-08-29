@@ -31,7 +31,12 @@ namespace Lanchat.Terminal.UserInterface.Controls
         {
             Window.UiAction(() =>
             {
-                Tabs[Tabs.FindIndex(x => x.Equals(previousTab))] = newTab;
+                var previousTabIndex = Tabs.FindIndex(x => x.Equals(previousTab));
+                if (previousTabIndex < 0)
+                {
+                    return;
+                }
+                Tabs[previousTabIndex] = newTab;
                 var updatedHeaders = Headers.Children.ToList();
                 updatedHeaders[updatedHeaders.IndexOf(previousTab.Header)] = newTab.Header;
                 Headers.Children = updatedHeaders.ToList();
