@@ -110,7 +110,7 @@ namespace Lanchat.Core.NodesDetection
         {
             var timer = new Timer
             {
-                Interval = 2500,
+                Interval = 5000,
                 Enabled = true
             };
 
