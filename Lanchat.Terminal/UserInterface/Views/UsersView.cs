@@ -65,7 +65,7 @@ namespace Lanchat.Terminal.UserInterface.Views
 
         public VerticalScrollPanel ScrollPanel { get; }
 
-        public void RefreshConnectedUsers()
+        public void RefreshUsersView()
         {
             Window.UiAction(() =>
             {
@@ -88,29 +88,30 @@ namespace Lanchat.Terminal.UserInterface.Views
                         }
                     });
                 });
+                
+                detectedPanel.Children = new List<IControl>();
+                var connected = Program.Network.Nodes.Select(x => x.Host.Endpoint.Address);
+                Program.Network.NodesDetection.DetectedNodes.Where(x=> !connected.Any(y=> y.Equals(x.IpAddress)))
+                    .ForEach(x =>
+                    {
+                        detectedPanel.Add(new VerticalStackPanel
+                        {
+                            Children = new IControl[]
+                            {
+                                new TextBlock
+                                {
+                                    Text = $"{x.Nickname} - {x.IpAddress}"
+                                },
+                                new HorizontalSeparator(),
+                            }
+                        });
+                    });
             });
         }
 
         private void RefreshDetectedUsers(object sender, NotifyCollectionChangedEventArgs e)
         {
-            Window.UiAction(() =>
-            {
-                detectedPanel.Children = new List<IControl>();
-                Program.Network.NodesDetection.DetectedNodes.ForEach(x =>
-                {
-                    detectedPanel.Add(new VerticalStackPanel
-                    {
-                        Children = new IControl[]
-                        {
-                            new TextBlock
-                            {
-                                Text = $"{x.Nickname} - {x.IpAddress}"
-                            },
-                            new HorizontalSeparator(),
-                        }
-                    });
-                });
-            });
+            RefreshUsersView();
         }
     }
 }

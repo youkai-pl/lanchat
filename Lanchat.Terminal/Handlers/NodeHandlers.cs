@@ -32,7 +32,7 @@ namespace Lanchat.Terminal.Handlers
             privateChatTab = TabsManager.AddPrivateChatView(node);
             privateChatView = (ChatView)privateChatTab.Content;
             Writer.WriteStatus(string.Format(Resources._Connected, node.User.Nickname));
-            TabsManager.UsersView.RefreshConnectedUsers();
+            TabsManager.UsersView.RefreshUsersView();
 
             UpdateHeaderColor();
 
@@ -52,7 +52,7 @@ namespace Lanchat.Terminal.Handlers
         {
             TabsManager.ClosePrivateChatView(node);
             Writer.WriteStatus(string.Format(Resources._Disconnected, node.User.Nickname));
-            TabsManager.UsersView.RefreshConnectedUsers();
+            TabsManager.UsersView.RefreshUsersView();
         }
 
         private void MessagingOnMessageReceived(object sender, string e)
