@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -83,7 +84,6 @@ namespace Lanchat.Core.Network
         {
             var tcs = new TaskCompletionSource<bool>();
             port ??= Config.ServerPort;
-            CheckAddress(ipAddress);
             var client = new Client(ipAddress, port.Value);
             var node = nodesControl.CreateNode(client);
             SubscribeEvents(node, tcs);
@@ -102,28 +102,6 @@ namespace Lanchat.Core.Network
                 catch (ArgumentException)
                 { }
             });
-        }
-
-        private void CheckAddress(IPAddress ipAddress)
-        {
-            if (Config.BlockedAddresses.Contains(ipAddress))
-            {
-                throw new ArgumentException("Node blocked");
-            }
-
-            if (Nodes.Any(x => x.Host.Endpoint.Address.Equals(ipAddress)))
-            {
-                throw new ArgumentException("Already connected to this node");
-            }
-
-            var localHost = Dns.GetHostEntry(Dns.GetHostName());
-            if ((localHost.AddressList.Any(x => x.Equals(ipAddress)) ||
-                 ipAddress.Equals(IPAddress.Loopback) ||
-                 ipAddress.Equals(IPAddress.IPv6Loopback))
-                && !Config.DebugMode)
-            {
-                throw new ArgumentException("Address belong to local machine");
-            }
         }
 
         private static void SubscribeEvents(INodeInternal node, TaskCompletionSource<bool> tcs)

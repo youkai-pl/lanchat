@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using Autofac;
 using Lanchat.Core.Config;
 using Lanchat.Core.Network.Models;
@@ -25,6 +26,7 @@ namespace Lanchat.Core.Network
 
         internal INodeInternal CreateNode(IHost host)
         {
+            CheckAddress(host.Endpoint.Address);
             var scope = container.BeginLifetimeScope(b => { b.RegisterInstance(host).As<IHost>(); });
             var node = scope.Resolve<INodeInternal>();
             Nodes.Add(node);
@@ -67,6 +69,33 @@ namespace Lanchat.Core.Network
             if (!config.SavedAddresses.Contains(node.Host.Endpoint.Address))
             {
                 config.SavedAddresses.Add(node.Host.Endpoint.Address);
+            }
+        }
+        
+        private void CheckAddress(IPAddress ipAddress)
+        {
+            if (config.BlockedAddresses.Contains(ipAddress))
+            {
+                throw new ArgumentException("Node blocked");
+            }
+
+            Nodes.ForEach(x =>
+            {
+                Trace.WriteLine(x.Host.Endpoint.Address);
+            });
+            
+            if (Nodes.Any(x => x.Host.Endpoint.Address.Equals(ipAddress)))
+            {
+                throw new ArgumentException("Already connected to this node");
+            }
+
+            var localHost = Dns.GetHostEntry(Dns.GetHostName());
+            if ((localHost.AddressList.Any(x => x.Equals(ipAddress)) ||
+                 ipAddress.Equals(IPAddress.Loopback) ||
+                 ipAddress.Equals(IPAddress.IPv6Loopback))
+                && !config.DebugMode)
+            {
+                throw new ArgumentException("Address belong to local machine");
             }
         }
     }

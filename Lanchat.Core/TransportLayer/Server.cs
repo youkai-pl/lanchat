@@ -43,8 +43,12 @@ namespace Lanchat.Core.TransportLayer
                 return;
             }
 
-            nodesControl.CreateNode(session);
-            Trace.WriteLine($"Session for {session.Endpoint.Address} created. Session ID: {session.Id}");
+            try
+            {
+                nodesControl.CreateNode(session);
+            }
+            catch (ArgumentException)
+            { }
         }
 
         protected override void OnError(SocketError error)
