@@ -9,7 +9,7 @@
         <ApplicationIcon>icon.ico</ApplicationIcon>
         <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
         <IsPackable>false</IsPackable>
-        <Company>tofudd</Company>
+        <Company>Youkai Telecom</Company>
         <PublishTrimmed>true</PublishTrimmed>
     </PropertyGroup>
 
