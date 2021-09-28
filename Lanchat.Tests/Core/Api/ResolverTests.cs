@@ -1,6 +1,7 @@
 using System;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat.Models;
+using Lanchat.Core.Identity.Models;
 using Lanchat.Core.Json;
 using Lanchat.Core.Network.Models;
 using Lanchat.Tests.Mock.ApiHandlers;
@@ -16,6 +17,7 @@ namespace Lanchat.Tests.Core.Api
         private Input input;
         private JsonUtils jsonUtils;
         private MessageHandlerMock messageHandlerMock;
+        private ModelWithValidationMaxLengthHandler modelWithValidationMaxLengthHandler;
         private NodeMock nodeMock;
         private PrivilegedHandler privilegedHandler;
         private Resolver resolver;
@@ -25,6 +27,7 @@ namespace Lanchat.Tests.Core.Api
         {
             messageHandlerMock = new MessageHandlerMock();
             privilegedHandler = new PrivilegedHandler();
+            modelWithValidationMaxLengthHandler = new ModelWithValidationMaxLengthHandler();
             jsonUtils = new JsonUtils();
             nodeMock = new NodeMock
             {
@@ -33,7 +36,8 @@ namespace Lanchat.Tests.Core.Api
             resolver = new Resolver(nodeMock, new ModelEncryptionMock(), new IApiHandler[]
             {
                 messageHandlerMock,
-                privilegedHandler
+                privilegedHandler,
+                modelWithValidationMaxLengthHandler
             });
             input = new Input(resolver);
             resolver.RegisterHandler(messageHandlerMock);
@@ -79,10 +83,18 @@ namespace Lanchat.Tests.Core.Api
         }
 
         [Test]
-        public void InvalidModel()
+        public void InvalidModelRequired()
         {
             input.OnDataReceived(this, jsonUtils.Serialize(new Message { Content = null }));
             Assert.IsFalse(messageHandlerMock.Received);
+        }
+        
+        [Test]
+        public void InvalidModelMaxLength()
+        {
+            input.OnDataReceived(this, jsonUtils.Serialize(
+                new NicknameUpdate{NewNickname = "123456789012345678901234567890"}));
+            Assert.IsFalse(modelWithValidationMaxLengthHandler.Received);
         }
 
         [Test]
@@ -100,7 +112,7 @@ namespace Lanchat.Tests.Core.Api
         [Test]
         public void ValidationExceptionCatch()
         {
-            input.OnDataReceived(this, jsonUtils.Serialize(new ModelWithValidation()));
+            input.OnDataReceived(this, jsonUtils.Serialize(new ModelWithValidationRequired()));
         }
 
         [Test]

@@ -3,9 +3,9 @@ using Lanchat.Tests.Mock.Models;
 
 namespace Lanchat.Tests.Mock.ApiHandlers
 {
-    public class ModelWithValidationHandlerMock : ApiHandler<ModelWithValidation>
+    public class ModelWithValidationHandlerRequired : ApiHandler<ModelWithValidationRequired>
     {
-        protected override void Handle(ModelWithValidation data)
+        protected override void Handle(ModelWithValidationRequired data)
         { }
     }
 }

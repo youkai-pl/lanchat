@@ -22,7 +22,7 @@ namespace Lanchat.Tests.Core.Api
             resolver = new Resolver(new NodeMock { Ready = true }, new ModelEncryptionMock(), new IApiHandler[]
             {
                 modelHandlerMock,
-                new ModelWithValidationHandlerMock()
+                new ModelWithValidationHandlerRequired()
             });
             jsonBuffer = new JsonBuffer();
             jsonUtils = new JsonUtils();

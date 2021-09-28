@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Runtime.InteropServices.ComTypes;
 using Lanchat.Core.Network;
 
 namespace Lanchat.Core.Api
@@ -28,7 +29,11 @@ namespace Lanchat.Core.Api
                 return false;
             }
 
-            if (Validator.TryValidateObject(data, new ValidationContext(data), new List<ValidationResult>()))
+            if (Validator.TryValidateObject(
+                data, 
+                new ValidationContext(data), 
+                new List<ValidationResult>(),
+                true))
             {
                 return true;
             }
