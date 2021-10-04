@@ -79,11 +79,6 @@ namespace Lanchat.Core.Network
             {
                 throw new ArgumentException("Node blocked");
             }
-
-            Nodes.ForEach(x =>
-            {
-                Trace.WriteLine(x.Host.Endpoint.Address);
-            });
             
             if (Nodes.Any(x => x.Host.Endpoint.Address.Equals(ipAddress)))
             {
