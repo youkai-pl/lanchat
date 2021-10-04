@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using Autofac;
 using Lanchat.Core.Config;
 using Lanchat.Core.Network.Models;
@@ -89,13 +90,28 @@ namespace Lanchat.Core.Network
                 throw new ArgumentException("Already connected to this node");
             }
 
-            var localHost = Dns.GetHostEntry(Dns.GetHostName());
-            if ((localHost.AddressList.Any(x => x.Equals(ipAddress)) ||
+            if ((GetLocalAddresses().Any(x => x.Equals(ipAddress)) ||
                  ipAddress.Equals(IPAddress.Loopback) ||
                  ipAddress.Equals(IPAddress.IPv6Loopback))
                 && !config.DebugMode)
             {
                 throw new ArgumentException("Address belong to local machine");
+            }
+        }
+
+        private static IEnumerable<IPAddress> GetLocalAddresses()
+        {
+            try
+            {
+                return Dns.GetHostEntry(Dns.GetHostName()).AddressList;
+            }
+            catch (SocketException)
+            {
+                Trace.WriteLine("Cannot get local addresses.");
+                return new[]
+                {
+                    IPAddress.Loopback
+                };
             }
         }
     }
