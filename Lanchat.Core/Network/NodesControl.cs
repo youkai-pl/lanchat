@@ -30,7 +30,10 @@ namespace Lanchat.Core.Network
             CheckAddress(host.Endpoint.Address);
             var scope = container.BeginLifetimeScope(b => { b.RegisterInstance(host).As<IHost>(); });
             var node = scope.Resolve<INodeInternal>();
-            Nodes.Add(node);
+            lock (Nodes)
+            {
+                Nodes.Add(node);
+            }
             node.Connected += OnConnected;
             node.CannotConnect += (sender, args) =>
             {
@@ -51,7 +54,10 @@ namespace Lanchat.Core.Network
         {
             var node = (INodeInternal)sender;
             var id = node.Id;
-            Nodes.Remove(node);
+            lock (Nodes)
+            {
+                Nodes.Remove(node);
+            }
             node.Connected -= OnConnected;
             node.CannotConnect -= CloseNode;
             node.Disconnected -= CloseNode;
