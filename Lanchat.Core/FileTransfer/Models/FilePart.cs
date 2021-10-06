@@ -6,7 +6,7 @@ namespace Lanchat.Core.FileTransfer.Models
     internal class FilePart
     {
         [Required]
-        [MaxLength(1398102)]
+        [MaxLength(2097152)]
         [Encrypt]
         public string Data { get; init; }
     }
