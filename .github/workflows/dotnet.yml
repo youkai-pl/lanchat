@@ -31,7 +31,7 @@ jobs:
         with:
           PROJECT_FILE_PATH: Lanchat.Core/Lanchat.Core.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-          TAG_FORMAT: *
+          TAG_FORMAT: "*"
           
       - name: Publish Lanchat.ClientCore
         uses: brandedoutcast/publish-nuget@v2.5.5
