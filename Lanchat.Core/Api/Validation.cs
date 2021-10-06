@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using Lanchat.Core.Network;
 
@@ -29,16 +30,18 @@ namespace Lanchat.Core.Api
                 return false;
             }
 
+            var results = new List<ValidationResult>();
             if (Validator.TryValidateObject(
                 data, 
                 new ValidationContext(data), 
-                new List<ValidationResult>(),
+                results,
                 true))
             {
                 return true;
             }
 
-            Trace.WriteLine($"Node {node.Id} received invalid json");
+            var resultsString = string.Join( ", ", results.Select(x=> x.ErrorMessage));
+            Trace.WriteLine($"Node {node.Id} received invalid json: {resultsString}");
             return false;
         }
     }
