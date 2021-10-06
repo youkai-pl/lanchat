@@ -124,7 +124,13 @@ namespace Lanchat.Core.FileTransfer
         
         public void Dispose()
         {
-            CurrentFileTransfer?.Dispose();
+            if (CurrentFileTransfer != null && CurrentFileTransfer.Progress != 100)
+            {
+                CurrentFileTransfer.Dispose();
+                FileTransferError?.Invoke(this, new FileTransferException(
+                    CurrentFileTransfer, 
+                    "User disconnected before file transfer ended"));
+            }
             disposing = true;
         }
 
