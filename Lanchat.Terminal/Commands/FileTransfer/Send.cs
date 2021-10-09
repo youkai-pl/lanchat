@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Security;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
@@ -22,14 +23,15 @@ namespace Lanchat.Terminal.Commands.FileTransfer
                 return;
             }
 
-            Execute(new[] { args[1] }, node);
+            Execute(args.Skip(1).ToArray(), node);
         }
 
         public void Execute(string[] args, INode node)
         {
+            var filePath = string.Join(" ", args);
             try
             {
-                node.FileSender.CreateSendRequest(args[0]);
+                node.FileSender.CreateSendRequest(filePath);
             }
             catch (Exception e)
             {
@@ -40,7 +42,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
                     case SecurityException:
                     case PathTooLongException:
                     case ArgumentException:
-                        Writer.WriteError(string.Format(Resources._CannotAccessFile, args[0]));
+                        Writer.WriteError(string.Format(Resources._CannotAccessFile, filePath));
                         break;
 
                     case InvalidOperationException:
