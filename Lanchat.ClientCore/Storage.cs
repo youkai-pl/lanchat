@@ -196,13 +196,13 @@ namespace Lanchat.ClientCore
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 var home = Environment.GetEnvironmentVariable("HOME");
-                DataPath = $"{home}/.Lancaht2";
+                DataPath = $"{home}/.Lanchat2";
                 DownloadsPath = $"{home}/Downloads";
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 var home = Environment.GetEnvironmentVariable("HOME");
-                DataPath = $"{home}/Library/Preferences/.Lancaht2";
+                DataPath = $"{home}/Library/Preferences/.Lanchat2";
                 DownloadsPath = $"{home}/Downloads";
             }
 
