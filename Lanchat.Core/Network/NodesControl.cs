@@ -34,6 +34,7 @@ namespace Lanchat.Core.Network
             {
                 Nodes.Add(node);
             }
+
             node.Connected += OnConnected;
             node.CannotConnect += (sender, args) =>
             {
@@ -58,6 +59,7 @@ namespace Lanchat.Core.Network
             {
                 Nodes.Remove(node);
             }
+
             node.Connected -= OnConnected;
             node.CannotConnect -= CloseNode;
             node.Disconnected -= CloseNode;
@@ -78,14 +80,14 @@ namespace Lanchat.Core.Network
                 config.SavedAddresses.Add(node.Host.Endpoint.Address);
             }
         }
-        
+
         private void CheckAddress(IPAddress ipAddress)
         {
             if (config.BlockedAddresses.Contains(ipAddress))
             {
                 throw new ArgumentException("Node blocked");
             }
-            
+
             if (Nodes.Any(x => x.Host.Endpoint.Address.Equals(ipAddress)))
             {
                 throw new ArgumentException("Already connected to this node");

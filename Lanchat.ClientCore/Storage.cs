@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Lanchat.Core.Json;
 using Mono.Unix;
-using Mono.Unix.Native;
 
 namespace Lanchat.ClientCore
 {
@@ -148,7 +147,7 @@ namespace Lanchat.ClientCore
                 {
                     Directory.CreateDirectory(DownloadsPath);
                 }
-                
+
                 if (!Directory.Exists($"{RsaDatabasePath}"))
                 {
                     Directory.CreateDirectory($"{RsaDatabasePath}");

@@ -6,8 +6,7 @@ Encrypted, P2P, local network chat.
 
 ## Lanchat.Terminal
 
-Main client of Lanchat based on Lanchat.Core. Available for Windows, Linux and
-MacOS.
+Main client of Lanchat based on Lanchat.Core. Available for Windows, Linux and MacOS.
 
 ### Installation
 
@@ -64,8 +63,8 @@ Check list of commands with `/help`. Detailed help for each command can be get b
 #### Commands with user in parameter
 
 Commands like `/send` or `/block` takes four digits ID in argument. ID of user can be read from nickname after `#`.
-Like `User#1321`. IDs are assigned randomly upon connection and are different on each node.
-Commands that takes user ID in argument can be executed in user tab without it.
+Like `User#1321`. IDs are assigned randomly upon connection and are different on each node. Commands that takes user ID
+in argument can be executed in user tab without it.
 
 #### CLI arguments
 
@@ -80,15 +79,15 @@ You can start terminal client with the following arguments:
 | --no-udp    | -b    | Start without broadcasting.                |
 
 ### Public key verification
-Lanchat saves public key of connected users and compare them in next connections.
-Keys are assigned to IP address.
+
+Lanchat saves public key of connected users and compare them in next connections. Keys are assigned to IP address.
 Thanks to that the possibility of a man in the middle attack is somewhat limited.
 
 **On first connection you should compare fingerprints by yourself**
 
-If public key was changed Lanchat will give error message on each connection.
-If you are sure the keys are correct (for example ip address is used by more than one user) 
-you should remove corresponding PEM file in Lanchat config directory. 
+If public key was changed Lanchat will give error message on each connection. If you are sure the keys are correct (for
+example ip address is used by more than one user)
+you should remove corresponding PEM file in Lanchat config directory.
 
 ### Configuration
 

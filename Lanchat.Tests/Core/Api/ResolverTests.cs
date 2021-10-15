@@ -88,12 +88,12 @@ namespace Lanchat.Tests.Core.Api
             input.OnDataReceived(this, jsonUtils.Serialize(new Message { Content = null }));
             Assert.IsFalse(messageHandlerMock.Received);
         }
-        
+
         [Test]
         public void InvalidModelMaxLength()
         {
             input.OnDataReceived(this, jsonUtils.Serialize(
-                new NicknameUpdate{NewNickname = "123456789012345678901234567890"}));
+                new NicknameUpdate { NewNickname = "123456789012345678901234567890" }));
             Assert.IsFalse(modelWithValidationMaxLengthHandler.Received);
         }
 

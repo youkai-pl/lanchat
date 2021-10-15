@@ -31,7 +31,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
                 UserStatus.DoNotDisturb => "DND",
                 _ => null
             };
-            
+
             if (status == null)
             {
                 Window.UiAction(() => textBlock.Text = "> ");

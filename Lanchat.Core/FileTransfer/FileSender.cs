@@ -19,6 +19,19 @@ namespace Lanchat.Core.FileTransfer
             this.storage = storage;
         }
 
+        public void Dispose()
+        {
+            if (CurrentFileTransfer != null && CurrentFileTransfer.Progress != 100)
+            {
+                CurrentFileTransfer.Dispose();
+                FileTransferError?.Invoke(this, new FileTransferException(
+                    CurrentFileTransfer,
+                    "User disconnected before file transfer ended"));
+            }
+
+            disposing = true;
+        }
+
         public CurrentFileTransfer CurrentFileTransfer { get; private set; }
 
         public event EventHandler<FileTransferException> FileTransferError;
@@ -26,7 +39,7 @@ namespace Lanchat.Core.FileTransfer
         public event EventHandler<CurrentFileTransfer> AcceptedByReceiver;
         public event EventHandler<CurrentFileTransfer> FileTransferRequestRejected;
         public event EventHandler<CurrentFileTransfer> FileSendFinished;
-        
+
         public void CreateSendRequest(string path)
         {
             if (CurrentFileTransfer is { Disposed: false })
@@ -42,6 +55,12 @@ namespace Lanchat.Core.FileTransfer
 
             fileTransferOutput.SendRequest(CurrentFileTransfer);
             FileTransferQueued?.Invoke(this, CurrentFileTransfer);
+        }
+
+        public void CancelSend()
+        {
+            CurrentFileTransfer?.Dispose();
+            fileTransferOutput.SendSignal(FileTransferStatus.SenderError);
         }
 
         public void SendFile()
@@ -114,24 +133,6 @@ namespace Lanchat.Core.FileTransfer
             }
 
             CurrentFileTransfer.Dispose();
-        }
-
-        public void CancelSend()
-        {
-            CurrentFileTransfer?.Dispose();
-            fileTransferOutput.SendSignal(FileTransferStatus.SenderError);
-        }
-        
-        public void Dispose()
-        {
-            if (CurrentFileTransfer != null && CurrentFileTransfer.Progress != 100)
-            {
-                CurrentFileTransfer.Dispose();
-                FileTransferError?.Invoke(this, new FileTransferException(
-                    CurrentFileTransfer, 
-                    "User disconnected before file transfer ended"));
-            }
-            disposing = true;
         }
 
         private void OnFileTransferError(FileTransferException e)

@@ -35,14 +35,14 @@ namespace Lanchat.Terminal.UserInterface
                 AddDebugView();
             }
         }
-        
+
         public static void ShowMainChatView()
         {
             if (Window.TabPanel.SystemTabs.Tabs.First().Content is HomeView)
             {
                 Window.TabPanel.SystemTabs.ReplaceTab(HomeViewTab, MainViewTab);
             }
-            
+
             if (Window.TabPanel.CurrentTab.Content is HomeView)
             {
                 Window.TabPanel.SelectTab(MainViewTab);
@@ -67,7 +67,7 @@ namespace Lanchat.Terminal.UserInterface
 
             Window.TabPanel.ChatTabs.RemoveTab(chatTab);
         }
-        
+
         public static void SignalNewMessage()
         {
             if (Window.TabPanel.CurrentTab != MainViewTab)

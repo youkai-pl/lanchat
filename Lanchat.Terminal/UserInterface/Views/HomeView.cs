@@ -44,7 +44,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                 }
             });
         }
-        
+
         private void WriteWelcomeText()
         {
             AddText("", Color.White);

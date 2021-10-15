@@ -17,14 +17,14 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
-      
+
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore
       - name: Test
         run: dotnet test --no-build --verbosity normal
-      
+
       - name: Publish Lanchat.Core
         uses: brandedoutcast/publish-nuget@v2.5.5
         continue-on-error: true
@@ -32,7 +32,7 @@ jobs:
           PROJECT_FILE_PATH: Lanchat.Core/Lanchat.Core.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
           TAG_FORMAT: "*"
-          
+
       - name: Publish Lanchat.ClientCore
         uses: brandedoutcast/publish-nuget@v2.5.5
         continue-on-error: true

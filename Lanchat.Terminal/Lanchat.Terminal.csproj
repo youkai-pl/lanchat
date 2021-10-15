@@ -24,12 +24,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="ConsoleGUI" Version="1.4.1" />
+        <PackageReference Include="ConsoleGUI" Version="1.4.1"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Lanchat.ClientCore\Lanchat.ClientCore.csproj" />
-        <ProjectReference Include="..\Lanchat.Core\Lanchat.Core.csproj" />
+        <ProjectReference Include="..\Lanchat.ClientCore\Lanchat.ClientCore.csproj"/>
+        <ProjectReference Include="..\Lanchat.Core\Lanchat.Core.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

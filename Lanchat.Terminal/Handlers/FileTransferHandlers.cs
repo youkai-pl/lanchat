@@ -37,7 +37,7 @@ namespace Lanchat.Terminal.Handlers
             fileTransferStatus.Update(Resources._FileTransferRejected);
             TabsManager.SignalFileTransfer();
         }
-        
+
         private void OnFileTransferError(object sender, FileTransferException e)
         {
             fileTransferStatus.Update(e.Message);

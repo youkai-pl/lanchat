@@ -84,14 +84,14 @@ namespace Lanchat.Terminal.UserInterface.Views
                             {
                                 Text = RsaFingerprint.GetMd5(x.NodeRsa.Rsa.ExportRSAPublicKey())
                             },
-                            new HorizontalSeparator(),
+                            new HorizontalSeparator()
                         }
                     });
                 });
-                
+
                 detectedPanel.Children = new List<IControl>();
                 var connected = Program.Network.Nodes.Select(x => x.Host.Endpoint.Address);
-                Program.Network.NodesDetection.DetectedNodes.Where(x=> !connected.Any(y=> y.Equals(x.IpAddress)))
+                Program.Network.NodesDetection.DetectedNodes.Where(x => !connected.Any(y => y.Equals(x.IpAddress)))
                     .ForEach(x =>
                     {
                         detectedPanel.Add(new VerticalStackPanel
@@ -102,7 +102,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                                 {
                                     Text = $"{x.Nickname} - {x.IpAddress}"
                                 },
-                                new HorizontalSeparator(),
+                                new HorizontalSeparator()
                             }
                         });
                     });

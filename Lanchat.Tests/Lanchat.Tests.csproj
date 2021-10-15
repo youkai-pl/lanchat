@@ -7,15 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="NUnit" Version="3.13.2" />
-        <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
-        <PackageReference Include="System.Text.Json" Version="5.0.2" />
+        <PackageReference Include="NUnit" Version="3.13.2"/>
+        <PackageReference Include="NUnit3TestAdapter" Version="4.0.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0"/>
+        <PackageReference Include="System.Text.Json" Version="5.0.2"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Lanchat.ClientCore\Lanchat.ClientCore.csproj" />
-        <ProjectReference Include="..\Lanchat.Core\Lanchat.Core.csproj" />
+        <ProjectReference Include="..\Lanchat.ClientCore\Lanchat.ClientCore.csproj"/>
+        <ProjectReference Include="..\Lanchat.Core\Lanchat.Core.csproj"/>
     </ItemGroup>
 
 </Project>

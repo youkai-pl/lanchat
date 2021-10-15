@@ -13,7 +13,7 @@ namespace Lanchat.Terminal.UserInterface
         {
             Write(text, ConsoleColor.Yellow);
         }
-        
+
         public static void WriteError(string text)
         {
             Write(text, ConsoleColor.Red);

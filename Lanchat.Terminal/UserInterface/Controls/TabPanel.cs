@@ -94,7 +94,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
                 CurrentTab = tab;
 
                 tabSwitch = AllTabs.IndexOf(CurrentTab);
-                
+
                 CurrentTab.Header.MarkAsActive();
                 wrapper.FillingControl = new Border
                 {

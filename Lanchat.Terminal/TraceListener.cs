@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using Lanchat.Terminal.UserInterface;
-using Lanchat.Terminal.UserInterface.Views;
 
 namespace Lanchat.Terminal
 {

@@ -11,7 +11,6 @@ namespace Lanchat.Terminal.UserInterface.Controls
         private readonly int counter;
         private readonly CurrentFileTransfer currentFileTransfer;
         private readonly TextBlock textBlock = new();
-        public INode Node { get; }
 
         public FileTransferStatus(INode node, CurrentFileTransfer currentFileTransfer, int counter)
         {
@@ -20,6 +19,8 @@ namespace Lanchat.Terminal.UserInterface.Controls
             this.counter = counter;
             Update(Resources._FileTransferWaiting);
         }
+
+        public INode Node { get; }
 
         public void Update(string status)
         {

@@ -10,10 +10,10 @@ namespace Lanchat.Terminal.UserInterface
 {
     public class InputController : IInputListener
     {
-        private readonly CommandsController commandsController;
-        private readonly TextBox promptInput;
         private const int HistoryLimit = 50;
+        private readonly CommandsController commandsController;
         private readonly List<string> history = new();
+        private readonly TextBox promptInput;
         private int currentHistoryItem = HistoryLimit;
 
         public InputController(TextBox promptInput)
@@ -30,17 +30,17 @@ namespace Lanchat.Terminal.UserInterface
             switch (key)
             {
                 case ConsoleKey.UpArrow:
-                    Window.UiAction(()=> promptInput.Text = GetFromHistory(-1));
-                    Window.UiAction(()=> promptInput.Caret = promptInput.Text.Length);
+                    Window.UiAction(() => promptInput.Text = GetFromHistory(-1));
+                    Window.UiAction(() => promptInput.Caret = promptInput.Text.Length);
                     inputEvent.Handled = true;
                     break;
-                
+
                 case ConsoleKey.DownArrow:
-                    Window.UiAction(()=> promptInput.Text = GetFromHistory(1));
-                    Window.UiAction(()=> promptInput.Caret = promptInput.Text.Length);
+                    Window.UiAction(() => promptInput.Text = GetFromHistory(1));
+                    Window.UiAction(() => promptInput.Caret = promptInput.Text.Length);
                     inputEvent.Handled = true;
                     break;
-                
+
                 case ConsoleKey.Enter:
                     ProcessInputText();
                     Window.UiAction(() => promptInput.Text = string.Empty);
@@ -100,7 +100,7 @@ namespace Lanchat.Terminal.UserInterface
         {
             currentHistoryItem += direction;
             var historyItem = history.ElementAtOrDefault(currentHistoryItem);
-            
+
             if (historyItem != null)
             {
                 return historyItem;

@@ -36,6 +36,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
                 {
                     return;
                 }
+
                 Tabs[previousTabIndex] = newTab;
                 var updatedHeaders = Headers.Children.ToList();
                 updatedHeaders[updatedHeaders.IndexOf(previousTab.Header)] = newTab.Header;

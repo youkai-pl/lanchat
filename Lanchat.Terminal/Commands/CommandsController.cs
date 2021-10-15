@@ -35,6 +35,7 @@ namespace Lanchat.Terminal.Commands
                 Writer.WriteError(Resources._InvalidCommand);
                 return;
             }
+
             CheckContext(args, command);
         }
 
@@ -55,7 +56,7 @@ namespace Lanchat.Terminal.Commands
                 }
             }
         }
-        
+
         private static bool CheckArgumentsCount(IReadOnlyCollection<string> args, int expectedCount, string alias)
         {
             if (args.Count >= expectedCount)
