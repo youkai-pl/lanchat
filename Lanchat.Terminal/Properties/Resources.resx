@@ -140,8 +140,9 @@
 Lanchat: LAN chat and file transfer
 https://youkai.pl/lanchat-docs
 
-Tab / Shift+Tab - tabs switching
-PageUp / PageDown - scrolling
+Tab / Shift+Tab       - tabs switching
+Up Arrow / Down Arrow - input history
+PageUp / PageDown     - scrolling
 
 Commands:
 connect   disconnect   nick    

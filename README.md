@@ -43,6 +43,8 @@ Runtime ID for your operating system can be found [here](https://docs.microsoft.
 
 * `Tab` - Switch to next tab
 * `Shift + Tab` - Switch to previous tab
+* `Up Arrow` - Previous item in input history
+* `Down Arrow` - Next item in input history
 * `PageUp` - Scroll content up
 * `PageDown` - Scroll content down
 

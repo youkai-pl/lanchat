@@ -21,8 +21,9 @@
 Lanchat: LAN chat i wysyłanie plików
 https://youkai.pl/lanchat-docs
 
-Tab / Shift+Tab - przełączanie kart
-PageUp / PageDown - przewijanie
+Tab / Shift+Tab       - przełączanie kart
+Up Arrow / Down Arrow - historia wprowadzania
+PageUp / PageDown     - przewijanie
 
 Komendy:
 connect   disconnect   nick    
