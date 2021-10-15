@@ -19,30 +19,51 @@ namespace Lanchat.Terminal.UserInterface
 
         public void OnInput(InputEvent inputEvent)
         {
-            if (inputEvent.Key.Key != ConsoleKey.Enter)
+            var key = inputEvent.Key.Key;
+
+            // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
+            switch (key)
+            {
+                case ConsoleKey.UpArrow:
+                    Window.UiAction(()=> promptInput.Text = "UP");
+                    Window.UiAction(()=> promptInput.Caret = promptInput.Text.Length);
+                    inputEvent.Handled = true;
+                    break;
+                
+                case ConsoleKey.DownArrow:
+                    Window.UiAction(()=> promptInput.Text = "DOWN");
+                    Window.UiAction(()=> promptInput.Caret = promptInput.Text.Length);
+                    inputEvent.Handled = true;
+                    break;
+                
+                case ConsoleKey.Enter:
+                    ProcessInputText();
+                    Window.UiAction(() => promptInput.Text = string.Empty);
+                    inputEvent.Handled = true;
+                    break;
+            }
+        }
+
+        private void ProcessInputText()
+        {
+            if (string.IsNullOrWhiteSpace(promptInput.Text))
             {
                 return;
             }
 
-            if (!string.IsNullOrWhiteSpace(promptInput.Text))
+            if (Window.TabPanel.CurrentTab.Content is HomeView)
             {
-                if (Window.TabPanel.CurrentTab.Content is HomeView)
-                {
-                    TabsManager.ShowMainChatView();
-                }
-
-                if (promptInput.Text.StartsWith("/", StringComparison.CurrentCulture))
-                {
-                    commandsController.ExecuteCommand(promptInput.Text.Split(' '));
-                }
-                else if (Window.TabPanel.CurrentTab.Content is ChatView chatView)
-                {
-                    SendMessage(chatView);
-                }
+                TabsManager.ShowMainChatView();
             }
 
-            Window.UiAction(() => promptInput.Text = string.Empty);
-            inputEvent.Handled = true;
+            if (promptInput.Text.StartsWith("/", StringComparison.CurrentCulture))
+            {
+                commandsController.ExecuteCommand(promptInput.Text.Split(' '));
+            }
+            else if (Window.TabPanel.CurrentTab.Content is ChatView chatView)
+            {
+                SendMessage(chatView);
+            }
         }
 
         private void SendMessage(ChatView chatView)
