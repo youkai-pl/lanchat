@@ -14,7 +14,7 @@ namespace Lanchat.Terminal.UserInterface
         private readonly CommandsController commandsController;
         private readonly List<string> history = new();
         private readonly TextBox promptInput;
-        private int currentHistoryItem = HistoryLimit;
+        private int currentHistoryItem;
 
         public InputController(TextBox promptInput)
         {
@@ -89,11 +89,14 @@ namespace Lanchat.Terminal.UserInterface
         private void AddToHistory(string input)
         {
             history.Add(input);
-            currentHistoryItem = HistoryLimit;
-            if (history.Count > HistoryLimit)
+            currentHistoryItem = history.Count;
+            if (history.Count <= HistoryLimit)
             {
-                history.Remove(history.First());
+                return;
             }
+
+            history.Remove(history.First());
+            currentHistoryItem--;
         }
 
         private string GetFromHistory(int direction)
