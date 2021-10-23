@@ -70,6 +70,7 @@ namespace Lanchat.Terminal.Handlers
         private void UserOnNicknameUpdated(object sender, string e)
         {
             privateChatTab?.Header.UpdateText(node.User.Nickname);
+            TabsManager.UsersView.RefreshUsersView();
             Writer.WriteStatus(
                 string.Format(Resources._NicknameChanged, node.User.PreviousNickname, node.User.Nickname));
         }
