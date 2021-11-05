@@ -15,7 +15,7 @@ namespace Lanchat.Core.Encryption
         /// <returns>MD5 fingerprint</returns>
         public static string GetMd5(byte[] key)
         {
-            var hash = new MD5CryptoServiceProvider().ComputeHash(key);
+            var hash = MD5.HashData(key);
             var fingerprint = string.Concat(hash.Select(b => b.ToString("x2").Insert(2, ":")));
             return fingerprint.Remove(fingerprint.Length - 1);
         }
