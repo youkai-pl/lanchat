@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Lanchat.Core.Json;
-using Mono.Unix;
 
 namespace Lanchat.ClientCore
 {
@@ -218,12 +217,18 @@ namespace Lanchat.ClientCore
                 return;
             }
 
-            var fileInfo = new UnixFileInfo(filePath)
+            using var process = new Process
             {
-                FileAccessPermissions = FileAccessPermissions.UserRead | FileAccessPermissions.UserWrite
+                StartInfo = new ProcessStartInfo
+                {
+                    CreateNoWindow = true,
+                    FileName = "chmod",
+                    Arguments = $"0600 {filePath}" 
+                }
             };
 
-            fileInfo.Refresh();
+            process.Start();
+            process.WaitForExit();
         }
     }
 }
