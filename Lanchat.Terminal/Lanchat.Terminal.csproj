@@ -11,6 +11,7 @@
         <IsPackable>false</IsPackable>
         <Company>Youkai Telecom</Company>
         <PublishTrimmed>true</PublishTrimmed>
+        <IsTrimmable>true</IsTrimmable>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">

@@ -13,6 +13,7 @@
         <PackageTags>p2p, chat, network</PackageTags>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Authors>tofudd</Authors>
+        <IsTrimmable>true</IsTrimmable>
     </PropertyGroup>
 
     <ItemGroup>
