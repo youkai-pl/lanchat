@@ -261,4 +261,7 @@ Config file can be found in:
     <data name="_GetHelp" xml:space="preserve">
         <value>Check /help command</value>
     </data>
+    <data name="SelfNicknameChanged" xml:space="preserve">
+        <value>Nickname changed to {0}</value>
+    </data>
 </root>

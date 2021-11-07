@@ -140,4 +140,7 @@ Plik konfiguracyjny znajduje się w:
     <data name="_GetHelp" xml:space="preserve">
         <value>Sprawdź komendę /help</value>
     </data>
+    <data name="SelfNicknameChanged" xml:space="preserve">
+        <value>Zmieniono nick na {0}</value>
+    </data>
 </root>

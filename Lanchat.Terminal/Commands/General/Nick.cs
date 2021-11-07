@@ -20,6 +20,7 @@ namespace Lanchat.Terminal.Commands.General
             else
             {
                 Program.Config.Nickname = nickname;
+                Writer.WriteStatus(string.Format(Resources.SelfNicknameChanged, nickname));
             }
         }
 

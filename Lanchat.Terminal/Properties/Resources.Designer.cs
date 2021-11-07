@@ -266,5 +266,11 @@ namespace Lanchat.Terminal.Properties {
                 return ResourceManager.GetString("_GetHelp", resourceCulture);
             }
         }
+        
+        internal static string SelfNicknameChanged {
+            get {
+                return ResourceManager.GetString("SelfNicknameChanged", resourceCulture);
+            }
+        }
     }
 }
