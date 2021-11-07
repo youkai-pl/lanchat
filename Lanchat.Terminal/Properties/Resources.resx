@@ -124,7 +124,7 @@
         </value>
     </resheader>
     <!-- ReSharper disable once NotOverriddenInSpecificCulture -->
-    <data name="_Logo" xml:space="preserve">
+    <data name="Logo" xml:space="preserve">
         <value>    
      __                     __          __
     / /   ____ _____  _____/ /_  ____ _/ /_
@@ -159,22 +159,22 @@ Config file can be found in:
     </value>
     </data>
     <!-- ReSharper disable once NotOverriddenInSpecificCulture -->
-    <data name="_WindowTitle" xml:space="preserve">
+    <data name="WindowTitle" xml:space="preserve">
         <value>Lanchat</value>
     </data>
-    <data name="_ConnectionAttempt" xml:space="preserve">
+    <data name="ConnectionAttempt" xml:space="preserve">
         <value>Attempting connect to {0}</value>
     </data>
-    <data name="_IncorrectValues" xml:space="preserve">
+    <data name="IncorrectValues" xml:space="preserve">
     <value>Incorrect values</value>
   </data>
-    <data name="_ManualNotFound" xml:space="preserve">
+    <data name="ManualNotFound" xml:space="preserve">
     <value>Manual not found</value>
   </data>
     <data name="Help_nick" xml:space="preserve">
     <value>Syntax: /nick &lt;new_nick&gt;</value>
   </data>
-    <data name="_WrongNickname" xml:space="preserve">
+    <data name="WrongNickname" xml:space="preserve">
         <value>Nickname must be shorter than 20 characters and cannot be blank</value>
     </data>
     <data name="Help_disconnect" xml:space="preserve">
@@ -186,40 +186,40 @@ Config file can be found in:
     <data name="Help_unblock" xml:space="preserve">
         <value>Syntax: /unblock &lt;ip&gt;</value>
     </data>
-    <data name="_UserNotFound" xml:space="preserve">
+    <data name="UserNotFound" xml:space="preserve">
         <value>User not found</value>
     </data>
-    <data name="_Blocked" xml:space="preserve">
+    <data name="Blocked" xml:space="preserve">
         <value>{0} blocked</value>
     </data>
-    <data name="_Unblocked" xml:space="preserve">
+    <data name="Unblocked" xml:space="preserve">
         <value>{0} unblocked</value>
     </data>
-    <data name="_BlockedList" xml:space="preserve">
+    <data name="BlockedList" xml:space="preserve">
         <value>Blocked IP addresses</value>
     </data>
-    <data name="_Disconnected" xml:space="preserve">
+    <data name="Disconnected" xml:space="preserve">
         <value>{0} disconnected</value>
     </data>
-    <data name="_Connected" xml:space="preserve">
+    <data name="Connected" xml:space="preserve">
         <value>{0} connected</value>
     </data>
-    <data name="_NicknameChanged" xml:space="preserve">
+    <data name="NicknameChanged" xml:space="preserve">
         <value>{0} is now {1}</value>
     </data>
-    <data name="_PortBusy" xml:space="preserve">
+    <data name="PortBusy" xml:space="preserve">
         <value>Port busy. Cannot start server.</value>
     </data>
-    <data name="_CannotConnect" xml:space="preserve">
+    <data name="CannotConnect" xml:space="preserve">
         <value>Cannot connect with {0}</value>
     </data>
-    <data name="_CannotAccessFile" xml:space="preserve">
+    <data name="CannotAccessFile" xml:space="preserve">
         <value>Cannot access {0}. File name or permissions may be wrong.</value>
     </data>
-    <data name="_FileTransferInProgress" xml:space="preserve">
+    <data name="FileTransferInProgress" xml:space="preserve">
         <value>Cannot send multiple files at once.</value>
     </data>
-    <data name="_NoFileReceiveRequest" xml:space="preserve">
+    <data name="NoFileReceiveRequest" xml:space="preserve">
         <value>No file transfers in progress.</value>
     </data>
     <data name="Help_send" xml:space="preserve">
@@ -231,34 +231,34 @@ Config file can be found in:
     <data name="Help_reject" xml:space="preserve">
         <value>Syntax: /reject &lt;short id&gt;</value>
     </data>
-    <data name="_AlreadyBlocked" xml:space="preserve">
+    <data name="AlreadyBlocked" xml:space="preserve">
         <value>Address already blocked</value>
     </data>
-    <data name="_InvalidCommand" xml:space="preserve">
+    <data name="InvalidCommand" xml:space="preserve">
         <value>Invalid command</value>
     </data>
-    <data name="_RsaChanged" xml:space="preserve">
+    <data name="RsaChanged" xml:space="preserve">
         <value>Public key of {0} has changed. Connection may be not secure.</value>
     </data>
-    <data name="_FreshRsa" xml:space="preserve">
+    <data name="FreshRsa" xml:space="preserve">
         <value>To make sure the connection with {0} is secure check fingerprint in "Users" tab.</value>
     </data>
-    <data name="_YourRsa" xml:space="preserve">
+    <data name="YourRsa" xml:space="preserve">
         <value>Your key fingerprint:</value>
     </data>
-    <data name="_FileTransferRejected" xml:space="preserve">
+    <data name="FileTransferRejected" xml:space="preserve">
         <value>Rejected</value>
     </data>
-    <data name="_FileTransferFinished" xml:space="preserve">
+    <data name="FileTransferFinished" xml:space="preserve">
         <value>Finished</value>
     </data>
-    <data name="_FileTransferWaiting" xml:space="preserve">
+    <data name="FileTransferWaiting" xml:space="preserve">
         <value>Waiting for accept</value>
     </data>
-    <data name="_FileTransferCancelled" xml:space="preserve">
+    <data name="FileTransferCancelled" xml:space="preserve">
         <value>Cancelled</value>
     </data>
-    <data name="_GetHelp" xml:space="preserve">
+    <data name="GetHelp" xml:space="preserve">
         <value>Check /help command</value>
     </data>
     <data name="SelfNicknameChanged" xml:space="preserve">

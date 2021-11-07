@@ -28,13 +28,13 @@ namespace Lanchat.Terminal.Handlers
             TabsManager.SignalFileTransfer();
             e.PropertyChanged += (_, _) =>
             {
-                fileTransferStatus.Update(e.Progress == 100 ? Resources._FileTransferFinished : $"{e.Progress}%");
+                fileTransferStatus.Update(e.Progress == 100 ? Resources.FileTransferFinished : $"{e.Progress}%");
             };
         }
 
         private void FileSenderOnFileTransferRequestRejected(object sender, CurrentFileTransfer e)
         {
-            fileTransferStatus.Update(Resources._FileTransferRejected);
+            fileTransferStatus.Update(Resources.FileTransferRejected);
             TabsManager.SignalFileTransfer();
         }
 

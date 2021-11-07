@@ -38,43 +38,43 @@ Plik konfiguracyjny znajduje się w:
 {0}
     </value>
     </data>
-    <data name="_Connected" xml:space="preserve">
+    <data name="Connected" xml:space="preserve">
         <value>Połączono z {0}</value>
     </data>
-    <data name="_Disconnected" xml:space="preserve">
+    <data name="Disconnected" xml:space="preserve">
         <value>Rozłączono z {0}</value>
     </data>
-    <data name="_IncorrectValues" xml:space="preserve">
+    <data name="IncorrectValues" xml:space="preserve">
         <value>Nieprawidłowa wartość</value>
     </data>
-    <data name="_ManualNotFound" xml:space="preserve">
+    <data name="ManualNotFound" xml:space="preserve">
         <value>Pomoc nie została znaleziona</value>
     </data>
-    <data name="_NicknameChanged" xml:space="preserve">
+    <data name="NicknameChanged" xml:space="preserve">
         <value>{0} zmienił nick na {1}</value>
     </data>
-    <data name="_UserNotFound" xml:space="preserve">
+    <data name="UserNotFound" xml:space="preserve">
         <value>Nie znaleziono użytkownika</value>
     </data>
-    <data name="_PortBusy" xml:space="preserve">
+    <data name="PortBusy" xml:space="preserve">
         <value>Port zajęty, nie można uruchomić serwera.</value>
     </data>
-    <data name="_Unblocked" xml:space="preserve">
+    <data name="Unblocked" xml:space="preserve">
         <value>{0} został odblokowany</value>
     </data>
-    <data name="_WrongNickname" xml:space="preserve">
+    <data name="WrongNickname" xml:space="preserve">
         <value>Nickname musi być krótszy niż 20 znaków i nie może być pusty</value>
     </data>
-    <data name="_ConnectionAttempt" xml:space="preserve">
+    <data name="ConnectionAttempt" xml:space="preserve">
         <value>Łączenie z {0}</value>
     </data>
-    <data name="_CannotConnect" xml:space="preserve">
+    <data name="CannotConnect" xml:space="preserve">
         <value>Nie można połączyć z {0}</value>
     </data>
-    <data name="_BlockedList" xml:space="preserve">
+    <data name="BlockedList" xml:space="preserve">
         <value>Zablokowane adresy IP</value>
     </data>
-    <data name="_Blocked" xml:space="preserve">
+    <data name="Blocked" xml:space="preserve">
         <value>{0} został zablokowany</value>
     </data>
     <data name="Help_block" xml:space="preserve">
@@ -92,13 +92,13 @@ Plik konfiguracyjny znajduje się w:
     <data name="Help_unblock" xml:space="preserve">
         <value>Składnia: /unblock &lt;ip&gt;</value>
     </data>
-    <data name="_CannotAccessFile" xml:space="preserve">
+    <data name="CannotAccessFile" xml:space="preserve">
         <value>Nie można uzyskać dostępu do {0}. Nazwa pliku lub uprawnienia dostępu mogą być błędne</value>
     </data>
-    <data name="_FileTransferInProgress" xml:space="preserve">
+    <data name="FileTransferInProgress" xml:space="preserve">
         <value>Nie można wysyłać wielu plików jednocześnie.</value>
     </data>
-    <data name="_NoFileReceiveRequest" xml:space="preserve">
+    <data name="NoFileReceiveRequest" xml:space="preserve">
         <value>Brak przesyłanych plików</value>
     </data>
     <data name="Help_send" xml:space="preserve">
@@ -110,34 +110,34 @@ Plik konfiguracyjny znajduje się w:
     <data name="Help_reject" xml:space="preserve">
         <value>Składnia: /reject &lt;krótkie id&gt;</value>
     </data>
-    <data name="_AlreadyBlocked" xml:space="preserve">
+    <data name="AlreadyBlocked" xml:space="preserve">
         <value>Adres jest już zablokowany</value>
     </data>
-    <data name="_InvalidCommand" xml:space="preserve">
+    <data name="InvalidCommand" xml:space="preserve">
         <value>Nieprawidłowa komenda</value>
     </data>
-    <data name="_RsaChanged" xml:space="preserve">
+    <data name="RsaChanged" xml:space="preserve">
         <value>Klucz publiczny {0} został zmieniony. Połączenie może być niezabezpieczone.</value>
     </data>
-    <data name="_FreshRsa" xml:space="preserve">
+    <data name="FreshRsa" xml:space="preserve">
         <value>Aby upewnić się, że połączenie z {0} jest bezpieczne sprawdź klucz publiczny w zakładce "Users".</value>
     </data>
-    <data name="_YourRsa" xml:space="preserve">
+    <data name="YourRsa" xml:space="preserve">
         <value>Twój klucz:</value>
     </data>
-    <data name="_FileTransferRejected" xml:space="preserve">
+    <data name="FileTransferRejected" xml:space="preserve">
         <value>Odrzucono</value>
     </data>
-    <data name="_FileTransferFinished" xml:space="preserve">
+    <data name="FileTransferFinished" xml:space="preserve">
         <value>Zakończono</value>
     </data>
-    <data name="_FileTransferWaiting" xml:space="preserve">
+    <data name="FileTransferWaiting" xml:space="preserve">
         <value>Oczekuje</value>
     </data>
-    <data name="_FileTransferCancelled" xml:space="preserve">
+    <data name="FileTransferCancelled" xml:space="preserve">
         <value>Anulowano</value>
     </data>
-    <data name="_GetHelp" xml:space="preserve">
+    <data name="GetHelp" xml:space="preserve">
         <value>Sprawdź komendę /help</value>
     </data>
     <data name="SelfNicknameChanged" xml:space="preserve">

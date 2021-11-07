@@ -43,20 +43,20 @@ namespace Lanchat.Terminal.Commands.General
                     port = Program.Config.ServerPort;
                 }
 
-                Writer.WriteText(string.Format(Resources._ConnectionAttempt, addressArgument));
+                Writer.WriteText(string.Format(Resources.ConnectionAttempt, addressArgument));
                 var result = await Program.Network.Connect(ipAddress, port);
                 if (!result)
                 {
-                    Writer.WriteError(string.Format(Resources._CannotConnect, ipAddress));
+                    Writer.WriteError(string.Format(Resources.CannotConnect, ipAddress));
                 }
             }
             catch (FormatException)
             {
-                Writer.WriteError(Resources._IncorrectValues);
+                Writer.WriteError(Resources.IncorrectValues);
             }
             catch (SocketException)
             {
-                Writer.WriteError(Resources._IncorrectValues);
+                Writer.WriteError(Resources.IncorrectValues);
             }
             catch (ArgumentException e)
             {

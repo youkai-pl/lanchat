@@ -17,18 +17,18 @@ namespace Lanchat.Terminal.Commands.Blocking
             var correct = IPAddress.TryParse(args[0], out var parsedIp);
             if (!correct)
             {
-                Writer.WriteError(Resources._IncorrectValues);
+                Writer.WriteError(Resources.IncorrectValues);
                 return;
             }
 
             if (Program.Config.BlockedAddresses.All(x => !Equals(x, parsedIp)))
             {
-                Writer.WriteError(Resources._UserNotFound);
+                Writer.WriteError(Resources.UserNotFound);
                 return;
             }
 
             Program.Config.BlockedAddresses.Remove(parsedIp);
-            Writer.WriteText(string.Format(Resources._Unblocked, parsedIp));
+            Writer.WriteText(string.Format(Resources.Unblocked, parsedIp));
         }
 
         public void Execute(string[] args, INode node)

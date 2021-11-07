@@ -31,7 +31,7 @@ namespace Lanchat.Terminal.Handlers
             TabsManager.ShowMainChatView();
             privateChatTab = TabsManager.AddPrivateChatView(node);
             privateChatView = (ChatView)privateChatTab.Content;
-            Writer.WriteStatus(string.Format(Resources._Connected, node.User.Nickname));
+            Writer.WriteStatus(string.Format(Resources.Connected, node.User.Nickname));
             TabsManager.UsersView.RefreshUsersView();
 
             UpdateHeaderColor();
@@ -39,11 +39,11 @@ namespace Lanchat.Terminal.Handlers
             switch (node.NodeRsa.KeyStatus)
             {
                 case KeyStatus.FreshKey:
-                    Writer.WriteWarning(string.Format(Resources._FreshRsa, node.User.Nickname));
+                    Writer.WriteWarning(string.Format(Resources.FreshRsa, node.User.Nickname));
                     break;
 
                 case KeyStatus.ChangedKey:
-                    Writer.WriteError(string.Format(Resources._RsaChanged, node.User.Nickname));
+                    Writer.WriteError(string.Format(Resources.RsaChanged, node.User.Nickname));
                     break;
             }
         }
@@ -51,7 +51,7 @@ namespace Lanchat.Terminal.Handlers
         private void NodeOnDisconnected(object sender, EventArgs e)
         {
             TabsManager.ClosePrivateChatView(node);
-            Writer.WriteStatus(string.Format(Resources._Disconnected, node.User.Nickname));
+            Writer.WriteStatus(string.Format(Resources.Disconnected, node.User.Nickname));
             TabsManager.UsersView.RefreshUsersView();
         }
 
@@ -72,7 +72,7 @@ namespace Lanchat.Terminal.Handlers
             privateChatTab?.Header.UpdateText(node.User.Nickname);
             TabsManager.UsersView.RefreshUsersView();
             Writer.WriteStatus(
-                string.Format(Resources._NicknameChanged, node.User.PreviousNickname, node.User.Nickname));
+                string.Format(Resources.NicknameChanged, node.User.PreviousNickname, node.User.Nickname));
         }
 
         private void UserOnStatusUpdated(object sender, UserStatus e)

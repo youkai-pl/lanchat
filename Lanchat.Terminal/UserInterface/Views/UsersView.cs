@@ -48,7 +48,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                         {
                             new TextBlock
                             {
-                                Text = Resources._YourRsa
+                                Text = Resources.YourRsa
                             },
                             new TextBlock
                             {

@@ -13,7 +13,7 @@ namespace Lanchat.Terminal.Commands.Blocking
 
         public void Execute(string[] _)
         {
-            Writer.WriteText($"{Resources._BlockedList} {Program.Config.BlockedAddresses.Count}");
+            Writer.WriteText($"{Resources.BlockedList} {Program.Config.BlockedAddresses.Count}");
             Program.Config.BlockedAddresses.ForEach(x => Writer.WriteText($"{x}"));
         }
 

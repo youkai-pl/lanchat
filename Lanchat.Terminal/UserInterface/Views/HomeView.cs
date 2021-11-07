@@ -40,7 +40,7 @@ namespace Lanchat.Terminal.UserInterface.Views
             {
                 Content = new TextBlock
                 {
-                    Text = string.Format(Resources._Logo, currentVersion)
+                    Text = string.Format(Resources.Logo, currentVersion)
                 }
             });
         }
@@ -50,7 +50,7 @@ namespace Lanchat.Terminal.UserInterface.Views
             AddText("", Color.White);
             if (Program.Config.Fresh)
             {
-                AddText(Resources._GetHelp, Color.White);
+                AddText(Resources.GetHelp, Color.White);
             }
         }
     }

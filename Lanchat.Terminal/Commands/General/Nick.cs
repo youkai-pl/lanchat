@@ -15,7 +15,7 @@ namespace Lanchat.Terminal.Commands.General
             var nickname = args[0].Trim();
             if (nickname.Length >= 20 || string.IsNullOrWhiteSpace(nickname))
             {
-                Writer.WriteError(Resources._WrongNickname);
+                Writer.WriteError(Resources.WrongNickname);
             }
             else
             {

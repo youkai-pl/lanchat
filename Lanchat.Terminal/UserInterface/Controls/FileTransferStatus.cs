@@ -17,7 +17,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
             Node = node;
             this.currentFileTransfer = currentFileTransfer;
             this.counter = counter;
-            Update(Resources._FileTransferWaiting);
+            Update(Resources.FileTransferWaiting);
         }
 
         public INode Node { get; }

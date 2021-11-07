@@ -39,7 +39,7 @@ namespace Lanchat.Terminal.Commands.Blocking
             }
             else
             {
-                Writer.WriteError(Resources._IncorrectValues);
+                Writer.WriteError(Resources.IncorrectValues);
             }
         }
 
@@ -48,14 +48,14 @@ namespace Lanchat.Terminal.Commands.Blocking
             var ipAddress = node.Host.Endpoint.Address;
             node.Disconnect();
             SaveBlockInConfig(ipAddress);
-            Writer.WriteText(string.Format(Resources._Blocked, ipAddress));
+            Writer.WriteText(string.Format(Resources.Blocked, ipAddress));
         }
 
         private static void SaveBlockInConfig(IPAddress ipAddress)
         {
             if (Program.Config.BlockedAddresses.Any(x => Equals(x, ipAddress)))
             {
-                Writer.WriteError(Resources._AlreadyBlocked);
+                Writer.WriteError(Resources.AlreadyBlocked);
                 return;
             }
 

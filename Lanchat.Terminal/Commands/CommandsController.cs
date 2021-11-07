@@ -32,7 +32,7 @@ namespace Lanchat.Terminal.Commands
             var command = commands.FirstOrDefault(x => x.Alias == commandAlias);
             if (command == null)
             {
-                Writer.WriteError(Resources._InvalidCommand);
+                Writer.WriteError(Resources.InvalidCommand);
                 return;
             }
 

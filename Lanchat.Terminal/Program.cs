@@ -54,7 +54,7 @@ namespace Lanchat.Terminal
                     throw;
                 }
 
-                TabsManager.HomeView.AddText(Resources._PortBusy, ConsoleColor.Yellow);
+                TabsManager.HomeView.AddText(Resources.PortBusy, ConsoleColor.Yellow);
             }
 
             if (args.Contains("--localhost") || args.Contains("-l"))
