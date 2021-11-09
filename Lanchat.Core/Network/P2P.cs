@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -17,9 +18,9 @@ namespace Lanchat.Core.Network
     public class P2P : IP2P
     {
         internal readonly IConfig Config;
+        private readonly AddressChecker addressChecker;
         private readonly NodesControl nodesControl;
         private readonly Server server;
-
 
         /// <summary>
         ///     Initialize P2P mode
@@ -37,14 +38,17 @@ namespace Lanchat.Core.Network
             Config = config;
             LocalRsa = new LocalRsa(rsaDatabase);
             var container = NodeSetup.Setup(config, rsaDatabase, LocalRsa, this, nodeCreated, apiHandlers);
-            nodesControl = new NodesControl(config, container);
+            addressChecker = new AddressChecker(config);
+            nodesControl = new NodesControl(config, container, addressChecker);
             server = Config.UseIPv6
-                ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config, nodesControl)
-                : new Server(IPAddress.Any, Config.ServerPort, Config, nodesControl);
+                ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config, nodesControl, addressChecker)
+                : new Server(IPAddress.Any, Config.ServerPort, Config, nodesControl, addressChecker);
 
             NodesDetection = new NodesDetector(Config);
             Broadcast = new Broadcast(nodesControl.Nodes);
             _ = new ConfigObserver(this);
+
+            NodesDetection.DetectedNodes.CollectionChanged += ConnectToDetectedAddresses;
         }
 
         /// <inheritdoc />
@@ -81,6 +85,8 @@ namespace Lanchat.Core.Network
         /// <inheritdoc />
         public Task<bool> Connect(IPAddress ipAddress, int? port = null)
         {
+            addressChecker.CheckAddress(ipAddress);
+            addressChecker.LockAddress(ipAddress);
             var tcs = new TaskCompletionSource<bool>();
             port ??= Config.ServerPort;
             var client = new Client(ipAddress, port.Value);
@@ -88,6 +94,24 @@ namespace Lanchat.Core.Network
             SubscribeEvents(node, tcs);
             client.ConnectAsync();
             return tcs.Task;
+        }
+
+        private void ConnectToDetectedAddresses(object sender, NotifyCollectionChangedEventArgs args)
+        {
+            if (args.NewItems == null)
+            {
+                return;
+            }
+
+            foreach (DetectedNode newNode in args.NewItems)
+            {
+                try
+                {
+                    Connect(newNode.IpAddress);
+                }
+                catch (ArgumentException)
+                { }
+            }
         }
 
         private void ConnectToSavedAddresses()

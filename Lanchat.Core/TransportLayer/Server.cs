@@ -12,11 +12,13 @@ namespace Lanchat.Core.TransportLayer
     {
         private readonly IConfig config;
         private readonly NodesControl nodesControl;
+        private readonly AddressChecker addressChecker;
 
-        internal Server(IPAddress address, int port, IConfig config, NodesControl nodesControl) : base(address, port)
+        internal Server(IPAddress address, int port, IConfig config, NodesControl nodesControl, AddressChecker addressChecker) : base(address, port)
         {
             this.config = config;
             this.nodesControl = nodesControl;
+            this.addressChecker = addressChecker;
             OptionDualMode = true;
         }
 
@@ -36,19 +38,15 @@ namespace Lanchat.Core.TransportLayer
         private void SessionOnConnected(object sender, EventArgs e)
         {
             var session = (Session)sender;
-            if (config.BlockedAddresses.Contains(session.Endpoint.Address))
-            {
-                Trace.WriteLine($"Connection from {session.Endpoint.Address} blocked");
-                session.Close();
-                return;
-            }
-
             try
             {
+                addressChecker.CheckAddress(session.Endpoint.Address);
                 nodesControl.CreateNode(session);
             }
             catch (ArgumentException)
-            { }
+            {
+                session.Close();
+            }
         }
 
         protected override void OnError(SocketError error)

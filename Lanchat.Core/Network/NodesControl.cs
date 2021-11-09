@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
 using Autofac;
 using Lanchat.Core.Config;
 using Lanchat.Core.Network.Models;
@@ -15,11 +13,13 @@ namespace Lanchat.Core.Network
     {
         private readonly IConfig config;
         private readonly IContainer container;
+        private readonly AddressChecker addressChecker;
 
-        internal NodesControl(IConfig config, IContainer container)
+        internal NodesControl(IConfig config, IContainer container, AddressChecker addressChecker)
         {
             this.config = config;
             this.container = container;
+            this.addressChecker = addressChecker;
             Nodes = new List<INodeInternal>();
         }
 
@@ -27,7 +27,6 @@ namespace Lanchat.Core.Network
 
         internal INodeInternal CreateNode(IHost host)
         {
-            CheckAddress(host.Endpoint.Address);
             var scope = container.BeginLifetimeScope(b => { b.RegisterInstance(host).As<IHost>(); });
             var node = scope.Resolve<INodeInternal>();
             lock (Nodes)
@@ -59,7 +58,7 @@ namespace Lanchat.Core.Network
             {
                 Nodes.Remove(node);
             }
-
+            addressChecker.UnlockAddress(node.Host.Endpoint.Address);
             node.Connected -= OnConnected;
             node.CannotConnect -= CloseNode;
             node.Disconnected -= CloseNode;
@@ -78,43 +77,6 @@ namespace Lanchat.Core.Network
             if (!config.SavedAddresses.Contains(node.Host.Endpoint.Address))
             {
                 config.SavedAddresses.Add(node.Host.Endpoint.Address);
-            }
-        }
-
-        private void CheckAddress(IPAddress ipAddress)
-        {
-            if (config.BlockedAddresses.Contains(ipAddress))
-            {
-                throw new ArgumentException("Node blocked");
-            }
-
-            if (Nodes.Any(x => x.Host.Endpoint.Address.Equals(ipAddress)))
-            {
-                throw new ArgumentException("Already connected to this node");
-            }
-
-            if ((GetLocalAddresses().Any(x => x.Equals(ipAddress)) ||
-                 ipAddress.Equals(IPAddress.Loopback) ||
-                 ipAddress.Equals(IPAddress.IPv6Loopback))
-                && !config.DebugMode)
-            {
-                throw new ArgumentException("Address belong to local machine");
-            }
-        }
-
-        private static IEnumerable<IPAddress> GetLocalAddresses()
-        {
-            try
-            {
-                return Dns.GetHostEntry(Dns.GetHostName()).AddressList;
-            }
-            catch (SocketException)
-            {
-                Trace.WriteLine("Cannot get local addresses.");
-                return new[]
-                {
-                    IPAddress.Loopback
-                };
             }
         }
     }
