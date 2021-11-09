@@ -31,5 +31,11 @@ namespace Lanchat.Core.Config
         /// <param name="ipAddress">Node IP Address.</param>
         /// <param name="nodeInfo">Node info.</param>
         void SaveNodeInfo(IPAddress ipAddress, NodeInfo nodeInfo);
+
+        /// <summary>
+        ///     Get count of saved nodes.
+        /// </summary>
+        /// <returns>Saved nodes count</returns>
+        int GetSavedNodesCount();
     }
 }
