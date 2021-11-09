@@ -20,7 +20,7 @@ namespace Lanchat.Terminal
         private static void Main(string[] args)
         {
             Config = Storage.LoadConfig();
-            var rsaDatabase = new RsaDatabase();
+            var rsaDatabase = new NodesDatabase();
 
             try
             {

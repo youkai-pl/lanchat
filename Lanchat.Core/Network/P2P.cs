@@ -30,13 +30,13 @@ namespace Lanchat.Core.Network
         /// <param name="apiHandlers">Optional custom api handlers</param>
         public P2P(
             IConfig config,
-            IRsaDatabase rsaDatabase,
+            INodesDatabase nodesDatabase,
             Action<IActivatedEventArgs<INode>> nodeCreated,
             IEnumerable<Type> apiHandlers = null)
         {
             Config = config;
-            LocalRsa = new LocalRsa(rsaDatabase);
-            var container = NodeSetup.Setup(config, rsaDatabase, LocalRsa, this, nodeCreated, apiHandlers);
+            LocalRsa = new LocalRsa(nodesDatabase);
+            var container = NodeSetup.Setup(config, nodesDatabase, LocalRsa, this, nodeCreated, apiHandlers);
             nodesControl = new NodesControl(config, container);
             server = Config.UseIPv6
                 ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config, nodesControl)

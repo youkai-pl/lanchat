@@ -1,4 +1,5 @@
 using System.Net;
+using System.Text.Json.Serialization;
 
 namespace Lanchat.Core.Config
 {
@@ -8,18 +9,24 @@ namespace Lanchat.Core.Config
     public class NodeInfo
     {
         /// <summary>
-        ///     Node IP address
+        ///     Node IP address.
         /// </summary>
         public IPAddress IpAddress { get; set; }
         
         /// <summary>
-        ///     Node ID
+        ///     Node ID.
         /// </summary>
         public int Id { get; set; }
         
         /// <summary>
-        ///     Node user nickname
+        ///     Node user nickname.
         /// </summary>
         public string Nickname { get; set; }
+        
+        /// <summary>
+        ///     Public RSA Key PEM.
+        /// </summary>
+        [JsonIgnore]
+        public string PublicKey { get; set; }
     }
 }

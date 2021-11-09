@@ -3,22 +3,33 @@ using System.Net;
 namespace Lanchat.Core.Config
 {
     /// <summary>
-    ///     Nodes ID's and addresses storage.
+    ///     RSA keys storage.
     /// </summary>
     public interface INodesDatabase
     {
+        /// <summary>
+        ///     Get local public and private keys.
+        /// </summary>
+        /// <returns>PEM file string</returns>
+        string GetLocalNodeInfo();
 
         /// <summary>
-        ///     Search node info by IP address.
+        ///     Save local public and private keys.
         /// </summary>
-        /// <param name="ipAddress">IP address</param>
-        /// <returns>Save node info</returns>
-        NodeInfo GetNodeByIp(IPAddress ipAddress);
+        /// <param name="pem">PEM file string</param>
+        void SaveLocalNodeInfo(string pem);
+
+        /// <summary>
+        ///     Get node info by IP address.
+        /// </summary>
+        /// <param name="ipAddress">Node IP Address</param>
+        NodeInfo GetNodeInfo(IPAddress ipAddress);
 
         /// <summary>
         ///     Save node info.
         /// </summary>
-        /// <param name="nodeInfo">Node info</param>
-        void SaveNodeInfo(NodeInfo nodeInfo);
+        /// <param name="ipAddress">Node IP Address.</param>
+        /// <param name="nodeInfo">Node info.</param>
+        void SaveNodeInfo(IPAddress ipAddress, NodeInfo nodeInfo);
     }
 }
