@@ -35,7 +35,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
                 outputMock,
                 nodeMock,
                 new HostMock(),
-                new User(nodeMock),
+                new User(nodeMock, new HostMock(), new NodesDatabaseMock()),
                 new Connection(nodeMock, new HostMock(), outputMock, new ConfigMock(), nodeRsa));
         }
 

@@ -32,20 +32,16 @@ namespace Lanchat.Tests.Mock.Config
             {
                 Nickname = "test",
                 Id = 9999,
-                IpAddress = IPAddress.Any,
                 PublicKey = pem
             };
         }
 
-        public void UpdateNodeInfo(IPAddress ipAddress, NodeInfo nodeInfo)
-        {
-            remoteRsa.ImportFromPem(nodeInfo.PublicKey);
+        public void UpdateNodeNickname(IPAddress ipAddress, string nickname)
+        { }
 
-        }
-
-        public int GetSavedNodesCount()
+        public void UpdateNodePublicKey(IPAddress ipAddress, string publicKey)
         {
-            return 9999;
+            remoteRsa.ImportFromPem(publicKey);
         }
     }
 }
