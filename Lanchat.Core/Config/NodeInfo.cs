@@ -1,4 +1,3 @@
-using System.Net;
 using System.Text.Json.Serialization;
 
 namespace Lanchat.Core.Config
@@ -8,11 +7,6 @@ namespace Lanchat.Core.Config
     /// </summary>
     public class NodeInfo
     {
-        /// <summary>
-        ///     Node IP address.
-        /// </summary>
-        public IPAddress IpAddress { get; set; }
-        
         /// <summary>
         ///     Node ID.
         /// </summary>

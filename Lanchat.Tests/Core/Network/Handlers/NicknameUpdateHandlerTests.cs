@@ -27,7 +27,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
             };
 
             nicknameUpdateHandler.Handle(nicknameUpdate);
-            Assert.AreEqual(nicknameUpdate.NewNickname, userMock.Nickname);
+            Assert.AreEqual(nicknameUpdate.NewNickname, userMock.NicknameWithId);
         }
     }
 }

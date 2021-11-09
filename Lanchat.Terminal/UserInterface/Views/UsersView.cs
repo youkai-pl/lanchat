@@ -78,7 +78,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                         {
                             new TextBlock
                             {
-                                Text = $"{x.User.Nickname} - {x.Host.Endpoint.Address}"
+                                Text = $"{x.User.NicknameWithId} - {x.Host.Endpoint.Address}"
                             },
                             new TextBlock
                             {

@@ -27,6 +27,7 @@ namespace Lanchat.Core.Network
         }
 
         public IUser User { get; set; }
+        public IInternalUser InternalUser { get; set; }
         public IHost Host { get; set; }
         public IFileReceiver FileReceiver { get; set; }
         public IFileSender FileSender { get; set; }
@@ -65,12 +66,7 @@ namespace Lanchat.Core.Network
         public void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);
-            nodesDatabase.SaveNodeInfo(Host.Endpoint.Address, new NodeInfo
-            {
-                IpAddress = Host.Endpoint.Address,
-                Id = nodesDatabase.GetSavedNodesCount(),
-                Nickname = User.Nickname
-            });
+            nodesDatabase.UpdateNodeNickname(Host.Endpoint.Address, InternalUser.Nickname);
         }
 
         public void OnDisconnected()

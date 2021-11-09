@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text.Json;
@@ -15,7 +14,7 @@ namespace Lanchat.ClientCore
         {
             Converters = { new IpAddressConverter() }
         };
-        
+
         /// <inheritdoc />
         public string GetLocalNodeInfo()
         {
@@ -34,7 +33,7 @@ namespace Lanchat.ClientCore
             var pem = ReadPemFile(ipAddress.ToString());
             var nodeInfo = ReadNodeInfo(ipAddress.ToString()) ?? new NodeInfo
             {
-                IpAddress = ipAddress
+                Id = Directory.GetFiles(Storage.DatabasePath).Length + 1
             };
 
             nodeInfo.PublicKey = pem;
@@ -42,8 +41,10 @@ namespace Lanchat.ClientCore
         }
 
         /// <inheritdoc />
-        public void SaveNodeInfo(IPAddress ipAddress, NodeInfo nodeInfo)
+        public void UpdateNodeNickname(IPAddress ipAddress, string nickname)
         {
+            var nodeInfo = GetNodeInfo(ipAddress);
+            nodeInfo.Nickname = nickname;
             SaveNodeInfo(ipAddress.ToString(), nodeInfo);
 
             if (nodeInfo.PublicKey != null)
@@ -53,9 +54,9 @@ namespace Lanchat.ClientCore
         }
 
         /// <inheritdoc />
-        public int GetSavedNodesCount()
+        public void UpdateNodePublicKey(IPAddress ipAddress, string publicKey)
         {
-            return Directory.GetFiles(Storage.DatabasePath).Length;
+            SavePemFile(ipAddress.ToString(), publicKey);
         }
 
         private NodeInfo ReadNodeInfo(string name)

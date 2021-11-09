@@ -11,11 +11,11 @@ namespace Lanchat.Tests.Mock.Identity
         public UserMock()
         {
             ShortId = "9999";
-            Nickname = "test";
+            NicknameWithId = "test";
             PreviousNickname = "test";
         }
 
-        public string Nickname
+        public string NicknameWithId
         {
             get => nickname;
             set

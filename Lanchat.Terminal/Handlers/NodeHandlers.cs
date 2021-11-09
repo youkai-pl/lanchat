@@ -31,7 +31,7 @@ namespace Lanchat.Terminal.Handlers
             TabsManager.ShowMainChatView();
             privateChatTab = TabsManager.AddPrivateChatView(node);
             privateChatView = (ChatView)privateChatTab.Content;
-            Writer.WriteStatus(string.Format(Resources._Connected, node.User.Nickname));
+            Writer.WriteStatus(string.Format(Resources._Connected, node.User.NicknameWithId));
             TabsManager.UsersView.RefreshUsersView();
 
             UpdateHeaderColor();
@@ -39,11 +39,11 @@ namespace Lanchat.Terminal.Handlers
             switch (node.NodeRsa.KeyStatus)
             {
                 case KeyStatus.FreshKey:
-                    Writer.WriteWarning(string.Format(Resources._FreshRsa, node.User.Nickname));
+                    Writer.WriteWarning(string.Format(Resources._FreshRsa, node.User.NicknameWithId));
                     break;
 
                 case KeyStatus.ChangedKey:
-                    Writer.WriteError(string.Format(Resources._RsaChanged, node.User.Nickname));
+                    Writer.WriteError(string.Format(Resources._RsaChanged, node.User.NicknameWithId));
                     break;
             }
         }
@@ -51,28 +51,28 @@ namespace Lanchat.Terminal.Handlers
         private void NodeOnDisconnected(object sender, EventArgs e)
         {
             TabsManager.ClosePrivateChatView(node);
-            Writer.WriteStatus(string.Format(Resources._Disconnected, node.User.Nickname));
+            Writer.WriteStatus(string.Format(Resources._Disconnected, node.User.NicknameWithId));
             TabsManager.UsersView.RefreshUsersView();
         }
 
         private void MessagingOnMessageReceived(object sender, string e)
         {
-            TabsManager.MainChatView.AddMessage(e, node.User.Nickname);
+            TabsManager.MainChatView.AddMessage(e, node.User.NicknameWithId);
             TabsManager.SignalNewMessage();
         }
 
         private void MessagingOnPrivateMessageReceived(object sender, string e)
         {
-            privateChatView.AddMessage(e, node.User.Nickname);
+            privateChatView.AddMessage(e, node.User.NicknameWithId);
             TabsManager.SignalPrivateNewMessage(node);
         }
 
         private void UserOnNicknameUpdated(object sender, string e)
         {
-            privateChatTab?.Header.UpdateText(node.User.Nickname);
+            privateChatTab?.Header.UpdateText(node.User.NicknameWithId);
             TabsManager.UsersView.RefreshUsersView();
             Writer.WriteStatus(
-                string.Format(Resources._NicknameChanged, node.User.PreviousNickname, node.User.Nickname));
+                string.Format(Resources._NicknameChanged, node.User.PreviousNickname, node.User.NicknameWithId));
         }
 
         private void UserOnStatusUpdated(object sender, UserStatus e)

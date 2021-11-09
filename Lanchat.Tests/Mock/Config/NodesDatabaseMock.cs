@@ -37,7 +37,7 @@ namespace Lanchat.Tests.Mock.Config
             };
         }
 
-        public void SaveNodeInfo(IPAddress ipAddress, NodeInfo nodeInfo)
+        public void UpdateNodeInfo(IPAddress ipAddress, NodeInfo nodeInfo)
         {
             remoteRsa.ImportFromPem(nodeInfo.PublicKey);
 

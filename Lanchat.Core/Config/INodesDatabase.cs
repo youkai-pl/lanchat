@@ -26,16 +26,17 @@ namespace Lanchat.Core.Config
         NodeInfo GetNodeInfo(IPAddress ipAddress);
 
         /// <summary>
-        ///     Save node info.
+        ///     Update node nickname.
         /// </summary>
         /// <param name="ipAddress">Node IP Address.</param>
-        /// <param name="nodeInfo">Node info.</param>
-        void SaveNodeInfo(IPAddress ipAddress, NodeInfo nodeInfo);
-
+        /// <param name="nickname">New node nickname</param>
+        void UpdateNodeNickname(IPAddress ipAddress, string nickname);
+        
         /// <summary>
-        ///     Get count of saved nodes.
+        ///     Update node public key.
         /// </summary>
-        /// <returns>Saved nodes count</returns>
-        int GetSavedNodesCount();
+        /// <param name="ipAddress">Node IP Address.</param>
+        /// <param name="publicKey">New node public key</param>
+        void UpdateNodePublicKey(IPAddress ipAddress, string publicKey);
     }
 }
