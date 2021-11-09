@@ -49,7 +49,6 @@ namespace Lanchat.Core.Network
                 }
 
                 connections.Add(ipAddress);
-                Trace.WriteLine("LOCKED");
             }
         }
 
@@ -58,7 +57,6 @@ namespace Lanchat.Core.Network
             lock (connections)
             {
                 connections.Remove(ipAddress);
-                Trace.WriteLine("UNLOCKED");
             }
         }
 

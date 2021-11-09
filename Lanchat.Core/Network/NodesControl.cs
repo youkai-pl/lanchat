@@ -54,11 +54,13 @@ namespace Lanchat.Core.Network
         {
             var node = (INodeInternal)sender;
             var id = node.Id;
+            var address = node.Host.Endpoint.Address;
+            
             lock (Nodes)
             {
                 Nodes.Remove(node);
             }
-            addressChecker.UnlockAddress(node.Host.Endpoint.Address);
+            addressChecker.UnlockAddress(address);
             node.Connected -= OnConnected;
             node.CannotConnect -= CloseNode;
             node.Disconnected -= CloseNode;
