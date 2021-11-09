@@ -29,13 +29,13 @@ namespace Lanchat.Core.Network
             {
                 if (connections.Any(x => x.Equals(ipAddress)))
                 {
-                    throw new ArgumentException("Already connecting or connected");
+                    throw new ArgumentException($"Already connecting or connected wit {ipAddress}");
                 }
             }
 
             if (GetLocalAddresses().Any(x => x.Equals(ipAddress)) && !config.DebugMode)
             {
-                throw new ArgumentException("Address belong to local machine");
+                throw new ArgumentException($"{ipAddress} belong to local machine");
             }
         }
 
@@ -68,7 +68,7 @@ namespace Lanchat.Core.Network
             }
             catch (SocketException)
             {
-                Trace.WriteLine("Cannot get local addresses.");
+                Trace.WriteLine("Cannot get local addresses");
                 return new[]
                 {
                     IPAddress.Loopback,

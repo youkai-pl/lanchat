@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using Lanchat.Core.Config;
 using Lanchat.Core.Network;
 using NetCoreServer;
 
