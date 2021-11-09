@@ -41,8 +41,8 @@ namespace Lanchat.Core.Network
             addressChecker = new AddressChecker(config);
             nodesControl = new NodesControl(config, container, addressChecker);
             server = Config.UseIPv6
-                ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config, nodesControl, addressChecker)
-                : new Server(IPAddress.Any, Config.ServerPort, Config, nodesControl, addressChecker);
+                ? new Server(IPAddress.IPv6Any, Config.ServerPort, nodesControl, addressChecker)
+                : new Server(IPAddress.Any, Config.ServerPort, nodesControl, addressChecker);
 
             NodesDetection = new NodesDetector(Config);
             Broadcast = new Broadcast(nodesControl.Nodes);

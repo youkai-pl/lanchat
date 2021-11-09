@@ -10,13 +10,11 @@ namespace Lanchat.Core.TransportLayer
 {
     internal class Server : TcpServer
     {
-        private readonly IConfig config;
         private readonly NodesControl nodesControl;
         private readonly AddressChecker addressChecker;
 
-        internal Server(IPAddress address, int port, IConfig config, NodesControl nodesControl, AddressChecker addressChecker) : base(address, port)
+        internal Server(IPAddress address, int port, NodesControl nodesControl, AddressChecker addressChecker) : base(address, port)
         {
-            this.config = config;
             this.nodesControl = nodesControl;
             this.addressChecker = addressChecker;
             OptionDualMode = true;
