@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <Title>Lanchat.ClientCore</Title>
-        <Version>2.9.0</Version>
+        <Version>2.10.0</Version>
         <Authors>tofudd</Authors>
         <PackageProjectUrl>https://github.com/tofudd/lanchat</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/tof4/lanchat/blob/master/LICENSE</PackageLicenseUrl>
