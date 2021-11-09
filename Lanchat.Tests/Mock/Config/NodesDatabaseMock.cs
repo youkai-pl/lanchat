@@ -42,5 +42,10 @@ namespace Lanchat.Tests.Mock.Config
             remoteRsa.ImportFromPem(nodeInfo.PublicKey);
 
         }
+
+        public int GetSavedNodesCount()
+        {
+            return 9999;
+        }
     }
 }
