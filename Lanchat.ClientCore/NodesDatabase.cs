@@ -18,13 +18,6 @@ namespace Lanchat.ClientCore
         /// <inheritdoc />
         public void SaveLocalNodeInfo(string pem)
         {
-            var nodeInfo = new NodeInfo
-            {
-                Id = 0,
-                IpAddress = IPAddress.Loopback
-            };
-
-            SaveNodeInfo("localhost", nodeInfo);
             SavePemFile("localhost", pem);
         }
 
