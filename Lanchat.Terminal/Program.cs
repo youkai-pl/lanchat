@@ -16,11 +16,12 @@ namespace Lanchat.Terminal
     {
         public static IP2P Network { get; private set; }
         public static Config Config { get; private set; }
+        public static NodesDatabase NodesDatabase { get; private set; }
 
         private static void Main(string[] args)
         {
             Config = Storage.LoadConfig();
-            var rsaDatabase = new NodesDatabase();
+            NodesDatabase = new NodesDatabase();
 
             try
             {
@@ -33,7 +34,7 @@ namespace Lanchat.Terminal
 
             Resources.Culture = CultureInfo.CurrentCulture;
 
-            Network = new P2P(Config, rsaDatabase, x =>
+            Network = new P2P(Config, NodesDatabase, x =>
             {
                 _ = new NodeHandlers(x.Instance);
                 _ = new FileTransferHandlers(x.Instance);

@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Net;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
@@ -14,21 +13,22 @@ namespace Lanchat.Terminal.Commands.Blocking
 
         public void Execute(string[] args)
         {
-            var correct = IPAddress.TryParse(args[0], out var parsedIp);
+            var correct = IPAddress.TryParse(args[0], out var ipAddress);
             if (!correct)
             {
                 Writer.WriteError(Resources._IncorrectValues);
                 return;
             }
 
-            if (Program.Config.BlockedAddresses.All(x => !Equals(x, parsedIp)))
+            var node = Program.NodesDatabase.GetNodeInfo(ipAddress);
+            if (node == null)
             {
-                Writer.WriteError(Resources._UserNotFound);
+                Writer.WriteError(Resources._AlreadyBlocked);
                 return;
             }
 
-            Program.Config.BlockedAddresses.Remove(parsedIp);
-            Writer.WriteText(string.Format(Resources._Unblocked, parsedIp));
+            node.Blocked = false;
+            Writer.WriteText(string.Format(Resources._Unblocked, ipAddress));
         }
 
         public void Execute(string[] args, INode node)

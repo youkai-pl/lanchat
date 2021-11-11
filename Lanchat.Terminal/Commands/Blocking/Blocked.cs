@@ -1,4 +1,4 @@
-using Lanchat.Core.Extensions;
+using System.Linq;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
@@ -13,8 +13,9 @@ namespace Lanchat.Terminal.Commands.Blocking
 
         public void Execute(string[] _)
         {
-            Writer.WriteText($"{Resources._BlockedList} {Program.Config.BlockedAddresses.Count}");
-            Program.Config.BlockedAddresses.ForEach(x => Writer.WriteText($"{x}"));
+            var blockedNodes = Program.NodesDatabase.SavedNodes.Where(x => x.Blocked).ToList();
+            Writer.WriteText($"{Resources._BlockedList} {blockedNodes.Count}");
+            blockedNodes.ForEach(x => Writer.WriteText($"{x}"));
         }
 
         public void Execute(string[] args, INode node)
