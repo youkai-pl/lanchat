@@ -11,18 +11,22 @@ namespace Lanchat.Core.Network
     internal class AddressChecker
     {
         private readonly IConfig config;
+        private readonly INodesDatabase nodesDatabase;
         private readonly List<IPAddress> connections = new();
 
-        internal AddressChecker(IConfig config)
+        internal AddressChecker(IConfig config, INodesDatabase nodesDatabase)
         {
             this.config = config;
+            this.nodesDatabase = nodesDatabase;
         }
 
         internal void CheckAddress(IPAddress ipAddress)
         {
-            if (config.BlockedAddresses.Contains(ipAddress))
+            var savedNode = nodesDatabase.SavedNodes.FirstOrDefault(x => Equals(x.IpAddress, ipAddress));
+            if (savedNode is { Blocked: true })
             {
                 throw new ArgumentException("Node blocked");
+
             }
 
             lock (connections)

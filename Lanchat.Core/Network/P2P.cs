@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -7,7 +8,6 @@ using Autofac.Core;
 using Lanchat.Core.Api;
 using Lanchat.Core.Config;
 using Lanchat.Core.Encryption;
-using Lanchat.Core.Extensions;
 using Lanchat.Core.NodesDetection;
 using Lanchat.Core.TransportLayer;
 
@@ -27,7 +27,7 @@ namespace Lanchat.Core.Network
         ///     Initialize P2P mode
         /// </summary>
         /// <param name="config">Lanchat config</param>
-        /// <param name="rsaDatabase">IRsaDatabase implementation</param>
+        /// <param name="nodesDatabase">INodesDatabase implementation</param>
         /// <param name="nodeCreated">Method called after creation of new node</param>
         /// <param name="apiHandlers">Optional custom api handlers</param>
         public P2P(
@@ -40,11 +40,11 @@ namespace Lanchat.Core.Network
             this.nodesDatabase = nodesDatabase;
             LocalRsa = new LocalRsa(nodesDatabase);
             var container = NodeSetup.Setup(config, nodesDatabase, LocalRsa, this, nodeCreated, apiHandlers);
-            addressChecker = new AddressChecker(config)
-            nodesControl = new NodesControl(config, nodesDatabase, container);
+            addressChecker = new AddressChecker(config, nodesDatabase);
+            nodesControl = new NodesControl(config, container, addressChecker, nodesDatabase);
             server = Config.UseIPv6
-                ? new Server(IPAddress.IPv6Any, Config.ServerPort, nodesDatabase, nodesControl)
-                : new Server(IPAddress.Any, Config.ServerPort, nodesDatabase, nodesControl);
+                ? new Server(IPAddress.IPv6Any, Config.ServerPort, nodesControl, addressChecker)
+                : new Server(IPAddress.Any, Config.ServerPort, nodesControl, addressChecker);
 
             NodesDetection = new NodesDetector(Config);
             Broadcast = new Broadcast(nodesControl.Nodes);
