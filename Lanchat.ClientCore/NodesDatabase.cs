@@ -12,8 +12,8 @@ namespace Lanchat.ClientCore
     /// <inheritdoc />
     public class NodesDatabase : INodesDatabase
     {
-        private readonly List<NodeInfo> nodesList;
-
+        private readonly List<NodeInfo> savedNodes;
+        
         private readonly JsonSerializerOptions jsonSerializerOptions = new()
         {
             WriteIndented = true,
@@ -28,16 +28,19 @@ namespace Lanchat.ClientCore
             try
             {
                 var json = File.ReadAllText($"{Storage.DataPath}/nodes.json");
-                nodesList = JsonSerializer.Deserialize<List<NodeInfo>>(json, jsonSerializerOptions);
-                nodesList?.ForEach(x => x.PropertyChanged += (_, _) => { SaveNodesList(); });
+                savedNodes = JsonSerializer.Deserialize<List<NodeInfo>>(json, jsonSerializerOptions);
+                savedNodes?.ForEach(x => x.PropertyChanged += (_, _) => { SaveNodesList(); });
             }
             catch (Exception e)
             {
                 Storage.CatchFileSystemExceptions(e);
-                nodesList = new List<NodeInfo>();
+                savedNodes = new List<NodeInfo>();
                 SaveNodesList();
             }
         }
+
+        /// <inheritdoc />
+        public List<INodeInfo> SavedNodes => savedNodes.Cast<INodeInfo>().ToList();
 
         /// <inheritdoc />
         public string GetLocalNodeInfo()
@@ -54,7 +57,7 @@ namespace Lanchat.ClientCore
         /// <inheritdoc />
         public INodeInfo GetNodeInfo(IPAddress ipAddress)
         {
-            var nodeInfo = nodesList.FirstOrDefault(x => Equals(x.IpAddress, ipAddress))
+            var nodeInfo = savedNodes.FirstOrDefault(x => Equals(x.IpAddress, ipAddress))
                            ?? CreateNodeInfo(ipAddress);
 
             return nodeInfo;
@@ -93,11 +96,11 @@ namespace Lanchat.ClientCore
             var nodeInfo = new NodeInfo
             {
                 IpAddress = ipAddress,
-                Id = nodesList.Count + 1
+                Id = savedNodes.Count + 1
             };
 
             nodeInfo.PropertyChanged += (_, _) => { SaveNodesList(); };
-            nodesList.Add(nodeInfo);
+            savedNodes.Add(nodeInfo);
             SaveNodesList();
             return nodeInfo;
         }
@@ -106,7 +109,7 @@ namespace Lanchat.ClientCore
         {
             try
             {
-                var json = JsonSerializer.Serialize(nodesList, jsonSerializerOptions);
+                var json = JsonSerializer.Serialize(savedNodes, jsonSerializerOptions);
                 var filePath = $"{Storage.DataPath}/nodes.json";
                 Storage.CreateStorageDirectoryIfNotExists();
                 Storage.CreateAndSetPermissions(filePath);

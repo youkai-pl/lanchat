@@ -46,17 +46,6 @@ namespace Lanchat.Tests.ClientCore
         }
 
         [Test]
-        public void ListSaving()
-        {
-            var config = Storage.LoadConfig();
-            config.BlockedAddresses.Add(IPAddress.Loopback);
-            config.SavedAddresses.Add(IPAddress.Loopback);
-            var loadedConfig = Storage.LoadConfig();
-            Assert.Contains(IPAddress.Loopback, loadedConfig.BlockedAddresses);
-            Assert.Contains(IPAddress.Loopback, loadedConfig.SavedAddresses);
-        }
-
-        [Test]
         public void LoadingInvalidJson()
         {
             File.WriteAllText(Storage.ConfigPath, "not a json");

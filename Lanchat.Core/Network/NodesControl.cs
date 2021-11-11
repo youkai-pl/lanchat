@@ -74,11 +74,6 @@ namespace Lanchat.Core.Network
                 .Where(x => x.Id != node.Id)
                 .Select(x => x.Host.Endpoint.Address));
             node.Output.SendData(nodesList);
-
-            if (!config.SavedAddresses.Contains(node.Host.Endpoint.Address))
-            {
-                config.SavedAddresses.Add(node.Host.Endpoint.Address);
-            }
         }
 
         private void CheckAddress(IPAddress ipAddress)

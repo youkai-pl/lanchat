@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace Lanchat.Core.Network
     public class P2P : IP2P
     {
         internal readonly IConfig Config;
+        private readonly INodesDatabase nodesDatabase;
         private readonly NodesControl nodesControl;
         private readonly Server server;
 
@@ -25,7 +27,7 @@ namespace Lanchat.Core.Network
         ///     Initialize P2P mode
         /// </summary>
         /// <param name="config">Lanchat config</param>
-        /// <param name="rsaDatabase">IRsaDatabase implementation</param>
+        /// <param name="nodesDatabase">INodeDatabase implementation</param>
         /// <param name="nodeCreated">Method called after creation of new node</param>
         /// <param name="apiHandlers">Optional custom api handlers</param>
         public P2P(
@@ -35,6 +37,7 @@ namespace Lanchat.Core.Network
             IEnumerable<Type> apiHandlers = null)
         {
             Config = config;
+            this.nodesDatabase = nodesDatabase;
             LocalRsa = new LocalRsa(nodesDatabase);
             var container = NodeSetup.Setup(config, nodesDatabase, LocalRsa, this, nodeCreated, apiHandlers);
             nodesControl = new NodesControl(config, container);
@@ -92,11 +95,11 @@ namespace Lanchat.Core.Network
 
         private void ConnectToSavedAddresses()
         {
-            Config.SavedAddresses.ForEach(x =>
+            nodesDatabase.SavedNodes.ForEach(x =>
             {
                 try
                 {
-                    Connect(x);
+                    Connect(x.IpAddress);
                 }
                 catch (ArgumentException)
                 { }

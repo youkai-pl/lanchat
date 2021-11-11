@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net;
 
 namespace Lanchat.Core.Config
@@ -7,6 +8,11 @@ namespace Lanchat.Core.Config
     /// </summary>
     public interface INodesDatabase
     {
+        /// <summary>
+        ///     List of saved nodes.
+        /// </summary>
+        List<INodeInfo> SavedNodes { get; }
+        
         /// <summary>
         ///     Get local public and private keys.
         /// </summary>

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net;
 using System.Security.Cryptography;
 using Lanchat.Core.Config;
@@ -14,6 +15,8 @@ namespace Lanchat.Tests.Mock.Config
             localRsa = RSA.Create(2048);
             remoteRsa = RSA.Create(2048);
         }
+
+        public List<INodeInfo> SavedNodes { get; } = new();
 
         public string GetLocalNodeInfo()
         {
