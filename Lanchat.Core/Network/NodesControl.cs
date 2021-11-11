@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using Autofac;
 using Lanchat.Core.Config;
 using Lanchat.Core.Network.Models;
@@ -12,12 +14,14 @@ namespace Lanchat.Core.Network
     internal class NodesControl
     {
         private readonly IConfig config;
+        private readonly INodesDatabase nodesDatabase;
         private readonly IContainer container;
         private readonly AddressChecker addressChecker;
 
-        internal NodesControl(IConfig config, IContainer container, AddressChecker addressChecker)
+        internal NodesControl(IConfig config, IContainer container, AddressChecker addressChecker, INodesDatabase nodesDatabase)
         {
             this.config = config;
+            this.nodesDatabase = nodesDatabase;
             this.container = container;
             this.addressChecker = addressChecker;
             Nodes = new List<INodeInternal>();
@@ -75,10 +79,44 @@ namespace Lanchat.Core.Network
                 .Where(x => x.Id != node.Id)
                 .Select(x => x.Host.Endpoint.Address));
             node.Output.SendData(nodesList);
+            nodesDatabase.GetNodeInfo(node.Host.Endpoint.Address).Nickname = node.InternalUser.Nickname;
+        }
 
-            if (!config.SavedAddresses.Contains(node.Host.Endpoint.Address))
+        private void CheckAddress(IPAddress ipAddress)
+        {
+            var savedNode = nodesDatabase.SavedNodes.FirstOrDefault(x => Equals(x.IpAddress, ipAddress));
+            if (savedNode is { Blocked: true })
             {
-                config.SavedAddresses.Add(node.Host.Endpoint.Address);
+                throw new ArgumentException("Node blocked");
+            }
+
+            if (Nodes.Any(x => x.Host.Endpoint.Address.Equals(ipAddress)))
+            {
+                throw new ArgumentException("Already connected to this node");
+            }
+
+            if ((GetLocalAddresses().Any(x => x.Equals(ipAddress)) ||
+                 ipAddress.Equals(IPAddress.Loopback) ||
+                 ipAddress.Equals(IPAddress.IPv6Loopback))
+                && !config.DebugMode)
+            {
+                throw new ArgumentException("Address belong to local machine");
+            }
+        }
+
+        private static IEnumerable<IPAddress> GetLocalAddresses()
+        {
+            try
+            {
+                return Dns.GetHostEntry(Dns.GetHostName()).AddressList;
+            }
+            catch (SocketException)
+            {
+                Trace.WriteLine("Cannot get local addresses.");
+                return new[]
+                {
+                    IPAddress.Loopback
+                };
             }
         }
     }

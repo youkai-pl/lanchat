@@ -15,6 +15,8 @@ namespace Lanchat.Tests.Mock.Identity
             PreviousNickname = "test";
         }
 
+        public string NicknameWithId => $"{Nickname}#{ShortId}";
+
         public string Nickname
         {
             get => nickname;

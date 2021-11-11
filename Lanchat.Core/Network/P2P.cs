@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -19,8 +18,10 @@ namespace Lanchat.Core.Network
     {
         internal readonly IConfig Config;
         private readonly AddressChecker addressChecker;
+        private readonly INodesDatabase nodesDatabase;
         private readonly NodesControl nodesControl;
         private readonly Server server;
+
 
         /// <summary>
         ///     Initialize P2P mode
@@ -31,18 +32,19 @@ namespace Lanchat.Core.Network
         /// <param name="apiHandlers">Optional custom api handlers</param>
         public P2P(
             IConfig config,
-            IRsaDatabase rsaDatabase,
+            INodesDatabase nodesDatabase,
             Action<IActivatedEventArgs<INode>> nodeCreated,
             IEnumerable<Type> apiHandlers = null)
         {
             Config = config;
-            LocalRsa = new LocalRsa(rsaDatabase);
-            var container = NodeSetup.Setup(config, rsaDatabase, LocalRsa, this, nodeCreated, apiHandlers);
-            addressChecker = new AddressChecker(config);
-            nodesControl = new NodesControl(config, container, addressChecker);
+            this.nodesDatabase = nodesDatabase;
+            LocalRsa = new LocalRsa(nodesDatabase);
+            var container = NodeSetup.Setup(config, nodesDatabase, LocalRsa, this, nodeCreated, apiHandlers);
+            addressChecker = new AddressChecker(config)
+            nodesControl = new NodesControl(config, nodesDatabase, container);
             server = Config.UseIPv6
-                ? new Server(IPAddress.IPv6Any, Config.ServerPort, nodesControl, addressChecker)
-                : new Server(IPAddress.Any, Config.ServerPort, nodesControl, addressChecker);
+                ? new Server(IPAddress.IPv6Any, Config.ServerPort, nodesDatabase, nodesControl)
+                : new Server(IPAddress.Any, Config.ServerPort, nodesDatabase, nodesControl);
 
             NodesDetection = new NodesDetector(Config);
             Broadcast = new Broadcast(nodesControl.Nodes);
@@ -116,11 +118,11 @@ namespace Lanchat.Core.Network
 
         private void ConnectToSavedAddresses()
         {
-            Config.SavedAddresses.ForEach(x =>
+            nodesDatabase.SavedNodes.ForEach(x =>
             {
                 try
                 {
-                    Connect(x);
+                    Connect(x.IpAddress);
                 }
                 catch (ArgumentException)
                 { }

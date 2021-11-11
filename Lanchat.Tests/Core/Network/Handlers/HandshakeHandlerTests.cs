@@ -24,7 +24,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
         [SetUp]
         public void Setup()
         {
-            nodeRsa = new NodeRsa(new RsaDatabaseMock(), new LocalRsa(new RsaDatabaseMock()));
+            nodeRsa = new NodeRsa(new NodesDatabaseMock(), new LocalRsa(new NodesDatabaseMock()));
             nodeAesMock = new NodeAesMock();
             outputMock = new OutputMock();
             nodeMock = new NodeMock(outputMock);
@@ -35,7 +35,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
                 outputMock,
                 nodeMock,
                 new HostMock(),
-                new User(nodeMock),
+                new User(nodeMock, new HostMock(), new NodesDatabaseMock()),
                 new Connection(nodeMock, new HostMock(), outputMock, new ConfigMock(), nodeRsa));
         }
 

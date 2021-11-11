@@ -52,7 +52,7 @@ namespace Lanchat.Terminal.UserInterface
         public static Tab AddPrivateChatView(INode node)
         {
             var chatView = new ChatView(node);
-            var chatTab = new Tab(node.User.Nickname, chatView) { Id = node.Id };
+            var chatTab = new Tab($"{node.User.Nickname}#{node.User.ShortId}", chatView) { Id = node.Id };
             Window.TabPanel.ChatTabs.AddTab(chatTab);
             return chatTab;
         }

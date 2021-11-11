@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net;
 
 namespace Lanchat.Core.Config
@@ -5,31 +6,29 @@ namespace Lanchat.Core.Config
     /// <summary>
     ///     RSA keys storage.
     /// </summary>
-    public interface IRsaDatabase
+    public interface INodesDatabase
     {
+        /// <summary>
+        ///     List of saved nodes.
+        /// </summary>
+        List<INodeInfo> SavedNodes { get; }
+        
         /// <summary>
         ///     Get local public and private keys.
         /// </summary>
         /// <returns>PEM file string</returns>
-        string GetLocalPem();
+        string GetLocalNodeInfo();
 
         /// <summary>
         ///     Save local public and private keys.
         /// </summary>
         /// <param name="pem">PEM file string</param>
-        void SaveLocalPem(string pem);
+        void SaveLocalNodeInfo(string pem);
 
         /// <summary>
-        ///     Get node public key by IP Address.
+        ///     Get node info by IP address.
         /// </summary>
         /// <param name="ipAddress">Node IP Address</param>
-        string GetNodePem(IPAddress ipAddress);
-
-        /// <summary>
-        ///     Save node public key.
-        /// </summary>
-        /// <param name="ipAddress">Node IP Address.</param>
-        /// <param name="pem">PEM file string.</param>
-        void SaveNodePem(IPAddress ipAddress, string pem);
+        INodeInfo GetNodeInfo(IPAddress ipAddress);
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using Lanchat.Core.Config;
@@ -15,13 +13,11 @@ namespace Lanchat.ClientCore
     public class Config : IConfig
     {
         private bool automatic = true;
-        private ObservableCollection<IPAddress> blockedAddresses = new();
         private int broadcastPort = 3646;
         private string filesDownloadDirectory = Storage.DownloadsPath;
         private string language = "default";
         private string nickname = Environment.UserName;
         private int port = 3645;
-        private ObservableCollection<IPAddress> savedNodes = new();
         private bool useIPv6;
         private UserStatus userStatus = UserStatus.Online;
 
@@ -56,29 +52,7 @@ namespace Lanchat.ClientCore
         /// <inheritdoc />
         [JsonIgnore]
         public bool StartServer { get; set; } = true;
-
-        /// <inheritdoc />
-        public ObservableCollection<IPAddress> BlockedAddresses
-        {
-            get => blockedAddresses;
-            set
-            {
-                blockedAddresses = value;
-                OnPropertyChanged(nameof(BlockedAddresses));
-            }
-        }
-
-        /// <inheritdoc />
-        public ObservableCollection<IPAddress> SavedAddresses
-        {
-            get => savedNodes;
-            set
-            {
-                savedNodes = value;
-                OnPropertyChanged(nameof(SavedAddresses));
-            }
-        }
-
+        
         /// <inheritdoc />
         public UserStatus UserStatus
         {

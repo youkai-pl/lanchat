@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Net;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
@@ -53,13 +52,14 @@ namespace Lanchat.Terminal.Commands.Blocking
 
         private static void SaveBlockInConfig(IPAddress ipAddress)
         {
-            if (Program.Config.BlockedAddresses.Any(x => Equals(x, ipAddress)))
+            var node = Program.NodesDatabase.GetNodeInfo(ipAddress);
+            if (node == null)
             {
                 Writer.WriteError(Resources._AlreadyBlocked);
                 return;
             }
 
-            Program.Config.BlockedAddresses.Add(ipAddress);
+            node.Blocked = true;
         }
     }
 }

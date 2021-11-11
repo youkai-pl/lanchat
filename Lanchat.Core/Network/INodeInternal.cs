@@ -11,6 +11,7 @@ namespace Lanchat.Core.Network
     internal interface INodeInternal
     {
         public Connection Connection { get; set; }
+        public IInternalUser InternalUser { get; set; }
         public IUser User { get; set; }
         public IHost Host { get; set; }
         public IFileReceiver FileReceiver { get; set; }
