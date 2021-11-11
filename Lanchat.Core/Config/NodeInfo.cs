@@ -1,12 +1,17 @@
-using System.Text.Json.Serialization;
+using System.Net;
 
 namespace Lanchat.Core.Config
 {
     /// <summary>
     ///     Saved node info.
     /// </summary>
-    public class NodeInfo
+    public interface INodeInfo
     {
+        /// <summary>
+        ///     Node IP address.
+        /// </summary>
+        public IPAddress IpAddress { get; set; }
+        
         /// <summary>
         ///     Node ID.
         /// </summary>
@@ -20,7 +25,6 @@ namespace Lanchat.Core.Config
         /// <summary>
         ///     Public RSA Key PEM.
         /// </summary>
-        [JsonIgnore]
         public string PublicKey { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace Lanchat.Core.Identity.Handlers
         {
             user.Nickname = newNickname.NewNickname;
             
-            nodesDatabase.UpdateNodeNickname(host.Endpoint.Address, newNickname.NewNickname);
+            nodesDatabase.GetNodeInfo(host.Endpoint.Address).Nickname = newNickname.NewNickname;
         }
     }
 }

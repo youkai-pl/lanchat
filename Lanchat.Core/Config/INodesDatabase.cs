@@ -23,20 +23,6 @@ namespace Lanchat.Core.Config
         ///     Get node info by IP address.
         /// </summary>
         /// <param name="ipAddress">Node IP Address</param>
-        NodeInfo GetNodeInfo(IPAddress ipAddress);
-
-        /// <summary>
-        ///     Update node nickname.
-        /// </summary>
-        /// <param name="ipAddress">Node IP Address.</param>
-        /// <param name="nickname">New node nickname</param>
-        void UpdateNodeNickname(IPAddress ipAddress, string nickname);
-        
-        /// <summary>
-        ///     Update node public key.
-        /// </summary>
-        /// <param name="ipAddress">Node IP Address.</param>
-        /// <param name="publicKey">New node public key</param>
-        void UpdateNodePublicKey(IPAddress ipAddress, string publicKey);
+        INodeInfo GetNodeInfo(IPAddress ipAddress);
     }
 }

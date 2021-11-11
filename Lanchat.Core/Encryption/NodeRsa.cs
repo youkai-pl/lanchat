@@ -76,7 +76,7 @@ namespace Lanchat.Core.Encryption
             {
                 Trace.WriteLine("New RSA key");
                 KeyStatus = KeyStatus.FreshKey;
-                nodesDatabase.UpdateNodePublicKey(ipAddress, currentPem);
+                nodeInfo.PublicKey = currentPem;
             }
             else if (nodeInfo.PublicKey != currentPem)
             {

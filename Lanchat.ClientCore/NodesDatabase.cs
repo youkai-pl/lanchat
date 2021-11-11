@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.Json;
 using Lanchat.Core.Config;
@@ -10,10 +12,32 @@ namespace Lanchat.ClientCore
     /// <inheritdoc />
     public class NodesDatabase : INodesDatabase
     {
+        private readonly List<NodeInfo> nodesList;
+
         private readonly JsonSerializerOptions jsonSerializerOptions = new()
         {
+            WriteIndented = true,
             Converters = { new IpAddressConverter() }
         };
+
+        /// <summary>
+        ///     Initialize nodes database.
+        /// </summary>
+        public NodesDatabase()
+        {
+            try
+            {
+                var json = File.ReadAllText($"{Storage.DataPath}/nodes.json");
+                nodesList = JsonSerializer.Deserialize<List<NodeInfo>>(json, jsonSerializerOptions);
+                nodesList?.ForEach(x => x.PropertyChanged += (_, _) => { SaveNodesList(); });
+            }
+            catch (Exception e)
+            {
+                Storage.CatchFileSystemExceptions(e);
+                nodesList = new List<NodeInfo>();
+                SaveNodesList();
+            }
+        }
 
         /// <inheritdoc />
         public string GetLocalNodeInfo()
@@ -28,68 +52,15 @@ namespace Lanchat.ClientCore
         }
 
         /// <inheritdoc />
-        public NodeInfo GetNodeInfo(IPAddress ipAddress)
+        public INodeInfo GetNodeInfo(IPAddress ipAddress)
         {
-            var pem = ReadPemFile(ipAddress.ToString());
-            var nodeInfo = ReadNodeInfo(ipAddress.ToString()) ?? new NodeInfo
-            {
-                Id = Directory.GetFiles(Storage.DatabasePath).Length + 1
-            };
+            var nodeInfo = nodesList.FirstOrDefault(x => Equals(x.IpAddress, ipAddress))
+                           ?? CreateNodeInfo(ipAddress);
 
-            nodeInfo.PublicKey = pem;
             return nodeInfo;
         }
 
-        /// <inheritdoc />
-        public void UpdateNodeNickname(IPAddress ipAddress, string nickname)
-        {
-            var nodeInfo = GetNodeInfo(ipAddress);
-            nodeInfo.Nickname = nickname;
-            SaveNodeInfo(ipAddress.ToString(), nodeInfo);
-
-            if (nodeInfo.PublicKey != null)
-            {
-                SavePemFile(ipAddress.ToString(), nodeInfo.PublicKey);
-            }
-        }
-
-        /// <inheritdoc />
-        public void UpdateNodePublicKey(IPAddress ipAddress, string publicKey)
-        {
-            SavePemFile(ipAddress.ToString(), publicKey);
-        }
-
-        private NodeInfo ReadNodeInfo(string name)
-        {
-            try
-            {
-                var json = File.ReadAllText($"{Storage.DatabasePath}/{name}.json");
-                return JsonSerializer.Deserialize<NodeInfo>(json, jsonSerializerOptions);
-            }
-            catch (Exception e)
-            {
-                Storage.CatchFileSystemExceptions(e);
-                return null;
-            }
-        }
-
-        private void SaveNodeInfo(string name, NodeInfo nodeInfo)
-        {
-            try
-            {
-                var json = JsonSerializer.Serialize(nodeInfo, jsonSerializerOptions);
-                var filePath = $"{Storage.DatabasePath}/{name}.json";
-                Storage.CreateStorageDirectoryIfNotExists();
-                Storage.CreateAndSetPermissions(filePath);
-                File.WriteAllText(filePath, json);
-            }
-            catch (Exception e)
-            {
-                Storage.CatchFileSystemExceptions(e);
-            }
-        }
-
-        private static string ReadPemFile(string name)
+        internal static string ReadPemFile(string name)
         {
             try
             {
@@ -102,7 +73,7 @@ namespace Lanchat.ClientCore
             }
         }
 
-        private static void SavePemFile(string name, string content)
+        internal static void SavePemFile(string name, string content)
         {
             try
             {
@@ -110,6 +81,36 @@ namespace Lanchat.ClientCore
                 Storage.CreateStorageDirectoryIfNotExists();
                 Storage.CreateAndSetPermissions(filePath);
                 File.WriteAllText(filePath, content);
+            }
+            catch (Exception e)
+            {
+                Storage.CatchFileSystemExceptions(e);
+            }
+        }
+
+        private NodeInfo CreateNodeInfo(IPAddress ipAddress)
+        {
+            var nodeInfo = new NodeInfo
+            {
+                IpAddress = ipAddress,
+                Id = nodesList.Count + 1
+            };
+
+            nodeInfo.PropertyChanged += (_, _) => { SaveNodesList(); };
+            nodesList.Add(nodeInfo);
+            SaveNodesList();
+            return nodeInfo;
+        }
+
+        private void SaveNodesList()
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(nodesList, jsonSerializerOptions);
+                var filePath = $"{Storage.DataPath}/nodes.json";
+                Storage.CreateStorageDirectoryIfNotExists();
+                Storage.CreateAndSetPermissions(filePath);
+                File.WriteAllText(filePath, json);
             }
             catch (Exception e)
             {

@@ -25,23 +25,13 @@ namespace Lanchat.Tests.Mock.Config
             localRsa.ImportFromPem(pem);
         }
 
-        NodeInfo INodesDatabase.GetNodeInfo(IPAddress ipAddress)
+        public INodeInfo GetNodeInfo(IPAddress ipAddress)
         {
             var pem = new string(PemEncoding.Write("RSA PUBLIC KEY", remoteRsa.ExportRSAPublicKey()));
-            return new NodeInfo
+            return new NodeInfoMock
             {
-                Nickname = "test",
-                Id = 9999,
                 PublicKey = pem
             };
-        }
-
-        public void UpdateNodeNickname(IPAddress ipAddress, string nickname)
-        { }
-
-        public void UpdateNodePublicKey(IPAddress ipAddress, string publicKey)
-        {
-            remoteRsa.ImportFromPem(publicKey);
         }
     }
 }

@@ -23,18 +23,12 @@ namespace Lanchat.ClientCore
         ///     Path of main Lanchat data folder.
         /// </summary>
         public static string DataPath { get; set; }
-        
-        /// <summary>
-        ///     Path of nodes database.
-        /// </summary>
-        public static string DatabasePath { get; set; }
 
         /// <summary>
         ///     Path of RSA pem files directory.
         /// </summary>
         public static string RsaDatabasePath { get; set; }
 
-        
         /// <summary>
         ///     Path of Lanchat config file.
         /// </summary>
@@ -113,11 +107,6 @@ namespace Lanchat.ClientCore
                     Directory.CreateDirectory(DownloadsPath);
                 }
 
-                if (!Directory.Exists($"{DatabasePath}"))
-                {
-                    Directory.CreateDirectory($"{DatabasePath}");
-                }
-                
                 if (!Directory.Exists($"{RsaDatabasePath}"))
                 {
                     Directory.CreateDirectory($"{RsaDatabasePath}");
@@ -186,7 +175,6 @@ namespace Lanchat.ClientCore
                 DownloadsPath = $"{home}/Downloads";
             }
 
-            DatabasePath = $"{DataPath}/Nodes";
             RsaDatabasePath = $"{DataPath}/RSA";
         }
 

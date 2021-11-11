@@ -66,7 +66,7 @@ namespace Lanchat.Core.Network
         public void OnConnected()
         {
             Connected?.Invoke(this, EventArgs.Empty);
-            nodesDatabase.UpdateNodeNickname(Host.Endpoint.Address, InternalUser.Nickname);
+            nodesDatabase.GetNodeInfo(Host.Endpoint.Address).Nickname = InternalUser.Nickname;
         }
 
         public void OnDisconnected()
