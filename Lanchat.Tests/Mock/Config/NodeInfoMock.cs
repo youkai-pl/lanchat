@@ -9,5 +9,6 @@ namespace Lanchat.Tests.Mock.Config
         public int Id { get; set; } = 1;
         public string Nickname { get; set; } = "Test";
         public string PublicKey { get; set; }
+        public bool Blocked { get; set; }
     }
 }

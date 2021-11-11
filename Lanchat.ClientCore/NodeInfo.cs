@@ -12,6 +12,7 @@ namespace Lanchat.ClientCore
         private string nickname;
         private IPAddress ipAddress;
         private int id;
+        private bool blocked;
 
         /// <inheritdoc />
         public IPAddress IpAddress
@@ -47,13 +48,25 @@ namespace Lanchat.ClientCore
         }
 
         /// <inheritdoc />
+        public bool Blocked
+        {
+            get => blocked;
+            set
+            {
+                blocked = value;
+                OnPropertyChanged(nameof(Blocked));
+            }
+        }
+
+
+        /// <inheritdoc />
         [JsonIgnore]
         public string PublicKey
         {
             get => NodesDatabase.ReadPemFile(IpAddress.ToString());
             set => NodesDatabase.SavePemFile(IpAddress.ToString(), value);
         }
-
+        
         /// <inheritdoc />
         public event PropertyChangedEventHandler PropertyChanged;
 

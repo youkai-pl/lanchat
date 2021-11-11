@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using Lanchat.Core.Config;
@@ -10,12 +11,13 @@ namespace Lanchat.Core.TransportLayer
 {
     internal class Server : TcpServer
     {
-        private readonly IConfig config;
+        private readonly INodesDatabase nodesDatabase;
         private readonly NodesControl nodesControl;
 
-        internal Server(IPAddress address, int port, IConfig config, NodesControl nodesControl) : base(address, port)
+        internal Server(IPAddress address, int port, INodesDatabase nodesDatabase,
+            NodesControl nodesControl) : base(address, port)
         {
-            this.config = config;
+            this.nodesDatabase = nodesDatabase;
             this.nodesControl = nodesControl;
             OptionDualMode = true;
         }
@@ -36,7 +38,8 @@ namespace Lanchat.Core.TransportLayer
         private void SessionOnConnected(object sender, EventArgs e)
         {
             var session = (Session)sender;
-            if (config.BlockedAddresses.Contains(session.Endpoint.Address))
+            var savedNode = nodesDatabase.SavedNodes.FirstOrDefault(x => Equals(x.IpAddress, session.Endpoint.Address));
+            if (savedNode is { Blocked: true })
             {
                 Trace.WriteLine($"Connection from {session.Endpoint.Address} blocked");
                 session.Close();

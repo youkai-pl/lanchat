@@ -75,7 +75,7 @@ namespace Lanchat.ClientCore
             }
 
             SaveConfig(config);
-            SubscribeEvents(config);
+            config!.PropertyChanged += (_, _) => { SaveConfig(config); };
             return config;
         }
         
@@ -176,12 +176,6 @@ namespace Lanchat.ClientCore
             }
 
             RsaDatabasePath = $"{DataPath}/RSA";
-        }
-
-        private static void SubscribeEvents(Config config)
-        {
-            config.PropertyChanged += (_, _) => { SaveConfig(config); };
-            config.BlockedAddresses.CollectionChanged += (_, _) => { SaveConfig(config); };
         }
     }
 }

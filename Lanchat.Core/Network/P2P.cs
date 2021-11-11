@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -8,7 +7,6 @@ using Autofac.Core;
 using Lanchat.Core.Api;
 using Lanchat.Core.Config;
 using Lanchat.Core.Encryption;
-using Lanchat.Core.Extensions;
 using Lanchat.Core.NodesDetection;
 using Lanchat.Core.TransportLayer;
 
@@ -40,10 +38,10 @@ namespace Lanchat.Core.Network
             this.nodesDatabase = nodesDatabase;
             LocalRsa = new LocalRsa(nodesDatabase);
             var container = NodeSetup.Setup(config, nodesDatabase, LocalRsa, this, nodeCreated, apiHandlers);
-            nodesControl = new NodesControl(config, container);
+            nodesControl = new NodesControl(config, nodesDatabase, container);
             server = Config.UseIPv6
-                ? new Server(IPAddress.IPv6Any, Config.ServerPort, Config, nodesControl)
-                : new Server(IPAddress.Any, Config.ServerPort, Config, nodesControl);
+                ? new Server(IPAddress.IPv6Any, Config.ServerPort, nodesDatabase, nodesControl)
+                : new Server(IPAddress.Any, Config.ServerPort, nodesDatabase, nodesControl);
 
             NodesDetection = new NodesDetector(Config);
             Broadcast = new Broadcast(nodesControl.Nodes);

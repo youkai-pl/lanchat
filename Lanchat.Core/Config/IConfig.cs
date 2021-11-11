@@ -28,11 +28,6 @@ namespace Lanchat.Core.Config
         int BroadcastPort { get; set; }
 
         /// <summary>
-        ///     Blocked IP addresses.
-        /// </summary>
-        ObservableCollection<IPAddress> BlockedAddresses { get; set; }
-
-        /// <summary>
         ///     User status.
         /// </summary>
         UserStatus UserStatus { get; set; }

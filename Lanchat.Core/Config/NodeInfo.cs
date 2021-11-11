@@ -26,5 +26,10 @@ namespace Lanchat.Core.Config
         ///     Public RSA Key PEM.
         /// </summary>
         public string PublicKey { get; set; }
+        
+        /// <summary>
+        ///     Node is blocked.
+        /// </summary>
+        public bool Blocked { get; set; }
     }
 }
