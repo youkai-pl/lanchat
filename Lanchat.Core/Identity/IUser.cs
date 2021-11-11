@@ -10,7 +10,7 @@ namespace Lanchat.Core.Identity
         /// <summary>
         ///     Node user nickname.
         /// </summary>
-        string NicknameWithId { get; }
+        string Nickname { get; }
 
         /// <summary>
         ///     Nickname before last change.

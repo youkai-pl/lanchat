@@ -27,7 +27,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
             Window.UiAction(() =>
             {
                 textBlock.Text =
-                    $"#{counter} | {Node.User.NicknameWithId} - {currentFileTransfer.FileName} - {status}";
+                    $"#{counter} | {Node.User.Nickname}#{Node.User.ShortId}- {currentFileTransfer.FileName} - {status}";
                 Content = textBlock;
             });
         }

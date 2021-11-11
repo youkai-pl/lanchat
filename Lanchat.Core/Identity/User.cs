@@ -38,8 +38,6 @@ namespace Lanchat.Core.Identity
             }
         }
         
-        public string NicknameWithId => $"{nickname}#{ShortId}";
-
         public string PreviousNickname => $"{previousNickname}#{ShortId}";
         public string ShortId => nodeId.ToString();
 
