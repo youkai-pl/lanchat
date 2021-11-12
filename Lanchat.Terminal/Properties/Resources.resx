@@ -35,28 +35,58 @@ Config file can be found in:
         </value>
     </data>
     <data name="Help_connect" xml:space="preserve">
-        <value>Syntax: /connect &lt;ip&gt; &lt;port&gt;</value>
+        <value>Usage:
+    /connect &lt;ip&gt;
+    /connect &lt;ip&gt; &lt;port&gt;
+    /connect &lt;domain&gt;
+    /connect &lt;domain&gt; &lt;port&gt;
+Description:
+    Connect with other users.</value>
     </data>
     <data name="Help_disconnect" xml:space="preserve">
-        <value>Syntax: /disconnect &lt;id&gt;</value>
+        <value>Usage:
+/disconnect &lt;id&gt;</value>
     </data>
     <data name="Help_nick" xml:space="preserve">
-        <value>Syntax: /nick &lt;new_nick&gt;</value>
+        <value>Usage:
+    /nick &lt;new_nick&gt;
+Description:
+    Changes user nickname.
+    Nickname have to be between 1-20 characters</value>
     </data>
     <data name="Help_block" xml:space="preserve">
-        <value>Syntax: /block &lt;ip | id&gt;</value>
+        <value>Usage:
+    /block &lt;id&gt;
+    /block &lt;IP address&gt;
+Description:
+    Prevent from connecting to specified user.
+    If you are not currently connected you can block by IP address.</value>
     </data>
     <data name="Help_unblock" xml:space="preserve">
-        <value>Syntax: /unblock &lt;ip&gt;</value>
+        <value>Usage:
+    /unblock &lt;IP address&gt;
+Description:
+    Unblock user. You have to user IP address in argument.
+    Check /blocked command for blocked addresses list.</value>
     </data>
     <data name="Help_send" xml:space="preserve">
-        <value>Syntax: /send &lt;id&gt; &lt;file path&gt;</value>
+        <value>Usage:
+    /send &lt;id&gt; &lt;file path&gt;
+Description:
+    Send file. Make sure path in argument doesn't have quotation marks.
+    If the target user accepts the request, the transfer will begin.</value>
     </data>
     <data name="Help_accept" xml:space="preserve">
-        <value>Syntax: /accept &lt;id&gt;</value>
+        <value>Usage: 
+    /accept &lt;id&gt;
+Description:
+    Accept incoming file transfer request.</value>
     </data>
-    <data name="Help_reject" xml:space="preserve">
-        <value>Syntax: /reject &lt;id&gt;</value>
+    <data name="Help_accept" xml:space="preserve">
+        <value>Usage: 
+    /reject &lt;id&gt;
+Description:
+    Reject incoming file transfer request.</value>
     </data>
 
     <!-- UI elements -->

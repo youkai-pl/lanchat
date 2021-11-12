@@ -19,6 +19,7 @@ namespace Lanchat.Terminal.Commands.General
 
         public void Execute(string[] args)
         {
+            Writer.WriteStatus("User manual");
             if (args.Length < 1)
             {
                 Writer.WriteText(string.Format(Resources.Help, Storage.ConfigPath));
@@ -33,13 +34,15 @@ namespace Lanchat.Terminal.Commands.General
                 }
 
                 var commandHelp = Resources.ResourceManager.GetString($"Help_{command.Aliases[0]}", CultureInfo.CurrentCulture);
-                if (commandHelp == null)
-                {
-                    Writer.WriteError(Resources.ManualNotFound);
-                    return;
-                }
 
-                Writer.WriteText(commandHelp);
+                var aliases = string.Join(", ", command.Aliases);
+                Writer.WriteText($"Aliases");
+                Writer.WriteText($"    {aliases}");
+                if (commandHelp != null)
+                {
+                    Writer.WriteText(commandHelp);
+                }
+                Writer.WriteText("");
             }
         }
 

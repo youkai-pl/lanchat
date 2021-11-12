@@ -230,7 +230,10 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax: /accept &lt;id&gt;.
+        ///   Looks up a localized string similar to Usage: 
+        ///    /accept &lt;id&gt;
+        ///Description:
+        ///    Accept incoming file transfer request..
         /// </summary>
         internal static string Help_accept {
             get {
@@ -239,7 +242,12 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax: /block &lt;ip | id&gt;.
+        ///   Looks up a localized string similar to Usage:
+        ///    /block &lt;id&gt;
+        ///    /block &lt;IP address&gt;
+        ///Description:
+        ///    Prevent from connecting to specified user.
+        ///    If you are not currently connected you can block by IP address..
         /// </summary>
         internal static string Help_block {
             get {
@@ -248,7 +256,13 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax: /connect &lt;ip&gt; &lt;port&gt;.
+        ///   Looks up a localized string similar to Usage:
+        ///    /connect &lt;ip&gt;
+        ///    /connect &lt;ip&gt; &lt;port&gt;
+        ///    /connect &lt;domain&gt;
+        ///    /connect &lt;domain&gt; &lt;port&gt;
+        ///Description:
+        ///    Connect with other users..
         /// </summary>
         internal static string Help_connect {
             get {
@@ -257,7 +271,8 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax: /disconnect &lt;id&gt;.
+        ///   Looks up a localized string similar to Usage:
+        /// /disconnect &lt;id&gt;.
         /// </summary>
         internal static string Help_disconnect {
             get {
@@ -266,7 +281,11 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax: /nick &lt;new_nick&gt;.
+        ///   Looks up a localized string similar to Usage:
+        ///    /nick &lt;new_nick&gt;
+        ///Description:
+        ///    Changes user nickname.
+        ///    Nickname have to be between 1-20 characters.
         /// </summary>
         internal static string Help_nick {
             get {
@@ -275,16 +294,11 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax: /reject &lt;id&gt;.
-        /// </summary>
-        internal static string Help_reject {
-            get {
-                return ResourceManager.GetString("Help_reject", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Syntax: /send &lt;id&gt; &lt;file path&gt;.
+        ///   Looks up a localized string similar to Usage:
+        ///    /send &lt;id&gt; &lt;file path&gt;
+        ///Description:
+        ///    Send file. Make sure path in argument doesn&apos;t have quotation marks.
+        ///    If the target user accepts the request, the transfer will begin..
         /// </summary>
         internal static string Help_send {
             get {
@@ -293,7 +307,11 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax: /unblock &lt;ip&gt;.
+        ///   Looks up a localized string similar to Usage:
+        ///    /unblock &lt;IP address&gt;
+        ///Description:
+        ///    Unblock user. You have to user IP address in argument.
+        ///    Check /blocked command for blocked addresses list..
         /// </summary>
         internal static string Help_unblock {
             get {
