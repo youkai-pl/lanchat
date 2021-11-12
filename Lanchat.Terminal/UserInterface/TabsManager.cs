@@ -1,5 +1,6 @@
 using System.Linq;
 using Lanchat.Core.Network;
+using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface.Controls;
 using Lanchat.Terminal.UserInterface.Views;
 
@@ -13,9 +14,9 @@ namespace Lanchat.Terminal.UserInterface
 
         static TabsManager()
         {
-            HomeViewTab = new Tab("Lanchat", HomeView);
-            MainViewTab = new Tab("Lanchat", MainChatView);
-            FileTransferViewTab = new Tab("File transfer", FileTransfersView);
+            HomeViewTab = new Tab(Resources.MainTab, HomeView);
+            MainViewTab = new Tab(Resources.MainTab, MainChatView);
+            FileTransferViewTab = new Tab(Resources.FileTransferTab, FileTransfersView);
         }
 
         public static HomeView HomeView { get; } = new();
@@ -27,7 +28,7 @@ namespace Lanchat.Terminal.UserInterface
         public static void Initialize()
         {
             Window.TabPanel.SystemTabs.AddTab(HomeViewTab);
-            Window.TabPanel.SystemTabs.AddTab(new Tab("Users", UsersView));
+            Window.TabPanel.SystemTabs.AddTab(new Tab(Resources.UsersTab, UsersView));
             Window.TabPanel.SystemTabs.AddTab(FileTransferViewTab);
             Window.TabPanel.SelectTab(HomeViewTab);
             if (Program.Config.DebugMode)

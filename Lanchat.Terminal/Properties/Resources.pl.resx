@@ -1,21 +1,6 @@
-<!-- ReSharper disable MarkupTextTypo -->
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>1.3</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
-    </resheader>
+    <!-- Help -->
     <data name="Help" xml:space="preserve">
         <value>
 Lanchat: LAN chat i wysyłanie plików
@@ -36,49 +21,7 @@ Sprawdź /help &lt;polecenie&gt;
        
 Plik konfiguracyjny znajduje się w:
 {0}
-    </value>
-    </data>
-    <data name="Connected" xml:space="preserve">
-        <value>Połączono z {0}</value>
-    </data>
-    <data name="Disconnected" xml:space="preserve">
-        <value>Rozłączono z {0}</value>
-    </data>
-    <data name="IncorrectValues" xml:space="preserve">
-        <value>Nieprawidłowa wartość</value>
-    </data>
-    <data name="ManualNotFound" xml:space="preserve">
-        <value>Pomoc nie została znaleziona</value>
-    </data>
-    <data name="NicknameChanged" xml:space="preserve">
-        <value>{0} zmienił nick na {1}</value>
-    </data>
-    <data name="UserNotFound" xml:space="preserve">
-        <value>Nie znaleziono użytkownika</value>
-    </data>
-    <data name="PortBusy" xml:space="preserve">
-        <value>Port zajęty, nie można uruchomić serwera.</value>
-    </data>
-    <data name="Unblocked" xml:space="preserve">
-        <value>{0} został odblokowany</value>
-    </data>
-    <data name="WrongNickname" xml:space="preserve">
-        <value>Nickname musi być krótszy niż 20 znaków i nie może być pusty</value>
-    </data>
-    <data name="ConnectionAttempt" xml:space="preserve">
-        <value>Łączenie z {0}</value>
-    </data>
-    <data name="CannotConnect" xml:space="preserve">
-        <value>Nie można połączyć z {0}</value>
-    </data>
-    <data name="BlockedList" xml:space="preserve">
-        <value>Zablokowane adresy IP</value>
-    </data>
-    <data name="Blocked" xml:space="preserve">
-        <value>{0} został zablokowany</value>
-    </data>
-    <data name="Help_block" xml:space="preserve">
-        <value>Składnia: /block &lt;ip | krótkie id&gt;</value>
+        </value>
     </data>
     <data name="Help_connect" xml:space="preserve">
         <value>Składnia: /connect &lt;ip&gt; &lt;port&gt;</value>
@@ -89,17 +32,11 @@ Plik konfiguracyjny znajduje się w:
     <data name="Help_nick" xml:space="preserve">
         <value>Składnia: /nick &lt;nowy nick&gt;</value>
     </data>
+    <data name="Help_block" xml:space="preserve">
+        <value>Składnia: /block &lt;ip | krótkie id&gt;</value>
+    </data>
     <data name="Help_unblock" xml:space="preserve">
         <value>Składnia: /unblock &lt;ip&gt;</value>
-    </data>
-    <data name="CannotAccessFile" xml:space="preserve">
-        <value>Nie można uzyskać dostępu do {0}. Nazwa pliku lub uprawnienia dostępu mogą być błędne</value>
-    </data>
-    <data name="FileTransferInProgress" xml:space="preserve">
-        <value>Nie można wysyłać wielu plików jednocześnie.</value>
-    </data>
-    <data name="NoFileReceiveRequest" xml:space="preserve">
-        <value>Brak przesyłanych plików</value>
     </data>
     <data name="Help_send" xml:space="preserve">
         <value>Składnia: /send &lt;krótkie id&gt; &lt;ścieżka do pliku&gt;</value>
@@ -110,26 +47,94 @@ Plik konfiguracyjny znajduje się w:
     <data name="Help_reject" xml:space="preserve">
         <value>Składnia: /reject &lt;krótkie id&gt;</value>
     </data>
-    <data name="AlreadyBlocked" xml:space="preserve">
-        <value>Adres jest już zablokowany</value>
+
+
+    <!-- UI elements -->
+    <data name="WindowTitle" xml:space="preserve">
+        <value>Lanchat</value>
     </data>
-    <data name="InvalidCommand" xml:space="preserve">
-        <value>Nieprawidłowa komenda</value>
+    <data name="MainTab" xml:space="preserve">
+        <value>Lanchat</value>
     </data>
-    <data name="RsaChanged" xml:space="preserve">
-        <value>Klucz publiczny {0} został zmieniony. Połączenie może być niezabezpieczone.</value>
+    <data name="FileTransferTab" xml:space="preserve">
+        <value>Wymiana plików</value>
     </data>
-    <data name="FreshRsa" xml:space="preserve">
-        <value>Aby upewnić się, że połączenie z {0} jest bezpieczne sprawdź klucz publiczny w zakładce "Users".</value>
+    <data name="UsersTab" xml:space="preserve">
+        <value>Użytkownicy</value>
     </data>
     <data name="YourRsa" xml:space="preserve">
         <value>Twój klucz:</value>
     </data>
-    <data name="FileTransferRejected" xml:space="preserve">
-        <value>Odrzucono</value>
+    <data name="GetHelp" xml:space="preserve">
+        <value>Sprawdź komendę /help</value>
     </data>
+
+    <!-- Node status messages -->
+    <data name="Connected" xml:space="preserve">
+        <value>Połączono z {0}</value>
+    </data>
+    <data name="Disconnected" xml:space="preserve">
+        <value>Rozłączono z {0}</value>
+    </data>
+    <data name="CannotConnect" xml:space="preserve">
+        <value>Nie można połączyć z {0}</value>
+    </data>
+    <data name="NicknameChanged" xml:space="preserve">
+        <value>{0} zmienił nick na {1}</value>
+    </data>
+    <data name="FreshRsa" xml:space="preserve">
+        <value>Aby upewnić się, że połączenie z {0} jest bezpieczne sprawdź klucz publiczny w zakładce "Users".</value>
+    </data>
+    <data name="RsaChanged" xml:space="preserve">
+        <value>Klucz publiczny {0} został zmieniony. Połączenie może być niezabezpieczone.</value>
+    </data>
+
+    <!-- Errors -->
+    <data name="PortBusy" xml:space="preserve">
+        <value>Port zajęty, nie można uruchomić serwera.</value>
+    </data>
+    <data name="InvalidCommand" xml:space="preserve">
+        <value>Nieprawidłowa komenda</value>
+    </data>
+    <data name="IncorrectValues" xml:space="preserve">
+        <value>Nieprawidłowa wartość</value>
+    </data>
+    <data name="UserNotFound" xml:space="preserve">
+        <value>Nie znaleziono użytkownika</value>
+    </data>
+
+    <!-- Commands results -->
+    <data name="ConnectionAttempt" xml:space="preserve">
+        <value>Łączenie z {0}</value>
+    </data>
+    <data name="SelfNicknameChanged" xml:space="preserve">
+        <value>Zmieniono nick na {0}</value>
+    </data>
+    <data name="WrongNickname" xml:space="preserve">
+        <value>Nickname musi być krótszy niż 20 znaków i nie może być pusty</value>
+    </data>
+    <data name="Blocked" xml:space="preserve">
+        <value>{0} został zablokowany</value>
+    </data>
+    <data name="Unblocked" xml:space="preserve">
+        <value>{0} został odblokowany</value>
+    </data>
+    <data name="AlreadyBlocked" xml:space="preserve">
+        <value>Adres jest już zablokowany</value>
+    </data>
+    <data name="BlockedList" xml:space="preserve">
+        <value>Zablokowane adresy IP</value>
+    </data>
+    <data name="ManualNotFound" xml:space="preserve">
+        <value>Pomoc nie została znaleziona</value>
+    </data>
+
+    <!-- File transfer -->
     <data name="FileTransferFinished" xml:space="preserve">
         <value>Zakończono</value>
+    </data>
+    <data name="FileTransferRejected" xml:space="preserve">
+        <value>Odrzucono</value>
     </data>
     <data name="FileTransferWaiting" xml:space="preserve">
         <value>Oczekuje</value>
@@ -137,10 +142,13 @@ Plik konfiguracyjny znajduje się w:
     <data name="FileTransferCancelled" xml:space="preserve">
         <value>Anulowano</value>
     </data>
-    <data name="GetHelp" xml:space="preserve">
-        <value>Sprawdź komendę /help</value>
+    <data name="NoFileReceiveRequest" xml:space="preserve">
+        <value>Brak przesyłanych plików</value>
     </data>
-    <data name="SelfNicknameChanged" xml:space="preserve">
-        <value>Zmieniono nick na {0}</value>
+    <data name="FileTransferInProgress" xml:space="preserve">
+        <value>Nie można wysyłać wielu plików jednocześnie.</value>
+    </data>
+    <data name="CannotAccessFile" xml:space="preserve">
+        <value>Nie można uzyskać dostępu do {0}. Nazwa pliku lub uprawnienia dostępu mogą być błędne</value>
     </data>
 </root>
