@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <Title>Lanchat.ClientCore</Title>
-        <Version>2.9.0</Version>
+        <Version>2.10.0</Version>
         <Authors>tofudd</Authors>
         <PackageProjectUrl>https://github.com/tofudd/lanchat</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/tof4/lanchat/blob/master/LICENSE</PackageLicenseUrl>
@@ -14,7 +14,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Lanchat.Core\Lanchat.Core.csproj"/>
+        <ProjectReference Include="..\Lanchat.Core\Lanchat.Core.csproj" />
     </ItemGroup>
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
@@ -22,6 +22,6 @@
         </AssemblyAttribute>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Mono.Posix.NETStandard" Version="1.0.0"/>
+        <PackageReference Include="Mono.Posix.NETStandard" Version="1.0.0" />
     </ItemGroup>
 </Project>

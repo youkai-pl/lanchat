@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <Title>Lanchat.Core</Title>
-        <Version>2.9.0</Version>
+        <Version>2.10.0</Version>
         <Description>Local network P2P chat libary.</Description>
         <Copyright>tofudd</Copyright>
         <PackageProjectUrl>https://github.com/tofudd/lanchat</PackageProjectUrl>
@@ -16,9 +16,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="6.3.0"/>
-        <PackageReference Include="NetCoreServer" Version="5.1.0"/>
-        <PackageReference Include="System.Text.Json" Version="5.0.2"/>
+        <PackageReference Include="Autofac" Version="6.3.0" />
+        <PackageReference Include="NetCoreServer" Version="5.1.0" />
+        <PackageReference Include="System.Text.Json" Version="5.0.2" />
     </ItemGroup>
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">

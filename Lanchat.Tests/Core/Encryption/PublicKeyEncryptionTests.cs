@@ -15,7 +15,7 @@ namespace Lanchat.Tests.Core.Encryption
         [SetUp]
         public void Setup()
         {
-            nodeRsaTest = new NodeRsa(new RsaDatabaseMock(), new LocalRsa(new RsaDatabaseMock()));
+            nodeRsaTest = new NodeRsa(new NodesDatabaseMock(), new LocalRsa(new NodesDatabaseMock()));
             nodeRsaTest.ImportKey(nodeRsaTest.ExportKey(), IPAddress.Loopback);
         }
 

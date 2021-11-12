@@ -1,23 +1,27 @@
 using System;
+using Lanchat.Core.Config;
 using Lanchat.Core.Network;
+using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.Identity
 {
     internal class User : IUser, IInternalUser
     {
         private readonly INodeInternal node;
+        private readonly int nodeId;
         private string nickname;
         private string previousNickname;
         private UserStatus userStatus;
 
-        public User(INodeInternal node)
+        public User(INodeInternal node, IHost host, INodesDatabase nodesDatabase)
         {
+            nodeId = nodesDatabase.GetNodeInfo(host.Endpoint.Address).Id;
             this.node = node;
         }
 
-        public string Nickname
+        public string Nickname 
         {
-            get => $"{nickname}#{ShortId}";
+            get => nickname;
             set
             {
                 if (value == nickname)
@@ -33,9 +37,9 @@ namespace Lanchat.Core.Identity
                 }
             }
         }
-
+        
         public string PreviousNickname => $"{previousNickname}#{ShortId}";
-        public string ShortId => node.Id.GetHashCode().ToString().Substring(1, 4);
+        public string ShortId => nodeId.ToString();
 
         public UserStatus UserStatus
         {

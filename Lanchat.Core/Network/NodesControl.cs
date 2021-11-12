@@ -14,12 +14,16 @@ namespace Lanchat.Core.Network
     internal class NodesControl
     {
         private readonly IConfig config;
+        private readonly INodesDatabase nodesDatabase;
         private readonly IContainer container;
+        private readonly AddressChecker addressChecker;
 
-        internal NodesControl(IConfig config, IContainer container)
+        internal NodesControl(IConfig config, IContainer container, AddressChecker addressChecker, INodesDatabase nodesDatabase)
         {
             this.config = config;
+            this.nodesDatabase = nodesDatabase;
             this.container = container;
+            this.addressChecker = addressChecker;
             Nodes = new List<INodeInternal>();
         }
 
@@ -27,7 +31,6 @@ namespace Lanchat.Core.Network
 
         internal INodeInternal CreateNode(IHost host)
         {
-            CheckAddress(host.Endpoint.Address);
             var scope = container.BeginLifetimeScope(b => { b.RegisterInstance(host).As<IHost>(); });
             var node = scope.Resolve<INodeInternal>();
             lock (Nodes)
@@ -55,11 +58,13 @@ namespace Lanchat.Core.Network
         {
             var node = (INodeInternal)sender;
             var id = node.Id;
+            var address = node.Host.Endpoint.Address;
+            
             lock (Nodes)
             {
                 Nodes.Remove(node);
             }
-
+            addressChecker.UnlockAddress(address);
             node.Connected -= OnConnected;
             node.CannotConnect -= CloseNode;
             node.Disconnected -= CloseNode;
@@ -74,16 +79,13 @@ namespace Lanchat.Core.Network
                 .Where(x => x.Id != node.Id)
                 .Select(x => x.Host.Endpoint.Address));
             node.Output.SendData(nodesList);
-
-            if (!config.SavedAddresses.Contains(node.Host.Endpoint.Address))
-            {
-                config.SavedAddresses.Add(node.Host.Endpoint.Address);
-            }
+            nodesDatabase.GetNodeInfo(node.Host.Endpoint.Address).Nickname = node.InternalUser.Nickname;
         }
 
         private void CheckAddress(IPAddress ipAddress)
         {
-            if (config.BlockedAddresses.Contains(ipAddress))
+            var savedNode = nodesDatabase.SavedNodes.FirstOrDefault(x => Equals(x.IpAddress, ipAddress));
+            if (savedNode is { Blocked: true })
             {
                 throw new ArgumentException("Node blocked");
             }

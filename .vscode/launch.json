@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Lanchat.Terminal/bin/Debug/net5.0/Lanchat.dll",
+            "args": [
+                "-d",
+                "-a"
+            ],
+            "cwd": "${workspaceFolder}/Lanchat.Terminal",
+            "console": "externalTerminal",
+            "stopAtEntry": false
+        }
+    ]
+}

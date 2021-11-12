@@ -15,7 +15,7 @@ namespace Lanchat.Tests.Mock.Network
     {
         public P2PMock()
         {
-            LocalRsa = new LocalRsa(new RsaDatabaseMock());
+            LocalRsa = new LocalRsa(new NodesDatabaseMock());
             NodesDetection = new NodesDetector(new ConfigMock());
             Broadcast = new Broadcast(Nodes.Cast<INodeInternal>().ToList());
         }
