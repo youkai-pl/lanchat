@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using Lanchat.ClientCore;
+using Lanchat.Core.Extensions;
 using Lanchat.Core.Network;
+using Lanchat.Terminal.Commands;
 using Lanchat.Terminal.Handlers;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
@@ -17,6 +21,7 @@ namespace Lanchat.Terminal
         public static IP2P Network { get; private set; }
         public static Config Config { get; private set; }
         public static NodesDatabase NodesDatabase { get; private set; }
+        public static List<ICommand> Commands { get; private set; } = new();
 
         private static void Main(string[] args)
         {
@@ -41,6 +46,7 @@ namespace Lanchat.Terminal
             });
 
             CheckStartArguments(args);
+            LoadCommands();
             Window.Initialize();
             Logger.StartLogging();
 
@@ -64,6 +70,18 @@ namespace Lanchat.Terminal
             }
 
             Logger.DeleteOldLogs(5);
+        }
+
+        private static void LoadCommands()
+        {
+            var assembly = Assembly.GetEntryAssembly();
+            assembly!.DefinedTypes.ForEach(x =>
+            {
+                if (x.ImplementedInterfaces.Contains(typeof(ICommand)))
+                {
+                    Commands.Add(assembly.CreateInstance(x.FullName!) as ICommand);
+                }
+            });
         }
 
         private static void CheckStartArguments(string[] args)

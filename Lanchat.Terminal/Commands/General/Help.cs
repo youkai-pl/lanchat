@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Linq;
 using Lanchat.ClientCore;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
@@ -8,7 +9,11 @@ namespace Lanchat.Terminal.Commands.General
 {
     public class Help : ICommand
     {
-        public string Alias => "help";
+        public string[] Aliases { get; } =
+        {
+            "help",
+            "h"
+        };
         public int ArgsCount => 0;
         public int ContextArgsCount => ArgsCount;
 
@@ -20,15 +25,21 @@ namespace Lanchat.Terminal.Commands.General
             }
             else
             {
-                var commandHelp = Resources.ResourceManager.GetString($"Help_{args[0]}", CultureInfo.CurrentCulture);
+                var command = Program.Commands.FirstOrDefault(x => x.Aliases.Contains(args[0]));
+                if (command == null)
+                {
+                    Writer.WriteError(Resources.InvalidCommand);
+                    return;
+                }
+
+                var commandHelp = Resources.ResourceManager.GetString($"Help_{command.Aliases[0]}", CultureInfo.CurrentCulture);
                 if (commandHelp == null)
                 {
                     Writer.WriteError(Resources.ManualNotFound);
+                    return;
                 }
-                else
-                {
-                    Writer.WriteText(commandHelp);
-                }
+
+                Writer.WriteText(commandHelp);
             }
         }
 

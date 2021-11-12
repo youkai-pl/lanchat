@@ -10,7 +10,11 @@ namespace Lanchat.Terminal.Commands.General
 {
     public class Connect : ICommand
     {
-        public string Alias => "connect";
+        public string[] Aliases { get; } = 
+        {
+            "connect",
+            "c"
+        };
         public int ArgsCount => 1;
         public int ContextArgsCount => ArgsCount;
 

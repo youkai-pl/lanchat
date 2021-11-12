@@ -5,7 +5,10 @@ namespace Lanchat.Terminal.Commands.Status
 {
     public class Online : ICommand
     {
-        public string Alias => "online";
+        public string[] Aliases { get; } =
+        {
+            "online"
+        };
         public int ArgsCount => 0;
         public int ContextArgsCount => ArgsCount;
 

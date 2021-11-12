@@ -6,7 +6,11 @@ namespace Lanchat.Terminal.Commands.General
 {
     public class Nick : ICommand
     {
-        public string Alias => "nick";
+        public string[] Aliases { get; } =
+        {
+            "nick",
+            "n"
+        };
         public int ArgsCount => 1;
         public int ContextArgsCount => ArgsCount;
 

@@ -7,7 +7,10 @@ namespace Lanchat.Terminal.Commands.FileTransfer
 {
     public class Cancel : ICommand
     {
-        public string Alias => "cancel";
+        public string[] Aliases { get; } = 
+        {
+            "cancel"
+        };
         public int ArgsCount => 1;
         public int ContextArgsCount => 0;
 

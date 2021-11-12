@@ -10,7 +10,10 @@ namespace Lanchat.Terminal.Commands.FileTransfer
 {
     public class Send : ICommand
     {
-        public string Alias => "send";
+        public string[] Aliases { get; } = 
+        {
+            "send"
+        };
         public int ArgsCount => 2;
         public int ContextArgsCount => 1;
 

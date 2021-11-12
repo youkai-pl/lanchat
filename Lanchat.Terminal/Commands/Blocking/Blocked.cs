@@ -7,7 +7,10 @@ namespace Lanchat.Terminal.Commands.Blocking
 {
     public class Blocked : ICommand
     {
-        public string Alias => "blocked";
+        public string[] Aliases { get; } =
+        {
+            "blocked"
+        };
         public int ArgsCount => 0;
         public int ContextArgsCount => ArgsCount;
 
