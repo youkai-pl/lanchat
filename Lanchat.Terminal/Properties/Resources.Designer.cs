@@ -103,6 +103,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Command not found.
+        /// </summary>
+        internal static string CommandNotFound {
+            get {
+                return ResourceManager.GetString("CommandNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} connected.
         /// </summary>
         internal static string Connected {
@@ -230,20 +239,12 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incorrect values.
+        ///   Looks up a localized string similar to Incorrect command usage
+        ///Check /help [command].
         /// </summary>
-        internal static string IncorrectValues {
+        internal static string IncorrectCommandUsage {
             get {
-                return ResourceManager.GetString("IncorrectValues", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid command.
-        /// </summary>
-        internal static string InvalidCommand {
-            get {
-                return ResourceManager.GetString("InvalidCommand", resourceCulture);
+                return ResourceManager.GetString("IncorrectCommandUsage", resourceCulture);
             }
         }
         

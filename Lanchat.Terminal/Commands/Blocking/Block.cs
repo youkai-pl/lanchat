@@ -21,21 +21,20 @@ namespace Lanchat.Terminal.Commands.Blocking
                 Execute(args, Program.Network.Nodes.Find(x => x.User.ShortId == args[0]));
             }
 
-            if (IPAddress.TryParse(args[0], out var ipAddress))
+            if (!IPAddress.TryParse(args[0], out var ipAddress))
             {
-                var node = Program.Network.Nodes.Find(x => Equals(x.Host.Endpoint.Address, ipAddress));
-                if (node == null)
-                {
-                    SaveBlockInConfig(ipAddress);
-                }
-                else
-                {
-                    Execute(args, node);
-                }
+                Writer.WriteError(Resources.IncorrectCommandUsage);
+                return;
+            }
+
+            var node = Program.Network.Nodes.Find(x => Equals(x.Host.Endpoint.Address, ipAddress));
+            if (node == null)
+            {
+                SaveBlockInConfig(ipAddress);
             }
             else
             {
-                Writer.WriteError(Resources.IncorrectValues);
+                Execute(args, node);
             }
         }
 

@@ -50,11 +50,11 @@ namespace Lanchat.Terminal.Commands.General
             }
             catch (FormatException)
             {
-                Writer.WriteError(Resources.IncorrectValues);
+                Writer.WriteError(Resources.IncorrectCommandUsage);
             }
             catch (SocketException)
             {
-                Writer.WriteError(Resources.IncorrectValues);
+                Writer.WriteError(Resources.IncorrectCommandUsage);
             }
             catch (ArgumentException e)
             {

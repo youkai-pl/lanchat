@@ -19,7 +19,7 @@ namespace Lanchat.Terminal.Commands.Blocking
             var correct = IPAddress.TryParse(args[0], out var ipAddress);
             if (!correct)
             {
-                Writer.WriteError(Resources.IncorrectValues);
+                Writer.WriteError(Resources.IncorrectCommandUsage);
                 return;
             }
 

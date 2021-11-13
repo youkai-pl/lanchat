@@ -34,7 +34,7 @@ Config file can be found in:
 {0}
         </value>
     </data>
-    
+
     <!-- Help / Commands summary -->
     <data name="Summary_connect" xml:space="preserve">
         <value>
@@ -167,11 +167,12 @@ Config file can be found in:
     <data name="PortBusy" xml:space="preserve">
         <value>Port busy. Cannot start server.</value>
     </data>
-    <data name="InvalidCommand" xml:space="preserve">
-        <value>Invalid command</value>
+    <data name="IncorrectCommandUsage" xml:space="preserve">
+        <value>Incorrect command usage
+Check /help [command]</value>
     </data>
-    <data name="IncorrectValues" xml:space="preserve">
-        <value>Incorrect values</value>
+    <data name="CommandNotFound" xml:space="preserve">
+        <value>Command not found</value>
     </data>
     <data name="UserNotFound" xml:space="preserve">
         <value>User not found</value>

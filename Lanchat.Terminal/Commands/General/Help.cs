@@ -27,7 +27,7 @@ namespace Lanchat.Terminal.Commands.General
                 var command = Program.CommandsManager.GetCommandByAlias(args[0]);
                 if (command == null)
                 {
-                    Writer.WriteError(Resources.InvalidCommand);
+                    Writer.WriteError(Resources.CommandNotFound);
                     return;
                 }
 

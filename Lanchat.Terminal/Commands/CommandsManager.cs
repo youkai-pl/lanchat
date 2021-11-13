@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Lanchat.Terminal.Commands.Blocking;
 using Lanchat.Terminal.Commands.FileTransfer;
@@ -54,7 +53,7 @@ namespace Lanchat.Terminal.Commands
             var command = GetCommandByAlias(commandAlias);
             if (command == null)
             {
-                Writer.WriteError(Resources.InvalidCommand);
+                Writer.WriteError(Resources.CommandNotFound);
                 return;
             }
 
@@ -86,12 +85,7 @@ namespace Lanchat.Terminal.Commands
                 return true;
             }
 
-            var help = Resources.ResourceManager.GetString($"Help_{alias}", CultureInfo.CurrentCulture);
-            if (help != null)
-            {
-                Writer.WriteText(help);
-            }
-
+            Writer.WriteError(Resources.IncorrectCommandUsage);
             return false;
         }
     }
