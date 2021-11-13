@@ -47,7 +47,7 @@ namespace Lanchat.ClientCore
                 new IpAddressConverter()
             }
         };
-        
+
         private static readonly JsonContext JsonContext = new(JsonSerializerOptions);
 
 
@@ -60,7 +60,7 @@ namespace Lanchat.ClientCore
         public static Config LoadConfig()
         {
             Config config;
-            
+
             try
             {
                 var json = File.ReadAllText(ConfigPath);
@@ -80,7 +80,7 @@ namespace Lanchat.ClientCore
             config!.PropertyChanged += (_, _) => { SaveConfig(config); };
             return config;
         }
-        
+
         internal static void SaveConfig(Config config)
         {
             try
@@ -94,7 +94,7 @@ namespace Lanchat.ClientCore
                 CatchFileSystemExceptions(e);
             }
         }
-        
+
         internal static void CreateStorageDirectoryIfNotExists()
         {
             try
@@ -133,7 +133,30 @@ namespace Lanchat.ClientCore
 
             Trace.WriteLine("Cannot access file system");
         }
-        
+
+        internal static void SetPermissions(string filePath)
+        {
+            File.Create(filePath).Dispose();
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return;
+            }
+
+            using var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    CreateNoWindow = true,
+                    FileName = "chmod",
+                    Arguments = $"0600 {filePath}"
+                }
+            };
+
+            process.Start();
+            process.WaitForExit();
+        }
+
         private static void SetPaths()
         {
             var xdgDataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
@@ -161,29 +184,6 @@ namespace Lanchat.ClientCore
             }
 
             RsaDatabasePath = $"{DataPath}/RSA";
-        }
-
-        public static void SetPermissions(string filePath)
-        {
-            File.Create(filePath).Dispose();
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return;
-            }
-
-            using var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    CreateNoWindow = true,
-                    FileName = "chmod",
-                    Arguments = $"0600 {filePath}" 
-                }
-            };
-
-            process.Start();
-            process.WaitForExit();
         }
     }
 }

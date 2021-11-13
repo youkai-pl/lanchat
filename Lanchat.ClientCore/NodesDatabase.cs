@@ -82,7 +82,7 @@ namespace Lanchat.ClientCore
             {
                 var filePath = $"{Storage.RsaDatabasePath}/{name}.pem";
                 Storage.CreateStorageDirectoryIfNotExists();
-                Storage.CreateAndSetPermissions(filePath);
+                Storage.SetPermissions(filePath);
                 File.WriteAllText(filePath, content);
             }
             catch (Exception e)
@@ -112,7 +112,7 @@ namespace Lanchat.ClientCore
                 var json = JsonSerializer.Serialize(savedNodes, jsonSerializerOptions);
                 var filePath = $"{Storage.DataPath}/nodes.json";
                 Storage.CreateStorageDirectoryIfNotExists();
-                Storage.CreateAndSetPermissions(filePath);
+                Storage.SetPermissions(filePath);
                 File.WriteAllText(filePath, json);
             }
             catch (Exception e)
