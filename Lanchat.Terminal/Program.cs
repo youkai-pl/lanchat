@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Reflection;
 using Lanchat.ClientCore;
-using Lanchat.Core.Extensions;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Commands;
 using Lanchat.Terminal.Handlers;

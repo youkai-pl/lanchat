@@ -43,13 +43,11 @@ namespace Lanchat.ClientCore
             WriteIndented = true,
             Converters =
             {
-                new JsonStringEnumConverter(),
-                new IpAddressConverter()
+                new JsonStringEnumConverter()
             }
         };
 
-        private static readonly JsonContext JsonContext = new(JsonSerializerOptions);
-
+        private static readonly ConfigContext ConfigContext = new(JsonSerializerOptions);
 
         /// <summary>
         ///     Load config from file or create new if it's non present or corrupted.
@@ -64,7 +62,7 @@ namespace Lanchat.ClientCore
             try
             {
                 var json = File.ReadAllText(ConfigPath);
-                config = JsonSerializer.Deserialize<Config>(json, JsonContext.Config);
+                config = JsonSerializer.Deserialize(json, ConfigContext.Config);
             }
             catch (JsonException)
             {
@@ -87,7 +85,7 @@ namespace Lanchat.ClientCore
             {
                 CreateStorageDirectoryIfNotExists();
                 SetPermissions(ConfigPath);
-                File.WriteAllText(ConfigPath, JsonSerializer.Serialize(config, JsonSerializerOptions));
+                File.WriteAllText(ConfigPath, JsonSerializer.Serialize(config, ConfigContext.Config));
             }
             catch (Exception e)
             {

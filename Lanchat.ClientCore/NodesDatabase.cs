@@ -13,12 +13,17 @@ namespace Lanchat.ClientCore
     public class NodesDatabase : INodesDatabase
     {
         private readonly List<NodeInfo> savedNodes;
-        
-        private readonly JsonSerializerOptions jsonSerializerOptions = new()
+
+        private static JsonSerializerOptions JsonSerializerOptions => new()
         {
             WriteIndented = true,
-            Converters = { new IpAddressConverter() }
+            Converters =
+            {
+                new JsonIpAddressConverter()
+            }
         };
+
+        private static readonly NodesDatabaseContext NodesDatabaseContext = new(JsonSerializerOptions);
 
         /// <summary>
         ///     Initialize nodes database.
@@ -28,7 +33,7 @@ namespace Lanchat.ClientCore
             try
             {
                 var json = File.ReadAllText($"{Storage.DataPath}/nodes.json");
-                savedNodes = JsonSerializer.Deserialize<List<NodeInfo>>(json, jsonSerializerOptions);
+                savedNodes = JsonSerializer.Deserialize(json, NodesDatabaseContext.ListNodeInfo);
                 savedNodes?.ForEach(x => x.PropertyChanged += (_, _) => { SaveNodesList(); });
             }
             catch (Exception e)
@@ -109,7 +114,7 @@ namespace Lanchat.ClientCore
         {
             try
             {
-                var json = JsonSerializer.Serialize(savedNodes, jsonSerializerOptions);
+                var json = JsonSerializer.Serialize(savedNodes, NodesDatabaseContext.ListNodeInfo);
                 var filePath = $"{Storage.DataPath}/nodes.json";
                 Storage.CreateStorageDirectoryIfNotExists();
                 Storage.SetPermissions(filePath);

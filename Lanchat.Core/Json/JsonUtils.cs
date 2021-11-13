@@ -18,7 +18,7 @@ namespace Lanchat.Core.Json
                 Converters =
                 {
                     new JsonStringEnumConverter(),
-                    new IpAddressConverter()
+                    new JsonIpAddressConverter()
                 }
             };
         }

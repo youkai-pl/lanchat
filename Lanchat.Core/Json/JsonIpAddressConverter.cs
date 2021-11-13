@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 namespace Lanchat.Core.Json
 {
     /// <inheritdoc />
-    public class IpAddressConverter : JsonConverter<IPAddress>
+    public class JsonIpAddressConverter : JsonConverter<IPAddress>
     {
         /// <inheritdoc />
         public override IPAddress Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

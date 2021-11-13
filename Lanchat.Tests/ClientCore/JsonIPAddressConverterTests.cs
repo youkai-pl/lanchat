@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace Lanchat.Tests.ClientCore
 {
-    public class IpAddressConverterTests
+    public class JsonIpAddressConverterTests
     {
         private const string SerializedModel = "{\"IpAddress\":\"127.0.0.1\"}";
 
@@ -20,7 +20,7 @@ namespace Lanchat.Tests.ClientCore
             {
                 Converters =
                 {
-                    new IpAddressConverter()
+                    new JsonIpAddressConverter()
                 }
             };
 
