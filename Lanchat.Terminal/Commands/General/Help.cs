@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Linq;
 using Lanchat.ClientCore;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
@@ -26,7 +25,7 @@ namespace Lanchat.Terminal.Commands.General
             }
             else
             {
-                var command = Program.Commands.FirstOrDefault(x => x.Aliases.Contains(args[0]));
+                var command = Program.CommandsManager.GetCommandByAlias(args[0]);
                 if (command == null)
                 {
                     Writer.WriteError(Resources.InvalidCommand);
@@ -34,7 +33,6 @@ namespace Lanchat.Terminal.Commands.General
                 }
 
                 var commandHelp = Resources.ResourceManager.GetString($"Help_{command.Aliases[0]}", CultureInfo.CurrentCulture);
-
                 var aliases = string.Join(", ", command.Aliases);
                 Writer.WriteText($"Aliases");
                 Writer.WriteText($"    {aliases}");

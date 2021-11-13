@@ -21,12 +21,13 @@ namespace Lanchat.Terminal
         public static IP2P Network { get; private set; }
         public static Config Config { get; private set; }
         public static NodesDatabase NodesDatabase { get; private set; }
-        public static List<ICommand> Commands { get; private set; } = new();
+        public static CommandsManager CommandsManager {get; private set;}
 
         private static void Main(string[] args)
         {
             Config = Storage.LoadConfig();
             NodesDatabase = new NodesDatabase();
+            CommandsManager = new CommandsManager();
 
             try
             {
@@ -46,7 +47,6 @@ namespace Lanchat.Terminal
             });
 
             CheckStartArguments(args);
-            LoadCommands();
             Window.Initialize();
             Logger.StartLogging();
 
@@ -70,18 +70,6 @@ namespace Lanchat.Terminal
             }
 
             Logger.DeleteOldLogs(5);
-        }
-
-        private static void LoadCommands()
-        {
-            var assembly = Assembly.GetEntryAssembly();
-            assembly!.DefinedTypes.ForEach(x =>
-            {
-                if (x.ImplementedInterfaces.Contains(typeof(ICommand)))
-                {
-                    Commands.Add(assembly.CreateInstance(x.FullName!) as ICommand);
-                }
-            });
         }
 
         private static void CheckStartArguments(string[] args)
