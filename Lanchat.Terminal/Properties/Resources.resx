@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-
     <data name="Logo" xml:space="preserve">
         <value>    
      __                     __          __
@@ -33,6 +32,15 @@ Try /help [command] for more info.
 Config file can be found in:
 {0}
         </value>
+    </data>
+    <data name="Aliases" xml:space="preserve">
+        <value>Aliases</value>
+    </data>
+    <data name="Summary" xml:space="preserve">
+        <value>Summary</value>
+    </data>
+    <data name="Syntax" xml:space="preserve">
+        <value>Syntax</value>
     </data>
 
     <!-- Help / Commands summary -->
@@ -102,7 +110,6 @@ Config file can be found in:
         </value>
     </data>
 
-
     <!-- Help / Commands syntax -->
     <data name="Syntax_connect" xml:space="preserve">
         <value>
@@ -114,7 +121,7 @@ Config file can be found in:
     </data>
     <data name="Syntax_disconnect" xml:space="preserve">
         <value>
-    /disconnect [id]
+    /disconnect [ID]
         </value>
     </data>
     <data name="Syntax_nick" xml:space="preserve">
@@ -124,7 +131,7 @@ Config file can be found in:
     </data>
     <data name="Syntax_block" xml:space="preserve">
         <value>
-    /block [id]
+    /block [ID]
     /block [IP address]
         </value>
     </data>
@@ -135,22 +142,22 @@ Config file can be found in:
     </data>
     <data name="Syntax_send" xml:space="preserve">
         <value>
-    /send [id] [file path]
+    /send [ID] [file path]
         </value>
     </data>
     <data name="Syntax_accept" xml:space="preserve">
         <value> 
-    /accept [id]
+    /accept [ID]
         </value>
     </data>
     <data name="Syntax_reject" xml:space="preserve">
         <value>
-    /reject [id]
+    /reject [ID]
         </value>
     </data>
     <data name="Syntax_cancel" xml:space="preserve">
         <value>
-    /cancel [id]
+    /cancel [ID]
         </value>
     </data>
 
@@ -185,7 +192,7 @@ Config file can be found in:
         <value>Cannot connect with {0}</value>
     </data>
     <data name="NicknameChanged" xml:space="preserve">
-        <value>{0} is now {1}</value>
+        <value>{0} changed nick to {1}</value>
     </data>
     <data name="FreshRsa" xml:space="preserve">
         <value>To make sure the connection with {0} is secure check fingerprint in "Users" tab.</value>
@@ -217,7 +224,7 @@ Check /help [command]</value>
         <value>Nickname changed to {0}</value>
     </data>
     <data name="WrongNickname" xml:space="preserve">
-        <value>Nickname must be shorter than 20 characters and cannot be blank</value>
+        <value>Nickname must be less than 20 characters long and must not contain spaces.</value>
     </data>
     <data name="Blocked" xml:space="preserve">
         <value>{0} blocked</value>
@@ -230,9 +237,6 @@ Check /help [command]</value>
     </data>
     <data name="BlockedList" xml:space="preserve">
         <value>Blocked IP addresses</value>
-    </data>
-    <data name="ManualNotFound" xml:space="preserve">
-        <value>Manual not found</value>
     </data>
 
     <!-- File transfer -->
@@ -255,6 +259,7 @@ Check /help [command]</value>
         <value>Cannot send multiple files at once.</value>
     </data>
     <data name="CannotAccessFile" xml:space="preserve">
-        <value>Cannot access {0}. File name or permissions may be wrong.</value>
+        <value>Cannot access {0}
+File name or permissions may be wrong.</value>
     </data>
 </root>

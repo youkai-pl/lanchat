@@ -58,6 +58,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aliases.
+        /// </summary>
+        internal static string Aliases {
+            get {
+                return ResourceManager.GetString("Aliases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address already blocked.
         /// </summary>
         internal static string AlreadyBlocked {
@@ -85,7 +94,8 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot access {0}. File name or permissions may be wrong..
+        ///   Looks up a localized string similar to Cannot access {0}
+        ///File name or permissions may be wrong..
         /// </summary>
         internal static string CannotAccessFile {
             get {
@@ -273,16 +283,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Manual not found.
-        /// </summary>
-        internal static string ManualNotFound {
-            get {
-                return ResourceManager.GetString("ManualNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} is now {1}.
+        ///   Looks up a localized string similar to {0} changed nick to {1}.
         /// </summary>
         internal static string NicknameChanged {
             get {
@@ -323,6 +324,15 @@ namespace Lanchat.Terminal.Properties {
         internal static string SelfNicknameChanged {
             get {
                 return ResourceManager.GetString("SelfNicknameChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Summary.
+        /// </summary>
+        internal static string Summary {
+            get {
+                return ResourceManager.GetString("Summary", resourceCulture);
             }
         }
         
@@ -464,8 +474,17 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syntax.
+        /// </summary>
+        internal static string Syntax {
+            get {
+                return ResourceManager.GetString("Syntax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  
-        ///    /accept [id]
+        ///    /accept [ID]
         ///        .
         /// </summary>
         internal static string Syntax_accept {
@@ -476,7 +495,7 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///    /block [id]
+        ///    /block [ID]
         ///    /block [IP address]
         ///        .
         /// </summary>
@@ -488,7 +507,7 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///    /cancel [id]
+        ///    /cancel [ID]
         ///        .
         /// </summary>
         internal static string Syntax_cancel {
@@ -513,7 +532,7 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///    /disconnect [id]
+        ///    /disconnect [ID]
         ///        .
         /// </summary>
         internal static string Syntax_disconnect {
@@ -535,7 +554,7 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///    /reject [id]
+        ///    /reject [ID]
         ///        .
         /// </summary>
         internal static string Syntax_reject {
@@ -546,7 +565,7 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///    /send [id] [file path]
+        ///    /send [ID] [file path]
         ///        .
         /// </summary>
         internal static string Syntax_send {
@@ -603,7 +622,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nickname must be shorter than 20 characters and cannot be blank.
+        ///   Looks up a localized string similar to Nickname must be less than 20 characters long and must not contain spaces..
         /// </summary>
         internal static string WrongNickname {
             get {
