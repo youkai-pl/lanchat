@@ -224,7 +224,7 @@ namespace Lanchat.Terminal.Properties {
         ///block     unblock      blocked
         ///afk       dnd          online
         ///send      accept       reject
-        ///exit      help
+        ///cancel    exit         help
         ///
         ///Try /help [command] for more info.
         ///      
@@ -339,6 +339,17 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
+        ///    Change status to &quot;Away From Keyboard&quot;
+        ///        .
+        /// </summary>
+        internal static string Summary_afk {
+            get {
+                return ResourceManager.GetString("Summary_afk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
         ///    Prevent from connecting to specified user.
         ///    If you are not currently connected you can block by IP address.
         ///        .
@@ -346,6 +357,28 @@ namespace Lanchat.Terminal.Properties {
         internal static string Summary_block {
             get {
                 return ResourceManager.GetString("Summary_block", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    Show list of blocked IP addresses.
+        ///        .
+        /// </summary>
+        internal static string Summary_blocked {
+            get {
+                return ResourceManager.GetString("Summary_blocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    Cancel file transfer.
+        ///        .
+        /// </summary>
+        internal static string Summary_cancel {
+            get {
+                return ResourceManager.GetString("Summary_cancel", resourceCulture);
             }
         }
         
@@ -362,6 +395,17 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
+        ///    Change status to &quot;Do Not Disturb&quot;
+        ///        .
+        /// </summary>
+        internal static string Summary_dnd {
+            get {
+                return ResourceManager.GetString("Summary_dnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
         ///    Changes user nickname.
         ///    Nickname have to be between 1-20 characters.
         ///    Nickname cannot contains spaces.
@@ -370,6 +414,17 @@ namespace Lanchat.Terminal.Properties {
         internal static string Summary_nick {
             get {
                 return ResourceManager.GetString("Summary_nick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    Change status to &quot;Online&quot;
+        ///        .
+        /// </summary>
+        internal static string Summary_online {
+            get {
+                return ResourceManager.GetString("Summary_online", resourceCulture);
             }
         }
         
@@ -428,6 +483,17 @@ namespace Lanchat.Terminal.Properties {
         internal static string Syntax_block {
             get {
                 return ResourceManager.GetString("Syntax_block", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    /cancel [id]
+        ///        .
+        /// </summary>
+        internal static string Syntax_cancel {
+            get {
+                return ResourceManager.GetString("Syntax_cancel", resourceCulture);
             }
         }
         

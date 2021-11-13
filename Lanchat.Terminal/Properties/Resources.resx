@@ -26,7 +26,7 @@ connect   disconnect   nick
 block     unblock      blocked
 afk       dnd          online
 send      accept       reject
-exit      help
+cancel    exit         help
 
 Try /help [command] for more info.
       
@@ -60,6 +60,11 @@ Config file can be found in:
     Check /blocked command for blocked addresses list.
         </value>
     </data>
+    <data name="Summary_blocked" xml:space="preserve">
+        <value>
+    Show list of blocked IP addresses.
+        </value>
+    </data>
     <data name="Summary_send" xml:space="preserve">
         <value>
     Send file. Make sure path in argument doesn't have quotation marks.
@@ -76,6 +81,27 @@ Config file can be found in:
     Reject incoming file transfer request.
         </value>
     </data>
+    <data name="Summary_cancel" xml:space="preserve">
+        <value>
+    Cancel file transfer.
+        </value>
+    </data>
+    <data name="Summary_afk" xml:space="preserve">
+        <value>
+    Change status to "Away From Keyboard"
+        </value>
+    </data>
+    <data name="Summary_dnd" xml:space="preserve">
+        <value>
+    Change status to "Do Not Disturb"
+        </value>
+    </data>
+    <data name="Summary_online" xml:space="preserve">
+        <value>
+    Change status to "Online"
+        </value>
+    </data>
+
 
     <!-- Help / Commands syntax -->
     <data name="Syntax_connect" xml:space="preserve">
@@ -120,6 +146,11 @@ Config file can be found in:
     <data name="Syntax_reject" xml:space="preserve">
         <value>
     /reject [id]
+        </value>
+    </data>
+    <data name="Syntax_cancel" xml:space="preserve">
+        <value>
+    /cancel [id]
         </value>
     </data>
 
