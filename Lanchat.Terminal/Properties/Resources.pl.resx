@@ -7,7 +7,7 @@ Lanchat: LAN chat and file transfer
 https://youkai.pl/lanchat-docs
 
 Tab / Shift+Tab       - zmiana karty
-Up Arrow / Down Arrow - historia poleceń
+Strzałki góra / dół   - historia poleceń
 PageUp / PageDown     - przewijanie chatu
 
 Polecenia:
@@ -17,7 +17,7 @@ afk       dnd          online
 send      accept       reject
 cancel    exit         help
 
-Sprwadź /help [command] aby uzyskać więcej informacji.
+Sprwadź /help [polecenie] aby uzyskać więcej informacji.
       
 Plik konfiguracyjny znajduje się w:
 {0}
@@ -120,6 +120,12 @@ Plik konfiguracyjny znajduje się w:
     <data name="Syntax_send" xml:space="preserve">
         <value>
     /send [ID] [ścieżka do pliku]
+        </value>
+    </data>
+    <data name="Syntax_help" xml:space="preserve">
+        <value>
+    /help
+    /help [polecenie]
         </value>
     </data>
 

@@ -543,6 +543,18 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
+        ///    /help
+        ///    /help [command]
+        ///        .
+        /// </summary>
+        internal static string Syntax_help {
+            get {
+                return ResourceManager.GetString("Syntax_help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
         ///    /nick [new nick]
         ///        .
         /// </summary>

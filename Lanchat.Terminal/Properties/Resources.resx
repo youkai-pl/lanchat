@@ -160,6 +160,12 @@ Config file can be found in:
     /cancel [ID]
         </value>
     </data>
+    <data name="Syntax_help" xml:space="preserve">
+        <value>
+    /help
+    /help [command]
+        </value>
+    </data>
 
     <!-- UI elements -->
     <data name="WindowTitle" xml:space="preserve">

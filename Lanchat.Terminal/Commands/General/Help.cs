@@ -38,15 +38,15 @@ namespace Lanchat.Terminal.Commands.General
                 Writer.WriteText("");
                 if (commandSummary != null)
                 {
-                    Writer.WriteStatus("Summary");
+                    Writer.WriteStatus(Resources.Summary);
                     Writer.WriteText(commandSummary);
                 }
                 if (commandSyntax != null)
                 {
-                    Writer.WriteStatus("Syntax");
+                    Writer.WriteStatus(Resources.Syntax);
                     Writer.WriteText(commandSyntax);
                 }
-                Writer.WriteStatus($"Aliases");
+                Writer.WriteStatus(Resources.Aliases);
                 Writer.WriteText("");
                 Writer.WriteText($"    {aliases}");
                 Writer.WriteText("");
