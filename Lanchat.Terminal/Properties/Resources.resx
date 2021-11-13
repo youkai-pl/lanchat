@@ -28,65 +28,99 @@ afk       dnd          online
 send      accept       reject
 exit      help
 
-Try /help &lt;command&gt; for more info.
+Try /help [command] for more info.
       
 Config file can be found in:
 {0}
         </value>
     </data>
-    <data name="Help_connect" xml:space="preserve">
-        <value>Usage:
-    /connect &lt;ip&gt;
-    /connect &lt;ip&gt; &lt;port&gt;
-    /connect &lt;domain&gt;
-    /connect &lt;domain&gt; &lt;port&gt;
-Description:
-    Connect with other users.</value>
+    
+    <!-- Help / Commands summary -->
+    <data name="Summary_connect" xml:space="preserve">
+        <value>
+    Connect with other users.
+        </value>
     </data>
-    <data name="Help_disconnect" xml:space="preserve">
-        <value>Usage:
-/disconnect &lt;id&gt;</value>
-    </data>
-    <data name="Help_nick" xml:space="preserve">
-        <value>Usage:
-    /nick &lt;new_nick&gt;
-Description:
+    <data name="Summary_nick" xml:space="preserve">
+        <value>
     Changes user nickname.
-    Nickname have to be between 1-20 characters</value>
+    Nickname have to be between 1-20 characters.
+    Nickname cannot contains spaces.
+        </value>
     </data>
-    <data name="Help_block" xml:space="preserve">
-        <value>Usage:
-    /block &lt;id&gt;
-    /block &lt;IP address&gt;
-Description:
+    <data name="Summary_block" xml:space="preserve">
+        <value>
     Prevent from connecting to specified user.
-    If you are not currently connected you can block by IP address.</value>
+    If you are not currently connected you can block by IP address.
+        </value>
     </data>
-    <data name="Help_unblock" xml:space="preserve">
-        <value>Usage:
-    /unblock &lt;IP address&gt;
-Description:
+    <data name="Summary_unblock" xml:space="preserve">
+        <value>
     Unblock user. You have to user IP address in argument.
-    Check /blocked command for blocked addresses list.</value>
+    Check /blocked command for blocked addresses list.
+        </value>
     </data>
-    <data name="Help_send" xml:space="preserve">
-        <value>Usage:
-    /send &lt;id&gt; &lt;file path&gt;
-Description:
+    <data name="Summary_send" xml:space="preserve">
+        <value>
     Send file. Make sure path in argument doesn't have quotation marks.
-    If the target user accepts the request, the transfer will begin.</value>
+    If the target user accepts the request, the transfer will begin.
+        </value>
     </data>
-    <data name="Help_accept" xml:space="preserve">
-        <value>Usage: 
-    /accept &lt;id&gt;
-Description:
-    Accept incoming file transfer request.</value>
+    <data name="Summary_accept" xml:space="preserve">
+        <value>
+    Accept incoming file transfer request.
+        </value>
     </data>
-    <data name="Help_accept" xml:space="preserve">
-        <value>Usage: 
-    /reject &lt;id&gt;
-Description:
-    Reject incoming file transfer request.</value>
+    <data name="Summary_reject" xml:space="preserve">
+        <value>
+    Reject incoming file transfer request.
+        </value>
+    </data>
+
+    <!-- Help / Commands syntax -->
+    <data name="Syntax_connect" xml:space="preserve">
+        <value>
+    /connect [ip]
+    /connect [ip] [port]
+    /connect [domain]
+    /connect [domain] [port]
+        </value>
+    </data>
+    <data name="Syntax_disconnect" xml:space="preserve">
+        <value>
+    /disconnect [id]
+        </value>
+    </data>
+    <data name="Syntax_nick" xml:space="preserve">
+        <value>
+    /nick [new nick]
+        </value>
+    </data>
+    <data name="Syntax_block" xml:space="preserve">
+        <value>
+    /block [id]
+    /block [IP address]
+        </value>
+    </data>
+    <data name="Syntax_unblock" xml:space="preserve">
+        <value>
+    /unblock [IP address]
+        </value>
+    </data>
+    <data name="Syntax_send" xml:space="preserve">
+        <value>
+    /send [id] [file path]
+        </value>
+    </data>
+    <data name="Syntax_accept" xml:space="preserve">
+        <value> 
+    /accept [id]
+        </value>
+    </data>
+    <data name="Syntax_reject" xml:space="preserve">
+        <value>
+    /reject [id]
+        </value>
     </data>
 
     <!-- UI elements -->

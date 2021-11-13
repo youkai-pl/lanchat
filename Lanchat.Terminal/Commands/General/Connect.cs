@@ -20,12 +20,6 @@ namespace Lanchat.Terminal.Commands.General
 
         public async void Execute(string[] args)
         {
-            if (args == null || args.Length < 1)
-            {
-                Writer.WriteText(Resources.Help_connect);
-                return;
-            }
-
             var addressArgument = args[0].Trim();
             try
             {

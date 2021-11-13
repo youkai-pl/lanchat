@@ -217,7 +217,7 @@ namespace Lanchat.Terminal.Properties {
         ///send      accept       reject
         ///exit      help
         ///
-        ///Try /help &lt;command&gt; for more info.
+        ///Try /help [command] for more info.
         ///      
         ///Config file can be found in:
         ///{0}
@@ -226,96 +226,6 @@ namespace Lanchat.Terminal.Properties {
         internal static string Help {
             get {
                 return ResourceManager.GetString("Help", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Usage: 
-        ///    /accept &lt;id&gt;
-        ///Description:
-        ///    Accept incoming file transfer request..
-        /// </summary>
-        internal static string Help_accept {
-            get {
-                return ResourceManager.GetString("Help_accept", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Usage:
-        ///    /block &lt;id&gt;
-        ///    /block &lt;IP address&gt;
-        ///Description:
-        ///    Prevent from connecting to specified user.
-        ///    If you are not currently connected you can block by IP address..
-        /// </summary>
-        internal static string Help_block {
-            get {
-                return ResourceManager.GetString("Help_block", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Usage:
-        ///    /connect &lt;ip&gt;
-        ///    /connect &lt;ip&gt; &lt;port&gt;
-        ///    /connect &lt;domain&gt;
-        ///    /connect &lt;domain&gt; &lt;port&gt;
-        ///Description:
-        ///    Connect with other users..
-        /// </summary>
-        internal static string Help_connect {
-            get {
-                return ResourceManager.GetString("Help_connect", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Usage:
-        /// /disconnect &lt;id&gt;.
-        /// </summary>
-        internal static string Help_disconnect {
-            get {
-                return ResourceManager.GetString("Help_disconnect", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Usage:
-        ///    /nick &lt;new_nick&gt;
-        ///Description:
-        ///    Changes user nickname.
-        ///    Nickname have to be between 1-20 characters.
-        /// </summary>
-        internal static string Help_nick {
-            get {
-                return ResourceManager.GetString("Help_nick", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Usage:
-        ///    /send &lt;id&gt; &lt;file path&gt;
-        ///Description:
-        ///    Send file. Make sure path in argument doesn&apos;t have quotation marks.
-        ///    If the target user accepts the request, the transfer will begin..
-        /// </summary>
-        internal static string Help_send {
-            get {
-                return ResourceManager.GetString("Help_send", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Usage:
-        ///    /unblock &lt;IP address&gt;
-        ///Description:
-        ///    Unblock user. You have to user IP address in argument.
-        ///    Check /blocked command for blocked addresses list..
-        /// </summary>
-        internal static string Help_unblock {
-            get {
-                return ResourceManager.GetString("Help_unblock", resourceCulture);
             }
         }
         
@@ -412,6 +322,180 @@ namespace Lanchat.Terminal.Properties {
         internal static string SelfNicknameChanged {
             get {
                 return ResourceManager.GetString("SelfNicknameChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    Accept incoming file transfer request.
+        ///        .
+        /// </summary>
+        internal static string Summary_accept {
+            get {
+                return ResourceManager.GetString("Summary_accept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    Prevent from connecting to specified user.
+        ///    If you are not currently connected you can block by IP address.
+        ///        .
+        /// </summary>
+        internal static string Summary_block {
+            get {
+                return ResourceManager.GetString("Summary_block", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    Connect with other users.
+        ///        .
+        /// </summary>
+        internal static string Summary_connect {
+            get {
+                return ResourceManager.GetString("Summary_connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    Changes user nickname.
+        ///    Nickname have to be between 1-20 characters.
+        ///    Nickname cannot contains spaces.
+        ///        .
+        /// </summary>
+        internal static string Summary_nick {
+            get {
+                return ResourceManager.GetString("Summary_nick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    Reject incoming file transfer request.
+        ///        .
+        /// </summary>
+        internal static string Summary_reject {
+            get {
+                return ResourceManager.GetString("Summary_reject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    Send file. Make sure path in argument doesn&apos;t have quotation marks.
+        ///    If the target user accepts the request, the transfer will begin.
+        ///        .
+        /// </summary>
+        internal static string Summary_send {
+            get {
+                return ResourceManager.GetString("Summary_send", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    Unblock user. You have to user IP address in argument.
+        ///    Check /blocked command for blocked addresses list.
+        ///        .
+        /// </summary>
+        internal static string Summary_unblock {
+            get {
+                return ResourceManager.GetString("Summary_unblock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  
+        ///    /accept [id]
+        ///        .
+        /// </summary>
+        internal static string Syntax_accept {
+            get {
+                return ResourceManager.GetString("Syntax_accept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    /block [id]
+        ///    /block [IP address]
+        ///        .
+        /// </summary>
+        internal static string Syntax_block {
+            get {
+                return ResourceManager.GetString("Syntax_block", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    /connect [ip]
+        ///    /connect [ip] [port]
+        ///    /connect [domain]
+        ///    /connect [domain] [port]
+        ///        .
+        /// </summary>
+        internal static string Syntax_connect {
+            get {
+                return ResourceManager.GetString("Syntax_connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    /disconnect [id]
+        ///        .
+        /// </summary>
+        internal static string Syntax_disconnect {
+            get {
+                return ResourceManager.GetString("Syntax_disconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    /nick [new nick]
+        ///        .
+        /// </summary>
+        internal static string Syntax_nick {
+            get {
+                return ResourceManager.GetString("Syntax_nick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    /reject [id]
+        ///        .
+        /// </summary>
+        internal static string Syntax_reject {
+            get {
+                return ResourceManager.GetString("Syntax_reject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    /send [id] [file path]
+        ///        .
+        /// </summary>
+        internal static string Syntax_send {
+            get {
+                return ResourceManager.GetString("Syntax_send", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    /unblock [IP address]
+        ///        .
+        /// </summary>
+        internal static string Syntax_unblock {
+            get {
+                return ResourceManager.GetString("Syntax_unblock", resourceCulture);
             }
         }
         

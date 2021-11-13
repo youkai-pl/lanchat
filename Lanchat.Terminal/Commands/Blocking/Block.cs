@@ -16,12 +16,6 @@ namespace Lanchat.Terminal.Commands.Blocking
 
         public void Execute(string[] args)
         {
-            if (args == null || args.Length < 1)
-            {
-                Writer.WriteError(Resources.Help_block);
-                return;
-            }
-
             if (args[0].Length == 4)
             {
                 Execute(args, Program.Network.Nodes.Find(x => x.User.ShortId == args[0]));
