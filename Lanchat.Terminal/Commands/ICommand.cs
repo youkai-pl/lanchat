@@ -4,7 +4,7 @@ namespace Lanchat.Terminal.Commands
 {
     public interface ICommand
     {
-        string Alias { get; }
+        string[] Aliases { get; }
         int ArgsCount { get; }
         int ContextArgsCount { get; }
         void Execute(string[] args);

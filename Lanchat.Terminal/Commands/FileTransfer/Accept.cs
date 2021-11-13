@@ -7,7 +7,10 @@ namespace Lanchat.Terminal.Commands.FileTransfer
 {
     public class Accept : ICommand
     {
-        public string Alias => "accept";
+        public string[] Aliases { get; } = 
+        {
+            "accept"
+        };
         public int ArgsCount => 1;
         public int ContextArgsCount => 0;
 
@@ -16,7 +19,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             var node = Program.Network.Nodes.Find(x => x.User.ShortId == args[0]);
             if (node == null)
             {
-                Writer.WriteError(Resources._UserNotFound);
+                Writer.WriteError(Resources.UserNotFound);
                 return;
             }
 
@@ -31,7 +34,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             }
             catch (InvalidOperationException)
             {
-                Writer.WriteError(Resources._NoFileReceiveRequest);
+                Writer.WriteError(Resources.NoFileReceiveRequest);
             }
         }
     }

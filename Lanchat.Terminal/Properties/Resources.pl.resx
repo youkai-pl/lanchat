@@ -1,143 +1,228 @@
-<!-- ReSharper disable MarkupTextTypo -->
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>1.3</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
-    </resheader>
+    <!-- Help -->
     <data name="Help" xml:space="preserve">
         <value>
-Lanchat: LAN chat i wysyłanie plików
+Lanchat: LAN chat and file transfer
 https://youkai.pl/lanchat-docs
 
-Tab / Shift+Tab       - przełączanie kart
-Up Arrow / Down Arrow - historia wprowadzania
-PageUp / PageDown     - przewijanie
+Tab / Shift+Tab       - zmiana karty
+Strzałki góra / dół   - historia poleceń
+PageUp / PageDown     - przewijanie chatu
 
-Komendy:
+Polecenia:
 connect   disconnect   nick    
 block     unblock      blocked
 afk       dnd          online
 send      accept       reject
-exit      help
-            
-Sprawdź /help &lt;polecenie&gt;
-       
+cancel    exit         help
+
+Sprwadź /help [polecenie] aby uzyskać więcej informacji.
+      
 Plik konfiguracyjny znajduje się w:
 {0}
-    </value>
+        </value>
     </data>
-    <data name="_Connected" xml:space="preserve">
+    <data name="Aliases" xml:space="preserve">
+        <value>Aliasy</value>
+    </data>
+    <data name="Summary" xml:space="preserve">
+        <value>Opis</value>
+    </data>
+    <data name="Syntax" xml:space="preserve">
+        <value>Składnia</value>
+    </data>
+
+    <!-- Help / Commands summary -->
+    <data name="Summary_connect" xml:space="preserve">
+        <value>
+    Połącz się z innym użytkownikiem.
+        </value>
+    </data>
+    <data name="Summary_nick" xml:space="preserve">
+        <value>
+    Zmiania nicku.
+    Nick musi mieć pomiędzy 1 a 20 znaków.
+    Nick nie może zawierać spacji.
+        </value>
+    </data>
+    <data name="Summary_block" xml:space="preserve">
+        <value>
+    Blokuj połączenia z danym użytkownikiem.
+    Jeśli nie jesteś podłączony i nie znasz ID możesz użyć adresu IP.
+        </value>
+    </data>
+    <data name="Summary_unblock" xml:space="preserve">
+        <value>
+    Odblokuj użytkownika.
+    Użyj polecenia /blocked aby wyświetlić zablokowane adresy.
+        </value>
+    </data>
+    <data name="Summary_blocked" xml:space="preserve">
+        <value>
+    Wyświetl listę zablokowanych adresów.
+        </value>
+    </data>
+    <data name="Summary_send" xml:space="preserve">
+        <value>
+    Wyślij plik. Upewnij się że, ścieżka w argumencie jest zapisana bez cudzysłowia.
+    Transfer rozpocznie się gdy odbiorca zaakceptuje plik.
+        </value>
+    </data>
+    <data name="Summary_accept" xml:space="preserve">
+        <value>
+    Zaakceptuj odbiór pliku.
+        </value>
+    </data>
+    <data name="Summary_reject" xml:space="preserve">
+        <value>
+    Odrzuć plik.
+        </value>
+    </data>
+    <data name="Summary_cancel" xml:space="preserve">
+        <value>
+    Anuluj wymianę pliku.
+        </value>
+    </data>
+    <data name="Summary_afk" xml:space="preserve">
+        <value>
+    Zmień status na "Zaraz wracam"
+        </value>
+    </data>
+    <data name="Summary_dnd" xml:space="preserve">
+        <value>
+    Zmień status na "Nie przeszkadzać"
+        </value>
+    </data>
+    <data name="Summary_online" xml:space="preserve">
+        <value>
+    Zmień status na "Dostępny"
+        </value>
+    </data>
+
+    <!-- Help / Commands syntax -->
+    <data name="Syntax_nick" xml:space="preserve">
+        <value>
+    /nick [nowy nick]
+        </value>
+    </data>
+    <data name="Syntax_block" xml:space="preserve">
+        <value>
+    /block [ID]
+    /block [adres IP]
+        </value>
+    </data>
+    <data name="Syntax_unblock" xml:space="preserve">
+        <value>
+    /unblock [adres IP]
+        </value>
+    </data>
+    <data name="Syntax_send" xml:space="preserve">
+        <value>
+    /send [ID] [ścieżka do pliku]
+        </value>
+    </data>
+    <data name="Syntax_help" xml:space="preserve">
+        <value>
+    /help
+    /help [polecenie]
+        </value>
+    </data>
+
+    <!-- UI elements -->
+    <data name="FileTransferTab" xml:space="preserve">
+        <value>Wymiana plików</value>
+    </data>
+    <data name="UsersTab" xml:space="preserve">
+        <value>Użytkownicy</value>
+    </data>
+    <data name="YourRsa" xml:space="preserve">
+        <value>Twój fingerprint:</value>
+    </data>
+    <data name="GetHelp" xml:space="preserve">
+        <value>Sprawdź polecenie /help</value>
+    </data>
+
+    <!-- Node status messages -->
+    <data name="Connected" xml:space="preserve">
         <value>Połączono z {0}</value>
     </data>
-    <data name="_Disconnected" xml:space="preserve">
+    <data name="Disconnected" xml:space="preserve">
         <value>Rozłączono z {0}</value>
     </data>
-    <data name="_IncorrectValues" xml:space="preserve">
-        <value>Nieprawidłowa wartość</value>
-    </data>
-    <data name="_ManualNotFound" xml:space="preserve">
-        <value>Pomoc nie została znaleziona</value>
-    </data>
-    <data name="_NicknameChanged" xml:space="preserve">
-        <value>{0} zmienił nick na {1}</value>
-    </data>
-    <data name="_UserNotFound" xml:space="preserve">
-        <value>Nie znaleziono użytkownika</value>
-    </data>
-    <data name="_PortBusy" xml:space="preserve">
-        <value>Port zajęty, nie można uruchomić serwera.</value>
-    </data>
-    <data name="_Unblocked" xml:space="preserve">
-        <value>{0} został odblokowany</value>
-    </data>
-    <data name="_WrongNickname" xml:space="preserve">
-        <value>Nickname musi być krótszy niż 20 znaków i nie może być pusty</value>
-    </data>
-    <data name="_ConnectionAttempt" xml:space="preserve">
-        <value>Łączenie z {0}</value>
-    </data>
-    <data name="_CannotConnect" xml:space="preserve">
+    <data name="CannotConnect" xml:space="preserve">
         <value>Nie można połączyć z {0}</value>
     </data>
-    <data name="_BlockedList" xml:space="preserve">
-        <value>Zablokowane adresy IP</value>
+    <data name="NicknameChanged" xml:space="preserve">
+        <value>{0} zmienił nick na {1}</value>
     </data>
-    <data name="_Blocked" xml:space="preserve">
-        <value>{0} został zablokowany</value>
+    <data name="FreshRsa" xml:space="preserve">
+        <value>Aby upewnić się, że połączenie z {0} jest bezpiecznie 
+        sprawdź "Fingerprint" w karcie "Użytkownicy"</value>
     </data>
-    <data name="Help_block" xml:space="preserve">
-        <value>Składnia: /block &lt;ip | krótkie id&gt;</value>
+    <data name="RsaChanged" xml:space="preserve">
+        <value>Klucz publiczny {0} uległ zmianie. Połączenie może być niezabezpieczone.</value>
     </data>
-    <data name="Help_connect" xml:space="preserve">
-        <value>Składnia: /connect &lt;ip&gt; &lt;port&gt;</value>
+
+    <!-- Errors -->
+    <data name="PortBusy" xml:space="preserve">
+        <value>Port zajęty. Nie można uruchomić serwera</value>
     </data>
-    <data name="Help_disconnect" xml:space="preserve">
-        <value>Składnia: /disconnect &lt;krótkie id&gt;</value>
+    <data name="IncorrectCommandUsage" xml:space="preserve">
+        <value>Nieprawidłowe użycie polecenia
+Sprwadź /help [command]</value>
     </data>
-    <data name="Help_nick" xml:space="preserve">
-        <value>Składnia: /nick &lt;nowy nick&gt;</value>
+    <data name="CommandNotFound" xml:space="preserve">
+        <value>Polecenie nieznalezione</value>
     </data>
-    <data name="Help_unblock" xml:space="preserve">
-        <value>Składnia: /unblock &lt;ip&gt;</value>
+    <data name="UserNotFound" xml:space="preserve">
+        <value>Użytkownik nieznaleziony</value>
     </data>
-    <data name="_CannotAccessFile" xml:space="preserve">
-        <value>Nie można uzyskać dostępu do {0}. Nazwa pliku lub uprawnienia dostępu mogą być błędne</value>
+
+    <!-- Commands results -->
+    <data name="ConnectionAttempt" xml:space="preserve">
+        <value>Łączenie z {0}</value>
     </data>
-    <data name="_FileTransferInProgress" xml:space="preserve">
-        <value>Nie można wysyłać wielu plików jednocześnie.</value>
+    <data name="SelfNicknameChanged" xml:space="preserve">
+        <value>Nickname zmieniony na {0}</value>
     </data>
-    <data name="_NoFileReceiveRequest" xml:space="preserve">
-        <value>Brak przesyłanych plików</value>
+    <data name="WrongNickname" xml:space="preserve">
+        <value>Nickname musi być krótszy niż 20 znaków i nie może zawierać odstępów</value>
     </data>
-    <data name="Help_send" xml:space="preserve">
-        <value>Składnia: /send &lt;krótkie id&gt; &lt;ścieżka do pliku&gt;</value>
+    <data name="Blocked" xml:space="preserve">
+        <value>{0} zablokowany</value>
     </data>
-    <data name="Help_accept" xml:space="preserve">
-        <value>Składnia: /accept &lt;krótkie id&gt;</value>
+    <data name="Unblocked" xml:space="preserve">
+        <value>{0} odblokowany</value>
     </data>
-    <data name="Help_reject" xml:space="preserve">
-        <value>Składnia: /reject &lt;krótkie id&gt;</value>
-    </data>
-    <data name="_AlreadyBlocked" xml:space="preserve">
+    <data name="AlreadyBlocked" xml:space="preserve">
         <value>Adres jest już zablokowany</value>
     </data>
-    <data name="_InvalidCommand" xml:space="preserve">
-        <value>Nieprawidłowa komenda</value>
+    <data name="BlockedList" xml:space="preserve">
+        <value>Zablokowane adresy IP:</value>
     </data>
-    <data name="_RsaChanged" xml:space="preserve">
-        <value>Klucz publiczny {0} został zmieniony. Połączenie może być niezabezpieczone.</value>
-    </data>
-    <data name="_FreshRsa" xml:space="preserve">
-        <value>Aby upewnić się, że połączenie z {0} jest bezpieczne sprawdź klucz publiczny w zakładce "Users".</value>
-    </data>
-    <data name="_YourRsa" xml:space="preserve">
-        <value>Twój klucz:</value>
-    </data>
-    <data name="_FileTransferRejected" xml:space="preserve">
-        <value>Odrzucono</value>
-    </data>
-    <data name="_FileTransferFinished" xml:space="preserve">
+
+    <!-- File transfer -->
+    <data name="FileTransferFinished" xml:space="preserve">
         <value>Zakończono</value>
     </data>
-    <data name="_FileTransferWaiting" xml:space="preserve">
+    <data name="FileTransferRejected" xml:space="preserve">
+        <value>Odrzucono</value>
+    </data>
+    <data name="FileTransferWaiting" xml:space="preserve">
         <value>Oczekuje</value>
     </data>
-    <data name="_FileTransferCancelled" xml:space="preserve">
+    <data name="FileTransferCancelled" xml:space="preserve">
         <value>Anulowano</value>
     </data>
-    <data name="_GetHelp" xml:space="preserve">
-        <value>Sprawdź komendę /help</value>
+    <data name="NoFileReceiveRequest" xml:space="preserve">
+        <value>Brak przesyłanych plików</value>
+    </data>
+    <data name="FileTransferInProgress" xml:space="preserve">
+        <value>Nie można wysyłać wielu plików jednocześnie</value>
+    </data>
+    <data name="CannotAccessFile" xml:space="preserve">
+        <value>Nie można uzyskać dostępu do {0}
+Scieżka do pliku lub uprawnienia są nieprawidłowe.</value>
     </data>
 </root>

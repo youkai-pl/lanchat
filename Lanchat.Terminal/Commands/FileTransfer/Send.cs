@@ -10,7 +10,10 @@ namespace Lanchat.Terminal.Commands.FileTransfer
 {
     public class Send : ICommand
     {
-        public string Alias => "send";
+        public string[] Aliases { get; } = 
+        {
+            "send"
+        };
         public int ArgsCount => 2;
         public int ContextArgsCount => 1;
 
@@ -19,7 +22,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             var node = Program.Network.Nodes.Find(x => x.User.ShortId == args[0]);
             if (node == null)
             {
-                Writer.WriteError(Resources._UserNotFound);
+                Writer.WriteError(Resources.UserNotFound);
                 return;
             }
 
@@ -42,11 +45,11 @@ namespace Lanchat.Terminal.Commands.FileTransfer
                     case SecurityException:
                     case PathTooLongException:
                     case ArgumentException:
-                        Writer.WriteError(string.Format(Resources._CannotAccessFile, filePath));
+                        Writer.WriteError(string.Format(Resources.CannotAccessFile, filePath));
                         break;
 
                     case InvalidOperationException:
-                        Writer.WriteError(Resources._FileTransferInProgress);
+                        Writer.WriteError(Resources.FileTransferInProgress);
                         break;
                 }
             }

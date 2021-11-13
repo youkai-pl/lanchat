@@ -10,11 +10,11 @@ namespace Lanchat.Core.Encryption
     internal class NodeRsa : INodeRsa, IInternalNodeRsa
     {
         private readonly ILocalRsa localRsa;
-        private readonly IRsaDatabase rsaDatabase;
+        private readonly INodesDatabase nodesDatabase;
 
-        public NodeRsa(IRsaDatabase rsaDatabase, ILocalRsa localRsa)
+        public NodeRsa(INodesDatabase nodesDatabase, ILocalRsa localRsa)
         {
-            this.rsaDatabase = rsaDatabase;
+            this.nodesDatabase = nodesDatabase;
             this.localRsa = localRsa;
             Rsa = RSA.Create();
         }
@@ -70,15 +70,15 @@ namespace Lanchat.Core.Encryption
 
         private void CompareWithSaved(IPAddress ipAddress)
         {
-            var savedPem = rsaDatabase.GetNodePem(ipAddress);
+            var nodeInfo = nodesDatabase.GetNodeInfo(ipAddress);
             var currentPem = new string(PemEncoding.Write("RSA PUBLIC KEY", Rsa.ExportRSAPublicKey()));
-            if (savedPem == null)
+            if (nodeInfo.PublicKey == null)
             {
                 Trace.WriteLine("New RSA key");
                 KeyStatus = KeyStatus.FreshKey;
-                rsaDatabase.SaveNodePem(ipAddress, currentPem);
+                nodeInfo.PublicKey = currentPem;
             }
-            else if (savedPem != currentPem)
+            else if (nodeInfo.PublicKey != currentPem)
             {
                 Trace.WriteLine("Changed RSA key");
                 KeyStatus = KeyStatus.ChangedKey;

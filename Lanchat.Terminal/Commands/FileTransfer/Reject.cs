@@ -7,7 +7,10 @@ namespace Lanchat.Terminal.Commands.FileTransfer
 {
     public class Reject : ICommand
     {
-        public string Alias => "reject";
+        public string[] Aliases { get; } = 
+        {
+            "reject"
+        };
         public int ArgsCount => 1;
         public int ContextArgsCount => 0;
 
@@ -16,7 +19,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             var node = Program.Network.Nodes.Find(x => x.User.ShortId == args[0]);
             if (node == null)
             {
-                Writer.WriteError(Resources._UserNotFound);
+                Writer.WriteError(Resources.UserNotFound);
                 return;
             }
 
@@ -28,11 +31,11 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             try
             {
                 node.FileReceiver.RejectRequest();
-                TabsManager.FileTransfersView.GetFileTransferStatus(node).Update(Resources._FileTransferRejected);
+                TabsManager.FileTransfersView.GetFileTransferStatus(node).Update(Resources.FileTransferRejected);
             }
             catch (InvalidOperationException)
             {
-                Writer.WriteError(Resources._NoFileReceiveRequest);
+                Writer.WriteError(Resources.NoFileReceiveRequest);
             }
         }
     }

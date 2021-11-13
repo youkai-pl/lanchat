@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using Lanchat.ClientCore;
+using Lanchat.Core.Extensions;
 using Lanchat.Core.Network;
+using Lanchat.Terminal.Commands;
 using Lanchat.Terminal.Handlers;
 using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface;
@@ -16,11 +20,14 @@ namespace Lanchat.Terminal
     {
         public static IP2P Network { get; private set; }
         public static Config Config { get; private set; }
+        public static NodesDatabase NodesDatabase { get; private set; }
+        public static CommandsManager CommandsManager {get; private set;}
 
         private static void Main(string[] args)
         {
             Config = Storage.LoadConfig();
-            var rsaDatabase = new RsaDatabase();
+            NodesDatabase = new NodesDatabase();
+            CommandsManager = new CommandsManager();
 
             try
             {
@@ -33,7 +40,7 @@ namespace Lanchat.Terminal
 
             Resources.Culture = CultureInfo.CurrentCulture;
 
-            Network = new P2P(Config, rsaDatabase, x =>
+            Network = new P2P(Config, NodesDatabase, x =>
             {
                 _ = new NodeHandlers(x.Instance);
                 _ = new FileTransferHandlers(x.Instance);
@@ -54,7 +61,7 @@ namespace Lanchat.Terminal
                     throw;
                 }
 
-                TabsManager.HomeView.AddText(Resources._PortBusy, ConsoleColor.Yellow);
+                TabsManager.HomeView.AddText(Resources.PortBusy, ConsoleColor.Yellow);
             }
 
             if (args.Contains("--localhost") || args.Contains("-l"))

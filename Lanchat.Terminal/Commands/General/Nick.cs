@@ -6,7 +6,11 @@ namespace Lanchat.Terminal.Commands.General
 {
     public class Nick : ICommand
     {
-        public string Alias => "nick";
+        public string[] Aliases { get; } =
+        {
+            "nick",
+            "n"
+        };
         public int ArgsCount => 1;
         public int ContextArgsCount => ArgsCount;
 
@@ -15,11 +19,12 @@ namespace Lanchat.Terminal.Commands.General
             var nickname = args[0].Trim();
             if (nickname.Length >= 20 || string.IsNullOrWhiteSpace(nickname))
             {
-                Writer.WriteError(Resources._WrongNickname);
+                Writer.WriteError(Resources.WrongNickname);
             }
             else
             {
                 Program.Config.Nickname = nickname;
+                Writer.WriteStatus(string.Format(Resources.SelfNicknameChanged, nickname));
             }
         }
 

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>2.9.2</Version>
+        <Version>2.10.0</Version>
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
         <PackageIcon>icon.ico</PackageIcon>
@@ -45,7 +45,10 @@
         <EmbeddedResource Update="Properties\Resources.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+            <StronglyTypedFileName>Properties/Resources.Designer.cs</StronglyTypedFileName>
+            <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+            <StronglyTypedNamespace>Lanchat.Terminal.Properties</StronglyTypedNamespace>
+            <StronglyTypedClassName>Resources</StronglyTypedClassName>
         </EmbeddedResource>
     </ItemGroup>
-
 </Project>

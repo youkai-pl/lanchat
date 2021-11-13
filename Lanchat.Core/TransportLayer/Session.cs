@@ -12,7 +12,7 @@ namespace Lanchat.Core.TransportLayer
         internal Session(TcpServer server) : base(server)
         { }
 
-        public IPEndPoint Endpoint => (IPEndPoint)Socket.RemoteEndPoint;
+        public IPEndPoint Endpoint { get; private set; }
         public event EventHandler Disconnected;
         public event EventHandler<string> DataReceived;
         public event EventHandler<SocketError> SocketErrored;
@@ -34,6 +34,7 @@ namespace Lanchat.Core.TransportLayer
 
         protected override void OnConnected()
         {
+            Endpoint = (IPEndPoint)Socket.RemoteEndPoint;
             Connected?.Invoke(this, EventArgs.Empty);
             Trace.WriteLine($"Session {Id} connected");
         }

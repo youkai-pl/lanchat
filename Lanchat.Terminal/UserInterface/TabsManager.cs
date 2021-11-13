@@ -1,5 +1,6 @@
 using System.Linq;
 using Lanchat.Core.Network;
+using Lanchat.Terminal.Properties;
 using Lanchat.Terminal.UserInterface.Controls;
 using Lanchat.Terminal.UserInterface.Views;
 
@@ -13,9 +14,9 @@ namespace Lanchat.Terminal.UserInterface
 
         static TabsManager()
         {
-            HomeViewTab = new Tab("Lanchat", HomeView);
-            MainViewTab = new Tab("Lanchat", MainChatView);
-            FileTransferViewTab = new Tab("File transfer", FileTransfersView);
+            HomeViewTab = new Tab(Resources.MainTab, HomeView);
+            MainViewTab = new Tab(Resources.MainTab, MainChatView);
+            FileTransferViewTab = new Tab(Resources.FileTransferTab, FileTransfersView);
         }
 
         public static HomeView HomeView { get; } = new();
@@ -27,7 +28,7 @@ namespace Lanchat.Terminal.UserInterface
         public static void Initialize()
         {
             Window.TabPanel.SystemTabs.AddTab(HomeViewTab);
-            Window.TabPanel.SystemTabs.AddTab(new Tab("Users", UsersView));
+            Window.TabPanel.SystemTabs.AddTab(new Tab(Resources.UsersTab, UsersView));
             Window.TabPanel.SystemTabs.AddTab(FileTransferViewTab);
             Window.TabPanel.SelectTab(HomeViewTab);
             if (Program.Config.DebugMode)
@@ -52,7 +53,7 @@ namespace Lanchat.Terminal.UserInterface
         public static Tab AddPrivateChatView(INode node)
         {
             var chatView = new ChatView(node);
-            var chatTab = new Tab(node.User.Nickname, chatView) { Id = node.Id };
+            var chatTab = new Tab($"{node.User.Nickname}#{node.User.ShortId}", chatView) { Id = node.Id };
             Window.TabPanel.ChatTabs.AddTab(chatTab);
             return chatTab;
         }

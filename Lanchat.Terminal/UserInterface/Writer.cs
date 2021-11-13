@@ -21,7 +21,7 @@ namespace Lanchat.Terminal.UserInterface
 
         public static void WriteStatus(string text)
         {
-            WriteOnMainChat(text, ConsoleColor.White);
+            WriteOnMainChat(text, ConsoleColor.Cyan);
         }
 
         private static void Write(string text, ConsoleColor color)

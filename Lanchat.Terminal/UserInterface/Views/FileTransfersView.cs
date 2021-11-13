@@ -17,7 +17,7 @@ namespace Lanchat.Terminal.UserInterface.Views
         {
             ScrollPanel = new VerticalScrollPanel
             {
-                Content = new TextBlock { Text = Resources._NoFileReceiveRequest },
+                Content = new TextBlock { Text = Resources.NoFileReceiveRequest },
                 ScrollBarBackground = new Character(),
                 ScrollBarForeground = new Character(),
                 ScrollUpKey = ConsoleKey.PageUp,

@@ -24,7 +24,7 @@ namespace Lanchat.ClientCore
         public static string DataPath { get; set; }
 
         /// <summary>
-        ///     Path of RSA keys database.
+        ///     Path of RSA pem files directory.
         /// </summary>
         public static string RsaDatabasePath { get; set; }
 
@@ -77,66 +77,25 @@ namespace Lanchat.ClientCore
             }
 
             SaveConfig(config);
-            SubscribeEvents(config);
+            config!.PropertyChanged += (_, _) => { SaveConfig(config); };
             return config;
         }
-
-        /// <summary>
-        ///     Load PEM file.
-        /// </summary>
-        /// <param name="name">Key ID</param>
-        /// <returns>PEM file string</returns>
-        public static string ReadPemFile(string name)
-        {
-            try
-            {
-                return File.ReadAllText($"{RsaDatabasePath}/{name}.pem");
-            }
-            catch (Exception e)
-            {
-                CatchFileSystemExceptions(e);
-                return null;
-            }
-        }
-
-        /// <summary>
-        ///     Save PEM file.
-        /// </summary>
-        /// <param name="name">Key ID</param>
-        /// <param name="content">PEM file string</param>
-        public static void SavePemFile(string name, string content)
-        {
-            try
-            {
-                var filePath = $"{RsaDatabasePath}/{name}.pem";
-                CreateStorageDirectoryIfNotExists();
-                SetPermissions(filePath);
-                File.WriteAllText(filePath, content);
-            }
-            catch (Exception e)
-            {
-                CatchFileSystemExceptions(e);
-            }
-        }
-
+        
         internal static void SaveConfig(Config config)
         {
             try
             {
                 CreateStorageDirectoryIfNotExists();
                 SetPermissions(ConfigPath);
-                File.WriteAllText(ConfigPath, JsonSerializer.Serialize(config, JsonContext.Config));
+                File.WriteAllText(ConfigPath, JsonSerializer.Serialize(config, JsonSerializerOptions));
             }
             catch (Exception e)
             {
                 CatchFileSystemExceptions(e);
             }
         }
-
-        /// <summary>
-        ///     Check is <see cref="DataPath" /> exists and create if it's not.
-        /// </summary>
-        public static void CreateStorageDirectoryIfNotExists()
+        
+        internal static void CreateStorageDirectoryIfNotExists()
         {
             try
             {
@@ -161,7 +120,7 @@ namespace Lanchat.ClientCore
             }
         }
 
-        private static void CatchFileSystemExceptions(Exception e)
+        internal static void CatchFileSystemExceptions(Exception e)
         {
             if (e is not (
                 DirectoryNotFoundException or
@@ -174,14 +133,7 @@ namespace Lanchat.ClientCore
 
             Trace.WriteLine("Cannot access file system");
         }
-
-        private static void SubscribeEvents(Config config)
-        {
-            config.PropertyChanged += (_, _) => { SaveConfig(config); };
-            config.BlockedAddresses.CollectionChanged += (_, _) => { SaveConfig(config); };
-            config.SavedAddresses.CollectionChanged += (_, _) => { SaveConfig(config); };
-        }
-
+        
         private static void SetPaths()
         {
             var xdgDataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
@@ -211,7 +163,7 @@ namespace Lanchat.ClientCore
             RsaDatabasePath = $"{DataPath}/RSA";
         }
 
-        private static void SetPermissions(string filePath)
+        public static void SetPermissions(string filePath)
         {
             File.Create(filePath).Dispose();
 

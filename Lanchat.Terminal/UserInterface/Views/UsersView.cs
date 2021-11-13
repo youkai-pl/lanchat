@@ -48,7 +48,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                         {
                             new TextBlock
                             {
-                                Text = Resources._YourRsa
+                                Text = Resources.YourRsa
                             },
                             new TextBlock
                             {
@@ -78,7 +78,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                         {
                             new TextBlock
                             {
-                                Text = $"{x.User.Nickname} - {x.Host.Endpoint.Address}"
+                                Text = $"{x.User.Nickname}#{x.User.ShortId} - {x.Host.Endpoint.Address}"
                             },
                             new TextBlock
                             {

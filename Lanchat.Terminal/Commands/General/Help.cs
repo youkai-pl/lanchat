@@ -8,7 +8,11 @@ namespace Lanchat.Terminal.Commands.General
 {
     public class Help : ICommand
     {
-        public string Alias => "help";
+        public string[] Aliases { get; } =
+        {
+            "help",
+            "h"
+        };
         public int ArgsCount => 0;
         public int ContextArgsCount => ArgsCount;
 
@@ -20,15 +24,32 @@ namespace Lanchat.Terminal.Commands.General
             }
             else
             {
-                var commandHelp = Resources.ResourceManager.GetString($"Help_{args[0]}", CultureInfo.CurrentCulture);
-                if (commandHelp == null)
+                var command = Program.CommandsManager.GetCommandByAlias(args[0]);
+                if (command == null)
                 {
-                    Writer.WriteError(Resources._ManualNotFound);
+                    Writer.WriteError(Resources.CommandNotFound);
+                    return;
                 }
-                else
+
+                var aliases = string.Join(", ", command.Aliases);
+                var commandSyntax = Resources.ResourceManager.GetString($"Syntax_{command.Aliases[0]}", CultureInfo.CurrentCulture);
+                var commandSummary = Resources.ResourceManager.GetString($"Summary_{command.Aliases[0]}", CultureInfo.CurrentCulture);
+
+                Writer.WriteText("");
+                if (commandSummary != null)
                 {
-                    Writer.WriteText(commandHelp);
+                    Writer.WriteStatus(Resources.Summary);
+                    Writer.WriteText(commandSummary);
                 }
+                if (commandSyntax != null)
+                {
+                    Writer.WriteStatus(Resources.Syntax);
+                    Writer.WriteText(commandSyntax);
+                }
+                Writer.WriteStatus(Resources.Aliases);
+                Writer.WriteText("");
+                Writer.WriteText($"    {aliases}");
+                Writer.WriteText("");
             }
         }
 

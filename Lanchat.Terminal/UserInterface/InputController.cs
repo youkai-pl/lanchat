@@ -11,7 +11,7 @@ namespace Lanchat.Terminal.UserInterface
     public class InputController : IInputListener
     {
         private const int HistoryLimit = 50;
-        private readonly CommandsController commandsController;
+        private readonly CommandsManager commandsManager;
         private readonly List<string> history = new();
         private readonly TextBox promptInput;
         private int currentHistoryItem;
@@ -19,7 +19,7 @@ namespace Lanchat.Terminal.UserInterface
         public InputController(TextBox promptInput)
         {
             this.promptInput = promptInput;
-            commandsController = new CommandsController();
+            commandsManager = new CommandsManager();
         }
 
         public void OnInput(InputEvent inputEvent)
@@ -63,7 +63,7 @@ namespace Lanchat.Terminal.UserInterface
 
             if (promptInput.Text.StartsWith("/", StringComparison.CurrentCulture))
             {
-                commandsController.ExecuteCommand(promptInput.Text.Split(' '));
+                commandsManager.ExecuteCommand(promptInput.Text.Split(' '));
                 AddToHistory(promptInput.Text);
             }
             else if (Window.TabPanel.CurrentTab.Content is ChatView chatView)

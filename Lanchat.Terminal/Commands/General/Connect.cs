@@ -10,18 +10,16 @@ namespace Lanchat.Terminal.Commands.General
 {
     public class Connect : ICommand
     {
-        public string Alias => "connect";
+        public string[] Aliases { get; } = 
+        {
+            "connect",
+            "c"
+        };
         public int ArgsCount => 1;
         public int ContextArgsCount => ArgsCount;
 
         public async void Execute(string[] args)
         {
-            if (args == null || args.Length < 1)
-            {
-                Writer.WriteText(Resources.Help_connect);
-                return;
-            }
-
             var addressArgument = args[0].Trim();
             try
             {
@@ -43,20 +41,20 @@ namespace Lanchat.Terminal.Commands.General
                     port = Program.Config.ServerPort;
                 }
 
-                Writer.WriteText(string.Format(Resources._ConnectionAttempt, addressArgument));
+                Writer.WriteText(string.Format(Resources.ConnectionAttempt, addressArgument));
                 var result = await Program.Network.Connect(ipAddress, port);
                 if (!result)
                 {
-                    Writer.WriteError(string.Format(Resources._CannotConnect, ipAddress));
+                    Writer.WriteError(string.Format(Resources.CannotConnect, ipAddress));
                 }
             }
             catch (FormatException)
             {
-                Writer.WriteError(Resources._IncorrectValues);
+                Writer.WriteError(Resources.IncorrectCommandUsage);
             }
             catch (SocketException)
             {
-                Writer.WriteError(Resources._IncorrectValues);
+                Writer.WriteError(Resources.IncorrectCommandUsage);
             }
             catch (ArgumentException e)
             {

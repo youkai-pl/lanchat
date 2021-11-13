@@ -6,18 +6,18 @@ namespace Lanchat.Core.Encryption
 {
     internal class LocalRsa : ILocalRsa
     {
-        public LocalRsa(IRsaDatabase rsaDatabase)
+        public LocalRsa(INodesDatabase nodesDatabase)
         {
             try
             {
                 Rsa = RSA.Create();
-                Rsa.ImportFromPem(rsaDatabase.GetLocalPem());
+                Rsa.ImportFromPem(nodesDatabase.GetLocalNodeInfo());
             }
             catch (ArgumentException)
             {
                 Rsa = RSA.Create(2048);
                 var pemFile = PemEncoding.Write("RSA PRIVATE KEY", Rsa.ExportRSAPrivateKey());
-                rsaDatabase.SaveLocalPem(new string(pemFile));
+                nodesDatabase.SaveLocalNodeInfo(new string(pemFile));
             }
         }
 

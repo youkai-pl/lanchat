@@ -42,6 +42,7 @@ namespace Lanchat.Tests.Mock.Network
         }
 
         public Connection Connection { get; set; }
+        public IInternalUser InternalUser { get; set; }
         public IUser User { get; set; }
         public IHost Host { get; set; }
         public IFileReceiver FileReceiver { get; set; }
