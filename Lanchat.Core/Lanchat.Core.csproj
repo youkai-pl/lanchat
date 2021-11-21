@@ -5,15 +5,14 @@
         <Title>Lanchat.Core</Title>
         <Version>2.10.0</Version>
         <Description>Local network P2P chat libary.</Description>
-        <Copyright>tofudd</Copyright>
-        <PackageProjectUrl>https://github.com/tofudd/lanchat</PackageProjectUrl>
+        <Copyright>tof4</Copyright>
+        <PackageProjectUrl>https://github.com/tof4/lanchat</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/tof4/lanchat/blob/master/LICENSE</PackageLicenseUrl>
-        <RepositoryUrl>https://github.com/tofudd/lanchat</RepositoryUrl>
+        <RepositoryUrl>https://github.com/tof4/lanchat</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>p2p, chat, network</PackageTags>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <Authors>tofudd</Authors>
-        <IsTrimmable>true</IsTrimmable>
+        <Authors>tof4</Authors>
     </PropertyGroup>
 
     <ItemGroup>

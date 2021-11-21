@@ -11,5 +11,5 @@ do
     -p:GenerateDocumentationFile=false \
     --self-contained true -r $rid
 
-    zip -r -j bin/Packages/$rid.zip bin/Release/net5.0/$rid/publish/
+    zip -r -j bin/Packages/$rid.zip bin/Release/net6.0/$rid/publish/
 done

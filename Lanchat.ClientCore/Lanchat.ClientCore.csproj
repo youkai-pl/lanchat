@@ -4,14 +4,14 @@
         <TargetFramework>net6.0</TargetFramework>
         <Title>Lanchat.ClientCore</Title>
         <Version>2.10.0</Version>
-        <Authors>tofudd</Authors>
-        <PackageProjectUrl>https://github.com/tofudd/lanchat</PackageProjectUrl>
+        <Authors>tof4</Authors>
+        <PackageProjectUrl>https://github.com/tof4/lanchat</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/tof4/lanchat/blob/master/LICENSE</PackageLicenseUrl>
-        <RepositoryUrl>https://github.com/tofudd/lanchat</RepositoryUrl>
+        <RepositoryUrl>https://github.com/tof4/lanchat</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Description>Utilities for Lanchat.Core config store and logging to file.</Description>
-        <IsTrimmable>true</IsTrimmable>
+        <IsTrimmable>tof4</IsTrimmable>
     </PropertyGroup>
 
     <ItemGroup>
