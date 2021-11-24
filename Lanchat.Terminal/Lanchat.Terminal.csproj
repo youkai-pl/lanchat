@@ -10,7 +10,6 @@
         <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
         <IsPackable>false</IsPackable>
         <Company>Youkai Telecom</Company>
-        <PublishTrimmed>true</PublishTrimmed>
         <PublishSingleFile>true</PublishSingleFile>
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
     </PropertyGroup>
