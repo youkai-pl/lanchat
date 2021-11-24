@@ -1,7 +1,7 @@
 rm -r bin/Packages/
 mkdir bin/Packages
 
-for rid in win-x86 win-x64 linux-x64 linux-arm linux-arm64 osx-x64;
+for rid in win-x86 win-x64 linux-x64 linux-arm linux-arm64 osx-x64 osx-arm64;
 do
     dotnet publish \
     -c Release \
