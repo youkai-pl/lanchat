@@ -11,15 +11,16 @@
         <IsPackable>false</IsPackable>
         <Company>Youkai Telecom</Company>
         <PublishTrimmed>true</PublishTrimmed>
-        <IsTrimmable>true</IsTrimmable>
+        <PublishSingleFile>true</PublishSingleFile>
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
+    <PropertyGroup Condition="'$(Configuration)'=='Debug'">
         <DebugType>portable</DebugType>
         <DebugSymbols>true</DebugSymbols>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
         <DebugType>none</DebugType>
         <DebugSymbols>false</DebugSymbols>
     </PropertyGroup>
@@ -41,14 +42,4 @@
         </Compile>
     </ItemGroup>
 
-    <ItemGroup>
-        <EmbeddedResource Update="Properties\Resources.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-            <StronglyTypedFileName>Properties/Resources.Designer.cs</StronglyTypedFileName>
-            <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
-            <StronglyTypedNamespace>Lanchat.Terminal.Properties</StronglyTypedNamespace>
-            <StronglyTypedClassName>Resources</StronglyTypedClassName>
-        </EmbeddedResource>
-    </ItemGroup>
 </Project>

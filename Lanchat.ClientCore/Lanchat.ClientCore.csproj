@@ -11,7 +11,7 @@
         <RepositoryType>git</RepositoryType>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Description>Utilities for Lanchat.Core config store and logging to file.</Description>
-        <IsTrimmable>tof4</IsTrimmable>
+        <IsTrimmable>true</IsTrimmable>
     </PropertyGroup>
 
     <ItemGroup>
