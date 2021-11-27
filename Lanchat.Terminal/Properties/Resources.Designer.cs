@@ -643,6 +643,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your IP addresses:.
+        /// </summary>
+        internal static string YourAddress {
+            get {
+                return ResourceManager.GetString("YourAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your key fingerprint:.
         /// </summary>
         internal static string YourRsa {

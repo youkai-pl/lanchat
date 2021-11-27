@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
 using ConsoleGUI;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
 using ConsoleGUI.UserDefined;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Extensions;
+using Lanchat.Core.Network;
 using Lanchat.Terminal.Properties;
 
 namespace Lanchat.Terminal.UserInterface.Views
@@ -19,6 +21,10 @@ namespace Lanchat.Terminal.UserInterface.Views
 
         public UsersView()
         {
+            var localAddresses = string.Join(", ",
+                AddressChecker.GetLocalAddresses()
+                .Where(x => !x.Equals(IPAddress.Loopback)));
+
             ScrollPanel = new VerticalScrollPanel
             {
                 Content = new VerticalStackPanel
@@ -46,6 +52,18 @@ namespace Lanchat.Terminal.UserInterface.Views
                     {
                         Children = new[]
                         {
+                            new TextBlock
+                            {
+                                Text = Resources.YourAddress
+                            },
+                            new TextBlock
+                            {
+                                Text = localAddresses
+                            },
+                            new TextBlock
+                            {
+                                Text = ""
+                            },
                             new TextBlock
                             {
                                 Text = Resources.YourRsa

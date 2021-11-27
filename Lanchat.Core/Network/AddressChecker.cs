@@ -8,7 +8,10 @@ using Lanchat.Core.Config;
 
 namespace Lanchat.Core.Network
 {
-    internal class AddressChecker
+    /// <summary>
+    ///     IP addresses tools.
+    /// </summary>
+    public class AddressChecker
     {
         private readonly IConfig config;
         private readonly INodesDatabase nodesDatabase;
@@ -64,11 +67,24 @@ namespace Lanchat.Core.Network
             }
         }
 
-        private static IEnumerable<IPAddress> GetLocalAddresses()
+        /// <summary>
+        ///     Get list of host IP addresses.
+        /// </summary>
+        /// <returns>List of addresses</returns>
+        public static IEnumerable<IPAddress> GetLocalAddresses()
         {
             try
             {
-                return Dns.GetHostEntry(Dns.GetHostName()).AddressList;
+                var list = new List<IPAddress>();
+                var host = Dns.GetHostEntry(Dns.GetHostName());
+                foreach (var ip in host.AddressList)
+                {
+                    if (ip.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        list.Add(ip);
+                    }
+                }
+                return list;
             }
             catch (SocketException)
             {

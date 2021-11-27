@@ -180,6 +180,9 @@ Config file can be found in:
     <data name="UsersTab" xml:space="preserve">
         <value>Users</value>
     </data>
+    <data name="YourAddress" xml:space="preserve">
+        <value>Your IP addresses:</value>
+    </data>
     <data name="YourRsa" xml:space="preserve">
         <value>Your key fingerprint:</value>
     </data>

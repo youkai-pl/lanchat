@@ -136,6 +136,9 @@ Plik konfiguracyjny znajduje się w:
     <data name="UsersTab" xml:space="preserve">
         <value>Użytkownicy</value>
     </data>
+    <data name="YourAddress" xml:space="preserve">
+        <value>Twoje adresy IP:</value>
+    </data>
     <data name="YourRsa" xml:space="preserve">
         <value>Twój fingerprint:</value>
     </data>
