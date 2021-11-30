@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Help -->
+    <data name="Help" xml:space="preserve">
+        <value>
+Lanchat: LAN chat and file transfer
+https://youkai.pl/lanchat-docs
+
+Tab / Shift+Tab       - troca entre áreas
+Seta para cima/baixo  - histórico de entrada
+PageUp / PageDown     - rolagem na conversa
+
+Comandos:
+connect   disconnect   nick    
+block     unblock      blocked
+afk       dnd          online
+send      accept       reject
+cancel    exit         help
+
+Digite /help [comando] para mais detalhes.
+      
+Pode encontrar o arquivo de configuração em:
+{0}
+        </value>
+    </data>
+    <data name="Aliases" xml:space="preserve">
+        <value>Aliases</value>
+    </data>
+    <data name="Summary" xml:space="preserve">
+        <value>Resumo</value>
+    </data>
+    <data name="Syntax" xml:space="preserve">
+        <value>Sintaxe</value>
+    </data>
+
+    <!-- Help / Commands summary -->
+    <data name="Summary_connect" xml:space="preserve">
+        <value>
+    Conectar-se com outros.
+        </value>
+    </data>
+    <data name="Summary_nick" xml:space="preserve">
+        <value>
+    Muda nome de usuário.
+    O nome tem que ter entre 1-20 caracteres.
+    O nome não pode ter espaços.
+        </value>
+    </data>
+    <data name="Summary_block" xml:space="preserve">
+        <value>
+    Bloqueie conexões para alguns usuários.
+    Se você não estiver conectado neste momento, pode bloquear por endereço IP.
+        </value>
+    </data>
+    <data name="Summary_unblock" xml:space="preserve">
+        <value>
+    Bloqueia usuário. Precisa usar o endereço IP do usuário em argumento.
+    Digite comando /blocked para ver lista de endereços bloqueados.
+        </value>
+    </data>
+    <data name="Summary_blocked" xml:space="preserve">
+        <value>
+    Mostra lista de endereços IP bloqueados.
+        </value>
+    </data>
+    <data name="Summary_send" xml:space="preserve">
+        <value>
+    Envio de arquivo. Certifique-se de que a localização no argumento não tenha aspas.
+    Se destinatário aceitar o pedido, a transferência será iniciada.
+        </value>
+    </data>
+    <data name="Summary_accept" xml:space="preserve">
+        <value>
+    Aceita pedido de transferência de arquivo recebido.
+        </value>
+    </data>
+    <data name="Summary_reject" xml:space="preserve">
+        <value>
+    Rejeita pedido de transferência de arquivo recebido.
+        </value>
+    </data>
+    <data name="Summary_cancel" xml:space="preserve">
+        <value>
+    Cancela transferência de arquivo.
+        </value>
+    </data>
+    <data name="Summary_afk" xml:space="preserve">
+        <value>
+    Muda status para "Já volto"
+        </value>
+    </data>
+    <data name="Summary_dnd" xml:space="preserve">
+        <value>
+    Muda status para "Não perturba"
+        </value>
+    </data>
+    <data name="Summary_online" xml:space="preserve">
+        <value>
+    Muda status para "Disponível"
+        </value>
+    </data>
+
+    <!-- Help / Commands syntax -->
+    <data name="Syntax_connect" xml:space="preserve">
+        <value>
+    /connect [ip]
+    /connect [ip] [porta]
+    /connect [domínio]
+    /connect [domínio] [porta]
+        </value>
+    </data>
+    <data name="Syntax_nick" xml:space="preserve">
+        <value>
+    /nick [novo nome]
+        </value>
+    </data>
+    <data name="Syntax_block" xml:space="preserve">
+        <value>
+    /block [ID]
+    /block [endereço IP]
+        </value>
+    </data>
+    <data name="Syntax_unblock" xml:space="preserve">
+        <value>
+    /unblock [endereço IP]
+        </value>
+    </data>
+    <data name="Syntax_send" xml:space="preserve">
+        <value>
+    /send [ID] [localização do arquivo]
+        </value>
+    </data>
+    <data name="Syntax_help" xml:space="preserve">
+        <value>
+    /help
+    /help [comando]
+        </value>
+    </data>
+
+    <!-- UI elements -->
+    <data name="FileTransferTab" xml:space="preserve">
+        <value>Transferência de arquivo</value>
+    </data>
+    <data name="UsersTab" xml:space="preserve">
+        <value>Usuários</value>
+    </data>
+    <data name="YourAddress" xml:space="preserve">
+        <value>Seus endereços IP:</value>
+    </data>
+    <data name="YourRsa" xml:space="preserve">
+        <value>Sua impressão digital:</value>
+    </data>
+    <data name="GetHelp" xml:space="preserve">
+        <value>Digite comando /help</value>
+    </data>
+
+    <!-- Node status messages -->
+    <data name="Connected" xml:space="preserve">
+        <value>Conectado com {0}</value>
+    </data>
+    <data name="Disconnected" xml:space="preserve">
+        <value>Desconectado com {0}</value>
+    </data>
+    <data name="CannotConnect" xml:space="preserve">
+        <value>Não foi possível conectar com {0}</value>
+    </data>
+    <data name="NicknameChanged" xml:space="preserve">
+        <value>{0} mudou nome para {1}</value>
+    </data>
+    <data name="FreshRsa" xml:space="preserve">
+        <value>Para garantir que a conexão com {0} seja segura, 
+	verifique a impressão digital na área de "Usuários".</value>
+    </data>
+    <data name="RsaChanged" xml:space="preserve">
+        <value>A chave pública de {0} mudou. A conexão pode não estar segura.</value>
+    </data>
+
+    <!-- Errors -->
+    <data name="PortBusy" xml:space="preserve">
+        <value>Porta indisponível. Não foi possível iniciar o servidor.</value>
+    </data>
+    <data name="IncorrectCommandUsage" xml:space="preserve">
+        <value>Uso errado do comando
+Digite /help [comando]</value>
+    </data>
+    <data name="CommandNotFound" xml:space="preserve">
+        <value>Comando não encontrado</value>
+    </data>
+    <data name="UserNotFound" xml:space="preserve">
+        <value>Usuário não encontrado</value>
+    </data>
+
+    <!-- Commands results -->
+    <data name="ConnectionAttempt" xml:space="preserve">
+        <value>Tentando conectar-se com {0}</value>
+    </data>
+    <data name="SelfNicknameChanged" xml:space="preserve">
+        <value>Nome mudou para {0}</value>
+    </data>
+    <data name="WrongNickname" xml:space="preserve">
+        <value>O nome deve ter menos de 20 caracteres e não deve conter espaços.</value>
+    </data>
+    <data name="Blocked" xml:space="preserve">
+        <value>{0} bloqueado</value>
+    </data>
+    <data name="Unblocked" xml:space="preserve">
+        <value>{0} desbloqueado</value>
+    </data>
+    <data name="AlreadyBlocked" xml:space="preserve">
+        <value>Endereço já bloqueado</value>
+    </data>
+    <data name="BlockedList" xml:space="preserve">
+        <value>Endereços IP bloqueados</value>
+    </data>
+
+    <!-- File transfer -->
+    <data name="FileTransferFinished" xml:space="preserve">
+        <value>Concluído</value>
+    </data>
+    <data name="FileTransferRejected" xml:space="preserve">
+        <value>Recusado</value>
+    </data>
+    <data name="FileTransferWaiting" xml:space="preserve">
+        <value>Esperando para ser aceito</value>
+    </data>
+    <data name="FileTransferCancelled" xml:space="preserve">
+        <value>Cancelado</value>
+    </data>
+    <data name="NoFileReceiveRequest" xml:space="preserve">
+        <value>Não há nenhuma transferência de arquivos.</value>
+    </data>
+    <data name="FileTransferInProgress" xml:space="preserve">
+        <value>Não é possível enviar vários arquivos ao mesmo tempo.</value>
+    </data>
+    <data name="CannotAccessFile" xml:space="preserve">
+        <value>Não foi possível acessar {0}
+Tanto o nome do arquivo quanto as permissões podem estar incorretos.</value>
+    </data>
+</root>
