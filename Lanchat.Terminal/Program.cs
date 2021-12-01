@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using Lanchat.ClientCore;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Commands;
@@ -18,10 +19,14 @@ namespace Lanchat.Terminal
         public static IP2P Network { get; private set; }
         public static Config Config { get; private set; }
         public static NodesDatabase NodesDatabase { get; private set; }
-        public static CommandsManager CommandsManager {get; private set;}
+        public static CommandsManager CommandsManager { get; private set; }
 
-        private static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
+            var tcs = new TaskCompletionSource();
+            Console.CancelKeyPress += (_, _) => tcs.SetResult();
+            AppDomain.CurrentDomain.ProcessExit += (_, _) => tcs.SetResult();
+
             Config = Storage.LoadConfig();
             NodesDatabase = new NodesDatabase();
             CommandsManager = new CommandsManager();
@@ -58,10 +63,14 @@ namespace Lanchat.Terminal
 
             if (args.Contains("--localhost") || args.Contains("-l"))
             {
-                Network.Connect(IPAddress.Loopback);
+                await Network.Connect(IPAddress.Loopback);
             }
 
             Logger.DeleteOldLogs(5);
+            await tcs.Task;
+            Console.ResetColor();
+            Console.Clear();
+            Console.CursorVisible = true;
         }
 
         private static void CheckStartArguments(string[] args)

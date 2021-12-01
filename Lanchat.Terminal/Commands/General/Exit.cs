@@ -15,8 +15,6 @@ namespace Lanchat.Terminal.Commands.General
 
         public void Execute(string[] _)
         {
-            Console.ResetColor();
-            Console.Clear();
             Environment.Exit(0);
         }
 
