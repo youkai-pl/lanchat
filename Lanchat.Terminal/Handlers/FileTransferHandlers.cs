@@ -26,10 +26,7 @@ namespace Lanchat.Terminal.Handlers
             fileTransferStatus = new FileTransferStatus(node, e, TabsManager.FileTransfersView.Counter);
             TabsManager.FileTransfersView.Add(fileTransferStatus);
             TabsManager.SignalFileTransfer();
-            e.PropertyChanged += (_, _) =>
-            {
-                fileTransferStatus.Update(e.Progress == 100 ? Resources.FileTransferFinished : $"{e.Progress}%");
-            };
+            e.PropertyChanged += (_, _) => fileTransferStatus.Update(e.Progress == 100 ? Resources.FileTransferFinished : $"{e.Progress}%");
         }
 
         private void FileSenderOnFileTransferRequestRejected(object sender, CurrentFileTransfer e)

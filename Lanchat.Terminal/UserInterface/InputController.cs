@@ -95,7 +95,7 @@ namespace Lanchat.Terminal.UserInterface
                 return;
             }
 
-            history.Remove(history.First());
+            history.Remove(history[0]);
             currentHistoryItem--;
         }
 

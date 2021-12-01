@@ -25,11 +25,10 @@ namespace Lanchat.Core.Network
 
         internal void CheckAddress(IPAddress ipAddress)
         {
-            var savedNode = nodesDatabase.SavedNodes.FirstOrDefault(x => Equals(x.IpAddress, ipAddress));
+            var savedNode = nodesDatabase.SavedNodes.Find(x => Equals(x.IpAddress, ipAddress));
             if (savedNode is { Blocked: true })
             {
                 throw new ArgumentException("Node blocked");
-
             }
 
             lock (connections)

@@ -39,7 +39,7 @@ namespace Lanchat.Tests.Core.Chat
             const string testMessage = "test message";
             var receivedMessage = string.Empty;
 
-            messaging.MessageReceived += (_, s) => { receivedMessage = s; };
+            messaging.MessageReceived += (_, s) => receivedMessage = s;
             hostMock.DataReceived += (_, s) => resolver.CallHandler(s);
 
             messaging.SendMessage(testMessage);
@@ -52,7 +52,7 @@ namespace Lanchat.Tests.Core.Chat
             const string testMessage = "test message";
             var receivedMessage = string.Empty;
 
-            messaging.PrivateMessageReceived += (_, s) => { receivedMessage = s; };
+            messaging.PrivateMessageReceived += (_, s) => receivedMessage = s;
             hostMock.DataReceived += (_, s) => resolver.CallHandler(s);
 
             messaging.SendPrivateMessage(testMessage);
@@ -66,7 +66,7 @@ namespace Lanchat.Tests.Core.Chat
                 "ẗ̴̝̱̦̝͉͉̬̩̙́̎e̷̡̧̡̢̮̩͓̯̞̼̖̜̥̭̣̙͕̲̳̰̱̾̈͗̉̈́͐́̿̿̕ş̵̡̣̣̳̺̘̲̦͕̣̹̯̰̘̟̰͕̗̰̦͍̩̩̱̩͖̖͍̈́̊͆̾̀̄̾͐̈̈̍̃̔̉̋̐̔͒̒̍̎̇̏͌̑̚͜t̴͙̭̠͇̹̫͇̗̥̗͍̀̒̈́́͑̈́̃͌̽̈́̏̈̉͘̕̚͜͝ͅͅ";
             var receivedMessage = string.Empty;
 
-            messaging.MessageReceived += (_, s) => { receivedMessage = s; };
+            messaging.MessageReceived += (_, s) => receivedMessage = s;
             hostMock.DataReceived += (_, s) => resolver.CallHandler(s);
 
             messaging.SendMessage(testMessage);

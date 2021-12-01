@@ -5,7 +5,7 @@ namespace Lanchat.Terminal.Commands.General
 {
     public class Exit : ICommand
     {
-        public string[] Aliases { get; } = 
+        public string[] Aliases { get; } =
         {
             "exit",
             "e"

@@ -66,7 +66,7 @@ namespace Lanchat.Core.FileTransfer
         public void SendFile()
         {
             CurrentFileTransfer.Accepted = true;
-            if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
+            if (CurrentFileTransfer?.Disposed != false)
             {
                 return;
             }
@@ -114,7 +114,7 @@ namespace Lanchat.Core.FileTransfer
 
         public void HandleReject()
         {
-            if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
+            if (CurrentFileTransfer?.Disposed != false)
             {
                 return;
             }
@@ -125,9 +125,7 @@ namespace Lanchat.Core.FileTransfer
 
         public void HandleError()
         {
-            if (CurrentFileTransfer == null ||
-                CurrentFileTransfer.Disposed ||
-                CurrentFileTransfer.Accepted == false)
+            if (CurrentFileTransfer?.Disposed != false || !CurrentFileTransfer.Accepted)
             {
                 return;
             }

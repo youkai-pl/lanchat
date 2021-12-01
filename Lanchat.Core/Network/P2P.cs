@@ -22,7 +22,6 @@ namespace Lanchat.Core.Network
         private readonly NodesControl nodesControl;
         private readonly Server server;
 
-
         /// <summary>
         ///     Initialize P2P mode
         /// </summary>
@@ -41,7 +40,7 @@ namespace Lanchat.Core.Network
             LocalRsa = new LocalRsa(nodesDatabase);
             var container = NodeSetup.Setup(config, nodesDatabase, LocalRsa, this, nodeCreated, apiHandlers);
             addressChecker = new AddressChecker(config, nodesDatabase);
-            nodesControl = new NodesControl(config, container, addressChecker, nodesDatabase);
+            nodesControl = new NodesControl(container, addressChecker, nodesDatabase);
             server = Config.UseIPv6
                 ? new Server(IPAddress.IPv6Any, Config.ServerPort, nodesControl, addressChecker)
                 : new Server(IPAddress.Any, Config.ServerPort, nodesControl, addressChecker);
@@ -131,8 +130,8 @@ namespace Lanchat.Core.Network
 
         private static void SubscribeEvents(INodeInternal node, TaskCompletionSource<bool> tcs)
         {
-            node.Connected += (_, _) => { tcs.TrySetResult(true); };
-            node.CannotConnect += (_, _) => { tcs.TrySetResult(false); };
+            node.Connected += (_, _) => tcs.TrySetResult(true);
+            node.CannotConnect += (_, _) => tcs.TrySetResult(false);
         }
     }
 }

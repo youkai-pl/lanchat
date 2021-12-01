@@ -2,7 +2,6 @@
 using System.Net.Sockets;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
-using Lanchat.Core.Config;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Identity;
@@ -13,11 +12,8 @@ namespace Lanchat.Core.Network
 {
     internal class Node : IDisposable, INode, INodeInternal
     {
-        private readonly INodesDatabase nodesDatabase;
-
-        public Node(IHost host, INodesDatabase nodesDatabase)
+        public Node(IHost host)
         {
-            this.nodesDatabase = nodesDatabase;
             Host = host;
         }
 

@@ -58,7 +58,6 @@ namespace Lanchat.ClientCore
             }
         }
 
-
         /// <inheritdoc />
         [JsonIgnore]
         public string PublicKey
@@ -66,7 +65,7 @@ namespace Lanchat.ClientCore
             get => NodesDatabase.ReadPemFile(IpAddress.ToString());
             set => NodesDatabase.SavePemFile(IpAddress.ToString(), value);
         }
-        
+
         /// <inheritdoc />
         public event PropertyChangedEventHandler PropertyChanged;
 

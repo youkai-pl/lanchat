@@ -53,7 +53,7 @@ namespace Lanchat.ClientCore
 
         private static void OnFirstChanceException(object sender, FirstChanceExceptionEventArgs e)
         {
-            if (e.Exception.Source != null && e.Exception.Source.StartsWith("Lanchat"))
+            if (e.Exception.Source?.StartsWith("Lanchat") == true)
             {
                 Trace.WriteLine(e.Exception);
             }

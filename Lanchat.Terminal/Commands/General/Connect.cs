@@ -10,7 +10,7 @@ namespace Lanchat.Terminal.Commands.General
 {
     public class Connect : ICommand
     {
-        public string[] Aliases { get; } = 
+        public string[] Aliases { get; } =
         {
             "connect",
             "c"

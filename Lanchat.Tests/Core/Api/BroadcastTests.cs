@@ -20,8 +20,8 @@ namespace Lanchat.Tests.Core.Api
         {
             outputMocks.Add(new OutputMock());
             outputMocks.Add(new OutputMock());
-            nodes.Add(new NodeMock(outputMocks.ElementAt(0)));
-            nodes.Add(new NodeMock(outputMocks.ElementAt(1)));
+            nodes.Add(new NodeMock(outputMocks[0]));
+            nodes.Add(new NodeMock(outputMocks[1]));
             broadcast = new Broadcast(nodes);
         }
 

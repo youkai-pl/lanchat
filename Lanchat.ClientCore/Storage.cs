@@ -75,7 +75,7 @@ namespace Lanchat.ClientCore
             }
 
             SaveConfig(config);
-            config!.PropertyChanged += (_, _) => { SaveConfig(config); };
+            config!.PropertyChanged += (_, _) => SaveConfig(config);
             return config;
         }
 

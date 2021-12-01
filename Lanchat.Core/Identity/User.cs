@@ -19,7 +19,7 @@ namespace Lanchat.Core.Identity
             this.node = node;
         }
 
-        public string Nickname 
+        public string Nickname
         {
             get => nickname;
             set
@@ -37,7 +37,7 @@ namespace Lanchat.Core.Identity
                 }
             }
         }
-        
+
         public string PreviousNickname => $"{previousNickname}#{ShortId}";
         public string ShortId => nodeId.ToString();
 

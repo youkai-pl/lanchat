@@ -34,7 +34,7 @@ namespace Lanchat.ClientCore
             {
                 var json = File.ReadAllText($"{Storage.DataPath}/nodes.json");
                 savedNodes = JsonSerializer.Deserialize(json, NodesDatabaseContext.ListNodeInfo);
-                savedNodes?.ForEach(x => x.PropertyChanged += (_, _) => { SaveNodesList(); });
+                savedNodes?.ForEach(x => x.PropertyChanged += (_, _) => SaveNodesList());
             }
             catch (Exception e)
             {
@@ -62,10 +62,7 @@ namespace Lanchat.ClientCore
         /// <inheritdoc />
         public INodeInfo GetNodeInfo(IPAddress ipAddress)
         {
-            var nodeInfo = savedNodes.FirstOrDefault(x => Equals(x.IpAddress, ipAddress))
-                           ?? CreateNodeInfo(ipAddress);
-
-            return nodeInfo;
+            return savedNodes.Find(x => Equals(x.IpAddress, ipAddress)) ?? CreateNodeInfo(ipAddress);
         }
 
         internal static string ReadPemFile(string name)
@@ -104,7 +101,7 @@ namespace Lanchat.ClientCore
                 Id = savedNodes.Count + 1
             };
 
-            nodeInfo.PropertyChanged += (_, _) => { SaveNodesList(); };
+            nodeInfo.PropertyChanged += (_, _) => SaveNodesList();
             savedNodes.Add(nodeInfo);
             SaveNodesList();
             return nodeInfo;

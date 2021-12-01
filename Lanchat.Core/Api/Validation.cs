@@ -17,7 +17,7 @@ namespace Lanchat.Core.Api
 
         internal bool CheckPreconditions(IApiHandler handler, object data)
         {
-            if (!node.Ready && handler.Privileged == false)
+            if (!node.Ready && !handler.Privileged)
             {
                 Trace.WriteLine($"{node.Id} must be ready to handle this type of data.");
                 return false;

@@ -60,7 +60,7 @@ namespace Lanchat.Tests.Core.Network.Handlers
         public void InvalidKey()
         {
             var eventRaised = false;
-            nodeMock.CannotConnect += (_, _) => { eventRaised = true; };
+            nodeMock.CannotConnect += (_, _) => eventRaised = true;
 
             var handshake = new Handshake
             {

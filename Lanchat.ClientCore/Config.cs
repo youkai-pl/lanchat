@@ -40,7 +40,6 @@ namespace Lanchat.ClientCore
             }
         }
 
-
         /// <inheritdoc />
         [JsonIgnore]
         public bool ConnectToSaved { get; set; } = true;
@@ -52,7 +51,7 @@ namespace Lanchat.ClientCore
         /// <inheritdoc />
         [JsonIgnore]
         public bool StartServer { get; set; } = true;
-        
+
         /// <inheritdoc />
         public UserStatus UserStatus
         {

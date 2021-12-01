@@ -39,7 +39,7 @@ namespace Lanchat.Terminal.UserInterface
 
         public static void ShowMainChatView()
         {
-            if (Window.TabPanel.SystemTabs.Tabs.First().Content is HomeView)
+            if (Window.TabPanel.SystemTabs.Tabs[0].Content is HomeView)
             {
                 Window.TabPanel.SystemTabs.ReplaceTab(HomeViewTab, MainViewTab);
             }

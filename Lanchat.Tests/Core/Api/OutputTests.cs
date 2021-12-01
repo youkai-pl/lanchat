@@ -28,7 +28,7 @@ namespace Lanchat.Tests.Core.Api
         public void SendToReadyNode()
         {
             var dataReceived = false;
-            hostMock.DataReceived += (_, _) => { dataReceived = true; };
+            hostMock.DataReceived += (_, _) => dataReceived = true;
             output.SendData(new Model());
             Assert.IsTrue(dataReceived);
         }
@@ -37,7 +37,7 @@ namespace Lanchat.Tests.Core.Api
         public void SendToNotReadyNode()
         {
             var dataReceived = false;
-            hostMock.DataReceived += (_, _) => { dataReceived = true; };
+            hostMock.DataReceived += (_, _) => dataReceived = true;
             nodeMock.Ready = false;
             output.SendData(new Model());
             Assert.IsFalse(dataReceived);
@@ -47,7 +47,7 @@ namespace Lanchat.Tests.Core.Api
         public void SendPrivilegedData()
         {
             var dataReceived = false;
-            hostMock.DataReceived += (_, _) => { dataReceived = true; };
+            hostMock.DataReceived += (_, _) => dataReceived = true;
             nodeMock.Ready = false;
             output.SendPrivilegedData(new Model());
             Assert.IsTrue(dataReceived);

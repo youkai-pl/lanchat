@@ -51,13 +51,8 @@ namespace Lanchat.Terminal
             {
                 Network.Start();
             }
-            catch (SocketException e)
+            catch (SocketException e) when (e.SocketErrorCode == SocketError.AddressAlreadyInUse)
             {
-                if (e.SocketErrorCode != SocketError.AddressAlreadyInUse)
-                {
-                    throw;
-                }
-
                 TabsManager.HomeView.AddText(Resources.PortBusy, ConsoleColor.Yellow);
             }
 

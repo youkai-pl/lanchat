@@ -37,7 +37,7 @@ namespace Lanchat.Core.FileTransfer
 
         public void AcceptRequest()
         {
-            if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
+            if (CurrentFileTransfer?.Disposed != false)
             {
                 throw new InvalidOperationException("No pending requests ");
             }
@@ -67,9 +67,7 @@ namespace Lanchat.Core.FileTransfer
 
         public void CancelReceive(bool deleteFile)
         {
-            if (CurrentFileTransfer == null ||
-                CurrentFileTransfer.Disposed ||
-                !CurrentFileTransfer.Accepted)
+            if (CurrentFileTransfer?.Disposed != false || !CurrentFileTransfer.Accepted)
             {
                 throw new InvalidOperationException("No file transfers in progress");
             }
@@ -102,7 +100,7 @@ namespace Lanchat.Core.FileTransfer
 
         public void HandleError()
         {
-            if (CurrentFileTransfer == null || CurrentFileTransfer.Disposed)
+            if (CurrentFileTransfer?.Disposed != false)
             {
                 return;
             }

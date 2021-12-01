@@ -12,7 +12,7 @@ namespace Lanchat.Core.Config
         ///     List of saved nodes.
         /// </summary>
         List<INodeInfo> SavedNodes { get; }
-        
+
         /// <summary>
         ///     Get local public and private keys.
         /// </summary>

@@ -43,7 +43,7 @@ namespace Lanchat.Terminal.Commands
 
         public ICommand GetCommandByAlias(string alias)
         {
-            return commands.FirstOrDefault(x => x.Aliases.Contains(alias));
+            return commands.Find(x => x.Aliases.Contains(alias));
         }
 
         public void ExecuteCommand(string[] args)
@@ -60,25 +60,25 @@ namespace Lanchat.Terminal.Commands
             CheckContext(args, command);
         }
 
-        private void CheckContext(string[] args, ICommand command)
+        private static void CheckContext(string[] args, ICommand command)
         {
             if (Window.TabPanel.CurrentTab.Content is not ChatView view || view.Node == null)
             {
-                if (CheckArgumentsCount(args, command.ArgsCount, command.Aliases[0]))
+                if (CheckArgumentsCount(args, command.ArgsCount))
                 {
                     command.Execute(args);
                 }
             }
             else
             {
-                if (CheckArgumentsCount(args, command.ContextArgsCount, command.Aliases[0]))
+                if (CheckArgumentsCount(args, command.ContextArgsCount))
                 {
                     command.Execute(args, view.Node);
                 }
             }
         }
 
-        private bool CheckArgumentsCount(IReadOnlyCollection<string> args, int expectedCount, string alias)
+        private static bool CheckArgumentsCount(IReadOnlyCollection<string> args, int expectedCount)
         {
             if (args.Count >= expectedCount)
             {

@@ -43,7 +43,6 @@ namespace Lanchat.Core.Encryption
                 Exponent = publicKey.RsaExponent
             };
 
-
             Rsa.ImportParameters(parameters);
             TestKeys();
             CompareWithSaved(remoteIp);

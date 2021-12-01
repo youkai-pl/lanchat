@@ -43,13 +43,13 @@ namespace Lanchat.Tests.Core.Encryption
         [Test]
         public void InvalidFormat()
         {
-            Assert.Catch<FormatException>(() => { nodeAes.DecryptString("not a base 64"); });
+            Assert.Catch<FormatException>(() => nodeAes.DecryptString("not a base 64"));
         }
 
         [Test]
         public void InvalidEncryption()
         {
-            Assert.Catch<CryptographicException>(() => { nodeAes.DecryptString("bm90IGVuY3J5cHRlZA=="); });
+            Assert.Catch<CryptographicException>(() => nodeAes.DecryptString("bm90IGVuY3J5cHRlZA=="));
         }
 
         [Test]
@@ -69,8 +69,8 @@ namespace Lanchat.Tests.Core.Encryption
         public void Dispose()
         {
             nodeAes.Dispose();
-            Assert.Catch<ObjectDisposedException>(() => { nodeAes.EncryptString("test"); });
-            Assert.Catch<ObjectDisposedException>(() => { nodeAes.DecryptString("test"); });
+            Assert.Catch<ObjectDisposedException>(() => nodeAes.EncryptString("test"));
+            Assert.Catch<ObjectDisposedException>(() => nodeAes.DecryptString("test"));
         }
     }
 }

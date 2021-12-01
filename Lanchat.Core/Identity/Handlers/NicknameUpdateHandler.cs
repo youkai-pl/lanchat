@@ -21,7 +21,6 @@ namespace Lanchat.Core.Identity.Handlers
         protected override void Handle(NicknameUpdate newNickname)
         {
             user.Nickname = newNickname.NewNickname;
-            
             nodesDatabase.GetNodeInfo(host.Endpoint.Address).Nickname = newNickname.NewNickname;
         }
     }

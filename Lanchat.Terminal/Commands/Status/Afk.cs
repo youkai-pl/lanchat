@@ -5,7 +5,7 @@ namespace Lanchat.Terminal.Commands.Status
 {
     public class Afk : ICommand
     {
-        public string[] Aliases { get; } = 
+        public string[] Aliases { get; } =
         {
             "afk"
         };

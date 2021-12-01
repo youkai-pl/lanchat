@@ -6,7 +6,7 @@ namespace Lanchat.Terminal.Commands.General
 {
     public class Disconnect : ICommand
     {
-        public string[] Aliases { get; } = 
+        public string[] Aliases { get; } =
         {
             "disconnect",
             "d"

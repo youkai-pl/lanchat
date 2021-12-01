@@ -45,7 +45,7 @@ namespace Lanchat.Tests.Core.Encryption
         public void Dispose()
         {
             nodeRsaTest.Dispose();
-            Assert.Catch<ObjectDisposedException>(() => { nodeRsaTest.Encrypt(new byte[] { 0x10 }); });
+            Assert.Catch<ObjectDisposedException>(() => nodeRsaTest.Encrypt(new byte[] { 0x10 }));
         }
     }
 }

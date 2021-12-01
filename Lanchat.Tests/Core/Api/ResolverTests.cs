@@ -47,16 +47,13 @@ namespace Lanchat.Tests.Core.Api
         [Test]
         public void UnknownModel()
         {
-            Assert.Catch<InvalidOperationException>(() => { resolver.CallHandler(jsonUtils.Serialize(new Model())); });
+            Assert.Catch<InvalidOperationException>(() => resolver.CallHandler(jsonUtils.Serialize(new Model())));
         }
 
         [Test]
         public void NoHandler()
         {
-            Assert.Catch<InvalidOperationException>(() =>
-            {
-                resolver.CallHandler(jsonUtils.Serialize(new Handshake()));
-            });
+            Assert.Catch<InvalidOperationException>(() => resolver.CallHandler(jsonUtils.Serialize(new Handshake())));
         }
 
         [Test]

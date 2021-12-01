@@ -28,7 +28,7 @@ namespace Lanchat.Tests.Core.Encryption.Handlers
         public void ValidKeyInfo()
         {
             var eventRaised = false;
-            nodeMock.Connected += (_, _) => { eventRaised = true; };
+            nodeMock.Connected += (_, _) => eventRaised = true;
 
             var keyInfo = nodeAes.ExportKey();
             keyInfoHandler.Handle(keyInfo);
@@ -42,7 +42,7 @@ namespace Lanchat.Tests.Core.Encryption.Handlers
         public void InvalidKeyInfo()
         {
             var eventRaised = false;
-            nodeMock.CannotConnect += (_, _) => { eventRaised = true; };
+            nodeMock.CannotConnect += (_, _) => eventRaised = true;
 
             var keyInfo = new KeyInfo
             {
@@ -58,7 +58,7 @@ namespace Lanchat.Tests.Core.Encryption.Handlers
         public void BlankKeyInfo()
         {
             var eventRaised = false;
-            nodeMock.CannotConnect += (_, _) => { eventRaised = true; };
+            nodeMock.CannotConnect += (_, _) => eventRaised = true;
 
             var keyInfo = new KeyInfo();
             keyInfoHandler.Handle(keyInfo);
