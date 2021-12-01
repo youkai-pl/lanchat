@@ -37,5 +37,12 @@ namespace Lanchat.Core.Network
         /// <param name="ipAddress">Node IP address.</param>
         /// <param name="port">Node port.</param>
         Task<bool> Connect(IPAddress ipAddress, int? port = null);
+
+        /// <summary>
+        ///     Connect to node using hostname.
+        /// </summary>
+        /// <param name="hostname">Node hostname.</param>
+        /// <param name="port">Node port.</param>
+        Task<bool> Connect(string hostname, int? port = null);
     }
 }

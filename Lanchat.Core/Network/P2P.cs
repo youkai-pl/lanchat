@@ -97,6 +97,19 @@ namespace Lanchat.Core.Network
             return tcs.Task;
         }
 
+        /// <inheritdoc />
+        public async Task<bool> Connect(string hostname, int? port = null)
+        {
+            var dnsResult = await Dns.GetHostAddressesAsync(hostname);
+            var ipAddress = dnsResult.FirstOrDefault();
+            if (ipAddress == null)
+            {
+                return false;
+            }
+
+            return Connect(ipAddress, port).Result;
+        }
+
         private void ConnectToDetectedAddresses(object sender, NotifyCollectionChangedEventArgs args)
         {
             if (args.NewItems == null)
