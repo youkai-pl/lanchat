@@ -1,6 +1,6 @@
 # Lanchat
 
-Encrypted, P2P, local network chat.
+Lan-chat and file transfer.
 
 [Documentation](https://youkai.pl/lanchat-docs/)
 
@@ -128,6 +128,7 @@ you should remove corresponding PEM file in Lanchat config directory.
 * Language
     * `"default"`
     * `"pl"`
+    * `"pt"`
 
 #### Example
 
