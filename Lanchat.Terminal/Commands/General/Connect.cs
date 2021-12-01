@@ -23,13 +23,6 @@ namespace Lanchat.Terminal.Commands.General
             var addressArgument = args[0].Trim();
             try
             {
-                // If input cannot be parsed as IP try get address from dns
-                if (!IPAddress.TryParse(addressArgument, out var ipAddress))
-                {
-                    ipAddress = (await Dns.GetHostAddressesAsync(addressArgument)).FirstOrDefault();
-                }
-
-                // Use port from argument or config
                 var port = 0;
                 if (args.Length > 1)
                 {
@@ -42,7 +35,17 @@ namespace Lanchat.Terminal.Commands.General
                 }
 
                 Writer.WriteText(string.Format(Resources.ConnectionAttempt, addressArgument));
-                var result = await Program.Network.Connect(ipAddress, port);
+
+                bool result;
+                if (IPAddress.TryParse(addressArgument, out var ipAddress))
+                {
+                    result = await Program.Network.Connect(ipAddress, port);
+                }
+                else
+                {
+                    result = await Program.Network.Connect(addressArgument, port);
+                }
+
                 if (!result)
                 {
                     Writer.WriteError(string.Format(Resources.CannotConnect, ipAddress));
