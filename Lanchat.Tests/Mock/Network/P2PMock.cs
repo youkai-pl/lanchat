@@ -41,5 +41,10 @@ namespace Lanchat.Tests.Mock.Network
             Connected.Add(ipAddress);
             return new Task<bool>(() => true);
         }
+
+        public Task<bool> Connect(string hostname, int? port = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
