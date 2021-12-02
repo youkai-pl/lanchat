@@ -20,7 +20,7 @@ namespace Lanchat.Terminal.Commands.General
         {
             if (args.Length < 1)
             {
-                Writer.WriteText(string.Format(Resources.Help, Storage.ConfigPath));
+                Writer.WriteText(string.Format(Resources.Help, Paths.ConfigFile));
             }
             else
             {

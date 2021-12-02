@@ -19,7 +19,7 @@ namespace Lanchat.ClientCore
         public static void StartLogging()
         {
             AppDomain.CurrentDomain.FirstChanceException += OnFirstChanceException;
-            var logPath = $"{Storage.LogsPath}/{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log";
+            var logPath = $"{Paths.LogsDirectory}/{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log";
             _fileTraceListener = new FileTraceListener(logPath);
             Trace.Listeners.Add(_fileTraceListener);
             Trace.IndentSize = 11;
@@ -42,7 +42,7 @@ namespace Lanchat.ClientCore
         /// <param name="maxLogsCount">Number of log files to preserve.</param>
         public static void DeleteOldLogs(int maxLogsCount)
         {
-            foreach (var fi in new DirectoryInfo(Storage.DataPath)
+            foreach (var fi in new DirectoryInfo(Paths.LogsDirectory)
                 .GetFiles("*.log")
                 .OrderByDescending(x => x.LastWriteTime)
                 .Skip(maxLogsCount))

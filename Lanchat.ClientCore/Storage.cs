@@ -12,36 +12,6 @@ namespace Lanchat.ClientCore
     /// </summary>
     public static class Storage
     {
-        static Storage()
-        {
-            SetPaths();
-        }
-
-        /// <summary>
-        ///     Path of main Lanchat data folder.
-        /// </summary>
-        public static string DataPath { get; set; }
-
-        /// <summary>
-        ///     Path of RSA pem files directory.
-        /// </summary>
-        public static string RsaDatabasePath { get; set; }
-
-        /// <summary>
-        ///     Path of Lanchat config file.
-        /// </summary>
-        public static string ConfigPath => DataPath + "/config.json";
-
-        /// <summary>
-        ///     Path of saved files directory.
-        /// </summary>
-        public static string DownloadsPath { get; set; }
-
-         /// <summary>
-        ///     Path of log files directory.
-        /// </summary>
-        public static string LogsPath => DataPath + "/Logs";
-
         private static JsonSerializerOptions JsonSerializerOptions => new()
         {
             WriteIndented = true,
@@ -65,7 +35,7 @@ namespace Lanchat.ClientCore
 
             try
             {
-                var json = File.ReadAllText(ConfigPath);
+                var json = File.ReadAllText(Paths.ConfigFile);
                 config = JsonSerializer.Deserialize(json, ConfigContext.Config);
             }
             catch (JsonException)
@@ -83,43 +53,13 @@ namespace Lanchat.ClientCore
             return config;
         }
 
-        internal static void SaveConfig(Config config)
+        internal static void SaveFile(string content, string path)
         {
             try
             {
-                CreateStorageDirectoryIfNotExists();
-                SetPermissions(ConfigPath);
-                File.WriteAllText(ConfigPath, JsonSerializer.Serialize(config, ConfigContext.Config));
-            }
-            catch (Exception e)
-            {
-                CatchFileSystemExceptions(e);
-            }
-        }
-
-        internal static void CreateStorageDirectoryIfNotExists()
-        {
-            try
-            {
-                if (!Directory.Exists(DataPath))
-                {
-                    Directory.CreateDirectory(DataPath);
-                }
-
-                if (!Directory.Exists(DownloadsPath))
-                {
-                    Directory.CreateDirectory(DownloadsPath);
-                }
-
-                if (!Directory.Exists($"{RsaDatabasePath}"))
-                {
-                    Directory.CreateDirectory($"{RsaDatabasePath}");
-                }
-
-                if (!Directory.Exists(LogsPath))
-                {
-                    Directory.CreateDirectory(LogsPath);
-                }
+                EnsureDirectories();
+                SetPermissions(path);
+                File.WriteAllText(path, content);
             }
             catch (Exception e)
             {
@@ -141,7 +81,32 @@ namespace Lanchat.ClientCore
             Trace.WriteLine("Cannot access file system");
         }
 
-        internal static void SetPermissions(string filePath)
+        private static void EnsureDirectories()
+        {
+            try
+            {
+                if (!Directory.Exists(Paths.RootDirectory))
+                {
+                    Directory.CreateDirectory(Paths.RootDirectory);
+                }
+
+                if (!Directory.Exists($"{Paths.RsaDirectory}"))
+                {
+                    Directory.CreateDirectory($"{Paths.RsaDirectory}");
+                }
+
+                if (!Directory.Exists(Paths.LogsDirectory))
+                {
+                    Directory.CreateDirectory(Paths.LogsDirectory);
+                }
+            }
+            catch (Exception e)
+            {
+                CatchFileSystemExceptions(e);
+            }
+        }
+
+        private static void SetPermissions(string filePath)
         {
             File.Create(filePath).Dispose();
 
@@ -164,33 +129,10 @@ namespace Lanchat.ClientCore
             process.WaitForExit();
         }
 
-        private static void SetPaths()
+        private static void SaveConfig(Config config)
         {
-            var xdgDataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
-            if (xdgDataHome != null)
-            {
-                DataPath = xdgDataHome;
-                DownloadsPath = xdgDataHome;
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                DataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Lanchat2";
-                DownloadsPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads";
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                var home = Environment.GetEnvironmentVariable("HOME");
-                DataPath = $"{home}/.Lanchat2";
-                DownloadsPath = $"{home}/Downloads";
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                var home = Environment.GetEnvironmentVariable("HOME");
-                DataPath = $"{home}/Library/Preferences/.Lanchat2";
-                DownloadsPath = $"{home}/Downloads";
-            }
-
-            RsaDatabasePath = $"{DataPath}/RSA";
+            var json = JsonSerializer.Serialize(config, ConfigContext.Config);
+            SaveFile(json, Paths.ConfigFile);
         }
     }
 }

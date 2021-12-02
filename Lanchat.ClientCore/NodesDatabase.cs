@@ -32,7 +32,7 @@ namespace Lanchat.ClientCore
         {
             try
             {
-                var json = File.ReadAllText($"{Storage.DataPath}/nodes.json");
+                var json = File.ReadAllText(Paths.NodesFile);
                 savedNodes = JsonSerializer.Deserialize(json, NodesDatabaseContext.ListNodeInfo);
                 savedNodes?.ForEach(x => x.PropertyChanged += (_, _) => SaveNodesList());
             }
@@ -69,7 +69,7 @@ namespace Lanchat.ClientCore
         {
             try
             {
-                return File.ReadAllText($"{Storage.RsaDatabasePath}/{name}.pem");
+                return File.ReadAllText($"{Paths.RsaDirectory}/{name}.pem");
             }
             catch (Exception e)
             {
@@ -80,17 +80,8 @@ namespace Lanchat.ClientCore
 
         internal static void SavePemFile(string name, string content)
         {
-            try
-            {
-                var filePath = $"{Storage.RsaDatabasePath}/{name}.pem";
-                Storage.CreateStorageDirectoryIfNotExists();
-                Storage.SetPermissions(filePath);
-                File.WriteAllText(filePath, content);
-            }
-            catch (Exception e)
-            {
-                Storage.CatchFileSystemExceptions(e);
-            }
+            var filePath = $"{Paths.RsaDirectory}/{name}.pem";
+            Storage.SaveFile(content, filePath);
         }
 
         private NodeInfo CreateNodeInfo(IPAddress ipAddress)
@@ -109,18 +100,8 @@ namespace Lanchat.ClientCore
 
         private void SaveNodesList()
         {
-            try
-            {
-                var json = JsonSerializer.Serialize(savedNodes, NodesDatabaseContext.ListNodeInfo);
-                var filePath = $"{Storage.DataPath}/nodes.json";
-                Storage.CreateStorageDirectoryIfNotExists();
-                Storage.SetPermissions(filePath);
-                File.WriteAllText(filePath, json);
-            }
-            catch (Exception e)
-            {
-                Storage.CatchFileSystemExceptions(e);
-            }
+            var json = JsonSerializer.Serialize(savedNodes, NodesDatabaseContext.ListNodeInfo);
+            Storage.SaveFile(Paths.NodesFile, json);
         }
     }
 }

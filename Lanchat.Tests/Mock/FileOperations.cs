@@ -11,14 +11,14 @@ namespace Lanchat.Tests.Mock
         public static void Prepare()
         {
             _guid = Guid.NewGuid();
-            Storage.DataPath = $"test-{_guid}";
-            Storage.DownloadsPath = Storage.DataPath;
-            Storage.CreateStorageDirectoryIfNotExists();
+            Paths.RootDirectory = $"test-{_guid}";
+            Paths.DownloadsDirectory = Paths.RootDirectory;
+            Storage.CreateDirectories();
         }
 
         public static void CleanUp()
         {
-            Directory.Delete(Storage.DataPath, true);
+            Directory.Delete(Paths.RootDirectory, true);
         }
     }
 }

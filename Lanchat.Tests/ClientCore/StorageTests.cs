@@ -48,7 +48,7 @@ namespace Lanchat.Tests.ClientCore
         [Test]
         public void LoadingInvalidJson()
         {
-            File.WriteAllText(Storage.ConfigPath, "not a json");
+            File.WriteAllText(Paths.ConfigFile, "not a json");
             var config = Storage.LoadConfig();
             Assert.IsTrue(config.Fresh);
         }
@@ -56,9 +56,9 @@ namespace Lanchat.Tests.ClientCore
         [Test]
         public void CreatingDirectory()
         {
-            Directory.Delete(Storage.DataPath, true);
-            Storage.CreateStorageDirectoryIfNotExists();
-            Assert.IsTrue(Directory.Exists(Storage.DataPath));
+            Directory.Delete(Paths.RootDirectory, true);
+            Storage.CreateDirectories();
+            Assert.IsTrue(Directory.Exists(Paths.RootDirectory));
         }
     }
 }

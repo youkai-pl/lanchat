@@ -14,7 +14,7 @@ namespace Lanchat.ClientCore
     {
         private bool automatic = true;
         private int broadcastPort = 3646;
-        private string filesDownloadDirectory = Storage.DownloadsPath;
+        private string filesDownloadDirectory = Paths.DownloadsDirectory;
         private string language = "default";
         private string nickname = Environment.UserName;
         private int port = 3645;
