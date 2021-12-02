@@ -19,7 +19,7 @@ namespace Lanchat.ClientCore
         public static void StartLogging()
         {
             AppDomain.CurrentDomain.FirstChanceException += OnFirstChanceException;
-            var logPath = $"{Storage.DataPath}/{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log";
+            var logPath = $"{Storage.LogsPath}/{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.log";
             _fileTraceListener = new FileTraceListener(logPath);
             Trace.Listeners.Add(_fileTraceListener);
             Trace.IndentSize = 11;

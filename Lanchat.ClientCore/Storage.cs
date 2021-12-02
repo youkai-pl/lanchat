@@ -4,7 +4,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Lanchat.Core.Json;
 
 namespace Lanchat.ClientCore
 {
@@ -37,6 +36,11 @@ namespace Lanchat.ClientCore
         ///     Path of saved files directory.
         /// </summary>
         public static string DownloadsPath { get; set; }
+
+         /// <summary>
+        ///     Path of log files directory.
+        /// </summary>
+        public static string LogsPath => DataPath + "/Logs";
 
         private static JsonSerializerOptions JsonSerializerOptions => new()
         {
@@ -110,6 +114,11 @@ namespace Lanchat.ClientCore
                 if (!Directory.Exists($"{RsaDatabasePath}"))
                 {
                     Directory.CreateDirectory($"{RsaDatabasePath}");
+                }
+
+                if (!Directory.Exists(LogsPath))
+                {
+                    Directory.CreateDirectory(LogsPath);
                 }
             }
             catch (Exception e)
