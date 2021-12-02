@@ -101,7 +101,7 @@ namespace Lanchat.ClientCore
         private void SaveNodesList()
         {
             var json = JsonSerializer.Serialize(savedNodes, NodesDatabaseContext.ListNodeInfo);
-            Storage.SaveFile(Paths.NodesFile, json);
+            Storage.SaveFile(json, Paths.NodesFile);
         }
     }
 }
