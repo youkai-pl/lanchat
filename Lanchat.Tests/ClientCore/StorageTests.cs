@@ -1,5 +1,5 @@
 using System.IO;
-using System.Net;
+using System.Text.Json;
 using Lanchat.ClientCore;
 using Lanchat.Tests.Mock;
 using NUnit.Framework;
@@ -31,7 +31,7 @@ namespace Lanchat.Tests.ClientCore
         [Test]
         public void ConfigLoading()
         {
-            Storage.SaveConfig(new Config());
+            Storage.SaveFile(JsonSerializer.Serialize(new Config()), Paths.ConfigFile);
             var config = Storage.LoadConfig();
             Assert.IsFalse(config.Fresh);
         }
@@ -51,14 +51,6 @@ namespace Lanchat.Tests.ClientCore
             File.WriteAllText(Paths.ConfigFile, "not a json");
             var config = Storage.LoadConfig();
             Assert.IsTrue(config.Fresh);
-        }
-
-        [Test]
-        public void CreatingDirectory()
-        {
-            Directory.Delete(Paths.RootDirectory, true);
-            Storage.CreateDirectories();
-            Assert.IsTrue(Directory.Exists(Paths.RootDirectory));
         }
     }
 }

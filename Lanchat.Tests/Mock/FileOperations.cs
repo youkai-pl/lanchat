@@ -12,8 +12,8 @@ namespace Lanchat.Tests.Mock
         {
             _guid = Guid.NewGuid();
             Paths.RootDirectory = $"test-{_guid}";
-            Paths.DownloadsDirectory = Paths.RootDirectory;
-            Storage.CreateDirectories();
+            Directory.CreateDirectory(Paths.RootDirectory);
+            Directory.CreateDirectory(Paths.LogsDirectory);
         }
 
         public static void CleanUp()

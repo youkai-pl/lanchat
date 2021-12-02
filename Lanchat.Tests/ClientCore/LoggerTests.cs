@@ -28,7 +28,7 @@ namespace Lanchat.Tests.ClientCore
             Logger.StartLogging();
             Trace.WriteLine("test");
             Logger.StopLogging();
-            var files = Directory.GetFiles(Storage.DataPath, "*.log");
+            var files = Directory.GetFiles(Paths.LogsDirectory, "*.log");
             var logFile = File.ReadAllLines(files.Last());
             var test = logFile.Last().EndsWith("test");
             Assert.IsTrue(test);
@@ -40,7 +40,7 @@ namespace Lanchat.Tests.ClientCore
             Logger.StartLogging();
             Logger.StopLogging();
             Logger.DeleteOldLogs(0);
-            Assert.AreEqual(0, new DirectoryInfo(Storage.DataPath).GetFiles().Length);
+            Assert.AreEqual(0, new DirectoryInfo(Paths.LogsDirectory).GetFiles().Length);
         }
     }
 }
