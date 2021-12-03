@@ -28,7 +28,7 @@ For running Lanchat.Terminal from source you will need [.NET 5 SDK](https://dotn
 
 ```sh
 git clone https://github.com/tof4/lanchat
-cd Lanchat.Terminal
+cd lanchat/Lanchat.Terminal
 dotnet publish -c Release -p:PublishSingleFile=true --self-contained true -r <runtime id>
 cd bin/Release/net5.0/linux-x64/publish/<runtime id>
 ./Lanchat
@@ -53,8 +53,7 @@ Use `/connect <IP address>` command to connect with other user in network. You c
 like `/connect pc.lan`. Lanchat also can be used outside LAN network but host you are connecting to must have public IP
 and forwarded server port.
 
-Lanchat exchange lists of connected nodes address during connecting with new user. If new connected users have not
-disabled `ConnectToReceivedList` they automatically connect with other nodes.
+Lanchat uses UDP broadcast to detect and connect with other nodes. If for some reason this doesn't work, there's a second way. After establishing connection, nodes exchange the list of nodes addresses with which they connected earlier. 
 
 #### Commands
 
@@ -135,13 +134,6 @@ you should remove corresponding PEM file in Lanchat config directory.
 ```json
 {
   "Language": "default",
-  "BlockedAddresses": [
-    "192.168.1.5"
-  ],
-  "SavedAddresses": [
-    "192.168.1.3",
-    "192.168.1.4"
-  ],
   "Status": "Online",
   "ServerPort": 3645,
   "BroadcastPort": 3646,
