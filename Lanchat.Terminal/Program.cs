@@ -97,11 +97,7 @@ namespace Lanchat.Terminal
             }
             else
             {
-                var newVersion = UpdateChecker.CheckUpdates();
-                if (newVersion != null)
-                {
-                    TabsManager.HomeView.AddText($"Update available: {newVersion}", ConsoleColor.Green);
-                }
+                _ = UpdateChecker.CheckUpdatesAsync();
             }
         }
     }
