@@ -12,7 +12,7 @@ namespace Lanchat.Core.Network
     /// </summary>
     public interface IP2P
     {
-        /// <see cref="Lanchat.Core.NodesDetection" />
+        /// <inheritdoc cref="NodesDetection" />
         NodesDetector NodesDetection { get; }
 
         /// <summary>
@@ -20,10 +20,10 @@ namespace Lanchat.Core.Network
         /// </summary>
         List<INode> Nodes { get; }
 
-        /// <see cref="Lanchat.Core.Api.IBroadcast" />
+        /// <inheritdoc cref="IBroadcast" />
         IBroadcast Broadcast { get; }
 
-        /// <see cref="ILocalRsa" />
+        /// <inheritdoc cref="ILocalRsa" />
         ILocalRsa LocalRsa { get; }
 
         /// <summary>

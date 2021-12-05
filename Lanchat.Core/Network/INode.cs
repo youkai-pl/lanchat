@@ -24,25 +24,25 @@ namespace Lanchat.Core.Network
         /// </summary>
         bool Ready { get; }
 
-        /// <see cref="IUser" />
+        /// <inheritdoc cref="IUser" />
         IUser User { get; }
 
-        /// <see cref="IHost" />
+        /// <inheritdoc cref="IHost" />
         IHost Host { get; }
 
-        /// <see cref="Lanchat.Core.Chat.IMessaging" />
+        /// <inheritdoc cref="IMessaging" />
         IMessaging Messaging { get; }
 
-        /// <see cref="Lanchat.Core.FileTransfer.FileReceiver" />
+        /// <inheritdoc cref="FileTransfer.FileReceiver" />
         IFileReceiver FileReceiver { get; }
 
-        /// <see cref="Lanchat.Core.FileTransfer.FileSender" />
+        /// <inheritdoc cref="FileTransfer.FileSender" />
         IFileSender FileSender { get; }
 
-        /// <see cref="Lanchat.Core.Api.IOutput" />
+        /// <inheritdoc cref="IOutput" />
         IOutput Output { get; }
 
-        /// <see cref="INodeRsa" />
+        /// <inheritdoc cref="INodeRsa" />
         INodeRsa NodeRsa { get; }
 
         /// <summary>
