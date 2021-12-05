@@ -26,7 +26,7 @@ namespace Lanchat.ClientCore
         private static readonly NodesDatabaseContext NodesDatabaseContext = new(JsonSerializerOptions);
 
         /// <summary>
-        ///     Initialize nodes database.
+        ///     Loads database from json file.
         /// </summary>
         public NodesDatabase()
         {

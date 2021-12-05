@@ -10,6 +10,9 @@ namespace Lanchat.ClientCore
     /// <summary>
     ///     Default IConfig implementation.
     /// </summary>
+    /// <remakrs>
+    ///     Contains additional properties for Lanchat.Terminal.
+    /// </remakrs>
     public class Config : IConfig
     {
         private bool automatic = true;
@@ -22,7 +25,7 @@ namespace Lanchat.ClientCore
         private UserStatus userStatus = UserStatus.Online;
 
         /// <summary>
-        ///     Config could not be loaded and has just been generated.
+        ///     True if config file could not be loaded and has just been generated.
         /// </summary>
         [JsonIgnore]
         public bool Fresh { get; set; }

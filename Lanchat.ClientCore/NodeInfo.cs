@@ -6,7 +6,7 @@ using Lanchat.Core.Config;
 
 namespace Lanchat.ClientCore
 {
-    /// <inheritdoc cref="Lanchat.Core.Config.INodeInfo" />
+    /// <inheritdoc cref="INodeInfo" />
     public class NodeInfo : INodeInfo, INotifyPropertyChanged
     {
         private string nickname;

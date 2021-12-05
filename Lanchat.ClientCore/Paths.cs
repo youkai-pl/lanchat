@@ -4,7 +4,8 @@ using System.Runtime.InteropServices;
 namespace Lanchat.ClientCore
 {
     /// <summary>
-    ///     Paths used by Lanchat.
+    ///     Paths used by Lanchat storage.
+    ///     If any of the paths has to be overridden set them before initializing other modules.
     /// </summary>
     public static class Paths
     {

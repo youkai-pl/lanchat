@@ -8,8 +8,12 @@ using System.Text.Json.Serialization;
 namespace Lanchat.ClientCore
 {
     /// <summary>
-    ///     File system utilities.
+    ///     Handles file system operations.
     /// </summary>
+    /// <remarks>
+    ///     Currently the only public method is <see cref="LoadConfig"/>.
+    ///     <see cref="NodesDatabase"/> also uses filesystem but it's loaded by constructor.
+    /// </remarks>
     public static class Storage
     {
         private static JsonSerializerOptions JsonSerializerOptions => new()
@@ -24,8 +28,11 @@ namespace Lanchat.ClientCore
         private static readonly ConfigContext ConfigContext = new(JsonSerializerOptions);
 
         /// <summary>
-        ///     Load config from file or create new if it's non present or corrupted.
+        ///     Load config from json file.
         /// </summary>
+        /// <remarks>
+        ///     If config file is not present or cannot be parsed new file will be created.
+        /// </remarks>
         /// <returns>
         ///     <see cref="Config" />
         /// </returns>
@@ -49,7 +56,7 @@ namespace Lanchat.ClientCore
             }
 
             SaveConfig(config);
-            config!.PropertyChanged += (_, _) => SaveConfig(config);
+            config.PropertyChanged += (_, _) => SaveConfig(config);
             return config;
         }
 

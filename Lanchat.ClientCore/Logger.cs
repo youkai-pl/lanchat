@@ -14,7 +14,7 @@ namespace Lanchat.ClientCore
         private static FileTraceListener _fileTraceListener;
 
         /// <summary>
-        ///     Create log file and start logging.
+        ///     Create log file and start writing trace messages.
         /// </summary>
         public static void StartLogging()
         {
@@ -28,7 +28,7 @@ namespace Lanchat.ClientCore
         }
 
         /// <summary>
-        ///     Stop writing to log file.
+        ///     Stop writing trace messages to log file.
         /// </summary>
         public static void StopLogging()
         {
