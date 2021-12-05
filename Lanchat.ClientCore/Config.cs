@@ -10,9 +10,9 @@ namespace Lanchat.ClientCore
     /// <summary>
     ///     Default IConfig implementation.
     /// </summary>
-    /// <remakrs>
+    /// <remarks>
     ///     Contains additional properties for Lanchat.Terminal.
-    /// </remakrs>
+    /// </remarks>
     public class Config : IConfig
     {
         private bool automatic = true;
