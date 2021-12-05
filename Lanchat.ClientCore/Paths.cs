@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Lanchat.ClientCore
@@ -17,16 +18,16 @@ namespace Lanchat.ClientCore
         /// <summary>
         ///     RSA pem files directory.
         /// </summary>
-        public static string RsaDirectory => RootDirectory + "/RSA";
+        public static string RsaDirectory { get; set; }
         /// <summary>
         ///     Config file path.
         /// </summary>
-        public static string ConfigFile => RootDirectory + "/config.json";
+        public static string ConfigFile { get; set; }
 
         /// <summary>
         ///     Nodes database path.
         /// </summary>
-        public static string NodesFile => RootDirectory + "/nodes.json";
+        public static string NodesFile { get; set; }
 
         /// <summary>
         ///     File transfer target directory.
@@ -36,7 +37,7 @@ namespace Lanchat.ClientCore
         /// <summary>
         ///     Log files directory.
         /// </summary>
-        public static string LogsDirectory => RootDirectory + "/Logs";
+        public static string LogsDirectory { get; set; }
 
         static Paths()
         {
@@ -63,6 +64,11 @@ namespace Lanchat.ClientCore
                 RootDirectory = $"{home}/Library/Preferences/.Lanchat2";
                 DownloadsDirectory = $"{home}/Downloads";
             }
+
+            RsaDirectory = Path.Combine(RootDirectory, "RSA");
+            ConfigFile = Path.Combine(RootDirectory, "config.json");
+            NodesFile = Path.Combine(RootDirectory, "nodes.json");
+            LogsDirectory = Path.Combine(RootDirectory, "Logs");
         }
     }
 }
