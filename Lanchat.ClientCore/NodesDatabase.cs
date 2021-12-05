@@ -28,6 +28,9 @@ namespace Lanchat.ClientCore
         /// <summary>
         ///     Loads database from json file.
         /// </summary>
+        /// <remakrs>
+        ///     To change file paths use <see cref="Paths"/>.
+        /// </remakrs>
         public NodesDatabase()
         {
             try

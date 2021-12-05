@@ -6,8 +6,17 @@ namespace Lanchat.ClientCore
 {
     /// <summary>
     ///     Paths used by Lanchat storage.
-    ///     If any of the paths has to be overridden set them before initializing other modules.
     /// </summary>
+    /// <remarks>
+    ///     If any of the paths has to be overridden set them before initializing other modules.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    ///     Paths.ConfigFile = "custom-config.json";
+    ///     Config = Storage.LoadConfig();
+    ///     NodesDatabase = new NodesDatabase();
+    /// </code>
+    /// </example>
     public static class Paths
     {
         /// <summary>

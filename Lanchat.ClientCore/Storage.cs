@@ -11,8 +11,13 @@ namespace Lanchat.ClientCore
     ///     Handles file system operations.
     /// </summary>
     /// <remarks>
+    /// <para>
     ///     Currently the only public method is <see cref="LoadConfig"/>.
+    /// </para>
+    /// <para>
     ///     <see cref="NodesDatabase"/> also uses filesystem but it's loaded by constructor.
+    ///     To change file paths use <see cref="Paths"/>.
+    /// </para>
     /// </remarks>
     public static class Storage
     {
