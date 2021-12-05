@@ -364,3 +364,5 @@ MigrationBackup/
 
 .flatpak-builder/
 flatpak/
+
+Docs/html
