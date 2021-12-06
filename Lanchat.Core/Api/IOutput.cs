@@ -1,7 +1,7 @@
 namespace Lanchat.Core.Api
 {
     /// <summary>
-    ///     Sending data to specific node.
+    ///     Sending data to node.
     /// </summary>
     public interface IOutput
     {
@@ -12,9 +12,9 @@ namespace Lanchat.Core.Api
         void SendData(object content);
 
         /// <summary>
-        ///     Send the data before marking the node as ready (Handshake, KeyInfo...).
+        ///     Send the data even if the connection process is not finished yet.
         /// </summary>
-        /// <param name="content">Object to send.</param>
+        /// <param name="content">Model object.</param>
         void SendPrivilegedData(object content);
     }
 }

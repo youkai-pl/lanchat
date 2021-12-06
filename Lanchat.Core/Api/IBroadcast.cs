@@ -14,7 +14,7 @@ namespace Lanchat.Core.Api
         /// <summary>
         ///     Broadcast data.
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="data">Model object.</param>
         void SendData(object data);
     }
 }
