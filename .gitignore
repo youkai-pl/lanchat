@@ -362,6 +362,8 @@ MigrationBackup/
 # Generated files
 .idea/**/contentModel.xml
 
+*.swp
+
 .flatpak-builder/
 flatpak/
 
