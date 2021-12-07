@@ -13,7 +13,6 @@ namespace Lanchat.Core.Chat
         /// <remakrs>
         ///     Sending messages to all users is handled by <see cref="Api.IBroadcast"/>
         /// </remakrs>
-
         event EventHandler<string> MessageReceived;
 
         /// <summary>

@@ -19,10 +19,23 @@ namespace Lanchat.ClientCore
     /// </example>
     public static class Paths
     {
+        private static string rootDirectory;
+
         /// <summary>
         ///     Root directory.
         /// </summary>
-        public static string RootDirectory { get; set; }
+        /// <remarks>
+        ///     After changing this paths which in default are placed in root directory will be refreshed.
+        /// </remarks>
+        public static string RootDirectory
+        {
+            get { return rootDirectory; }
+            set
+            {
+                rootDirectory = value;
+                SetPaths();
+            }
+        }
 
         /// <summary>
         ///     RSA pem files directory.
@@ -73,7 +86,11 @@ namespace Lanchat.ClientCore
                 RootDirectory = $"{home}/Library/Preferences/.Lanchat2";
                 DownloadsDirectory = $"{home}/Downloads";
             }
+            SetPaths();
+        }
 
+        private static void SetPaths()
+        {
             RsaDirectory = Path.Combine(RootDirectory, "RSA");
             ConfigFile = Path.Combine(RootDirectory, "config.json");
             NodesFile = Path.Combine(RootDirectory, "nodes.json");
