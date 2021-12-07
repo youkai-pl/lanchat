@@ -10,6 +10,10 @@ namespace Lanchat.Core.Chat
         /// <summary>
         ///     Message received.
         /// </summary>
+        /// <remakrs>
+        ///     Sending messages to all users is handled by <see cref="Api.IBroadcast"/>
+        /// </remakrs>
+
         event EventHandler<string> MessageReceived;
 
         /// <summary>
@@ -18,15 +22,11 @@ namespace Lanchat.Core.Chat
         event EventHandler<string> PrivateMessageReceived;
 
         /// <summary>
-        ///     Send message.
-        /// </summary>
-        /// <param name="content">Message content.</param>
-        void SendMessage(string content);
-
-        /// <summary>
         ///     Send private message.
         /// </summary>
         /// <param name="content">Message content.</param>
         void SendPrivateMessage(string content);
+
+        internal void SendMessage(string content);
     }
 }
