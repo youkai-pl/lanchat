@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            "name": "Lanchat.Terminal",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build-terminal",
             "program": "${workspaceFolder}/Lanchat.Terminal/bin/Debug/net6.0/Lanchat.dll",
             "args": [
                 "-d",
@@ -13,6 +13,20 @@
             ],
             "cwd": "${workspaceFolder}/Lanchat.Terminal",
             "console": "externalTerminal",
+            "stopAtEntry": false,
+        },
+        {
+            "name": "Lanchat.Ipc",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-ipc",
+            "program": "${workspaceFolder}/Lanchat.Ipc/bin/Debug/net6.0/Lanchat.Ipc.dll",
+            "args": [
+                "lfs",
+                "-d",
+                "-a"
+            ],
+            "cwd": "${workspaceFolder}/Lanchat.Ipc/bin/Debug/net6.0",
             "stopAtEntry": false,
         }
     ]
