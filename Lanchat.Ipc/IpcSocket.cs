@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -36,7 +37,7 @@ namespace Lanchat.Ipc
 
         public void Send(string data)
         {
-            handlers.ForEach(x => Send(x, data));
+            handlers.ToList().ForEach(x => Send(x, data));
         }
 
         private void AcceptCallback(IAsyncResult ar)
