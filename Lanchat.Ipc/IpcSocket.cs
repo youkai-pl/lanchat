@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
@@ -6,17 +7,18 @@ using System.Threading;
 
 namespace Lanchat.Ipc
 {
-    public class SocketListener
+    public class IpcSocket
     {
         private readonly ManualResetEvent allDone = new(false);
         private readonly string socketPath;
+        private readonly List<Socket> handlers = new();
 
-        public SocketListener(string socketPath)
+        public IpcSocket(string socketPath)
         {
             this.socketPath = socketPath;
         }
 
-        public void StartListening()
+        public void Start()
         {
             var listener = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified);
             var endpoint = new UnixDomainSocketEndPoint(socketPath);
@@ -27,17 +29,22 @@ namespace Lanchat.Ipc
             while (true)
             {
                 allDone.Reset();
-                Console.WriteLine("Waiting for a connection...");
                 listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
                 allDone.WaitOne();
             }
         }
 
-        public void AcceptCallback(IAsyncResult ar)
+        public void Send(string data)
+        {
+            handlers.ForEach(x => Send(x, data));
+        }
+
+        private void AcceptCallback(IAsyncResult ar)
         {
             allDone.Set();
             var listener = (Socket)ar.AsyncState;
             var handler = listener.EndAccept(ar);
+            handlers.Add(handler);
             var state = new StateObject
             {
                 Socket = handler
@@ -46,7 +53,7 @@ namespace Lanchat.Ipc
                 new AsyncCallback(ReadCallback), state);
         }
 
-        public void ReadCallback(IAsyncResult ar)
+        private void ReadCallback(IAsyncResult ar)
         {
             var content = string.Empty;
             var state = (StateObject)ar.AsyncState;
@@ -60,7 +67,7 @@ namespace Lanchat.Ipc
 
             state.StringBuilder.Append(Encoding.UTF8.GetString(state.Buffer, 0, bytesRead));
             content = state.StringBuilder.ToString();
-            Console.WriteLine(content);
+            Program.Network.Broadcast.SendMessage(content);
             state.StringBuilder.Clear();
             handler.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0,
                 new AsyncCallback(ReadCallback), state);
@@ -76,7 +83,16 @@ namespace Lanchat.Ipc
         private void SendCallback(IAsyncResult ar)
         {
             Socket handler = (Socket)ar.AsyncState;
-            handler.EndSend(ar);
+            try
+            {
+                handler.EndSend(ar);
+            }
+            catch (SocketException)
+            {
+                handlers.Remove(handler);
+                handler.Shutdown(SocketShutdown.Both);
+                handler.Close();
+            }
         }
     }
 }
