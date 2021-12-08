@@ -68,7 +68,7 @@ namespace Lanchat.Ipc
 
             state.StringBuilder.Append(Encoding.UTF8.GetString(state.Buffer, 0, bytesRead));
             content = state.StringBuilder.ToString();
-            Program.Network.Broadcast.SendMessage(content);
+            Program.CommandsManager.ExecuteCommand(content);
             state.StringBuilder.Clear();
             handler.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0,
                 new AsyncCallback(ReadCallback), state);
