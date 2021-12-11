@@ -49,7 +49,7 @@ namespace Lanchat.Ipc.Commands.General
             {
                 Program.IpcSocket.Send("invalid_argument");
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 Program.IpcSocket.Send("invalid_argument");
             }
