@@ -27,7 +27,11 @@ Commands arguments are separated by `/`. Use UTF-8 encoding.
 | connect    | Connect with node.         | *IP address* | `connect/127.0.0.1`         |
 | -          | -                          | *hostname*   | `connect/localhost`         |
 | disconnect | Disconnect from node.      | *GUID*       | `disconnect/node-id`        |
+
+### Config
+| Command    | Description                | Arguments    | Example                     |
 | nick       | Change nickname.           | *nickname*   | `nick/test`                 |
+| status     | Change status.             | *status*     | `status/afk`                |
 
 ## Output
 

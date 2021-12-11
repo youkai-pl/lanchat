@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lanchat.Ipc.Commands.General;
+using Lanchat.Ipc.Commands.Config;
 
 namespace Lanchat.Ipc.Commands
 {
@@ -11,11 +11,14 @@ namespace Lanchat.Ipc.Commands
 
         public CommandsManager()
         {
-            // General commands
+            // General
             commands.Add(new Broadcast());
             commands.Add(new Connect());
             commands.Add(new Disconnect());
+
+            // Config
             commands.Add(new Nick());
+            commands.Add(new Status());
         }
 
         public ICommand GetCommandByAlias(string alias)

@@ -1,4 +1,4 @@
-namespace Lanchat.Ipc.Commands.General
+namespace Lanchat.Ipc.Commands.Config
 {
     public class Nick : ICommand
     {
