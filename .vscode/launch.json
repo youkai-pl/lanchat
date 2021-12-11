@@ -22,7 +22,7 @@
             "preLaunchTask": "build-ipc",
             "program": "${workspaceFolder}/Lanchat.Ipc/bin/Debug/net6.0/Lanchat.Ipc.dll",
             "args": [
-                "lfs",
+                "lanchat.sock",
                 "-d",
                 "-a"
             ],
