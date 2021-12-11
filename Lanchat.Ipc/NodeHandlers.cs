@@ -22,12 +22,12 @@ namespace Lanchat.Ipc
 
         private void NodeOnConnected(object sender, EventArgs e)
         {
-            Program.IpcSocket.Send($"connected/{node.Id}");
+            Program.IpcSocket.Send($"{node.Id}/connected");
         }
 
         private void NodeOnDisconnected(object sender, EventArgs e)
         {
-            Program.IpcSocket.Send($"disconnected/{node.Id}");
+            Program.IpcSocket.Send($"{node.Id}/disconnected");
         }
 
         private void MessagingOnMessageReceived(object sender, string e)

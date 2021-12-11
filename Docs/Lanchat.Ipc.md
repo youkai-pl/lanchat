@@ -12,10 +12,22 @@ Commands arguments are separated by `/`.
 
 ### General
 
-| Command    | Description                | Syntax       | Example                                           |
+| Command    | Description                | Arguments    | Example                                           |
 |------------|----------------------------|--------------|---------------------------------------------------|
-| broadcast  | Send message to all nodes. | *string*     | `broadcast/hello`                                 |
+| broadcast  | Send message to all nodes. | *message*    | `broadcast/message-content`                       |
 | connect    | Connect with node.         | *IP address* | `connect/127.0.0.1`                               |
 | -          | -                          | *hostname*   | `connect/localhost`                               |
-| disconnect | Disconnect from node.      | *GUID*       | `disconnect/00000000-0000-0000-0000-000000000000` |
-| nick       | Change nickname.           | *string*     | `nick/test`                                       |
+| disconnect | Disconnect from node.      | *GUID*       | `disconnect/node-id`                              |
+| nick       | Change nickname.           | *nickname*   | `nick/test`                                       |
+
+## Output
+
+### Node events
+| Event           | Description                 | Arguments          | Example                                   |
+|-----------------|-----------------------------|--------------------|-------------------------------------------|
+| connected       | Node connected.             | *GUID*             | `node-id/connected`                       |
+| disconnected    | Node disconnected.          | *GUID*             | `node-id/disconnected`                    |
+| message         | Broadcast message received. | *GUID*; *message*  | `node-id/message/message-content`         |
+| private_message | Private message received.   | *GUID*; *message*  | `node-id/private_message/message-content` |
+| nickname_update | Node nickname changed.      | *GUID*; *nickname* | `node-id/nickname_update/new-nickname`    |
+| status_update   | Node status changed.        | *GUID*; *status*   | `node-id/status_update/new-status`        |
