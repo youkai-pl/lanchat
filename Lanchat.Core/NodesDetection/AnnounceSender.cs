@@ -40,7 +40,6 @@ namespace Lanchat.Core.NodesDetection
                     udpClient.Send(json, endPoint);
                     Thread.Sleep(2000);
                 }
-                // ReSharper disable once FunctionNeverReturns
             });
         }
     }

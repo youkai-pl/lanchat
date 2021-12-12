@@ -24,10 +24,7 @@ namespace Lanchat.Terminal.UserInterface
 
         public void OnInput(InputEvent inputEvent)
         {
-            var key = inputEvent.Key.Key;
-
-            // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
-            switch (key)
+            switch (inputEvent.Key.Key)
             {
                 case ConsoleKey.UpArrow:
                     Window.UiAction(() => promptInput.Text = GetFromHistory(-1));

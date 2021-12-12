@@ -2,8 +2,6 @@ using Lanchat.Core.Api;
 using Lanchat.Core.Network.Models;
 using Lanchat.Core.TransportLayer;
 
-// ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
-
 namespace Lanchat.Core.Network.Handlers
 {
     internal class ConnectionControlHandler : ApiHandler<ConnectionControl>

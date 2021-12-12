@@ -86,7 +86,6 @@ namespace Lanchat.Terminal.UserInterface
                         ConsoleManager.AdjustBufferSize();
                     });
                 }
-                // ReSharper disable once FunctionNeverReturns
             }).Start();
         }
 
