@@ -5,7 +5,7 @@
 Lanchat is app and library for communication in P2P manner.
 
 Initially designed for use in LAN networks also can works over internet (if you have public address and port forwarded).
-Main purpose of Lanchat is messaging but Lanchat.Core library is extendable (see Lanpaint).
+Main purpose of Lanchat is messaging but Lanchat.Core library is extendable (see [Lanpaint](https://github.com/tof4/Lanpaint)).
 
 [Documentation](https://youkai.pl/lanchat/)
 
@@ -40,4 +40,4 @@ If public key was changed Lanchat will give error message on each connection. If
 example ip address is used by more than one user)
 you should remove corresponding PEM file in Lanchat config directory.
 
-Messages and transferred files are encrypted. Other data, like nicknames or status changes, is sent in plain JSON format.
+**Messages and transferred files are encrypted. Other data, like nicknames or status changes, is sent in plain JSON format.**
