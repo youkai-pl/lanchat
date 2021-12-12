@@ -13,6 +13,7 @@ namespace Lanchat.Ipc.Commands
         {
             // General
             commands.Add(new Broadcast());
+            commands.Add(new Private());
             commands.Add(new Connect());
             commands.Add(new Disconnect());
 

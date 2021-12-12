@@ -1,18 +1,20 @@
 using System;
+using System.Linq;
 
 namespace Lanchat.Ipc.Commands.General
 {
-    public class Disconnect : ICommand
+    public class Private : ICommand
     {
-        public string Alias => "disconnect";
-        public int ArgsCount => 1;
+        public string Alias => "private";
+        public int ArgsCount => 2;
+        public int ContextArgsCount => ArgsCount;
 
         public void Execute(string[] args)
         {
             var node = Program.Network.Nodes.Find(x => x.User.ShortId == args[0]);
             if (node != null)
             {
-                node.Disconnect();
+                node.Messaging.SendPrivateMessage(string.Join(" ", args.Skip(1)));
             }
             else
             {

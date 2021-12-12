@@ -24,12 +24,13 @@ Data is encoded in `UTF-8`.
 
 #### General
 
-| Command    | Description                | Arguments    | Example                     |
-| ---------- | -------------------------- | ------------ | --------------------------- |
-| broadcast  | Send message to all nodes. | *message*    | `broadcast/message-content` |
-| connect    | Connect with node.         | *IP address* | `connect/127.0.0.1`         |
-| -          | -                          | *hostname*   | `connect/localhost`         |
-| disconnect | Disconnect from node.      | *ID*         | `disconnect/node-id`        |
+| Command    | Description                | Arguments       | Example                           |
+| ---------- | -------------------------- | --------------- | --------------------------------- |
+| broadcast  | Send message to all nodes. | *message*       | `broadcast/message-content`       |
+| private    | Send private message       | *ID*; *message* | `private/node-id/message-content` |
+| connect    | Connect with node.         | *IP address*    | `connect/127.0.0.1`               |
+| -          | -                          | *hostname*      | `connect/localhost`               |
+| disconnect | Disconnect from node.      | *ID*            | `disconnect/node-id`              |
 
 #### Config
 
@@ -60,6 +61,12 @@ Data is encoded in `UTF-8`.
 
 ### Types
 
+#### Simple types
+* *ID* - Node short id
+* *message* - message string
+* *hostname* - domain name
+* *IP address* - node IP address
+  
 #### Error (enum)
 
 | Value              |
@@ -77,10 +84,3 @@ Data is encoded in `UTF-8`.
 | `online` |
 | `afk`    |
 | `dnd`    |
-
-
-#### String types
-
-* message
-* hostname
-* IP address
