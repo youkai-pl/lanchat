@@ -1,5 +1,3 @@
-using System;
-
 namespace Lanchat.Ipc.Commands.General
 {
     public class Disconnect : ICommand
