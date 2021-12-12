@@ -32,11 +32,16 @@ namespace Lanchat.Terminal.UserInterface.Views
         {
             foreach (var line in SplitLines(text))
             {
-                AddToLog(new List<TextBlock>
-                {
-                    new() { Text = $"{DateTime.Now:HH:mm:ss} ", Color = ConsoleColor.White},
-                    new() { Text = line, Color = color }
-                });
+                AddToLog(
+                    new List<TextBlock>
+                    {
+                        new() { Text = $"{DateTime.Now:HH:mm:ss}", Color = ConsoleColor.White },
+                        new() { Text = " " },
+                    },
+                    new List<TextBlock>
+                    {
+                        new() { Text = line, Color = color }
+                    });
             }
         }
 
@@ -44,13 +49,18 @@ namespace Lanchat.Terminal.UserInterface.Views
         {
             foreach (var line in SplitLines(text))
             {
-                AddToLog(new List<TextBlock>
-                {
-                    new() { Text = $"{DateTime.Now:HH:mm:ss} ", Color = ConsoleColor.White },
-                    new() { Text = nickname, Color = ConsoleColor.Blue },
-                    new() { Text = " " },
-                    new() { Text = line }
-                });
+                AddToLog(
+                    new List<TextBlock>
+                    {
+                        new() { Text = $"{DateTime.Now:HH:mm:ss}", Color = ConsoleColor.White },
+                        new() { Text = " " },
+                        new() { Text = nickname, Color = ConsoleColor.Blue },
+                        new() { Text = " " },
+                    },
+                    new List<TextBlock>
+                    {
+                        new() { Text = line }
+                    });
             }
         }
 
@@ -72,17 +82,29 @@ namespace Lanchat.Terminal.UserInterface.Views
             );
         }
 
-        private void AddToLog(IEnumerable<TextBlock> textBlocks)
+        private void AddToLog(List<TextBlock> header, List<TextBlock> content)
         {
             Window.UiAction(() =>
             {
-                stackPanel.Add(new WrapPanel
-                {
-                    Content = new HorizontalStackPanel
+                stackPanel.Add(
+                    new DockPanel
                     {
-                        Children = textBlocks
-                    }
-                });
+                        DockedControl = new WrapPanel
+                        {
+                            Content = new HorizontalStackPanel
+                            {
+                                Children = header
+                            }
+                        },
+                        FillingControl = new WrapPanel
+                        {
+                            Content = new HorizontalStackPanel
+                            {
+                                Children = content
+                            }
+                        },
+                        Placement = DockPanel.DockedControlPlacement.Left
+                    });
                 ScrollPanel.Top = int.MaxValue;
             });
         }
