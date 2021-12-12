@@ -25,7 +25,7 @@ namespace Lanchat.Ipc.Commands.Config
                     break;
 
                 default:
-                    Program.IpcSocket.Send("invalid_argument");
+                    Program.IpcSocket.SendError(Error.invalid_argument);
                     break;
             }
         }

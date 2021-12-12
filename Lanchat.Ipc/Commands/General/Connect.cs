@@ -38,20 +38,20 @@ namespace Lanchat.Ipc.Commands.General
 
                 if (!result)
                 {
-                    Program.IpcSocket.Send("cannot_connect");
+                    Program.IpcSocket.SendError(Error.cannot_connect);
                 }
             }
             catch (FormatException)
             {
-                Program.IpcSocket.Send("invalid_argument");
+                Program.IpcSocket.SendError(Error.invalid_argument);
             }
             catch (SocketException)
             {
-                Program.IpcSocket.Send("invalid_argument");
+                Program.IpcSocket.SendError(Error.invalid_argument);
             }
             catch (ArgumentException)
             {
-                Program.IpcSocket.Send("invalid_argument");
+                Program.IpcSocket.SendError(Error.invalid_argument);
             }
         }
     }

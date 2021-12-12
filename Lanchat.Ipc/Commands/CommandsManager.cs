@@ -34,7 +34,7 @@ namespace Lanchat.Ipc.Commands
             var command = GetCommandByAlias(commandAlias);
             if (command == null)
             {
-                Program.IpcSocket.Send("invalid_command");
+                Program.IpcSocket.SendError(Error.invalid_command);
                 return;
             }
 
@@ -49,7 +49,7 @@ namespace Lanchat.Ipc.Commands
                 return true;
             }
 
-            Program.IpcSocket.Send("invalid_arguments");
+            Program.IpcSocket.SendError(Error.missing_argument);
             return false;
         }
     }

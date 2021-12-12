@@ -11,7 +11,7 @@ namespace Lanchat.Ipc.Commands.Config
             var nickname = args[0].Trim();
             if (nickname.Length >= 20 || string.IsNullOrWhiteSpace(nickname))
             {
-                Program.IpcSocket.Send("invalid_argument");
+                Program.IpcSocket.SendError(Error.invalid_argument);
             }
             else
             {

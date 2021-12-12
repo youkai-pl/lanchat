@@ -15,32 +15,72 @@ Options:
 * `-n` - disable server
 * `-b` - disable broadcasting
 
-Commands arguments are separated by `/`. Use UTF-8 encoding.
+## API
 
-## Commands
+Commands arguments are separated by `/`.
+Data is encoded in `UTF-8`.
 
-### General
+### Commands
+
+#### General
 
 | Command    | Description                | Arguments    | Example                     |
-|------------|----------------------------|--------------|-----------------------------|
+| ---------- | -------------------------- | ------------ | --------------------------- |
 | broadcast  | Send message to all nodes. | *message*    | `broadcast/message-content` |
 | connect    | Connect with node.         | *IP address* | `connect/127.0.0.1`         |
 | -          | -                          | *hostname*   | `connect/localhost`         |
-| disconnect | Disconnect from node.      | *GUID*       | `disconnect/node-id`        |
+| disconnect | Disconnect from node.      | *ID*         | `disconnect/node-id`        |
 
-### Config
-| Command    | Description                | Arguments    | Example                     |
-| nick       | Change nickname.           | *nickname*   | `nick/test`                 |
-| status     | Change status.             | *status*     | `status/afk`                |
+#### Config
 
-## Output
+| Command | Description      | Arguments  | Example      |
+| ------- | ---------------- | ---------- | ------------ |
+| nick    | Change nickname. | *nickname* | `nick/test`  |
+| status  | Change status.   | *status*   | `status/afk` |
 
-### Node events
-| Event           | Description                 | Arguments          | Example                                   |
-|-----------------|-----------------------------|--------------------|-------------------------------------------|
-| connected       | Node connected.             | *GUID*             | `node-id/connected`                       |
-| disconnected    | Node disconnected.          | *GUID*             | `node-id/disconnected`                    |
-| message         | Broadcast message received. | *GUID*; *message*  | `node-id/message/message-content`         |
-| private_message | Private message received.   | *GUID*; *message*  | `node-id/private_message/message-content` |
-| nickname_update | Node nickname changed.      | *GUID*; *nickname* | `node-id/nickname_update/new-nickname`    |
-| status_update   | Node status changed.        | *GUID*; *status*   | `node-id/status_update/new-status`        |
+### Events
+
+#### General
+
+| Event | Description             | Arguments | Example                 |
+| ----- | ----------------------- | --------- | ----------------------- |
+| error | Command returned error. | *error*   | `error/invalid_command` |
+
+
+#### Node
+
+| Event           | Description                 | Arguments        | Example                                   |
+| --------------- | --------------------------- | ---------------- | ----------------------------------------- |
+| connected       | Node connected.             | *ID*             | `node-id/connected`                       |
+| disconnected    | Node disconnected.          | *ID*             | `node-id/disconnected`                    |
+| message         | Broadcast message received. | *ID*; *message*  | `node-id/message/message-content`         |
+| private_message | Private message received.   | *ID*; *message*  | `node-id/private_message/message-content` |
+| nickname_update | Node nickname changed.      | *ID*; *nickname* | `node-id/nickname_update/new-nickname`    |
+| status_update   | Node status changed.        | *ID*; *status*   | `node-id/status_update/new-status`        |
+
+### Types
+
+#### Error (enum)
+
+| Value              |
+|--------------------|
+| `invalid_command`  |
+| `invalid_argument` |
+| `missing_argument` |
+| `node_not_found`   |
+| `cannot_connect`   |
+
+#### Status (enum)
+
+| Value    |
+|----------|
+| `online` |
+| `afk`    |
+| `dnd`    |
+
+
+#### String types
+
+* message
+* hostname
+* IP address

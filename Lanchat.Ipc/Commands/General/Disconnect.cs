@@ -17,7 +17,7 @@ namespace Lanchat.Ipc.Commands.General
             }
             else
             {
-                Program.IpcSocket.Send("node_not_found");
+                Program.IpcSocket.SendError(Error.node_not_found);
             }
         }
     }

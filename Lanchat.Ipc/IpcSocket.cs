@@ -40,6 +40,11 @@ namespace Lanchat.Ipc
             handlers.ToList().ForEach(x => Send(x, data));
         }
 
+        public void SendError(Error error)
+        {
+            Send($"error/{error}");
+        }
+
         private void AcceptCallback(IAsyncResult ar)
         {
             allDone.Set();
