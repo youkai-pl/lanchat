@@ -19,7 +19,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                 VerticalContentPlacement = Box.VerticalPlacement.Center,
                 Content = new Boundary
                 {
-                    Width = 44,
+                    Width = 41,
                     Content = stackPanel
                 }
             };
@@ -35,7 +35,7 @@ namespace Lanchat.Terminal.UserInterface.Views
 
         private void WriteAsciiLogo()
         {
-            var currentVersion = $"Version: {Assembly.GetEntryAssembly()!.GetName().Version!.ToString(3)}";
+            var currentVersion = $"{Assembly.GetEntryAssembly()!.GetName().Version!.ToString(3)}";
             stackPanel.Add(new BreakPanel
             {
                 Content = new TextBlock

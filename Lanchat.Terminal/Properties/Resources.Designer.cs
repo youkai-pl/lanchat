@@ -260,12 +260,12 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to     
-        ///     __                     __          __
-        ///    / /   ____ _____  _____/ /_  ____ _/ /_
-        ///   / /   / __ `/ __ \/ ___/ __ \/ __ `/ __/
-        ///  / /___/ /_/ / / / / /__/ / / / /_/ / /_
-        /// /_____/\__,_/_/ /_/\___/_/ /_/\__,_/\__/
-        ///              {0}.
+        ///   _           _                     _ 
+        /// _| |_ __   __| |___   __ _ _ __    | |
+        ///|__ | &apos;_ \ / _` |__ \ / _` | &apos;_ \   | |
+        /// _| | |_) | | | |__) | | | | |_) |__| |
+        ///|__/|_.__/|_| |_|___/|_| |_|_.__/_____|                           
+        ///                                {0}.
         /// </summary>
         internal static string Logo {
             get {
@@ -630,6 +630,15 @@ namespace Lanchat.Terminal.Properties {
         internal static string WindowTitle {
             get {
                 return ResourceManager.GetString("WindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lanchat [New messages].
+        /// </summary>
+        internal static string WindowTitleNotification {
+            get {
+                return ResourceManager.GetString("WindowTitleNotification", resourceCulture);
             }
         }
         
