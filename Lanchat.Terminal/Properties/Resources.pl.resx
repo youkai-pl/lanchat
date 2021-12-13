@@ -43,7 +43,7 @@ Plik konfiguracyjny znajduje się w:
         <value>
     Zmiania nicku.
     Nick musi mieć pomiędzy 1 a 20 znaków.
-    Nick nie może zawierać spacji.
+    Nick nie może zawierać spacji.
         </value>
     </data>
     <data name="Summary_block" xml:space="preserve">
@@ -130,6 +130,9 @@ Plik konfiguracyjny znajduje się w:
     </data>
 
     <!-- UI elements -->
+    <data name="WindowTitleNotification" xml:space="preserve">
+        <value>Lanchat [Nowe wiadomości]</value>
+    </data>
     <data name="FileTransferTab" xml:space="preserve">
         <value>Wymiana plików</value>
     </data>

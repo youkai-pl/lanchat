@@ -171,6 +171,9 @@ Config file can be found in:
     <data name="WindowTitle" xml:space="preserve">
         <value>Lanchat</value>
     </data>
+    <data name="WindowTitleNotification" xml:space="preserve">
+        <value>Lanchat [New messages]</value>
+    </data>
     <data name="MainTab" xml:space="preserve">
         <value>Lanchat</value>
     </data>

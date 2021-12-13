@@ -20,6 +20,7 @@ namespace Lanchat.Terminal
         public static Config Config { get; private set; }
         public static NodesDatabase NodesDatabase { get; private set; }
         public static CommandsManager CommandsManager { get; private set; }
+        public static Notifications Notifications {get; private set;}
 
         private static async Task Main(string[] args)
         {
@@ -30,6 +31,7 @@ namespace Lanchat.Terminal
             Config = Storage.LoadConfig();
             NodesDatabase = new NodesDatabase();
             CommandsManager = new CommandsManager();
+            Notifications = new Notifications();
 
             try
             {

@@ -59,12 +59,14 @@ namespace Lanchat.Terminal.Handlers
 
         private void MessagingOnMessageReceived(object sender, string e)
         {
+            Program.Notifications.ShowNotification();
             TabsManager.MainChatView.AddMessage(e, $"{node.User.Nickname}#{node.User.ShortId}");
             TabsManager.SignalNewMessage();
         }
 
         private void MessagingOnPrivateMessageReceived(object sender, string e)
         {
+            Program.Notifications.ShowNotification();
             privateChatView.AddMessage(e, $"{node.User.Nickname}#{node.User.ShortId}");
             TabsManager.SignalPrivateNewMessage(node);
         }

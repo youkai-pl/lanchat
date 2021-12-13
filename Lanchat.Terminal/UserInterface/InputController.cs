@@ -24,6 +24,8 @@ namespace Lanchat.Terminal.UserInterface
 
         public void OnInput(InputEvent inputEvent)
         {
+            Program.Notifications.ResetInactivityTimer();
+
             switch (inputEvent.Key.Key)
             {
                 case ConsoleKey.UpArrow:
