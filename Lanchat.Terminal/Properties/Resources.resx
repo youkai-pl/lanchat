@@ -25,7 +25,7 @@ connect   disconnect   nick
 block     unblock      blocked
 afk       dnd          online
 send      accept       reject
-cancel    exit         help
+cancel    whois        exit
 
 Try /help [command] for more info.
       
@@ -109,6 +109,11 @@ Config file can be found in:
     Change status to "Online"
         </value>
     </data>
+    <data name="Summary_whois" xml:space="preserve">
+        <value>
+    Show information about user
+        </value>
+    </data>
 
     <!-- Help / Commands syntax -->
     <data name="Syntax_connect" xml:space="preserve">
@@ -164,6 +169,11 @@ Config file can be found in:
         <value>
     /help
     /help [command]
+        </value>
+    </data>
+    <data name="Syntax_whois" xml:space="preserve">
+        <value>
+    /whois [ID]
         </value>
     </data>
 
@@ -249,6 +259,16 @@ Check /help [command]</value>
     </data>
     <data name="BlockedList" xml:space="preserve">
         <value>Blocked IP addresses</value>
+    </data>
+    <data name="Whois" xml:space="preserve">
+        <value>Nickname: {0}
+ID: {1}
+Status: {2}
+IP address: {3}
+Connection port: {4}
+Host ID: {5}
+Client: {6}
+Fingerprint: {7}</value>
     </data>
 
     <!-- File transfer -->

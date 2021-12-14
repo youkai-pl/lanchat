@@ -234,7 +234,7 @@ namespace Lanchat.Terminal.Properties {
         ///block     unblock      blocked
         ///afk       dnd          online
         ///send      accept       reject
-        ///cancel    exit         help
+        ///cancel    whois        exit
         ///
         ///Try /help [command] for more info.
         ///      
@@ -474,6 +474,17 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    Show information about user
+        ///        .
+        /// </summary>
+        internal static string Summary_whois {
+            get {
+                return ResourceManager.GetString("Summary_whois", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Syntax.
         /// </summary>
         internal static string Syntax {
@@ -598,6 +609,17 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///    /whois [ID]
+        ///        .
+        /// </summary>
+        internal static string Syntax_whois {
+            get {
+                return ResourceManager.GetString("Syntax_whois", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} unblocked.
         /// </summary>
         internal static string Unblocked {
@@ -621,6 +643,22 @@ namespace Lanchat.Terminal.Properties {
         internal static string UsersTab {
             get {
                 return ResourceManager.GetString("UsersTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nickname: {0}
+        ///ID: {1}
+        ///Status: {2}
+        ///IP address: {3}
+        ///Connection port: {4}
+        ///Host ID: {5}
+        ///Client: {6}
+        ///Fingerprint: {7}.
+        /// </summary>
+        internal static string Whois {
+            get {
+                return ResourceManager.GetString("Whois", resourceCulture);
             }
         }
         

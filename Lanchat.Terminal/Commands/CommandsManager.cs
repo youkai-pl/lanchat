@@ -23,6 +23,7 @@ namespace Lanchat.Terminal.Commands
             commands.Add(new Exit());
             commands.Add(new Help());
             commands.Add(new Nick());
+            commands.Add(new Whois());
 
             // Status commands
             commands.Add(new Afk());
