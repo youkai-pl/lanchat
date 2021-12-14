@@ -17,7 +17,7 @@ namespace Lanchat.Terminal.Commands
 
         public CommandsManager()
         {
-            // General commands
+            // General
             commands.Add(new Connect());
             commands.Add(new Disconnect());
             commands.Add(new Exit());
@@ -25,12 +25,12 @@ namespace Lanchat.Terminal.Commands
             commands.Add(new Nick());
             commands.Add(new Whois());
 
-            // Status commands
+            // Status
             commands.Add(new Afk());
             commands.Add(new Dnd());
             commands.Add(new Online());
 
-            // Blocking commands
+            // Blocking
             commands.Add(new Block());
             commands.Add(new Blocked());
             commands.Add(new Unblock());

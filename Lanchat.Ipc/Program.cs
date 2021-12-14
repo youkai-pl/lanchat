@@ -10,6 +10,7 @@ namespace Lanchat.Ipc
     public static class Program
     {
         public static Config Config { get; set; }
+        public static NodesDatabase NodesDatabase { get; set; }
         public static CommandsManager CommandsManager { get; set; }
         public static P2P Network { get; set; }
         public static IpcSocket IpcSocket { get; set; }
@@ -21,9 +22,10 @@ namespace Lanchat.Ipc
 
             Config.DebugMode = true;
 
+            NodesDatabase = new NodesDatabase();
             CommandsManager = new CommandsManager();
             IpcSocket = new IpcSocket(args[0]);
-            Network = new P2P(Config, new NodesDatabase(), x => _ = new NodeHandlers(x.Instance));
+            Network = new P2P(Config, NodesDatabase, x => _ = new NodeHandlers(x.Instance));
 
             Network.Start();
             IpcSocket.Start();

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Lanchat.Ipc.Commands.General;
 using Lanchat.Ipc.Commands.Config;
+using Lanchat.Ipc.Commands.Blocking;
 
 namespace Lanchat.Ipc.Commands
 {
@@ -16,6 +17,11 @@ namespace Lanchat.Ipc.Commands
             commands.Add(new Private());
             commands.Add(new Connect());
             commands.Add(new Disconnect());
+
+            // Blocking
+            commands.Add(new Block());
+            commands.Add(new Blocked());
+            commands.Add(new Unblock());
 
             // Config
             commands.Add(new Nick());
