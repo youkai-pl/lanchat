@@ -15,9 +15,9 @@ connect   disconnect   nick
 block     unblock      blocked
 afk       dnd          online
 send      accept       reject
-cancel    exit         help
+cancel    whois        exit
 
-Digite /help [comando] para mais detalhes.
+Digite comando /help para mais detalhes.
       
 Pode encontrar o arquivo de configuração em:
 {0}
@@ -48,14 +48,14 @@ Pode encontrar o arquivo de configuração em:
     </data>
     <data name="Summary_block" xml:space="preserve">
         <value>
-    Bloqueie conexões para alguns usuários.
+    Bloquear conexão para usuário.
     Se você não estiver conectado neste momento, pode bloquear por endereço IP.
         </value>
     </data>
     <data name="Summary_unblock" xml:space="preserve">
         <value>
-    Bloqueia usuário. Precisa usar o endereço IP do usuário em argumento.
-    Digite comando /blocked para ver lista de endereços bloqueados.
+    Desbloquear usuário. Precisa usar o endereço IP do usuário em argumento.
+    Digite comando /blocked para ver a lista de endereços bloqueados.
         </value>
     </data>
     <data name="Summary_blocked" xml:space="preserve">
@@ -65,7 +65,7 @@ Pode encontrar o arquivo de configuração em:
     </data>
     <data name="Summary_send" xml:space="preserve">
         <value>
-    Envio de arquivo. Certifique-se de que a localização no argumento não tenha aspas.
+    Envio de arquivo. Certifique-se de que o caminho no argumento não tenha aspas.
     Se destinatário aceitar o pedido, a transferência será iniciada.
         </value>
     </data>
@@ -86,7 +86,7 @@ Pode encontrar o arquivo de configuração em:
     </data>
     <data name="Summary_afk" xml:space="preserve">
         <value>
-    Muda status para "Já volto"
+    Muda status para "Indisponível"
         </value>
     </data>
     <data name="Summary_dnd" xml:space="preserve">
@@ -97,6 +97,11 @@ Pode encontrar o arquivo de configuração em:
     <data name="Summary_online" xml:space="preserve">
         <value>
     Muda status para "Disponível"
+        </value>
+    </data>
+    <data name="Summary_whois" xml:space="preserve">
+        <value>
+    Mostra informação sobre usuário
         </value>
     </data>
 
@@ -138,6 +143,9 @@ Pode encontrar o arquivo de configuração em:
     </data>
 
     <!-- UI elements -->
+    <data name="WindowTitleNotification" xml:space="preserve">
+        <value>Lanchat [Novas mensagens]</value>
+    </data>
     <data name="FileTransferTab" xml:space="preserve">
         <value>Transferência de arquivo</value>
     </data>
@@ -169,7 +177,7 @@ Pode encontrar o arquivo de configuração em:
     </data>
     <data name="FreshRsa" xml:space="preserve">
         <value>Para garantir que a conexão com {0} seja segura, 
-	verifique a impressão digital na área de "Usuários".</value>
+	verifique a impressão digital na área com "Usuários".</value>
     </data>
     <data name="RsaChanged" xml:space="preserve">
         <value>A chave pública de {0} mudou. A conexão pode não estar segura.</value>
@@ -207,10 +215,20 @@ Digite /help [comando]</value>
         <value>{0} desbloqueado</value>
     </data>
     <data name="AlreadyBlocked" xml:space="preserve">
-        <value>Endereço já bloqueado</value>
+        <value>O endereço já bloqueado</value>
     </data>
     <data name="BlockedList" xml:space="preserve">
         <value>Endereços IP bloqueados</value>
+    </data>
+    <data name="Whois" xml:space="preserve">
+        <value>Nickname: {0}
+ID: {1}
+Status: {2}
+Endereço IP: {3}
+Porta da conexão: {4}
+ID do host: {5}
+Cliente: {6}
+Impressão digital: {7}</value>
     </data>
 
     <!-- File transfer -->
@@ -234,6 +252,6 @@ Digite /help [comando]</value>
     </data>
     <data name="CannotAccessFile" xml:space="preserve">
         <value>Não foi possível acessar {0}
-Tanto o nome do arquivo quanto as permissões podem estar incorretos.</value>
+O caminho do arquivo ou as permissões podem estar incorretos.</value>
     </data>
 </root>
