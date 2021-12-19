@@ -19,6 +19,7 @@ namespace Lanchat.Core.Network.Handlers
 
         protected override void Handle(NodesList nodesList)
         {
+            Disabled = true;
             if (!config.ConnectToReceivedList)
             {
                 return;
