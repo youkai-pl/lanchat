@@ -7,7 +7,7 @@ namespace Lanchat.Terminal
     {
         public override void WriteLine(string message)
         {
-            TabsManager.DebugView.AddToLog(message);
+            TabsManager.DebugView?.AddToLog(message);
         }
     }
 }

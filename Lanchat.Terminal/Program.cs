@@ -50,6 +50,8 @@ namespace Lanchat.Terminal
                 _ = new FileTransferHandlers(x.Instance);
             });
 
+            _ = new GeneralHandlers(Network);
+
             CheckStartArguments(args);
             Window.Initialize();
             Logger.StartLogging();
