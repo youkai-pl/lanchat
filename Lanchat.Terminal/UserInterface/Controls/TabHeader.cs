@@ -12,7 +12,7 @@ namespace Lanchat.Terminal.UserInterface.Controls
 
         public TabHeader(string text)
         {
-            textBlock = new TextBlock { Text = text };
+            textBlock = new TextBlock { Text = text, Color = Theme.Foreground };
             headerBackground = new Background
             {
                 Content = new Margin

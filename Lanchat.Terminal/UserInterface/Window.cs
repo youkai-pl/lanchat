@@ -13,7 +13,7 @@ namespace Lanchat.Terminal.UserInterface
 {
     public static class Window
     {
-        private static readonly DockPanel DockPanel;
+        private static readonly IControl Root;
         private static readonly List<IInputListener> InputListeners = new();
         private static readonly object Locker = new();
 
@@ -43,11 +43,19 @@ namespace Lanchat.Terminal.UserInterface
                 }
             };
 
-            DockPanel = new DockPanel
+            Root = new Background()
             {
-                Placement = DockPanel.DockedControlPlacement.Bottom,
-                FillingControl = TabPanel,
-                DockedControl = promptBox
+                Color = Theme.Background,
+                Content = new Style()
+                {
+                    Foreground = Theme.Foreground,
+                    Content = new DockPanel
+                    {
+                        Placement = DockPanel.DockedControlPlacement.Bottom,
+                        FillingControl = TabPanel,
+                        DockedControl = promptBox
+                    }
+                }
             };
 
             SetupInputListeners(promptInput);
@@ -62,7 +70,7 @@ namespace Lanchat.Terminal.UserInterface
                 ConsoleManager.Console = new SimplifiedConsole();
             }
             ConsoleManager.Setup();
-            ConsoleManager.Content = DockPanel;
+            ConsoleManager.Content = Root;
             Console.Title = Resources.WindowTitle;
             TabsManager.Initialize();
             StartUiThread();
