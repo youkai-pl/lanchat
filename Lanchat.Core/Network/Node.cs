@@ -2,19 +2,26 @@
 using System.Net.Sockets;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
+using Lanchat.Core.Config;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Identity;
 using Lanchat.Core.Network.Models;
+using Lanchat.Core.NodesDiscovery;
 using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.Network
 {
     internal class Node : IDisposable, INode, INodeInternal
     {
-        public Node(IHost host)
+        private readonly INodesDatabase nodesDatabase;
+        private readonly INodesExchange nodesExchange;
+
+        public Node(IHost host, INodesDatabase nodesDatabase, INodesExchange nodesExchange)
         {
             Host = host;
+            this.nodesDatabase = nodesDatabase;
+            this.nodesExchange = nodesExchange;
         }
 
         public void Dispose()
@@ -73,6 +80,19 @@ namespace Lanchat.Core.Network
         public void OnCannotConnect()
         {
             CannotConnect?.Invoke(this, EventArgs.Empty);
+        }
+
+        public bool Trusted
+        {
+            get
+            {
+                return nodesDatabase.GetNodeInfo(Host.Endpoint.Address).Trusted;
+            }
+            set
+            {
+                nodesDatabase.GetNodeInfo(Host.Endpoint.Address).Trusted = value;
+                nodesExchange.ConnectWithAwaitingList(this);
+            }
         }
     }
 }

@@ -48,6 +48,11 @@ namespace Lanchat.Terminal.Handlers
                         $"{node.User.Nickname}#{node.User.ShortId}"));
                     break;
             }
+
+            if(!node.Trusted)
+            {
+                Writer.WriteWarning("If you know this user you can mark it's node as trusted.");
+            }
         }
 
         private void NodeOnDisconnected(object sender, EventArgs e)

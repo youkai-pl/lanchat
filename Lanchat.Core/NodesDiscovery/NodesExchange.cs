@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Lanchat.Core.Config;
 using Lanchat.Core.Network;
@@ -9,13 +10,12 @@ namespace Lanchat.Core.NodesDiscovery
     internal class NodesExchange : INodesExchange
     {
         private readonly IConfig config;
-        private readonly INodesDatabase nodesDatabase;
         private readonly IP2P network;
+        private readonly List<Tuple<INode, NodesList>> awaitingLists = new();
 
-        public NodesExchange(IConfig config, INodesDatabase nodesDatabase, IP2P network)
+        public NodesExchange(IConfig config, IP2P network)
         {
             this.config = config;
-            this.nodesDatabase = nodesDatabase;
             this.network = network;
         }
 
@@ -26,14 +26,14 @@ namespace Lanchat.Core.NodesDiscovery
                 return;
             }
 
-            var nodeInfo = nodesDatabase.GetNodeInfo(sender.Host.Endpoint.Address);
-            if (!nodeInfo.Trusted)
+            if (!sender.Trusted)
             {
-                Trace.WriteLine("Node is not trusted. Ignoring list exchange");
+                Trace.WriteLine("Node is not trusted. Ignoring list exchange.");
+                awaitingLists.Add(new Tuple<INode, NodesList>(sender, nodesList));
                 return;
             }
 
-            Trace.WriteLine("Connecting with nodes from list");
+            Trace.WriteLine("Connecting with nodes from list.");
             nodesList.ForEach(x =>
             {
                 try
@@ -43,6 +43,17 @@ namespace Lanchat.Core.NodesDiscovery
                 catch (ArgumentException)
                 { }
             });
+        }
+
+        public void ConnectWithAwaitingList(INode node)
+        {
+            Trace.WriteLine("Connecting with list");
+            var list = awaitingLists.Find(x => x.Item1 == node);
+            if (list != null)
+            {
+                ConnectWithList(node, list.Item2);
+                awaitingLists.Remove(list);
+            }
         }
     }
 }

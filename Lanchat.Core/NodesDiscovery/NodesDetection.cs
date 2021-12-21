@@ -29,8 +29,8 @@ namespace Lanchat.Core.NodesDiscovery
 
         internal void Start()
         {
-            announceListener.Start();
-            announceSender.Start();
+          //  announceListener.Start();
+          //  announceSender.Start();
         }
     }
 }

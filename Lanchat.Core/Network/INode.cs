@@ -64,5 +64,8 @@ namespace Lanchat.Core.Network
         ///     Disconnect from node.
         /// </summary>
         void Disconnect();
+
+        /// <inheritdoc cref="Config.INodeInfo.Trusted"/>
+        bool Trusted {get;set;}
     }
 }

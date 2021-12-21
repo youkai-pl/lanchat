@@ -24,6 +24,7 @@ namespace Lanchat.Terminal.Commands
             commands.Add(new Help());
             commands.Add(new Nick());
             commands.Add(new Whois());
+            commands.Add(new Trust());
 
             // Status
             commands.Add(new Afk());
