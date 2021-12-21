@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Lanchat.ClientCore;
+using Lanchat.Core.Config;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Commands;
 using Lanchat.Terminal.Handlers;
@@ -18,7 +19,7 @@ namespace Lanchat.Terminal
     {
         public static IP2P Network { get; private set; }
         public static Config Config { get; private set; }
-        public static NodesDatabase NodesDatabase { get; private set; }
+        public static INodesDatabase NodesDatabase { get; private set; }
         public static CommandsManager CommandsManager { get; private set; }
         public static Notifications Notifications {get; private set;}
 

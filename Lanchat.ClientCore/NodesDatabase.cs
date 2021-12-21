@@ -68,6 +68,12 @@ namespace Lanchat.ClientCore
             return savedNodes.Find(x => Equals(x.IpAddress, ipAddress)) ?? CreateNodeInfo(ipAddress);
         }
 
+        /// <inheritdoc />
+        public INodeInfo GetNodeInfo(int id)
+        {
+            return savedNodes.Find(x => x.Id == id);
+        }
+
         internal static string ReadPemFile(string name)
         {
             try

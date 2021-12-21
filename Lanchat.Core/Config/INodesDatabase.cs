@@ -28,7 +28,16 @@ namespace Lanchat.Core.Config
         /// <summary>
         ///     Get node info by IP address.
         /// </summary>
+        /// <remarks>
+        ///     Creates new entry if address is not found.
+        /// </remarks>
         /// <param name="ipAddress">Node IP Address</param>
         INodeInfo GetNodeInfo(IPAddress ipAddress);
+
+         /// <summary>
+        ///     Get node info by ID.
+        /// </summary>
+        /// <param name="id">Node ID</param>
+        INodeInfo GetNodeInfo(int id);
     }
 }

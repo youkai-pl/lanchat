@@ -17,8 +17,8 @@ namespace Lanchat.Terminal.Commands.Blocking
         public void Execute(string[] _)
         {
             var blockedNodes = Program.NodesDatabase.SavedNodes.Where(x => x.Blocked).ToList();
-            Writer.WriteText($"{Resources.BlockedList} {blockedNodes.Count}");
-            blockedNodes.ForEach(x => Writer.WriteText($"{x}"));
+            Writer.WriteText($"{Resources.BlockedList}:");
+            blockedNodes.ForEach(x => Writer.WriteText($"{x.Nickname}#{x.Id} - {x.IpAddress}"));
         }
 
         public void Execute(string[] args, INode node)
