@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Cryptography;
@@ -35,6 +36,11 @@ namespace Lanchat.Tests.Mock.Config
             {
                 PublicKey = pem
             };
+        }
+
+        public INodeInfo GetNodeInfo(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
