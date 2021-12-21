@@ -16,6 +16,7 @@ block     unblock      blocked
 afk       dnd          online
 send      accept       reject
 cancel    whois        exit
+trust
 
 Sprwadź /help [polecenie] aby uzyskać więcej informacji.
       
@@ -104,6 +105,13 @@ Plik konfiguracyjny znajduje się w:
     Wyświetl informacje o użytkowniku
         </value>
     </data>
+    <data name="Summary_trust" xml:space="preserve">
+        <value>
+    Oznacz użytkownika jako zaufanego.
+    Jeśli użytkownik jest zaufany Lanchat będzie się łączył do adresów otrzymanych od tego użytkownika.
+    Lista zaufanych użytkowników jest przechowywana w pliku "nodes.json".
+        </value>
+    </data>
 
     <!-- Help / Commands syntax -->
     <data name="Syntax_nick" xml:space="preserve">
@@ -161,6 +169,10 @@ Plik konfiguracyjny znajduje się w:
     <data name="Disconnected" xml:space="preserve">
         <value>Rozłączono z {0}</value>
     </data>
+        <data name="ConnectedWithUntrusted" xml:space="preserve">
+        <value>{0} nie jest zaufany. Dla bezpieczeństwa niektóre funkcje pozostaną wyłączone dopóki nie oznaczysz tego użytkownika jako zaufanego.
+Użyj komendy /trust [ID].</value>
+    </data>
     <data name="CannotConnect" xml:space="preserve">
         <value>Nie można połączyć z {0}</value>
     </data>
@@ -212,7 +224,7 @@ Sprwadź /help [command]</value>
     <data name="BlockedList" xml:space="preserve">
         <value>Zablokowane adresy IP:</value>
     </data>
-        <data name="Whois" xml:space="preserve">
+    <data name="Whois" xml:space="preserve">
         <value>Nickname: {0}
 ID: {1}
 Status: {2}
@@ -222,7 +234,12 @@ ID hosta: {5}
 Klient: {6}
 Skrót klucza RSA: {7}</value>
     </data>
-
+    <data name="UserTrused" xml:space="preserve">
+        <value>{0} jest teraz zaufany.</value>
+    </data>
+    <data name="UserAlreadyTrused" xml:space="preserve">
+        <value>{0} jest już zaufany.</value>
+    </data>
     <!-- File transfer -->
     <data name="FileTransferFinished" xml:space="preserve">
         <value>Zakończono</value>
