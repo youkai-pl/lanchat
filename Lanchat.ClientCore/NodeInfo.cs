@@ -12,6 +12,7 @@ namespace Lanchat.ClientCore
         private string nickname;
         private IPAddress ipAddress;
         private int id;
+        private bool trusted;
         private bool blocked;
 
         /// <inheritdoc />
@@ -44,6 +45,17 @@ namespace Lanchat.ClientCore
             {
                 nickname = value;
                 OnPropertyChanged(nameof(Nickname));
+            }
+        }
+
+        /// <inheritdoc />
+        public bool Trusted
+        {
+            get => trusted;
+            set
+            {
+                trusted = value;
+                OnPropertyChanged(nameof(Trusted));
             }
         }
 

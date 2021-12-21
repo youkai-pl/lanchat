@@ -26,6 +26,13 @@ namespace Lanchat.Core.NodesDiscovery
                 return;
             }
 
+            var nodeInfo = nodesDatabase.GetNodeInfo(sender.Host.Endpoint.Address);
+            if (!nodeInfo.Trusted)
+            {
+                Trace.WriteLine("Node is not trusted. Ignoring list exchange");
+                return;
+            }
+
             Trace.WriteLine("Connecting with nodes from list");
             nodesList.ForEach(x =>
             {
