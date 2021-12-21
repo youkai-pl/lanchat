@@ -54,6 +54,7 @@ namespace Lanchat.Tests.Mock.Network
         public IInternalNodeRsa InternalNodeRsa { get; set; }
         public Guid Id { get; }
         public bool Ready { get; set; }
+        public bool Trusted { get; set; }
 
         public void OnConnected()
         {
