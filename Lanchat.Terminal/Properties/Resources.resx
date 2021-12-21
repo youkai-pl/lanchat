@@ -14,7 +14,7 @@
     <data name="Help" xml:space="preserve">
         <value>
 Lanchat: LAN chat and file transfer
-https://youkai.pl/lanchat-docs
+https://youkai.pl/lanchat
 
 Tab / Shift+Tab       - tabs switching
 Up Arrow / Down Arrow - input history
@@ -26,6 +26,7 @@ block     unblock      blocked
 afk       dnd          online
 send      accept       reject
 cancel    whois        exit
+trust
 
 Try /help [command] for more info.
       
@@ -114,6 +115,13 @@ Config file can be found in:
     Show information about user
         </value>
     </data>
+    <data name="Summary_trust" xml:space="preserve">
+        <value>
+    Mark user as trusted.
+    If user is trusted Lanchat will connect with addresses from list received from this user.
+    List of trusted users persists in "nodes.json" file.
+        </value>
+    </data>
 
     <!-- Help / Commands syntax -->
     <data name="Syntax_connect" xml:space="preserve">
@@ -176,6 +184,11 @@ Config file can be found in:
     /whois [ID]
         </value>
     </data>
+    <data name="Syntax_trust" xml:space="preserve">
+        <value>
+    /trust [ID]
+        </value>
+    </data>
 
     <!-- UI elements -->
     <data name="WindowTitle" xml:space="preserve">
@@ -209,6 +222,10 @@ Config file can be found in:
     </data>
     <data name="Disconnected" xml:space="preserve">
         <value>{0} disconnected</value>
+    </data>
+    <data name="ConnectedWithUntrusted" xml:space="preserve">
+        <value>{0} isn't trusted. For safety reasons some features will be disabled until you mark user as trusted.
+Use /trust [ID] command.</value>
     </data>
     <data name="CannotConnect" xml:space="preserve">
         <value>Cannot connect with {0}</value>
@@ -269,6 +286,12 @@ Connection port: {4}
 Host ID: {5}
 Client: {6}
 Fingerprint: {7}</value>
+    </data>
+    <data name="UserTrused" xml:space="preserve">
+        <value>{0} is now trusted user.</value>
+    </data>
+    <data name="UserAlreadyTrused" xml:space="preserve">
+        <value>{0} is already trusted.</value>
     </data>
 
     <!-- File transfer -->

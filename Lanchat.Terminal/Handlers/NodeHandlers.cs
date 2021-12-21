@@ -51,7 +51,7 @@ namespace Lanchat.Terminal.Handlers
 
             if(!node.Trusted)
             {
-                Writer.WriteWarning("If you know this user you can mark it's node as trusted.");
+                Writer.WriteWarning(string.Format(Resources.ConnectedWithUntrusted, $"{node.User.Nickname}#{node.User.ShortId}"));
             }
         }
 

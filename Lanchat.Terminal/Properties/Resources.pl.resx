@@ -4,14 +4,14 @@
     <data name="Help" xml:space="preserve">
         <value>
 Lanchat: LAN chat and file transfer
-https://youkai.pl/lanchat-docs
+https://youkai.pl/lanchat
 
 Tab / Shift+Tab       - zmiana karty
 Strzałki góra / dół   - historia poleceń
 PageUp / PageDown     - przewijanie chatu
 
 Polecenia:
-connect   disconnect   nick    
+connect   disconnect   nick
 block     unblock      blocked
 afk       dnd          online
 send      accept       reject

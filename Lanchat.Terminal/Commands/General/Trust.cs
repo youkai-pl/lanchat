@@ -31,11 +31,11 @@ namespace Lanchat.Terminal.Commands.General
         {
             if (node.Trusted)
             {
-                Writer.WriteStatus("Node is already trusted");
+                Writer.WriteStatus(string.Format(Resources.UserAlreadyTrused, node.User.Nickname));
                 return;
             }
             node.Trusted = true;
-            Writer.WriteStatus("Node is trusted.");
+            Writer.WriteStatus(string.Format(Resources.UserTrused, node.User.Nickname));
         }
     }
 }

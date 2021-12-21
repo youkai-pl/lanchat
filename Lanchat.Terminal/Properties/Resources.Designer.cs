@@ -131,6 +131,16 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} isn&apos;t trusted. For safety reasons some features will be disabled until you mark user as trusted.
+        ///Use /trust [ID] command..
+        /// </summary>
+        internal static string ConnectedWithUntrusted {
+            get {
+                return ResourceManager.GetString("ConnectedWithUntrusted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attempting connect to {0}.
         /// </summary>
         internal static string ConnectionAttempt {
@@ -223,7 +233,7 @@ namespace Lanchat.Terminal.Properties {
         /// <summary>
         ///   Looks up a localized string similar to 
         ///Lanchat: LAN chat and file transfer
-        ///https://youkai.pl/lanchat-docs
+        ///https://youkai.pl/lanchat
         ///
         ///Tab / Shift+Tab       - tabs switching
         ///Up Arrow / Down Arrow - input history
@@ -235,6 +245,7 @@ namespace Lanchat.Terminal.Properties {
         ///afk       dnd          online
         ///send      accept       reject
         ///cancel    whois        exit
+        ///trust
         ///
         ///Try /help [command] for more info.
         ///      
@@ -463,6 +474,19 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
+        ///    Mark user as trusted.
+        ///    If user is trusted Lanchat will connect with addresses from list received from this user.
+        ///    List of trusted users persists in &quot;nodes.json&quot; file.
+        ///        .
+        /// </summary>
+        internal static string Summary_trust {
+            get {
+                return ResourceManager.GetString("Summary_trust", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
         ///    Unblock user. You have to user IP address in argument.
         ///    Check /blocked command for blocked addresses list.
         ///        .
@@ -599,6 +623,17 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
+        ///    /trust [ID]
+        ///        .
+        /// </summary>
+        internal static string Syntax_trust {
+            get {
+                return ResourceManager.GetString("Syntax_trust", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
         ///    /unblock [IP address]
         ///        .
         /// </summary>
@@ -629,6 +664,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is already trusted..
+        /// </summary>
+        internal static string UserAlreadyTrused {
+            get {
+                return ResourceManager.GetString("UserAlreadyTrused", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User not found.
         /// </summary>
         internal static string UserNotFound {
@@ -643,6 +687,15 @@ namespace Lanchat.Terminal.Properties {
         internal static string UsersTab {
             get {
                 return ResourceManager.GetString("UsersTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is now trusted user..
+        /// </summary>
+        internal static string UserTrused {
+            get {
+                return ResourceManager.GetString("UserTrused", resourceCulture);
             }
         }
         
