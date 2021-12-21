@@ -61,6 +61,11 @@ namespace Lanchat.ClientCore
         /// </summary>
         public static string LogsDirectory { get; set; }
 
+        /// <summary>
+        ///     Themes directory.
+        /// </summary>
+        public static string ThemesDirectory { get; set; }
+
         static Paths()
         {
             var xdgDataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
@@ -95,6 +100,7 @@ namespace Lanchat.ClientCore
             ConfigFile = Path.Combine(RootDirectory, "config.json");
             NodesFile = Path.Combine(RootDirectory, "nodes.json");
             LogsDirectory = Path.Combine(RootDirectory, "Logs");
+            ThemesDirectory = Path.Combine(RootDirectory, "Themes");
         }
     }
 }

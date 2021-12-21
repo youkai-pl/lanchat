@@ -35,7 +35,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                 AddToLog(
                     new List<TextBlock>
                     {
-                        new() { Text = $"{DateTime.Now:HH:mm:ss}", Color = ConsoleColor.White },
+                        new() { Text = $"{DateTime.Now:HH:mm:ss}", Color = Theme.LogHour },
                         new() { Text = " " },
                     },
                     new List<TextBlock>
@@ -52,14 +52,14 @@ namespace Lanchat.Terminal.UserInterface.Views
                 AddToLog(
                     new List<TextBlock>
                     {
-                        new() { Text = $"{DateTime.Now:HH:mm:ss}", Color = ConsoleColor.White },
+                        new() { Text = $"{DateTime.Now:HH:mm:ss}", Color = Theme.LogHour },
                         new() { Text = " " },
-                        new() { Text = nickname, Color = ConsoleColor.Blue },
+                        new() { Text = nickname, Color = Theme.LogNickname },
                         new() { Text = " " },
                     },
                     new List<TextBlock>
                     {
-                        new() { Text = line }
+                        new() { Text = line, Color = Theme.Foreground }
                     });
             }
         }

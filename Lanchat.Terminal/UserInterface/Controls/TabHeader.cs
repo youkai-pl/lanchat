@@ -1,5 +1,5 @@
-using System;
 using ConsoleGUI.Controls;
+using ConsoleGUI.Data;
 using ConsoleGUI.Space;
 using ConsoleGUI.UserDefined;
 
@@ -30,24 +30,24 @@ namespace Lanchat.Terminal.UserInterface.Controls
             textBlock.Text = text;
         }
 
-        public void UpdateTextColor(ConsoleColor color)
+        public void UpdateTabColor(Color color)
         {
             textBlock.Color = color;
         }
 
         public void MarkAsActive()
         {
-            headerBackground.Color = ConsoleColor.Blue;
+            headerBackground.Color = Theme.TabActive;
         }
 
         public void MarkAsInactive()
         {
-            headerBackground.Color = ConsoleColor.Black;
+            headerBackground.Color = Theme.TabInactive;
         }
 
         public void MarkAsUnread()
         {
-            headerBackground.Color = ConsoleColor.Green;
+            headerBackground.Color = Theme.TabAttentionNeeded;
         }
     }
 }

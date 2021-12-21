@@ -23,6 +23,7 @@ namespace Lanchat.ClientCore
         private int port = 3645;
         private bool useIPv6;
         private UserStatus userStatus = UserStatus.Online;
+        private string theme = "default";
 
         /// <summary>
         ///     True if config file could not be loaded and has just been generated.
@@ -132,6 +133,19 @@ namespace Lanchat.ClientCore
             {
                 useIPv6 = value;
                 OnPropertyChanged(nameof(UseIPv6));
+            }
+        }
+
+        /// <summary>
+        ///     Lanchat.Terminal color scheme.
+        /// </summary>
+        public string Theme
+        {
+            get => theme;
+            set
+            {
+                theme = value;
+                OnPropertyChanged(nameof(Theme));
             }
         }
 

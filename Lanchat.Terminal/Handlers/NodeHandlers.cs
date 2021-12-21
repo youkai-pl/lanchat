@@ -95,13 +95,13 @@ namespace Lanchat.Terminal.Handlers
             switch (node.User.UserStatus)
             {
                 case UserStatus.Online:
-                    privateChatTab?.Header.UpdateTextColor(ConsoleColor.White);
+                    privateChatTab?.Header.UpdateTabColor(Theme.StatusOnline);
                     break;
                 case UserStatus.AwayFromKeyboard:
-                    privateChatTab?.Header.UpdateTextColor(ConsoleColor.Yellow);
+                    privateChatTab?.Header.UpdateTabColor(Theme.StatusAfk);
                     break;
                 case UserStatus.DoNotDisturb:
-                    privateChatTab?.Header.UpdateTextColor(ConsoleColor.Red);
+                    privateChatTab?.Header.UpdateTabColor(Theme.StatusDnd);
                     break;
             }
         }

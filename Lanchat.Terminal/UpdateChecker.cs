@@ -23,7 +23,7 @@ namespace Lanchat.Terminal
 
                 if (Assembly.GetEntryAssembly().GetName().Version.CompareTo(lastGithubVersion) == -1)
                 {
-                    TabsManager.HomeView.AddText($"Update available: {lastGithubVersion}", ConsoleColor.Green);
+                    TabsManager.HomeView.AddText($"Update available: {lastGithubVersion}", Theme.LogStatus);
                 }
             }
             catch (Exception)

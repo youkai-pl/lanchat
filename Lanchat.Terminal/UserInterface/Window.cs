@@ -57,7 +57,10 @@ namespace Lanchat.Terminal.UserInterface
 
         public static void Initialize()
         {
-            ConsoleManager.Console = new SimplifiedConsole();
+            if (!Theme.NeedTrueColor)
+            {
+                ConsoleManager.Console = new SimplifiedConsole();
+            }
             ConsoleManager.Setup();
             ConsoleManager.Content = DockPanel;
             Console.Title = Resources.WindowTitle;

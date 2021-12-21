@@ -30,6 +30,7 @@ namespace Lanchat.Terminal
             AppDomain.CurrentDomain.ProcessExit += (_, _) => tcs.SetResult();
 
             Config = Storage.LoadConfig();
+            UserInterface.Theme.LoadFromConfig();
             NodesDatabase = new NodesDatabase();
             CommandsManager = new CommandsManager();
             Notifications = new Notifications();
@@ -61,7 +62,7 @@ namespace Lanchat.Terminal
             }
             catch (SocketException e) when (e.SocketErrorCode == SocketError.AddressAlreadyInUse)
             {
-                TabsManager.HomeView.AddText(Resources.PortBusy, ConsoleColor.Yellow);
+                TabsManager.HomeView.AddText(Resources.PortBusy, UserInterface.Theme.LogWarning);
             }
 
             if (args.Contains("--localhost") || args.Contains("-l"))

@@ -1,4 +1,4 @@
-using System;
+using ConsoleGUI.Data;
 
 namespace Lanchat.Terminal.UserInterface
 {
@@ -6,25 +6,25 @@ namespace Lanchat.Terminal.UserInterface
     {
         public static void WriteText(string text)
         {
-            Write(text, ConsoleColor.White);
+            Write(text, Theme.Foreground);
         }
 
         public static void WriteWarning(string text)
         {
-            Write(text, ConsoleColor.Yellow);
+            Write(text, Theme.LogWarning);
         }
 
         public static void WriteError(string text)
         {
-            Write(text, ConsoleColor.Red);
+            Write(text, Theme.LogError);
         }
 
         public static void WriteStatus(string text)
         {
-            WriteOnMainChat(text, ConsoleColor.Cyan);
+            WriteOnMainChat(text, Theme.LogStatus);
         }
 
-        private static void Write(string text, ConsoleColor color)
+        private static void Write(string text, Color color)
         {
             if (Window.TabPanel.CurrentTab.Content is IWriteable writeable)
             {
@@ -36,7 +36,7 @@ namespace Lanchat.Terminal.UserInterface
             }
         }
 
-        private static void WriteOnMainChat(string text, ConsoleColor color)
+        private static void WriteOnMainChat(string text, Color color)
         {
             TabsManager.ShowMainChatView();
             TabsManager.MainChatView.AddText(text, color);

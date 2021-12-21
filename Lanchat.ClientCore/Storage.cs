@@ -31,6 +31,7 @@ namespace Lanchat.ClientCore
         };
 
         private static readonly ConfigContext ConfigContext = new(JsonSerializerOptions);
+        private static readonly ThemeContext ThemeContext = new(JsonSerializerOptions);
 
         /// <summary>
         ///     Load config from json file.
@@ -63,6 +64,26 @@ namespace Lanchat.ClientCore
             SaveConfig(config);
             config.PropertyChanged += (_, _) => SaveConfig(config);
             return config;
+        }
+
+        public static Theme LoadTheme(string themeName)
+        {
+            try
+            {
+                var json = File.ReadAllText(Path.Combine(Paths.ThemesDirectory, $"{themeName}.json"));
+                return JsonSerializer.Deserialize(json, ThemeContext.Theme);
+            }
+            catch (JsonException)
+            {
+                SaveDefaultTheme();
+                return new Theme();
+            }
+            catch (Exception e)
+            {
+                CatchFileSystemExceptions(e);
+                SaveDefaultTheme();
+                return new Theme();
+            }
         }
 
         internal static void SaveFile(string content, string path)
@@ -111,6 +132,10 @@ namespace Lanchat.ClientCore
                 {
                     Directory.CreateDirectory(Paths.LogsDirectory);
                 }
+                if (!Directory.Exists(Paths.ThemesDirectory))
+                {
+                    Directory.CreateDirectory(Paths.ThemesDirectory);
+                }
             }
             catch (Exception e)
             {
@@ -145,6 +170,12 @@ namespace Lanchat.ClientCore
         {
             var json = JsonSerializer.Serialize(config, ConfigContext.Config);
             SaveFile(json, Paths.ConfigFile);
+        }
+
+        private static void SaveDefaultTheme()
+        {
+            var json = JsonSerializer.Serialize(new Theme(), ThemeContext.Theme);
+            SaveFile(json, Path.Combine(Paths.ThemesDirectory, "default.json"));
         }
     }
 }
