@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Lanchat.Core.NodesDetection.Models
+namespace Lanchat.Core.NodesDiscovery.Models
 {
     internal class Announce
     {

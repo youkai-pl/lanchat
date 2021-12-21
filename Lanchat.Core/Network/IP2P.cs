@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Lanchat.Core.Api;
 using Lanchat.Core.Encryption;
-using Lanchat.Core.NodesDetection;
+using Lanchat.Core.NodesDiscovery;
 
 namespace Lanchat.Core.Network
 {
@@ -13,7 +13,7 @@ namespace Lanchat.Core.Network
     public interface IP2P
     {
         /// <inheritdoc cref="NodesDetection" />
-        NodesDetector NodesDetection { get; }
+        NodesDetection NodesDetection { get; }
 
         /// <summary>
         ///     List of connected nodes.

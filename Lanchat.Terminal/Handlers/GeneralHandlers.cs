@@ -1,6 +1,6 @@
 using System.Collections.Specialized;
 using Lanchat.Core.Network;
-using Lanchat.Core.NodesDetection;
+using Lanchat.Core.NodesDiscovery;
 using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Handlers

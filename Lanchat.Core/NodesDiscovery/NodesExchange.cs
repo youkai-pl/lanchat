@@ -6,35 +6,21 @@ using System.Linq;
 using System.Net;
 using Lanchat.Core.Config;
 using Lanchat.Core.Network;
-using Lanchat.Core.TransportLayer;
 
-namespace Lanchat.Core.NodesDetection
+namespace Lanchat.Core.NodesDiscovery
 {
-    /// <summary>
-    ///     Detecting nodes by UDP broadcasts.
-    /// </summary>
-    public class NodesDetector
+    internal class NodesExchange
     {
-        private readonly AnnounceListener announceListener;
-        private readonly AnnounceSender announceSender;
+        private readonly IConfig config;
         private readonly INodesDatabase nodesDatabase;
         private readonly IP2P network;
 
-        internal NodesDetector(IConfig config, INodesDatabase nodesDatabase, IP2P network)
+        public NodesExchange(IConfig config, INodesDatabase nodesDatabase, IP2P network)
         {
-            var uniqueId = Guid.NewGuid().ToString();
-            var udpClient = new UdpClientWrapper();
-
-            announceListener = new AnnounceListener(config, udpClient, uniqueId, DetectedNodes);
-            announceSender = new AnnounceSender(config, udpClient, uniqueId);
+            this.config = config;
             this.nodesDatabase = nodesDatabase;
             this.network = network;
         }
-
-        /// <summary>
-        ///     Detected nodes.
-        /// </summary>
-        public ObservableCollection<DetectedNode> DetectedNodes { get; } = new();
 
         public ObservableCollection<NodesList> ReceivedLists { get; } = new();
 
@@ -50,12 +36,6 @@ namespace Lanchat.Core.NodesDetection
                 catch (ArgumentException)
                 { }
             });
-        }
-
-        internal void Start()
-        {
-            announceListener.Start();
-            announceSender.Start();
         }
 
         internal void AddNodesList(INode node, List<IPAddress> addressesList)

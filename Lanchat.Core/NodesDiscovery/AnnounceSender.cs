@@ -3,10 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Lanchat.Core.Config;
 using Lanchat.Core.Json;
-using Lanchat.Core.NodesDetection.Models;
+using Lanchat.Core.NodesDiscovery.Models;
 using Lanchat.Core.TransportLayer;
 
-namespace Lanchat.Core.NodesDetection
+namespace Lanchat.Core.NodesDiscovery
 {
     internal class AnnounceSender
     {

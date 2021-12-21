@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 using System.Timers;
 using Lanchat.Core.Config;
 using Lanchat.Core.Json;
-using Lanchat.Core.NodesDetection.Models;
+using Lanchat.Core.NodesDiscovery.Models;
 using Lanchat.Core.TransportLayer;
 
-namespace Lanchat.Core.NodesDetection
+namespace Lanchat.Core.NodesDiscovery
 {
     internal class AnnounceListener
     {

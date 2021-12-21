@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Net;
 
-namespace Lanchat.Core.NodesDetection
+namespace Lanchat.Core.NodesDiscovery
 {
     /// <summary>
     ///     Node detected in LAN but not connected

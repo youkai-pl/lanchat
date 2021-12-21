@@ -8,7 +8,7 @@ using Autofac.Core;
 using Lanchat.Core.Api;
 using Lanchat.Core.Config;
 using Lanchat.Core.Encryption;
-using Lanchat.Core.NodesDetection;
+using Lanchat.Core.NodesDiscovery;
 using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.Network
@@ -45,7 +45,7 @@ namespace Lanchat.Core.Network
                 ? new Server(IPAddress.IPv6Any, Config.ServerPort, nodesControl, addressChecker)
                 : new Server(IPAddress.Any, Config.ServerPort, nodesControl, addressChecker);
 
-            NodesDetection = new NodesDetector(Config, nodesDatabase, this);
+            NodesDetection = new NodesDetection(Config);
             Broadcast = new Broadcast(nodesControl.Nodes);
             _ = new ConfigObserver(this);
 
@@ -53,7 +53,7 @@ namespace Lanchat.Core.Network
         }
 
         /// <inheritdoc />
-        public NodesDetector NodesDetection { get; }
+        public NodesDetection NodesDetection { get; }
 
         /// <inheritdoc />
         public List<INode> Nodes => nodesControl.Nodes.Where(x => x.Ready).Cast<INode>().ToList();
