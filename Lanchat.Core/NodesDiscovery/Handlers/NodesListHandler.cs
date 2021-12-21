@@ -1,31 +1,24 @@
 using Lanchat.Core.Api;
-using Lanchat.Core.Config;
+using Lanchat.Core.Network;
 using Lanchat.Core.Network.Models;
 
-namespace Lanchat.Core.Network.Handlers
+namespace Lanchat.Core.NodesDiscovery.Handlers
 {
     internal class NodesListHandler : ApiHandler<NodesList>
     {
-        private readonly IConfig config;
-        private readonly IP2P network;
+        private readonly INodesExchange nodesExchange;
         private readonly INode node;
 
-        public NodesListHandler(IConfig config, IP2P network, INode node)
+        public NodesListHandler(INode node, INodesExchange nodesExchange)
         {
-            this.config = config;
-            this.network = network;
+            this.nodesExchange = nodesExchange;
             this.node = node;
         }
 
         protected override void Handle(NodesList nodesList)
         {
             Disabled = true;
-            if (!config.ConnectToReceivedList)
-            {
-                return;
-            }
-
-            network.NodesDetection.AddNodesList(node, nodesList);
+            nodesExchange.ConnectWithList(node, nodesList);
         }
     }
 }

@@ -11,6 +11,7 @@ using Lanchat.Core.Extensions;
 using Lanchat.Core.FileSystem;
 using Lanchat.Core.FileTransfer;
 using Lanchat.Core.Identity;
+using Lanchat.Core.NodesDiscovery;
 
 namespace Lanchat.Core.Network
 {
@@ -30,6 +31,10 @@ namespace Lanchat.Core.Network
             builder.RegisterInstance(nodesDatabase).As<INodesDatabase>().SingleInstance();
             builder.RegisterInstance(network).As<IP2P>().SingleInstance();
             builder.RegisterInstance(localRsa).As<ILocalRsa>().SingleInstance();
+
+            builder.RegisterType<NodesExchange>()
+                    .As<INodesExchange>()
+                    .SingleInstance();
 
             builder.RegisterType<Node>()
                 .As<INode>()
