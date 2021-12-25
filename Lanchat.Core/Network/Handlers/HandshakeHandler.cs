@@ -50,6 +50,7 @@ namespace Lanchat.Core.Network.Handlers
                 user.UserStatus = handshake.UserStatus;
                 output.SendPrivilegedData(encryption.ExportKey());
                 Disabled = true;
+                connection.HandshakeReceived = true;
             }
             catch (CryptographicException)
             {

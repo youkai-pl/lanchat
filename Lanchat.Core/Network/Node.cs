@@ -61,7 +61,7 @@ namespace Lanchat.Core.Network
             Connection.Initialize();
         }
 
-        public Connection Connection { get; set; }
+        public IConnection Connection { get; set; }
         public IInput Input { get; set; }
         public IInternalNodeRsa InternalNodeRsa { get; set; }
         public event EventHandler CannotConnect;

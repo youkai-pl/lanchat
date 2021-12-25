@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using Lanchat.Core.Api;
 using Lanchat.Core.Encryption.Models;
@@ -20,6 +21,12 @@ namespace Lanchat.Core.Encryption.Handlers
 
         protected override void Handle(KeyInfo keyInfo)
         {
+            if(!node.Connection.HandshakeReceived)
+            {
+                Trace.WriteLine("Cannot handle KeyInfo before handshake");
+                return;
+            }
+
             try
             {
                 encryption.ImportKey(keyInfo);

@@ -10,16 +10,16 @@ namespace Lanchat.Core.Network
 {
     internal interface INodeInternal
     {
-        public Connection Connection { get; set; }
-        public IInternalUser InternalUser { get; set; }
-        public IUser User { get; set; }
-        public IHost Host { get; set; }
-        public IFileReceiver FileReceiver { get; set; }
-        public IFileSender FileSender { get; set; }
-        public IMessaging Messaging { get; set; }
-        public IOutput Output { get; set; }
-        public IInput Input { get; set; }
-        public IInternalNodeRsa InternalNodeRsa { get; set; }
+        IConnection Connection { get; set; }
+        IInternalUser InternalUser { get; set; }
+        IUser User { get; set; }
+        IHost Host { get; set; }
+        IFileReceiver FileReceiver { get; set; }
+        IFileSender FileSender { get; set; }
+        IMessaging Messaging { get; set; }
+        IOutput Output { get; set; }
+        IInput Input { get; set; }
+        IInternalNodeRsa InternalNodeRsa { get; set; }
 
         Guid Id { get; }
         bool Ready { get; set; }

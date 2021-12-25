@@ -8,7 +8,14 @@ using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.Network
 {
-    internal class Connection
+    internal interface IConnection
+    {
+        bool HandshakeReceived { get; set; }
+        void Initialize();
+        void SendHandshake();
+    }
+
+    internal class Connection : IConnection
     {
         private readonly IConfig config;
         private readonly IHost host;
@@ -32,7 +39,9 @@ namespace Lanchat.Core.Network
             host.Disconnected += OnDisconnected;
         }
 
-        internal void Initialize()
+        public bool HandshakeReceived { get; set; }
+
+        public void Initialize()
         {
             if (host.IsSession)
             {
@@ -51,7 +60,7 @@ namespace Lanchat.Core.Network
             });
         }
 
-        internal void SendHandshake()
+        public void SendHandshake()
         {
             var handshake = new Handshake
             {

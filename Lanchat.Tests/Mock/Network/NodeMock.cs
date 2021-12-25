@@ -25,6 +25,7 @@ namespace Lanchat.Tests.Mock.Network
             var fileTransferOutput = new FileTransferOutput(Output);
             FileSender = new FileSender(fileTransferOutput, new StorageMock());
             FileReceiver = new FileReceiver(fileTransferOutput, new StorageMock());
+            Connection = new ConnectionMock();
         }
 
         public INodeRsa NodeRsa { get; set; }
@@ -41,7 +42,7 @@ namespace Lanchat.Tests.Mock.Network
             throw new NotImplementedException();
         }
 
-        public Connection Connection { get; set; }
+        public IConnection Connection { get; set; }
         public IInternalUser InternalUser { get; set; }
         public IUser User { get; set; }
         public IHost Host { get; set; }
