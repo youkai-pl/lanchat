@@ -6,6 +6,9 @@ namespace Lanchat.Core.NodesDiscovery.Models
     {
         [Required] public string Guid { get; init; }
 
-        [Required] [MaxLength(20)] public string Nickname { get; init; }
+        [Required]
+        [MaxLength(20)]
+        [RegularExpression("^[a-zA-Z0-9_-]+$")]
+        public string Nickname { get; init; }
     }
 }
