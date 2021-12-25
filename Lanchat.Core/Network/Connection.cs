@@ -8,13 +8,6 @@ using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.Network
 {
-    internal interface IConnection
-    {
-        bool HandshakeReceived { get; set; }
-        void Initialize();
-        void SendHandshake();
-    }
-
     internal class Connection : IConnection
     {
         private readonly IConfig config;
