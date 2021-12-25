@@ -9,7 +9,7 @@ namespace Lanchat.Core.Network.Handlers
 {
     internal class HandshakeHandler : ApiHandler<Handshake>
     {
-        private readonly Connection connection;
+        private readonly IConnection connection;
         private readonly INodeAes encryption;
         private readonly IHost host;
         private readonly IInternalNodeRsa internalNodeRsa;
@@ -24,7 +24,7 @@ namespace Lanchat.Core.Network.Handlers
             INodeInternal node,
             IHost host,
             IInternalUser user,
-            Connection connection)
+            IConnection connection)
         {
             this.internalNodeRsa = internalNodeRsa;
             this.encryption = encryption;

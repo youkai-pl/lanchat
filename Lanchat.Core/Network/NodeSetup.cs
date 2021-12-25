@@ -92,7 +92,10 @@ namespace Lanchat.Core.Network
                 .As<IInternalFileSender>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<Connection>().InstancePerLifetimeScope();
+            builder.RegisterType<Connection>()
+                .As<IConnection>()
+                .InstancePerLifetimeScope();
+
             builder.RegisterType<FileTransferOutput>().InstancePerLifetimeScope();
 
             builder.RegisterAssemblyTypes(
