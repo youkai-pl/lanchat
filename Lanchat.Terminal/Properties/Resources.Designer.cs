@@ -271,6 +271,21 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to     
+        ///  _                     _           _   
+        /// | |    __ _ _ __   ___| |__   __ _| |_ 
+        /// | |   / _` | &apos;_ \ / __| &apos;_ \ / _` | __|
+        /// | |__| (_| | | | | (__| | | | (_| | |_ 
+        /// |_____\__,_|_| |_|\___|_| |_|\__,_|\__|                        
+        ///                                {0}.
+        /// </summary>
+        internal static string Logo {
+            get {
+                return ResourceManager.GetString("Logo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to     
         ///   _           _                     _ 
         /// _| |_ __   __| |___   __ _ _ __    | |
         ///|__ | &apos;_ \ / _` |__ \ / _` | &apos;_ \   | |
@@ -278,9 +293,9 @@ namespace Lanchat.Terminal.Properties {
         ///|__/|_.__/|_| |_|___/|_| |_|_.__/_____|                           
         ///                                {0}.
         /// </summary>
-        internal static string Logo {
+        internal static string LogoAlternative {
             get {
-                return ResourceManager.GetString("Logo", resourceCulture);
+                return ResourceManager.GetString("LogoAlternative", resourceCulture);
             }
         }
         

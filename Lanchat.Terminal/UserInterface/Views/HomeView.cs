@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using ConsoleGUI.Controls;
 using ConsoleGUI.Data;
@@ -35,12 +36,23 @@ namespace Lanchat.Terminal.UserInterface.Views
 
         private void WriteAsciiLogo()
         {
+            string logo;
+            var draw = new Random().Next(1, 5);
+            if (draw == 2)
+            {
+                logo = Resources.LogoAlternative;
+            }
+            else
+            {
+                logo = Resources.Logo;
+            }
+
             var currentVersion = $"{Assembly.GetEntryAssembly()!.GetName().Version!.ToString(3)}";
             stackPanel.Add(new BreakPanel
             {
                 Content = new TextBlock
                 {
-                    Text = string.Format(Resources.Logo, currentVersion)
+                    Text = string.Format(logo, currentVersion)
                 }
             });
         }
