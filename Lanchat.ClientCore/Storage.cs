@@ -39,6 +39,13 @@ namespace Lanchat.ClientCore
             var path = string.Concat(dirtyPath.Split(Path.GetInvalidFileNameChars()));
             var fileName = Path.GetFileNameWithoutExtension(path);
             var fileExt = Path.GetExtension(path);
+
+            if(fileName.Length > 40 || fileExt.Length > 6)
+            {
+                fileName = "inavlid_filename";
+                fileExt = string.Empty;
+            }
+
             path = Path.Combine(Config.ReceivedFilesDirectory, $"received-{fileName}{fileExt}");
 
             for (var i = 1; ; ++i)

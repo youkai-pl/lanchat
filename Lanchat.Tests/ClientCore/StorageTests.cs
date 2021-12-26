@@ -119,5 +119,51 @@ namespace Lanchat.Tests.ClientCore
             var path = storage.GetNewFilePath(filename);
             Assert.AreEqual(expectedPath, path);
         }
+
+        [Test]
+        public void TooLongFileName()
+        {
+            const string filename = "12345678901234567890123456789012345678901.txt";
+            var expectedPath = $"{Paths.DownloadsDirectory}/received-inavlid_filename";
+
+            var storage = new Storage();
+            var path = storage.GetNewFilePath(filename);
+            Assert.AreEqual(expectedPath, path);
+        }
+
+        [Test]
+        public void TooLongFileNameAndAlreadyExists()
+        {
+            const string filename = "12345678901234567890123456789012345678901.txt";
+            var expectedPath = $"{Paths.DownloadsDirectory}/received-inavlid_filename(1)";
+
+            File.Create($"{Paths.DownloadsDirectory}/received-inavlid_filename");
+            var storage = new Storage();
+            var path = storage.GetNewFilePath(filename);
+            Assert.AreEqual(expectedPath, path);
+        }
+
+        [Test]
+        public void TooLongFileExtension()
+        {
+            const string filename = "test.123456";
+            var expectedPath = $"{Paths.DownloadsDirectory}/received-inavlid_filename";
+
+            var storage = new Storage();
+            var path = storage.GetNewFilePath(filename);
+            Assert.AreEqual(expectedPath, path);
+        }
+
+        [Test]
+        public void TooLongFileExtensionAndAlreadyExists()
+        {
+            const string filename = "test.123456";
+            var expectedPath = $"{Paths.DownloadsDirectory}/received-inavlid_filename(1)";
+
+            File.Create($"{Paths.DownloadsDirectory}/received-inavlid_filename");
+            var storage = new Storage();
+            var path = storage.GetNewFilePath(filename);
+            Assert.AreEqual(expectedPath, path);
+        }
     }
 }
