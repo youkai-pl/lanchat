@@ -22,32 +22,32 @@ namespace Lanchat.Ipc
 
         private void NodeOnConnected(object sender, EventArgs e)
         {
-            Program.IpcSocket.Send($"{node.Id}/connected");
+            Program.IpcSocket.Send($"{node.User.ShortId}/connected");
         }
 
         private void NodeOnDisconnected(object sender, EventArgs e)
         {
-            Program.IpcSocket.Send($"{node.Id}/disconnected");
+            Program.IpcSocket.Send($"{node.User.ShortId}/disconnected");
         }
 
         private void MessagingOnMessageReceived(object sender, string e)
         {
-            Program.IpcSocket.Send($"{node.Id}/message/{e}");
+            Program.IpcSocket.Send($"{node.User.ShortId}/message/{e}");
         }
 
         private void MessagingOnPrivateMessageReceived(object sender, string e)
         {
-            Program.IpcSocket.Send($"{node.Id}/private_message/{e}");
+            Program.IpcSocket.Send($"{node.User.ShortId}/private_message/{e}");
         }
 
         private void UserOnNicknameUpdated(object sender, string e)
         {
-            Program.IpcSocket.Send($"{node.Id}/nickname_update/{e}");
+            Program.IpcSocket.Send($"{node.User.ShortId}/nickname_update/{e}");
         }
 
         private void UserOnStatusUpdated(object sender, UserStatus e)
         {
-            Program.IpcSocket.Send($"{node.Id}/status_update/{e.ToString().ToLower()}");
+            Program.IpcSocket.Send($"{node.User.ShortId}/status_update/{e.ToString().ToLower()}");
         }
     }
 }

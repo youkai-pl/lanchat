@@ -37,7 +37,7 @@ namespace Lanchat.Terminal.Commands.General
                 node.Host.Endpoint.Address,
                 node.Host.Endpoint.Port,
                 node.Host.Id,
-                !node.Host.IsSession,
+                node.Host.IsSession,
                 RsaFingerprint.GetMd5(node.NodeRsa.Rsa.ExportRSAPublicKey())
             ));
         }

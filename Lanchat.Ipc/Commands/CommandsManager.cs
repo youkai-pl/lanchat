@@ -17,6 +17,8 @@ namespace Lanchat.Ipc.Commands
             commands.Add(new Private());
             commands.Add(new Connect());
             commands.Add(new Disconnect());
+            commands.Add(new List());
+            commands.Add(new Whois());
 
             // Blocking
             commands.Add(new Block());
