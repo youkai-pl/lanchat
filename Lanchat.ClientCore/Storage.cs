@@ -17,7 +17,7 @@ namespace Lanchat.ClientCore
 
         /// <summary>
         ///     Loads config and theme.
-        /// <summary/>
+        /// </summary>
         public Storage()
         {
             Config = ConfigLoader.Load();

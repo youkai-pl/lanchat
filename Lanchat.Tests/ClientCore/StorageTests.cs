@@ -24,33 +24,33 @@ namespace Lanchat.Tests.ClientCore
         [Test]
         public void CreatingNewConfig()
         {
-            var config = ConfigLoader.LoadConfig();
-            Assert.IsTrue(config.Fresh);
+            var storage = new Storage();
+            Assert.IsTrue(storage.Config.Fresh);
         }
 
         [Test]
         public void ConfigLoading()
         {
-            ConfigLoader.SaveFile(JsonSerializer.Serialize(new Config()), Paths.ConfigFile);
-            var config = ConfigLoader.LoadConfig();
-            Assert.IsFalse(config.Fresh);
+            File.WriteAllText(Paths.ConfigFile, JsonSerializer.Serialize(new Config()));
+            var storage = new Storage();
+            Assert.IsFalse(storage.Config.Fresh);
         }
 
         [Test]
         public void ConfigSaving()
         {
-            var config = ConfigLoader.LoadConfig();
-            config.Nickname = "test";
-            var loadedConfig = ConfigLoader.LoadConfig();
-            Assert.AreEqual(config.Nickname, loadedConfig.Nickname);
+            var storage = new Storage();
+            storage.Config.Nickname = "test";
+            var reloadedStorage = new Storage();
+            Assert.AreEqual(storage.Config.Nickname, reloadedStorage.Config.Nickname);
         }
 
         [Test]
         public void LoadingInvalidJson()
         {
             File.WriteAllText(Paths.ConfigFile, "not a json");
-            var config = ConfigLoader.LoadConfig();
-            Assert.IsTrue(config.Fresh);
+            var storage = new Storage();
+            Assert.IsTrue(storage.Config.Fresh);
         }
     }
 }

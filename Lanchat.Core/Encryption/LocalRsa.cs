@@ -20,7 +20,6 @@ namespace Lanchat.Core.Encryption
                 nodesDatabase.SaveLocalNodeInfo(new string(pemFile));
             }
         }
-
         public RSA Rsa { get; }
     }
 }
