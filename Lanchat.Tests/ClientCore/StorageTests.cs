@@ -90,7 +90,7 @@ namespace Lanchat.Tests.ClientCore
         public void MaliciousFilePath()
         {
             const string filename = "../test.txt";
-            var expectedPath = $"{Paths.DownloadsDirectory}/received-test.txt";
+            var expectedPath = $"{Paths.DownloadsDirectory}/received-..test.txt";
 
             var storage = new Storage();
             var path = storage.GetNewFilePath(filename);
@@ -101,7 +101,7 @@ namespace Lanchat.Tests.ClientCore
         public void OtherMaliciousFilePath()
         {
             const string filename = "/test/test.txt";
-            var expectedPath = $"{Paths.DownloadsDirectory}/received-test.txt";
+            var expectedPath = $"{Paths.DownloadsDirectory}/received-testtest.txt";
 
             var storage = new Storage();
             var path = storage.GetNewFilePath(filename);

@@ -12,7 +12,7 @@ namespace Lanchat.Tests.Mock
         {
             _guid = Guid.NewGuid();
             Paths.RootDirectory = $"test-{_guid}";
-            Paths.DownloadsDirectory = $"download={_guid}";
+            Paths.DownloadsDirectory = $"download-{_guid}";
             Directory.CreateDirectory(Paths.RootDirectory);
             Directory.CreateDirectory(Paths.LogsDirectory);
             Directory.CreateDirectory(Paths.DownloadsDirectory);

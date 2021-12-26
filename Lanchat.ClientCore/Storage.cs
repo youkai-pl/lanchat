@@ -34,20 +34,21 @@ namespace Lanchat.ClientCore
         }
 
         /// <inheritdoc/>
-        public string GetNewFilePath(string path)
+        public string GetNewFilePath(string dirtyPath)
         {
+            var path = string.Concat(dirtyPath.Split(Path.GetInvalidFileNameChars()));
             var fileName = Path.GetFileNameWithoutExtension(path);
             var fileExt = Path.GetExtension(path);
-            var newPath = Path.Combine(Config.ReceivedFilesDirectory, $"received-{fileName}{fileExt}");
+            path = Path.Combine(Config.ReceivedFilesDirectory, $"received-{fileName}{fileExt}");
 
             for (var i = 1; ; ++i)
             {
-                if (!File.Exists(newPath))
+                if (!File.Exists(path))
                 {
-                    return newPath;
+                    return path;
                 }
 
-                newPath = Path.Combine(Config.ReceivedFilesDirectory, $"received-{fileName}({i}){fileExt}");
+                path = Path.Combine(Config.ReceivedFilesDirectory, $"received-{fileName}({i}){fileExt}");
             }
         }
 
