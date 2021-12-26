@@ -41,7 +41,7 @@ namespace Lanchat.ClientCore
             }
             catch (Exception e)
             {
-                ConfigLoader.CatchFileSystemExceptions(e);
+                Storage.CatchFileSystemExceptionsStatic(e);
                 savedNodes = new List<NodeInfo>();
                 SaveNodesList();
             }
@@ -82,7 +82,7 @@ namespace Lanchat.ClientCore
             }
             catch (Exception e)
             {
-                ConfigLoader.CatchFileSystemExceptions(e);
+                Storage.CatchFileSystemExceptionsStatic(e);
                 return null;
             }
         }
@@ -90,7 +90,7 @@ namespace Lanchat.ClientCore
         internal static void SavePemFile(string name, string content)
         {
             var filePath = $"{Paths.RsaDirectory}/{name}.pem";
-            ConfigLoader.SaveFile(content, filePath);
+            Storage.SaveFile(content, filePath);
         }
 
         private NodeInfo CreateNodeInfo(IPAddress ipAddress)
@@ -110,7 +110,7 @@ namespace Lanchat.ClientCore
         private void SaveNodesList()
         {
             var json = JsonSerializer.Serialize(savedNodes, NodesDatabaseContext.ListNodeInfo);
-            ConfigLoader.SaveFile(json, Paths.NodesFile);
+            Storage.SaveFile(json, Paths.NodesFile);
         }
     }
 }

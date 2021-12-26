@@ -5,7 +5,7 @@ namespace Lanchat.ClientCore
     /// <summary>
     ///     Lanchat.Terminal theme model.
     /// </summary>
-    public class Theme
+    public class ThemeModel
     {
         public bool NeedTrueColor { get; set; }
         public string Foreground { get; set; }

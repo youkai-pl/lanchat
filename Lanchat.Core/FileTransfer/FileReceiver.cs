@@ -75,7 +75,7 @@ namespace Lanchat.Core.FileTransfer
             fileTransferOutput.SendSignal(FileTransferStatus.ReceiverError);
             if (deleteFile)
             {
-                storage.DeleteIncompleteFile(CurrentFileTransfer.FilePath);
+                storage.DeleteFile(CurrentFileTransfer.FilePath);
             }
 
             FileTransferError?.Invoke(this, new FileTransferException(CurrentFileTransfer, "Cancelled"));
@@ -105,7 +105,7 @@ namespace Lanchat.Core.FileTransfer
                 return;
             }
 
-            storage.DeleteIncompleteFile(CurrentFileTransfer.FilePath);
+            storage.DeleteFile(CurrentFileTransfer.FilePath);
             OnFileTransferError();
             CurrentFileTransfer?.Dispose();
             FileWriter?.Dispose();

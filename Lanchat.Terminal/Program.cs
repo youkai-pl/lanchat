@@ -29,8 +29,11 @@ namespace Lanchat.Terminal
             Console.CancelKeyPress += (_, _) => tcs.SetResult();
             AppDomain.CurrentDomain.ProcessExit += (_, _) => tcs.SetResult();
 
-            Config = ConfigLoader.LoadConfig();
-            UserInterface.Theme.LoadFromConfig();
+            var storage = new Storage();
+
+            Config = storage.Config;
+            Theme.SetFromThemeModel(storage.Theme);
+
             NodesDatabase = new NodesDatabase();
             CommandsManager = new CommandsManager();
             Notifications = new Notifications();
@@ -45,8 +48,6 @@ namespace Lanchat.Terminal
             }
 
             Resources.Culture = CultureInfo.CurrentCulture;
-
-            var storage = new Storage(Config);
 
             Network = new P2P(
                 storage,

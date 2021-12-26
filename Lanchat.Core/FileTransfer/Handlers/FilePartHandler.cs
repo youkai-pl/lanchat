@@ -32,7 +32,7 @@ namespace Lanchat.Core.FileTransfer.Handlers
             }
             catch (Exception e)
             {
-                storage.CatchFileSystemException(e, () =>
+                storage.CatchFileSystemExceptions(e, () =>
                 {
                     fileReceiver.CancelReceive(false);
                     fileReceiver.OnFileTransferError();

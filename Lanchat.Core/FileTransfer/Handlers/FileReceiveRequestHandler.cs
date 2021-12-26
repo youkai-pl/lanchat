@@ -29,7 +29,7 @@ namespace Lanchat.Core.FileTransfer.Handlers
 
             fileReceiver.CurrentFileTransfer = new CurrentFileTransfer
             {
-                FilePath = storage.GetFilePath(data.FileName),
+                FilePath = storage.GetNewFilePath(data.FileName),
                 Parts = data.PartsCount
             };
 

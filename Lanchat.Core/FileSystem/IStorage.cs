@@ -4,9 +4,9 @@ namespace Lanchat.Core.FileSystem
 {
     public interface IStorage
     {
-        string GetFilePath(string path);
+        string GetNewFilePath(string path);
         long GetFileSize(string path);
-        void DeleteIncompleteFile(string path);
-        void CatchFileSystemException(Exception e, Action errorHandler);
+        void DeleteFile(string path);
+        void CatchFileSystemExceptions(Exception e, Action errorHandler);
     }
 }

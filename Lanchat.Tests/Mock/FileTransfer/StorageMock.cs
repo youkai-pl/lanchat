@@ -11,17 +11,17 @@ namespace Lanchat.Tests.Mock.FileTransfer
             throw new NotImplementedException();
         }
 
-        public void DeleteIncompleteFile(string path)
+        public void DeleteFile(string path)
         {
             throw new NotImplementedException();
         }
 
-        public string GetFilePath(string file)
+        public string GetNewFilePath(string file)
         {
             throw new NotImplementedException();
         }
 
-        public void CatchFileSystemException(Exception e, Action errorHandler)
+        public void CatchFileSystemExceptions(Exception e, Action errorHandler)
         {
             throw new NotImplementedException();
         }

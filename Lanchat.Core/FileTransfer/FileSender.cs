@@ -102,7 +102,7 @@ namespace Lanchat.Core.FileTransfer
             }
             catch (Exception e)
             {
-                storage.CatchFileSystemException(e, () =>
+                storage.CatchFileSystemExceptions(e, () =>
                 {
                     OnFileTransferError(new FileTransferException(CurrentFileTransfer, e.Message));
                     fileTransferOutput.SendSignal(FileTransferStatus.SenderError);

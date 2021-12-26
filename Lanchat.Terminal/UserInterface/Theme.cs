@@ -24,14 +24,8 @@ namespace Lanchat.Terminal.UserInterface
         public static Color StatusAfk { get; set; }
         public static Color StatusDnd { get; set; }
 
-        public static void LoadFromConfig()
+        public static void SetFromThemeModel(ThemeModel theme)
         {
-            var theme = ConfigLoader.LoadTheme(Program.Config.Theme);
-            if (theme == null)
-            {
-                return;
-            }
-
             NeedTrueColor = theme.NeedTrueColor;
             Foreground = ConvertColor(theme.Foreground) ?? ConsoleColor.White;
             Background = ConvertColor(theme.Background) ?? ConsoleColor.Black;

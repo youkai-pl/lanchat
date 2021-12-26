@@ -7,8 +7,8 @@ namespace Lanchat.ClientCore
     internal partial class ConfigContext : JsonSerializerContext
     { }
 
-    [JsonSerializable(typeof(Theme))]
-    internal partial class ThemeContext : JsonSerializerContext
+    [JsonSerializable(typeof(ThemeModel))]
+    internal partial class ThemeModelContext : JsonSerializerContext
     { }
 
     [JsonSerializable(typeof(List<NodeInfo>))]
