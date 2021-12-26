@@ -66,6 +66,15 @@ namespace Lanchat.ClientCore
             return config;
         }
 
+        /// <summary>
+        ///     Load Lanchat.Terminal theme.
+        /// </summary>
+        /// <param name="themeName">
+        ///     Theme file name without extension.
+        /// </param>
+        /// <returns>
+        ///     <see cref="Theme"/>
+        /// </returns>
         public static Theme LoadTheme(string themeName)
         {
             try

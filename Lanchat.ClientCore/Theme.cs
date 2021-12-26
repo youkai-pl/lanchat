@@ -1,5 +1,10 @@
+#pragma warning disable 1591
+
 namespace Lanchat.ClientCore
 {
+    /// <summary>
+    ///     Lanchat.Terminal theme model.
+    /// </summary>
     public class Theme
     {
         public bool NeedTrueColor { get; set; }
