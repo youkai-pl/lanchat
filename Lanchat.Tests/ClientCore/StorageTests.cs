@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace Lanchat.Tests.ClientCore
 {
     [NonParallelizable]
-    public class  StorageTests
+    public class StorageTests
     {
         [SetUp]
         public void Setup()
@@ -57,7 +57,7 @@ namespace Lanchat.Tests.ClientCore
         public void ValidNewFilePath()
         {
             const string filename = "test.txt";
-            var expectedPath = $"{Paths.DownloadsDirectory}/test.txt";
+            var expectedPath = $"{Paths.DownloadsDirectory}/received-test.txt";
 
             var storage = new Storage();
             var path = storage.GetNewFilePath(filename);
@@ -68,7 +68,7 @@ namespace Lanchat.Tests.ClientCore
         public void NoExtensionFilePath()
         {
             const string filename = "test";
-            var expectedPath = $"{Paths.DownloadsDirectory}/test";
+            var expectedPath = $"{Paths.DownloadsDirectory}/received-test";
 
             var storage = new Storage();
             var path = storage.GetNewFilePath(filename);
@@ -79,7 +79,7 @@ namespace Lanchat.Tests.ClientCore
         public void AloneDotInFilePath()
         {
             const string filename = "test.";
-            var expectedPath = $"{Paths.DownloadsDirectory}/test";
+            var expectedPath = $"{Paths.DownloadsDirectory}/received-test";
 
             var storage = new Storage();
             var path = storage.GetNewFilePath(filename);
@@ -90,7 +90,7 @@ namespace Lanchat.Tests.ClientCore
         public void MaliciousFilePath()
         {
             const string filename = "../test.txt";
-            var expectedPath = $"{Paths.DownloadsDirectory}/test.txt";
+            var expectedPath = $"{Paths.DownloadsDirectory}/received-test.txt";
 
             var storage = new Storage();
             var path = storage.GetNewFilePath(filename);
@@ -101,8 +101,20 @@ namespace Lanchat.Tests.ClientCore
         public void OtherMaliciousFilePath()
         {
             const string filename = "/test/test.txt";
-            var expectedPath = $"{Paths.DownloadsDirectory}/test.txt";
+            var expectedPath = $"{Paths.DownloadsDirectory}/received-test.txt";
 
+            var storage = new Storage();
+            var path = storage.GetNewFilePath(filename);
+            Assert.AreEqual(expectedPath, path);
+        }
+
+        [Test]
+        public void AlreadyExistingFilePath()
+        {
+            const string filename = "test.txt";
+            var expectedPath = $"{Paths.DownloadsDirectory}/received-test(1).txt";
+
+            File.Create($"{Paths.DownloadsDirectory}/received-test.txt");
             var storage = new Storage();
             var path = storage.GetNewFilePath(filename);
             Assert.AreEqual(expectedPath, path);

@@ -38,7 +38,7 @@ namespace Lanchat.ClientCore
         {
             var fileName = Path.GetFileNameWithoutExtension(path);
             var fileExt = Path.GetExtension(path);
-            var newPath = Path.Combine(Config.ReceivedFilesDirectory, fileName + fileExt);
+            var newPath = Path.Combine(Config.ReceivedFilesDirectory, $"received-{fileName}{fileExt}");
 
             for (var i = 1; ; ++i)
             {
@@ -47,7 +47,7 @@ namespace Lanchat.ClientCore
                     return newPath;
                 }
 
-                newPath = Path.Combine(Config.ReceivedFilesDirectory, $"{fileName}({i}){fileExt}");
+                newPath = Path.Combine(Config.ReceivedFilesDirectory, $"received-{fileName}({i}){fileExt}");
             }
         }
 
