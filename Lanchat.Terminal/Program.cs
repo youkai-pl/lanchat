@@ -30,10 +30,8 @@ namespace Lanchat.Terminal
             AppDomain.CurrentDomain.ProcessExit += (_, _) => tcs.SetResult();
 
             var storage = new Storage();
-
             Config = storage.Config;
             Theme.SetFromThemeModel(storage.Theme);
-
             NodesDatabase = new NodesDatabase();
             CommandsManager = new CommandsManager();
             Notifications = new Notifications();

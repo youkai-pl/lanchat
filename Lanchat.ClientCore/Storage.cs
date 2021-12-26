@@ -9,9 +9,15 @@ namespace Lanchat.ClientCore
     /// <inheritdoc/>
     public class Storage : IStorage
     {
+        /// <inheritdoc cref="Config"/>
         public Config Config { get; set; }
+
+        /// <inheritdoc cref="ThemeModel"/>
         public ThemeModel Theme {get;set;}
 
+        /// <summary>
+        ///     Loads config and theme.
+        /// <summary/>
         public Storage()
         {
             Config = ConfigLoader.Load();
@@ -20,7 +26,6 @@ namespace Lanchat.ClientCore
 
         /// <inheritdoc/>
         public void CatchFileSystemExceptions(Exception e, Action errorHandler = null) => CatchFileSystemExceptionsStatic(e, errorHandler);
-
 
         /// <inheritdoc/>
         public void DeleteFile(string path)
