@@ -24,13 +24,15 @@ Data is encoded in `UTF-8`.
 
 #### General
 
-| Command    | Description                | Arguments       | Example                           |
-| ---------- | -------------------------- | --------------- | --------------------------------- |
-| broadcast  | Send message to all nodes. | *message*       | `broadcast/message-content`       |
-| private    | Send private message       | *ID*; *message* | `private/node-id/message-content` |
-| connect    | Connect with node.         | *IP address*    | `connect/127.0.0.1`               |
-| -          | -                          | *hostname*      | `connect/localhost`               |
-| disconnect | Disconnect from node.      | *ID*            | `disconnect/node-id`              |
+| Command    | Description                                          | Arguments       | Example                     |
+| ---------- | ---------------------------------------------------- | --------------- | --------------------------- |
+| broadcast  | Send message to all nodes.                           | *message*       | `broadcast/message-content` |
+| private    | Send private message.                                | *ID*; *message* | `private/1/message-content` |
+| connect    | Connect with node.                                   | *IP address*    | `connect/127.0.0.1`         |
+| -          | -                                                    | *hostname*      | `connect/localhost`         |
+| disconnect | Disconnect from node.                                | *ID*            | `disconnect/1`              |
+| list       | Get list of connected nodes. Returns *nodes-list*.   |                 | `list`                      |
+| whois      | Info about conencted node. Returns *whois*.          | *ID*            | `info/1`                    |
 
 #### Config
 
@@ -38,6 +40,15 @@ Data is encoded in `UTF-8`.
 | ------- | ---------------- | ---------- | ------------ |
 | nick    | Change nickname. | *nickname* | `nick/test`  |
 | status  | Change status.   | *status*   | `status/afk` |
+
+#### Blocking
+
+| Command  | Description                                      | Arguments    | Example           |
+| -------- | -------------------------------------------------| -----------  | ----------------  |
+| block/id | Block node by short ID.                          | *ID*         | `block/1`         |
+| block/ip | Block node by IP address.                        | *IP address* | `block/127.0.0.1` |                          
+| unblock  | Unblock node.                                    | *ID*         | `unblock/1`       |
+| blocked  | Get list of blocked nodes. Returns *nodes-list*. |              | `blocked`         |
 
 ### Events
 
@@ -67,7 +78,7 @@ Data is encoded in `UTF-8`.
 * *hostname* - domain name
 * *IP address* - node IP address
   
-#### Error (enum)
+#### error (enum)
 
 | Value              |
 |--------------------|
@@ -77,10 +88,22 @@ Data is encoded in `UTF-8`.
 | `node_not_found`   |
 | `cannot_connect`   |
 
-#### Status (enum)
+#### status (enum)
 
 | Value    |
 |----------|
 | `online` |
 | `afk`    |
 | `dnd`    |
+
+#### ndoes-list (string)
+
+List of connected nodes short IDs separated by `,`:
+
+`1,2,3;`
+
+#### whois-info (string)
+
+Whois command result in single string:
+
+`nickname,short-id,status,ip-address,port,host-id,is-session,fingerprint;`
