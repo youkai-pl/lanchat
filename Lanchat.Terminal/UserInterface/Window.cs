@@ -46,15 +46,11 @@ namespace Lanchat.Terminal.UserInterface
             Root = new Background()
             {
                 Color = Theme.Background,
-                Content = new Style()
+                Content = new DockPanel
                 {
-                    Foreground = Theme.Foreground,
-                    Content = new DockPanel
-                    {
-                        Placement = DockPanel.DockedControlPlacement.Bottom,
-                        FillingControl = TabPanel,
-                        DockedControl = promptBox
-                    }
+                    Placement = DockPanel.DockedControlPlacement.Bottom,
+                    FillingControl = TabPanel,
+                    DockedControl = promptBox
                 }
             };
 
