@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace Lanchat.Tests.ClientCore
 {
     [NonParallelizable]
-    public class ConfigManagerTests
+    public class  StorageTests
     {
         [SetUp]
         public void Setup()
@@ -51,6 +51,61 @@ namespace Lanchat.Tests.ClientCore
             File.WriteAllText(Paths.ConfigFile, "not a json");
             var storage = new Storage();
             Assert.IsTrue(storage.Config.Fresh);
+        }
+
+        [Test]
+        public void ValidNewFilePath()
+        {
+            const string filename = "test.txt";
+            var expectedPath = $"{Paths.DownloadsDirectory}/test.txt";
+
+            var storage = new Storage();
+            var path = storage.GetNewFilePath(filename);
+            Assert.AreEqual(expectedPath, path);
+        }
+
+        [Test]
+        public void NoExtensionFilePath()
+        {
+            const string filename = "test";
+            var expectedPath = $"{Paths.DownloadsDirectory}/test";
+
+            var storage = new Storage();
+            var path = storage.GetNewFilePath(filename);
+            Assert.AreEqual(expectedPath, path);
+        }
+
+        [Test]
+        public void AloneDotInFilePath()
+        {
+            const string filename = "test.";
+            var expectedPath = $"{Paths.DownloadsDirectory}/test";
+
+            var storage = new Storage();
+            var path = storage.GetNewFilePath(filename);
+            Assert.AreEqual(expectedPath, path);
+        }
+
+        [Test]
+        public void MaliciousFilePath()
+        {
+            const string filename = "../test.txt";
+            var expectedPath = $"{Paths.DownloadsDirectory}/test.txt";
+
+            var storage = new Storage();
+            var path = storage.GetNewFilePath(filename);
+            Assert.AreEqual(expectedPath, path);
+        }
+
+        [Test]
+        public void OtherMaliciousFilePath()
+        {
+            const string filename = "/test/test.txt";
+            var expectedPath = $"{Paths.DownloadsDirectory}/test.txt";
+
+            var storage = new Storage();
+            var path = storage.GetNewFilePath(filename);
+            Assert.AreEqual(expectedPath, path);
         }
     }
 }

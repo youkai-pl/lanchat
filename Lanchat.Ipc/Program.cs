@@ -17,7 +17,8 @@ namespace Lanchat.Ipc
 
         public static void Main(string[] args)
         {
-            Config = ConfigLoader.LoadConfig();
+            var storage = new Storage();
+            Config = storage.Config;
             CheckStartArguments(args);
 
             Config.DebugMode = true;
@@ -25,7 +26,7 @@ namespace Lanchat.Ipc
             NodesDatabase = new NodesDatabase();
             CommandsManager = new CommandsManager();
             IpcSocket = new IpcSocket(args[0]);
-            Network = new P2P(Config, NodesDatabase, x => _ = new NodeHandlers(x.Instance));
+            Network = new P2P(storage, Config, NodesDatabase, x => _ = new NodeHandlers(x.Instance));
 
             Network.Start();
             IpcSocket.Start();
