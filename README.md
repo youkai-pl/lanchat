@@ -1,3 +1,12 @@
+# PLEASE UPDATE TO 2.9.3
+**Previous versions has security bug. With a modified client is possible to send a file that will be saved outside of downloads directory.**
+**For example:**
+1. User A with modified client sent a file with filename set to `../test`.
+2. User B sees it as `test` and accepts file that should go into `~/Downloads/test`.
+3. File is saved into `~/test` instead.
+
+**Existing files cannot be overwritten this way. If file with specified name already exists new file with name like test(1), test(2) etc will be created.**
+
 # Lanchat
 
 Encrypted, P2P, local network chat.
