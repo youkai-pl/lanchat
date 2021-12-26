@@ -24,24 +24,24 @@ namespace Lanchat.Tests.ClientCore
         [Test]
         public void CreatingNewConfig()
         {
-            var config = Storage.LoadConfig();
+            var config = ConfigLoader.LoadConfig();
             Assert.IsTrue(config.Fresh);
         }
 
         [Test]
         public void ConfigLoading()
         {
-            Storage.SaveFile(JsonSerializer.Serialize(new Config()), Paths.ConfigFile);
-            var config = Storage.LoadConfig();
+            ConfigLoader.SaveFile(JsonSerializer.Serialize(new Config()), Paths.ConfigFile);
+            var config = ConfigLoader.LoadConfig();
             Assert.IsFalse(config.Fresh);
         }
 
         [Test]
         public void ConfigSaving()
         {
-            var config = Storage.LoadConfig();
+            var config = ConfigLoader.LoadConfig();
             config.Nickname = "test";
-            var loadedConfig = Storage.LoadConfig();
+            var loadedConfig = ConfigLoader.LoadConfig();
             Assert.AreEqual(config.Nickname, loadedConfig.Nickname);
         }
 
@@ -49,7 +49,7 @@ namespace Lanchat.Tests.ClientCore
         public void LoadingInvalidJson()
         {
             File.WriteAllText(Paths.ConfigFile, "not a json");
-            var config = Storage.LoadConfig();
+            var config = ConfigLoader.LoadConfig();
             Assert.IsTrue(config.Fresh);
         }
     }

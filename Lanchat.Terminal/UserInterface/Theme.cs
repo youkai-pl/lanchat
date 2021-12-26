@@ -26,7 +26,7 @@ namespace Lanchat.Terminal.UserInterface
 
         public static void LoadFromConfig()
         {
-            var theme = Storage.LoadTheme(Program.Config.Theme);
+            var theme = ConfigLoader.LoadTheme(Program.Config.Theme);
             if (theme == null)
             {
                 return;

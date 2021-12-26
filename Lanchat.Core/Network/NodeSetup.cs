@@ -18,6 +18,7 @@ namespace Lanchat.Core.Network
     internal static class NodeSetup
     {
         internal static IContainer Setup(
+            IStorage storage,
             IConfig config,
             INodesDatabase nodesDatabase,
             ILocalRsa localRsa,
@@ -27,10 +28,25 @@ namespace Lanchat.Core.Network
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterInstance(config).As<IConfig>().SingleInstance();
-            builder.RegisterInstance(nodesDatabase).As<INodesDatabase>().SingleInstance();
-            builder.RegisterInstance(network).As<IP2P>().SingleInstance();
-            builder.RegisterInstance(localRsa).As<ILocalRsa>().SingleInstance();
+            builder.RegisterInstance(storage)
+                .As<IStorage>()
+                .SingleInstance();
+
+            builder.RegisterInstance(config)
+                .As<IConfig>()
+                .SingleInstance();
+
+            builder.RegisterInstance(nodesDatabase)
+                .As<INodesDatabase>()
+                .SingleInstance();
+
+            builder.RegisterInstance(network)
+                .As<IP2P>()
+                .SingleInstance();
+
+            builder.RegisterInstance(localRsa)
+                .As<ILocalRsa>()
+                .SingleInstance();
 
             builder.RegisterType<NodesExchange>()
                     .As<INodesExchange>()
@@ -73,10 +89,6 @@ namespace Lanchat.Core.Network
                 .As<IResolver>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<Storage>()
-                .As<IStorage>()
-                .InstancePerLifetimeScope();
-
             builder.RegisterType<Messaging>()
                 .As<IMessaging>()
                 .As<IInternalMessaging>()
@@ -96,7 +108,8 @@ namespace Lanchat.Core.Network
                 .As<IConnection>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<FileTransferOutput>().InstancePerLifetimeScope();
+            builder.RegisterType<FileTransferOutput>()
+            .InstancePerLifetimeScope();
 
             builder.RegisterAssemblyTypes(
                     Assembly.GetExecutingAssembly())

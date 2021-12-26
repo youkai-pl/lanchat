@@ -17,7 +17,7 @@ namespace Lanchat.Ipc
 
         public static void Main(string[] args)
         {
-            Config = Storage.LoadConfig();
+            Config = ConfigLoader.LoadConfig();
             CheckStartArguments(args);
 
             Config.DebugMode = true;

@@ -21,7 +21,7 @@ namespace Lanchat.Terminal
         public static Config Config { get; private set; }
         public static INodesDatabase NodesDatabase { get; private set; }
         public static CommandsManager CommandsManager { get; private set; }
-        public static Notifications Notifications {get; private set;}
+        public static Notifications Notifications { get; private set; }
 
         private static async Task Main(string[] args)
         {
@@ -29,7 +29,7 @@ namespace Lanchat.Terminal
             Console.CancelKeyPress += (_, _) => tcs.SetResult();
             AppDomain.CurrentDomain.ProcessExit += (_, _) => tcs.SetResult();
 
-            Config = Storage.LoadConfig();
+            Config = ConfigLoader.LoadConfig();
             UserInterface.Theme.LoadFromConfig();
             NodesDatabase = new NodesDatabase();
             CommandsManager = new CommandsManager();
@@ -46,7 +46,12 @@ namespace Lanchat.Terminal
 
             Resources.Culture = CultureInfo.CurrentCulture;
 
-            Network = new P2P(Config, NodesDatabase, x =>
+            var storage = new Storage(Config);
+
+            Network = new P2P(
+                storage,
+                Config,
+                NodesDatabase, x =>
             {
                 _ = new NodeHandlers(x.Instance);
                 _ = new FileTransferHandlers(x.Instance);

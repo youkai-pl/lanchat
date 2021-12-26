@@ -8,6 +8,7 @@ using Autofac.Core;
 using Lanchat.Core.Api;
 using Lanchat.Core.Config;
 using Lanchat.Core.Encryption;
+using Lanchat.Core.FileSystem;
 using Lanchat.Core.NodesDiscovery;
 using Lanchat.Core.TransportLayer;
 
@@ -25,11 +26,13 @@ namespace Lanchat.Core.Network
         /// <summary>
         ///     Initialize P2P mode
         /// </summary>
-        /// <param name="config">Lanchat config</param>
+        /// <param name="storage">IStorage implementation</param>
+        /// <param name="config">IConfig implementation</param>
         /// <param name="nodesDatabase">INodesDatabase implementation</param>
         /// <param name="nodeCreated">Method called after creation of new node</param>
         /// <param name="apiHandlers">Optional custom api handlers</param>
         public P2P(
+            IStorage storage,
             IConfig config,
             INodesDatabase nodesDatabase,
             Action<IActivatedEventArgs<INode>> nodeCreated,
@@ -38,7 +41,7 @@ namespace Lanchat.Core.Network
             Config = config;
             this.nodesDatabase = nodesDatabase;
             LocalRsa = new LocalRsa(nodesDatabase);
-            var container = NodeSetup.Setup(config, nodesDatabase, LocalRsa, this, nodeCreated, apiHandlers);
+            var container = NodeSetup.Setup(storage, config, nodesDatabase, LocalRsa, this, nodeCreated, apiHandlers);
             addressChecker = new AddressChecker(config, nodesDatabase);
             nodesControl = new NodesControl(container, addressChecker, nodesDatabase);
             server = Config.UseIPv6
