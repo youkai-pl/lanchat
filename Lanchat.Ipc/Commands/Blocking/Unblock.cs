@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace Lanchat.Ipc.Commands.Blocking
 {
     public class Unblock : ICommand

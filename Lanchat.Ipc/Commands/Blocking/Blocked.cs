@@ -9,9 +9,10 @@ namespace Lanchat.Ipc.Commands.Blocking
 
         public void Execute(string[] _)
         {
-            var blockedNodes = Program.NodesDatabase.SavedNodes.Where(x => x.Blocked).ToList();
-            var addresses = blockedNodes.Select(x => x.Id).ToArray();
-            Program.IpcSocket.Send(string.Join(";", addresses));
+            foreach (var node in Program.NodesDatabase.SavedNodes.Where(x => x.Blocked).ToList())
+            {
+                Program.IpcSocket.Send($"{node.Id}-{node.Nickname}-{node.IpAddress};");
+            }
         }
     }
 }
