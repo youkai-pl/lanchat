@@ -2,7 +2,7 @@ using System.ComponentModel;
 using Lanchat.Core.Identity.Models;
 using Lanchat.Core.Network;
 
-namespace Lanchat.Core.Config
+namespace Lanchat.Core.Filesystem
 {
     internal class ConfigObserver
     {

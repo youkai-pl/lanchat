@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Lanchat.Core.Config
+namespace Lanchat.Core.Filesystem
 {
     /// <summary>
     ///     Saved node info.

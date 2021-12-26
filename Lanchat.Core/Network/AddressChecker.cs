@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using Lanchat.Core.Config;
+using Lanchat.Core.Filesystem;
 
 namespace Lanchat.Core.Network
 {

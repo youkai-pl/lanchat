@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Net;
 
-namespace Lanchat.Core.Config
+namespace Lanchat.Core.Filesystem
 {
     /// <summary>
     ///     RSA keys storage.

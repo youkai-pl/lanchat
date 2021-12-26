@@ -1,5 +1,5 @@
 using System;
-using Lanchat.Core.Config;
+using Lanchat.Core.Filesystem;
 using Lanchat.Core.Network;
 using Lanchat.Core.TransportLayer;
 

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
-using Lanchat.Core.Config;
+using Lanchat.Core.Filesystem;
 using Lanchat.Core.TransportLayer;
 
 namespace Lanchat.Core.NodesDiscovery

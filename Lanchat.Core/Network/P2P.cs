@@ -6,7 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Autofac.Core;
 using Lanchat.Core.Api;
-using Lanchat.Core.Config;
+using Lanchat.Core.Filesystem;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.FileSystem;
 using Lanchat.Core.NodesDiscovery;

@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using Lanchat.Core.Identity;
 
-namespace Lanchat.Core.Config
+namespace Lanchat.Core.Filesystem
 {
     /// <summary>
     ///     Lanchat.Core configuration.

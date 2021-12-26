@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Lanchat.ClientCore;
-using Lanchat.Core.Config;
+using Lanchat.Core.Filesystem;
 using Lanchat.Core.Network;
 using Lanchat.Terminal.Commands;
 using Lanchat.Terminal.Handlers;

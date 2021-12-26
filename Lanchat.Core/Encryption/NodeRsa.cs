@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Security.Cryptography;
-using Lanchat.Core.Config;
+using Lanchat.Core.Filesystem;
 using Lanchat.Core.Encryption.Models;
 
 namespace Lanchat.Core.Encryption

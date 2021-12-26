@@ -7,7 +7,7 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Timers;
-using Lanchat.Core.Config;
+using Lanchat.Core.Filesystem;
 using Lanchat.Core.Json;
 using Lanchat.Core.NodesDiscovery.Models;
 using Lanchat.Core.TransportLayer;

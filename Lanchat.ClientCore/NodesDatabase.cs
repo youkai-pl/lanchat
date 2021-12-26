@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
-using Lanchat.Core.Config;
+using Lanchat.Core.Filesystem;
 using Lanchat.Core.Json;
 
 namespace Lanchat.ClientCore

@@ -1,5 +1,5 @@
 using System.Net;
-using Lanchat.Core.Config;
+using Lanchat.Core.Filesystem;
 
 namespace Lanchat.Tests.Mock.Config
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Lanchat.Core.Config;
+using Lanchat.Core.Filesystem;
 using Lanchat.Core.Network;
 using Lanchat.Core.Network.Models;
 

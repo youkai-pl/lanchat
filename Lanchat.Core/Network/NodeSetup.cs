@@ -5,7 +5,7 @@ using Autofac;
 using Autofac.Core;
 using Lanchat.Core.Api;
 using Lanchat.Core.Chat;
-using Lanchat.Core.Config;
+using Lanchat.Core.Filesystem;
 using Lanchat.Core.Encryption;
 using Lanchat.Core.Extensions;
 using Lanchat.Core.FileSystem;

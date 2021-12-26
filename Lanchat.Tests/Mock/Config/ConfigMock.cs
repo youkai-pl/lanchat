@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net;
-using Lanchat.Core.Config;
+using Lanchat.Core.Filesystem;
 using Lanchat.Core.Identity;
 
 namespace Lanchat.Tests.Mock.Config

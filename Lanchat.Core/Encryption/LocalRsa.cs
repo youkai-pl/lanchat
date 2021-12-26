@@ -1,6 +1,6 @@
 using System;
 using System.Security.Cryptography;
-using Lanchat.Core.Config;
+using Lanchat.Core.Filesystem;
 
 namespace Lanchat.Core.Encryption
 {

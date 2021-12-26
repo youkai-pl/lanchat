@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Cryptography;
-using Lanchat.Core.Config;
+using Lanchat.Core.Filesystem;
 
 namespace Lanchat.Tests.Mock.Config
 {
