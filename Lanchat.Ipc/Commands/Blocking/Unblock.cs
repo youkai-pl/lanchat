@@ -9,13 +9,13 @@ namespace Lanchat.Ipc.Commands.Blocking
 
         public void Execute(string[] args)
         {
-            var correct = IPAddress.TryParse(args[0], out var ipAddress);
-            if (!correct)
+            if (!int.TryParse(args[0], out var id))
             {
+                Program.IpcSocket.SendError(Error.invalid_argument);
                 return;
             }
 
-            var node = Program.NodesDatabase.GetNodeInfo(ipAddress);
+            var node = Program.NodesDatabase.GetNodeInfo(id);
             if (node == null)
             {
                 Program.IpcSocket.SendError(Error.node_not_found);

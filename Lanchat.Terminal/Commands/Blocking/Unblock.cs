@@ -17,6 +17,7 @@ namespace Lanchat.Terminal.Commands.Blocking
         {
             if (!int.TryParse(args[0], out var id))
             {
+                Writer.WriteError(Resources.IncorrectCommandUsage);
                 return;
             }
 
