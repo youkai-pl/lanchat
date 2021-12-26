@@ -17,10 +17,10 @@ jobs:
       uses: mattnotmitt/doxygen-action@v1.1.0
       with:
         doxyfile-path: "./Doxyfile"
-        working-directory: "Docs"
+        working-directory: "."
     
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./lanchat-docs2
+        publish_dir: ./Docs/html

@@ -15,9 +15,9 @@ namespace Lanchat.Core.FileSystem
 
         public string GetFilePath(string file)
         {
-            var path = Path.Combine(config.ReceivedFilesDirectory, file);
-            var fileName = Path.GetFileNameWithoutExtension(path);
-            var fileExt = Path.GetExtension(path);
+            var fileName = Path.GetFileNameWithoutExtension(file);
+            var fileExt = Path.GetExtension(file);
+            var path = Path.Combine(config.ReceivedFilesDirectory, $"{fileName}{fileExt}");
 
             for (var i = 1;; ++i)
             {
