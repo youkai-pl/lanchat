@@ -20,7 +20,12 @@ namespace Lanchat.Terminal.UserInterface.Views
                 ScrollUpKey = ConsoleKey.PageUp,
                 ScrollDownKey = ConsoleKey.PageDown
             };
-            Content = ScrollPanel;
+
+            Content = new Style()
+            {
+                Foreground = Theme.Foreground,
+                Content = ScrollPanel
+            };
         }
 
         public VerticalScrollPanel ScrollPanel { get; }

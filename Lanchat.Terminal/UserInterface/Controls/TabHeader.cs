@@ -12,7 +12,11 @@ namespace Lanchat.Terminal.UserInterface.Controls
 
         public TabHeader(string text)
         {
-            textBlock = new TextBlock { Text = text, Color = Theme.Foreground };
+            textBlock = new TextBlock
+            {
+                Text = text,
+                Color = Theme.TabActiveText
+            };
             headerBackground = new Background
             {
                 Content = new Margin
@@ -37,16 +41,19 @@ namespace Lanchat.Terminal.UserInterface.Controls
 
         public void MarkAsActive()
         {
+            textBlock.Color = Theme.TabActiveText;
             headerBackground.Color = Theme.TabActive;
         }
 
         public void MarkAsInactive()
         {
-            headerBackground.Color = Theme.TabInactive;
+            textBlock.Color = Theme.Foreground;
+            headerBackground.Color = Theme.Background;
         }
 
         public void MarkAsUnread()
         {
+            textBlock.Color = Theme.TabAttentionNeededText;
             headerBackground.Color = Theme.TabAttentionNeeded;
         }
     }

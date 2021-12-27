@@ -59,7 +59,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                     },
                     new List<TextBlock>
                     {
-                        new() { Text = line, Color = Theme.Foreground }
+                        new() { Text = line, Color = Theme.LogMessage }
                     });
             }
         }

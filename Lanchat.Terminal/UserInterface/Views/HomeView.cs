@@ -52,17 +52,18 @@ namespace Lanchat.Terminal.UserInterface.Views
             {
                 Content = new TextBlock
                 {
-                    Text = string.Format(logo, currentVersion)
+                    Text = string.Format(logo, currentVersion),
+                    Color = Theme.Foreground
                 }
             });
         }
 
         private void WriteWelcomeText()
         {
-            AddText("", Color.White);
+            AddText("", Theme.Foreground);
             if (Program.Config.Fresh)
             {
-                AddText(Resources.GetHelp, Color.White);
+                AddText(Resources.GetHelp, Theme.Foreground);
             }
         }
     }

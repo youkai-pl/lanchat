@@ -10,10 +10,10 @@ namespace Lanchat.Terminal.UserInterface
         public static bool NeedTrueColor { get; set; }
         public static Color Foreground { get; set; }
         public static Color Background { get; set; }
-        public static Color Borders { get; set; }
         public static Color TabActive { get; set; }
-        public static Color TabInactive { get; set; }
+        public static Color TabActiveText { get; set; }
         public static Color TabAttentionNeeded { get; set; }
+        public static Color TabAttentionNeededText { get; set; }
         public static Color LogHour { get; set; }
         public static Color LogNickname { get; set; }
         public static Color LogMessage { get; set; }
@@ -29,12 +29,11 @@ namespace Lanchat.Terminal.UserInterface
             NeedTrueColor = theme.NeedTrueColor;
             Foreground = ConvertColor(theme.Foreground) ?? ConsoleColor.White;
             Background = ConvertColor(theme.Background) ?? ConsoleColor.Black;
-            Borders = ConvertColor(theme.Borders) ?? ConsoleColor.White;
-            TabActive = ConvertColor(theme.TabActive) ?? ConsoleColor.Blue;
-            TabInactive = ConvertColor(theme.TabInactive) ?? ConsoleColor.Black;
+            TabActive = ConvertColor(theme.TabActive) ?? ConsoleColor.Cyan;
             TabAttentionNeeded = ConvertColor(theme.TabAttentionNeeded) ?? ConsoleColor.Green;
+            TabAttentionNeededText = ConvertColor(theme.TabAttentionNeededText) ?? ConsoleColor.Black;
             LogHour = ConvertColor(theme.LogHour) ?? ConsoleColor.White;
-            LogNickname = ConvertColor(theme.LogNickname) ?? ConsoleColor.Blue;
+            LogNickname = ConvertColor(theme.LogNickname) ?? ConsoleColor.Cyan;
             LogMessage = ConvertColor(theme.LogMessage) ?? ConsoleColor.White;
             LogStatus = ConvertColor(theme.LogStatus) ?? ConsoleColor.Cyan;
             LogWarning = ConvertColor(theme.LogWarning) ?? ConsoleColor.Yellow;

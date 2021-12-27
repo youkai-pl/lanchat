@@ -41,41 +41,45 @@ namespace Lanchat.Terminal.UserInterface.Views
                 ScrollDownKey = ConsoleKey.PageDown
             };
 
-            Content = new DockPanel
+            Content = new Style()
             {
-                FillingControl = ScrollPanel,
-                DockedControl = new Border
+                Foreground = Theme.Foreground,
+                Content = new DockPanel
                 {
-                    BorderPlacement = BorderPlacement.Top,
-                    BorderStyle = BorderStyle.Single,
-                    Content = new VerticalStackPanel
+                    FillingControl = ScrollPanel,
+                    DockedControl = new Border
                     {
-                        Children = new[]
+                        BorderPlacement = BorderPlacement.Top,
+                        BorderStyle = BorderStyle.Single,
+                        Content = new VerticalStackPanel
                         {
-                            new TextBlock
+                            Children = new[]
                             {
-                                Text = Resources.YourAddress
-                            },
-                            new TextBlock
-                            {
-                                Text = localAddresses
-                            },
-                            new TextBlock
-                            {
-                                Text = ""
-                            },
-                            new TextBlock
-                            {
-                                Text = Resources.YourRsa
-                            },
-                            new TextBlock
-                            {
-                                Text = RsaFingerprint.GetMd5(Program.Network.LocalRsa.Rsa.ExportRSAPublicKey())
+                                new TextBlock
+                                {
+                                    Text = Resources.YourAddress
+                                },
+                                new TextBlock
+                                {
+                                    Text = localAddresses
+                                },
+                                new TextBlock
+                                {
+                                    Text = ""
+                                },
+                                new TextBlock
+                                {
+                                    Text = Resources.YourRsa
+                                },
+                                new TextBlock
+                                {
+                                    Text = RsaFingerprint.GetMd5(Program.Network.LocalRsa.Rsa.ExportRSAPublicKey())
+                                }
                             }
                         }
-                    }
-                },
-                Placement = DockPanel.DockedControlPlacement.Bottom
+                    },
+                    Placement = DockPanel.DockedControlPlacement.Bottom
+                }
             };
 
             Program.Network.NodesDetection.DetectedNodes.CollectionChanged += RefreshDetectedUsers;

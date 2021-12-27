@@ -6,10 +6,15 @@ namespace Lanchat.Terminal.UserInterface.Controls
 {
     public class PromptIndicator : SimpleControl
     {
-        private readonly TextBlock textBlock = new();
+        private readonly TextBlock textBlock;
 
         public PromptIndicator()
         {
+            textBlock = new()
+            {
+                Color = Theme.Foreground
+            };
+
             Program.Config.PropertyChanged += (_, args) =>
             {
                 if (args.PropertyName is "Nickname" or "UserStatus")

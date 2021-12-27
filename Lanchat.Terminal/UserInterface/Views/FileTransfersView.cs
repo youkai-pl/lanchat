@@ -24,7 +24,11 @@ namespace Lanchat.Terminal.UserInterface.Views
                 ScrollDownKey = ConsoleKey.PageDown
             };
 
-            Content = ScrollPanel;
+            Content = new Style()
+            {
+                Foreground = Theme.Foreground,
+                Content = ScrollPanel
+            };
         }
 
         public int Counter { get; private set; } = 1;

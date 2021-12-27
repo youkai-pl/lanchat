@@ -66,7 +66,7 @@ namespace Lanchat.Terminal
             }
             catch (SocketException e) when (e.SocketErrorCode == SocketError.AddressAlreadyInUse)
             {
-                TabsManager.HomeView.AddText(Resources.PortBusy, UserInterface.Theme.LogWarning);
+                TabsManager.HomeView.AddText(Resources.PortBusy, Theme.LogWarning);
             }
 
             if (args.Contains("--localhost") || args.Contains("-l"))
@@ -75,6 +75,7 @@ namespace Lanchat.Terminal
             }
 
             Logger.DeleteOldLogs(5);
+
             await tcs.Task;
             Console.ResetColor();
             Console.Clear();
