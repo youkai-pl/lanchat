@@ -11,6 +11,7 @@
         <IsPackable>false</IsPackable>
         <Company>Youkai Telecom</Company>
         <PublishSingleFile>true</PublishSingleFile>
+        <PublishTrimmed>true</PublishTrimmed>
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
     </PropertyGroup>
 
