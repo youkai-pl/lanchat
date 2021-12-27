@@ -33,11 +33,12 @@ namespace Lanchat.Terminal.UserInterface
                     {
                         Children = new IControl[]
                         {
-                            new Style
+                            new PromptIndicator(),
+                            new Style()
                             {
-                                Content = new PromptIndicator()
-                            },
-                            promptInput
+                                Foreground = Theme.Foreground,
+                                Content = promptInput
+                            }
                         }
                     }
                 }
