@@ -30,6 +30,7 @@ namespace Lanchat.Terminal.UserInterface
             Foreground = ConvertColor(theme.Foreground) ?? ConsoleColor.White;
             Background = ConvertColor(theme.Background) ?? ConsoleColor.Black;
             TabActive = ConvertColor(theme.TabActive) ?? ConsoleColor.Cyan;
+            TabActiveText = ConvertColor(theme.TabActiveText) ?? ConsoleColor.Black;
             TabAttentionNeeded = ConvertColor(theme.TabAttentionNeeded) ?? ConsoleColor.Green;
             TabAttentionNeededText = ConvertColor(theme.TabAttentionNeededText) ?? ConsoleColor.Black;
             LogHour = ConvertColor(theme.LogHour) ?? ConsoleColor.White;

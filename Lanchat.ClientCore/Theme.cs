@@ -11,7 +11,7 @@ namespace Lanchat.ClientCore
         public string Foreground { get; set; }
         public string Background { get; set; }
         public string TabActive { get; set; }
-        public string TabInactive { get; set; }
+        public string TabActiveText { get; set; }
         public string TabAttentionNeeded { get; set; }
         public string TabAttentionNeededText { get; set; }
         public string LogHour { get; set; }
