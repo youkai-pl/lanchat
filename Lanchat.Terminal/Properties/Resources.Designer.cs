@@ -354,6 +354,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status changed..
+        /// </summary>
+        internal static string StatusChanged {
+            get {
+                return ResourceManager.GetString("StatusChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Summary.
         /// </summary>
         internal static string Summary {

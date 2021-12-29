@@ -302,6 +302,9 @@ Fingerprint: {7}</value>
     <data name="UserAlreadyTrused" xml:space="preserve">
         <value>{0} is already trusted.</value>
     </data>
+    <data name="StatusChanged" xml:space="preserve">
+        <value>Status changed.</value>
+    </data>
 
     <!-- File transfer -->
     <data name="FileTransferFinished" xml:space="preserve">

@@ -240,6 +240,10 @@ Skrót klucza RSA: {7}</value>
     <data name="UserAlreadyTrused" xml:space="preserve">
         <value>{0} jest już zaufany.</value>
     </data>
+    <data name="StatusChanged" xml:space="preserve">
+        <value>Zmieniono status.</value>
+    </data>
+
     <!-- File transfer -->
     <data name="FileTransferFinished" xml:space="preserve">
         <value>Zakończono</value>

@@ -1,5 +1,7 @@
 using Lanchat.Core.Identity;
 using Lanchat.Core.Network;
+using Lanchat.Terminal.Properties;
+using Lanchat.Terminal.UserInterface;
 
 namespace Lanchat.Terminal.Commands.Status
 {
@@ -15,6 +17,7 @@ namespace Lanchat.Terminal.Commands.Status
         public void Execute(string[] _)
         {
             Program.Config.UserStatus = UserStatus.AwayFromKeyboard;
+            Writer.WriteStatus(Resources.StatusChanged);
         }
 
         public void Execute(string[] args, INode node)
