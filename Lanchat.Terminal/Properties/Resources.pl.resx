@@ -206,6 +206,9 @@ Sprwadź /help [command]</value>
     <data name="ConnectionAttempt" xml:space="preserve">
         <value>Łączenie z {0}</value>
     </data>
+    <data name="ConnectionAttemptDns" xml:space="preserve">
+        <value>Łączenie z {0} przy użyciu DNS</value>
+    </data>
     <data name="SelfNicknameChanged" xml:space="preserve">
         <value>Nickname zmieniony na {0}</value>
     </data>
@@ -242,6 +245,9 @@ Skrót klucza RSA: {7}</value>
     </data>
     <data name="StatusChanged" xml:space="preserve">
         <value>Zmieniono status.</value>
+    </data>
+    <data name="CannotConnectCommand" xml:space="preserve">
+        <value>Nie można połączyć.</value>
     </data>
 
     <!-- File transfer -->

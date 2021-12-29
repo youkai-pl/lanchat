@@ -104,11 +104,11 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot connect with {0}.
+        ///   Looks up a localized string similar to Cannot connect..
         /// </summary>
-        internal static string CannotConnect {
+        internal static string CannotConnectCommand {
             get {
-                return ResourceManager.GetString("CannotConnect", resourceCulture);
+                return ResourceManager.GetString("CannotConnectCommand", resourceCulture);
             }
         }
         
@@ -146,6 +146,15 @@ namespace Lanchat.Terminal.Properties {
         internal static string ConnectionAttempt {
             get {
                 return ResourceManager.GetString("ConnectionAttempt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempting connect to {0} using DNS.
+        /// </summary>
+        internal static string ConnectionAttemptDns {
+            get {
+                return ResourceManager.GetString("ConnectionAttemptDns", resourceCulture);
             }
         }
         

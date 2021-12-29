@@ -236,9 +236,6 @@ Config file can be found in:
         <value>{0} isn't trusted. For safety reasons some features will be disabled until you mark user as trusted.
 Use /trust [ID] command.</value>
     </data>
-    <data name="CannotConnect" xml:space="preserve">
-        <value>Cannot connect with {0}</value>
-    </data>
     <data name="NicknameChanged" xml:space="preserve">
         <value>{0} changed nick to {1}</value>
     </data>
@@ -267,6 +264,9 @@ Check /help [command]</value>
     <!-- Commands results -->
     <data name="ConnectionAttempt" xml:space="preserve">
         <value>Attempting connect to {0}</value>
+    </data>
+    <data name="ConnectionAttemptDns" xml:space="preserve">
+        <value>Attempting connect to {0} using DNS</value>
     </data>
     <data name="SelfNicknameChanged" xml:space="preserve">
         <value>Nickname changed to {0}</value>
@@ -304,6 +304,9 @@ Fingerprint: {7}</value>
     </data>
     <data name="StatusChanged" xml:space="preserve">
         <value>Status changed.</value>
+    </data>
+    <data name="CannotConnectCommand" xml:space="preserve">
+        <value>Cannot connect.</value>
     </data>
 
     <!-- File transfer -->

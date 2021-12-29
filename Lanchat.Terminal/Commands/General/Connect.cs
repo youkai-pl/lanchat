@@ -34,34 +34,34 @@ namespace Lanchat.Terminal.Commands.General
                     port = Program.Config.ServerPort;
                 }
 
-                Writer.WriteText(string.Format(Resources.ConnectionAttempt, addressArgument));
-
-                bool result;
+                bool connected;
                 if (IPAddress.TryParse(addressArgument, out var ipAddress))
                 {
-                    result = await Program.Network.Connect(ipAddress, port);
+                    Writer.WriteText(string.Format(Resources.ConnectionAttempt, addressArgument));
+                    connected = await Program.Network.Connect(ipAddress, port);
                 }
                 else
                 {
-                    result = await Program.Network.Connect(addressArgument, port);
+                    Writer.WriteText(string.Format(Resources.ConnectionAttemptDns, addressArgument));
+                    connected = await Program.Network.Connect(addressArgument, port);
                 }
 
-                if (!result)
+                if (!connected)
                 {
-                    Writer.WriteError(string.Format(Resources.CannotConnect, ipAddress));
+                    Writer.WriteError(Resources.CannotConnectCommand);
                 }
             }
             catch (FormatException)
             {
                 Writer.WriteError(Resources.IncorrectCommandUsage);
             }
-            catch (SocketException)
+            catch (ArgumentException)
             {
                 Writer.WriteError(Resources.IncorrectCommandUsage);
             }
-            catch (ArgumentException e)
+            catch (SocketException)
             {
-                Writer.WriteError(e.Message);
+                Writer.WriteError(Resources.CannotConnectCommand);
             }
         }
 
