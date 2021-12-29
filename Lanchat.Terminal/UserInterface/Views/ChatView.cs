@@ -36,7 +36,7 @@ namespace Lanchat.Terminal.UserInterface.Views
                     new List<TextBlock>
                     {
                         new() { Text = $"{DateTime.Now:HH:mm:ss}", Color = Theme.LogHour },
-                        new() { Text = " " },
+                        new() { Text = " ! ", Color = Theme.LogNickname },
                     },
                     new List<TextBlock>
                     {

@@ -36,7 +36,7 @@ namespace Lanchat.Terminal.UserInterface
             LogHour = ConvertColor(theme.LogHour) ?? ConsoleColor.White;
             LogNickname = ConvertColor(theme.LogNickname) ?? ConsoleColor.Cyan;
             LogMessage = ConvertColor(theme.LogMessage) ?? ConsoleColor.White;
-            LogStatus = ConvertColor(theme.LogStatus) ?? ConsoleColor.Cyan;
+            LogStatus = ConvertColor(theme.LogStatus) ?? ConsoleColor.Magenta;
             LogWarning = ConvertColor(theme.LogWarning) ?? ConsoleColor.Yellow;
             LogError = ConvertColor(theme.LogError) ?? ConsoleColor.Red;
             StatusOnline = ConvertColor(theme.StatusOnline) ?? ConsoleColor.White;
