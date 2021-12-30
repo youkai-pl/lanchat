@@ -122,6 +122,7 @@ namespace Lanchat.ClientCore
         }
 
         /// <inheritdoc />
+        [JsonIgnore]
         public bool DebugMode { get; set; }
 
         /// <summary>
