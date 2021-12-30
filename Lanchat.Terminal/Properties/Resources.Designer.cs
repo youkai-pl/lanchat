@@ -177,6 +177,24 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File transfer started..
+        /// </summary>
+        internal static string FileTransferAcceptCommand {
+            get {
+                return ResourceManager.GetString("FileTransferAcceptCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File transfer cancelled..
+        /// </summary>
+        internal static string FileTransferCancelCommand {
+            get {
+                return ResourceManager.GetString("FileTransferCancelCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancelled.
         /// </summary>
         internal static string FileTransferCancelled {
@@ -200,6 +218,15 @@ namespace Lanchat.Terminal.Properties {
         internal static string FileTransferInProgress {
             get {
                 return ResourceManager.GetString("FileTransferInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File transfer will not proceed..
+        /// </summary>
+        internal static string FileTransferRejectCommand {
+            get {
+                return ResourceManager.GetString("FileTransferRejectCommand", resourceCulture);
             }
         }
         

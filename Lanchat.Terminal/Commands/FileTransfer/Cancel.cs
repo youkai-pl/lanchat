@@ -32,6 +32,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             {
                 node.FileSender.CancelSend();
                 TabsManager.FileTransfersView.GetFileTransferStatus(node).Update(Resources.FileTransferCancelled);
+                Writer.WriteStatus(Resources.FileTransferCancelCommand);
             }
             catch (InvalidOperationException)
             {

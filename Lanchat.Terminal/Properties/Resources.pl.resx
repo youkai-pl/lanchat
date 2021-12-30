@@ -189,11 +189,11 @@ Użyj komendy /trust [ID].</value>
 
     <!-- Errors -->
     <data name="PortBusy" xml:space="preserve">
-        <value>Port zajęty. Nie można uruchomić serwera</value>
+        <value>Port zajęty. Nie można uruchomić serwera</value>
     </data>
     <data name="IncorrectCommandUsage" xml:space="preserve">
         <value>Nieprawidłowe użycie polecenia
-Sprwadź /help [command]</value>
+Sprawdź /help [command]</value>
     </data>
     <data name="CommandNotFound" xml:space="preserve">
         <value>Polecenie nieznalezione</value>
@@ -251,6 +251,15 @@ Skrót klucza RSA: {7}</value>
     </data>
     <data name="FileRequestSent" xml:space="preserve">
         <value>Wymiana plików czeka na zatwierdzenie przez odbiorcę.</value>
+    </data>
+    <data name="FileTransferAcceptCommand" xml:space="preserve">
+        <value>Rozpoczętu wymianę plików.</value>
+    </data>
+    <data name="FileTransferRejectCommand" xml:space="preserve">
+        <value>Wymiana plików nie zostanie przeprowadzona.</value>
+    </data>
+    <data name="FileTransferCancelCommand" xml:space="preserve">
+        <value>Anulowano wymianę plików.</value>
     </data>
 
     <!-- File transfer -->

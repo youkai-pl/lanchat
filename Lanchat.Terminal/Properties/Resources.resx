@@ -311,6 +311,15 @@ Fingerprint: {7}</value>
     <data name="FileRequestSent" xml:space="preserve">
         <value>File transfer is waiting for receiver's accept.</value>
     </data>
+    <data name="FileTransferAcceptCommand" xml:space="preserve">
+        <value>File transfer started.</value>
+    </data>
+    <data name="FileTransferRejectCommand" xml:space="preserve">
+        <value>File transfer will not proceed.</value>
+    </data>
+    <data name="FileTransferCancelCommand" xml:space="preserve">
+        <value>File transfer cancelled.</value>
+    </data>
 
     <!-- File transfer -->
     <data name="FileTransferFinished" xml:space="preserve">

@@ -31,6 +31,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             try
             {
                 node.FileReceiver.AcceptRequest();
+                Writer.WriteStatus(Resources.FileTransferAcceptCommand);
             }
             catch (InvalidOperationException)
             {
