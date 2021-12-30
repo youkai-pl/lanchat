@@ -180,8 +180,7 @@ Użyj komendy /trust [ID].</value>
         <value>{0} zmienił nick na {1}</value>
     </data>
     <data name="FreshRsa" xml:space="preserve">
-        <value>Aby upewnić się, że połączenie z {0} jest bezpiecznie 
-        sprawdź "Fingerprint" w karcie "Użytkownicy"</value>
+        <value>Aby upewnić się, że połączenie z {0} jest bezpiecznie sprawdź "Fingerprint" w karcie "Użytkownicy"</value>
     </data>
     <data name="RsaChanged" xml:space="preserve">
         <value>Klucz publiczny {0} uległ zmianie. Połączenie może być niezabezpieczone.</value>
@@ -282,7 +281,7 @@ Skrót klucza RSA: {7}</value>
         <value>Nie można wysyłać wielu plików jednocześnie</value>
     </data>
     <data name="CannotAccessFile" xml:space="preserve">
-        <value>Nie można uzyskać dostępu do {0}
+        <value>Nie można uzyskać dostępu do {0},
 Scieżka do pliku lub uprawnienia są nieprawidłowe.</value>
     </data>
 </root>

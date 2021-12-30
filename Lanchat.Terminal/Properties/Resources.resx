@@ -106,22 +106,22 @@ Config file can be found in:
     </data>
     <data name="Summary_afk" xml:space="preserve">
         <value>
-    Change status to "Away From Keyboard"
+    Change status to "Away From Keyboard".
         </value>
     </data>
     <data name="Summary_dnd" xml:space="preserve">
         <value>
-    Change status to "Do Not Disturb"
+    Change status to "Do Not Disturb".
         </value>
     </data>
     <data name="Summary_online" xml:space="preserve">
         <value>
-    Change status to "Online"
+    Change status to "Online".
         </value>
     </data>
     <data name="Summary_whois" xml:space="preserve">
         <value>
-    Show information about user
+    Show information about user.
         </value>
     </data>
     <data name="Summary_trust" xml:space="preserve">
@@ -272,7 +272,7 @@ Check /help [command]</value>
         <value>Nickname changed to {0}</value>
     </data>
     <data name="WrongNickname" xml:space="preserve">
-        <value>Nickname must be less than 20 characters long and must not contain spaces.</value>
+        <value>Nickname must be less than 20 characters long and must not contain spaces</value>
     </data>
     <data name="Blocked" xml:space="preserve">
         <value>{0} blocked</value>
@@ -297,28 +297,28 @@ Client: {6}
 Fingerprint: {7}</value>
     </data>
     <data name="UserTrused" xml:space="preserve">
-        <value>{0} is now trusted user.</value>
+        <value>{0} is now trusted user</value>
     </data>
     <data name="UserAlreadyTrused" xml:space="preserve">
-        <value>{0} is already trusted.</value>
+        <value>{0} is already trusted</value>
     </data>
     <data name="StatusChanged" xml:space="preserve">
-        <value>Status changed.</value>
+        <value>Status changed</value>
     </data>
     <data name="CannotConnectCommand" xml:space="preserve">
-        <value>Cannot connect.</value>
+        <value>Cannot connect</value>
     </data>
     <data name="FileRequestSent" xml:space="preserve">
-        <value>File transfer is waiting for receiver's accept.</value>
+        <value>File transfer is waiting for receiver's accept</value>
     </data>
     <data name="FileTransferAcceptCommand" xml:space="preserve">
-        <value>File transfer started.</value>
+        <value>File transfer started</value>
     </data>
     <data name="FileTransferRejectCommand" xml:space="preserve">
-        <value>File transfer will not proceed.</value>
+        <value>File transfer will not proceed</value>
     </data>
     <data name="FileTransferCancelCommand" xml:space="preserve">
-        <value>File transfer cancelled.</value>
+        <value>File transfer cancelled</value>
     </data>
 
     <!-- File transfer -->
@@ -335,13 +335,13 @@ Fingerprint: {7}</value>
         <value>Cancelled</value>
     </data>
     <data name="NoFileReceiveRequest" xml:space="preserve">
-        <value>No file transfers in progress.</value>
+        <value>No file transfers in progress</value>
     </data>
     <data name="FileTransferInProgress" xml:space="preserve">
-        <value>Cannot send multiple files at once.</value>
+        <value>Cannot send multiple files at once</value>
     </data>
     <data name="CannotAccessFile" xml:space="preserve">
-        <value>Cannot access {0}
-File name or permissions may be wrong.</value>
+        <value>Cannot access {0},
+File name or permissions may be wrong</value>
     </data>
 </root>

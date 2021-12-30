@@ -94,8 +94,8 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot access {0}
-        ///File name or permissions may be wrong..
+        ///   Looks up a localized string similar to Cannot access {0},
+        ///File name or permissions may be wrong.
         /// </summary>
         internal static string CannotAccessFile {
             get {
@@ -104,7 +104,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot connect..
+        ///   Looks up a localized string similar to Cannot connect.
         /// </summary>
         internal static string CannotConnectCommand {
             get {
@@ -168,7 +168,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File transfer is waiting for receiver&apos;s accept..
+        ///   Looks up a localized string similar to File transfer is waiting for receiver&apos;s accept.
         /// </summary>
         internal static string FileRequestSent {
             get {
@@ -177,7 +177,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File transfer started..
+        ///   Looks up a localized string similar to File transfer started.
         /// </summary>
         internal static string FileTransferAcceptCommand {
             get {
@@ -186,7 +186,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File transfer cancelled..
+        ///   Looks up a localized string similar to File transfer cancelled.
         /// </summary>
         internal static string FileTransferCancelCommand {
             get {
@@ -213,7 +213,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot send multiple files at once..
+        ///   Looks up a localized string similar to Cannot send multiple files at once.
         /// </summary>
         internal static string FileTransferInProgress {
             get {
@@ -222,7 +222,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File transfer will not proceed..
+        ///   Looks up a localized string similar to File transfer will not proceed.
         /// </summary>
         internal static string FileTransferRejectCommand {
             get {
@@ -363,7 +363,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No file transfers in progress..
+        ///   Looks up a localized string similar to No file transfers in progress.
         /// </summary>
         internal static string NoFileReceiveRequest {
             get {
@@ -399,7 +399,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Status changed..
+        ///   Looks up a localized string similar to Status changed.
         /// </summary>
         internal static string StatusChanged {
             get {
@@ -429,7 +429,7 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///    Change status to &quot;Away From Keyboard&quot;
+        ///    Change status to &quot;Away From Keyboard&quot;.
         ///        .
         /// </summary>
         internal static string Summary_afk {
@@ -485,7 +485,7 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///    Change status to &quot;Do Not Disturb&quot;
+        ///    Change status to &quot;Do Not Disturb&quot;.
         ///        .
         /// </summary>
         internal static string Summary_dnd {
@@ -509,7 +509,7 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///    Change status to &quot;Online&quot;
+        ///    Change status to &quot;Online&quot;.
         ///        .
         /// </summary>
         internal static string Summary_online {
@@ -568,7 +568,7 @@ namespace Lanchat.Terminal.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///    Show information about user
+        ///    Show information about user.
         ///        .
         /// </summary>
         internal static string Summary_whois {
@@ -733,7 +733,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} is already trusted..
+        ///   Looks up a localized string similar to {0} is already trusted.
         /// </summary>
         internal static string UserAlreadyTrused {
             get {
@@ -760,7 +760,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} is now trusted user..
+        ///   Looks up a localized string similar to {0} is now trusted user.
         /// </summary>
         internal static string UserTrused {
             get {
@@ -803,7 +803,7 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nickname must be less than 20 characters long and must not contain spaces..
+        ///   Looks up a localized string similar to Nickname must be less than 20 characters long and must not contain spaces.
         /// </summary>
         internal static string WrongNickname {
             get {
