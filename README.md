@@ -2,7 +2,8 @@
 
 ## Future updates
 
-I will not continue development of Lanchat after 2.10 release. Any bugs including security will not be fixed. Please consider use alternatives.
+I will not continue development of Lanchat after 2.10 release. 
+Any bugs or security issues will not be fixed. Please consider using alternatives.
 
 ## Introduction
 

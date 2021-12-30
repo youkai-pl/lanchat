@@ -11,7 +11,7 @@
     <description>
         <p>
             I will not continue development of Lanchat after 2.10 release. 
-            Any bugs including security will not be fixed. Please consider use alternatives.
+            Any bugs or security issues will not be fixed. Please consider using alternatives.
         </p>
     </description>
     <launchable type="desktop-id">io.github.tofudd.lanchat.terminal.desktop</launchable>
@@ -28,7 +28,7 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="2.10.0" date="2021-11-30  "/>
+        <release version="2.10.0" date="2021-11-30"/>
         <release version="2.9.3" date="2021-11-25"/>
         <release version="2.9.2" date="2021-10-23"/>
         <release version="2.9.1" date="2021-10-19"/>

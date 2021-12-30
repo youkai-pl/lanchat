@@ -18,12 +18,12 @@ flatpak run io.github.tofudd.lanchat.terminal
 
 ### Source code
 
-For running Lanchat.Terminal from source you will need [.NET 5 SDK](https://dotnet.microsoft.com/download/dotnet/5.0)
+For running Lanchat.Terminal from source you will need [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0)
 
 ```sh
 git clone https://github.com/tof4/lanchat
 cd lanchat/Lanchat.Terminal
-dotnet publish -c Release -p:PublishSingleFile=true --self-contained true -r <runtime id>
+dotnet publish -c Release -p:PublishSingleFile=true --self-contained -r <runtime id>
 cd bin/Release/net5.0/linux-x64/publish/<runtime id>
 ./Lanchat
 ```
