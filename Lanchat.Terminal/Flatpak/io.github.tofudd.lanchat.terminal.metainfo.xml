@@ -4,18 +4,19 @@
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>GPL-3.0-only</project_license>
     <name>Lanchat Terminal</name>
-    <summary>Lan-chat and file transfer</summary>
+    <summary>LAN chat and file transfer</summary>
     <content_rating type="oars-1.1">
         <content_attribute id="social-chat">intense</content_attribute>
     </content_rating>
     <description>
         <p>
-            Lan-chat and file transfer.
+            I will not continue development of Lanchat after 2.10 release. 
+            Any bugs including security will not be fixed. Please consider use alternatives.
         </p>
     </description>
     <launchable type="desktop-id">io.github.tofudd.lanchat.terminal.desktop</launchable>
     <url type="homepage">https://github.com/tof4/lanchat/</url>
-    <developer_name>Bartłomiej Tota (tof4)</developer_name>
+    <developer_name>tof4</developer_name>
     <provides>
         <binary>Lanchat</binary>
     </provides>
@@ -27,6 +28,7 @@
         </screenshot>
     </screenshots>
     <releases>
+        <release version="2.10.0" date="2021-11-30  "/>
         <release version="2.9.3" date="2021-11-25"/>
         <release version="2.9.2" date="2021-10-23"/>
         <release version="2.9.1" date="2021-10-19"/>
