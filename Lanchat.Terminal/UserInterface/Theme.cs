@@ -20,7 +20,6 @@ namespace Lanchat.Terminal.UserInterface
         public static Color LogStatus { get; set; }
         public static Color LogWarning { get; set; }
         public static Color LogError { get; set; }
-        public static Color StatusOnline { get; set; }
         public static Color StatusAfk { get; set; }
         public static Color StatusDnd { get; set; }
 
@@ -39,7 +38,6 @@ namespace Lanchat.Terminal.UserInterface
             LogStatus = ConvertColor(theme.LogStatus) ?? ConsoleColor.Magenta;
             LogWarning = ConvertColor(theme.LogWarning) ?? ConsoleColor.Yellow;
             LogError = ConvertColor(theme.LogError) ?? ConsoleColor.Red;
-            StatusOnline = ConvertColor(theme.StatusOnline) ?? ConsoleColor.White;
             StatusAfk = ConvertColor(theme.StatusAfk) ?? ConsoleColor.Yellow;
             StatusDnd = ConvertColor(theme.StatusDnd) ?? ConsoleColor.Red;
         }

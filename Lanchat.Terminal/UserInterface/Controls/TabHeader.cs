@@ -9,6 +9,8 @@ namespace Lanchat.Terminal.UserInterface.Controls
     {
         private readonly Background headerBackground;
         private readonly TextBlock textBlock;
+        private Color? lockedColor;
+        private bool isActive;
 
         public TabHeader(string text)
         {
@@ -36,25 +38,50 @@ namespace Lanchat.Terminal.UserInterface.Controls
 
         public void UpdateTabColor(Color color)
         {
-            textBlock.Color = color;
+            lockedColor = color;
+            if (isActive)
+            {
+                textBlock.Color = Theme.TabActiveText;
+                headerBackground.Color = color;
+            }
+            else
+            {
+                textBlock.Color = color;
+                headerBackground.Color = Theme.Background;
+            }
         }
 
         public void MarkAsActive()
         {
+            isActive = true;
+            headerBackground.Color = lockedColor ?? Theme.TabActive;
             textBlock.Color = Theme.TabActiveText;
-            headerBackground.Color = Theme.TabActive;
         }
 
         public void MarkAsInactive()
         {
-            textBlock.Color = Theme.Foreground;
+            isActive = false;
+            textBlock.Color = lockedColor ?? Theme.Foreground;
             headerBackground.Color = Theme.Background;
         }
 
         public void MarkAsUnread()
         {
-            textBlock.Color = Theme.TabAttentionNeededText;
-            headerBackground.Color = Theme.TabAttentionNeeded;
+            textBlock.Color =  Theme.TabAttentionNeededText;
+            headerBackground.Color = lockedColor ?? Theme.TabAttentionNeeded;
+        }
+
+        public void ResetColor()
+        {
+            lockedColor = null;
+            if (isActive)
+            {
+                MarkAsActive();
+            }
+            else
+            {
+                MarkAsInactive();
+            }
         }
     }
 }

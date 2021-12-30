@@ -20,7 +20,6 @@ namespace Lanchat.ClientCore
         public string LogStatus { get; set; }
         public string LogWarning { get; set; }
         public string LogError { get; set; }
-        public string StatusOnline { get; set; }
         public string StatusAfk { get; set; }
         public string StatusDnd { get; set; }
     }
