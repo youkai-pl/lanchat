@@ -29,11 +29,6 @@ namespace Lanchat.Core.Filesystem
         UserStatus UserStatus { get; set; }
 
         /// <summary>
-        ///     Use IPv6 instead IPv4.
-        /// </summary>
-        bool UseIPv6 { get; set; }
-
-        /// <summary>
         ///     Try connecting with nodes from received list.
         /// </summary>
         bool ConnectToReceivedList { get; set; }

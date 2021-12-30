@@ -21,7 +21,6 @@ namespace Lanchat.ClientCore
         private string language = "default";
         private string nickname = Environment.UserName;
         private int port = 3645;
-        private bool useIPv6;
         private UserStatus userStatus = UserStatus.Online;
         private string theme = "default";
 
@@ -124,17 +123,6 @@ namespace Lanchat.ClientCore
 
         /// <inheritdoc />
         public bool DebugMode { get; set; }
-
-        /// <inheritdoc />
-        public bool UseIPv6
-        {
-            get => useIPv6;
-            set
-            {
-                useIPv6 = value;
-                OnPropertyChanged(nameof(UseIPv6));
-            }
-        }
 
         /// <summary>
         ///     Lanchat.Terminal color scheme.
