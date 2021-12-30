@@ -249,6 +249,9 @@ Skrót klucza RSA: {7}</value>
     <data name="CannotConnectCommand" xml:space="preserve">
         <value>Nie można połączyć.</value>
     </data>
+    <data name="FileRequestSent" xml:space="preserve">
+        <value>Wymiana plików czeka na zatwierdzenie przez odbiorcę.</value>
+    </data>
 
     <!-- File transfer -->
     <data name="FileTransferFinished" xml:space="preserve">

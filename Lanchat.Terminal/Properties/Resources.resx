@@ -308,6 +308,9 @@ Fingerprint: {7}</value>
     <data name="CannotConnectCommand" xml:space="preserve">
         <value>Cannot connect.</value>
     </data>
+    <data name="FileRequestSent" xml:space="preserve">
+        <value>File transfer is waiting for receiver's accept.</value>
+    </data>
 
     <!-- File transfer -->
     <data name="FileTransferFinished" xml:space="preserve">

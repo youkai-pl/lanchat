@@ -168,6 +168,15 @@ namespace Lanchat.Terminal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File transfer is waiting for receiver&apos;s accept..
+        /// </summary>
+        internal static string FileRequestSent {
+            get {
+                return ResourceManager.GetString("FileRequestSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancelled.
         /// </summary>
         internal static string FileTransferCancelled {

@@ -35,6 +35,7 @@ namespace Lanchat.Terminal.Commands.FileTransfer
             try
             {
                 node.FileSender.CreateSendRequest(filePath);
+                Writer.WriteStatus(Resources.FileRequestSent);
             }
             catch (Exception e)
             {
